@@ -44,3 +44,5 @@
 	signingkey = 54D630CB5F0B5FD6
 [safe]
 	directory = /Users/s-a-c/.local/share/nvim/lazy/nvim-web-devicons
+[pull]
+	rebase = true
