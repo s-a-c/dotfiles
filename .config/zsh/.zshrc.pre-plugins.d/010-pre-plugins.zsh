@@ -175,7 +175,8 @@ export BUN_INSTALL=${BUN_INSTALL:="${XDG_DATA_HOME}/bun"}
 _path_prepend "${BUN_INSTALL}/bin"
 
 ## [plugins.colorize]
-export ZSH_COLORIZE_STYLE="rainbo_dash"
+#export ZSH_COLORIZE_STYLE="rainbow_dash"
+export ZSH_COLORIZE_STYLE="colorful"
 
 ## [plugins.composer]
 ## [plugins.cpanm]
@@ -247,12 +248,14 @@ zstyle ':omz:plugins:eza' 'icons' yes
 ## }}}  ## [plugins.eza]
 
 ## [plugins.fast-syntax-highlighting]
+typeset -gA FAST_HIGHLIGHT
 export FAST_HIGHLIGHT[use_brackets]=1
 fast-theme zdharma
 
 ## [plugins.fzf]
 export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
 export FZF_ALT_C_OPTS='--preview-window=right:60%:wrap'
+export FZF_BASE="${XDG_DATA_HOME}/fzf"
 export FZF_COMPLETION_TRIGGER='**'
 export FZF_CTRL_T_COMMAND='fd --type f --hidden --follow --exclude .git'
 export FZF_CTRL_T_OPTS='--preview-window=right:60%:wrap'
@@ -267,9 +270,9 @@ export LESSOPEN='| lessfilter-fzf %s'
 ## }}}  ## [plugins.fzf]
 
 ## [plugins.gem]
-export GEM_HOME="${XDG_DATA_HOME}/gem"
-export GEM_PATH="${XDG_DATA_HOME}/gem"
-export PATH="${XDG_DATA_HOME}/gem/bin:$PATH"
+export GEM_HOME="${XDG_DATA_HOME}/gem/ruby/3.3.0"
+export GEM_PATH="${GEM_HOME}/bin"
+_path_prepend "${GEM_HOME}/bin"
 
 ## [plugins.gh]
 export GH_CONFIG_DIR="${XDG_CONFIG_HOME}/gh"
