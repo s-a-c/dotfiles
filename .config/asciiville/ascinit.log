@@ -1,0 +1,123 @@
+ascinit
+
+
+Install Neovim text editor (optional but recommended) ? (y/n) n
+
+Skipping Neovim installation.
+Neovim can be installed later with the command 'ascinit neovim'.
+
+
+Install Durdraw ASCII editor (optional but recommended) ? (y/n) y
+
+Install ASCII Games ? (y/n) y
+
+	Installing fontconfig ... done
+	Installing coreutils ... doneA basic /Users/s-a-c/.mutt/muttrc Mutt email client configuration
+has been created for you. The default configuration can be used
+as a template to create a GMail IMAP Mutt email account.
+Edit /Users/s-a-c/.mutt/muttrc and add your GMail credentials.
+
+A good starting point for the new Mutt user is the Mutt Wiki at:
+https://gitlab.com/muttmua/mutt/-/wikis/home
+
+A /Users/s-a-c/.config/neomutt/ NeoMutt email client configuration
+has been created for you. Edit your name, email address, and
+email account credentials in /Users/s-a-c/.config/neomutt/accounts/*
+
+A good starting point for the NeoMutt user is the NeoMutt Guide at:
+https://neomutt.org/guide/
+
+
+	Installing gnome-terminal ... done
+	Installing Kitty configuration in /Users/s-a-c/.config/kitty ...cp: cannot overwrite non-directory '/Users/s-a-c/.config/kitty' with directory '/usr/local/share/asciiville/kitty'
+ done
+	Installing Ranger rifle configuration in /Users/s-a-c/.config/ranger/ ... done
+	Installing Tuir configuration in /Users/s-a-c/.config/tuir ... done
+	Installing Tmux configuration in /Users/s-a-c/.tmux.conf ... done
+	Installing Tmux plugins ... done
+	Installing asciimatics ... done
+	Installing ddgr ... done
+	Installing socli ... done
+	Installing future ... done
+	Installing xtermcolor ... done
+	Installing ffmpeg-python ... done
+	Installing pyaudio ... done
+	Installing term-image ... done
+	Installing urlscan ... done
+	Installing openai ... done
+	Installing node ... done
+	Installing dialog ... done
+	Installing mplayer ... done
+	Installing w3m ... done
+	Installing asciinema ... done
+	Installing imagemagick ... done
+	Installing cmatrix ... done
+	Installing neomutt ... done
+	Installing newsboat ... done
+	Installing speedtest-cli ... done
+	Installing neofetch ... done
+	Installing any2ascii ... done
+	Installing asciiville-aewan ... done
+
+Installing Durdraw Ascii Editor
+
+	Installing nbsdgames ... done
+	Installing nethack ... done
+	Installing ninvaders ... done
+	Installing c2048 ... done
+	Installing greed ... done
+	Installing nudoku ... done
+	Installing video-to-ascii ... done
+	Installing googler ... done
+	Installing pipx ... done
+	Installing and configuring jrnl ... done
+Installing kitty-control
+
+Cloning kitty-control repository
+
+Installing kitty-control
+
+Installing nicer Kitty icons
+cp: cannot create regular file '/Applications/kitty.app/Contents/Resources/kitty/logo/kitty.png.bak': Operation not permitted
+cp: cannot create regular file '/Applications/kitty.app/Contents/Resources/kitty/logo/kitty.png': Operation not permitted
+cp: cannot create regular file '/Applications/kitty.app/Contents/Resources/kitty/logo/kitty-128.png.bak': Operation not permitted
+cp: cannot create regular file '/Applications/kitty.app/Contents/Resources/kitty/logo/kitty-128.png': Operation not permitted
+
+Installing JetBrains Mono Nerd Font
+
+Installation of kitty-control complete ✨ 🌟 ✨
+
+See https://github.com/doctorfree/kitty-control#readme
+
+
+	Installing vhs ... done
+	Installing got ... done
+	Installing tdraw ... done
+
+Asciiville configuration in /Users/s-a-c/.config/asciiville/config ... done
+	Cleaning up Homebrew ... done
+
+	Installing JetBrains Mono font ... done
+
+	A Neovim text editor configuration has been created for you in
+		/Users/s-a-c/.config/nvim-Lazyman/
+	A good starting point for the Neovim user is the Neovim User Doc at:
+		https://neovim.io/doc/user/
+	Try Neovim out by viewing your Neovim configuration:
+		export NVIM_APPNAME=nvim-Lazyman nvim
+	Check your configuration with the Neovim command:
+		:checkhealth
+
+
+Asciiville Initialization Complete
+
+Logout, open a new shell, or reinitialize your current shell
+in order to set your execution PATH appropriately
+
+Visit the Asciiville Wiki at:
+	https://github.com/doctorfree/Asciiville/wiki
+View an Asciiville animation with:
+	asciisplash -c 1 -a -i
+128.53s user 83.15s system 38% cpu 9:03.87s total
+current_ruby:2: command not found: chruby
+current_ruby:3: command not found: chruby

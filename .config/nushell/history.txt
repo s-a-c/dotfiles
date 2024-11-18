@@ -1,0 +1,8 @@
+brew search jetbrains
+brew info jetbrains-space
+brew info jetbrains-gateway
+cd ~/.config/nix-darwin
+ll
+ls -al
+git status
+rm -rf ./.git

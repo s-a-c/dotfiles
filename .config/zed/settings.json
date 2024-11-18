@@ -1,0 +1,134 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "buffer_font_family": "OpenDyslexicM Nerd Font",
+  "buffer_font_size": 14,
+  "buffer_font_weight": 300,
+  "buffer_line_height": "standard",
+  "theme": {
+    "mode": "dark",
+    "light": "One Light",
+    "dark": "Gleam Dark"
+  },
+  "indent_guides": {
+    "enabled": true,
+    "line_width": 1,
+    "active_line_width": 1,
+    "coloring": "indent_aware",
+    "background_coloring": "indent_aware"
+  },
+  "inlay_hints": {
+    "enabled": true,
+    "show_parameter_hints": true,
+    "show_other_hints": true,
+    "show_background": true,
+    "edit_debounce_ms": 700,
+    "scroll_debounce_ms": 50
+  },
+  // Settings specific to journaling
+  "journal": {
+    "hour_format": "hour12",
+    "path": "~"
+  },
+  "preferred_line_length": 150,
+  // Zed's Prettier integration settings.
+  // Allows to enable/disable formatting with Prettier
+  // and configure default Prettier, used when no project-level Prettier installation is found.
+  "prettier": {
+    // // Whether to consider prettier formatter or not when attempting to format a file.
+    // "allowed": false,
+    //
+    // // Use regular Prettier json configuration.
+    // // If Prettier is allowed, Zed will use this for its Prettier instance for any applicable file, if
+    // // the project has no other Prettier installed.
+    // "plugins": [],
+    //
+    // // Use regular Prettier json configuration.
+    // // If Prettier is allowed, Zed will use this for its Prettier instance for any applicable file, if
+    // // the project has no other Prettier installed.
+    // "trailingComma": "es5",
+    // "tabWidth": 4,
+    // "semi": false,
+    // "singleQuote": true
+  },
+  "preview_tabs": {
+    "enabled": true,
+    "enable_preview_from_code_navigation": false,
+    "enable_preview_from_file_finder": true
+  },
+  "relative_line_numbers": true,
+  "show_whitespaces": "all",
+  // The settings for slash commands.
+  "slash_commands": {
+    "docs": {
+      "enabled": true,
+    },
+    "project": {
+      "enabled": true,
+    }
+  },
+  "soft_wrap": "bounded",
+  "tab_size": 2,
+  "tabs": {
+    "close_position": "right",
+    "file_icons": true,
+    "git_status": true,
+  },
+  "terminal": {
+    "shell": {
+      "with_arguments": {
+        "program": "/run/current-system/sw/bin/zsh",
+        "args": [
+          "--login"
+        ],
+      },
+    },
+    "dock": "bottom",
+    "default_width": 640,
+    "default_height": 320,
+    "working_directory": "current_project_directory",
+    "blinking": "on",
+    "cursor_shape": null,
+    "alternate_scroll": "off",
+    "option_as_meta": true,
+    "copy_on_select": false,
+    "button": true,
+    "env": {
+      // "KEY": "value1:value2",
+    },
+    "line_height": "comfortable",
+    "detect_venv": {
+      "on": {
+        "directories": [
+          ".env",
+          "env",
+          ".venv",
+          "venv"
+        ],
+        "activate_script": "default",
+      }
+    },
+    "toolbar": {
+      "title": true,
+    },
+  },
+  "ui_font_family": "OpenDyslexic Nerd Font",
+  "ui_font_features": {
+    "calt": true,
+  },
+  "ui_font_size": 16,
+  "use_smartcase_search": true,
+  "vim": {
+    "custom_digraphs": {},
+    "toggle_relative_line_numbers": true,
+    "use_multiline_find": true,
+    "use_smartcase_find": true,
+    "use_system_clipboard": "always",
+  }
+}

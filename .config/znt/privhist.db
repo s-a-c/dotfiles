@@ -1,0 +1,8 @@
+git add . && git commit -am "update zqs to show starship, +nix-darwin commit" && git push
+git add . && git commit -am "+cargo, +~/.zqs-settings" && git push
+git add . && git commit -am "+duti" && git push
+git add . && git commit -am "+duti" && git push
+npm i -g -u corepack melange neovim npm pnpm tree-sitter-bash yarn
+git add . && git commit -am "-dutis" && git push
+php -S localhost:8888
+git remote set-url --push origin git@github.com:s-a-c/nix-darwin.git https://github.com/s-a-c/nix-darwin.git

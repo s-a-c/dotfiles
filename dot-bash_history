@@ -1,0 +1,716 @@
+ls -al
+shopt -p
+#1730581062
+echo $SHELL
+#1730581173
+ls -al
+#1730581192
+ls -al .config/zsh/
+#1730581248
+cat ~/.zsh_history >> ~/dotfiles/zsh/.zsh_history
+#1730581289
+mv ./.zshrc ./.zshrc.local
+#1730581304
+ls -al --color ~/
+#1730581321
+ls -al --color always ~/
+#1730581380
+cd ..
+#1730581398
+rm ~/.zsh_history
+#1730581404
+ls -al --color always ~/
+#1730581471
+cp ~/dotfiles/zsh/.zshrc.local ~/dotfiles/zsh/.zshrc
+#1730581475
+ls -al --color always ~/
+#1730581497
+stow zsh
+#1730581501
+ls -al --color always ~/
+#1730581601
+ls -al --color auto ~/dotfiles/supermaven/.config/supermaven/
+#1730581727
+ln -s ~/dotfiles/supermaven/.config/supermaven ~/dotfiles/supermaven/.supermaven
+#1730581827
+ls -al --color auto ~/dotfiles/wakatime/.config/
+#1730581832
+ls -al --color auto ~/dotfiles/wakatime/.config/wakatime/
+#1730581991
+touch ~/dotfiles/wakatime/.config/wakatime/.wakatime.cfg
+#1730582002
+touch ~/dotfiles/wakatime/.config/wakatime/.wakatime
+#1730582059
+ln -s ~/dotfiles/wakatime/.config/wakatime/.wakatime* ~/dotfiles/wakatime/
+#1730582074
+ls -al --color auto ~/dotfiles/wakatime/
+#1730582100
+stow wakatime
+#1730582185
+ln -f ~/dotfiles/wakatime/.config/wakatime/.wakatime* ~/dotfiles/wakatime/
+#1730582190
+ls -al --color auto ~/dotfiles/wakatime/
+#1730582197
+stow wakatime
+#1730582222
+ls -al --color always ~/
+#1730582619
+ls -al --color auto ~/dotfiles/wallaby/
+#1730582623
+ls -al --color auto ~/dotfiles/wallaby/.config/
+#1730582628
+ls -al --color auto ~/dotfiles/wallaby/.config/wallaby/
+#1730582660
+touch ~/dotfiles/wallaby/.config/wallaby/.wallaby
+#1730582714
+ln -f ~/dotfiles/wallaby/.config/wallaby/.wallaby* ~/dotfiles/wallaby/
+#1730582723
+stow wallaby
+#1730582733
+ls -al --color always ~/
+#1730582785
+mv ~/.viminfo ~/dotfiles/vim/
+#1730582793
+stow vim
+#1730582823
+mv ~/.lesshst ~/dotfiles/less/
+#1730582828
+stow less
+#1730582868
+mkdir -p ~/dotfiles/chpwd
+#1730582893
+mv ~/.chpwd-recent-dirs ~/dotfiles/chpwd/
+#1730582899
+stow chpwd
+#1730582906
+ls -al --color always ~/
+#1730583008
+rm ~/".zcompdump-StandAloneComplex’s MacBook Pro-5.9" 
+#1730583014
+ls -al --color always ~/
+#1730583061
+ll ~/dotfiles/starship/
+#1730583079
+ls -al --color auto ~/dotfiles/starship/
+#1730583116
+cd ~/dotfiles/wakatime/
+#1730583125
+ls -al --color auto
+#1730583148
+ln -sf .config/wakatime/.wakatime* ./
+#1730583162
+ls -al --color auto ./
+#1730583177
+cd ~/dotfiles/wallaby/
+#1730583182
+ls -al --color auto ./
+#1730583205
+ln -sf .config/wallaby/.wallaby* ./
+#1730583208
+ls -al --color auto ./
+#1730583216
+cd ~/dotfiles/
+#1730583226
+stow wakatime
+#1730583233
+stow wallaby
+#1730583245
+ls -al --color auto ~/
+#1730583265
+ls -al --color auto ~/.local/state/nix/
+#1730583270
+ls -al --color auto ~/.local/state/nix/profiles/
+#1730628342
+mv ~/.p10k.zsh ~/dotfiles/zsh/
+#1730628383
+cat ~/.zsh_history >> ~/dotfiles/zsh/.zsh_history 
+#1730628403
+rm ~/.zsh_history 
+#1730628413
+stow zsh
+#1730628428
+cd ~/dotfiles/
+#1730628445
+ll -a ~/dotfiles/zsh/
+#1730628451
+ls -a ~/dotfiles/zsh/
+#1730628457
+ls -al ~/dotfiles/zsh/
+#1730628474
+stow zsh
+#1730628483
+ls -al ~/
+#1730628579
+mv ~/.zsh-quickstart-kit-prompt-switch-warning ~/dotfiles/zsh/
+#1730628598
+mv ~/.zsh-quickstart-last-update ~/dotfiles/zsh/
+#1730628617
+rm ~/..stow_global_ignore.un~ 
+#1730628648
+ls ~/dotfiles/less/
+#1730628655
+ls -al ~/dotfiles/less/
+#1730628719
+cat ~/.lesshst >> ~/dotfiles/less/.lesshst 
+#1730628729
+rm ~/.lesshst 
+#1730628737
+stow less
+#1730628756
+stow zsh
+#1730628763
+ls -al ~/
+#1730628812
+git add .
+#1730628925
+git commit -am "+p10k configure"
+#1730628954
+ls -al ./
+#1730629012
+rm ~/dotfiles/.local
+#1730629034
+cd ~/dotfiles/fzf
+#1730629039
+ls -al ./
+#1730629096
+ls -al ~/.local/share/
+#1730629163
+ls -al ~/.local/share/pip-apps/
+#1730629168
+ls -al ~/.local/share/pip-apps/bin/
+#1730629218
+rm ~/.local/share/fzf ~/.local/share/pip-apps
+#1730629241
+md ~/.local/share/fzf/bin
+#1730629261
+mkdir -p ~/.local/share/fzf/bin ~/.local/share/pip-apps/bin
+#1730629273
+ls -al
+#1730629298
+rm -rf ./.local
+#1730629313
+cd ./.fzf
+#1730629317
+ls -al
+#1730629339
+rm bin
+#1730629367
+ln -s ~/.local/share/fzf/bin ./bin
+#1730629371
+ls -al
+#1730629409
+cd ../../pip-apps/
+#1730629412
+ls -al
+#1730629654
+cd ~/dotfiles/fzf/
+#1730629658
+ls -al
+#1730629759
+mkdir -p ./local/share/fzf/bin
+#1730629814
+ls -al
+#1730629828
+mv ./local ./.local
+#1730629832
+ls -al
+#1730629862
+ln -sf ./.local/share/fzf .fzf
+#1730629912
+mv .config/fzf/fzf.zsh .local/share/fzf/
+#1730629960
+mv .local/share/fzf/fzf.zsh .local/share/fzf/bin/
+#1730629983
+ln -sf .local/share/fzf/bin/fzf.zsh .fzf.zsh 
+#1730630013
+ln -sf .local/share/fzf .fzf 
+#1730630017
+ls -al
+#1730630037
+rm .fzf
+#1730630050
+ln -s .local/share/fzf .fzf 
+#1730630054
+ls -al
+#1730630074
+ls -al .config/
+#1730630078
+ls -al .config/fzf/
+#1730630143
+mv .config/fzf/shell .local/share/fzf/
+#1730630149
+ls -al .config/fzf/
+#1730630178
+rm -rf .config
+#1730630183
+ls -al
+#1730630211
+ls -al .local/share/fzf/shell/
+#1730630288
+rm -rf ~/.local/share/fzf
+#1730630295
+rm -rf ~/.local/share/pip-apps
+#1730630309
+fzf-share
+#1730630325
+ls -al $(fzf-share)
+#1730630380
+cp $(fzf-share)/* ./.local/share/fzf/shell/
+#1730630390
+ls -al .local/share/fzf/shell/
+#1730630436
+chmod -R ug+w .local/share/fzf/shell/
+#1730630440
+ls -al .local/share/fzf/shell/
+#1730630513
+cd ..
+#1730630776
+ls -al ~/.local/share/
+#1730630788
+stow fzf
+#1730630794
+stow pip-apps
+#1730630803
+git add .
+#1730630826
+git commit -am "update fzf, pip-apps"
+#1730673660
+ls -al ~/
+#1730673743
+mv ~/.zgenom ./
+#1730673749
+ls -al ~/
+#1730673785
+mv ~/.zqs-* ./
+#1730673810
+mv ~/.zsh ./
+#1730673828
+mv ~/.zshrc.d ./
+#1730673847
+ls -al ./.zshrc.d
+#1730673862
+ls -al ~/.zshrc.d
+#1730673901
+rm -rf ~/.zshrc.d
+#1730673908
+ls -al ./
+#1730673962
+ls -al ~/.zshrc.pre-plugins.d/
+#1730674000
+mv ~/.zshrc.pre-plugins.d ./.zshrc.pre-plugins.d
+#1730674051
+cat ~/.zsh_history >> .zsh_history 
+#1730674065
+rm ~/.zsh_history 
+#1730674070
+cd ..
+#1730674103
+stow zsh
+#1730674129
+ls -al zsh/
+#1730674153
+rm -f zsh/.DS_Store 
+#1730674162
+stow zsh
+#1730674171
+git add .
+#1730674232
+git commit -am "update zgenom, add eza"
+#1730675717
+which cargo-audit
+#1730676286
+mkdir -p kitty/.config/kitty
+#1730676338
+cp -r ~/nc/StandAloneComplex/macos/Users/s-a-c/.config/kitty ./kitty/.config/
+#1730676350
+ls -al kitty/.config/kitty
+#1730676369
+which zellij
+#1730676539
+stow kitty
+#1730676549
+git add .
+#1730676569
+git commit -am "+kitty"
+#1730684612
+cat ~/.zsh_history >> ~/dotfiles/zsh/.zsh_history && rm ~/.zsh_history 
+#1730684644
+rm ~/dotfiles/.zsh_history 
+#1730684708
+less ~/.viminfo
+#1730684793
+mv ~/.viminfo ~/dotfiles/vim/.config/vim/viminfo 
+#1730684815
+rm ~/.zsh_aliases.local 
+#1730684862
+ll ~/dotfiles/less/
+#1730684880
+ls -al ~/dotfiles/less/
+#1730684916
+mv ~/.lesshst ~/dotfiles/less/
+#1730684985
+git add .
+#1730685029
+git commit -am "lesshst, viminfo, zsh_history"
+#1730685050
+stow less
+#1730685056
+stow vim
+#1730685063
+stow zsh
+#1730685085
+ls -al ~
+#1730685277
+mv ~/dotfiles/zsh/.zshrc.local ~/dotfiles/zsh/\#zshrc.local 
+#1730685303
+ls -al ~/dotfiles/zsh/
+#1730685598
+ls -al ~/dotfiles/zsh/.zsh/
+#1730685751
+mkdir .zshrc.ignored
+#1730685807
+mv .zshrc.ignored ~dotfiles/zsh/
+#1730685821
+mv .zshrc.ignored ~/dotfiles/zsh/
+#1730685900
+mv ~/"dotfiles/zsh/#zshrc.local" ~/dotfiles/zsh/.zshrc.ignored/.zshrc.local
+#1730685921
+ls -al ~/dotfiles/zsh/
+#1730685952
+ls -al ~
+#1730685977
+rm ~/.zshrc.local 
+#1730685985
+git add .
+#1730686151
+git commit -am "mv zsh/.zshrc.local zsh/.zshrc.ignored/"
+#1730686183
+ls -al ~/dotfiles/zsh/
+#1730686206
+git stow zsh
+#1730686218
+stow zsh
+#1730686245
+ls -al ~
+#1730686339
+zgenom --help
+#1730686368
+which zgenom
+#1730927960
+ls -al
+#1730927983
+ls -al .config/
+#1730928013
+mv ./.zsh_history ./.config/zsh/
+#1730928063
+ln -sf ./.config/zsh/.zshenv ./.zshenv
+#1730928079
+ls -al
+#1730928090
+ls -al ~/
+#1730928238
+rm ~/.zshrc.pre-plugins.d ~/.zshrc.ignored ~/.zshrc.d ~/.zshrc.add-plugins.d ~/.zshrc ~/.zshenv ~/.zsh_sessions ~/.zsh_history 
+#1730928262
+ls -al ~/
+#1730928482
+rm ~/.zsh-quickstart-last-update ~/.zsh-quickstart-kit-prompt-switch-warning ~/.zsh ~/.zqs* ~/.zprofile ~/.zgenom
+#1730928496
+ls -al ~/
+#1730928578
+rm ~/.p10k.zsh 
+#1730928737
+cd ~/dotfiles
+#1730928758
+ls -al ./
+#1730928790
+mkdir -p hex/.config
+#1730928830
+mv ~/.hex ~/dotfiles/hex/.config/hex
+#1730928852
+ls -al ~/dotfiles/hex/.config/
+#1730928876
+cd zgenom
+#1730928881
+ls -al
+#1730928946
+mkdir -p .config/zgenom
+#1730928978
+mv ./.git .config/zgenom/
+#1730929001
+mv ./_bin .config/zgenom/
+#1730929025
+mv ./functions .config/zgenom/
+#1730929060
+mv ./polaris .config/zgenom/
+#1730929080
+mv ./.gitignore .config/zgenom/
+#1730929104
+mv ./.projections.json .config/zgenom/
+#1730929141
+mv ./*.* ./.config/zgenom/
+#1730929165
+ls -al ./.config/
+#1730929182
+ls -al ./.config/zgenom/
+#1730929210
+cd ./.config/zgenom/
+#1730929214
+git status
+#1730929238
+mv ../../LICENSE ./
+#1730929241
+git status
+#1730929257
+cd ~/dotfiles/
+#1730929279
+ls -al
+#1730929349
+cd zsh-quickstart-kit/
+#1730929352
+ls -al
+#1730929383
+mkdir -p .config/zsh-quickstart-kit
+#1730929391
+man mv
+#1730929425
+ls -al
+#1730929535
+mv -t .config/zsh-quickstart-kit/ ./.git ./.github ./zsh ./.codeclimate.yml ./.gitignore ./.pre-commit-config.yaml ./.zsh-quickstart-local-plugins-example ./Changes.md ./Code_Of_Conduct.md ./Contributing.md ./LICENSE.txt ./Readme.md 
+#1730929550
+ls -al
+#1730929570
+cd .config/zsh-quickstart-kit/
+#1730929576
+git status
+#1730929606
+nvim zsh/.zshrc
+#1730929744
+git restore zsh/.zshrc
+#1730929749
+git status
+#1730929766
+ls -al ~/
+#1730929793
+cd ~
+#1730929997
+rm zsh zgenom.zsh zgen.zsh starship.toml Readme.md polaris options.zsh functions Contributing.md Code_Of_Conduct.md Changes.md _bin .zsh_functions .zsh_aliases .zsh-quickstart-local-plugins-example .zgen-setup .projections.json .pre-commit-config.yaml .github .codeclimate.yml 
+#1730930005
+cd ~/dotfiles/starship/
+#1730930021
+ls -al
+#1730930043
+mv starship.toml .config/
+#1730930059
+cd .config/
+#1730930070
+ls -al
+#1730930105
+man ln
+#1730930145
+:q
+#1730930177
+ls -al
+#1730930201
+ln -sf -T starship/starship.toml ./starship.toml
+#1730930216
+ls -al
+#1730930233
+cd ~
+#1730930236
+ls -al
+#1730930252
+rm commands.txt 
+#1730930258
+ls -al
+#1730930297
+mkdir -p ~/dotfiles/mix/.config
+#1730930318
+mv ~/.mix ~/dotfiles/mix/.config/mix
+#1730930337
+ls -al ~/dotfiles/mix/.config/mix
+#1730930356
+ls -al ~/dotfiles/mix/.config/mix/archives/
+#1730930373
+ls -al ~/dotfiles/mix/.config/mix/archives/hex-2.1.1/
+#1730930377
+ls -al ~/dotfiles/mix/.config/mix/archives/hex-2.1.1/hex-2.1.1/
+#1730930397
+ls -al ~/dotfiles/mix/.config/mix/archives/hex-2.1.1/hex-2.1.1/ebin/
+#1730930470
+mkdir -p ~/dotfiles/mix/.local/share
+#1730930533
+mv ~/dotfiles/mix/.config/mix ~/.local/share/
+#1730930546
+rm -rf ~/dotfiles/mix
+#1730930570
+cd ~/dotfiles/
+#1730930587
+git status
+#1730930602
+git add .
+#1730931884
+cd ~/dotfiles/zsh-quickstart-kit/
+#1730931889
+ls -al
+#1730931894
+ls -al .config/
+#1730931905
+ls -al .config/zsh-quickstart-kit/
+#1730931959
+ls -al .config/zsh-quickstart-kit/zsh/
+#1730932029
+man ln
+#1730932172
+ln -s -t ./ ./.config/zsh-quickstart-kit/zsh/*
+#1730932177
+ls -al
+#1730932211
+rm ./"*"
+#1730932215
+ls -al
+#1730932240
+ls -al .config/zsh-quickstart-kit/zsh/
+#1730932328
+ln -s -t ./ ./.config/zsh-quickstart-kit/zsh/.zgen-setup ./.config/zsh-quickstart-kit/zsh/.zsh_aliases ./.config/zsh-quickstart-kit/zsh/.zsh_functions ./.config/zsh-quickstart-kit/zsh/.zshrc 
+#1730932338
+ls -al
+#1730932758
+cd ~/dotfiles/zsh
+#1730932762
+ls -al
+#1730932775
+cd .config/zsh
+#1730932779
+ls -al
+#1730932928
+ls -al .zgenom/
+#1730933042
+ls -al
+#1730933073
+git clone https://github.com/jandamm/zgenom.git zgenom
+#1730933180
+git clone https://github.com/unixorn/zsh-quickstart-kit.git
+#1730933185
+ls -al
+#1730935787
+cd ~
+#1731004740
+cat ~/.zsh_history >> ~/.config/zsh/.zsh_history 
+#1731004754
+rm ~/.zsh_history 
+#1731004761
+ls -al ~/
+#1731004787
+cd ~/dotfiles
+#1731004809
+mkdir -p aspnet/.config/aspnet
+#1731004818
+ls -al ~/.aspnet
+#1731004868
+rm aspnet/.config/aspnet
+#1731004875
+rmdir aspnet/.config/aspnet
+#1731004899
+mv ~/.aspnet aspnet/.config/aspnet
+#1731005194
+cd aspnet
+#1731005207
+cd .config/
+#1731005227
+mkdir Microsoft
+#1731005239
+mv aspnet ASP.NET
+#1731005248
+mv ASP.NET Microsoft/
+#1731005255
+ls -al
+#1731005262
+cd ..
+#1731005265
+ls -al
+#1731005292
+ln -s .config/Microsoft/ASP.NET ./.aspnet
+#1731005317
+cd ..
+#1731005324
+stow aspnet
+#1731005335
+stow zsh
+#1731005347
+git add .
+#1731005389
+git commit -am "+aspnet, upd8 zsh"
+#1731005407
+cd nix-darwin/.config/nix-darwin/
+#1731005548
+cd ~
+#1731005637
+cd ~/dotfiles/nix-darwin/.config/nix-darwin/
+#1731005652
+nix flake update --flake $(realpath ~/.config/nix-darwin) && SHELLCHECK_OPTS='--exclude=SC2162' darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+#1731010968
+cat 
+#1731011025
+cat ~/.zsh_history >> ~/dotfiles/zsh/.config/zsh/.zsh_history 
+#1731011115
+rm ~/.zsh_history 
+#1731011318
+cd ..
+#1731011347
+git add . && git commit -am "zsh"
+#1731011360
+stow zsh
+#1731011364
+ll ~
+#1731011371
+ls -al ~
+#1731183973
+echo $BASH_VERSION
+#1731183982
+echo $ZSH_VERSION
+#1731269571
+ll -a zsh
+#1731269592
+ls -al zsh/.config/zsh
+#1731269672
+mv ~/.zqs-settings ~/dotfiles/zah/.config/zsh/
+#1731269686
+mv ~/.zqs-settings ~/dotfiles/zsh/.config/zsh/
+#1731269728
+cp -Rf ~/.zqs-settings ~/dotfiles/zsh/.config/zsh/
+#1731269752
+cd zsh
+#1731269759
+ls -al
+#1731269811
+ln -s .config/zsh/.zqs-settings ./
+#1731269815
+ls -al
+#1731269825
+nvim .zshrc
+#1731269846
+nvim .config/zsh/zshrc
+#1731269861
+nvim .config/zsh/.zshrc
+#1731269872
+ls -al
+#1731269900
+ln -sf .config/zsh/.zshrc .zshrc
+#1731269905
+ls -al
+#1731269921
+rm ~/.zshrc
+#1731269931
+cd ~/dotfiles
+#1731269936
+ls -al ~
+#1731269952
+rm ~/.zsh_history 
+#1731269971
+stow zsh
+#1731270003
+rm -rf ~/.zqs-settings
+#1731270009
+stow zsh
+#1731270018
+ls -al ~
