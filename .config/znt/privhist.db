@@ -7,3 +7,6 @@ git add . && git commit -am "-dutis" && git push
 php -S localhost:8888
 git remote set-url --push origin git@github.com:s-a-c/nix-darwin.git https://github.com/s-a-c/nix-darwin.git
 nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+npm i -g -u corepack melange neovim npm pnpm tree-sitter-bash yarn
+nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+git add . && git commit -am "+zellij via brew" && git push

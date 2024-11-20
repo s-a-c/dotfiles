@@ -82,9 +82,9 @@ config = {
     enable_tab_bar = true,
 
     font = wezterm.font_with_fallback{
-        'Iosevka Nerd Font Mono', 'OpenDyslexicM Nerd Font', 'JetBrains Mono', 'NotoColorEmoji',
+        'OpenDyslexicM Nerd Font', 'Iosevka Nerd Font Mono', 'JetBrains Mono', 'NotoColorEmoji',
     },
-    font_size = 16,
+    font_size = 12,
 
     force_reverse_video_cursor = true,
 
@@ -278,9 +278,31 @@ config = {
     use_fancy_tab_bar = true,
 
     macos_window_background_blur = 20,
-    window_background_opacity = 0.85,
+    window_background_opacity = 0.90,
     window_close_confirmation = "NeverPrompt",
-    window_decorations = "RESIZE",
+    window_decorations = "TITLE|RESIZE",
+    window_frame = {
+        active_titlebar_bg = '#2b2042',
+        active_titlebar_border_bottom = '#2b2042',
+        active_titlebar_fg = '#ffffff',
+        border_bottom_color = 'purple',
+        border_bottom_height = '0.25cell',
+        border_left_color = 'purple',
+        border_left_width = '0.5cell',
+        border_right_color = 'purple',
+        border_right_width = '0.5cell',
+        border_top_color = 'purple',
+        border_top_height = '0.25cell',
+        button_bg = '#2b2042',
+        button_fg = '#cccccc',
+        button_hover_bg = '#3b3052',
+        button_hover_fg = '#ffffff',
+        font = require('wezterm').font 'OpenDyslexicM Nerd Font',
+        font_size = 12,
+        inactive_titlebar_bg = '#353535',
+        inactive_titlebar_border_bottom = '#2b2042',
+        inactive_titlebar_fg = '#cccccc',
+    },
     window_padding = {
         left = 3,
         right = 3,

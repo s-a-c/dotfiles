@@ -8,7 +8,6 @@ extendedhistory
 noflowcontrol
 nohistbeep
 histexpiredupsfirst
-histfcntllock
 histignorealldups
 histignoredups
 histignorespace

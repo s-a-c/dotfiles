@@ -64,7 +64,7 @@ style = "full"  # "auto"
 
 ## the maximum number of lines the interface should take up
 ## set it to 0 to always go full screen
-inline_height = 20  # 0
+inline_height = 0
 
 ## Invert the UI - put the search bar at the top , Default to `false`
 # invert = false
@@ -124,7 +124,7 @@ history_format = "{time}\t{command}\t{duration}\t{host}\t{directory}"
 # show_help = true
 
 ## Configure whether or not to show tabs for search and inspect
-# show_tabs = true
+show_tabs = true
 
 ## Defaults to true. This matches history against a set of default regex, and will not save it if we get a match. Defaults include
 ## 1. AWS key id
@@ -217,7 +217,7 @@ records = true
 
 [daemon]
 ## Enables using the daemon to sync. Requires the daemon to be running in the background. Start it with `atuin daemon`
-# enabled = false
+ enabled = true
 
 ## How often the daemon should sync in seconds
 # sync_frequency = 300

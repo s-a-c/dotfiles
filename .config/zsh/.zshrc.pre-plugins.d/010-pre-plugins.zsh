@@ -29,7 +29,7 @@ zle -N self-insert url-quote-magic
 
 
 ## [plugins]  ## {{{
-## [plugins.zsh-abbr]
+## [plugins.zsh-abbr]   ## {{{
 # export ZSH_ABBR_COMPLETION=1
 # export ZSH_ABBR_PROMPT=1
 # export ZSH_ABBR_PROMPT_COLOR="cyan"
@@ -48,10 +48,30 @@ export ABBR_AUTOLOAD=1
 export ABBR_DEFAULT_BINDINGS=1
 export ABBR_DEBUG=0
 export ABBR_DRY_RUN=0
-export ABBR_FORCE=1
-export ABBR_QUIET=0
+export ABBR_FORCE=0
+typeset -gA ABBR_GLOBAL_USER_ABBREVIATIONS
+export ABBR_GLOBAL_USER_ABBREVIATIONS=()
+export ABBR_QUIET=1
+export ABBR_QUIETER=1
+typeset -gA ABBR_REGULAR_USER_ABBREVIATIONS
+export ABBR_REGULAR_USER_ABBREVIATIONS=()
+export ABBR_TMPDIR="${XDG_RUNTIME_DIR}/zsh-abbr"
+rm -fr "${ABBR_TMPDIR}"
+mkdir -p "${ABBR_TMPDIR}"
 export ABBR_USER_ABBREVIATIONS_FILE="${XDG_CONFIG_HOME}/zsh-abbr/user-abbreviations"
+rm -f "${ABBR_USER_ABBREVIATIONS_FILE}"
 unset NO_COLOR
+
+# .zshrc
+
+bindkey " "  abbr-expand
+bindkey "^E" abbr-expand
+bindkey "^A" abbr-expand-and-insert
+
+bindkey -M viins " " abbr-expand-and-insert
+bindkey -M viins "^ " magic-space
+bindkey -M viins "^M" abbr-expand-and-accept
+## }}}  ## [plugins.zsh-abbr]
 
 ## [plugins.alias-tips]
 #export ZSH_PLUGINS_ALIAS_TIPS_REVEAL_EXCLUDES=(_ ll vi)
@@ -250,7 +270,6 @@ zstyle ':omz:plugins:eza' 'icons' yes
 ## [plugins.fast-syntax-highlighting]
 typeset -gA FAST_HIGHLIGHT
 export FAST_HIGHLIGHT[use_brackets]=1
-fast-theme zdharma
 
 ## [plugins.fzf]
 export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
@@ -424,10 +443,15 @@ export _ZO_RESOLVE_SYMLINKS=1
     typeset -gx ATUIN[HOME_DIR]="${XDG_DATA_HOME:-${HOME}/.local/share}/atuin"
     typeset -gx ATUIN[BIN_DIR]="${XDG_DATA_HOME:-${HOME}/.local/share}/atuin/bin"
     typeset -gx ATUIN_HOME=${ATUIN[HOME_DIR]}
+    atuin daemon
     #_field_prepend PATH "${ATUIN[BIN_DIR]}"
     _path_prepend "${ATUIN[BIN_DIR]}"
     [[ -s "${ATUIN[BIN_DIR]}/env" ]] && builtin source "${ATUIN[BIN_DIR]}/env"
-    eval "$(atuin init zsh)"
+    $(atuin init zsh) >| "${ZDOTDIR}/saved_atuin_init.zsh"
+    eval $(atuin init zsh) || source "${ZDOTDIR}/saved_atuin_init.zsh" || {
+        echo "[zshrc] atuin init failed"
+        return
+    }
 # }
 ## }}}  ## [atuin]
 
