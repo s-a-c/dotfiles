@@ -34,3 +34,5 @@ echo $SHELL
 echo $env.SHELL
 $nu
 $env
+buz amethyst
+brew uninstall --zap amethyst

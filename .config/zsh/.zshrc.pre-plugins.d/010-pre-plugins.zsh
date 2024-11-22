@@ -6,7 +6,6 @@
 # vim: ft=zsh sw=2 ts=2 et nu rnu ai si
 
 
-
 export HISTDUP=erase
 export HISTFILE="$ZDOTDIR/.zsh_history"         ## History filepath
 export HISTSIZE=1000000                         ## Maximum events for internal history
@@ -444,7 +443,7 @@ export _ZO_RESOLVE_SYMLINKS=1
     builtin source "${HOME}/.atuin/bin/env"
     (atuin init zsh) >| "${ZDOTDIR}/saved_atuin_init.zsh"
     eval $(atuin init zsh)
-    atuin daemon
+    # atuin daemon
 }
 # [[ -n "${commands[atuin]}" ]] && {
 #     typeset -Ag ATUIN
@@ -459,7 +458,7 @@ export _ZO_RESOLVE_SYMLINKS=1
 #         echo "[zshrc] atuin init failed"
 #         return
 #     }
-#     atuin daemon
+#     # atuin daemon
 # }
 ## }}}  ## [atuin]
 

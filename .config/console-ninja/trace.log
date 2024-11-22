@@ -757,3 +757,53 @@
 16:53:44.880 info host completed tools discovery and integration
 17:55:17.173 info extension stopping host
 17:55:30.947 info extension stopping host
+11:58:38.017 info extension stopping host
+11:58:38.028 info host removing cache folder: 2af542690e61857e292486aa1cb6c607
+11:58:38.111 info extension stopping host
+11:58:38.138 info extension client disconnected: 1006 
+12:37:44.737 info extension stopping host
+15:06:17.857 info extension stopping host
+15:06:28.995 info extension stopping host
+15:06:31.994 info host ------------ starting ------------
+15:06:32.190 info extension host process output: port:[52584]
+15:06:32.190 info extension 
+15:06:32.215 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 52584 }
+15:06:33.564 info host worker Starting Host Worker...
+15:06:34.949 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.369","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.369/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.369/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.369/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/.quokka/interactive-examples/javascript/set/set-prototype-@@iterator.js","reason":"search"},{"path":"/users/s-a-c/.quokka/interactive-examples/javascript/set/set-prototype-add.js","reason":"search"},{"path":"/users/s-a-c/.quokka/interactive-examples/javascript/set/set-prototype-constructor.js","reason":"search"},{"path":"/users/s-a-c/.cursor/extensions/redhat.vscode-yaml-1.15.0/dist/extension.js","reason":"search"},{"path":"/users/s-a-c/.cursor/extensions/redhat.vscode-yaml-1.15.0/dist/languageserver.js","reason":"search"},{"path":"/users/s-a-c/.cursor/extensions/vitaliymaz.vscode-svg-previewer-0.7.0/media/index.js","reason":"search"},{"path":"/users/s-a-c/.cursor/extensions/redhat.vscode-yaml-1.15.0/dist/languageserver-web.js","reason":"search"}],"debug":false,"config":{"dateTimeFormat":"yyyy-MM-ddThh:mm:ss.SSS z ddd:","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":99999,"showWelcomeMessageInTools":true,"fontSize":12,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://www.google.com/search?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension","live-preview"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":false,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.242"],"host":"127.0.0.1","forcedStart":false,"startTime":1732287988996}
+15:06:35.009 info host starting tools discovery and integration
+15:06:35.406 info host looking for tools to patch
+15:06:56.645 WARN extension search limit hit
+15:07:52.003 info host found 58 tool file(s) to patch
+15:07:52.010 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+15:07:52.011 info host patching /users/s-a-c/Herd/livewire-from-scratch/node_modules/vite/bin/vite.js
+15:07:52.011 info host patching /users/s-a-c/Herd/livewire3fs/node_modules/vite/bin/vite.js
+15:07:52.011 info host patching /users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+15:07:52.011 info host patching /users/s-a-c/.vscode/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+15:07:52.011 info host patching /users/s-a-c/Insync/sunavlys@msn.com/OneDrive/.config/vscode/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+15:07:52.012 info host patching /users/s-a-c/.local/share/nvim-Lazyman/mason/packages/sqlls/node_modules/sql-language-server/node_modules/jest/bin/jest.js
+15:07:52.012 info host patching /users/s-a-c/.local/share/nvim-Lazyman/mason/packages/sqlls/node_modules/sql-language-server/node_modules/jest-runner/build/testWorker.js
+15:07:52.012 WARN host could not get write access to /users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js file(modification)
+15:07:52.015 info host patching /users/s-a-c/nc/Projects/Git/hello-world-reason/node_modules/.pnpm/next@14.2.11_react-dom@18.0.0_react@18.0.0__react@18.0.0/node_modules/next/dist/compiled/webpack/bundle5.js
+15:07:52.015 info host patching /users/s-a-c/nc/Projects/Git/hello-world-reason/node_modules/.pnpm/next@14.2.11_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/webpack/bundle5.js
+15:07:52.015 info host patching /users/s-a-c/nc/Projects/Git/t3gallery/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/webpack/bundle5.js
+15:07:52.015 info host patching /users/s-a-c/nc/Projects/Git/hello-world-reason/node_modules/.pnpm/next@14.2.11_react-dom@18.0.0_react@18.0.0__react@18.0.0/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js
+15:07:52.015 info host patching /users/s-a-c/nc/Projects/Git/hello-world-reason/node_modules/.pnpm/next@14.2.11_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js
+15:07:52.015 info host patching /users/s-a-c/nc/Projects/Git/t3gallery/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js
+15:07:52.015 info host patching /users/s-a-c/nc/Projects/Git/fireship.io/Next.js/myapp/node_modules/.pnpm/next@14.2.7_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/webpack/bundle5.js
+15:07:52.015 info host patching /users/s-a-c/nc/Projects/Git/fireship.io/Next.js/myapp/node_modules/.pnpm/next@14.2.7_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js
+15:07:52.018 info host patching /users/s-a-c/Insync/sunavlys@msn.com/OneDrive/GitHub/dubnium/packages/spfxreact/node_modules/webpack/lib/WebpackOptionsApply.js
+15:07:52.018 info host patching /users/s-a-c/Insync/sunavlys@msn.com/OneDrive/GitHub/dubnium/packages/spfxreact/node_modules/webpack/lib/webpack.js
+15:07:52.018 info host patching /users/s-a-c/nc/Projects/Git/hello-world-reason/node_modules/.pnpm/webpack@5.94.0_esbuild@0.19.12_webpack-cli@5.1.4/node_modules/webpack/lib/WebpackOptionsApply.js
+15:07:52.018 info host patching /users/s-a-c/nc/Projects/Git/hello-world-reason/node_modules/.pnpm/webpack@5.94.0_esbuild@0.19.12_webpack-cli@5.1.4/node_modules/webpack/lib/index.js
+15:07:52.018 info host patching /users/s-a-c/nc/Projects/Git/hello-world-reason/node_modules/.pnpm/webpack@5.94.0_esbuild@0.19.12_webpack-cli@5.1.4/node_modules/webpack/lib/webpack.js
+15:07:52.019 info host patching /users/s-a-c/nc/Projects/Git/docusaurus/my-website/node_modules/.pnpm/webpack@5.92.1/node_modules/webpack/lib/WebpackOptionsApply.js
+15:07:52.019 info host patching /users/s-a-c/nc/Projects/Git/docusaurus/my-website/node_modules/.pnpm/webpack@5.92.1/node_modules/webpack/lib/index.js
+15:07:52.019 info host patching /users/s-a-c/nc/Projects/Git/docusaurus/my-website/node_modules/.pnpm/webpack@5.92.1/node_modules/webpack/lib/webpack.js
+15:07:52.019 info host patching /users/s-a-c/Insync/sunavlys@msn.com/OneDrive/GitHub/dubnium/packages/spfxreact/node_modules/webpack-stream/node_modules/webpack/lib/WebpackOptionsApply.js
+15:07:52.019 info host patching /users/s-a-c/Insync/sunavlys@msn.com/OneDrive/GitHub/dubnium/packages/spfxreact/node_modules/webpack-stream/node_modules/webpack/lib/webpack.js
+15:07:52.019 info host patching /users/s-a-c/Insync/sunavlys@msn.com/OneDrive/GitHub/dubnium/packages/spfxreact/node_modules/@microsoft/gulp-core-build-karma/node_modules/webpack/lib/WebpackOptionsApply.js
+15:07:52.019 info host patching /users/s-a-c/Insync/sunavlys@msn.com/OneDrive/GitHub/dubnium/packages/spfxreact/node_modules/@microsoft/gulp-core-build-karma/node_modules/webpack/lib/webpack.js
+15:07:52.019 info host patching /users/s-a-c/Insync/sunavlys@msn.com/OneDrive/GitHub/dubnium/packages/spfxreact/node_modules/@microsoft/gulp-core-build-webpack/node_modules/webpack/lib/WebpackOptionsApply.js
+15:07:52.019 info host patching /users/s-a-c/Insync/sunavlys@msn.com/OneDrive/GitHub/dubnium/packages/spfxreact/node_modules/@microsoft/gulp-core-build-webpack/node_modules/webpack/lib/webpack.js
+15:07:52.185 info host Host's startup and patch time: 83189 ms
+15:07:52.185 info host completed tools discovery and integration
