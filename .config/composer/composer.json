@@ -1,0 +1,5 @@
+{
+    "require": {
+        "darkterminal/turso-php-installer": "^2.0"
+    }
+}

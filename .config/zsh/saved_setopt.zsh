@@ -8,6 +8,7 @@ extendedhistory
 noflowcontrol
 nohistbeep
 histexpiredupsfirst
+histfcntllock
 histignorealldups
 histignoredups
 histignorespace
@@ -17,7 +18,6 @@ histverify
 incappendhistory
 interactive
 interactivecomments
-login
 longlistjobs
 monitor
 promptsubst

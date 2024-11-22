@@ -10,3 +10,5 @@ nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild swit
 npm i -g -u corepack melange neovim npm pnpm tree-sitter-bash yarn
 nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
 git add . && git commit -am "+zellij via brew" && git push
+php -S localhost:8888
+git add . && git commit -am "nix flake update" && git push

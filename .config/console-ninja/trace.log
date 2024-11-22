@@ -755,3 +755,5 @@
 16:53:44.880 ERR! host failed to apply build hook related patches: Error: live-server: Error: EACCES: permission denied, open '/users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js'; 
 16:53:44.880 info host Host's startup and patch time: 61374 ms
 16:53:44.880 info host completed tools discovery and integration
+17:55:17.173 info extension stopping host
+17:55:30.947 info extension stopping host

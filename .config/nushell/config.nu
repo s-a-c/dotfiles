@@ -155,7 +155,7 @@ $env.config = {
     }
 
     rm: {
-        always_trash: false # always act as if -t was given. Can be overridden with -p
+        always_trash: true  # false # always act as if -t was given. Can be overridden with -p
     }
 
     table: {
@@ -896,3 +896,6 @@ $env.config = {
         }
     ]
 }
+
+source ($nu.default-config-dir | path join 'config_overrides.nu')
+

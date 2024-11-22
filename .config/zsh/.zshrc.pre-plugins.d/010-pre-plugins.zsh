@@ -14,6 +14,9 @@ export HISTTIMEFORMAT='%F %T %z %a %V '
 export SAVEHIST=1100000                         ## Maximum events in history file
 
 
+export EDITOR=$commands[nvim]
+export VISUAL=$commands[cursor]
+
 ## [builtins] ## {{{
 ## [builtins.colors]
 autoload -U colors && colors ## Load Colors
@@ -49,15 +52,12 @@ export ABBR_DEFAULT_BINDINGS=1
 export ABBR_DEBUG=0
 export ABBR_DRY_RUN=0
 export ABBR_FORCE=0
-typeset -gA ABBR_GLOBAL_USER_ABBREVIATIONS
-export ABBR_GLOBAL_USER_ABBREVIATIONS=()
+typeset -gxA ABBR_GLOBAL_USER_ABBREVIATIONS=()
 export ABBR_QUIET=1
 export ABBR_QUIETER=1
-typeset -gA ABBR_REGULAR_USER_ABBREVIATIONS
-export ABBR_REGULAR_USER_ABBREVIATIONS=()
+typeset -gxA ABBR_REGULAR_USER_ABBREVIATIONS=()
 export ABBR_TMPDIR="${XDG_RUNTIME_DIR}/zsh-abbr"
-rm -fr "${ABBR_TMPDIR}"
-mkdir -p "${ABBR_TMPDIR}"
+rm -fr "${ABBR_TMPDIR}" && mkdir -p "${ABBR_TMPDIR}"
 export ABBR_USER_ABBREVIATIONS_FILE="${XDG_CONFIG_HOME}/zsh-abbr/user-abbreviations"
 rm -f "${ABBR_USER_ABBREVIATIONS_FILE}"
 unset NO_COLOR
@@ -199,6 +199,8 @@ _path_prepend "${BUN_INSTALL}/bin"
 export ZSH_COLORIZE_STYLE="colorful"
 
 ## [plugins.composer]
+_path_prepend "${XDG_CONFIG_HOME}/composer/vendor/bin"
+
 ## [plugins.cpanm]
 
 ## [plugins.zsh-defer]
