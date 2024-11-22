@@ -12,3 +12,6 @@ nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild swit
 git add . && git commit -am "+zellij via brew" && git push
 php -S localhost:8888
 git add . && git commit -am "nix flake update" && git push
+nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+git add . && git commit -am "composer config" && git push
+git add . && git commit -am "-atuin" && git push

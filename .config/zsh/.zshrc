@@ -1018,3 +1018,6 @@ export HERD_PHP_84_INI_SCAN_DIR="/Users/s-a-c/Library/Application Support/Herd/c
 export HERD_PHP_82_INI_SCAN_DIR="/Users/s-a-c/Library/Application Support/Herd/config/php/82/"
 
 PATH=~/.console-ninja/.bin:$PATH
+. "$HOME/.atuin/bin/env"
+
+eval "$(atuin init zsh)"

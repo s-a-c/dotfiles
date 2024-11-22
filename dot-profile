@@ -26,3 +26,5 @@ fi
 }
 export PATH
 eval "$(/usr/local/bin/brew shellenv)"
+
+. "$HOME/.atuin/bin/env"

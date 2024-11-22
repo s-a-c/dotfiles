@@ -440,20 +440,26 @@ export _ZO_RESOLVE_SYMLINKS=1
 
 
 ## [atuin]  ## {{{
-# [[ -n "${commands[atuin]}" ]] && {
-    typeset -Ag ATUIN
-    typeset -gx ATUIN[HOME_DIR]="${XDG_DATA_HOME:-${HOME}/.local/share}/atuin"
-    typeset -gx ATUIN[BIN_DIR]="${XDG_DATA_HOME:-${HOME}/.local/share}/atuin/bin"
-    typeset -gx ATUIN_HOME=${ATUIN[HOME_DIR]}
+[[ -s "${HOME}/.atuin/bin/env" ]] && {
+    builtin source "${HOME}/.atuin/bin/env"
+    (atuin init zsh) >| "${ZDOTDIR}/saved_atuin_init.zsh"
+    eval $(atuin init zsh)
     atuin daemon
-    #_field_prepend PATH "${ATUIN[BIN_DIR]}"
-    _path_prepend "${ATUIN[BIN_DIR]}"
-    [[ -s "${ATUIN[BIN_DIR]}/env" ]] && builtin source "${ATUIN[BIN_DIR]}/env"
-    $(atuin init zsh) >| "${ZDOTDIR}/saved_atuin_init.zsh"
-    eval $(atuin init zsh) || source "${ZDOTDIR}/saved_atuin_init.zsh" || {
-        echo "[zshrc] atuin init failed"
-        return
-    }
+}
+# [[ -n "${commands[atuin]}" ]] && {
+#     typeset -Ag ATUIN
+#     typeset -gx ATUIN[HOME_DIR]="${XDG_DATA_HOME:-${HOME}/.local/share}/atuin"
+#     typeset -gx ATUIN[BIN_DIR]="${XDG_DATA_HOME:-${HOME}/.local/share}/atuin/bin"
+#     typeset -gx ATUIN_HOME=${ATUIN[HOME_DIR]}
+#     #_field_prepend PATH "${ATUIN[BIN_DIR]}"
+#     _path_prepend "${ATUIN[BIN_DIR]}"
+#     [[ -s "${ATUIN[BIN_DIR]}/env" ]] && builtin source "${ATUIN[BIN_DIR]}/env"
+#     (atuin init zsh) >| "${ZDOTDIR}/saved_atuin_init.zsh"
+#     eval $(atuin init zsh) || source "${ZDOTDIR}/saved_atuin_init.zsh" || {
+#         echo "[zshrc] atuin init failed"
+#         return
+#     }
+#     atuin daemon
 # }
 ## }}}  ## [atuin]
 

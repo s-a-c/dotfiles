@@ -60,11 +60,11 @@ search_mode = "fuzzy"
 
 ## which style to use
 ## possible values: auto, full, compact
-style = "full"  # "auto"
+style = "compact"  # "auto"
 
 ## the maximum number of lines the interface should take up
 ## set it to 0 to always go full screen
-inline_height = 0
+inline_height = 20
 
 ## Invert the UI - put the search bar at the top , Default to `false`
 # invert = false
@@ -88,7 +88,7 @@ inline_height = 0
 
 ## use ctrl instead of alt as the shortcut modifier key for numerical UI shortcuts
 ## alt-0 .. alt-9
-# ctrl_n_shortcuts = false
+ctrl_n_shortcuts = true
 
 ## default history list format - can also be specified with the --format arg
 # history_format = "{time}\t{command}\t{duration}"
@@ -121,7 +121,7 @@ history_format = "{time}\t{command}\t{duration}\t{host}\t{directory}"
 ## Configure whether or not to show the help row, which includes the current Atuin
 ## version (and whether an update is available), a keymap hint, and the total
 ## amount of commands in your history.
-# show_help = true
+show_help = true
 
 ## Configure whether or not to show tabs for search and inspect
 show_tabs = true
@@ -180,6 +180,7 @@ common_subcommands = [
   "nvm",
   "opam",
   "pecl",
+  "php",
   "pnpm",
   "podman",
   "port",
@@ -217,7 +218,7 @@ records = true
 
 [daemon]
 ## Enables using the daemon to sync. Requires the daemon to be running in the background. Start it with `atuin daemon`
- enabled = true
+enabled = true
 
 ## How often the daemon should sync in seconds
 # sync_frequency = 300
