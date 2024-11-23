@@ -2024,3 +2024,21 @@ typeset -gA ABBR_REGULAR_USER_ABBREVIATIONS=()\
 : 1732400447:0;eza -al ~/.config
 : 1732400461:0;eza -al ~/.config/asciiville
 : 1732400779:0;git add . && git commit -pm "tidy zsh" && git push
+: 1732400823:0;eza -al dot-config/zsh
+: 1732400840:0;eza -al dot-config/zsh/dot-zshrc.pre-plugins.d/
+: 1732400881:0;eza -als ~/.config/zsh/.zshrc.pre-plugins.d/
+: 1732400889:0;eza -ald ~/.config/zsh/.zshrc.pre-plugins.d/
+: 1732400899:0;eza -al ~/.config/zsh/.zshrc.pre-plugins.d/
+: 1732400941:0;cd ~/.config/zsh
+: 1732400946:0;eza -al
+: 1732400989:0;eza -al .zshrc.pre.plugins.d/
+: 1732401027:0;rm .zshrc.pre-plugins.d
+: 1732401049:0;cd ~/dotfiles/dot-config/zsh
+: 1732401054:0;eza -al
+: 1732401094:0;mv dot-zshrc.pre-plugins.d dot-zshrc.pre.plugins.d
+: 1732401120:0;eza -al dot-zshrc.pre.plugins.d
+: 1732401130:0;cd ~/dotfiles
+: 1732401138:0;stow .
+: 1732401155:0;eza -al ~/.config/zsh
+: 1732401173:0;eza -al ~/.config/zsh/.zshrc.pre.plugins.d/
+: 1732401198:0;git add . && git commit -pm "tidy zsh" && git push
