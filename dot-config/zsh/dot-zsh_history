@@ -1970,3 +1970,25 @@ typeset -gA ABBR_REGULAR_USER_ABBREVIATIONS=()\
 : 1732367280:0;eza -al
 : 1732367288:0;z
 : 1732367295:0;exec zsh
+: 1732379490:0;eza -al
+: 1732379520:0;cd .zshrc.pre.plugins.d
+: 1732379525:0;eza -al
+: 1732379580:0;ln -s ~/dotfiles/dot-config/zsh/dot-zshrc.pre-plugins.d/* ./
+: 1732379584:0;eza -al
+: 1732379615:0;ln -sf ../../dotfiles/dot-config/zsh/dot-zshrc.pre-plugins.d/* ./
+: 1732379632:0;ln -sf ../../../dotfiles/dot-config/zsh/dot-zshrc.pre-plugins.d/* ./
+: 1732379637:0;eza -al
+: 1732379652:0;cd ~/dotfiles
+: 1732379660:0;stow .
+: 1732379702:0;eza -al dot-config/zsh
+: 1732379735:0;eza -al ~/.config/zah
+: 1732379753:0;eza -al ~/.config/zsh
+: 1732379773:0;cd ~/.config/zsh
+: 1732379818:0;ln -sf ../../dotfiles/dot-config/zsh/dot-zsh_history .zsh_history
+: 1732379834:0;eza -al
+: 1732379860:0;cd ~/dotfiles
+: 1732379869:0;stow .
+: 1732379881:0;cd ~
+: 1732379982:0;bfg --delete-files "*001-zshenv*" ~/dotfiles
+: 1732379990:0;cd ~/dotfiles
+: 1732380011:0;cd ~/dotfiles && git add . && git commit -pm "+desk, +dot-*" && git push

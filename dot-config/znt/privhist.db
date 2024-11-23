@@ -16,3 +16,5 @@ nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild swit
 git add . && git commit -am "composer config" && git push
 git add . && git commit -am "-atuin" && git push
 git add . && git commit -pm "+desk" && git push
+bfg --delete-files "*saved_macos*" ~/dotfiles
+cd ~/dotfiles && git add . && git commit -pm "+desk, +dot-*" && git push
