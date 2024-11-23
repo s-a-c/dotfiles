@@ -1992,3 +1992,12 @@ typeset -gA ABBR_REGULAR_USER_ABBREVIATIONS=()\
 : 1732379982:0;bfg --delete-files "*001-zshenv*" ~/dotfiles
 : 1732379990:0;cd ~/dotfiles
 : 1732380011:0;cd ~/dotfiles && git add . && git commit -pm "+desk, +dot-*" && git push
+: 1732380090:0;git rev-list --objects --all | grep 0d7ab4c78248fccd44b50f006db1044afde399cc
+: 1732380125:0;eza -al dot-config/zsh/dot-zshrc.pre-plugins.d/
+: 1732380170:0;eza -al
+: 1732380179:0;z
+: 1732380215:0;bfg --delete-files "dot-config/zsh/dot-zshrc.pre-plugins.d/001-zshenv.zsh" ~/dotfiles
+: 1732380239:0;bfg --delete-files "*001-zshenv.zsh*" ~/dotfiles
+: 1732380282:0;cd ~/dotfiles
+: 1732380287:0;git reflog expire --expire=now --all && git gc --prune=now --aggressive
+: 1732380317:0;cd ~/dotfiles && git add . && git commit -pm "+desk, +dot-*" && git push

@@ -18,3 +18,6 @@ git add . && git commit -am "-atuin" && git push
 git add . && git commit -pm "+desk" && git push
 bfg --delete-files "*saved_macos*" ~/dotfiles
 cd ~/dotfiles && git add . && git commit -pm "+desk, +dot-*" && git push
+git rev-list --objects --all | grep 0d7ab4c78248fccd44b50f006db1044afde399cc
+bfg --delete-files "*001-zshenv*" ~/dotfiles
+cd ~/dotfiles && git add . && git commit -pm "+desk, +dot-*" && git push
