@@ -24,3 +24,5 @@ cd ~/dotfiles && git add . && git commit -pm "+desk, +dot-*" && git push
 bfg --delete-files "*001-zshenv.zsh*" ~/dotfiles
 git reflog expire --expire=now --all && git gc --prune=now --aggressive
 git add . && git commit -pm "tidy zsh" && git push
+bfg --delete-files "*.wakatime.cfg*" ~/dotfiles
+git reflog expire --expire=now --all && git gc --prune=now --aggressive
