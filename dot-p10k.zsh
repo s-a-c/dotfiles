@@ -1,1 +1,1 @@
-.config/zsh/.p10k.zsh
+dot-config/zsh/dot-p10k.zsh

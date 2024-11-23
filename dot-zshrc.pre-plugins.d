@@ -1,1 +1,1 @@
-./.config/zsh/.zshrc.pre-plugins.d
+dot-config/zsh/dot-zshrc.pre-plugins.d

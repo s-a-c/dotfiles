@@ -1,1 +1,1 @@
-.config/fzf/fzf.zsh
+dot-config/fzf/fzf.zsh
