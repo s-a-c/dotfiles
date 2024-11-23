@@ -2051,3 +2051,8 @@ typeset -gA ABBR_REGULAR_USER_ABBREVIATIONS=()\
 : 1732401542:0;rm ~/.config/wakatime/.wakatime.cfg && mv dot-config/wakatime/dot-wakatime.cfg ~/.config/wakatime/.wakatime.cfg
 : 1732401550:0;eza -al ~/.config/wakatime/
 : 1732401561:0;git add . && git commit -pm "tidy zsh" && git push
+: 1732401583:0;cd ~
+: 1732401612:0;bfg --delete-files "*.wakatime.cfg*" ~/dotfiles
+: 1732401629:0;z -
+: 1732401641:0;git reflog expire --expire=now --all && git gc --prune=now --aggressive
+: 1732401671:0;git add . && git commit -pm "tidy zsh" && git push
