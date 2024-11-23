@@ -807,3 +807,25 @@
 15:07:52.019 info host patching /users/s-a-c/Insync/sunavlys@msn.com/OneDrive/GitHub/dubnium/packages/spfxreact/node_modules/@microsoft/gulp-core-build-webpack/node_modules/webpack/lib/webpack.js
 15:07:52.185 info host Host's startup and patch time: 83189 ms
 15:07:52.185 info host completed tools discovery and integration
+17:22:28.648 info extension stopping host
+17:22:28.675 info host removing cache folder: 9f793fc90beceac683c6cac3d60e1877
+17:22:28.797 info extension client disconnected: 1006 
+22:56:05.803 info extension stopping host
+22:56:17.040 info extension stopping host
+22:56:19.651 info host ------------ starting ------------
+22:56:19.820 info extension host process output: port:[52584]
+22:56:19.820 info extension 
+22:56:19.826 ERR! extension connection error: connect ECONNREFUSED 127.0.0.1:52584
+22:56:19.827 info extension client disconnected: 1006 
+22:56:20.818 info host worker Starting Host Worker...
+22:56:21.826 ERR! extension WebSocket failed to become ready to send messages WebSocket is not in a state to send messages
+22:56:33.940 WARN extension search limit hit
+22:56:33.940 ERR! extension WebSocket failed to become ready to send messages WebSocket is not in a state to send messages
+22:56:37.565 ERR! extension WebSocket failed to become ready to send messages WebSocket is not in a state to send messages
+22:57:19.823 info host removing cache folder: e63ac6d573ca698d64d8c9c243f52752
+23:15:23.338 ERR! extension WebSocket failed to become ready to send messages WebSocket is not in a state to send messages
+23:43:37.292 ERR! extension WebSocket failed to become ready to send messages WebSocket is not in a state to send messages
+23:49:39.434 ERR! extension WebSocket failed to become ready to send messages WebSocket is not in a state to send messages
+00:04:04.234 ERR! extension WebSocket failed to become ready to send messages WebSocket is not in a state to send messages
+00:06:57.000 ERR! extension WebSocket failed to become ready to send messages WebSocket is not in a state to send messages
+01:25:50.025 ERR! extension WebSocket failed to become ready to send messages WebSocket is not in a state to send messages
