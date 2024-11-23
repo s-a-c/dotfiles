@@ -211,6 +211,12 @@ export ZSH_DEFER_SHOW_WAIT=1
 
 ## [plugins.deno]
 
+## [plugins.desk]
+export DESK_DIR="${XDG_CONFIG_HOME}/desk"
+alias d..='desk ..'
+alias d.='desk .'
+alias d='desk'
+
 ## [plugins.diff-so-fancy]  ## {{{
 #export GIT_PAGER='diff-so-fancy | less --tabs=4 -RFX'
 ## Configure git to use diff-so-fancy for all diff output:

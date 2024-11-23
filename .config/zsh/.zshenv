@@ -51,11 +51,11 @@ export JAVA_HOME="$(/usr/libexec/java_home)"
 export LANG='en_GB.UTF-8'
 export LC_ALL='en_GB.UTF-8'
 export TIME_STYLE=long-iso
-export VISUAL=$(which nvim)
+export VISUAL=$(which cursor)
 
 ## Get color support for 'less'
 #export LESS="--RAW-CONTROL-CHARS"
-export LESS=' --HILITE-UNREAD --LONG-PROMPT --no-histdups --ignore-case --incsearch --no-init --line-numbers --mouse --quit-if-one-screen --squeeze-blank-lines --status-column --tabs=4 --use-color --window=-4 '  ##  --RAW-CONTROL-CHARS
+export LESS=' --HILITE-UNREAD --LONG-PROMPT --no-histdups --ignore-case --incsearch --no-init --line-numbers --mouse --quit-if-one-screen --squeeze-blank-lines --status-column --tabs=4 --use-color --window=-4 --RAW-CONTROL-CHARS '
 
 export MY_SESSION_BUS_SOCKET=/tmp/dbus/$USER.session.usock
 export DBUS_SESSION_BUS_ADDRESS=unix:path=${MY_SESSION_BUS_SOCKET}

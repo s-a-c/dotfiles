@@ -10,6 +10,7 @@ zgenom ohmyzsh plugins/composer
 zgenom ohmyzsh plugins/cpanm
 zgenom load romkatv/zsh-defer
 zgenom ohmyzsh plugins/deno
+zgenom load jamesob/desk shell_plugins/zsh
 zgenom ohmyzsh plugins/direnv
 zgenom ohmyzsh plugins/dotnet
 zgenom ohmyzsh plugins/emacs
