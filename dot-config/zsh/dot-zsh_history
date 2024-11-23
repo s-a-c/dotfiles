@@ -2001,3 +2001,26 @@ typeset -gA ABBR_REGULAR_USER_ABBREVIATIONS=()\
 : 1732380282:0;cd ~/dotfiles
 : 1732380287:0;git reflog expire --expire=now --all && git gc --prune=now --aggressive
 : 1732380317:0;cd ~/dotfiles && git add . && git commit -pm "+desk, +dot-*" && git push
+: 1732398031:0;NVIM_APPNAME=nvim-Lazyman nvim
+: 1732398826:0;which htop
+: 1732398871:0;nvim ~/.config/zsh/.zshrc.d/880-alias.zsh
+: 1732399001:0;alias htop='btop'
+: 1732399470:0;eza -al ~/.config
+: 1732399532:0;eza -al ~/.config/zsh
+: 1732399604:0;eza -al ~/.config/zsh/.zshrc.pre.plugins.d/
+: 1732399619:0;eza -al ~/.config/zsh/.zshrc.pre-plugins.d/
+: 1732399691:0;eza -al ~/.config
+: 1732399715:0;cd ~/dotfiles
+: 1732399721:0;eza -al
+: 1732399752:0;cd dot-config
+: 1732399758:0;eza -al
+: 1732399783:0;mv dot-zshrc* zsh/
+: 1732400104:0;git restore dot-config/zsh/dot-zshrc.pre-plugins.d
+: 1732400363:0;stow .
+: 1732400382:0;eza -al ~/.config
+: 1732400429:0;rm ~/.config/.zshrc*
+: 1732400433:0;eza -al ~/.config
+: 1732400444:0;stow .
+: 1732400447:0;eza -al ~/.config
+: 1732400461:0;eza -al ~/.config/asciiville
+: 1732400779:0;git add . && git commit -pm "tidy zsh" && git push

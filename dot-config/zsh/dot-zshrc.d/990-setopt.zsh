@@ -28,4 +28,3 @@ setopt pushdignoredups
 setopt pushdminus
 setopt sharehistory
 setopt zle
-

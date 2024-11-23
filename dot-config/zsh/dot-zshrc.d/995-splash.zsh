@@ -6,4 +6,3 @@ else
 fi
 [[ -n "${commands[fastfetch]}" ]] && fastfetch
 ## }}}  ## [splash_screen]
-

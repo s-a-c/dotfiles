@@ -8,4 +8,3 @@ abbr import-git-aliases -g --quiet --prefix "git "
 abbr import-aliases --quiet
 ## [abbr.alias-unset]
 unalias -m '*'
-

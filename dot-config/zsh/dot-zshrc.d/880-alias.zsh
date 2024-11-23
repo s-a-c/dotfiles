@@ -125,4 +125,3 @@ alias vi="/run/current-system/sw/bin/vim"
 #unalias -m '*'
 ## [alias.load]
 #source ${ZDOTDIR}/saved_aliases.zsh
-
