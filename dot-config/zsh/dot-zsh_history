@@ -2042,3 +2042,12 @@ typeset -gA ABBR_REGULAR_USER_ABBREVIATIONS=()\
 : 1732401155:0;eza -al ~/.config/zsh
 : 1732401173:0;eza -al ~/.config/zsh/.zshrc.pre.plugins.d/
 : 1732401198:0;git add . && git commit -pm "tidy zsh" && git push
+: 1732401234:0;eza -ald ~/.config/wakatime
+: 1732401350:0;rm ~/.config/wakatime && mkdir -p ~/.config/wakatime && touch ~/.config/wakatime/wakatium
+: 1732401382:0;stow .
+: 1732401445:0;eza -ald ~/.config/wakatime
+: 1732401458:0;eza -al ~/.config/wakatime/
+: 1732401490:0;rm ~/.config/wakatime/wakatium
+: 1732401542:0;rm ~/.config/wakatime/.wakatime.cfg && mv dot-config/wakatime/dot-wakatime.cfg ~/.config/wakatime/.wakatime.cfg
+: 1732401550:0;eza -al ~/.config/wakatime/
+: 1732401561:0;git add . && git commit -pm "tidy zsh" && git push
