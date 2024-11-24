@@ -111,6 +111,7 @@ alias enablehistory="unset -f zshaddhistory"
 
 ## [alias.nvim]
 alias lmvim="NVIM_APPNAME=nvim-Lazyman nvim"
+alias lzvim="NVIM_APPNAME=nvim-Lazyvim nvim"
 alias ksvim="NVIM_APPNAME=nvim-Kickstart nvim"
 
 ## [alias.trash-cli]

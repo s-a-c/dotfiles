@@ -2039,3 +2039,15 @@ typeset -gA ABBR_REGULAR_USER_ABBREVIATIONS=()\
 : 1732417259:0;rm dot-config/zsh/dot-fzf.zsh
 : 1732417266:0;stow .
 : 1732417321:0;git add . && git commit -am "fzf tidy-up" && git push
+: 1732417355:0;eza -al ~/.config/zsh
+: 1732417380:0;eza -al dot-config/zsh
+: 1732417414:0;z dot-config/zsh
+: 1732417475:0;ln ../../../.config/zsh/.zsh_history ./zsh_history
+: 1732417496:0;rm zsh_history && ln ../../../.config/zsh/.zsh_history ./zsh_history
+: 1732417503:0;cd ../..
+: 1732417512:0;pwd
+: 1732417517:0;stow .
+: 1732417534:0;eza -al dot-config/zsh
+: 1732417669:0;cursor ~/dotfiles/dot-config/zsh/dot-zshrc.pre.plugins.d/010-pre-plugins.zsh
+: 1732417777:0;cursor ~/dotfiles/dot-config/zsh/dot-zshrc.d/880-alias.zsh
+: 1732417861:0;git add . && git commit -am "zsh tidy-up" && git push
