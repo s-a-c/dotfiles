@@ -2051,3 +2051,63 @@ typeset -gA ABBR_REGULAR_USER_ABBREVIATIONS=()\
 : 1732417669:0;cursor ~/dotfiles/dot-config/zsh/dot-zshrc.pre.plugins.d/010-pre-plugins.zsh
 : 1732417777:0;cursor ~/dotfiles/dot-config/zsh/dot-zshrc.d/880-alias.zsh
 : 1732417861:0;git add . && git commit -am "zsh tidy-up" && git push
+: 1732417890:0;alias lmvim="NVIM_APPNAME=nvim-Lazyman nvim"
+: 1732417912:0;alias lzvim="NVIM_APPNAME=nvim-Lazyvim nvim"
+: 1732417918:0;lzvim
+: 1732419196:0;php -S localhost:8888
+: 1732430776:0;lzvim
+: 1732430784:0;alias lzvim="NVIM_APPNAME=nvim-Lazyvim nvim"
+: 1732430789:0;lzvim
+: 1732430910:0;cd ~/.config/nvim-LazyVim
+: 1732430930:0;alias lzvim="NVIM_APPNAME=nvim-LazyVim nvim"
+: 1732430934:0;lzvim
+: 1732431267:0;NVIM_APPNAME=nvim-Lazyman nvim
+: 1732431656:0;eza -al ~/dotfiles/dot-config
+: 1732431830:0;cd ~/dotfiles/dot-config/nvim
+: 1732431841:0;eza -al
+: 1732431854:0;rm -rf ./*
+: 1732431866:0;rm -rf ./.*
+: 1732431870:0;eza -al
+: 1732431889:0;git clone https://github.com/LazyVim/starter .
+: 1732431902:0;rm -rf .git
+: 1732431931:0;eza -al ~/.config
+: 1732431958:0;mvim
+: 1732431964:0;nvim
+: 1732436015:0;NVIM_APPNAME=nvim-Lazyman nvim
+: 1732436579:0;cd ~/.config
+: 1732436725:0;mv ~/Downloads/folke\ dot\ master\ nvim ./nvim-Folke
+: 1732436738:0;cd nvim-Folke
+: 1732436746:0;eza -al
+: 1732436824:0;alias flkvim="NVIM_APPNAME=nvim-Folke nvim"
+: 1732436832:0;flkvim
+: 1732442174:0;eza -al
+: 1732442181:0;z
+: 1732442186:0;\
+mv ~/.local/share/nvim{,.bak}\
+mv ~/.local/state/nvim{,.bak}\
+mv ~/.cache/nvim{,.bak}\
+\
+
+: 1732442197:0;flkvim
+: 1732442388:0;cp -r .config/nvim-LazyVim/* .config/nvim-Folke/
+: 1732442407:0;eza -al ~/.config/nvim-LazyVim/
+: 1732442456:0;cp .config/nvim-LazyVim/.neoconf.json .config/nvim-Folke/
+: 1732442467:0;flkvim
+: 1732442549:0;rm -rf ~/.config/nvim-Folke
+: 1732442579:0;git clone https://github.com/LazyVim/starter ~/.config/nvim-Folke
+: 1732442620:0;cp -r .config/nvim-LazyVim/* .config/nvim-Folke/
+: 1732442636:0;flkvim
+: 1732468554:0;pwd
+: 1732468624:0;cd .config
+: 1732468637:0;eza -al
+: 1732468723:0;rm -rf ~/.config/nvim-Folke/ && git clone https://github.com/LazyVim/starter ~/.config/nvim-Folke
+: 1732469088:0;cp -r .config/nvim-LazyVim/* .config/nvim-Folke/
+: 1732469111:0;cp -r ~/.config/nvim-LazyVim/* ~/.config/nvim-Folke/
+: 1732472228:0;alias lzide="NVIM_APPNAME=nvim-LazyIde nvim"
+: 1732472234:0;lzide
+: 1732472420:0;alias lmvim="NVIM_APPNAME=nvim-Lazyman nvim"
+: 1732472425:0;NVIM_APPNAME=nvim-Lazyman nvim
+: 1732472491:0;eza -al nvim*
+: 1732472538:0;NVIM_APPNAME=nvim-Lazyman nvim
+: 1732476496:0;which cargo
+: 1732476507:0;exec zsh

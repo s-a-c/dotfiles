@@ -12,3 +12,174 @@
 23:43:22.466 info host found 1 tool file(s) to patch
 23:43:22.471 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
 23:43:22.547 info host completed tools discovery and integration
+10:06:09.410 info extension stopping host
+10:06:09.656 info host ------------ starting ------------
+10:06:09.749 info extension host process output: port:[60723]
+10:06:09.749 info extension 
+10:06:09.791 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 60723 }
+10:06:09.822 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.369","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.369/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.369/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.369/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[],"debug":false,"config":{"dateTimeFormat":"yyyy-MM-ddThh:mm:ss.SSS z ddd:","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":99999,"showWelcomeMessageInTools":true,"fontSize":12,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://www.google.com/search?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension","live-preview"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":false,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.242"],"host":"127.0.0.1","forcedStart":false,"startTime":1732442769411}
+10:06:09.826 info host worker Starting Host Worker...
+10:06:09.849 info host starting tools discovery and integration
+10:06:09.854 info host looking for tools to patch
+10:06:09.863 info host found 1 tool file(s) to patch
+10:06:09.864 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+10:06:09.931 info host completed tools discovery and integration
+10:43:58.665 info host removing cache folder: 03767b946d1ebee3f84ab18a14d1c89b
+12:57:09.927 info host removing cache folder: 77ec9fdc6e4f15a89cb065f5bbeaa5e8
+16:37:49.173 ERR! host could not obtain lock; retrying Lock file is already being held
+16:38:49.158 ERR! host could not obtain lock; retrying Lock file is already being held
+16:51:36.086 ERR! host could not obtain lock; retrying Lock file is already being held
+17:00:32.177 ERR! host could not obtain lock; retrying Lock file is already being held
+17:01:32.141 ERR! host could not obtain lock; retrying Lock file is already being held
+17:02:32.140 ERR! host could not obtain lock; retrying Lock file is already being held
+17:03:32.140 ERR! host could not obtain lock; retrying Lock file is already being held
+17:04:32.141 ERR! host could not obtain lock; retrying Lock file is already being held
+17:05:32.148 ERR! host could not obtain lock; retrying Lock file is already being held
+17:06:32.149 ERR! host could not obtain lock; retrying Lock file is already being held
+17:07:32.149 ERR! host could not obtain lock; retrying Lock file is already being held
+17:08:32.152 ERR! host could not obtain lock; retrying Lock file is already being held
+17:09:32.150 ERR! host could not obtain lock; retrying Lock file is already being held
+17:10:32.149 ERR! host could not obtain lock; retrying Lock file is already being held
+17:11:32.148 ERR! host could not obtain lock; retrying Lock file is already being held
+17:12:32.147 ERR! host could not obtain lock; retrying Lock file is already being held
+17:13:32.150 ERR! host could not obtain lock; retrying Lock file is already being held
+17:14:32.151 ERR! host could not obtain lock; retrying Lock file is already being held
+17:15:32.150 ERR! host could not obtain lock; retrying Lock file is already being held
+17:16:32.151 ERR! host could not obtain lock; retrying Lock file is already being held
+17:17:32.151 ERR! host could not obtain lock; retrying Lock file is already being held
+17:18:32.152 ERR! host could not obtain lock; retrying Lock file is already being held
+17:19:32.152 ERR! host could not obtain lock; retrying Lock file is already being held
+17:20:32.153 ERR! host could not obtain lock; retrying Lock file is already being held
+17:21:32.151 ERR! host could not obtain lock; retrying Lock file is already being held
+17:22:32.152 ERR! host could not obtain lock; retrying Lock file is already being held
+17:23:32.151 ERR! host could not obtain lock; retrying Lock file is already being held
+17:24:32.150 ERR! host could not obtain lock; retrying Lock file is already being held
+17:25:32.153 ERR! host could not obtain lock; retrying Lock file is already being held
+17:26:32.151 ERR! host could not obtain lock; retrying Lock file is already being held
+17:27:32.150 ERR! host could not obtain lock; retrying Lock file is already being held
+17:28:32.150 ERR! host could not obtain lock; retrying Lock file is already being held
+17:29:32.150 ERR! host could not obtain lock; retrying Lock file is already being held
+17:30:32.148 ERR! host could not obtain lock; retrying Lock file is already being held
+17:31:32.150 ERR! host could not obtain lock; retrying Lock file is already being held
+17:32:32.149 ERR! host could not obtain lock; retrying Lock file is already being held
+17:33:32.152 ERR! host could not obtain lock; retrying Lock file is already being held
+17:34:32.154 ERR! host could not obtain lock; retrying Lock file is already being held
+17:35:32.152 ERR! host could not obtain lock; retrying Lock file is already being held
+17:36:32.154 ERR! host could not obtain lock; retrying Lock file is already being held
+17:37:32.158 ERR! host could not obtain lock; retrying Lock file is already being held
+17:38:32.159 ERR! host could not obtain lock; retrying Lock file is already being held
+17:39:32.160 ERR! host could not obtain lock; retrying Lock file is already being held
+17:40:32.161 ERR! host could not obtain lock; retrying Lock file is already being held
+17:41:32.177 ERR! host could not obtain lock; retrying Lock file is already being held
+17:42:32.189 ERR! host could not obtain lock; retrying Lock file is already being held
+17:43:32.190 ERR! host could not obtain lock; retrying Lock file is already being held
+17:44:32.192 ERR! host could not obtain lock; retrying Lock file is already being held
+17:45:32.193 ERR! host could not obtain lock; retrying Lock file is already being held
+17:46:32.194 ERR! host could not obtain lock; retrying Lock file is already being held
+17:47:32.194 ERR! host could not obtain lock; retrying Lock file is already being held
+17:48:32.194 ERR! host could not obtain lock; retrying Lock file is already being held
+17:49:32.196 ERR! host could not obtain lock; retrying Lock file is already being held
+17:51:32.201 ERR! host could not obtain lock; retrying Lock file is already being held
+17:52:32.204 ERR! host could not obtain lock; retrying Lock file is already being held
+17:53:32.204 ERR! host could not obtain lock; retrying Lock file is already being held
+17:54:32.208 ERR! host could not obtain lock; retrying Lock file is already being held
+17:55:32.206 ERR! host could not obtain lock; retrying Lock file is already being held
+17:56:32.208 ERR! host could not obtain lock; retrying Lock file is already being held
+17:57:32.210 ERR! host could not obtain lock; retrying Lock file is already being held
+17:59:32.213 ERR! host could not obtain lock; retrying Lock file is already being held
+18:01:32.214 ERR! host could not obtain lock; retrying Lock file is already being held
+18:02:32.215 ERR! host could not obtain lock; retrying Lock file is already being held
+18:09:32.222 ERR! host could not obtain lock; retrying Lock file is already being held
+18:23:32.306 ERR! host could not obtain lock; retrying Lock file is already being held
+18:29:32.314 ERR! host could not obtain lock; retrying Lock file is already being held
+19:42:46.732 info extension stopping host
+21:17:43.722 info extension stopping host
+21:17:53.672 info extension stopping host
+21:17:57.084 info host ------------ starting ------------
+21:17:57.222 info extension host process output: port:[58846]
+21:17:57.222 info extension 
+21:17:57.244 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 58846 }
+21:17:58.574 info host worker Starting Host Worker...
+21:17:59.593 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.369","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.369/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.369/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.369/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/.cache/node/corepack/v1/yarn/1.22.22/bin/yarn.js","reason":"search"},{"path":"/users/s-a-c/.cache/node/corepack/v1/pnpm/9.12.3/dist/worker.js","reason":"search"},{"path":"/users/s-a-c/.cache/node/corepack/v1/pnpm/9.12.3/bin/pnpm.cjs","reason":"search"},{"path":"/users/s-a-c/.cache/node/corepack/v1/pnpm/9.12.3/dist/pnpm.cjs","reason":"search"},{"path":"/users/s-a-c/.cache/node/corepack/v1/yarn/1.22.22/lib/cli.js","reason":"search"},{"path":"/users/s-a-c/.console-ninja/.bin/loader.js","reason":"search"},{"path":"/users/s-a-c/.cursor/extensions/vitaliymaz.vscode-svg-previewer-0.7.0/media/index.js","reason":"search"}],"debug":false,"config":{"dateTimeFormat":"yyyy-MM-ddThh:mm:ss.SSS z ddd:","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":99999,"showWelcomeMessageInTools":true,"fontSize":12,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://www.google.com/search?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension","live-preview"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":false,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.242"],"host":"127.0.0.1","forcedStart":false,"startTime":1732483073672}
+21:17:59.934 info host starting tools discovery and integration
+21:18:00.114 info host looking for tools to patch
+21:18:04.823 ERR! host error scanning modules: EPERM: operation not permitted, scandir '/users/s-a-c/Library/Application Support/AddressBook'
+21:18:10.407 WARN extension search limit hit
+21:19:08.035 info host found 61 tool file(s) to patch
+21:19:08.053 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+21:19:08.055 info host patching /users/s-a-c/Herd/livewire-from-scratch/node_modules/vite/bin/vite.js
+21:19:08.055 info host patching /users/s-a-c/Herd/livewire3fs/node_modules/vite/bin/vite.js
+21:19:08.055 info host patching /users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+21:19:08.055 info host patching /users/s-a-c/.vscode/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+21:19:08.055 info host patching /users/s-a-c/Insync/sunavlys@msn.com/OneDrive/.config/vscode/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+21:19:08.058 info host patching /users/s-a-c/.local/share/nvim-LazyIde/mason/packages/sqlls/node_modules/sql-language-server/node_modules/jest/bin/jest.js
+21:19:08.059 info host patching /users/s-a-c/.local/share/nvim-LazyIde/mason/packages/sqlls/node_modules/sql-language-server/node_modules/jest-runner/build/testWorker.js
+21:19:08.059 info host patching /users/s-a-c/.local/share/nvim-Lazyman/mason/packages/sqlls/node_modules/sql-language-server/node_modules/jest/bin/jest.js
+21:19:08.059 info host patching /users/s-a-c/.local/share/nvim-Lazyman/mason/packages/sqlls/node_modules/sql-language-server/node_modules/jest-runner/build/testWorker.js
+21:19:08.062 info host patching /users/s-a-c/nc/Projects/Git/hello-world-reason/node_modules/.pnpm/next@14.2.11_react-dom@18.0.0_react@18.0.0__react@18.0.0/node_modules/next/dist/compiled/webpack/bundle5.js
+21:19:08.062 info host patching /users/s-a-c/nc/Projects/Git/hello-world-reason/node_modules/.pnpm/next@14.2.11_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/webpack/bundle5.js
+21:19:08.062 info host patching /users/s-a-c/nc/Projects/Git/t3gallery/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/webpack/bundle5.js
+21:19:08.062 info host patching /users/s-a-c/nc/Projects/Git/hello-world-reason/node_modules/.pnpm/next@14.2.11_react-dom@18.0.0_react@18.0.0__react@18.0.0/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js
+21:19:08.063 info host patching /users/s-a-c/nc/Projects/Git/hello-world-reason/node_modules/.pnpm/next@14.2.11_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js
+21:19:08.063 info host patching /users/s-a-c/nc/Projects/Git/t3gallery/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js
+21:19:08.063 info host patching /users/s-a-c/nc/Projects/Git/fireship.io/Next.js/myapp/node_modules/.pnpm/next@14.2.7_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/webpack/bundle5.js
+21:19:08.064 info host patching /users/s-a-c/nc/Projects/Git/fireship.io/Next.js/myapp/node_modules/.pnpm/next@14.2.7_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js
+21:19:08.068 info host patching /users/s-a-c/Insync/sunavlys@msn.com/OneDrive/GitHub/dubnium/packages/spfxreact/node_modules/webpack/lib/WebpackOptionsApply.js
+21:19:08.068 info host patching /users/s-a-c/Insync/sunavlys@msn.com/OneDrive/GitHub/dubnium/packages/spfxreact/node_modules/webpack/lib/webpack.js
+21:19:08.068 info host patching /users/s-a-c/nc/Projects/Git/hello-world-reason/node_modules/.pnpm/webpack@5.94.0_esbuild@0.19.12_webpack-cli@5.1.4/node_modules/webpack/lib/WebpackOptionsApply.js
+21:19:08.068 info host patching /users/s-a-c/nc/Projects/Git/hello-world-reason/node_modules/.pnpm/webpack@5.94.0_esbuild@0.19.12_webpack-cli@5.1.4/node_modules/webpack/lib/index.js
+21:19:08.068 info host patching /users/s-a-c/nc/Projects/Git/hello-world-reason/node_modules/.pnpm/webpack@5.94.0_esbuild@0.19.12_webpack-cli@5.1.4/node_modules/webpack/lib/webpack.js
+21:19:08.068 info host patching /users/s-a-c/nc/Projects/Git/docusaurus/my-website/node_modules/.pnpm/webpack@5.92.1/node_modules/webpack/lib/WebpackOptionsApply.js
+21:19:08.068 info host patching /users/s-a-c/nc/Projects/Git/docusaurus/my-website/node_modules/.pnpm/webpack@5.92.1/node_modules/webpack/lib/index.js
+21:19:08.068 info host patching /users/s-a-c/nc/Projects/Git/docusaurus/my-website/node_modules/.pnpm/webpack@5.92.1/node_modules/webpack/lib/webpack.js
+21:19:08.068 info host patching /users/s-a-c/Insync/sunavlys@msn.com/OneDrive/GitHub/dubnium/packages/spfxreact/node_modules/webpack-stream/node_modules/webpack/lib/WebpackOptionsApply.js
+21:19:08.068 info host patching /users/s-a-c/Insync/sunavlys@msn.com/OneDrive/GitHub/dubnium/packages/spfxreact/node_modules/webpack-stream/node_modules/webpack/lib/webpack.js
+21:19:08.068 info host patching /users/s-a-c/Insync/sunavlys@msn.com/OneDrive/GitHub/dubnium/packages/spfxreact/node_modules/@microsoft/gulp-core-build-karma/node_modules/webpack/lib/WebpackOptionsApply.js
+21:19:08.068 info host patching /users/s-a-c/Insync/sunavlys@msn.com/OneDrive/GitHub/dubnium/packages/spfxreact/node_modules/@microsoft/gulp-core-build-karma/node_modules/webpack/lib/webpack.js
+21:19:08.068 info host patching /users/s-a-c/Insync/sunavlys@msn.com/OneDrive/GitHub/dubnium/packages/spfxreact/node_modules/@microsoft/gulp-core-build-webpack/node_modules/webpack/lib/WebpackOptionsApply.js
+21:19:08.068 info host patching /users/s-a-c/Insync/sunavlys@msn.com/OneDrive/GitHub/dubnium/packages/spfxreact/node_modules/@microsoft/gulp-core-build-webpack/node_modules/webpack/lib/webpack.js
+21:19:08.245 info host Host's startup and patch time: 74573 ms
+21:19:08.245 info host completed tools discovery and integration
+21:44:36.244 info host scheduling tools patching
+21:44:36.378 info host scheduling tools patching
+21:44:37.627 info host scheduling tools patching
+21:44:37.760 info host scheduling tools patching
+21:44:38.222 info host scheduling tools patching
+21:44:38.392 info host scheduling tools patching
+21:44:40.394 info host looking for tools to patch
+21:44:41.145 ERR! host error scanning modules: EPERM: operation not permitted, scandir '/users/s-a-c/Library/Application Support/AddressBook'
+21:45:27.258 info host found 61 tool file(s) to patch
+21:45:27.265 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+21:45:27.266 info host patching /users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+21:45:27.266 info host patching /users/s-a-c/.vscode/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+21:45:27.266 info host patching /users/s-a-c/Insync/sunavlys@msn.com/OneDrive/.config/vscode/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+21:45:27.266 info host patching /users/s-a-c/Herd/livewire-from-scratch/node_modules/vite/bin/vite.js
+21:45:27.266 info host patching /users/s-a-c/Herd/livewire3fs/node_modules/vite/bin/vite.js
+21:45:27.267 WARN host could not get write access to /users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js file(modification)
+21:45:27.267 info host patching /users/s-a-c/.local/share/nvim-Lazyman/mason/packages/sqlls/node_modules/sql-language-server/node_modules/jest/bin/jest.js
+21:45:27.267 info host patching /users/s-a-c/.local/share/nvim-Lazyman/mason/packages/sqlls/node_modules/sql-language-server/node_modules/jest-runner/build/testWorker.js
+21:45:27.267 info host patching /users/s-a-c/.local/share/nvim-LazyIde/mason/packages/sqlls/node_modules/sql-language-server/node_modules/jest/bin/jest.js
+21:45:27.267 info host patching /users/s-a-c/.local/share/nvim-LazyIde/mason/packages/sqlls/node_modules/sql-language-server/node_modules/jest-runner/build/testWorker.js
+21:45:27.269 info host patching /users/s-a-c/nc/Projects/Git/hello-world-reason/node_modules/.pnpm/next@14.2.11_react-dom@18.0.0_react@18.0.0__react@18.0.0/node_modules/next/dist/compiled/webpack/bundle5.js
+21:45:27.269 info host patching /users/s-a-c/nc/Projects/Git/hello-world-reason/node_modules/.pnpm/next@14.2.11_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/webpack/bundle5.js
+21:45:27.269 info host patching /users/s-a-c/nc/Projects/Git/t3gallery/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/webpack/bundle5.js
+21:45:27.269 info host patching /users/s-a-c/nc/Projects/Git/hello-world-reason/node_modules/.pnpm/next@14.2.11_react-dom@18.0.0_react@18.0.0__react@18.0.0/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js
+21:45:27.269 info host patching /users/s-a-c/nc/Projects/Git/hello-world-reason/node_modules/.pnpm/next@14.2.11_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js
+21:45:27.269 info host patching /users/s-a-c/nc/Projects/Git/t3gallery/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js
+21:45:27.269 info host patching /users/s-a-c/nc/Projects/Git/fireship.io/Next.js/myapp/node_modules/.pnpm/next@14.2.7_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/webpack/bundle5.js
+21:45:27.269 info host patching /users/s-a-c/nc/Projects/Git/fireship.io/Next.js/myapp/node_modules/.pnpm/next@14.2.7_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js
+21:45:27.276 info host patching /users/s-a-c/Insync/sunavlys@msn.com/OneDrive/GitHub/dubnium/packages/spfxreact/node_modules/webpack/lib/WebpackOptionsApply.js
+21:45:27.276 info host patching /users/s-a-c/Insync/sunavlys@msn.com/OneDrive/GitHub/dubnium/packages/spfxreact/node_modules/webpack/lib/webpack.js
+21:45:27.276 info host patching /users/s-a-c/nc/Projects/Git/hello-world-reason/node_modules/.pnpm/webpack@5.94.0_esbuild@0.19.12_webpack-cli@5.1.4/node_modules/webpack/lib/WebpackOptionsApply.js
+21:45:27.276 info host patching /users/s-a-c/nc/Projects/Git/hello-world-reason/node_modules/.pnpm/webpack@5.94.0_esbuild@0.19.12_webpack-cli@5.1.4/node_modules/webpack/lib/index.js
+21:45:27.276 info host patching /users/s-a-c/nc/Projects/Git/hello-world-reason/node_modules/.pnpm/webpack@5.94.0_esbuild@0.19.12_webpack-cli@5.1.4/node_modules/webpack/lib/webpack.js
+21:45:27.276 info host patching /users/s-a-c/nc/Projects/Git/docusaurus/my-website/node_modules/.pnpm/webpack@5.92.1/node_modules/webpack/lib/WebpackOptionsApply.js
+21:45:27.276 info host patching /users/s-a-c/nc/Projects/Git/docusaurus/my-website/node_modules/.pnpm/webpack@5.92.1/node_modules/webpack/lib/index.js
+21:45:27.276 info host patching /users/s-a-c/nc/Projects/Git/docusaurus/my-website/node_modules/.pnpm/webpack@5.92.1/node_modules/webpack/lib/webpack.js
+21:45:27.276 info host patching /users/s-a-c/Insync/sunavlys@msn.com/OneDrive/GitHub/dubnium/packages/spfxreact/node_modules/webpack-stream/node_modules/webpack/lib/WebpackOptionsApply.js
+21:45:27.276 info host patching /users/s-a-c/Insync/sunavlys@msn.com/OneDrive/GitHub/dubnium/packages/spfxreact/node_modules/webpack-stream/node_modules/webpack/lib/webpack.js
+21:45:27.276 info host patching /users/s-a-c/Insync/sunavlys@msn.com/OneDrive/GitHub/dubnium/packages/spfxreact/node_modules/@microsoft/gulp-core-build-karma/node_modules/webpack/lib/WebpackOptionsApply.js
+21:45:27.276 info host patching /users/s-a-c/Insync/sunavlys@msn.com/OneDrive/GitHub/dubnium/packages/spfxreact/node_modules/@microsoft/gulp-core-build-karma/node_modules/webpack/lib/webpack.js
+21:45:27.276 info host patching /users/s-a-c/Insync/sunavlys@msn.com/OneDrive/GitHub/dubnium/packages/spfxreact/node_modules/@microsoft/gulp-core-build-webpack/node_modules/webpack/lib/WebpackOptionsApply.js
+21:45:27.277 info host patching /users/s-a-c/Insync/sunavlys@msn.com/OneDrive/GitHub/dubnium/packages/spfxreact/node_modules/@microsoft/gulp-core-build-webpack/node_modules/webpack/lib/webpack.js
+21:45:27.441 info host Host's startup and patch time: 1653769 ms
