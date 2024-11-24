@@ -1,20 +1,20 @@
 ARTDIR=/usr/local/share/asciiville/art
 MUSEDIR=/usr/local/share/asciiville/music
-SONG="/usr/local/asciiville/music/Chronos.mp3"
-ALTSONG="/usr/local/asciiville/music/Epic_Dramatic-Yuriy_Bespalov.wav"
+SONG=/Users/s-a-c/Music/Asciiville/Loyalty_Freak_Music-Im_On_Fire.ogg
+ALTSONG=/usr/local/asciiville/music/Epic_Dramatic-Yuriy_Bespalov.wav
 
 AUDIO=1
 BROWSER=w3m
-COMMAND=btop
-FULLSCREEN=
-MTITLE="Btop++ System Monitor"
+COMMAND="cmatrix -u 8"
+FULLSCREEN=1
+LOLCAT="lolcat"
+MTITLE="Asciiville"
 CURRENT=
 GNOME=
 RETRO=
 TILIX=
 KITTY=1
 XFCE4=
-LOLCAT=lolcat
 
 shuffle=1
 length=0

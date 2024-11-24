@@ -1,0 +1,14 @@
+23:43:19.050 info extension stopping host
+23:43:22.073 info extension stopping host
+23:43:22.314 info host ------------ starting ------------
+23:43:22.347 info extension host process output: port:[50882]
+23:43:22.347 info extension 
+23:43:22.386 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 50882 }
+23:43:22.423 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.369","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.369/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.369/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.369/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[],"debug":false,"config":{"dateTimeFormat":"yyyy-MM-ddThh:mm:ss.SSS z ddd:","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":99999,"showWelcomeMessageInTools":true,"fontSize":12,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://www.google.com/search?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension","live-preview"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":false,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.242"],"host":"127.0.0.1","forcedStart":false,"startTime":1732405402074}
+23:43:22.447 info host starting tools discovery and integration
+23:43:22.452 info host installing /Users/s-a-c/.zshrc
+23:43:22.452 info host looking for tools to patch
+23:43:22.461 info host worker Starting Host Worker...
+23:43:22.466 info host found 1 tool file(s) to patch
+23:43:22.471 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+23:43:22.547 info host completed tools discovery and integration

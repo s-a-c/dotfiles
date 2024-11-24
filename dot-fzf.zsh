@@ -1,1 +1,0 @@
-dot-config/fzf/fzf.zsh
