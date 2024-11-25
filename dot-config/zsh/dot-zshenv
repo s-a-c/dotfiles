@@ -100,3 +100,4 @@ function _path_prepend() {
 alias disablehistory="function zshaddhistory() {  return 1 }"
 alias enablehistory="unset -f zshaddhistory"
 
+. "/Users/s-a-c/.local/share/cargo/env"

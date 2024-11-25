@@ -380,9 +380,22 @@ export POWERLEVEL9K_DISABLE_HOT_RELOAD=false
 export RUSTUP_HOME=${RUSTUP_HOME:="${XDG_DATA_HOME}/rustup"}
 export CARGO_HOME=${CARGO_HOME:="${XDG_DATA_HOME}/cargo"}
 export CARGO_TARGET_DIR="${CARGO_HOME}/target"
+export RUSTUP_LOCATION="${CARGO_HOME}/bin/rustup"
 _path_prepend "${CARGO_HOME}/bin"
+
 ## [plugins.rust.rustup]  ## {{{
+[[ ! -n "${commands[rustup]}" ]] && {
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+}
+## configure rust environment
+[[ -s "$CARGO_HOME/env" ]] && source "$CARGO_HOME/env"
+
 [[ -n "${commands[rustup]}" ]] && {
+    ## Only add Rustup installation to PATH, MANPATH, and INFOPATH if rustup is
+    ## not already on the path, to prevent duplicate entries. This aligns with
+    ## the behavior of the rustup installer.sh post-install steps.
+    eval "$(rustup completions zsh)"
+    unset RUSTUP_LOCATION
     [[ ! -n "${commands[rustc]}" ]] && {
         #echo "[zshrc] rustc not found, please install it from https://www.rust-lang.org/tools/install"
         echo "[zshrc] rustc not found, using rustup to install `stable`"
@@ -395,8 +408,6 @@ _path_prepend "${CARGO_HOME}/bin"
     ## NOTE: Has to be defined after PATH update to locate .cargo directory.
     [[ -n "${commands[rustc]}" ]] && export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
 
-    ## configure rust environment
-    [[ -s "$CARGO_HOME/env" ]] && source "$CARGO_HOME/env"
     ## - autocomplete
     ## - cargo audit
     ## - cargo clippy
@@ -767,57 +778,37 @@ export GITHUB_CONFIG_DIR="${XDG_CONFIG_HOME}/github"
 ## }}}  ## [nvim.lazyman]
 ## }}}  ## [nvim]
 
-## [opam] ## {{{
-[[ -n "${commands[opam]}" ]] && {
-    export OPAMROOT=${OPAMROOT:="${XDG_DATA_HOME}/opam"}
-    export OPAMSWITCH=${OPAMSWITCH:="default"}
-    _path_prepend "${OPAMROOT}/$OPAMSWITCH/bin"
-}
-
 ## [ocaml] ## {{{
-#[[ -n "${commands=ocaml}" ]] && {
-    export OCAMLRUNPARAM="b"
-    export OCAML_TOPLEVEL_PATH="${XDG_DATA_HOME}/ocaml"
-    export OCAML_TOPLEVEL_HISTORY="${XDG_DATA_HOME}/ocaml/toplevel-history"
-    export OPAMROOT="${XDG_DATA_HOME}/opam"
-#}
-
-## [ocaml.dune] ##
-[[ -n "${commands[dune]}" ]] && export DUNE_CACHE="$XDG_CACHE_HOME/dune"
+export OPAMROOT=${OPAMROOT:="${XDG_DATA_HOME}/opam"}
+export OPAMSWITCH=${OPAMSWITCH:="default"}
+export OCAMLRUNPARAM="b"
+export OCAML_TOPLEVEL_PATH="${XDG_DATA_HOME}/ocaml"
+export OCAML_TOPLEVEL_HISTORY="${XDG_DATA_HOME}/ocaml/toplevel-history"
+export DUNE_CACHE=enabled
+export DUNE_CACHE_DIR="$XDG_CACHE_HOME/dune"
+_path_prepend "${OPAMROOT}/$OPAMSWITCH/bin"
 
 ## [ocaml.opam] ## {{{
+[[ ! -n "${commands[opam]}" ]] && {
+    ## Install opam
+    curl -sL https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh | sh
+    opam init --disable-sandboxing --auto-setup --reinit
+    opam install core core-bench core_unix dune js_of_ocaml js_of_ocaml-ppx merlin ocaml-lsp-server ocamlformat ocp-indent odoc opam-client opam-installer tuareg user-setup utop
+    opam switch create $OPAMSWITCH
+}
+opam update
+opam upgrade
+#opam install async base base_quickcheck bonsai incr_dom incremental logs-async ocsigen-start ocsipersist-pgsql-config ocsipersist-sqlite-config patdiff pgx_lwt ppx_jane reason reason-react reason-react-ppx riot
+
 [[ -n "${commands[opam]}" ]] && {
     ## opam configuration
     ## - shell completion
     ## - environment setup
     ## - opam aliases
+
     [[ -s "${OPAMROOT}/opam-init/init.zsh" ]] && source "${OPAMROOT}/opam-init/init.zsh" > /dev/null 2>&1
     [[ -s "${OPAMROOT}/opam-init/opam-switch.sh" ]] && source "${OPAMROOT}/opam-init/opam-switch.sh" > /dev/null 2>&1
     [[ -s "${OPAMROOT}/opam-init/opam-aliases.sh" ]] && source "${OPAMROOT}/opam-init/opam-aliases.sh" > /dev/null 2>&1
-
-    export OPAM_SWITCH_PREFIX="${OPAMROOT}/default"
-    #export OCAML_TOPLEVEL_PATH="$OPAM_SWITCH_PREFIX/lib/toplevel"
-    #export CAML_LD_LIBRARY_PATH="$OPAM_SWITCH_PREFIX/lib/stublibs:$OPAM_SWITCH_PREFIX/lib/ocaml/stublibs:$OPAM_SWITCH_PREFIX/lib/ocaml"
-
-    typeset -agx _OPAM_SWITCH_DEFAULT=(core core_bench dune js_of_ocaml js_of_ocaml-ppx merlin ocaml-lsp-server ocamlformat ocp-indent odoc opam-client opam-installer tuareg user-setup utop)
-    typeset -agx _OPAM_SWITCH_JANESTREET=(async base base_quickcheck bonsai core core_unix dune incr_dom incremental patdiff ppx_jane)
-    typeset -agx _OPAM_SWITCH_OCSIGEN=(logs-async ocsigen-start ocsipersist-pgsql-config ocsipersist-sqlite-config pgx_lwt riot)
-    typeset -agx _OPAM_SWITCH_REASON=(dune melange reason reason-react reason-react-ppx)
-    _OPAM_SWITCH_REASON+=(${_OPAM_SWITCH_JANESTREET})
-    _OPAM_SWITCH_OCSIGEN+=(${_OPAM_SWITCH_JANESTREET})
-
-    unset _OPAM_SWITCH && typeset -Agx _OPAM_SWITCH
-    typeset -gx _OPAM_SWITCH[reason]=${_OPAM_SWITCH_REASON}
-    typeset -gx _OPAM_SWITCH[ocsigen]=${_OPAM_SWITCH_OCSIGEN}
-    typeset -gx _OPAM_SWITCH[janestreet]=${_OPAM_SWITCH_JANESTREET}
-    typeset -gx _OPAM_SWITCH[default]=${_OPAM_SWITCH_DEFAULT}
-
-    function opam_switches() {
-        for switch in $(opam switch list -s); do
-            echo "\n<><> opam install --switch $switch \"$@\" <><><><><><><><>\n"
-            opam install --switch ${switch} "$@"
-        done
-    }
 
     ## [ocaml.opam.ENVIRONMENT]  ## {{{
     # Opam makes use of the environment variables listed here. Boolean variables should be set to "0", "no", "false" or the empty string to disable, "1", "yes" or "true" to enable.
@@ -904,9 +895,34 @@ export GITHUB_CONFIG_DIR="${XDG_CONFIG_HOME}/github"
     # OPAMVAR_package_var overrides the contents of the variable package:var when substituting ‘%{package:var}%‘ strings in ‘opam‘ files.
     ## }}}  ## [ocaml.opam.ENVIRONMENT]
 
-    [[ -r ${OPAMROOT}/opam-init/init.sh ]] && source ${OPAMROOT}/opam-init/init.sh >/dev/null 2>/dev/null || true
+    ## [ocaml.opam.switch]  ## {{{
+    export OPAM_SWITCH_PREFIX="${OPAMROOT}/default"
+    #export OCAML_TOPLEVEL_PATH="$OPAM_SWITCH_PREFIX/lib/toplevel"
+    #export CAML_LD_LIBRARY_PATH="$OPAM_SWITCH_PREFIX/lib/stublibs:$OPAM_SWITCH_PREFIX/lib/ocaml/stublibs:$OPAM_SWITCH_PREFIX/lib/ocaml"
 
-    #opam switch ocsigen && eval $(opam env --switch=ocsigen --set-switch)
+    typeset -agx _OPAM_SWITCH_DEFAULT=(core core-bench core_unix dune js_of_ocaml js_of_ocaml-ppx melange merlin ocaml-lsp-server ocamlformat ocp-indent odoc opam-client opam-installer tuareg user-setup utop)
+    typeset -agx _OPAM_SWITCH_JANESTREET=(async base base_quickcheck bonsai incr_dom incremental patdiff ppx_jane)
+    typeset -agx _OPAM_SWITCH_OCSIGEN=(logs-async ocsigen-start ocsipersist-pgsql-config ocsipersist-sqlite-config pgx_lwt riot)
+    typeset -agx _OPAM_SWITCH_REASON=(reason reason-react reason-react-ppx)
+    _OPAM_SWITCH_JANESTREET+=(${_OPAM_SWITCH_DEFAULT})
+    _OPAM_SWITCH_OCSIGEN+=(${_OPAM_SWITCH_DEFAULT})
+    _OPAM_SWITCH_REASON+=(${_OPAM_SWITCH_DEFAULT})
+
+    unset _OPAM_SWITCH && typeset -Agx _OPAM_SWITCH
+    typeset -gx _OPAM_SWITCH[reason]=${_OPAM_SWITCH_REASON}
+    typeset -gx _OPAM_SWITCH[ocsigen]=${_OPAM_SWITCH_OCSIGEN}
+    typeset -gx _OPAM_SWITCH[janestreet]=${_OPAM_SWITCH_JANESTREET}
+    typeset -gx _OPAM_SWITCH[default]=${_OPAM_SWITCH_DEFAULT}
+
+    function opam_switches() {
+        for switch in $(opam switch list -s); do
+            echo "\n<><> opam install --switch $switch \"$@\" <><><><><><><><>\n"
+            opam install --switch ${switch} "$@"
+        done
+    }
+
+    opam switch default && eval $(opam env --switch=default --set-switch)
+    ## }}}  ## [ocaml.opam.switch]
 }
 ## }}}  ## [ocaml.opam]
 ## }}}  ## [ocaml]
