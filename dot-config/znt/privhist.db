@@ -28,3 +28,7 @@ bfg --delete-files "*.wakatime.cfg*" ~/dotfiles
 git reflog expire --expire=now --all && git gc --prune=now --aggressive
 git add . && git commit -am "tidy zsh" && git push
 git add . && git commit -am "zsh tidy-up" && git push
+npm i -g -u corepack melange neovim npm pnpm tree-sitter-bash yarn
+php -S localhost:8888
+nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+git add . && git commit -am "+opam, +rustup" && git push

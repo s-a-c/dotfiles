@@ -64,8 +64,8 @@ config = {
     -- color_scheme = 'Modus-Vivendi',
     color_scheme = scheme_for_appearance(get_appearance()),
 
-    cursor_blink_ease_in = 'Constant',
-    cursor_blink_ease_out = 'Constant',
+    cursor_blink_ease_in = 'Linear',
+    cursor_blink_ease_out = 'Linear',
     default_cursor_style = "BlinkingBlock",
 
     debug_key_events = true,

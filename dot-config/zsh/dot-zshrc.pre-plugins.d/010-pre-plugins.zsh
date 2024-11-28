@@ -927,6 +927,10 @@ opam upgrade
 ## }}}  ## [ocaml.opam]
 ## }}}  ## [ocaml]
 
+## [pnpm]
+export PNPM_HOME="${XDG_DATA_HOME}/pnpm"
+_path_prepend "$PNPM_HOME"
+
 ## [ruby]   ## {{{
 ## [ruby.chruby]
 [[ -n "${commands[chruby-exec]}" ]] && {
@@ -979,4 +983,3 @@ zstyle ':omz:plugins:nvm' silent-autoload yes
 
 [[ -f "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh" ]] && builtin source "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh"
 ## }}}  ## [herd]
-

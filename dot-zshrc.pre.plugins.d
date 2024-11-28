@@ -1,1 +1,0 @@
-dot-config/zsh/dot-zshrc.pre.plugins.d
