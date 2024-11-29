@@ -210,6 +210,9 @@ export ZSH_DEFER_SHOW_TIME=1
 export ZSH_DEFER_SHOW_WAIT=1
 
 ## [plugins.deno]
+export DENO_INSTALL="${XDG_DATA_HOME}/deno"
+mkdir -p "${DENO_INSTALL}/bin"
+_path_prepend "${DENO_INSTALL}/bin"
 
 ## [plugins.desk]
 export DESK_DIR="${XDG_CONFIG_HOME}/desk"
@@ -423,8 +426,10 @@ _path_prepend "${CARGO_HOME}/bin"
     [[ -z "${commands[cargo-fmt]}" ]]       && rustup component add rustfmt
     [[ -z "${commands[cargo-nextest]}" ]]   && cargo install cargo-nextest
     [[ -z "${commands[cargo-upgrade]}" ]]   && cargo install cargo-edit
+    [[ -z "${commands[deno]}" ]]            && cargo install deno --locked
     [[ -z "${commands[frum]}" ]]            && cargo install frum
     [[ -z "${commands[macchina]}" ]]        && cargo install macchina
+    [[ -z "${commands[rnix-lsp]}" ]]        && cargo install rnix-lsp
     [[ -z "${commands[rust-analyzer]}" ]]   && rustup component add rust-analyzer
     [[ -z "${commands[starship]}" ]]        && cargo install starship --locked
 }

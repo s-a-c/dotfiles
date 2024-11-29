@@ -1,3 +1,5 @@
+# Add deno completions to search path
+if [[ ":$FPATH:" != *":/Users/s-a-c/.config/zsh/completions:"* ]]; then export FPATH="/Users/s-a-c/.config/zsh/completions:$FPATH"; fi
 # Copyright 2006-2024 Joseph Block <jpb@unixorn.net>
 #
 # BSD licensed, see LICENSE.txt

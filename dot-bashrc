@@ -102,3 +102,4 @@ PATH=~/.console-ninja/.bin:$PATH
 
 [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
 eval "$(atuin init bash)"
+source /Users/s-a-c/.local/share/bash-completion/completions/deno.bash
