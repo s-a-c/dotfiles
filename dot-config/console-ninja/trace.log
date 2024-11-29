@@ -696,3 +696,18 @@
 22:32:29.064 ERR! host uncaught exception: No clients connected
 22:55:55.824 ERR! host uncaught exception: No clients connected
 23:21:20.892 ERR! host uncaught exception: No clients connected
+10:20:35.526 info extension stopping host
+10:20:35.573 info extension client disconnected: 1006 
+10:20:39.229 info extension stopping host
+10:20:39.515 info host ------------ starting ------------
+10:20:39.570 info extension host process output: port:[62105]
+10:20:39.571 info extension 
+10:20:39.594 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 62105 }
+10:20:39.622 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.371","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.371/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.371/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.371/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/code/chat-app/main.ts","reason":"search"},{"path":"/Users/s-a-c/code/chat-app/main.ts","reason":"open"},{"path":"/Users/s-a-c/code/chat-app/public/index.html","reason":"open"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":10,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.242"],"host":"127.0.0.1","forcedStart":false,"startTime":1732875639230}
+10:20:39.644 info host starting tools discovery and integration
+10:20:39.657 info host worker Starting Host Worker...
+10:20:39.658 info host looking for tools to patch
+10:20:39.671 info host found 1 tool file(s) to patch
+10:20:39.672 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+10:20:39.734 info host completed tools discovery and integration
+10:20:39.742 ERR! host uncaught exception: No clients connected

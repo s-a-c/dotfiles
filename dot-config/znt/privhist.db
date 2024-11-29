@@ -35,3 +35,4 @@ git add . && git commit -am "+opam, +rustup" && git push
 nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
 git add . && git commit -am "+nerd-fonts via brew" && git push
 git add . && git commit -am "-deno" && git push
+git add . && git commit -am "+karabiner-elements" && git push
