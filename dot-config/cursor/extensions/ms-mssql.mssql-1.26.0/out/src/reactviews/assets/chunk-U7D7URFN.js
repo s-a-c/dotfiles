@@ -1,0 +1,1 @@
+function t(e){switch(e){case 2:return"vs-dark";case 3:return"hc-black";default:return"light"}}function i(e){let r=t(e);return r!=="light"?"dark":r}function u(e){return Array.from(new Set(e))}export{t as a,i as b,u as c};

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+		<Metadata>
+			<Identity Language="en-US" Id="dotenv-vscode" Version="0.28.1" Publisher="dotenv" />
+			<DisplayName>Dotenv Official +Vault</DisplayName>
+			<Description xml:space="preserve">Official Dotenv. Syntax highlighting, auto-cloaking, auto-completion, in-code secret peeking, and optionally dotenv-vault.</Description>
+			<Tags>dotenv,dotenv-vault,environment variables,vault,env,.env,environment,variables,config,settings,official,development,productivity,secrets,sync,cloak,mask,hide,blur,encrypt,password,api,key,__ext_env,__ext_envvault,__ext_envme,__ext_flaskenv,__ext_envsample,__ext_envexample,__ext_envlocal,__ext_envdev,__ext_envdevlocal,__ext_envbuild,__ext_envbuildlocal,__ext_envdevelopment,__ext_envdevelopmentlocal,__ext_envtest,__ext_envtestlocal,__ext_envtesting,__ext_envqa,__ext_envqalocal,__ext_envci,__ext_envcilocal,__ext_envfart,__ext_envuat,__ext_envuatlocal,__ext_envstag,__ext_envstaglocal,__ext_envstage,__ext_envstagelocal,__ext_envstaging,__ext_envstaginglocal,__ext_envlive,__ext_envlivelocal,__ext_envproduction,__ext_envproductionlocal,__ext_envprod,__ext_envprodlocal,__ext_envprevious,__ext_envstagingprevious,__ext_envproductionprevious,__ext_envfat,__ext_fart,__ext_vault,__ext_project,__ext_me,__ext_secret,__ext_envsecret,__ext_envsecrets,__ext_envsync,__ext_sync,__ext_envdeploy,__ext_envdeployment</Tags>
+			<Categories>Languages,Formatters,SCM Providers,Other</Categories>
+			<GalleryFlags>Public</GalleryFlags>
+			
+			<Properties>
+				<Property Id="Microsoft.VisualStudio.Code.Engine" Value="^1.65.0" />
+				<Property Id="Microsoft.VisualStudio.Code.ExtensionDependencies" Value="" />
+				<Property Id="Microsoft.VisualStudio.Code.ExtensionPack" Value="" />
+				<Property Id="Microsoft.VisualStudio.Code.ExtensionKind" Value="workspace" />
+				<Property Id="Microsoft.VisualStudio.Code.LocalizedLanguages" Value="" />
+				
+				
+				<Property Id="Microsoft.VisualStudio.Services.Links.Source" Value="https://github.com/dotenv-org/dotenv-vscode.git" />
+				<Property Id="Microsoft.VisualStudio.Services.Links.Getstarted" Value="https://github.com/dotenv-org/dotenv-vscode.git" />
+				<Property Id="Microsoft.VisualStudio.Services.Links.GitHub" Value="https://github.com/dotenv-org/dotenv-vscode.git" />
+				<Property Id="Microsoft.VisualStudio.Services.Links.Support" Value="https://github.com/dotenv-org/dotenv-vscode/issues" />
+				<Property Id="Microsoft.VisualStudio.Services.Links.Learn" Value="https://github.com/dotenv-org/dotenv-vscode" />
+				<Property Id="Microsoft.VisualStudio.Services.Branding.Color" Value="#ECD53F" />
+				<Property Id="Microsoft.VisualStudio.Services.Branding.Theme" Value="highContrast" />
+				<Property Id="Microsoft.VisualStudio.Services.GitHubFlavoredMarkdown" Value="true" />
+				<Property Id="Microsoft.VisualStudio.Services.EnableMarketplaceQnA" Value="false" />
+				
+			</Properties>
+			<License>extension/LICENSE.txt</License>
+			<Icon>extension/dotenv.png</Icon>
+		</Metadata>
+		<Installation>
+			<InstallationTarget Id="Microsoft.VisualStudio.Code"/>
+		</Installation>
+		<Dependencies/>
+		<Assets>
+			<Asset Type="Microsoft.VisualStudio.Code.Manifest" Path="extension/package.json" Addressable="true" />
+			<Asset Type="Microsoft.VisualStudio.Services.Content.Details" Path="extension/README.md" Addressable="true" />
+<Asset Type="Microsoft.VisualStudio.Services.Content.Changelog" Path="extension/CHANGELOG.md" Addressable="true" />
+<Asset Type="Microsoft.VisualStudio.Services.Content.License" Path="extension/LICENSE.txt" Addressable="true" />
+<Asset Type="Microsoft.VisualStudio.Services.Icons.Default" Path="extension/dotenv.png" Addressable="true" />
+		</Assets>
+	</PackageManifest>

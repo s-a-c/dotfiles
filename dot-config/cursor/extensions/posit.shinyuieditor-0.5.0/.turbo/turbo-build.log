@@ -1,0 +1,8 @@
+warning shinyuieditor@0.5.0: The engine "vscode" appears to be invalid.
+$ vsce package
+Executing prepublish script 'npm run vscode:prepublish'...
+
+> shinyuieditor@0.5.0 vscode:prepublish
+> tsx ./build.mts
+
+Packaged: /home/runner/work/shinyuieditor/shinyuieditor/inst/vscode-extension/shinyuieditor-0.5.0.vsix (46 files, 6.89MB)

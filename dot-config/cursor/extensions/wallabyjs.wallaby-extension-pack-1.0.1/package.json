@@ -1,0 +1,50 @@
+{
+	"name": "wallaby-extension-pack",
+	"displayName": "Wallaby Extension Pack",
+	"description": "An extension pack that contains all of the Wallaby VS Code Extensions for improving your JavaScript / TypeScript development productivity.",
+	"publisher": "WallabyJs",
+	"homepage": "https://wallabyjs.com",
+	"author": "Wallaby.js",
+	"repository": {},
+	"version": "1.0.1",
+	"engines": {
+		"vscode": "^1.75.0"
+	},
+	"icon": "images/logo.png",
+	"galleryBanner": {
+		"color": "#ffffff",
+		"theme": "light"
+	},
+	"keywords": [
+		"scratchpad",
+		"playground",
+		"JavaScript",
+		"TypeScript",
+		"REPL",
+		"testing"
+	],
+	"categories": [
+		"Extension Packs",
+		"Debuggers",
+		"Testing",
+		"Other"
+	],
+	"extensionPack": [
+		"WallabyJs.console-ninja",
+		"WallabyJs.quokka-vscode",
+		"WallabyJs.wallaby-vscode"
+	],
+	"__metadata": {
+		"id": "8fe7d0d3-383d-49ab-bbb5-d2d9893cf5a5",
+		"publisherDisplayName": "WallabyJs",
+		"publisherId": "9e43bb4e-4318-4e59-b5c2-df1109a963dd",
+		"isPreReleaseVersion": false,
+		"targetPlatform": "undefined",
+		"isApplicationScoped": false,
+		"hasPreReleaseVersion": false,
+		"installedTimestamp": 1731871027669,
+		"pinned": false,
+		"preRelease": false,
+		"source": "gallery"
+	}
+}

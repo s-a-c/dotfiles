@@ -1,39 +1,40 @@
 {
-    "arrowParens": "always",
-    "bracketSameLine": true,
-    "bracketSpacing": true,
-    "embeddedLanguageFormatting": "auto",
-    "endOfLine": "lf",
-    "experimentalTernaries": true,
-    "htmlWhitespaceSensitivity": "css",
-    "insertPragma": true,
-    "jsxSingleQuote": true,
-    "overrides": [
-        {   "files": "*.json",
-            "options": {
-                "printWidth": 200
-            }
-        }
-    ],
-    "plugins": [
-        "prettier-plugin-svelte"
-    ],
-    "printWidth": 125,
-    "proseWrap": "preserve",
-    "quoteProps": "consistent",
-    "requirePragma": false,
-    "semi": false,
-    "singgleAttributePerLine": true,
-    "singleQuote": true,
-    "svelteAllowShorthand": false,
-    "svelteBracketNewLine": false,
-    "svelteIndentScript": true,
-    "svelteIndentScriptAndStyle": true,
-    "svelteIndentStyle": true,
-    "svelteSortOrder": "styles-scripts-markup",
-    "svelteStrictMode": true,
-    "tabWidth": 4,
-    "trailingComma": "all",
-    "useTabs": false,
-    "vueIndentScriptAndStyle": true
+  "arrowParens": "always",
+  "bracketSameLine": true,
+  "bracketSpacing": true,
+  "embeddedLanguageFormatting": "auto",
+  "endOfLine": "lf",
+  "experimentalTernaries": true,
+  "htmlWhitespaceSensitivity": "css",
+  "insertPragma": true,
+  "jsxSingleQuote": true,
+  "overrides": [
+    {
+      "files": "*.json",
+      "options": {
+        "printWidth": 200
+      }
+    }
+  ],
+  "plugins": [
+    "prettier-plugin-svelte"
+  ],
+  "printWidth": 120,
+  "proseWrap": "always",
+  "quoteProps": "consistent",
+  "requirePragma": false,
+  "semi": false,
+  "singgleAttributePerLine": true,
+  "singleQuote": true,
+  "svelteAllowShorthand": false,
+  "svelteBracketNewLine": false,
+  "svelteIndentScript": true,
+  "svelteIndentScriptAndStyle": true,
+  "svelteIndentStyle": true,
+  "svelteSortOrder": "styles-scripts-markup",
+  "svelteStrictMode": true,
+  "tabWidth": 4,
+  "trailingComma": "all",
+  "useTabs": false,
+  "vueIndentScriptAndStyle": true
 }

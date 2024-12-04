@@ -1,0 +1,636 @@
+{
+  "version": "",
+  "name": "csv (caret)",
+  "scopeName": "text.crtsv",
+  "fileTypes": [
+    ".crtsv"
+  ],
+  "patterns": [
+    {
+      "include": "#item"
+    }
+  ],
+  "repository": {
+    "escape": {
+      "match": "\"\"",
+      "name": "constant.character.escape.crtsv"
+    },
+    "item": {
+      "begin": "(?:^|\\G|\\A)",
+      "end": "(?=$)",
+      "beginCaptures": {
+      },
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.entry.crtsv"
+        }
+      },
+      "name": "meta.1.crtsv",
+      "patterns": [
+        {
+          "match": "((?:\\G|\\A)[^\"^]*)(?:(\\^)|(?=$))",
+          "captures": {
+            "1": {
+              "name": "string.unquoted.crtsv rainbow1.crtsv text.csv.column1.crtsv"
+            },
+            "2": {
+              "name": "punctuation.definition.entry.crtsv"
+            }
+          }
+        },
+        {
+          "begin": "(?:(?:(?:\\G|\\A) *)(\"))",
+          "end": "(?:(\")(?: *)(?:(\\^)|(?=$)))",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.definition.string.crtsv"
+            }
+          },
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.string.crtsv"
+            },
+            "2": {
+              "name": "punctuation.definition.entry.crtsv"
+            }
+          },
+          "name": "string.quoted.double.crtsv rainbow1.crtsv text.csv.column1.crtsv",
+          "patterns": [
+            {
+              "include": "#escape"
+            }
+          ],
+          "applyEndPatternLast": 1
+        },
+        {
+          "begin": "(?<=\\^)(?!$)",
+          "end": "(?=$)",
+          "beginCaptures": {
+          },
+          "endCaptures": {
+          },
+          "name": "meta.1.inner.crtsv",
+          "patterns": [
+            {
+              "begin": "(?:\\G|\\A)",
+              "end": "(?=$)",
+              "beginCaptures": {
+              },
+              "endCaptures": {
+                "0": {
+                  "name": "punctuation.definition.entry.crtsv"
+                }
+              },
+              "name": "meta.2.crtsv",
+              "patterns": [
+                {
+                  "match": "((?:\\G|\\A)[^\"^]*)(?:(\\^)|(?=$))",
+                  "captures": {
+                    "1": {
+                      "name": "string.unquoted.crtsv keyword.rainbow2.crtsv text.csv.column2.crtsv"
+                    },
+                    "2": {
+                      "name": "punctuation.definition.entry.crtsv"
+                    }
+                  }
+                },
+                {
+                  "begin": "(?:(?:(?:\\G|\\A) *)(\"))",
+                  "end": "(?:(\")(?: *)(?:(\\^)|(?=$)))",
+                  "beginCaptures": {
+                    "1": {
+                      "name": "punctuation.definition.string.crtsv"
+                    }
+                  },
+                  "endCaptures": {
+                    "1": {
+                      "name": "punctuation.definition.string.crtsv"
+                    },
+                    "2": {
+                      "name": "punctuation.definition.entry.crtsv"
+                    }
+                  },
+                  "name": "string.quoted.double.crtsv keyword.rainbow2.crtsv text.csv.column2.crtsv",
+                  "patterns": [
+                    {
+                      "include": "#escape"
+                    }
+                  ],
+                  "applyEndPatternLast": 1
+                },
+                {
+                  "begin": "(?<=\\^)(?!$)",
+                  "end": "(?=$)",
+                  "beginCaptures": {
+                  },
+                  "endCaptures": {
+                  },
+                  "name": "meta.2.inner.crtsv",
+                  "patterns": [
+                    {
+                      "begin": "(?:\\G|\\A)",
+                      "end": "(?=$)",
+                      "beginCaptures": {
+                      },
+                      "endCaptures": {
+                        "0": {
+                          "name": "punctuation.definition.entry.crtsv"
+                        }
+                      },
+                      "name": "meta.3.crtsv",
+                      "patterns": [
+                        {
+                          "match": "((?:\\G|\\A)[^\"^]*)(?:(\\^)|(?=$))",
+                          "captures": {
+                            "1": {
+                              "name": "string.unquoted.crtsv entity.name.function.rainbow3.crtsv text.csv.column3.crtsv"
+                            },
+                            "2": {
+                              "name": "punctuation.definition.entry.crtsv"
+                            }
+                          }
+                        },
+                        {
+                          "begin": "(?:(?:(?:\\G|\\A) *)(\"))",
+                          "end": "(?:(\")(?: *)(?:(\\^)|(?=$)))",
+                          "beginCaptures": {
+                            "1": {
+                              "name": "punctuation.definition.string.crtsv"
+                            }
+                          },
+                          "endCaptures": {
+                            "1": {
+                              "name": "punctuation.definition.string.crtsv"
+                            },
+                            "2": {
+                              "name": "punctuation.definition.entry.crtsv"
+                            }
+                          },
+                          "name": "string.quoted.double.crtsv entity.name.function.rainbow3.crtsv text.csv.column3.crtsv",
+                          "patterns": [
+                            {
+                              "include": "#escape"
+                            }
+                          ],
+                          "applyEndPatternLast": 1
+                        },
+                        {
+                          "begin": "(?<=\\^)(?!$)",
+                          "end": "(?=$)",
+                          "beginCaptures": {
+                          },
+                          "endCaptures": {
+                          },
+                          "name": "meta.3.inner.crtsv",
+                          "patterns": [
+                            {
+                              "begin": "(?:\\G|\\A)",
+                              "end": "(?=$)",
+                              "beginCaptures": {
+                              },
+                              "endCaptures": {
+                                "0": {
+                                  "name": "punctuation.definition.entry.crtsv"
+                                }
+                              },
+                              "name": "meta.4.crtsv",
+                              "patterns": [
+                                {
+                                  "match": "((?:\\G|\\A)[^\"^]*)(?:(\\^)|(?=$))",
+                                  "captures": {
+                                    "1": {
+                                      "name": "string.unquoted.crtsv comment.rainbow4.crtsv text.csv.column4.crtsv"
+                                    },
+                                    "2": {
+                                      "name": "punctuation.definition.entry.crtsv"
+                                    }
+                                  }
+                                },
+                                {
+                                  "begin": "(?:(?:(?:\\G|\\A) *)(\"))",
+                                  "end": "(?:(\")(?: *)(?:(\\^)|(?=$)))",
+                                  "beginCaptures": {
+                                    "1": {
+                                      "name": "punctuation.definition.string.crtsv"
+                                    }
+                                  },
+                                  "endCaptures": {
+                                    "1": {
+                                      "name": "punctuation.definition.string.crtsv"
+                                    },
+                                    "2": {
+                                      "name": "punctuation.definition.entry.crtsv"
+                                    }
+                                  },
+                                  "name": "string.quoted.double.crtsv comment.rainbow4.crtsv text.csv.column4.crtsv",
+                                  "patterns": [
+                                    {
+                                      "include": "#escape"
+                                    }
+                                  ],
+                                  "applyEndPatternLast": 1
+                                },
+                                {
+                                  "begin": "(?<=\\^)(?!$)",
+                                  "end": "(?=$)",
+                                  "beginCaptures": {
+                                  },
+                                  "endCaptures": {
+                                  },
+                                  "name": "meta.4.inner.crtsv",
+                                  "patterns": [
+                                    {
+                                      "begin": "(?:\\G|\\A)",
+                                      "end": "(?=$)",
+                                      "beginCaptures": {
+                                      },
+                                      "endCaptures": {
+                                        "0": {
+                                          "name": "punctuation.definition.entry.crtsv"
+                                        }
+                                      },
+                                      "name": "meta.5.crtsv",
+                                      "patterns": [
+                                        {
+                                          "match": "((?:\\G|\\A)[^\"^]*)(?:(\\^)|(?=$))",
+                                          "captures": {
+                                            "1": {
+                                              "name": "string.unquoted.crtsv string.rainbow5.crtsv text.csv.column5.crtsv"
+                                            },
+                                            "2": {
+                                              "name": "punctuation.definition.entry.crtsv"
+                                            }
+                                          }
+                                        },
+                                        {
+                                          "begin": "(?:(?:(?:\\G|\\A) *)(\"))",
+                                          "end": "(?:(\")(?: *)(?:(\\^)|(?=$)))",
+                                          "beginCaptures": {
+                                            "1": {
+                                              "name": "punctuation.definition.string.crtsv"
+                                            }
+                                          },
+                                          "endCaptures": {
+                                            "1": {
+                                              "name": "punctuation.definition.string.crtsv"
+                                            },
+                                            "2": {
+                                              "name": "punctuation.definition.entry.crtsv"
+                                            }
+                                          },
+                                          "name": "string.quoted.double.crtsv string.rainbow5.crtsv text.csv.column5.crtsv",
+                                          "patterns": [
+                                            {
+                                              "include": "#escape"
+                                            }
+                                          ],
+                                          "applyEndPatternLast": 1
+                                        },
+                                        {
+                                          "begin": "(?<=\\^)(?!$)",
+                                          "end": "(?=$)",
+                                          "beginCaptures": {
+                                          },
+                                          "endCaptures": {
+                                          },
+                                          "name": "meta.5.inner.crtsv",
+                                          "patterns": [
+                                            {
+                                              "begin": "(?:\\G|\\A)",
+                                              "end": "(?=$)",
+                                              "beginCaptures": {
+                                              },
+                                              "endCaptures": {
+                                                "0": {
+                                                  "name": "punctuation.definition.entry.crtsv"
+                                                }
+                                              },
+                                              "name": "meta.6.crtsv",
+                                              "patterns": [
+                                                {
+                                                  "match": "((?:\\G|\\A)[^\"^]*)(?:(\\^)|(?=$))",
+                                                  "captures": {
+                                                    "1": {
+                                                      "name": "string.unquoted.crtsv variable.parameter.rainbow6.crtsv text.csv.column6.crtsv"
+                                                    },
+                                                    "2": {
+                                                      "name": "punctuation.definition.entry.crtsv"
+                                                    }
+                                                  }
+                                                },
+                                                {
+                                                  "begin": "(?:(?:(?:\\G|\\A) *)(\"))",
+                                                  "end": "(?:(\")(?: *)(?:(\\^)|(?=$)))",
+                                                  "beginCaptures": {
+                                                    "1": {
+                                                      "name": "punctuation.definition.string.crtsv"
+                                                    }
+                                                  },
+                                                  "endCaptures": {
+                                                    "1": {
+                                                      "name": "punctuation.definition.string.crtsv"
+                                                    },
+                                                    "2": {
+                                                      "name": "punctuation.definition.entry.crtsv"
+                                                    }
+                                                  },
+                                                  "name": "string.quoted.double.crtsv variable.parameter.rainbow6.crtsv text.csv.column6.crtsv",
+                                                  "patterns": [
+                                                    {
+                                                      "include": "#escape"
+                                                    }
+                                                  ],
+                                                  "applyEndPatternLast": 1
+                                                },
+                                                {
+                                                  "begin": "(?<=\\^)(?!$)",
+                                                  "end": "(?=$)",
+                                                  "beginCaptures": {
+                                                  },
+                                                  "endCaptures": {
+                                                  },
+                                                  "name": "meta.6.inner.crtsv",
+                                                  "patterns": [
+                                                    {
+                                                      "begin": "(?:\\G|\\A)",
+                                                      "end": "(?=$)",
+                                                      "beginCaptures": {
+                                                      },
+                                                      "endCaptures": {
+                                                        "0": {
+                                                          "name": "punctuation.definition.entry.crtsv"
+                                                        }
+                                                      },
+                                                      "name": "meta.7.crtsv",
+                                                      "patterns": [
+                                                        {
+                                                          "match": "((?:\\G|\\A)[^\"^]*)(?:(\\^)|(?=$))",
+                                                          "captures": {
+                                                            "1": {
+                                                              "name": "string.unquoted.crtsv constant.numeric.rainbow7.crtsv text.csv.column7.crtsv"
+                                                            },
+                                                            "2": {
+                                                              "name": "punctuation.definition.entry.crtsv"
+                                                            }
+                                                          }
+                                                        },
+                                                        {
+                                                          "begin": "(?:(?:(?:\\G|\\A) *)(\"))",
+                                                          "end": "(?:(\")(?: *)(?:(\\^)|(?=$)))",
+                                                          "beginCaptures": {
+                                                            "1": {
+                                                              "name": "punctuation.definition.string.crtsv"
+                                                            }
+                                                          },
+                                                          "endCaptures": {
+                                                            "1": {
+                                                              "name": "punctuation.definition.string.crtsv"
+                                                            },
+                                                            "2": {
+                                                              "name": "punctuation.definition.entry.crtsv"
+                                                            }
+                                                          },
+                                                          "name": "string.quoted.double.crtsv constant.numeric.rainbow7.crtsv text.csv.column7.crtsv",
+                                                          "patterns": [
+                                                            {
+                                                              "include": "#escape"
+                                                            }
+                                                          ],
+                                                          "applyEndPatternLast": 1
+                                                        },
+                                                        {
+                                                          "begin": "(?<=\\^)(?!$)",
+                                                          "end": "(?=$)",
+                                                          "beginCaptures": {
+                                                          },
+                                                          "endCaptures": {
+                                                          },
+                                                          "name": "meta.7.inner.crtsv",
+                                                          "patterns": [
+                                                            {
+                                                              "begin": "(?:\\G|\\A)",
+                                                              "end": "(?=$)",
+                                                              "beginCaptures": {
+                                                              },
+                                                              "endCaptures": {
+                                                                "0": {
+                                                                  "name": "punctuation.definition.entry.crtsv"
+                                                                }
+                                                              },
+                                                              "name": "meta.8.crtsv",
+                                                              "patterns": [
+                                                                {
+                                                                  "match": "((?:\\G|\\A)[^\"^]*)(?:(\\^)|(?=$))",
+                                                                  "captures": {
+                                                                    "1": {
+                                                                      "name": "string.unquoted.crtsv entity.name.type.rainbow8.crtsv text.csv.column8.crtsv"
+                                                                    },
+                                                                    "2": {
+                                                                      "name": "punctuation.definition.entry.crtsv"
+                                                                    }
+                                                                  }
+                                                                },
+                                                                {
+                                                                  "begin": "(?:(?:(?:\\G|\\A) *)(\"))",
+                                                                  "end": "(?:(\")(?: *)(?:(\\^)|(?=$)))",
+                                                                  "beginCaptures": {
+                                                                    "1": {
+                                                                      "name": "punctuation.definition.string.crtsv"
+                                                                    }
+                                                                  },
+                                                                  "endCaptures": {
+                                                                    "1": {
+                                                                      "name": "punctuation.definition.string.crtsv"
+                                                                    },
+                                                                    "2": {
+                                                                      "name": "punctuation.definition.entry.crtsv"
+                                                                    }
+                                                                  },
+                                                                  "name": "string.quoted.double.crtsv entity.name.type.rainbow8.crtsv text.csv.column8.crtsv",
+                                                                  "patterns": [
+                                                                    {
+                                                                      "include": "#escape"
+                                                                    }
+                                                                  ],
+                                                                  "applyEndPatternLast": 1
+                                                                },
+                                                                {
+                                                                  "begin": "(?<=\\^)(?!$)",
+                                                                  "end": "(?=$)",
+                                                                  "beginCaptures": {
+                                                                  },
+                                                                  "endCaptures": {
+                                                                  },
+                                                                  "name": "meta.8.inner.crtsv",
+                                                                  "patterns": [
+                                                                    {
+                                                                      "begin": "(?:\\G|\\A)",
+                                                                      "end": "(?=$)",
+                                                                      "beginCaptures": {
+                                                                      },
+                                                                      "endCaptures": {
+                                                                        "0": {
+                                                                          "name": "punctuation.definition.entry.crtsv"
+                                                                        }
+                                                                      },
+                                                                      "name": "meta.9.crtsv",
+                                                                      "patterns": [
+                                                                        {
+                                                                          "match": "((?:\\G|\\A)[^\"^]*)(?:(\\^)|(?=$))",
+                                                                          "captures": {
+                                                                            "1": {
+                                                                              "name": "string.unquoted.crtsv markup.bold.rainbow9.crtsv text.csv.column9.crtsv"
+                                                                            },
+                                                                            "2": {
+                                                                              "name": "punctuation.definition.entry.crtsv"
+                                                                            }
+                                                                          }
+                                                                        },
+                                                                        {
+                                                                          "begin": "(?:(?:(?:\\G|\\A) *)(\"))",
+                                                                          "end": "(?:(\")(?: *)(?:(\\^)|(?=$)))",
+                                                                          "beginCaptures": {
+                                                                            "1": {
+                                                                              "name": "punctuation.definition.string.crtsv"
+                                                                            }
+                                                                          },
+                                                                          "endCaptures": {
+                                                                            "1": {
+                                                                              "name": "punctuation.definition.string.crtsv"
+                                                                            },
+                                                                            "2": {
+                                                                              "name": "punctuation.definition.entry.crtsv"
+                                                                            }
+                                                                          },
+                                                                          "name": "string.quoted.double.crtsv markup.bold.rainbow9.crtsv text.csv.column9.crtsv",
+                                                                          "patterns": [
+                                                                            {
+                                                                              "include": "#escape"
+                                                                            }
+                                                                          ],
+                                                                          "applyEndPatternLast": 1
+                                                                        },
+                                                                        {
+                                                                          "begin": "(?<=\\^)(?!$)",
+                                                                          "end": "(?=$)",
+                                                                          "beginCaptures": {
+                                                                          },
+                                                                          "endCaptures": {
+                                                                          },
+                                                                          "name": "meta.9.inner.crtsv",
+                                                                          "patterns": [
+                                                                            {
+                                                                              "begin": "(?:\\G|\\A)",
+                                                                              "end": "(?=$)",
+                                                                              "beginCaptures": {
+                                                                              },
+                                                                              "endCaptures": {
+                                                                                "0": {
+                                                                                  "name": "punctuation.definition.entry.crtsv"
+                                                                                }
+                                                                              },
+                                                                              "name": "meta.10.crtsv",
+                                                                              "patterns": [
+                                                                                {
+                                                                                  "match": "((?:\\G|\\A)[^\"^]*)(?:(\\^)|(?=$))",
+                                                                                  "captures": {
+                                                                                    "1": {
+                                                                                      "name": "string.unquoted.crtsv invalid.rainbow10.crtsv text.csv.column10.crtsv"
+                                                                                    },
+                                                                                    "2": {
+                                                                                      "name": "punctuation.definition.entry.crtsv"
+                                                                                    }
+                                                                                  }
+                                                                                },
+                                                                                {
+                                                                                  "begin": "(?:(?:(?:\\G|\\A) *)(\"))",
+                                                                                  "end": "(?:(\")(?: *)(?:(\\^)|(?=$)))",
+                                                                                  "beginCaptures": {
+                                                                                    "1": {
+                                                                                      "name": "punctuation.definition.string.crtsv"
+                                                                                    }
+                                                                                  },
+                                                                                  "endCaptures": {
+                                                                                    "1": {
+                                                                                      "name": "punctuation.definition.string.crtsv"
+                                                                                    },
+                                                                                    "2": {
+                                                                                      "name": "punctuation.definition.entry.crtsv"
+                                                                                    }
+                                                                                  },
+                                                                                  "name": "string.quoted.double.crtsv invalid.rainbow10.crtsv text.csv.column10.crtsv",
+                                                                                  "patterns": [
+                                                                                    {
+                                                                                      "include": "#escape"
+                                                                                    }
+                                                                                  ],
+                                                                                  "applyEndPatternLast": 1
+                                                                                },
+                                                                                {
+                                                                                  "begin": "(?<=\\^)(?!$)",
+                                                                                  "end": "(?=$)",
+                                                                                  "beginCaptures": {
+                                                                                  },
+                                                                                  "endCaptures": {
+                                                                                  },
+                                                                                  "name": "meta.10.inner.crtsv",
+                                                                                  "patterns": [
+                                                                                    {
+                                                                                      "include": "#item"
+                                                                                    }
+                                                                                  ]
+                                                                                }
+                                                                              ],
+                                                                              "applyEndPatternLast": 1
+                                                                            }
+                                                                          ]
+                                                                        }
+                                                                      ],
+                                                                      "applyEndPatternLast": 1
+                                                                    }
+                                                                  ]
+                                                                }
+                                                              ],
+                                                              "applyEndPatternLast": 1
+                                                            }
+                                                          ]
+                                                        }
+                                                      ],
+                                                      "applyEndPatternLast": 1
+                                                    }
+                                                  ]
+                                                }
+                                              ],
+                                              "applyEndPatternLast": 1
+                                            }
+                                          ]
+                                        }
+                                      ],
+                                      "applyEndPatternLast": 1
+                                    }
+                                  ]
+                                }
+                              ],
+                              "applyEndPatternLast": 1
+                            }
+                          ]
+                        }
+                      ],
+                      "applyEndPatternLast": 1
+                    }
+                  ]
+                }
+              ],
+              "applyEndPatternLast": 1
+            }
+          ]
+        }
+      ],
+      "applyEndPatternLast": 1
+    },
+    "separator": {
+      "match": "\\^",
+      "name": "punctuation.definition.entry.crtsv"
+    }
+  }
+}

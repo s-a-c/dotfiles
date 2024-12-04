@@ -1,0 +1,674 @@
+{
+	"name": "powershell-universal",
+	"displayName": "PowerShell Universal",
+	"description": "Visual Studio Code tools for PowerShell Universal",
+	"publisher": "ironmansoftware",
+	"version": "4.2.4",
+	"engines": {
+		"vscode": "^1.72.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ironmansoftware/universal-code"
+	},
+	"categories": [
+		"Other"
+	],
+	"icon": "logo.png",
+	"qna": "marketplace",
+	"homepage": "https://ironmansoftware.com/powershell-universal",
+	"bugs": {
+		"url": "https://github.com/ironmansoftware/universal-code/issues"
+	},
+	"keywords": [
+		"powershell",
+		"universal dashboard",
+		"powershell universal",
+		"universal automation"
+	],
+	"activationEvents": [
+		"onUri"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "powershell-universal.welcome",
+				"title": "Welcome"
+			},
+			{
+				"command": "powershell-universal.walkthrough",
+				"title": "PowerShell Universal: Getting Started Walkthrough"
+			},
+			{
+				"command": "powershell-universal.attachRunspace",
+				"title": "Attach Runspace",
+				"icon": "$(debug-alt)"
+			},
+			{
+				"command": "powershell-universal.addConnection",
+				"title": "Add Connection",
+				"icon": "$(add)"
+			},
+			{
+				"command": "powershell-universal.connection",
+				"title": "Connect to Instance",
+				"icon": "$(remote)"
+			},
+			{
+				"command": "powershell-universal.reloadConfig",
+				"title": "Reload Configuration",
+				"icon": "$(debug-restart)"
+			},
+			{
+				"command": "powershell-universal.refreshAllTreeViews",
+				"title": "Refresh",
+				"icon": "$(refresh)"
+			},
+			{
+				"command": "powershell-universal.refreshTreeView",
+				"title": "Refresh",
+				"icon": "$(refresh)"
+			},
+			{
+				"command": "powershell-universal.refreshEndpointTreeView",
+				"title": "Refresh",
+				"icon": "$(refresh)"
+			},
+			{
+				"command": "powershell-universal.refreshScriptTreeView",
+				"title": "Refresh",
+				"icon": "$(refresh)"
+			},
+			{
+				"command": "powershell-universal.refreshConfigurationTreeView",
+				"title": "Refresh",
+				"icon": "$(refresh)"
+			},
+			{
+				"command": "powershell-universal.refreshConnectionTreeView",
+				"title": "Refresh",
+				"icon": "$(refresh)"
+			},
+			{
+				"command": "powershell-universal.refreshPlatformTreeView",
+				"title": "Refresh",
+				"icon": "$(refresh)"
+			},
+			{
+				"command": "powershell-universal.viewDashboard",
+				"title": "View",
+				"icon": "$(open-preview)"
+			},
+			{
+				"command": "powershell-universal.restartDashboard",
+				"title": "Restart",
+				"icon": "$(debug-restart)"
+			},
+			{
+				"command": "powershell-universal.openDashboardFile",
+				"title": "Open App File",
+				"icon": "$(go-to-file)"
+			},
+			{
+				"command": "powershell-universal.addDashboardPage",
+				"title": "Add Page",
+				"icon": "$(add)"
+			},
+			{
+				"command": "powershell-universal.deleteDashboardPage",
+				"title": "Delete Page",
+				"icon": "$(trash)"
+			},
+			{
+				"command": "powershell-universal.openDashboardPageFile",
+				"title": "Open App Page File",
+				"icon": "$(go-to-file)"
+			},
+			{
+				"command": "powershell-universal.downloadUniversal",
+				"title": "PowerShell Universal: Download",
+				"icon": "$(desktop-download)"
+			},
+			{
+				"command": "powershell-universal.viewDashboardLog",
+				"title": "View Log",
+				"icon": "$(file)"
+			},
+			{
+				"command": "powershell-universal.openDashboardTerminal",
+				"title": "Open Terminal",
+				"icon": "$(debug-console)"
+			},
+			{
+				"command": "powershell-universal.openTerminal",
+				"title": "Open Terminal",
+				"icon": "$(debug-console)"
+			},
+			{
+				"command": "powershell-universal.startUniversal",
+				"title": "PowerShell Universal: Start",
+				"icon": "$(play)"
+			},
+			{
+				"command": "powershell-universal.manageDashboards",
+				"title": "PowerShell Universal: Manage Apps",
+				"icon": "$(link-external)"
+			},
+			{
+				"command": "powershell-universal.help",
+				"title": "Help",
+				"icon": "$(book)"
+			},
+			{
+				"command": "powershell-universal.openEndpointScriptBlock",
+				"title": "Edit Endpoint",
+				"icon": "$(go-to-file)"
+			},
+			{
+				"command": "powershell-universal.openEndpointConfigFile",
+				"title": "Open endpoints.ps1",
+				"icon": "$(go-to-file)"
+			},
+			{
+				"command": "powershell-universal.openDashboardConfigFile",
+				"title": "Open dashboards.ps1",
+				"icon": "$(go-to-file)"
+			},
+			{
+				"command": "powershell-universal.openScriptConfigFile",
+				"title": "Open scripts.ps1",
+				"icon": "$(go-to-file)"
+			},
+			{
+				"command": "powershell-universal.openConfigFile",
+				"title": "Open file",
+				"icon": "$(go-to-file)"
+			},
+			{
+				"command": "powershell-universal.insertRestMethod",
+				"title": "Insert Invoke-RestMethod to Console",
+				"icon": "$(terminal)"
+			},
+			{
+				"command": "powershell-universal.invokeScript",
+				"title": "Run Script",
+				"icon": "$(play)"
+			},
+			{
+				"command": "powershell-universal.manageEndpoints",
+				"title": "PowerShell Universal: Manage APIs",
+				"icon": "$(link-external)"
+			},
+			{
+				"command": "powershell-universal.manageScripts",
+				"title": "PowerShell Universal: Manage Scripts",
+				"icon": "$(link-external)"
+			},
+			{
+				"command": "powershell-universal.editScript",
+				"title": "PowerShell Universal: Edit Script",
+				"icon": "$(go-to-file)"
+			},
+			{
+				"command": "powershell-universal.connect",
+				"title": "Connect",
+				"icon": "$(debug-disconnect)"
+			},
+			{
+				"command": "powershell-universal.syncSamples",
+				"title": "Update Samples",
+				"icon": "$(sync)"
+			},
+			{
+				"command": "powershell-universal.insertSample",
+				"title": "Insert Sample",
+				"icon": "$(add)"
+			},
+			{
+				"command": "powershell-universal.viewSampleOnGitHub",
+				"title": "View Sample on GitHub",
+				"icon": "$(github)"
+			},
+			{
+				"command": "powershell-universal.viewJob",
+				"title": "View Job",
+				"icon": "$(link-external)"
+			},
+			{
+				"command": "powershell-universal.viewJobLog",
+				"title": "View Job Log",
+				"icon": "$(book)"
+			},
+			{
+				"command": "powershell-universal.getJobPipelineOutput",
+				"title": "Get Job Pipeline Output",
+				"icon": "$(terminal-powershell)"
+			},
+			{
+				"command": "powershell-universal.newConfigFile",
+				"title": "New File",
+				"icon": "$(new-file)"
+			},
+			{
+				"command": "powershell-universal.newConfigFolder",
+				"title": "New Folder",
+				"icon": "$(new-folder)"
+			},
+			{
+				"command": "powershell-universal.newModule",
+				"title": "New Module",
+				"icon": "$(add)"
+			},
+			{
+				"command": "powershell-universal.editModule",
+				"title": "Edit Module",
+				"icon": "$(go-to-file)"
+			}
+		],
+		"debuggers": [
+			{
+				"type": "powershelluniversal",
+				"label": "PowerShell Universal",
+				"initialConfigurations": [
+					{
+						"type": "powershelluniversal",
+						"request": "attach",
+						"name": "Attach PowerShell Universal Debugger"
+					}
+				]
+			}
+		],
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "powershellUniversal",
+					"title": "PowerShell Universal",
+					"icon": "media/logo.svg"
+				}
+			]
+		},
+		"views": {
+			"powershellUniversal": [
+				{
+					"id": "universalConnectionProviderView",
+					"name": "Connections"
+				},
+				{
+					"id": "universalEndpointProviderView",
+					"name": "APIs"
+				},
+				{
+					"id": "universalScriptProviderView",
+					"name": "Automation"
+				},
+				{
+					"id": "universalDashboardProviderView",
+					"name": "Apps"
+				},
+				{
+					"id": "universalPlatformProviderView",
+					"name": "Platform"
+				},
+				{
+					"id": "universalConfigProviderView",
+					"name": "Configuration"
+				},
+				{
+					"id": "sampleProviderView",
+					"name": "Samples"
+				},
+				{
+					"id": "universalInfoProviderView",
+					"name": "Help and Information"
+				}
+			]
+		},
+		"configuration": {
+			"type": "object",
+			"title": "PowerShell Universal",
+			"properties": {
+				"powerShellUniversal.url": {
+					"type": "string",
+					"default": "http://localhost:5000",
+					"description": "The URL of the PowerShell Universal server. To specify multiple connections, use the Connections setting."
+				},
+				"powerShellUniversal.appToken": {
+					"type": "string",
+					"default": "",
+					"description": "The App Token used to connect to PowerShell Universal. To specify multiple connections, use the Connections setting."
+				},
+				"powerShellUniversal.samplesDirectory": {
+					"type": "string",
+					"default": "",
+					"description": "Storage location for samples."
+				},
+				"powerShellUniversal.syncSamples": {
+					"type": "boolean",
+					"default": false,
+					"description": "Whether to automatically synchronize samples from GitHub when the extension starts."
+				},
+				"powerShellUniversal.checkModules": {
+					"type": "boolean",
+					"default": true,
+					"description": "Checks module versions and updates them when starting the extension."
+				},
+				"powerShellUniversal.connections": {
+					"type": "array",
+					"description": "Specifies an array of connections to PowerShell Universal instances.",
+					"scope": "machine",
+					"uniqueItems": true,
+					"items": {
+						"type": "object",
+						"required": [
+							"name",
+							"url"
+						],
+						"properties": {
+							"name": {
+								"type": "string",
+								"description": "The name of this connection."
+							},
+							"url": {
+								"type": "string",
+								"description": "The URL of the PowerShell Universal instance."
+							},
+							"appToken": {
+								"type": "string",
+								"description": "An app token used to access the PowerShell Universal instance."
+							},
+							"allowInvalidCertificate": {
+								"type": "boolean",
+								"description": "Whether to allow an invalid certificate when connecting over HTTPS."
+							}
+						}
+					}
+				}
+			}
+		},
+		"menus": {
+			"view/title": [
+				{
+					"command": "powershell-universal.addConnection",
+					"when": "view == universalConnectionProviderView",
+					"group": "navigation"
+				},
+				{
+					"command": "powershell-universal.refreshConnectionTreeView",
+					"when": "view == universalConnectionProviderView",
+					"group": "navigation"
+				},
+				{
+					"command": "powershell-universal.refreshPlatformTreeView",
+					"when": "view == universalPlatformProviderView",
+					"group": "navigation"
+				},
+				{
+					"command": "powershell-universal.refreshTreeView",
+					"when": "view == universalDashboardProviderView",
+					"group": "navigation"
+				},
+				{
+					"command": "powershell-universal.openEndpointConfigFile",
+					"when": "view == universalEndpointProviderView",
+					"group": "navigation"
+				},
+				{
+					"command": "powershell-universal.openDashboardConfigFile",
+					"when": "view == universalDashboardProviderView",
+					"group": "navigation"
+				},
+				{
+					"command": "powershell-universal.openScriptConfigFile",
+					"when": "view == universalScriptProviderView",
+					"group": "navigation"
+				},
+				{
+					"command": "powershell-universal.refreshEndpointTreeView",
+					"when": "view == universalEndpointProviderView",
+					"group": "navigation"
+				},
+				{
+					"command": "powershell-universal.syncSamples",
+					"when": "view == sampleProviderView",
+					"group": "navigation"
+				},
+				{
+					"command": "powershell-universal.refreshScriptTreeView",
+					"when": "view == universalScriptProviderView",
+					"group": "navigation"
+				},
+				{
+					"command": "powershell-universal.refreshConfigurationTreeView",
+					"when": "view == universalConfigProviderView",
+					"group": "navigation"
+				},
+				{
+					"command": "powershell-universal.manageDashboards",
+					"when": "view == universalDashboardProviderView",
+					"group": "navigation"
+				},
+				{
+					"command": "powershell-universal.manageEndpoints",
+					"when": "view == universalEndpointProviderView",
+					"group": "navigation"
+				},
+				{
+					"command": "powershell-universal.manageScripts",
+					"when": "view == universalScriptProviderView",
+					"group": "navigation"
+				},
+				{
+					"command": "powershell-universal.reloadConfig",
+					"when": "view == universalConfigProviderView",
+					"group": "navigation"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "powershell-universal.attachRunspace",
+					"when": "view == universalPlatformProviderView && viewItem == runspace",
+					"group": "inline"
+				},
+				{
+					"command": "powershell-universal.connection",
+					"when": "view == universalConnectionProviderView && viewItem == connection",
+					"group": "inline"
+				},
+				{
+					"command": "powershell-universal.viewDashboard",
+					"when": "view == universalDashboardProviderView && viewItem == dashboard",
+					"group": "inline"
+				},
+				{
+					"command": "powershell-universal.addDashboardPage",
+					"when": "view == universalDashboardProviderView && viewItem == dashboardPages",
+					"group": "inline"
+				},
+				{
+					"command": "powershell-universal.deleteDashboardPage",
+					"when": "view == universalDashboardProviderView && viewItem == dashboardPage",
+					"group": "inline"
+				},
+				{
+					"command": "powershell-universal.restartDashboard",
+					"when": "view == universalDashboardProviderView && viewItem == dashboard",
+					"group": "inline"
+				},
+				{
+					"command": "powershell-universal.openDashboardFile",
+					"when": "view == universalDashboardProviderView && viewItem == dashboard",
+					"group": "inline"
+				},
+				{
+					"command": "powershell-universal.openDashboardPageFile",
+					"when": "view == universalDashboardProviderView && viewItem == dashboardPage",
+					"group": "inline"
+				},
+				{
+					"command": "powershell-universal.viewDashboardLog",
+					"when": "view == universalDashboardProviderView && viewItem == dashboard"
+				},
+				{
+					"command": "powershell-universal.openDashboardTerminal",
+					"when": "view == universalDashboardProviderView && viewItem == dashboardSessionPage",
+					"group": "inline"
+				},
+				{
+					"command": "powershell-universal.insertRestMethod",
+					"when": "view == universalEndpointProviderView && viewItem == endpoint",
+					"group": "inline"
+				},
+				{
+					"command": "powershell-universal.openEndpointScriptBlock",
+					"when": "view == universalEndpointProviderView && viewItem == endpoint",
+					"group": "inline"
+				},
+				{
+					"command": "powershell-universal.openTerminal",
+					"when": "view == universalScriptProviderView && viewItem == terminal",
+					"group": "inline"
+				},
+				{
+					"command": "powershell-universal.invokeScript",
+					"when": "view == universalScriptProviderView && viewItem == script",
+					"group": "inline"
+				},
+				{
+					"command": "powershell-universal.editScript",
+					"when": "view == universalScriptProviderView && viewItem == script",
+					"group": "inline"
+				},
+				{
+					"command": "powershell-universal.viewJob",
+					"when": "view == universalScriptProviderView && viewItem == job",
+					"group": "inline"
+				},
+				{
+					"command": "powershell-universal.getJobPipelineOutput",
+					"when": "view == universalScriptProviderView && viewItem == job",
+					"group": "inline"
+				},
+				{
+					"command": "powershell-universal.viewJobLog",
+					"when": "view == universalScriptProviderView && viewItem == job",
+					"group": "inline"
+				},
+				{
+					"command": "powershell-universal.openConfigFile",
+					"when": "view == universalConfigProviderView && viewItem == configFile",
+					"group": "inline"
+				},
+				{
+					"command": "powershell-universal.newConfigFile",
+					"when": "view == universalConfigProviderView && viewItem == configFolder",
+					"group": "inline"
+				},
+				{
+					"command": "powershell-universal.newConfigFolder",
+					"when": "view == universalConfigProviderView && viewItem == configFolder",
+					"group": "inline"
+				},
+				{
+					"command": "powershell-universal.insertSample",
+					"when": "view == sampleProviderView && viewItem == sample",
+					"group": "inline"
+				},
+				{
+					"command": "powershell-universal.viewSampleOnGitHub",
+					"when": "view == sampleProviderView && viewItem == sample",
+					"group": "inline"
+				},
+				{
+					"command": "powershell-universal.newModule",
+					"when": "view == universalPlatformProviderView && viewItem == customModules",
+					"group": "inline"
+				},
+				{
+					"command": "powershell-universal.editModule",
+					"when": "view == universalPlatformProviderView && viewItem == customModule",
+					"group": "inline"
+				}
+			]
+		},
+		"walkthroughs": [
+			{
+				"id": "universal.welcome",
+				"title": "Get Started with PowerShell Universal",
+				"description": "Install and configure PowerShell Universal",
+				"steps": [
+					{
+						"id": "universal.welcome.install",
+						"title": "Install PowerShell Universal",
+						"description": "Download and install the PowerShell Universal server to get started.",
+						"media": {
+							"markdown": "walkthroughs/getting-started/1-install.md"
+						}
+					},
+					{
+						"id": "universal.welcome.login",
+						"title": "Login to PowerShell Universal",
+						"description": "Login to your PowerShell Universal instance.",
+						"media": {
+							"markdown": "walkthroughs/getting-started/2-login.md"
+						}
+					},
+					{
+						"id": "universal.welcome.connect",
+						"title": "Connect VS Code to PowerShell Universal",
+						"description": "Connect the VS Code extension to your PowerShell Universal server.",
+						"media": {
+							"markdown": "walkthroughs/getting-started/3-connect.md"
+						}
+					}
+				]
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"lint": "eslint src --ext ts",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile && npm run lint",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/glob": "^7.1.1",
+		"@types/mocha": "^7.0.2",
+		"@types/node": "^13.11.0",
+		"@types/vscode": "^1.46.0",
+		"@typescript-eslint/eslint-plugin": "^2.30.0",
+		"@typescript-eslint/parser": "^2.30.0",
+		"eslint": "^6.8.0",
+		"glob": "^7.1.6",
+		"mocha": "^7.1.2",
+		"typescript": "^3.8.3",
+		"vscode-test": "^1.3.0"
+	},
+	"dependencies": {
+		"@microsoft/signalr": "^8.0.0",
+		"@vscode/debugprotocol": "^1.63.0",
+		"adm-zip": "^0.4.16",
+		"atob": "^2.1.2",
+		"axios": "^0.19.2",
+		"compare-versions": "^3.6.0",
+		"progress": "^2.0.3",
+		"semver": "^7.3.5",
+		"temp": "^0.9.1",
+		"yaml": "^1.10.0"
+	},
+	"__metadata": {
+		"id": "0d673afe-6600-4f92-956c-e7949987f313",
+		"publisherId": "3622767b-8400-4c0f-b74b-2f2549e52090",
+		"publisherDisplayName": "ironmansoftware",
+		"targetPlatform": "undefined",
+		"isApplicationScoped": false,
+		"isPreReleaseVersion": false,
+		"hasPreReleaseVersion": false,
+		"installedTimestamp": 1729983707089,
+		"pinned": false,
+		"preRelease": false,
+		"source": "gallery"
+	}
+}

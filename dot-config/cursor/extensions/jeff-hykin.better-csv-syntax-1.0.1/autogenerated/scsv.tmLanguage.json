@@ -1,0 +1,636 @@
+{
+  "version": "",
+  "name": "csv (semicolon)",
+  "scopeName": "text.scsv",
+  "fileTypes": [
+    ".scsv"
+  ],
+  "patterns": [
+    {
+      "include": "#item"
+    }
+  ],
+  "repository": {
+    "escape": {
+      "match": "\"\"",
+      "name": "constant.character.escape.scsv"
+    },
+    "item": {
+      "begin": "(?:^|\\G|\\A)",
+      "end": "(?=$)",
+      "beginCaptures": {
+      },
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.entry.scsv"
+        }
+      },
+      "name": "meta.1.scsv",
+      "patterns": [
+        {
+          "match": "((?:\\G|\\A)[^\";]*)(?:(;)|(?=$))",
+          "captures": {
+            "1": {
+              "name": "string.unquoted.scsv rainbow1.scsv text.csv.column1.scsv"
+            },
+            "2": {
+              "name": "punctuation.definition.entry.scsv"
+            }
+          }
+        },
+        {
+          "begin": "(?:(?:(?:\\G|\\A) *)(\"))",
+          "end": "(?:(\")(?: *)(?:(;)|(?=$)))",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.definition.string.scsv"
+            }
+          },
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.string.scsv"
+            },
+            "2": {
+              "name": "punctuation.definition.entry.scsv"
+            }
+          },
+          "name": "string.quoted.double.scsv rainbow1.scsv text.csv.column1.scsv",
+          "patterns": [
+            {
+              "include": "#escape"
+            }
+          ],
+          "applyEndPatternLast": 1
+        },
+        {
+          "begin": "(?<=;)(?!$)",
+          "end": "(?=$)",
+          "beginCaptures": {
+          },
+          "endCaptures": {
+          },
+          "name": "meta.1.inner.scsv",
+          "patterns": [
+            {
+              "begin": "(?:\\G|\\A)",
+              "end": "(?=$)",
+              "beginCaptures": {
+              },
+              "endCaptures": {
+                "0": {
+                  "name": "punctuation.definition.entry.scsv"
+                }
+              },
+              "name": "meta.2.scsv",
+              "patterns": [
+                {
+                  "match": "((?:\\G|\\A)[^\";]*)(?:(;)|(?=$))",
+                  "captures": {
+                    "1": {
+                      "name": "string.unquoted.scsv keyword.rainbow2.scsv text.csv.column2.scsv"
+                    },
+                    "2": {
+                      "name": "punctuation.definition.entry.scsv"
+                    }
+                  }
+                },
+                {
+                  "begin": "(?:(?:(?:\\G|\\A) *)(\"))",
+                  "end": "(?:(\")(?: *)(?:(;)|(?=$)))",
+                  "beginCaptures": {
+                    "1": {
+                      "name": "punctuation.definition.string.scsv"
+                    }
+                  },
+                  "endCaptures": {
+                    "1": {
+                      "name": "punctuation.definition.string.scsv"
+                    },
+                    "2": {
+                      "name": "punctuation.definition.entry.scsv"
+                    }
+                  },
+                  "name": "string.quoted.double.scsv keyword.rainbow2.scsv text.csv.column2.scsv",
+                  "patterns": [
+                    {
+                      "include": "#escape"
+                    }
+                  ],
+                  "applyEndPatternLast": 1
+                },
+                {
+                  "begin": "(?<=;)(?!$)",
+                  "end": "(?=$)",
+                  "beginCaptures": {
+                  },
+                  "endCaptures": {
+                  },
+                  "name": "meta.2.inner.scsv",
+                  "patterns": [
+                    {
+                      "begin": "(?:\\G|\\A)",
+                      "end": "(?=$)",
+                      "beginCaptures": {
+                      },
+                      "endCaptures": {
+                        "0": {
+                          "name": "punctuation.definition.entry.scsv"
+                        }
+                      },
+                      "name": "meta.3.scsv",
+                      "patterns": [
+                        {
+                          "match": "((?:\\G|\\A)[^\";]*)(?:(;)|(?=$))",
+                          "captures": {
+                            "1": {
+                              "name": "string.unquoted.scsv entity.name.function.rainbow3.scsv text.csv.column3.scsv"
+                            },
+                            "2": {
+                              "name": "punctuation.definition.entry.scsv"
+                            }
+                          }
+                        },
+                        {
+                          "begin": "(?:(?:(?:\\G|\\A) *)(\"))",
+                          "end": "(?:(\")(?: *)(?:(;)|(?=$)))",
+                          "beginCaptures": {
+                            "1": {
+                              "name": "punctuation.definition.string.scsv"
+                            }
+                          },
+                          "endCaptures": {
+                            "1": {
+                              "name": "punctuation.definition.string.scsv"
+                            },
+                            "2": {
+                              "name": "punctuation.definition.entry.scsv"
+                            }
+                          },
+                          "name": "string.quoted.double.scsv entity.name.function.rainbow3.scsv text.csv.column3.scsv",
+                          "patterns": [
+                            {
+                              "include": "#escape"
+                            }
+                          ],
+                          "applyEndPatternLast": 1
+                        },
+                        {
+                          "begin": "(?<=;)(?!$)",
+                          "end": "(?=$)",
+                          "beginCaptures": {
+                          },
+                          "endCaptures": {
+                          },
+                          "name": "meta.3.inner.scsv",
+                          "patterns": [
+                            {
+                              "begin": "(?:\\G|\\A)",
+                              "end": "(?=$)",
+                              "beginCaptures": {
+                              },
+                              "endCaptures": {
+                                "0": {
+                                  "name": "punctuation.definition.entry.scsv"
+                                }
+                              },
+                              "name": "meta.4.scsv",
+                              "patterns": [
+                                {
+                                  "match": "((?:\\G|\\A)[^\";]*)(?:(;)|(?=$))",
+                                  "captures": {
+                                    "1": {
+                                      "name": "string.unquoted.scsv comment.rainbow4.scsv text.csv.column4.scsv"
+                                    },
+                                    "2": {
+                                      "name": "punctuation.definition.entry.scsv"
+                                    }
+                                  }
+                                },
+                                {
+                                  "begin": "(?:(?:(?:\\G|\\A) *)(\"))",
+                                  "end": "(?:(\")(?: *)(?:(;)|(?=$)))",
+                                  "beginCaptures": {
+                                    "1": {
+                                      "name": "punctuation.definition.string.scsv"
+                                    }
+                                  },
+                                  "endCaptures": {
+                                    "1": {
+                                      "name": "punctuation.definition.string.scsv"
+                                    },
+                                    "2": {
+                                      "name": "punctuation.definition.entry.scsv"
+                                    }
+                                  },
+                                  "name": "string.quoted.double.scsv comment.rainbow4.scsv text.csv.column4.scsv",
+                                  "patterns": [
+                                    {
+                                      "include": "#escape"
+                                    }
+                                  ],
+                                  "applyEndPatternLast": 1
+                                },
+                                {
+                                  "begin": "(?<=;)(?!$)",
+                                  "end": "(?=$)",
+                                  "beginCaptures": {
+                                  },
+                                  "endCaptures": {
+                                  },
+                                  "name": "meta.4.inner.scsv",
+                                  "patterns": [
+                                    {
+                                      "begin": "(?:\\G|\\A)",
+                                      "end": "(?=$)",
+                                      "beginCaptures": {
+                                      },
+                                      "endCaptures": {
+                                        "0": {
+                                          "name": "punctuation.definition.entry.scsv"
+                                        }
+                                      },
+                                      "name": "meta.5.scsv",
+                                      "patterns": [
+                                        {
+                                          "match": "((?:\\G|\\A)[^\";]*)(?:(;)|(?=$))",
+                                          "captures": {
+                                            "1": {
+                                              "name": "string.unquoted.scsv string.rainbow5.scsv text.csv.column5.scsv"
+                                            },
+                                            "2": {
+                                              "name": "punctuation.definition.entry.scsv"
+                                            }
+                                          }
+                                        },
+                                        {
+                                          "begin": "(?:(?:(?:\\G|\\A) *)(\"))",
+                                          "end": "(?:(\")(?: *)(?:(;)|(?=$)))",
+                                          "beginCaptures": {
+                                            "1": {
+                                              "name": "punctuation.definition.string.scsv"
+                                            }
+                                          },
+                                          "endCaptures": {
+                                            "1": {
+                                              "name": "punctuation.definition.string.scsv"
+                                            },
+                                            "2": {
+                                              "name": "punctuation.definition.entry.scsv"
+                                            }
+                                          },
+                                          "name": "string.quoted.double.scsv string.rainbow5.scsv text.csv.column5.scsv",
+                                          "patterns": [
+                                            {
+                                              "include": "#escape"
+                                            }
+                                          ],
+                                          "applyEndPatternLast": 1
+                                        },
+                                        {
+                                          "begin": "(?<=;)(?!$)",
+                                          "end": "(?=$)",
+                                          "beginCaptures": {
+                                          },
+                                          "endCaptures": {
+                                          },
+                                          "name": "meta.5.inner.scsv",
+                                          "patterns": [
+                                            {
+                                              "begin": "(?:\\G|\\A)",
+                                              "end": "(?=$)",
+                                              "beginCaptures": {
+                                              },
+                                              "endCaptures": {
+                                                "0": {
+                                                  "name": "punctuation.definition.entry.scsv"
+                                                }
+                                              },
+                                              "name": "meta.6.scsv",
+                                              "patterns": [
+                                                {
+                                                  "match": "((?:\\G|\\A)[^\";]*)(?:(;)|(?=$))",
+                                                  "captures": {
+                                                    "1": {
+                                                      "name": "string.unquoted.scsv variable.parameter.rainbow6.scsv text.csv.column6.scsv"
+                                                    },
+                                                    "2": {
+                                                      "name": "punctuation.definition.entry.scsv"
+                                                    }
+                                                  }
+                                                },
+                                                {
+                                                  "begin": "(?:(?:(?:\\G|\\A) *)(\"))",
+                                                  "end": "(?:(\")(?: *)(?:(;)|(?=$)))",
+                                                  "beginCaptures": {
+                                                    "1": {
+                                                      "name": "punctuation.definition.string.scsv"
+                                                    }
+                                                  },
+                                                  "endCaptures": {
+                                                    "1": {
+                                                      "name": "punctuation.definition.string.scsv"
+                                                    },
+                                                    "2": {
+                                                      "name": "punctuation.definition.entry.scsv"
+                                                    }
+                                                  },
+                                                  "name": "string.quoted.double.scsv variable.parameter.rainbow6.scsv text.csv.column6.scsv",
+                                                  "patterns": [
+                                                    {
+                                                      "include": "#escape"
+                                                    }
+                                                  ],
+                                                  "applyEndPatternLast": 1
+                                                },
+                                                {
+                                                  "begin": "(?<=;)(?!$)",
+                                                  "end": "(?=$)",
+                                                  "beginCaptures": {
+                                                  },
+                                                  "endCaptures": {
+                                                  },
+                                                  "name": "meta.6.inner.scsv",
+                                                  "patterns": [
+                                                    {
+                                                      "begin": "(?:\\G|\\A)",
+                                                      "end": "(?=$)",
+                                                      "beginCaptures": {
+                                                      },
+                                                      "endCaptures": {
+                                                        "0": {
+                                                          "name": "punctuation.definition.entry.scsv"
+                                                        }
+                                                      },
+                                                      "name": "meta.7.scsv",
+                                                      "patterns": [
+                                                        {
+                                                          "match": "((?:\\G|\\A)[^\";]*)(?:(;)|(?=$))",
+                                                          "captures": {
+                                                            "1": {
+                                                              "name": "string.unquoted.scsv constant.numeric.rainbow7.scsv text.csv.column7.scsv"
+                                                            },
+                                                            "2": {
+                                                              "name": "punctuation.definition.entry.scsv"
+                                                            }
+                                                          }
+                                                        },
+                                                        {
+                                                          "begin": "(?:(?:(?:\\G|\\A) *)(\"))",
+                                                          "end": "(?:(\")(?: *)(?:(;)|(?=$)))",
+                                                          "beginCaptures": {
+                                                            "1": {
+                                                              "name": "punctuation.definition.string.scsv"
+                                                            }
+                                                          },
+                                                          "endCaptures": {
+                                                            "1": {
+                                                              "name": "punctuation.definition.string.scsv"
+                                                            },
+                                                            "2": {
+                                                              "name": "punctuation.definition.entry.scsv"
+                                                            }
+                                                          },
+                                                          "name": "string.quoted.double.scsv constant.numeric.rainbow7.scsv text.csv.column7.scsv",
+                                                          "patterns": [
+                                                            {
+                                                              "include": "#escape"
+                                                            }
+                                                          ],
+                                                          "applyEndPatternLast": 1
+                                                        },
+                                                        {
+                                                          "begin": "(?<=;)(?!$)",
+                                                          "end": "(?=$)",
+                                                          "beginCaptures": {
+                                                          },
+                                                          "endCaptures": {
+                                                          },
+                                                          "name": "meta.7.inner.scsv",
+                                                          "patterns": [
+                                                            {
+                                                              "begin": "(?:\\G|\\A)",
+                                                              "end": "(?=$)",
+                                                              "beginCaptures": {
+                                                              },
+                                                              "endCaptures": {
+                                                                "0": {
+                                                                  "name": "punctuation.definition.entry.scsv"
+                                                                }
+                                                              },
+                                                              "name": "meta.8.scsv",
+                                                              "patterns": [
+                                                                {
+                                                                  "match": "((?:\\G|\\A)[^\";]*)(?:(;)|(?=$))",
+                                                                  "captures": {
+                                                                    "1": {
+                                                                      "name": "string.unquoted.scsv entity.name.type.rainbow8.scsv text.csv.column8.scsv"
+                                                                    },
+                                                                    "2": {
+                                                                      "name": "punctuation.definition.entry.scsv"
+                                                                    }
+                                                                  }
+                                                                },
+                                                                {
+                                                                  "begin": "(?:(?:(?:\\G|\\A) *)(\"))",
+                                                                  "end": "(?:(\")(?: *)(?:(;)|(?=$)))",
+                                                                  "beginCaptures": {
+                                                                    "1": {
+                                                                      "name": "punctuation.definition.string.scsv"
+                                                                    }
+                                                                  },
+                                                                  "endCaptures": {
+                                                                    "1": {
+                                                                      "name": "punctuation.definition.string.scsv"
+                                                                    },
+                                                                    "2": {
+                                                                      "name": "punctuation.definition.entry.scsv"
+                                                                    }
+                                                                  },
+                                                                  "name": "string.quoted.double.scsv entity.name.type.rainbow8.scsv text.csv.column8.scsv",
+                                                                  "patterns": [
+                                                                    {
+                                                                      "include": "#escape"
+                                                                    }
+                                                                  ],
+                                                                  "applyEndPatternLast": 1
+                                                                },
+                                                                {
+                                                                  "begin": "(?<=;)(?!$)",
+                                                                  "end": "(?=$)",
+                                                                  "beginCaptures": {
+                                                                  },
+                                                                  "endCaptures": {
+                                                                  },
+                                                                  "name": "meta.8.inner.scsv",
+                                                                  "patterns": [
+                                                                    {
+                                                                      "begin": "(?:\\G|\\A)",
+                                                                      "end": "(?=$)",
+                                                                      "beginCaptures": {
+                                                                      },
+                                                                      "endCaptures": {
+                                                                        "0": {
+                                                                          "name": "punctuation.definition.entry.scsv"
+                                                                        }
+                                                                      },
+                                                                      "name": "meta.9.scsv",
+                                                                      "patterns": [
+                                                                        {
+                                                                          "match": "((?:\\G|\\A)[^\";]*)(?:(;)|(?=$))",
+                                                                          "captures": {
+                                                                            "1": {
+                                                                              "name": "string.unquoted.scsv markup.bold.rainbow9.scsv text.csv.column9.scsv"
+                                                                            },
+                                                                            "2": {
+                                                                              "name": "punctuation.definition.entry.scsv"
+                                                                            }
+                                                                          }
+                                                                        },
+                                                                        {
+                                                                          "begin": "(?:(?:(?:\\G|\\A) *)(\"))",
+                                                                          "end": "(?:(\")(?: *)(?:(;)|(?=$)))",
+                                                                          "beginCaptures": {
+                                                                            "1": {
+                                                                              "name": "punctuation.definition.string.scsv"
+                                                                            }
+                                                                          },
+                                                                          "endCaptures": {
+                                                                            "1": {
+                                                                              "name": "punctuation.definition.string.scsv"
+                                                                            },
+                                                                            "2": {
+                                                                              "name": "punctuation.definition.entry.scsv"
+                                                                            }
+                                                                          },
+                                                                          "name": "string.quoted.double.scsv markup.bold.rainbow9.scsv text.csv.column9.scsv",
+                                                                          "patterns": [
+                                                                            {
+                                                                              "include": "#escape"
+                                                                            }
+                                                                          ],
+                                                                          "applyEndPatternLast": 1
+                                                                        },
+                                                                        {
+                                                                          "begin": "(?<=;)(?!$)",
+                                                                          "end": "(?=$)",
+                                                                          "beginCaptures": {
+                                                                          },
+                                                                          "endCaptures": {
+                                                                          },
+                                                                          "name": "meta.9.inner.scsv",
+                                                                          "patterns": [
+                                                                            {
+                                                                              "begin": "(?:\\G|\\A)",
+                                                                              "end": "(?=$)",
+                                                                              "beginCaptures": {
+                                                                              },
+                                                                              "endCaptures": {
+                                                                                "0": {
+                                                                                  "name": "punctuation.definition.entry.scsv"
+                                                                                }
+                                                                              },
+                                                                              "name": "meta.10.scsv",
+                                                                              "patterns": [
+                                                                                {
+                                                                                  "match": "((?:\\G|\\A)[^\";]*)(?:(;)|(?=$))",
+                                                                                  "captures": {
+                                                                                    "1": {
+                                                                                      "name": "string.unquoted.scsv invalid.rainbow10.scsv text.csv.column10.scsv"
+                                                                                    },
+                                                                                    "2": {
+                                                                                      "name": "punctuation.definition.entry.scsv"
+                                                                                    }
+                                                                                  }
+                                                                                },
+                                                                                {
+                                                                                  "begin": "(?:(?:(?:\\G|\\A) *)(\"))",
+                                                                                  "end": "(?:(\")(?: *)(?:(;)|(?=$)))",
+                                                                                  "beginCaptures": {
+                                                                                    "1": {
+                                                                                      "name": "punctuation.definition.string.scsv"
+                                                                                    }
+                                                                                  },
+                                                                                  "endCaptures": {
+                                                                                    "1": {
+                                                                                      "name": "punctuation.definition.string.scsv"
+                                                                                    },
+                                                                                    "2": {
+                                                                                      "name": "punctuation.definition.entry.scsv"
+                                                                                    }
+                                                                                  },
+                                                                                  "name": "string.quoted.double.scsv invalid.rainbow10.scsv text.csv.column10.scsv",
+                                                                                  "patterns": [
+                                                                                    {
+                                                                                      "include": "#escape"
+                                                                                    }
+                                                                                  ],
+                                                                                  "applyEndPatternLast": 1
+                                                                                },
+                                                                                {
+                                                                                  "begin": "(?<=;)(?!$)",
+                                                                                  "end": "(?=$)",
+                                                                                  "beginCaptures": {
+                                                                                  },
+                                                                                  "endCaptures": {
+                                                                                  },
+                                                                                  "name": "meta.10.inner.scsv",
+                                                                                  "patterns": [
+                                                                                    {
+                                                                                      "include": "#item"
+                                                                                    }
+                                                                                  ]
+                                                                                }
+                                                                              ],
+                                                                              "applyEndPatternLast": 1
+                                                                            }
+                                                                          ]
+                                                                        }
+                                                                      ],
+                                                                      "applyEndPatternLast": 1
+                                                                    }
+                                                                  ]
+                                                                }
+                                                              ],
+                                                              "applyEndPatternLast": 1
+                                                            }
+                                                          ]
+                                                        }
+                                                      ],
+                                                      "applyEndPatternLast": 1
+                                                    }
+                                                  ]
+                                                }
+                                              ],
+                                              "applyEndPatternLast": 1
+                                            }
+                                          ]
+                                        }
+                                      ],
+                                      "applyEndPatternLast": 1
+                                    }
+                                  ]
+                                }
+                              ],
+                              "applyEndPatternLast": 1
+                            }
+                          ]
+                        }
+                      ],
+                      "applyEndPatternLast": 1
+                    }
+                  ]
+                }
+              ],
+              "applyEndPatternLast": 1
+            }
+          ]
+        }
+      ],
+      "applyEndPatternLast": 1
+    },
+    "separator": {
+      "match": ";",
+      "name": "punctuation.definition.entry.scsv"
+    }
+  }
+}

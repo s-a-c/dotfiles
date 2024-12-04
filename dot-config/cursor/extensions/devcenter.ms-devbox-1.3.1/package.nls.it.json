@@ -1,0 +1,10 @@
+{
+	"extension.title": "Dev Box",
+	"extension.description": "Un’estensione per la creazione di file di personalizzazione per Dev Box.",
+	"commands.listtasks": "Elenca le attività disponibili per questa istanza di Dev Box",
+	"commands.applytasks": "Applica attività di personalizzazione",
+	"agent.chatHello": "Ciao! Come posso aiutarti?",
+	"agent.customize": "Creare attività di personalizzazione dell'istanza di Dev Box con linguaggio naturale",
+	"agent.tasks": "Elenca attività con list-tasks, fai qualsiasi domanda correlata alle attività",
+	"_agent.tasks.comment": "{Locked = list-tasks}"
+}

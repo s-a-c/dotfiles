@@ -27,4 +27,7 @@ _darcs
 \.DS_Store
 \.cache
 \.local
+\.cursor
+\.vscode
+\.zed
 

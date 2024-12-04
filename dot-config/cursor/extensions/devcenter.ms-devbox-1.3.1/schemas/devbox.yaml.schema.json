@@ -1,0 +1,99 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://aka.ms/devbox-definition-schema/0.0",
+    "title": "devbox.yaml schema",
+    "description": "Schema for devbox.yaml",
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+            "description": "Specifies a friendly name to show when selecting a devbox.yaml file through tooling. Names must be between 3 and 63 characters long and cannot contain special characters \/\"\"[]:|<>+=;,?*@&, whitespace, or begin with '_' or '-'.",
+            "examples": [
+                "my-devbox-definition"
+            ]
+        },
+        "image": {
+            "type": "string",
+            "description": "Specifies the name of a base image to use for the dev box.",
+            "examples": [
+                "microsoftwindowsdesktop_windows-ent-cpc_win11-21h2-ent-cpc-m365",
+                "my-gallery/my-image@0.0.1"
+            ]
+        },
+        "hostInformation": {
+            "type": "string",
+            "description": "An enum that specifies the requirements for a host VM that will be used for the dev box. general_i stands for Intel. general_a stands for AMD. general_i_8c32gb256ssd_v2 stands for Intel, 8 vCPU, 32GB RAM, 256GB SSD",
+            "enum": [
+                "general_i_8c32gb256ssd_v2",
+                "general_i_8c32gb512ssd_v2",
+                "general_i_8c32gb1024ssd_v2",
+                "general_i_8c32gb2048ssd_v2",
+                "general_i_16c64gb256ssd_v2",
+                "general_i_16c64gb512ssd_v2",
+                "general_i_16c64gb1024ssd_v2",
+                "general_i_16c64gb2048ssd_v2",
+                "general_i_32c128gb512ssd_v2",
+                "general_i_32c128gb1024ssd_v2",
+                "general_i_32c128gb2048ssd_v2",
+                "general_a_8c32gb256ssd_v2",
+                "general_a_8c32gb512ssd_v2",
+                "general_a_8c32gb1024ssd_v2",
+                "general_a_8c32gb2048ssd_v2",
+                "general_a_16c64gb256ssd_v2",
+                "general_a_16c64gb512ssd_v2",
+                "general_a_16c64gb1024ssd_v2",
+                "general_a_16c64gb2048ssd_v2",
+                "general_a_32c128gb512ssd_v2",
+                "general_a_32c128gb1024ssd_v2",
+                "general_a_32c128gb2048ssd_v2"
+            ]
+        },
+        "supportsHibernation": {
+            "type": "boolean",
+            "description": "Indicates if this dev box definition supports hibernation",
+            "default": false
+        },
+        "setupTasks": {
+            "type": "array",
+            "description": "A list of Dev Box customization tasks to be executed when provisioning a Dev Box",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "task": {
+                        "type": "string",
+                        "description": "Id of the customization task"
+                    },
+                    "displayName": {
+                        "type": "string",
+                        "description": "Display name of the customization task, short text to show in UI"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Description of the customization task"
+                    },
+                    "inputs": {
+                        "description": "A list of input parameters for the customization task",
+                        "patternProperties": {
+                            "^.*$": {
+                                "type": [
+                                    "string",
+                                    "boolean",
+                                    "number"
+                                ],
+                                "description": "Name of the input parameter"
+                            }
+                        }
+                    }
+                },
+                "required": [
+                    "task"
+                ]
+            }
+        }
+    },
+    "required": [
+        "name",
+        "image",
+        "hostInformation"
+    ]
+}

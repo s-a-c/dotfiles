@@ -801,8 +801,8 @@ _path_prepend "${OPAMROOT}/$OPAMSWITCH/bin"
     opam install core core-bench core_unix dune js_of_ocaml js_of_ocaml-ppx merlin ocaml-lsp-server ocamlformat ocp-indent odoc opam-client opam-installer tuareg user-setup utop
     opam switch create $OPAMSWITCH
 }
-opam update
-opam upgrade
+# opam update
+# opam upgrade
 #opam install async base base_quickcheck bonsai incr_dom incremental logs-async ocsigen-start ocsipersist-pgsql-config ocsipersist-sqlite-config patdiff pgx_lwt ppx_jane reason reason-react reason-react-ppx riot
 
 [[ -n "${commands[opam]}" ]] && {

@@ -1,0 +1,10 @@
+{
+	"extension.title": "Dev-Box",
+	"extension.description": "Eine Erweiterung zum Erstellen von Anpassungsdateien für Ihre Dev-Box.",
+	"commands.listtasks": "Verfügbare Aufgaben für diese Dev-Box auflisten",
+	"commands.applytasks": "Anpassungsaufgaben anwenden",
+	"agent.chatHello": "Hallo! Womit kann ich Ihnen helfen?",
+	"agent.customize": "Erstellen von Dev Box-Anpassungsaufgaben mit natürlicher Sprache",
+	"agent.tasks": "Aufgaben mit list-tasks auflisten, alle aufgabenbezogenen Fragen stellen",
+	"_agent.tasks.comment": "{Locked = list-tasks}"
+}

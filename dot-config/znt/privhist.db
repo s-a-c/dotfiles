@@ -36,3 +36,10 @@ nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild swit
 git add . && git commit -am "+nerd-fonts via brew" && git push
 git add . && git commit -am "-deno" && git push
 git add . && git commit -am "+karabiner-elements" && git push
+deno task start
+deno add https://deno.land/x/fresh@next
+deno run -A -r https://fresh.deno.dev
+pnpm i -g corepack melange million neovim npm pnpm prettier tree-sitter-bash yarn
+nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+git add . && git commit -am "+dot-aerospace" && git push
+git add . && git commit -am "+marksman" && git push

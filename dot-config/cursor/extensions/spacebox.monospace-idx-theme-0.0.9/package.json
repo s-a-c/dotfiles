@@ -1,0 +1,69 @@
+{
+	"name": "monospace-idx-theme",
+	"displayName": "Monospace IDX Theme",
+	"description": "Monospace theme for VSCode",
+	"publisher": "SpaceBox",
+	"license": "MIT",
+	"version": "0.0.9",
+	"engines": {
+		"vscode": "^1.83.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/amnweb/monospace-idx-theme"
+	},
+	"categories": [
+		"Themes"
+	],
+	"keywords": [
+		"idx",
+		"theme",
+		"dark",
+		"light",
+		"google",
+		"purple",
+		"monospace",
+		"monospace-theme",
+		"monospace-idx-theme",
+		"idx-theme"
+	],
+	"galleryBanner": {
+		"color": "#151f2b",
+		"theme": "dark"
+	},
+	"icon": "images/icon.png",
+	"contributes": {
+		"themes": [
+			{
+				"label": "Monospace IDX Light",
+				"uiTheme": "vs",
+				"path": "./themes/monospace-idx-light.json"
+			},
+			{
+				"label": "Monospace IDX Dark",
+				"uiTheme": "vs-dark",
+				"path": "./themes/monospace-idx-dark.json"
+			}
+		],
+		"iconThemes": [
+			{
+				"id": "monospace-idx-file-icon-theme",
+				"label": "Monospace IDX File Icon Theme",
+				"path": "./icons/monospace-idx-file-icon-theme.json"
+			}
+		]
+	},
+	"__metadata": {
+		"id": "a28e22ca-09ce-4549-bb96-f088e02d8706",
+		"publisherId": "84187c65-7bc5-48a6-9dc3-d273504f30f3",
+		"publisherDisplayName": "SpaceBox",
+		"targetPlatform": "undefined",
+		"isApplicationScoped": false,
+		"isPreReleaseVersion": false,
+		"hasPreReleaseVersion": false,
+		"installedTimestamp": 1731622354694,
+		"pinned": false,
+		"preRelease": false,
+		"source": "gallery"
+	}
+}

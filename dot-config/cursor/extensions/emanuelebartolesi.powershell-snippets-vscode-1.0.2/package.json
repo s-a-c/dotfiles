@@ -1,0 +1,39 @@
+{
+	"name": "powershell-snippets-vscode",
+	"displayName": "PowerShell Snippets for VS Code",
+	"description": "A collection of PowerShell snippets for Visual Studio Code",
+	"icon": "icon.png",
+	"version": "1.0.2",
+	"publisher": "emanuelebartolesi",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/kasuken/powershell-snippets-vscode"
+	},
+	"engines": {
+		"vscode": "^1.75.0"
+	},
+	"categories": [
+		"Snippets"
+	],
+	"contributes": {
+		"snippets": [
+			{
+				"language": "powershell",
+				"path": "./snippets/snippets.code-snippets"
+			}
+		]
+	},
+	"__metadata": {
+		"id": "dee51c33-5e27-429b-9716-cc25fb8b3e72",
+		"publisherId": "bdfddc5c-39af-4b5f-8476-6543c7847f81",
+		"publisherDisplayName": "emanuelebartolesi",
+		"targetPlatform": "undefined",
+		"isApplicationScoped": false,
+		"isPreReleaseVersion": false,
+		"hasPreReleaseVersion": false,
+		"installedTimestamp": 1729983788428,
+		"pinned": false,
+		"preRelease": false,
+		"source": "gallery"
+	}
+}

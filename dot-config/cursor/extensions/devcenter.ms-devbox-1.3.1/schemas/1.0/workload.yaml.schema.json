@@ -1,0 +1,71 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://aka.ms/devbox-workload-schema/1.0",
+    "title": "workload.yaml schema",
+    "description": "Schema for workload.yaml",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "type": "string",
+            "description": "Version of the schema file",
+            "examples": [
+                "1.0"
+            ]
+        },
+        "name": {
+            "type": "string",
+            "description": "Specifies a friendly name to show when selecting a workload.yaml file through tooling. Names must be between 3 and 63 characters long and cannot contain special characters /\"\"[]:|<>+=;,?*@&, whitespace, or begin with '_' or '-'.",
+            "examples": [
+                "my-devbox-customization"
+            ]
+        },
+        "tasks": {
+            "type": "array",
+            "description": "A list of customization tasks to be executed when provisioning a Dev Box",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Id of the customization task"
+                    },
+                    "displayName": {
+                        "type": "string",
+                        "description": "Display name of the customization task, short text to show in UI"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Description of the customization task"
+                    },
+                    "parameters": {
+                        "description": "A list of input parameters for the customization task",
+                        "patternProperties": {
+                            "^.*$": {
+                                "type": [
+                                    "string",
+                                    "boolean",
+                                    "number"
+                                ],
+                                "description": "Name of the input parameter"
+                            }
+                        }
+                    }
+                },
+                "required": [
+                    "name"
+                ]
+            }
+        },
+        "userTasks": {
+            "type": "array",
+            "description": "A list of customization tasks to be executed using the user context.",
+            "items": {
+                "$ref": "./workload.yaml.schema.json#/properties/tasks/items"
+            }
+        }
+    },
+    "required": [
+        "$schema",
+        "name"
+    ]
+}

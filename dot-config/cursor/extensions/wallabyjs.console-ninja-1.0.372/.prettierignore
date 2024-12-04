@@ -1,0 +1,3 @@
+out
+src/buildHook/__data__/**
+webview/build/**

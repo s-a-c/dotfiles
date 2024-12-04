@@ -1,0 +1,910 @@
+{
+	"name": "vscode-nextjs-generator",
+	"displayName": "T3 Stack / NextJS / ReactJS File Generator",
+	"description": "⚛ VSCode extension to generate files for T3 Stack project. It includes NextJS, ReactJS, Prisma, Drizzle, TailwindCSS, i18next, Zod, and more.",
+	"version": "2.5.1",
+	"icon": "icon.png",
+	"galleryBanner": {
+		"color": "#52137b",
+		"theme": "dark"
+	},
+	"license": "MIT",
+	"publisher": "imgildev",
+	"author": {
+		"name": "Manuel Gil",
+		"url": "https://github.com/ManuelGil"
+	},
+	"sponsor": {
+		"url": "https://github.com/sponsors/manuelgil"
+	},
+	"engines": {
+		"vscode": "^1.76.0"
+	},
+	"categories": [
+		"Snippets",
+		"Programming Languages",
+		"Other"
+	],
+	"keywords": [
+		"api",
+		"auth",
+		"boilerplate",
+		"bun",
+		"bundler",
+		"cli",
+		"code generator",
+		"code",
+		"command",
+		"component",
+		"create-next-app",
+		"create-next",
+		"create-nextjs-app",
+		"create-nextjs-project",
+		"create-nextjs",
+		"create-t3-app",
+		"create-t3-project",
+		"create-t3",
+		"create",
+		"css",
+		"custom",
+		"customizable",
+		"db",
+		"deploy",
+		"dev",
+		"development",
+		"drizzle cli",
+		"drizzle db",
+		"drizzle-orm",
+		"drizzle",
+		"drizzlecli",
+		"drizzledb",
+		"drizzlemigrate",
+		"drizzlestudio",
+		"extension",
+		"file-generator",
+		"file",
+		"files",
+		"folder",
+		"framework",
+		"fullstack",
+		"generator",
+		"git",
+		"github",
+		"html",
+		"i18n",
+		"i18next",
+		"init",
+		"interface",
+		"interfaces",
+		"javascript",
+		"js",
+		"json",
+		"jsx",
+		"language",
+		"layout",
+		"loading",
+		"migrate",
+		"migration",
+		"module",
+		"modules",
+		"next 13",
+		"next 14",
+		"next auth",
+		"next-auth",
+		"next.js",
+		"next",
+		"nextauth",
+		"nextjs 13",
+		"nextjs 14",
+		"nextjs-13",
+		"nextjs-14",
+		"nextjs-file-generator",
+		"nextjs-file",
+		"nextjs-generator",
+		"nextjs",
+		"nextjs13",
+		"nextjs14",
+		"nextjsfile",
+		"nextjsfilegenerator",
+		"nextjsgenerator",
+		"nextjsproject",
+		"node",
+		"nodejs",
+		"npm",
+		"orm",
+		"page",
+		"pages",
+		"pnpm",
+		"prisma cli",
+		"prisma db",
+		"prisma migrate",
+		"prisma studio",
+		"prisma-orm",
+		"prisma",
+		"prismacli",
+		"prismadb",
+		"prismamigrate",
+		"prismastudio",
+		"project",
+		"react 16",
+		"react 17",
+		"react 18",
+		"react.js",
+		"react",
+		"reactjs",
+		"reactjs16",
+		"reactjs17",
+		"reactjs18",
+		"reactjsfile",
+		"reactjsfilegenerator",
+		"reactjsgenerator",
+		"reactjsproject",
+		"schema.prisma",
+		"schema",
+		"schemas",
+		"schematics",
+		"seed",
+		"server",
+		"snippet",
+		"snippets",
+		"stack",
+		"start",
+		"starter kit",
+		"starter-kit",
+		"starter",
+		"starterkit",
+		"t3 stack",
+		"t3-stack",
+		"t3",
+		"t3stack",
+		"tailwind css",
+		"tailwind-css",
+		"tailwind",
+		"tailwindcss",
+		"template",
+		"terminal",
+		"test",
+		"testing",
+		"tool",
+		"tools",
+		"trpc",
+		"ts",
+		"tsx",
+		"turbo-mode",
+		"turbo",
+		"typescript",
+		"vercel",
+		"vscode extension",
+		"vscode-extension",
+		"vscode",
+		"vscode",
+		"yarn",
+		"zod"
+	],
+	"homepage": "https://github.com/ManuelGil/vscode-nextjs-generator",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ManuelGil/vscode-nextjs-generator"
+	},
+	"bugs": {
+		"url": "https://github.com/ManuelGil/vscode-nextjs-generator/issues"
+	},
+	"activationEvents": [
+		"onLanguage:javascript",
+		"onLanguage:javascriptreact",
+		"onLanguage:typescript",
+		"onLanguage:typescriptreact"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"configuration": {
+			"title": "T3 Stack / NextJS / ReactJS File Generator",
+			"properties": {
+				"nextjs.files.alias": {
+					"type": "string",
+					"default": "~",
+					"scope": "resource",
+					"description": "Sets the default import alias for the generated files"
+				},
+				"nextjs.files.extension": {
+					"type": "string",
+					"default": "ts",
+					"enum": [
+						"js",
+						"jsx",
+						"ts",
+						"tsx"
+					],
+					"scope": "resource",
+					"description": "Sets the default extension for the generated files"
+				},
+				"nextjs.files.showType": {
+					"type": "boolean",
+					"default": true,
+					"scope": "resource",
+					"description": "Show the type in the name of the generated files"
+				},
+				"nextjs.files.include": {
+					"type": "array",
+					"default": [
+						"js",
+						"jsx",
+						"ts",
+						"tsx"
+					],
+					"scope": "resource",
+					"description": "Glob patterns to include in the package. The default is js, jsx, ts, and tsx."
+				},
+				"nextjs.files.exclude": {
+					"type": "array",
+					"default": [
+						"**/node_modules/**",
+						"**/dist/**",
+						"**/out/**",
+						"**/build/**",
+						"**/.*/**"
+					],
+					"scope": "resource",
+					"description": "Glob patterns to exclude from the package. The default is node_modules, dist, out, build, and any hidden files."
+				},
+				"nextjs.files.watch": {
+					"type": "array",
+					"default": [
+						"controllers",
+						"components",
+						"routers"
+					],
+					"scope": "resource",
+					"description": "The list of directories to watch for changes"
+				},
+				"nextjs.files.showPath": {
+					"type": "boolean",
+					"default": true,
+					"scope": "resource",
+					"description": "Show the path of the file in the name of the list of generated files"
+				},
+				"nextjs.server.turbo": {
+					"type": "boolean",
+					"default": false,
+					"scope": "resource",
+					"description": "Star server in turbo mode (only for NextJS 14+)"
+				},
+				"nextjs.server.experimentalHttps": {
+					"type": "boolean",
+					"default": false,
+					"scope": "resource",
+					"description": "Start server in https mode. Use `--experimental-https` flag (only for NextJS 14+)"
+				}
+			}
+		},
+		"snippets": [
+			{
+				"path": "./snippets/drizzle.code-snippets"
+			},
+			{
+				"path": "./snippets/html.code-snippets"
+			},
+			{
+				"path": "./snippets/i18next.code-snippets"
+			},
+			{
+				"path": "./snippets/javascript.code-snippets"
+			},
+			{
+				"path": "./snippets/nextauth.code-snippets"
+			},
+			{
+				"path": "./snippets/nextjs.code-snippets"
+			},
+			{
+				"path": "./snippets/prisma.code-snippets"
+			},
+			{
+				"path": "./snippets/reactjs.code-snippets"
+			},
+			{
+				"path": "./snippets/tailwindcss.code-snippets"
+			},
+			{
+				"path": "./snippets/trpc.code-snippets"
+			},
+			{
+				"path": "./snippets/zod.code-snippets"
+			}
+		],
+		"commands": [
+			{
+				"command": "nextjs.file.class",
+				"title": "Generate Class or Interface",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.file.component",
+				"title": "Generate Component",
+				"icon": "$(add)",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.file.layout",
+				"title": "Generate Layout",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.file.loading",
+				"title": "Generate Loading",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.file.page",
+				"title": "Generate Page",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.file.nextauth",
+				"title": "Add NextAuth file",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.file.trpc.router",
+				"title": "Generate tRPC Router",
+				"icon": "$(add)",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.file.trpc.controller",
+				"title": "Generate tRPC Controller",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.terminal.project",
+				"title": "Create Project",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.terminal.start",
+				"title": "Start Server",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.terminal.prisma.db.execute",
+				"title": "Prisma DB Execute",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.terminal.prisma.db.pull",
+				"title": "Prisma DB Pull",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.terminal.prisma.db.push",
+				"title": "Prisma DB Push",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.terminal.prisma.db.seed",
+				"title": "Prisma DB Seed",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.terminal.prisma.format",
+				"title": "Prisma Format",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.terminal.prisma.generate",
+				"title": "Prisma Generate",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.terminal.prisma.init",
+				"title": "Prisma Init",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.terminal.prisma.migrate.deploy",
+				"title": "Prisma Migrate Deploy",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.terminal.prisma.migrate.dev",
+				"title": "Prisma Migrate Dev",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.terminal.prisma.migrate.reset",
+				"title": "Prisma Migrate Reset",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.terminal.prisma.migrate.status",
+				"title": "Prisma Migrate Status",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.terminal.prisma.studio",
+				"title": "Prisma Studio",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.terminal.prisma.validate",
+				"title": "Prisma Validate",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.terminal.drizzle.generate",
+				"title": "Drizzle Generate",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.terminal.drizzle.pull",
+				"title": "Drizzle Pull",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.terminal.drizzle.push",
+				"title": "Drizzle Push",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.terminal.drizzle.drop",
+				"title": "Drizzle Drop",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.terminal.drizzle.up",
+				"title": "Drizzle Up",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.terminal.drizzle.check",
+				"title": "Drizzle Check",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.terminal.drizzle.studio",
+				"title": "Drizzle Studio",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.editor.json.ts",
+				"title": "Convert JSON to TypeScript",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.editor.json.zod",
+				"title": "Convert JSON to Zod",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.listHooks.refresh",
+				"title": "Refresh List of Hooks",
+				"icon": "$(refresh)",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.listComponents.refresh",
+				"title": "Refresh List of Components",
+				"icon": "$(refresh)",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.listRoutes.refresh",
+				"title": "Refresh List of Routes",
+				"icon": "$(refresh)",
+				"category": "T3"
+			},
+			{
+				"command": "nextjs.listFiles.refresh",
+				"title": "Refresh List of Files",
+				"icon": "$(refresh)",
+				"category": "T3"
+			}
+		],
+		"submenus": [
+			{
+				"id": "root.submenu",
+				"label": "T3 Stack File Generator"
+			},
+			{
+				"id": "folder.submenu",
+				"label": "T3 Stack File Generator"
+			},
+			{
+				"id": "prisma.submenu",
+				"label": "T3 Stack File Generator"
+			},
+			{
+				"id": "drizzle.submenu",
+				"label": "T3 Stack File Generator"
+			},
+			{
+				"id": "transform.submenu",
+				"label": "T3 Stack File Generator"
+			}
+		],
+		"menus": {
+			"view/title": [
+				{
+					"command": "nextjs.file.component",
+					"when": "view == nextjs.listHooksView",
+					"group": "navigation"
+				},
+				{
+					"command": "nextjs.listHooks.refresh",
+					"when": "view == nextjs.listHooksView",
+					"group": "navigation"
+				},
+				{
+					"command": "nextjs.file.component",
+					"when": "view == nextjs.listComponentsView",
+					"group": "navigation"
+				},
+				{
+					"command": "nextjs.listComponents.refresh",
+					"when": "view == nextjs.listComponentsView",
+					"group": "navigation"
+				},
+				{
+					"command": "nextjs.file.trpc.router",
+					"when": "view == nextjs.listRoutesView",
+					"group": "navigation"
+				},
+				{
+					"command": "nextjs.listRoutes.refresh",
+					"when": "view == nextjs.listRoutesView",
+					"group": "navigation"
+				},
+				{
+					"command": "nextjs.listFiles.refresh",
+					"when": "view == nextjs.listFilesView",
+					"group": "navigation"
+				}
+			],
+			"explorer/context": [
+				{
+					"submenu": "root.submenu",
+					"group": "2_workspace",
+					"when": "explorerViewletFocus && explorerResourceIsRoot && explorerResourceIsFolder"
+				},
+				{
+					"submenu": "folder.submenu",
+					"group": "2_workspace",
+					"when": "explorerViewletFocus && explorerResourceIsFolder && !explorerResourceIsRoot"
+				},
+				{
+					"submenu": "prisma.submenu",
+					"group": "2_workspace",
+					"when": "explorerViewletFocus && !explorerResourceIsFolder && resourceFilename =~ /schema.prisma$/"
+				},
+				{
+					"submenu": "drizzle.submenu",
+					"group": "2_workspace",
+					"when": "explorerViewletFocus && !explorerResourceIsFolder && resourceFilename =~ /drizzle.config.ts$/"
+				}
+			],
+			"editor/context": [
+				{
+					"submenu": "transform.submenu",
+					"group": "1_modification",
+					"when": "editorHasSelection"
+				}
+			],
+			"root.submenu": [
+				{
+					"command": "nextjs.terminal.project",
+					"group": "1_nextjs"
+				},
+				{
+					"command": "nextjs.terminal.start",
+					"group": "1_nextjs"
+				},
+				{
+					"command": "nextjs.terminal.prisma.init",
+					"group": "2_prisma"
+				}
+			],
+			"folder.submenu": [
+				{
+					"command": "nextjs.file.class",
+					"group": "1_nextjs"
+				},
+				{
+					"command": "nextjs.file.component",
+					"group": "1_nextjs"
+				},
+				{
+					"command": "nextjs.file.layout",
+					"group": "1_nextjs"
+				},
+				{
+					"command": "nextjs.file.loading",
+					"group": "1_nextjs"
+				},
+				{
+					"command": "nextjs.file.page",
+					"group": "1_nextjs"
+				},
+				{
+					"command": "nextjs.file.nextauth",
+					"group": "2_nextauth"
+				},
+				{
+					"command": "nextjs.file.trpc.router",
+					"group": "3_trpc"
+				},
+				{
+					"command": "nextjs.file.trpc.controller",
+					"group": "3_trpc"
+				},
+				{
+					"command": "nextjs.terminal.prisma.db.execute",
+					"group": "4_prisma",
+					"when": "resourcePath =~ /prisma$/"
+				},
+				{
+					"command": "nextjs.terminal.prisma.db.pull",
+					"group": "4_prisma",
+					"when": "resourcePath =~ /prisma$/"
+				},
+				{
+					"command": "nextjs.terminal.prisma.db.push",
+					"group": "4_prisma",
+					"when": "resourcePath =~ /prisma$/"
+				},
+				{
+					"command": "nextjs.terminal.prisma.db.seed",
+					"group": "4_prisma",
+					"when": "resourcePath =~ /prisma$/"
+				},
+				{
+					"command": "nextjs.terminal.prisma.format",
+					"group": "4_prisma",
+					"when": "resourcePath =~ /prisma$/"
+				},
+				{
+					"command": "nextjs.terminal.prisma.generate",
+					"group": "4_prisma",
+					"when": "resourcePath =~ /prisma$/"
+				},
+				{
+					"command": "nextjs.terminal.prisma.migrate.deploy",
+					"group": "4_prisma",
+					"when": "resourcePath =~ /prisma$/"
+				},
+				{
+					"command": "nextjs.terminal.prisma.migrate.dev",
+					"group": "4_prisma",
+					"when": "resourcePath =~ /prisma$/"
+				},
+				{
+					"command": "nextjs.terminal.prisma.migrate.reset",
+					"group": "4_prisma",
+					"when": "resourcePath =~ /prisma$/"
+				},
+				{
+					"command": "nextjs.terminal.prisma.migrate.status",
+					"group": "4_prisma",
+					"when": "resourcePath =~ /prisma$/"
+				},
+				{
+					"command": "nextjs.terminal.prisma.studio",
+					"group": "4_prisma",
+					"when": "resourcePath =~ /prisma$/"
+				},
+				{
+					"command": "nextjs.terminal.prisma.validate",
+					"group": "4_prisma",
+					"when": "resourcePath =~ /prisma$/"
+				}
+			],
+			"prisma.submenu": [
+				{
+					"command": "nextjs.terminal.prisma.db.execute",
+					"group": "1_prisma"
+				},
+				{
+					"command": "nextjs.terminal.prisma.db.pull",
+					"group": "1_prisma"
+				},
+				{
+					"command": "nextjs.terminal.prisma.db.push",
+					"group": "1_prisma"
+				},
+				{
+					"command": "nextjs.terminal.prisma.db.seed",
+					"group": "1_prisma"
+				},
+				{
+					"command": "nextjs.terminal.prisma.format",
+					"group": "1_prisma"
+				},
+				{
+					"command": "nextjs.terminal.prisma.generate",
+					"group": "1_prisma"
+				},
+				{
+					"command": "nextjs.terminal.prisma.migrate.deploy",
+					"group": "1_prisma"
+				},
+				{
+					"command": "nextjs.terminal.prisma.migrate.dev",
+					"group": "1_prisma"
+				},
+				{
+					"command": "nextjs.terminal.prisma.migrate.reset",
+					"group": "1_prisma"
+				},
+				{
+					"command": "nextjs.terminal.prisma.migrate.status",
+					"group": "1_prisma"
+				},
+				{
+					"command": "nextjs.terminal.prisma.studio",
+					"group": "1_prisma"
+				},
+				{
+					"command": "nextjs.terminal.prisma.validate",
+					"group": "1_prisma"
+				}
+			],
+			"drizzle.submenu": [
+				{
+					"command": "nextjs.terminal.drizzle.generate",
+					"group": "1_drizzle"
+				},
+				{
+					"command": "nextjs.terminal.drizzle.pull",
+					"group": "1_drizzle"
+				},
+				{
+					"command": "nextjs.terminal.drizzle.push",
+					"group": "1_drizzle"
+				},
+				{
+					"command": "nextjs.terminal.drizzle.drop",
+					"group": "1_drizzle"
+				},
+				{
+					"command": "nextjs.terminal.drizzle.up",
+					"group": "1_drizzle"
+				},
+				{
+					"command": "nextjs.terminal.drizzle.check",
+					"group": "1_drizzle"
+				},
+				{
+					"command": "nextjs.terminal.drizzle.studio",
+					"group": "1_drizzle"
+				}
+			],
+			"transform.submenu": [
+				{
+					"command": "nextjs.editor.json.ts",
+					"group": "1_transform"
+				},
+				{
+					"command": "nextjs.editor.json.zod",
+					"group": "1_transform"
+				}
+			]
+		},
+		"viewsWelcome": [
+			{
+				"view": "nextjs.listHooksView",
+				"contents": "Sorry, no hooks were found. Please ensure that you have a defined component configured.\n[Generate Component](command:nextjs.file.component)\nTo learn more about how to use T3 Stack / NextJS / ReactJS File Generator for VS Code [read our docs](https://github.com/ManuelGil/vscode-nextjs-generator)."
+			},
+			{
+				"view": "nextjs.listComponentsView",
+				"contents": "Sorry, no components were found. Please ensure that you have a defined component configured.\n[Generate Component](command:nextjs.file.component)\nTo learn more about how to use T3 Stack / NextJS / ReactJS File Generator for VS Code [read our docs](https://github.com/ManuelGil/vscode-nextjs-generator)."
+			},
+			{
+				"view": "nextjs.listRoutesView",
+				"contents": "Sorry, no routes were found. Please ensure that you have a defined router configured.\n[Generate tRPC Router](command:nextjs.file.trpc.router)\nTo learn more about how to use T3 Stack / NextJS / ReactJS File Generator for VS Code [read our docs](https://github.com/ManuelGil/vscode-nextjs-generator)."
+			},
+			{
+				"view": "nextjs.listFilesView",
+				"contents": "To effectively capture files, ensure you include the plural form of the file type within the workspace settings.\n[Open Workspace Setting](command:workbench.action.openWorkspaceSettingsFile)\nTo learn more about how to use T3 Stack / NextJS / ReactJS File Generator for VS Code [read our docs](https://github.com/ManuelGil/vscode-nextjs-generator)."
+			}
+		],
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "nextjs-explorer",
+					"title": "T3 Stack / NextJS / ReactJS File Generator",
+					"icon": "out/assets/logo.svg"
+				}
+			]
+		},
+		"views": {
+			"nextjs-explorer": [
+				{
+					"id": "nextjs.listComponentsView",
+					"name": "List of Components",
+					"visibility": "visible"
+				},
+				{
+					"id": "nextjs.listRoutesView",
+					"name": "List of Routes",
+					"visibility": "visible"
+				},
+				{
+					"id": "nextjs.listHooksView",
+					"name": "List of Hooks",
+					"visibility": "visible"
+				},
+				{
+					"id": "nextjs.listFilesView",
+					"name": "List of Files",
+					"visibility": "collapsed"
+				},
+				{
+					"id": "nextjs.feedbackView",
+					"name": "Help and Feedback",
+					"visibility": "visible"
+				}
+			]
+		},
+		"jsonValidation": [
+			{
+				"fileMatch": ".vscode/settings.json",
+				"url": "./schemas/config.schema.json"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "rimraf out && tsc -p ./ && cpy src/assets/* out/assets",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile && npm run lint",
+		"format": "prettier --write 'src/**/*.ts'",
+		"lint": "eslint src --ext .ts",
+		"lint:fix": "eslint src --ext .ts --fix",
+		"test": "node ./out/test/runTest.js",
+		"compodoc": "npx compodoc -p tsconfig.doc.json -d compodoc --theme readthedocs -s",
+		"prepare": "husky"
+	},
+	"devDependencies": {
+		"@commitlint/cli": "^19.3.0",
+		"@commitlint/config-conventional": "^19.2.2",
+		"@compodoc/compodoc": "^1.1.24",
+		"@types/glob": "^8.1.0",
+		"@types/minimatch": "^3.0.5",
+		"@types/mocha": "^10.0.6",
+		"@types/node": "^20.12.11",
+		"@types/vscode": "^1.76.0",
+		"@typescript-eslint/eslint-plugin": "^6.21.0",
+		"@typescript-eslint/parser": "^6.21.0",
+		"cpy-cli": "^5.0.0",
+		"eslint": "^8.57.0",
+		"eslint-config-standard-with-typescript": "^43.0.1",
+		"eslint-plugin-import": "^2.29.1",
+		"eslint-plugin-n": "^16.6.2",
+		"eslint-plugin-promise": "^6.1.1",
+		"glob": "^10.3.13",
+		"husky": "^9.0.11",
+		"lint-staged": "^15.2.2",
+		"mocha": "^10.4.0",
+		"prettier": "3.2.5",
+		"rimraf": "^5.0.5",
+		"typescript": "^5.4.5",
+		"vscode-test": "^1.5.0"
+	},
+	"dependencies": {
+		"json-schema-to-zod": "^2.1.0",
+		"json-to-ts": "^2.1.0",
+		"json5": "^2.2.3"
+	},
+	"__metadata": {
+		"id": "fe0d197e-daee-4bf7-94b4-4415a6fc7ba7",
+		"publisherId": "128db666-746a-4243-bc4e-eea3e29af7a7",
+		"publisherDisplayName": "imgildev",
+		"targetPlatform": "undefined",
+		"isApplicationScoped": false,
+		"isPreReleaseVersion": false,
+		"hasPreReleaseVersion": false,
+		"installedTimestamp": 1731071780763,
+		"pinned": false,
+		"preRelease": false,
+		"source": "gallery"
+	}
+}

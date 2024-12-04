@@ -1,0 +1,57 @@
+{
+	"name": "a-touch-of-lilac-theme",
+	"displayName": "A Touch of Lilac Theme",
+	"version": "1.2.3",
+	"description": "Lilac tinted color UI theme with vibrant syntax highlighting colors for Visual Studio Code. It also has a No-Italics version.",
+	"scripts": {
+		"vsce:publish": "vsce publish"
+	},
+	"author": "alexnho",
+	"license": "See LICENSE file",
+	"publisher": "alexnho",
+	"engines": {
+		"vscode": "^1.6.0"
+	},
+	"categories": [
+		"Themes"
+	],
+	"keywords": [
+		"lilac",
+		"purple",
+		"dark",
+		"theme",
+		"vibrant"
+	],
+	"icon": "images/icon.png",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/alexnho/vscode-a-touch-of-lilac-theme"
+	},
+	"contributes": {
+		"themes": [
+			{
+				"label": "A Touch of Lilac Theme",
+				"uiTheme": "vs-dark",
+				"path": "./themes/a-touch-of-lilac.json"
+			},
+			{
+				"label": "A Touch of Lilac Theme (No Italics)",
+				"uiTheme": "vs-dark",
+				"path": "./themes/a-touch-of-lilac-no-italics.json"
+			}
+		]
+	},
+	"__metadata": {
+		"id": "cd4dd269-25a6-4d59-bfa6-b82081fd2684",
+		"publisherId": "dbd50203-861b-4e42-b243-f70d9ecaa9b4",
+		"publisherDisplayName": "alexnho",
+		"targetPlatform": "undefined",
+		"isApplicationScoped": false,
+		"isPreReleaseVersion": false,
+		"hasPreReleaseVersion": false,
+		"installedTimestamp": 1732798428677,
+		"pinned": false,
+		"preRelease": false,
+		"source": "gallery"
+	}
+}

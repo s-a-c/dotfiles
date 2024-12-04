@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+		<Metadata>
+			<Identity Language="en-US" Id="vscode-nextjs-generator" Version="2.5.1" Publisher="imgildev" />
+			<DisplayName>T3 Stack / NextJS / ReactJS File Generator</DisplayName>
+			<Description xml:space="preserve">⚛ VSCode extension to generate files for T3 Stack project. It includes NextJS, ReactJS, Prisma, Drizzle, TailwindCSS, i18next, Zod, and more.</Description>
+			<Tags>api,auth,boilerplate,bun,bundler,cli,code generator,code,command,component,create-next-app,create-next,create-nextjs-app,create-nextjs-project,create-nextjs,create-t3-app,create-t3-project,create-t3,create,css,custom,customizable,db,deploy,dev,development,drizzle cli,drizzle db,drizzle-orm,drizzle,drizzlecli,drizzledb,drizzlemigrate,drizzlestudio,extension,file-generator,file,files,folder,framework,fullstack,generator,git,github,html,i18n,i18next,init,interface,interfaces,javascript,js,json,jsx,language,layout,loading,migrate,migration,module,modules,next 13,next 14,next auth,next-auth,next.js,next,nextauth,nextjs 13,nextjs 14,nextjs-13,nextjs-14,nextjs-file-generator,nextjs-file,nextjs-generator,nextjs,nextjs13,nextjs14,nextjsfile,nextjsfilegenerator,nextjsgenerator,nextjsproject,node,nodejs,npm,orm,page,pages,pnpm,prisma cli,prisma db,prisma migrate,prisma studio,prisma-orm,prisma,prismacli,prismadb,prismamigrate,prismastudio,project,react 16,react 17,react 18,react.js,react,reactjs,reactjs16,reactjs17,reactjs18,reactjsfile,reactjsfilegenerator,reactjsgenerator,reactjsproject,schema.prisma,schema,schemas,schematics,seed,server,snippet,snippets,stack,start,starter kit,starter-kit,starter,starterkit,t3 stack,t3-stack,t3,t3stack,tailwind css,tailwind-css,tailwind,tailwindcss,template,terminal,test,testing,tool,tools,trpc,ts,tsx,turbo-mode,turbo,typescript,vercel,vscode extension,vscode-extension,vscode,yarn,zod,javascriptreact,typescriptreact,__sponsor_extension</Tags>
+			<Categories>Snippets,Programming Languages,Other</Categories>
+			<GalleryFlags>Public</GalleryFlags>
+			
+			<Properties>
+				<Property Id="Microsoft.VisualStudio.Code.Engine" Value="^1.76.0" />
+				<Property Id="Microsoft.VisualStudio.Code.ExtensionDependencies" Value="" />
+				<Property Id="Microsoft.VisualStudio.Code.ExtensionPack" Value="" />
+				<Property Id="Microsoft.VisualStudio.Code.ExtensionKind" Value="workspace" />
+				<Property Id="Microsoft.VisualStudio.Code.LocalizedLanguages" Value="" />
+				
+				<Property Id="Microsoft.VisualStudio.Code.SponsorLink" Value="https://github.com/sponsors/manuelgil" />
+				<Property Id="Microsoft.VisualStudio.Services.Links.Source" Value="https://github.com/ManuelGil/vscode-nextjs-generator.git" />
+				<Property Id="Microsoft.VisualStudio.Services.Links.Getstarted" Value="https://github.com/ManuelGil/vscode-nextjs-generator.git" />
+				<Property Id="Microsoft.VisualStudio.Services.Links.GitHub" Value="https://github.com/ManuelGil/vscode-nextjs-generator.git" />
+				<Property Id="Microsoft.VisualStudio.Services.Links.Support" Value="https://github.com/ManuelGil/vscode-nextjs-generator/issues" />
+				<Property Id="Microsoft.VisualStudio.Services.Links.Learn" Value="https://github.com/ManuelGil/vscode-nextjs-generator" />
+				<Property Id="Microsoft.VisualStudio.Services.Branding.Color" Value="#52137b" />
+				<Property Id="Microsoft.VisualStudio.Services.Branding.Theme" Value="dark" />
+				<Property Id="Microsoft.VisualStudio.Services.GitHubFlavoredMarkdown" Value="true" />
+				<Property Id="Microsoft.VisualStudio.Services.Content.Pricing" Value="Free"/>
+
+				
+				
+			</Properties>
+			<License>extension/LICENSE.txt</License>
+			<Icon>extension/icon.png</Icon>
+		</Metadata>
+		<Installation>
+			<InstallationTarget Id="Microsoft.VisualStudio.Code"/>
+		</Installation>
+		<Dependencies/>
+		<Assets>
+			<Asset Type="Microsoft.VisualStudio.Code.Manifest" Path="extension/package.json" Addressable="true" />
+			<Asset Type="Microsoft.VisualStudio.Services.Content.Details" Path="extension/README.md" Addressable="true" />
+<Asset Type="Microsoft.VisualStudio.Services.Content.Changelog" Path="extension/CHANGELOG.md" Addressable="true" />
+<Asset Type="Microsoft.VisualStudio.Services.Content.License" Path="extension/LICENSE.txt" Addressable="true" />
+<Asset Type="Microsoft.VisualStudio.Services.Icons.Default" Path="extension/icon.png" Addressable="true" />
+		</Assets>
+	</PackageManifest>

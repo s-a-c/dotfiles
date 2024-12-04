@@ -1,0 +1,63 @@
+{
+	"name": "after-dark",
+	"displayName": "After Dark",
+	"description": "✨ Theme for your eyes",
+	"version": "1.6.4",
+	"publisher": "ssmi",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/sssmi/after-dark"
+	},
+	"engines": {
+		"vscode": "^1.25.0"
+	},
+	"scripts": {
+		"publish:vsmarket": "vsce publish",
+		"publish:openvs": ""
+	},
+	"keywords": [
+		"React",
+		"Clojure",
+		"Dark Theme",
+		"High Contrast",
+		"Night Theme"
+	],
+	"galleryBanner": {
+		"color": "#0E131B",
+		"theme": "dark"
+	},
+	"categories": [
+		"Themes"
+	],
+	"icon": "new-logo.png",
+	"contributes": {
+		"themes": [
+			{
+				"label": "After Dark",
+				"uiTheme": "vs-dark",
+				"path": "./themes/After Dark-color-theme.json"
+			},
+			{
+				"label": "After Dark No Italics",
+				"uiTheme": "vs-dark",
+				"path": "/themes/After Dark-color-theme-noitalic.json"
+			}
+		]
+	},
+	"devDependencies": {
+		"react": "^18.2.0"
+	},
+	"__metadata": {
+		"id": "92cbcecb-8867-4292-98a2-63031aa76fb3",
+		"publisherId": "49e0bd34-a086-4214-96d1-6b9274905fad",
+		"publisherDisplayName": "ssmi",
+		"targetPlatform": "undefined",
+		"isApplicationScoped": false,
+		"isPreReleaseVersion": false,
+		"hasPreReleaseVersion": false,
+		"installedTimestamp": 1733173531266,
+		"pinned": false,
+		"preRelease": false,
+		"source": "gallery"
+	}
+}

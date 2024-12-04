@@ -7,5 +7,5 @@ sbar.bar({
     height = 40,
     padding_left = 2,
     padding_right = 2,
-    position = "bottom",
+    position = bottom,
 })

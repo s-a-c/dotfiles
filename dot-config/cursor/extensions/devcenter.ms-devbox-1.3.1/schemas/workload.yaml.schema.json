@@ -1,0 +1,57 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://aka.ms/devbox-workload-schema/0.0",
+    "title": "workload.yaml schema",
+    "description": "Schema for workload.yaml",
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+            "description": "Specifies a friendly name to show when selecting a workload.yaml file through tooling. Names must be between 3 and 63 characters long and cannot contain special characters /\"\"[]:|<>+=;,?*@&, whitespace, or begin with '_' or '-'.",
+            "examples": [
+                "my-workload"
+            ]
+        },
+        "setupTasks": {
+            "type": "array",
+            "description": "A list of customization tasks to be executed when provisioning a Dev Box",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "task": {
+                        "type": "string",
+                        "description": "Id of the customization task"
+                    },
+                    "displayName": {
+                        "type": "string",
+                        "description": "Display name of the customization task, short text to show in UI"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Description of the customization task"
+                    },
+                    "inputs": {
+                        "description": "A list of input parameters for the customization task",
+                        "patternProperties": {
+                            "^.*$": {
+                                "type": [
+                                    "string",
+                                    "boolean",
+                                    "number"
+                                ],
+                                "description": "Name of the input parameter"
+                            }
+                        }
+                    }
+                },
+                "required": [
+                    "task"
+                ]
+            }
+        }
+    },
+    "required": [
+        "name",
+        "setupTasks"
+    ]
+}

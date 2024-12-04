@@ -173,6 +173,7 @@ _darcs
 # [custom]
 \.DS_Store
 \.cache
+\.env
 \.local
 
 # Add `.rake_tasks` to your global [.gitignore] (https://help.github.com/articles/ignoring-files#global-gitignore)  repositories don't get polluted.

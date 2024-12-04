@@ -1,0 +1,10 @@
+{
+	"extension.title": "開發箱",
+	"extension.description": "用於為您的開發箱建立自訂檔案的延伸模組。",
+	"commands.listtasks": "列出此 Microsoft 開發箱的可用工作",
+	"commands.applytasks": "套用自訂工作",
+	"agent.chatHello": "您好!我可以提供哪些協助?",
+	"agent.customize": "使用自然語言建立開發箱自訂工作",
+	"agent.tasks": "列出具有清單工作的工作，詢問任何與工作相關的問題",
+	"_agent.tasks.comment": "{Locked = list-tasks}"
+}

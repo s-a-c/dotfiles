@@ -1,0 +1,256 @@
+{
+	"name": "vscode-wasm",
+	"displayName": "WebAssembly",
+	"description": "WebAssembly Toolkit for VSCode",
+	"version": "1.4.1",
+	"publisher": "dtsvet",
+	"license": "MIT",
+	"icon": "images/vscode-wasm-logo.png",
+	"engines": {
+		"vscode": "^1.65.0"
+	},
+	"bugs": {
+		"url": "https://github.com/wasmerio/vscode-wasm/issues"
+	},
+	"homepage": "https://github.com/wasmerio/vscode-wasm",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/wasmerio/vscode-wasm.git"
+	},
+	"categories": [
+		"Programming Languages",
+		"Other"
+	],
+	"activationEvents": [
+		"onLanguage:wasm",
+		"onLanguage:wai",
+		"onLanguage:wat",
+		"onCommand:wasm.wasm2wat",
+		"onCommand:wasm.save2wat",
+		"onCommand:wasm.save2wasm"
+	],
+	"main": "./out/extension",
+	"contributes": {
+		"languages": [
+			{
+				"id": "wasm",
+				"extensions": [
+					".wasm"
+				],
+				"aliases": [
+					"WebAssembly Binary",
+					"WebAssembly"
+				],
+				"configuration": "./configurations/language-configuration-wat-wasm.json"
+			},
+			{
+				"id": "wat",
+				"extensions": [
+					".wat",
+					".wast"
+				],
+				"aliases": [
+					"WebAssembly Text"
+				],
+				"configuration": "./configurations/language-configuration-wat-wasm.json"
+			},
+			{
+				"id": "wai",
+				"extensions": [
+					".wai",
+					".wit"
+				],
+				"aliases": [
+					"WebAssembly Interface"
+				]
+			}
+		],
+		"configuration": {
+			"type": "object",
+			"title": "wai-language-server",
+			"properties": {
+				"wai-language-server.serverPath": {
+					"type": "string",
+					"scope": "window",
+					"default": "wai-language-server",
+					"description": "The path to the WAI language server executable."
+				},
+				"wai-language-server.trace.server": {
+					"type": "string",
+					"scope": "window",
+					"enum": [
+						"off",
+						"messages",
+						"verbose"
+					],
+					"enumDescriptions": [
+						"No traces",
+						"Error only",
+						"Full log"
+					],
+					"default": "off",
+					"description": "Traces the communication between VS Code and the WAI language server."
+				}
+			}
+		},
+		"grammars": [
+			{
+				"language": "wasm",
+				"scopeName": "source.wat",
+				"path": "./syntaxes/wat.json"
+			},
+			{
+				"language": "wat",
+				"scopeName": "source.wat",
+				"path": "./syntaxes/wat.json"
+			},
+			{
+				"language": "wai",
+				"scopeName": "source.wai",
+				"path": "./syntaxes/wai.json"
+			}
+		],
+		"snippets": [
+			{
+				"language": "wat",
+				"path": "./snippets/types.json"
+			},
+			{
+				"language": "wat",
+				"path": "./snippets/instructions.json"
+			},
+			{
+				"language": "wat",
+				"path": "./snippets/sections.json"
+			}
+		],
+		"commands": [
+			{
+				"command": "wasm.wasm2wat",
+				"title": "Show WebAssembly",
+				"category": "wasm"
+			},
+			{
+				"command": "wasm.save2wat",
+				"title": "Save as WebAssembly text file",
+				"category": "wasm"
+			},
+			{
+				"command": "wasm.save2wasm",
+				"title": "Save as WebAssembly binary file",
+				"category": "wasm"
+			},
+			{
+				"command": "wai-language-server.printVersion",
+				"title": "Show WAI Version",
+				"category": "wai"
+			},
+			{
+				"command": "wai-language-server.generateWAICode",
+				"title": "Generate WAI-Rust Code",
+				"category": "wai"
+			},
+			{
+				"command": "wai.WAIGenerate",
+				"title": "WAI Generate",
+				"category": "wai"
+			}
+		],
+		"menus": {
+			"explorer/context": [
+				{
+					"command": "wasm.wasm2wat",
+					"when": "resourceLangId == wasm",
+					"group": "wasm"
+				},
+				{
+					"command": "wasm.save2wat",
+					"when": "resourceLangId == wasm",
+					"group": "wasm"
+				},
+				{
+					"command": "wasm.save2wasm",
+					"when": "resourceLangId == wat",
+					"group": "wasm"
+				},
+				{
+					"command": "wai.WAIGenerate",
+					"when": "resourceLangId == wai",
+					"group": "wai"
+				}
+			],
+			"editor/context": [
+				{
+					"command": "wasm.save2wat",
+					"when": "resourceLangId == wasm",
+					"group": "wasm"
+				},
+				{
+					"command": "wasm.save2wasm",
+					"when": "resourceLangId == wat",
+					"group": "wasm"
+				},
+				{
+					"command": "wai.WAIGenerate",
+					"when": "resourceLangId == wai",
+					"group": "wai"
+				}
+			],
+			"editor/title/context": [
+				{
+					"command": "wasm.save2wat",
+					"when": "resourceLangId == wasm",
+					"group": "wasm"
+				},
+				{
+					"command": "wasm.save2wasm",
+					"when": "resourceLangId == wat",
+					"group": "wasm"
+				},
+				{
+					"command": "wai.WAIGenerate",
+					"when": "resourceLangId == wai",
+					"group": "wai"
+				}
+			]
+		}
+	},
+	"keywords": [
+		"wasm",
+		"wast",
+		"webassembly",
+		"asm",
+		"web assembly",
+		"wai",
+		"wit"
+	],
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"test": "npm run compile && node ./node_modules/vscode/bin/test"
+	},
+	"devDependencies": {
+		"@types/mocha": "^9.0.0",
+		"@types/node": "^16.18.11",
+		"typescript": "^4.4.3"
+	},
+	"dependencies": {
+		"@types/vscode": "^1.76.0",
+		"@wasmer/wabt": "https://registry-cdn.wapm.io/bindings/generator-0.6.0/npm/wasmer/wabt/wabt-1.0.37.tar.gz",
+		"vscode-languageclient": "^8.0.2"
+	},
+	"__metadata": {
+		"id": "ccdc6b78-b9ca-4057-99b2-6f3449c9509d",
+		"publisherId": "a5e533fe-f179-4a09-a704-0ecd5fa0aa5e",
+		"publisherDisplayName": "dtsvet",
+		"targetPlatform": "undefined",
+		"isApplicationScoped": false,
+		"isPreReleaseVersion": false,
+		"hasPreReleaseVersion": false,
+		"installedTimestamp": 1729821476438,
+		"pinned": false,
+		"preRelease": false,
+		"source": "gallery"
+	}
+}

@@ -1,0 +1,56 @@
+{
+	"name": "laravel-extension-pack",
+	"displayName": "Laravel Extension Pack",
+	"description": "A collection of extensions for Laravel development",
+	"version": "1.3.0",
+	"publisher": "onecentlin",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/onecentlin/laravel-extension-pack-vscode"
+	},
+	"engines": {
+		"vscode": "^1.26.0"
+	},
+	"icon": "icon.png",
+	"galleryBanner": {
+		"color": "#f66f62",
+		"theme": "dark"
+	},
+	"categories": [
+		"Extension Packs"
+	],
+	"keywords": [
+		"laravel",
+		"blade",
+		"php",
+		"snippet"
+	],
+	"extensionPack": [
+		"onecentlin.laravel-blade",
+		"onecentlin.laravel5-snippets",
+		"ryannaddy.laravel-artisan",
+		"codingyu.laravel-goto-view",
+		"pgl.laravel-jump-controller",
+		"amiralizadeh9480.laravel-extra-intellisense",
+		"mikestead.dotenv",
+		"EditorConfig.EditorConfig",
+		"naoray.laravel-goto-components",
+		"shufo.vscode-blade-formatter",
+		"glitchbl.laravel-create-view",
+		"IHunte.laravel-blade-wrapper",
+		"damms005.devdb"
+	],
+	"__metadata": {
+		"id": "970bf208-88ee-472e-a6cf-63ce54817acc",
+		"publisherId": "ae5a5701-dff3-41f0-bdb1-adbf4a18997b",
+		"publisherDisplayName": "onecentlin",
+		"targetPlatform": "undefined",
+		"isApplicationScoped": false,
+		"isPreReleaseVersion": false,
+		"hasPreReleaseVersion": false,
+		"installedTimestamp": 1729820012799,
+		"pinned": false,
+		"preRelease": false,
+		"source": "gallery"
+	}
+}

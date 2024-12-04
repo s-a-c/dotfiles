@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "nextjs.files.alias": {
+      "type": "string",
+      "default": "~",
+      "scope": "resource",
+      "description": "Sets the default import alias for the generated files"
+    },
+    "nextjs.files.extension": {
+      "type": "string",
+      "default": "tsx",
+      "enum": [
+        "js",
+        "jsx",
+        "ts",
+        "tsx"
+      ],
+      "scope": "resource",
+      "description": "Sets the default extension for the generated files"
+    },
+    "nextjs.files.showType": {
+      "type": "boolean",
+      "default": true,
+      "scope": "resource",
+      "description": "Show the type in the name of the generated files"
+    },
+    "nextjs.files.include": {
+      "type": "array",
+      "default": [
+        "js",
+        "jsx",
+        "ts",
+        "tsx"
+      ],
+      "scope": "resource",
+      "description": "Glob patterns to include in the package. The default is js, jsx, ts, and tsx."
+    },
+    "nextjs.files.exclude": {
+      "type": "array",
+      "default": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/out/**",
+        "**/build/**",
+        "**/.*/**"
+      ],
+      "scope": "resource",
+      "description": "Glob patterns to exclude from the package. The default is node_modules, dist, out, build, and any hidden files."
+    },
+    "nextjs.files.watch": {
+      "type": "array",
+      "default": [
+        "controllers",
+        "components",
+        "routers"
+      ],
+      "scope": "resource",
+      "description": "The list of directories to watch for changes"
+    },
+    "nextjs.files.showPath": {
+      "type": "boolean",
+      "default": true,
+      "scope": "resource",
+      "description": "Show the path of the file in the name of the list of generated files"
+    },
+    "nextjs.server.turbo": {
+      "type": "boolean",
+      "default": true,
+      "scope": "resource",
+      "description": "Star server in turbo mode (only for NextJS 14+)"
+    },
+    "nextjs.server.experimentalHttps": {
+      "type": "boolean",
+      "default": false,
+      "scope": "resource",
+      "description": "Start server in https mode. Use `--experimental-https` flag (only for NextJS 14+)"
+    }
+  }
+}
