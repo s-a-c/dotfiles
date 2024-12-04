@@ -20,6 +20,7 @@ interactive
 interactivecomments
 login
 longlistjobs
+monitor
 promptsubst
 pushdignoredups
 pushdminus
