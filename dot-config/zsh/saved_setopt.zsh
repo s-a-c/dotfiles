@@ -6,9 +6,9 @@ correct
 extendedglob
 extendedhistory
 noflowcontrol
+nohashdirs
 nohistbeep
 histexpiredupsfirst
-histfcntllock
 histignorealldups
 histignoredups
 histignorespace
@@ -16,13 +16,10 @@ histreduceblanks
 histsavenodups
 histverify
 incappendhistory
-interactive
 interactivecomments
 login
 longlistjobs
-monitor
 promptsubst
 pushdignoredups
 pushdminus
 sharehistory
-zle

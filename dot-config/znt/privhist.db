@@ -44,3 +44,4 @@ nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild swit
 git add . && git commit -am "+dot-aerospace" && git push
 git add . && git commit -am "+marksman" && git push
 git add . && git commit -am "+marksman" && git push
+git add . && git commit -am "-extensions" && git push
