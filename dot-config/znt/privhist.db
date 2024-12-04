@@ -43,3 +43,4 @@ pnpm i -g corepack melange million neovim npm pnpm prettier tree-sitter-bash yar
 nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
 git add . && git commit -am "+dot-aerospace" && git push
 git add . && git commit -am "+marksman" && git push
+git add . && git commit -am "+marksman" && git push

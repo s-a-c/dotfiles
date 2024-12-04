@@ -1,8 +1,0 @@
-{
-  "VariableGridColumnActions": "Eylemler",
-  "VariableGridColumnName": "Ad",
-  "VariableGridColumnValue": "Değer",
-  "VariableGridColumnType": "Tür",
-  "VariableGridColumnKernel": "Çekirdek",
-  "VariableGridshareTemplate": "{kernel-name} çekirdeğindeki {value-name} değerini paylaşın"
-}
