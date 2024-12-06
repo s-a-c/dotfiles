@@ -1674,3 +1674,6 @@
 09:27:15.397 WARN host No clients connected
 09:28:53.509 WARN host No clients connected
 09:30:42.800 WARN host No clients connected
+09:39:50.982 info extension stopping host
+09:39:50.992 info host removing cache folder: 1ae1493afad47bee0a2f9af8c871657b
+09:39:56.572 info extension stopping host
