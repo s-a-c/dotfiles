@@ -58,3 +58,4 @@ deno run -A npm:create-vite@latest --template react-ts
 npm i -g -u corepack melange million neovim npm pnpm prettier semver tree-sitter-bash yarn
 npm i -g -u @angular/cli corepack melange million neovim npm pnpm prettier semver tree-sitter-bash yarn
 git add . && git commit -am "-extensions" && git push
+git add . && git commit -am "-extensions" && git push
