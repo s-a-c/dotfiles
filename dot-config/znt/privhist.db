@@ -45,3 +45,16 @@ git add . && git commit -am "+dot-aerospace" && git push
 git add . && git commit -am "+marksman" && git push
 git add . && git commit -am "+marksman" && git push
 git add . && git commit -am "-extensions" && git push
+deno outdated -r --update --latest
+deno outdated -r --update --latest
+deno outdated -r --update --latest
+git clone git@github.com:s-a-c/risposta.org.git s-a-c/risposta.org
+deno outdated -r --update --latest
+deno run -A npm:create-vite@latest --template react-ts
+deno outdated -r --update --latest
+rm -rf analog-project/
+pnpm create analog
+deno run -A npm:create-vite@latest --template react-ts
+npm i -g -u corepack melange million neovim npm pnpm prettier semver tree-sitter-bash yarn
+npm i -g -u @angular/cli corepack melange million neovim npm pnpm prettier semver tree-sitter-bash yarn
+git add . && git commit -am "-extensions" && git push

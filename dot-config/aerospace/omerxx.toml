@@ -170,9 +170,6 @@ alt-ctrl-shift-r = 'move-node-to-workspace r  --focus-follows-window'
 alt-ctrl-shift-t = 'move-node-to-workspace t  --focus-follows-window'
 alt-ctrl-shift-y = 'move-node-to-workspace y  --focus-follows-window'
 
-alt-shift-tab = 'workspace-back-and-forth'
-alt-tab = 'move-workspace-to-monitor --wrap-around next'
-
 alt-ctrl-a = 'exec-and-forget open -a /Applications/Arc.app'
 alt-ctrl-c = 'exec-and-forget open -a /Applications/Cursor.app'
 alt-ctrl-d = 'exec-and-forget open -a /Applications/Discord.app'
@@ -206,11 +203,11 @@ backspace = ['close-all-windows-but-current', 'mode main']
 # sticky is not yet supported https://github.com/nikitabobko/AeroSpace/issues/2
 #s = ['layout sticky tiling', 'mode main']
 
-alt-shift-h = ['join-with left', 'mode main']
-alt-shift-j = ['join-with down', 'mode main']
-alt-shift-k = ['join-with up', 'mode main']
-alt-shift-l = ['join-with right', 'mode main']
+alt-ctrl-h = ['join-with left', 'mode main']
+alt-ctrl-j = ['join-with down', 'mode main']
+alt-ctrl-k = ['join-with up', 'mode main']
+alt-ctrl-l = ['join-with right', 'mode main']
 
-down = 'volume down'
-up = 'volume up'
+down = ['volume down', 'mode main']
+up = ['volume up', 'mode main']
 shift-down = ['volume set 0', 'mode main']

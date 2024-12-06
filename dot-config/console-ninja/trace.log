@@ -1040,3 +1040,637 @@
 23:59:42.048 info extension stopping host
 00:31:20.110 info extension stopping host
 00:31:47.400 info extension stopping host
+03:18:09.583 info extension stopping host
+03:18:44.512 info extension stopping host
+03:18:56.702 info extension stopping host
+03:18:56.915 info host ------------ starting ------------
+03:18:56.976 info extension host process output: port:[53153]
+03:18:56.976 info extension 
+03:18:56.989 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 53153 }
+03:18:57.025 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.372","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.372/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.372/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.372/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":13,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.116"],"host":"127.0.0.1","forcedStart":false,"startTime":1733282336704}
+03:18:57.044 info host worker Starting Host Worker...
+03:18:57.048 info host starting tools discovery and integration
+03:18:57.051 info host updating /Users/s-a-c/.console-ninja/.bin/loader.js
+03:18:57.052 info host looking for tools to patch
+03:18:57.061 info host found 1 tool file(s) to patch
+03:18:57.061 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+03:18:57.122 info host completed tools discovery and integration
+03:20:01.878 ERR! host uncaught exception: No clients connected
+03:34:50.778 ERR! host uncaught exception: No clients connected
+03:47:38.136 info extension stopping host
+03:47:38.148 info host removing cache folder: 3f7a8ce9a6b9b11b5300546852f31980
+03:47:50.593 info extension stopping host
+03:47:50.790 info host ------------ starting ------------
+03:47:50.815 info extension host process output: port:[56047]
+03:47:50.816 info extension 
+03:47:50.880 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 56047 }
+03:47:50.912 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.372","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.372/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.372/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.372/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/nc/projects/git/s-a-c/react-vite-ts/server/main_test.ts","reason":"search"},{"path":"/users/s-a-c/nc/projects/git/s-a-c/react-vite-ts/server/main.ts","reason":"search"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":13,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.116"],"host":"127.0.0.1","forcedStart":false,"startTime":1733284070594}
+03:47:50.933 info host starting tools discovery and integration
+03:47:50.936 info host looking for tools to patch
+03:47:50.948 info host found 1 tool file(s) to patch
+03:47:50.949 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+03:47:50.951 info host worker Starting Host Worker...
+03:47:51.009 info host completed tools discovery and integration
+03:51:09.932 ERR! host uncaught exception: No clients connected
+03:56:27.302 ERR! host uncaught exception: No clients connected
+04:02:24.707 ERR! host uncaught exception: No clients connected
+15:06:10.553 ERR! host uncaught exception: No clients connected
+15:17:08.618 ERR! host uncaught exception: No clients connected
+15:45:58.030 ERR! host uncaught exception: No clients connected
+15:47:59.892 ERR! host uncaught exception: No clients connected
+15:48:53.542 ERR! host uncaught exception: No clients connected
+16:46:31.836 ERR! host uncaught exception: No clients connected
+16:50:48.616 ERR! host uncaught exception: No clients connected
+16:51:29.289 ERR! host uncaught exception: No clients connected
+17:07:03.783 ERR! host uncaught exception: No clients connected
+17:08:49.796 ERR! host uncaught exception: No clients connected
+17:12:29.395 ERR! host uncaught exception: No clients connected
+19:36:13.845 ERR! host uncaught exception: No clients connected
+19:36:50.441 ERR! host uncaught exception: No clients connected
+19:54:17.590 ERR! host uncaught exception: No clients connected
+19:55:00.804 ERR! host uncaught exception: No clients connected
+19:55:32.499 ERR! host uncaught exception: No clients connected
+19:55:42.681 ERR! host uncaught exception: No clients connected
+19:56:03.054 ERR! host uncaught exception: No clients connected
+19:56:16.435 ERR! host uncaught exception: No clients connected
+20:07:24.621 info extension stopping host
+20:07:24.630 info host removing cache folder: ab27625a0bd1b25502347b236c59afee
+22:26:23.852 info extension stopping host
+22:26:31.539 info extension stopping host
+22:26:31.740 info host ------------ starting ------------
+22:26:31.754 info extension host process output: port:[51902]
+22:26:31.754 info extension 
+22:26:31.762 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 51902 }
+22:26:31.803 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.372","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.372/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.372/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.372/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/nc/projects/git/s-a-c/s-a-c/risposta.org/lib/ai.ts","reason":"search"},{"path":"/users/s-a-c/nc/projects/git/s-a-c/s-a-c/risposta.org/islands/joinclass.tsx","reason":"search"},{"path":"/users/s-a-c/nc/projects/git/s-a-c/s-a-c/risposta.org/islands/classmembers.tsx","reason":"search"},{"path":"/users/s-a-c/nc/projects/git/s-a-c/s-a-c/risposta.org/islands/createcomment.tsx","reason":"search"},{"path":"/users/s-a-c/nc/projects/git/s-a-c/s-a-c/risposta.org/islands/createclass.tsx","reason":"search"},{"path":"/users/s-a-c/nc/projects/git/s-a-c/s-a-c/risposta.org/db/get_comment.ts","reason":"search"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":13,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.116"],"host":"127.0.0.1","forcedStart":false,"startTime":1733351191540}
+22:26:31.823 info host starting tools discovery and integration
+22:26:31.826 info host looking for tools to patch
+22:26:31.837 info host found 1 tool file(s) to patch
+22:26:31.837 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+22:26:31.854 info host worker Starting Host Worker...
+22:26:31.897 info host completed tools discovery and integration
+22:31:11.583 ERR! host uncaught exception: No clients connected
+22:31:28.958 ERR! host uncaught exception: No clients connected
+22:31:37.256 ERR! host uncaught exception: No clients connected
+22:48:48.632 ERR! host uncaught exception: No clients connected
+22:49:44.193 ERR! host uncaught exception: No clients connected
+23:15:41.948 info extension stopping host
+23:15:41.980 info host removing cache folder: 01d29b3952b8707e6d57a8934a072366
+23:15:42.032 info extension client disconnected: 1006 
+23:15:50.239 info extension stopping host
+23:16:20.588 info extension stopping host
+23:18:37.788 info extension stopping host
+23:18:37.978 info host ------------ starting ------------
+23:18:37.996 info extension host process output: port:[56067]
+23:18:37.997 info extension 
+23:18:38.005 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 56067 }
+23:18:38.048 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.372","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.372/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.372/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.372/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/nc/projects/git/s-a-c/risposta.org/islands/createclass.tsx","reason":"search"},{"path":"/users/s-a-c/nc/projects/git/s-a-c/risposta.org/islands/classmembers.tsx","reason":"search"},{"path":"/users/s-a-c/nc/projects/git/s-a-c/risposta.org/islands/joinclass.tsx","reason":"search"},{"path":"/users/s-a-c/nc/projects/git/s-a-c/risposta.org/islands/createcomment.tsx","reason":"search"},{"path":"/users/s-a-c/nc/projects/git/s-a-c/risposta.org/db/get_comment.ts","reason":"search"},{"path":"/users/s-a-c/nc/projects/git/s-a-c/risposta.org/lib/ai.ts","reason":"search"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":13,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.116"],"host":"127.0.0.1","forcedStart":false,"startTime":1733354317789}
+23:18:38.068 info host starting tools discovery and integration
+23:18:38.072 info host looking for tools to patch
+23:18:38.098 info host worker Starting Host Worker...
+23:18:38.137 info host found 1 tool file(s) to patch
+23:18:38.138 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+23:18:38.203 info host completed tools discovery and integration
+00:28:03.866 ERR! host uncaught exception: No clients connected
+00:34:35.056 info extension stopping host
+00:34:35.091 info host removing cache folder: 8a8a15f67a8e848e139981fd83ed9a0c
+00:34:35.122 info extension client disconnected: 1006 
+00:34:43.149 info extension stopping host
+10:27:49.089 info extension stopping host
+10:28:01.755 info extension stopping host
+10:28:01.956 info host ------------ starting ------------
+10:28:01.991 info extension host process output: port:[60255]
+10:28:01.991 info extension 
+10:28:02.009 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 60255 }
+10:28:02.049 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.372","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.372/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.372/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.372/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":13,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.116"],"host":"127.0.0.1","forcedStart":false,"startTime":1733394481756}
+10:28:02.073 info host starting tools discovery and integration
+10:28:02.078 info host looking for tools to patch
+10:28:02.088 info host worker Starting Host Worker...
+10:28:02.094 info host found 1 tool file(s) to patch
+10:28:02.094 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+10:28:02.156 info host completed tools discovery and integration
+10:41:01.216 info extension stopping host
+10:41:01.227 info host removing cache folder: 5db65c08284ae75732500a72e0c1c86f
+10:41:01.253 info extension client disconnected: 1006 
+10:42:38.003 info extension stopping host
+10:59:39.827 info extension stopping host
+10:59:44.194 info extension stopping host
+12:53:27.521 info extension stopping host
+12:53:27.716 info host ------------ starting ------------
+12:53:27.740 info extension host process output: port:[56039]
+12:53:27.740 info extension 
+12:53:27.748 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 56039 }
+12:53:27.790 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.373","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.373/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.373/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.373/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/nc/projects/git/angular/first-app_01-hello-world/src/main.ts","reason":"search"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":13,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.116"],"host":"127.0.0.1","forcedStart":false,"startTime":1733403207522}
+12:53:27.809 info host starting tools discovery and integration
+12:53:27.811 info host updating /Users/s-a-c/.console-ninja/.bin/loader.js
+12:53:27.812 info host looking for tools to patch
+12:53:27.822 info host found 1 tool file(s) to patch
+12:53:27.823 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+12:53:27.840 info host worker Starting Host Worker...
+12:53:27.889 info host completed tools discovery and integration
+13:06:35.029 info host scheduling tools patching
+13:06:37.035 info host looking for tools to patch
+13:06:37.634 info host found 11 tool file(s) to patch
+13:06:37.635 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+13:06:37.635 info host patching /users/s-a-c/nc/projects/git/angular/first-app_01-hello-world/node_modules/.pnpm/node_modules/vite/bin/vite.js
+13:06:37.636 info host patching /users/s-a-c/nc/projects/git/angular/first-app_01-hello-world/node_modules/.pnpm/node_modules/webpack/lib/WebpackOptionsApply.js
+13:06:37.636 info host patching /users/s-a-c/nc/projects/git/angular/first-app_01-hello-world/node_modules/.pnpm/node_modules/webpack/lib/index.js
+13:06:37.636 info host patching /users/s-a-c/nc/projects/git/angular/first-app_01-hello-world/node_modules/.pnpm/node_modules/webpack/lib/webpack.js
+13:06:37.636 info host patching /users/s-a-c/nc/projects/git/angular/first-app_01-hello-world/node_modules/.pnpm/@angular+cli@19.0.3_@types+node@22.10.1_chokidar@4.0.1/node_modules/@angular/cli/bin/ng.js
+13:06:37.636 info host patching /users/s-a-c/nc/projects/git/angular/first-app_01-hello-world/node_modules/.pnpm/node_modules/@angular/build/src/tools/esbuild/javascript-transformer-worker.js
+13:06:37.636 info host patching /users/s-a-c/nc/projects/git/angular/first-app_01-hello-world/node_modules/.pnpm/node_modules/@angular/build/src/tools/angular/compilation/parallel-worker.js
+13:06:37.692 info host Host's startup and patch time: 790170 ms
+13:35:42.066 WARN host No clients connected
+14:20:28.433 WARN host No clients connected
+14:22:13.892 WARN host No clients connected
+14:22:57.532 WARN host No clients connected
+14:23:04.956 WARN host No clients connected
+14:23:55.828 WARN host No clients connected
+14:46:29.939 WARN host No clients connected
+15:16:40.193 WARN host No clients connected
+15:54:41.802 info extension stopping host
+15:54:41.813 info host removing cache folder: 1af64c66b658a4ed34019197eb62a191
+15:54:42.016 info extension client disconnected: 1006 
+15:54:49.005 info extension stopping host
+15:54:49.199 info host ------------ starting ------------
+15:54:49.219 info extension host process output: port:[54044]
+15:54:49.219 info extension 
+15:54:49.228 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 54044 }
+15:54:49.266 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.373","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.373/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.373/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.373/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/nc/projects/git/angular/wishlist/src/main.ts","reason":"search"},{"path":"/users/s-a-c/nc/projects/git/angular/wishlist/src/server.ts","reason":"search"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":13,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.116"],"host":"127.0.0.1","forcedStart":false,"startTime":1733414089006}
+15:54:49.288 info host starting tools discovery and integration
+15:54:49.292 info host looking for tools to patch
+15:54:49.327 info host worker Starting Host Worker...
+15:54:49.427 info host found 11 tool file(s) to patch
+15:54:49.428 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+15:54:49.429 info host patching /users/s-a-c/nc/projects/git/angular/wishlist/node_modules/vite/bin/vite.js
+15:54:49.429 info host patching /users/s-a-c/nc/projects/git/angular/wishlist/node_modules/webpack/lib/WebpackOptionsApply.js
+15:54:49.429 info host patching /users/s-a-c/nc/projects/git/angular/wishlist/node_modules/webpack/lib/index.js
+15:54:49.429 info host patching /users/s-a-c/nc/projects/git/angular/wishlist/node_modules/webpack/lib/webpack.js
+15:54:49.429 info host patching /users/s-a-c/nc/projects/git/angular/wishlist/node_modules/@angular/cli/bin/ng.js
+15:54:49.429 info host patching /users/s-a-c/nc/projects/git/angular/wishlist/node_modules/@angular/build/src/tools/esbuild/javascript-transformer-worker.js
+15:54:49.429 info host patching /users/s-a-c/nc/projects/git/angular/wishlist/node_modules/@angular/build/src/tools/angular/compilation/parallel-worker.js
+15:54:49.482 info host Host's startup and patch time: 476 ms
+15:54:49.482 info host completed tools discovery and integration
+15:55:52.871 info buildHook-11858 installing build hook for angular at /users/s-a-c/nc/projects/git/angular/wishlist, node v22.11.0
+15:55:52.874 info buildHook-11858 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+15:55:52.874 info buildHook-11858 running tools: angular
+15:55:52.876 info buildHook-11858 installing fs interceptor
+15:55:52.998 info host client connected: buildHook { address: '127.0.0.1', family: 'IPv4', port: 54044 }
+15:55:53.003 info buildHook-11858 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+15:55:53.003 info buildHook-11858 running tools: angular
+15:55:54.973 info buildHook-11858 installing build hook for angular at /users/s-a-c/nc/projects/git/angular/wishlist, node v22.11.0
+15:55:54.977 info buildHook-11858 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+15:55:54.977 info buildHook-11858 running tools: angular
+15:55:54.978 info buildHook-11858 installing fs interceptor
+15:55:55.033 info host client connected: buildHook { address: '127.0.0.1', family: 'IPv4', port: 54044 }
+15:55:55.037 info buildHook-11858 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+15:55:55.037 info buildHook-11858 running tools: angular
+16:06:15.564 WARN host No clients connected
+16:06:25.100 WARN host No clients connected
+16:08:34.570 WARN host No clients connected
+16:08:59.150 WARN host No clients connected
+16:16:40.283 WARN host No clients connected
+16:19:20.821 WARN host No clients connected
+16:22:30.016 WARN host No clients connected
+16:27:17.068 WARN host No clients connected
+16:40:12.979 info buildHook-11858 file processed (stat): 0 log points, error handler: true, network logging handler: true
+16:45:40.013 info buildHook-11858 file processed (stat): 0 log points, error handler: true, network logging handler: true
+17:22:51.603 info host client disconnected: buildHook 1006
+17:22:51.603 info host client disconnected: buildHook 1006, has clients true
+17:22:51.706 info host client disconnected: buildHook 1006
+17:22:51.706 info host client disconnected: buildHook 1006, has clients false
+17:22:58.289 info extension stopping host
+17:22:58.296 info host removing cache folder: 70443184955dce870d5ab817e19286f6
+17:22:58.297 WARN host unable to revert access and modified time for file /users/s-a-c/nc/projects/git/angular/wishlist/src/main.ts
+17:23:06.577 info extension stopping host
+17:23:13.394 info extension stopping host
+17:23:13.606 info host ------------ starting ------------
+17:23:13.633 info extension host process output: port:[56039]
+17:23:13.633 info extension 
+17:23:13.641 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 56039 }
+17:23:13.678 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.373","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.373/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.373/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.373/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/nc/projects/git/angular/first-app_01-hello-world/.angular/cache/19.1.0-next.0/first-app/vite/deps/@angular_platform-browser.js","reason":"search"},{"path":"/users/s-a-c/nc/projects/git/angular/first-app_01-hello-world/src/main.ts","reason":"search"},{"path":"/users/s-a-c/nc/projects/git/angular/first-app_01-hello-world/.angular/cache/19.1.0-next.0/first-app/vite/deps/chunk-twigzo2h.js","reason":"search"},{"path":"/Users/s-a-c/nc/Projects/Git/angular/first-app_01-hello-world/src/index.html","reason":"open"},{"path":"/Users/s-a-c/nc/Projects/Git/angular/first-app_01-hello-world/src/app/app.component.ts","reason":"open"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":13,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.116"],"host":"127.0.0.1","forcedStart":false,"startTime":1733419393395}
+17:23:13.697 info host starting tools discovery and integration
+17:23:13.703 info host looking for tools to patch
+17:23:13.740 info host worker Starting Host Worker...
+17:23:14.538 info host found 33 tool file(s) to patch
+17:23:14.540 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+17:23:14.540 info host patching /users/s-a-c/nc/projects/git/angular/first-app_01-hello-world/node_modules/.pnpm/node_modules/vite/bin/vite.js
+17:23:14.540 info host patching /users/s-a-c/nc/projects/git/angular/first-app_01-hello-world/node_modules/.pnpm/@angular+build@19.0.3_@angular+compiler-cli@19.0.3_@angular+compiler@19.0.3_@angular+core@19._gb76b54ua5qqpl6nyajepuggla/node_modules/vite/bin/vite.js
+17:23:14.541 info host patching /users/s-a-c/nc/projects/git/angular/first-app_01-hello-world/node_modules/.pnpm/node_modules/webpack/lib/WebpackOptionsApply.js
+17:23:14.541 info host patching /users/s-a-c/nc/projects/git/angular/first-app_01-hello-world/node_modules/.pnpm/node_modules/webpack/lib/index.js
+17:23:14.541 info host patching /users/s-a-c/nc/projects/git/angular/first-app_01-hello-world/node_modules/.pnpm/node_modules/webpack/lib/webpack.js
+17:23:14.541 info host patching /users/s-a-c/nc/projects/git/angular/first-app_01-hello-world/node_modules/.pnpm/@angular-devkit+build-angular@19.0.3_@angular+compiler-cli@19.0.3_@angular+compiler@19.0.3_@a_rkoh7vkqxyeu5jlraqnoif6km4/node_modules/webpack/lib/WebpackOptionsApply.js
+17:23:14.541 info host patching /users/s-a-c/nc/projects/git/angular/first-app_01-hello-world/node_modules/.pnpm/@angular-devkit+build-angular@19.0.3_@angular+compiler-cli@19.0.3_@angular+compiler@19.0.3_@a_rkoh7vkqxyeu5jlraqnoif6km4/node_modules/webpack/lib/index.js
+17:23:14.541 info host patching /users/s-a-c/nc/projects/git/angular/first-app_01-hello-world/node_modules/.pnpm/@angular-devkit+build-angular@19.0.3_@angular+compiler-cli@19.0.3_@angular+compiler@19.0.3_@a_rkoh7vkqxyeu5jlraqnoif6km4/node_modules/webpack/lib/webpack.js
+17:23:14.543 info host patching /users/s-a-c/nc/projects/git/angular/first-app_01-hello-world/node_modules/@angular/cli/bin/ng.js
+17:23:14.543 info host patching /users/s-a-c/nc/projects/git/angular/first-app_01-hello-world/node_modules/@angular/build/src/tools/esbuild/javascript-transformer-worker.js
+17:23:14.543 info host patching /users/s-a-c/nc/projects/git/angular/first-app_01-hello-world/node_modules/@angular/build/src/tools/angular/compilation/parallel-worker.js
+17:23:14.543 info host patching /users/s-a-c/nc/projects/git/angular/first-app_01-hello-world/node_modules/.pnpm/@angular+build@19.0.3_@angular+compiler-cli@19.0.3_@angular+compiler@19.0.3_@angular+core@19._gb76b54ua5qqpl6nyajepuggla/node_modules/@angular/build/src/tools/esbuild/javascript-transformer-worker.js
+17:23:14.543 info host patching /users/s-a-c/nc/projects/git/angular/first-app_01-hello-world/node_modules/.pnpm/@angular+build@19.0.3_@angular+compiler-cli@19.1.0-next.2_@angular+compiler@19.0.3_@angular+c_v3yqdbhzx2hzog45aezkk6uape/node_modules/@angular/build/src/tools/esbuild/javascript-transformer-worker.js
+17:23:14.543 info host patching /users/s-a-c/nc/projects/git/angular/first-app_01-hello-world/node_modules/.pnpm/@angular+build@19.1.0-next.0_@angular+compiler-cli@19.1.0-next.2_@angular+compiler@19.0.3_@an_vjsfstla3xm2lvnzzr3bbd7nhi/node_modules/@angular/build/src/tools/esbuild/javascript-transformer-worker.js
+17:23:14.543 info host patching /users/s-a-c/nc/projects/git/angular/first-app_01-hello-world/node_modules/.pnpm/@angular+build@19.1.0-next.0_@angular+compiler-cli@19.1.0-next.2_@angular+compiler@19.1.0-nex_kiyma4il22etd7zprkaieqbhe4/node_modules/@angular/build/src/tools/esbuild/javascript-transformer-worker.js
+17:23:14.543 info host patching /users/s-a-c/nc/projects/git/angular/first-app_01-hello-world/node_modules/.pnpm/@angular+build@19.0.3_@angular+compiler-cli@19.0.3_@angular+compiler@19.0.3_@angular+core@19._gb76b54ua5qqpl6nyajepuggla/node_modules/@angular/build/src/tools/angular/compilation/parallel-worker.js
+17:23:14.543 info host patching /users/s-a-c/nc/projects/git/angular/first-app_01-hello-world/node_modules/.pnpm/@angular+build@19.0.3_@angular+compiler-cli@19.1.0-next.2_@angular+compiler@19.0.3_@angular+c_v3yqdbhzx2hzog45aezkk6uape/node_modules/@angular/build/src/tools/angular/compilation/parallel-worker.js
+17:23:14.543 info host patching /users/s-a-c/nc/projects/git/angular/first-app_01-hello-world/node_modules/.pnpm/@angular+build@19.1.0-next.0_@angular+compiler-cli@19.1.0-next.2_@angular+compiler@19.0.3_@an_vjsfstla3xm2lvnzzr3bbd7nhi/node_modules/@angular/build/src/tools/angular/compilation/parallel-worker.js
+17:23:14.543 info host patching /users/s-a-c/nc/projects/git/angular/first-app_01-hello-world/node_modules/.pnpm/@angular+build@19.1.0-next.0_@angular+compiler-cli@19.1.0-next.2_@angular+compiler@19.1.0-nex_kiyma4il22etd7zprkaieqbhe4/node_modules/@angular/build/src/tools/angular/compilation/parallel-worker.js
+17:23:14.598 info host Host's startup and patch time: 1203 ms
+17:23:14.598 info host completed tools discovery and integration
+17:23:14.610 WARN host No clients connected
+17:23:59.691 WARN host No clients connected
+17:32:31.837 info buildHook-31324 installing build hook for angular at /users/s-a-c/nc/projects/git/angular/first-app_01-hello-world, node v22.11.0
+17:32:31.841 info buildHook-31324 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+17:32:31.841 info buildHook-31324 running tools: angular
+17:32:31.842 info buildHook-31324 installing fs interceptor
+17:32:31.963 info host client connected: buildHook { address: '127.0.0.1', family: 'IPv4', port: 56039 }
+17:32:31.975 info buildHook-31324 file processed (stat): 0 log points, error handler: true, network logging handler: true
+17:32:31.975 info buildHook-31324 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+17:32:31.975 info buildHook-31324 running tools: angular
+17:42:20.604 WARN host No clients connected
+17:48:55.740 WARN host No clients connected
+18:01:09.207 info host client disconnected: buildHook 1006
+18:01:09.208 info host client disconnected: buildHook 1006, has clients false
+18:01:15.114 info buildHook-34046 installing build hook for angular at /users/s-a-c/nc/projects/git/angular/first-app_01-hello-world, node v22.11.0
+18:01:15.118 info buildHook-34046 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+18:01:15.118 info buildHook-34046 running tools: angular
+18:01:15.119 info buildHook-34046 installing fs interceptor
+18:01:15.236 info host client connected: buildHook { address: '127.0.0.1', family: 'IPv4', port: 56039 }
+18:01:15.248 info buildHook-34046 file processed (stat): 0 log points, error handler: true, network logging handler: true
+18:01:15.249 info buildHook-34046 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+18:01:15.249 info buildHook-34046 running tools: angular
+18:02:15.877 info host client disconnected: buildHook 1006
+18:02:15.877 info host client disconnected: buildHook 1006, has clients false
+18:02:18.743 info buildHook-34209 installing build hook for angular at /users/s-a-c/nc/projects/git/angular/first-app_01-hello-world, node v22.11.0
+18:02:18.747 info buildHook-34209 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+18:02:18.747 info buildHook-34209 running tools: angular
+18:02:18.747 info buildHook-34209 installing fs interceptor
+18:02:18.937 info host client connected: buildHook { address: '127.0.0.1', family: 'IPv4', port: 56039 }
+18:02:18.948 info buildHook-34209 file processed (stat): 0 log points, error handler: true, network logging handler: true
+18:02:18.948 info buildHook-34209 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+18:02:18.948 info buildHook-34209 running tools: angular
+18:03:12.767 info host client disconnected: buildHook 1006
+18:03:12.767 info host client disconnected: buildHook 1006, has clients false
+18:03:30.290 info buildHook-34487 installing build hook for angular at /users/s-a-c/nc/projects/git/angular/first-app_01-hello-world, node v22.11.0
+18:03:30.293 info buildHook-34487 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+18:03:30.293 info buildHook-34487 running tools: angular
+18:03:30.294 info buildHook-34487 installing fs interceptor
+18:03:30.413 info host client connected: buildHook { address: '127.0.0.1', family: 'IPv4', port: 56039 }
+18:03:30.424 info buildHook-34487 file processed (stat): 0 log points, error handler: true, network logging handler: true
+18:03:30.425 info buildHook-34487 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+18:03:30.425 info buildHook-34487 running tools: angular
+18:06:21.549 WARN host No clients connected
+18:43:31.507 info host client disconnected: buildHook 1006
+18:43:31.508 info host client disconnected: buildHook 1006, has clients false
+18:43:38.736 info extension stopping host
+18:43:38.744 info host removing cache folder: 75106fa683d83647ec0d726133fb27f2
+18:43:38.746 WARN host unable to revert access and modified time for file /users/s-a-c/nc/projects/git/angular/first-app_01-hello-world/src/app/app.component.ts
+18:45:14.848 info buildHook-39691 installing build hook for angular at /users/s-a-c/nc/projects/git/angular/first-app, node v22.11.0
+18:45:16.301 info buildHook-39691 installing build hook for angular at /users/s-a-c/nc/projects/git/angular/first-app, node v22.11.0
+18:45:51.146 info extension stopping host
+18:45:54.231 info extension stopping host
+18:45:54.680 info host ------------ starting ------------
+18:45:54.768 info extension host process output: port:[51376]
+18:45:54.768 info extension 
+18:45:54.812 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 51376 }
+18:45:54.838 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.373","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.373/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.373/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.373/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/nc/projects/git/angular/first-app/.angular/cache/19.1.0-next.0/first-app/vite/deps/@angular_platform-browser.js","reason":"search"},{"path":"/users/s-a-c/nc/projects/git/angular/first-app/src/main.ts","reason":"search"},{"path":"/users/s-a-c/nc/projects/git/angular/first-app/.angular/cache/19.1.0-next.0/first-app/vite/deps/chunk-twigzo2h.js","reason":"search"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":13,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.116"],"host":"127.0.0.1","forcedStart":false,"startTime":1733424354232}
+18:45:54.869 info host starting tools discovery and integration
+18:45:54.875 info host looking for tools to patch
+18:45:55.134 info host worker Starting Host Worker...
+18:45:55.932 info host found 33 tool file(s) to patch
+18:45:55.935 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+18:45:55.936 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/node_modules/vite/bin/vite.js
+18:45:55.936 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular+build@19.0.3_@angular+compiler-cli@19.0.3_@angular+compiler@19.0.3_@angular+core@19._gb76b54ua5qqpl6nyajepuggla/node_modules/vite/bin/vite.js
+18:45:55.936 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/node_modules/webpack/lib/WebpackOptionsApply.js
+18:45:55.936 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/node_modules/webpack/lib/index.js
+18:45:55.936 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/node_modules/webpack/lib/webpack.js
+18:45:55.937 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular-devkit+build-angular@19.0.3_@angular+compiler-cli@19.0.3_@angular+compiler@19.0.3_@a_rkoh7vkqxyeu5jlraqnoif6km4/node_modules/webpack/lib/WebpackOptionsApply.js
+18:45:55.937 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular-devkit+build-angular@19.0.3_@angular+compiler-cli@19.0.3_@angular+compiler@19.0.3_@a_rkoh7vkqxyeu5jlraqnoif6km4/node_modules/webpack/lib/index.js
+18:45:55.937 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular-devkit+build-angular@19.0.3_@angular+compiler-cli@19.0.3_@angular+compiler@19.0.3_@a_rkoh7vkqxyeu5jlraqnoif6km4/node_modules/webpack/lib/webpack.js
+18:45:55.938 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/@angular/cli/bin/ng.js
+18:45:55.938 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/@angular/build/src/tools/esbuild/javascript-transformer-worker.js
+18:45:55.938 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/@angular/build/src/tools/angular/compilation/parallel-worker.js
+18:45:55.938 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular+build@19.0.3_@angular+compiler-cli@19.0.3_@angular+compiler@19.0.3_@angular+core@19._gb76b54ua5qqpl6nyajepuggla/node_modules/@angular/build/src/tools/esbuild/javascript-transformer-worker.js
+18:45:55.939 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular+build@19.0.3_@angular+compiler-cli@19.1.0-next.2_@angular+compiler@19.0.3_@angular+c_v3yqdbhzx2hzog45aezkk6uape/node_modules/@angular/build/src/tools/esbuild/javascript-transformer-worker.js
+18:45:55.939 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular+build@19.1.0-next.0_@angular+compiler-cli@19.1.0-next.2_@angular+compiler@19.0.3_@an_vjsfstla3xm2lvnzzr3bbd7nhi/node_modules/@angular/build/src/tools/esbuild/javascript-transformer-worker.js
+18:45:55.939 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular+build@19.1.0-next.0_@angular+compiler-cli@19.1.0-next.2_@angular+compiler@19.1.0-nex_kiyma4il22etd7zprkaieqbhe4/node_modules/@angular/build/src/tools/esbuild/javascript-transformer-worker.js
+18:45:55.939 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular+build@19.0.3_@angular+compiler-cli@19.0.3_@angular+compiler@19.0.3_@angular+core@19._gb76b54ua5qqpl6nyajepuggla/node_modules/@angular/build/src/tools/angular/compilation/parallel-worker.js
+18:45:55.939 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular+build@19.0.3_@angular+compiler-cli@19.1.0-next.2_@angular+compiler@19.0.3_@angular+c_v3yqdbhzx2hzog45aezkk6uape/node_modules/@angular/build/src/tools/angular/compilation/parallel-worker.js
+18:45:55.939 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular+build@19.1.0-next.0_@angular+compiler-cli@19.1.0-next.2_@angular+compiler@19.0.3_@an_vjsfstla3xm2lvnzzr3bbd7nhi/node_modules/@angular/build/src/tools/angular/compilation/parallel-worker.js
+18:45:55.939 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular+build@19.1.0-next.0_@angular+compiler-cli@19.1.0-next.2_@angular+compiler@19.1.0-nex_kiyma4il22etd7zprkaieqbhe4/node_modules/@angular/build/src/tools/angular/compilation/parallel-worker.js
+18:45:56.053 info host Host's startup and patch time: 1821 ms
+18:45:56.054 info host completed tools discovery and integration
+18:46:33.351 WARN host No clients connected
+18:48:15.932 WARN host No clients connected
+18:51:55.138 WARN host No clients connected
+18:53:17.454 WARN host No clients connected
+18:58:30.867 info extension stopping host
+18:58:30.890 info host removing cache folder: ea87c8fd21055700d94883edec74e714
+18:59:13.695 info extension stopping host
+18:59:17.088 info extension stopping host
+18:59:17.323 info host ------------ starting ------------
+18:59:17.355 info extension host process output: port:[51376]
+18:59:17.355 info extension 
+18:59:17.368 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 51376 }
+18:59:17.445 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.373","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.373/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.373/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.373/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/nc/projects/git/angular/first-app/src/main.ts","reason":"search"},{"path":"/users/s-a-c/nc/projects/git/angular/first-app/.angular/cache/19.1.0-next.0/first-app/vite/deps/@angular_platform-browser.js","reason":"search"},{"path":"/users/s-a-c/nc/projects/git/angular/first-app/.angular/cache/19.1.0-next.0/first-app/vite/deps/chunk-twigzo2h.js","reason":"search"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":13,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.116"],"host":"127.0.0.1","forcedStart":false,"startTime":1733425157089}
+18:59:17.476 info host starting tools discovery and integration
+18:59:17.512 info host looking for tools to patch
+18:59:17.717 info host worker Starting Host Worker...
+18:59:18.795 info host found 33 tool file(s) to patch
+18:59:18.797 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+18:59:18.797 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/node_modules/vite/bin/vite.js
+18:59:18.797 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular+build@19.0.3_@angular+compiler-cli@19.1.0-next.2_@angular+compiler@19.0.3_@angular+c_v3yqdbhzx2hzog45aezkk6uape/node_modules/vite/bin/vite.js
+18:59:18.798 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/node_modules/webpack/lib/WebpackOptionsApply.js
+18:59:18.798 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/node_modules/webpack/lib/index.js
+18:59:18.798 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/node_modules/webpack/lib/webpack.js
+18:59:18.798 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular-devkit+build-angular@19.0.3_@angular+compiler-cli@19.0.3_@angular+compiler@19.0.3_@a_rkoh7vkqxyeu5jlraqnoif6km4/node_modules/webpack/lib/WebpackOptionsApply.js
+18:59:18.798 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular-devkit+build-angular@19.0.3_@angular+compiler-cli@19.0.3_@angular+compiler@19.0.3_@a_rkoh7vkqxyeu5jlraqnoif6km4/node_modules/webpack/lib/index.js
+18:59:18.798 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular-devkit+build-angular@19.0.3_@angular+compiler-cli@19.0.3_@angular+compiler@19.0.3_@a_rkoh7vkqxyeu5jlraqnoif6km4/node_modules/webpack/lib/webpack.js
+18:59:18.800 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/@angular/cli/bin/ng.js
+18:59:18.800 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/@angular/build/src/tools/esbuild/javascript-transformer-worker.js
+18:59:18.800 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/@angular/build/src/tools/angular/compilation/parallel-worker.js
+18:59:18.800 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular+build@19.1.0-next.0_@angular+compiler-cli@19.1.0-next.2_@angular+compiler@19.0.3_@an_vjsfstla3xm2lvnzzr3bbd7nhi/node_modules/@angular/build/src/tools/esbuild/javascript-transformer-worker.js
+18:59:18.800 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular+build@19.0.3_@angular+compiler-cli@19.1.0-next.2_@angular+compiler@19.0.3_@angular+c_v3yqdbhzx2hzog45aezkk6uape/node_modules/@angular/build/src/tools/esbuild/javascript-transformer-worker.js
+18:59:18.800 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular+build@19.1.0-next.0_@angular+compiler-cli@19.1.0-next.2_@angular+compiler@19.1.0-nex_kiyma4il22etd7zprkaieqbhe4/node_modules/@angular/build/src/tools/esbuild/javascript-transformer-worker.js
+18:59:18.800 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular+build@19.0.3_@angular+compiler-cli@19.0.3_@angular+compiler@19.0.3_@angular+core@19._gb76b54ua5qqpl6nyajepuggla/node_modules/@angular/build/src/tools/esbuild/javascript-transformer-worker.js
+18:59:18.801 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular+build@19.1.0-next.0_@angular+compiler-cli@19.1.0-next.2_@angular+compiler@19.0.3_@an_vjsfstla3xm2lvnzzr3bbd7nhi/node_modules/@angular/build/src/tools/angular/compilation/parallel-worker.js
+18:59:18.801 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular+build@19.0.3_@angular+compiler-cli@19.1.0-next.2_@angular+compiler@19.0.3_@angular+c_v3yqdbhzx2hzog45aezkk6uape/node_modules/@angular/build/src/tools/angular/compilation/parallel-worker.js
+18:59:18.801 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular+build@19.1.0-next.0_@angular+compiler-cli@19.1.0-next.2_@angular+compiler@19.1.0-nex_kiyma4il22etd7zprkaieqbhe4/node_modules/@angular/build/src/tools/angular/compilation/parallel-worker.js
+18:59:18.801 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular+build@19.0.3_@angular+compiler-cli@19.0.3_@angular+compiler@19.0.3_@angular+core@19._gb76b54ua5qqpl6nyajepuggla/node_modules/@angular/build/src/tools/angular/compilation/parallel-worker.js
+18:59:18.854 info host Host's startup and patch time: 1764 ms
+18:59:18.854 info host completed tools discovery and integration
+19:00:05.160 WARN host No clients connected
+19:00:51.835 info buildHook-58157 installing build hook for angular at /users/s-a-c/nc/projects/git/angular/first-app, node v22.11.0
+19:00:51.839 info buildHook-58157 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+19:00:51.839 info buildHook-58157 running tools: angular
+19:00:51.841 info buildHook-58157 installing fs interceptor
+19:00:51.962 info host client connected: buildHook { address: '127.0.0.1', family: 'IPv4', port: 51376 }
+19:00:51.968 info buildHook-58157 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+19:00:51.968 info buildHook-58157 running tools: angular
+19:03:34.991 WARN host No clients connected
+19:11:12.954 WARN host No clients connected
+19:11:32.806 WARN host No clients connected
+19:42:14.896 info host client disconnected: buildHook 1006
+19:42:14.897 info host client disconnected: buildHook 1006, has clients false
+19:42:21.604 info buildHook-62172 installing build hook for angular at /users/s-a-c/nc/projects/git/angular/first-app, node v22.11.0
+19:42:21.608 info buildHook-62172 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+19:42:21.608 info buildHook-62172 running tools: angular
+19:42:21.610 info buildHook-62172 installing fs interceptor
+19:42:21.721 info host client connected: buildHook { address: '127.0.0.1', family: 'IPv4', port: 51376 }
+19:42:21.729 info buildHook-62172 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+19:42:21.729 info buildHook-62172 running tools: angular
+20:01:58.071 info host client disconnected: buildHook 1006
+20:01:58.072 info host client disconnected: buildHook 1006, has clients false
+20:02:04.669 WARN host No clients connected
+20:02:57.048 info extension stopping host
+20:02:57.071 info host removing cache folder: eff1ac4e7b1fbc117fcaf83a5eb778e6
+20:02:57.073 WARN host unable to revert access and modified time for file /users/s-a-c/nc/projects/git/angular/first-app/src/app/home/home.component.ts
+20:04:29.410 info extension stopping host
+20:04:32.718 info extension stopping host
+20:04:33.155 info host ------------ starting ------------
+20:04:33.264 info extension host process output: port:[51376]
+20:04:33.264 info extension 
+20:04:33.280 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 51376 }
+20:04:33.324 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.373","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.373/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.373/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.373/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/nc/projects/git/angular/first-app/src/main.ts","reason":"search"},{"path":"/users/s-a-c/nc/projects/git/angular/first-app/.angular/cache/19.1.0-next.0/first-app/vite/deps/@angular_platform-browser.js","reason":"search"},{"path":"/users/s-a-c/nc/projects/git/angular/first-app/.angular/cache/19.1.0-next.0/first-app/vite/deps/chunk-twigzo2h.js","reason":"search"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":13,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.116"],"host":"127.0.0.1","forcedStart":false,"startTime":1733429072719}
+20:04:33.349 info host starting tools discovery and integration
+20:04:33.356 info host looking for tools to patch
+20:04:33.567 info host worker Starting Host Worker...
+20:04:34.398 info host found 33 tool file(s) to patch
+20:04:34.401 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+20:04:34.401 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/node_modules/vite/bin/vite.js
+20:04:34.401 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular+build@19.0.3_@angular+compiler-cli@19.1.0-next.2_@angular+compiler@19.0.3_@angular+c_v3yqdbhzx2hzog45aezkk6uape/node_modules/vite/bin/vite.js
+20:04:34.402 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/node_modules/webpack/lib/WebpackOptionsApply.js
+20:04:34.402 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/node_modules/webpack/lib/index.js
+20:04:34.402 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/node_modules/webpack/lib/webpack.js
+20:04:34.402 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular-devkit+build-angular@19.0.3_@angular+compiler-cli@19.0.3_@angular+compiler@19.0.3_@a_rkoh7vkqxyeu5jlraqnoif6km4/node_modules/webpack/lib/WebpackOptionsApply.js
+20:04:34.402 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular-devkit+build-angular@19.0.3_@angular+compiler-cli@19.0.3_@angular+compiler@19.0.3_@a_rkoh7vkqxyeu5jlraqnoif6km4/node_modules/webpack/lib/index.js
+20:04:34.402 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular-devkit+build-angular@19.0.3_@angular+compiler-cli@19.0.3_@angular+compiler@19.0.3_@a_rkoh7vkqxyeu5jlraqnoif6km4/node_modules/webpack/lib/webpack.js
+20:04:34.404 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/@angular/cli/bin/ng.js
+20:04:34.404 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/@angular/build/src/tools/esbuild/javascript-transformer-worker.js
+20:04:34.404 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/@angular/build/src/tools/angular/compilation/parallel-worker.js
+20:04:34.404 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular+build@19.0.3_@angular+compiler-cli@19.1.0-next.2_@angular+compiler@19.0.3_@angular+c_v3yqdbhzx2hzog45aezkk6uape/node_modules/@angular/build/src/tools/esbuild/javascript-transformer-worker.js
+20:04:34.404 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular+build@19.1.0-next.0_@angular+compiler-cli@19.1.0-next.2_@angular+compiler@19.0.3_@an_vjsfstla3xm2lvnzzr3bbd7nhi/node_modules/@angular/build/src/tools/esbuild/javascript-transformer-worker.js
+20:04:34.404 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular+build@19.0.3_@angular+compiler-cli@19.0.3_@angular+compiler@19.0.3_@angular+core@19._gb76b54ua5qqpl6nyajepuggla/node_modules/@angular/build/src/tools/esbuild/javascript-transformer-worker.js
+20:04:34.404 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular+build@19.1.0-next.0_@angular+compiler-cli@19.1.0-next.2_@angular+compiler@19.1.0-nex_kiyma4il22etd7zprkaieqbhe4/node_modules/@angular/build/src/tools/esbuild/javascript-transformer-worker.js
+20:04:34.404 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular+build@19.0.3_@angular+compiler-cli@19.1.0-next.2_@angular+compiler@19.0.3_@angular+c_v3yqdbhzx2hzog45aezkk6uape/node_modules/@angular/build/src/tools/angular/compilation/parallel-worker.js
+20:04:34.404 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular+build@19.1.0-next.0_@angular+compiler-cli@19.1.0-next.2_@angular+compiler@19.0.3_@an_vjsfstla3xm2lvnzzr3bbd7nhi/node_modules/@angular/build/src/tools/angular/compilation/parallel-worker.js
+20:04:34.404 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular+build@19.0.3_@angular+compiler-cli@19.0.3_@angular+compiler@19.0.3_@angular+core@19._gb76b54ua5qqpl6nyajepuggla/node_modules/@angular/build/src/tools/angular/compilation/parallel-worker.js
+20:04:34.404 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/@angular+build@19.1.0-next.0_@angular+compiler-cli@19.1.0-next.2_@angular+compiler@19.1.0-nex_kiyma4il22etd7zprkaieqbhe4/node_modules/@angular/build/src/tools/angular/compilation/parallel-worker.js
+20:04:34.457 info host Host's startup and patch time: 1738 ms
+20:04:34.457 info host completed tools discovery and integration
+20:04:36.524 WARN host No clients connected
+20:06:57.258 WARN host No clients connected
+20:17:01.930 WARN host No clients connected
+20:18:25.452 WARN host No clients connected
+20:18:36.628 WARN host No clients connected
+20:18:59.374 WARN host No clients connected
+20:22:28.277 WARN host No clients connected
+20:25:46.693 WARN host No clients connected
+20:35:16.697 info buildHook-72630 installing build hook for angular at /users/s-a-c/nc/projects/git/angular/first-app, node v22.11.0
+20:35:16.701 info buildHook-72630 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+20:35:16.701 info buildHook-72630 running tools: angular
+20:35:16.702 info buildHook-72630 installing fs interceptor
+20:35:16.822 info host client connected: buildHook { address: '127.0.0.1', family: 'IPv4', port: 51376 }
+20:35:16.828 info buildHook-72630 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+20:35:16.828 info buildHook-72630 running tools: angular
+20:39:30.350 info host client disconnected: buildHook 1006
+20:39:30.350 info host client disconnected: buildHook 1006, has clients false
+20:40:02.919 WARN host No clients connected
+20:40:51.920 info buildHook-73559 installing build hook for angular at /users/s-a-c/nc/projects/git/angular/first-app, node v22.11.0
+20:40:51.924 info buildHook-73559 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+20:40:51.924 info buildHook-73559 running tools: angular
+20:40:51.925 info buildHook-73559 installing fs interceptor
+20:40:52.079 info host client connected: buildHook { address: '127.0.0.1', family: 'IPv4', port: 51376 }
+20:40:52.086 info buildHook-73559 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+20:40:52.086 info buildHook-73559 running tools: angular
+20:45:16.853 WARN host No clients connected
+21:18:28.298 info host client disconnected: buildHook 1006
+21:18:28.299 info host client disconnected: buildHook 1006, has clients false
+21:19:05.415 info buildHook-78935 installing build hook for angular at /users/s-a-c/nc/projects/git/angular/first-app, node v22.11.0
+21:19:05.419 info buildHook-78935 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+21:19:05.419 info buildHook-78935 running tools: angular
+21:19:05.420 info buildHook-78935 installing fs interceptor
+21:19:05.539 info host client connected: buildHook { address: '127.0.0.1', family: 'IPv4', port: 51376 }
+21:19:05.542 info buildHook-78935 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+21:19:05.542 info buildHook-78935 running tools: angular
+21:22:09.478 WARN host No clients connected
+21:35:35.626 WARN host No clients connected
+21:45:01.843 WARN host No clients connected
+21:46:05.998 WARN host No clients connected
+21:48:46.714 WARN host No clients connected
+22:50:47.265 WARN host No clients connected
+22:51:19.543 WARN host No clients connected
+23:09:22.549 WARN host No clients connected
+00:20:51.547 WARN host No clients connected
+00:33:57.788 info host client disconnected: buildHook 1006
+00:33:57.789 info host client disconnected: buildHook 1006, has clients false
+00:38:02.022 info extension stopping host
+00:38:02.031 info host removing cache folder: 1c89c54fb7e4fa539ebf657b71019acc
+00:38:02.032 WARN host unable to revert access and modified time for file /users/s-a-c/nc/projects/git/angular/first-app/src/main.ts
+00:38:02.032 WARN host unable to revert access and modified time for file /users/s-a-c/nc/projects/git/angular/first-app/.angular/cache/19.1.0-next.0/first-app/vite/deps/@angular_platform-browser.js
+00:38:02.032 WARN host unable to revert access and modified time for file /users/s-a-c/nc/projects/git/angular/first-app/.angular/cache/19.1.0-next.0/first-app/vite/deps/chunk-twigzo2h.js
+00:38:02.032 WARN host unable to revert access and modified time for file /users/s-a-c/nc/projects/git/angular/first-app/src/app/app.component.ts
+00:38:13.535 info extension stopping host
+00:38:18.773 info extension stopping host
+00:38:18.969 info host ------------ starting ------------
+00:38:18.985 info extension host process output: port:[51376]
+00:38:18.985 info extension 
+00:38:18.994 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 51376 }
+00:38:19.030 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.373","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.373/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.373/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.373/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/nc/projects/git/angular/first-app/src/main.ts","reason":"search"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":13,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.116"],"host":"127.0.0.1","forcedStart":false,"startTime":1733445498774}
+00:38:19.047 info host starting tools discovery and integration
+00:38:19.051 info host looking for tools to patch
+00:38:19.060 info host found 1 tool file(s) to patch
+00:38:19.061 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+00:38:19.085 info host worker Starting Host Worker...
+00:38:19.122 info host completed tools discovery and integration
+00:39:33.380 WARN host No clients connected
+00:58:11.548 WARN host No clients connected
+00:58:50.835 WARN host No clients connected
+01:01:57.145 WARN host No clients connected
+01:02:23.065 WARN host No clients connected
+01:02:52.305 WARN host No clients connected
+01:05:54.685 WARN host No clients connected
+01:08:23.099 WARN host No clients connected
+01:16:20.125 info host scheduling tools patching
+01:16:22.131 info host looking for tools to patch
+01:16:22.700 info host found 11 tool file(s) to patch
+01:16:22.701 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+01:16:22.701 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/node_modules/vite/bin/vite.js
+01:16:22.701 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/node_modules/webpack/lib/WebpackOptionsApply.js
+01:16:22.701 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/node_modules/webpack/lib/index.js
+01:16:22.701 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/node_modules/webpack/lib/webpack.js
+01:16:22.701 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/@angular/cli/bin/ng.js
+01:16:22.702 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/node_modules/@angular/build/src/tools/esbuild/javascript-transformer-worker.js
+01:16:22.702 info host patching /users/s-a-c/nc/projects/git/angular/first-app/node_modules/.pnpm/node_modules/@angular/build/src/tools/angular/compilation/parallel-worker.js
+01:16:22.754 info host Host's startup and patch time: 2283980 ms
+01:20:44.498 WARN host No clients connected
+01:21:42.200 WARN host No clients connected
+01:24:36.150 WARN host No clients connected
+01:27:25.938 WARN host No clients connected
+01:28:05.149 WARN host No clients connected
+01:49:43.018 WARN host No clients connected
+06:51:10.967 ERR! host Tt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+06:51:10.968 ERR! host  failed to verify subscription [Tt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+06:51:10.968 ERR! host   type: 'system',
+06:51:10.968 ERR! host   errno: 'ENOTFOUND',
+06:51:10.968 ERR! host   code: 'ENOTFOUND',
+06:51:10.968 ERR! host   erroredSysCall: 'getaddrinfo'
+06:51:10.968 ERR! host }
+06:59:01.704 ERR! host Tt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+06:59:01.704 ERR! host  failed to verify subscription [Tt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+06:59:01.704 ERR! host   type: 'system',
+06:59:01.704 ERR! host   errno: 'ENOTFOUND',
+06:59:01.704 ERR! host   code: 'ENOTFOUND',
+06:59:01.704 ERR! host   erroredSysCall: 'getaddrinfo'
+06:59:01.704 ERR! host }
+07:14:56.861 ERR! host Tt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+07:14:56.861 ERR! host  failed to verify subscription [Tt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+07:14:56.861 ERR! host   type: 'system',
+07:14:56.861 ERR! host   errno: 'ENOTFOUND',
+07:14:56.861 ERR! host   code: 'ENOTFOUND',
+07:14:56.861 ERR! host   erroredSysCall: 'getaddrinfo'
+07:14:56.861 ERR! host }
+07:36:52.558 ERR! host Tt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+07:36:52.558 ERR! host  failed to verify subscription [Tt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+07:36:52.558 ERR! host   type: 'system',
+07:36:52.558 ERR! host   errno: 'ENOTFOUND',
+07:36:52.558 ERR! host   code: 'ENOTFOUND',
+07:36:52.558 ERR! host   erroredSysCall: 'getaddrinfo'
+07:36:52.558 ERR! host }
+07:41:52.572 ERR! host Tt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+07:41:52.572 ERR! host  failed to verify subscription [Tt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+07:41:52.572 ERR! host   type: 'system',
+07:41:52.572 ERR! host   errno: 'ENOTFOUND',
+07:41:52.572 ERR! host   code: 'ENOTFOUND',
+07:41:52.573 ERR! host   erroredSysCall: 'getaddrinfo'
+07:41:52.573 ERR! host }
+07:46:52.583 ERR! host Tt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+07:46:52.583 ERR! host  failed to verify subscription [Tt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+07:46:52.583 ERR! host   type: 'system',
+07:46:52.583 ERR! host   errno: 'ENOTFOUND',
+07:46:52.583 ERR! host   code: 'ENOTFOUND',
+07:46:52.583 ERR! host   erroredSysCall: 'getaddrinfo'
+07:46:52.583 ERR! host }
+07:51:52.600 ERR! host Tt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+07:51:52.600 ERR! host  failed to verify subscription [Tt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+07:51:52.600 ERR! host   type: 'system',
+07:51:52.600 ERR! host   errno: 'ENOTFOUND',
+07:51:52.600 ERR! host   code: 'ENOTFOUND',
+07:51:52.600 ERR! host   erroredSysCall: 'getaddrinfo'
+07:51:52.600 ERR! host }
+07:56:52.596 ERR! host Tt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+07:56:52.596 ERR! host  failed to verify subscription [Tt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+07:56:52.596 ERR! host   type: 'system',
+07:56:52.596 ERR! host   errno: 'ENOTFOUND',
+07:56:52.596 ERR! host   code: 'ENOTFOUND',
+07:56:52.596 ERR! host   erroredSysCall: 'getaddrinfo'
+07:56:52.596 ERR! host }
+08:01:52.612 ERR! host Tt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+08:01:52.612 ERR! host  failed to verify subscription [Tt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+08:01:52.612 ERR! host   type: 'system',
+08:01:52.612 ERR! host   errno: 'ENOTFOUND',
+08:01:52.612 ERR! host   code: 'ENOTFOUND',
+08:01:52.612 ERR! host   erroredSysCall: 'getaddrinfo'
+08:01:52.612 ERR! host }
+08:06:52.619 ERR! host Tt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+08:06:52.619 ERR! host  failed to verify subscription [Tt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+08:06:52.619 ERR! host   type: 'system',
+08:06:52.619 ERR! host   errno: 'ENOTFOUND',
+08:06:52.619 ERR! host   code: 'ENOTFOUND',
+08:06:52.619 ERR! host   erroredSysCall: 'getaddrinfo'
+08:06:52.619 ERR! host }
+08:11:52.624 ERR! host Tt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+08:11:52.624 ERR! host  failed to verify subscription [Tt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+08:11:52.624 ERR! host   type: 'system',
+08:11:52.624 ERR! host   errno: 'ENOTFOUND',
+08:11:52.624 ERR! host   code: 'ENOTFOUND',
+08:11:52.624 ERR! host   erroredSysCall: 'getaddrinfo'
+08:11:52.624 ERR! host }
+08:31:34.578 ERR! host Tt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+08:31:34.578 ERR! host  failed to verify subscription [Tt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+08:31:34.578 ERR! host   type: 'system',
+08:31:34.578 ERR! host   errno: 'ENOTFOUND',
+08:31:34.578 ERR! host   code: 'ENOTFOUND',
+08:31:34.578 ERR! host   erroredSysCall: 'getaddrinfo'
+08:31:34.578 ERR! host }
+08:38:41.850 ERR! host Tt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+08:38:41.850 ERR! host  failed to verify subscription [Tt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+08:38:41.850 ERR! host   type: 'system',
+08:38:41.850 ERR! host   errno: 'ENOTFOUND',
+08:38:41.850 ERR! host   code: 'ENOTFOUND',
+08:38:41.851 ERR! host   erroredSysCall: 'getaddrinfo'
+08:38:41.851 ERR! host }
+08:43:41.848 ERR! host Tt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+08:43:41.849 ERR! host  failed to verify subscription [Tt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+08:43:41.849 ERR! host   type: 'system',
+08:43:41.849 ERR! host   errno: 'ENOTFOUND',
+08:43:41.849 ERR! host   code: 'ENOTFOUND',
+08:43:41.849 ERR! host   erroredSysCall: 'getaddrinfo'
+08:43:41.849 ERR! host }
+08:48:41.850 ERR! host Tt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+08:48:41.850 ERR! host  failed to verify subscription [Tt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+08:48:41.850 ERR! host   type: 'system',
+08:48:41.850 ERR! host   errno: 'ENOTFOUND',
+08:48:41.850 ERR! host   code: 'ENOTFOUND',
+08:48:41.850 ERR! host   erroredSysCall: 'getaddrinfo'
+08:48:41.850 ERR! host }
+08:55:59.900 info extension stopping host
+08:55:59.943 info host removing cache folder: e357d09dcb537feda0afb563afa35d6c
+09:01:07.338 info extension stopping host
+09:01:22.190 info extension stopping host
+09:01:22.381 info host ------------ starting ------------
+09:01:22.399 info extension host process output: port:[51376]
+09:01:22.399 info extension 
+09:01:22.408 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 51376 }
+09:01:22.444 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.373","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.373/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.373/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.373/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/nc/projects/git/angular/first-app/src/main.ts","reason":"search"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":13,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","169.254.58.113","192.168.0.116"],"host":"127.0.0.1","forcedStart":false,"startTime":1733475682191}
+09:01:22.464 info host starting tools discovery and integration
+09:01:22.467 info host looking for tools to patch
+09:01:22.478 info host found 1 tool file(s) to patch
+09:01:22.479 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+09:01:22.499 info host worker Starting Host Worker...
+09:01:22.540 info host completed tools discovery and integration
+09:03:03.631 WARN host No clients connected
+09:23:43.825 WARN host No clients connected
+09:24:06.402 WARN host No clients connected
+09:26:44.489 WARN host No clients connected
+09:27:02.064 WARN host No clients connected
+09:27:15.397 WARN host No clients connected
+09:28:53.509 WARN host No clients connected
+09:30:42.800 WARN host No clients connected
