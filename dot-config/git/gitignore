@@ -175,6 +175,8 @@ _darcs
 \.cache
 \.env
 \.local
+node_modules/
 
 # Add `.rake_tasks` to your global [.gitignore] (https://help.github.com/articles/ignoring-files#global-gitignore)  repositories don't get polluted.
 .rake_tasks
+

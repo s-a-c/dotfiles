@@ -59,3 +59,7 @@ npm i -g -u corepack melange million neovim npm pnpm prettier semver tree-sitter
 npm i -g -u @angular/cli corepack melange million neovim npm pnpm prettier semver tree-sitter-bash yarn
 git add . && git commit -am "-extensions" && git push
 git add . && git commit -am "-extensions" && git push
+npm i -g -u @angular/cli@next corepack melange million neovim npm pnpm prettier semver tailwindcss@next tree-sitter-bash vite yarn
+nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+git add . && git commit -pm "working start"
+git add . && git commit -pm "disable sketchybar" && git push
