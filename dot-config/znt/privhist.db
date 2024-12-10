@@ -63,3 +63,4 @@ npm i -g -u @angular/cli@next corepack melange million neovim npm pnpm prettier 
 nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
 git add . && git commit -pm "working start"
 git add . && git commit -pm "disable sketchybar" && git push
+git add . && git commit -pm "disable sketchybar" && git push

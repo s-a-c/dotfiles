@@ -1,6 +1,6 @@
 ## [alias]
 ## [alias.save]
-alias -L >| "${ZDOTDIR}/saved_alias.zsh"
+alias -L >|"${ZDOTDIR}/saved_alias.zsh"
 
 ## [alias.bat]
 alias -g bathelp='bat --plain --language=help'
@@ -110,9 +110,10 @@ alias disablehistory="function zshaddhistory() {  return 1 }"
 alias enablehistory="unset -f zshaddhistory"
 
 ## [alias.nvim]
+alias ksvim="NVIM_APPNAME=nvim-Kickstart nvim"
 alias lmvim="NVIM_APPNAME=nvim-Lazyman nvim"
 alias lzvim="NVIM_APPNAME=nvim-Lazyvim nvim"
-alias ksvim="NVIM_APPNAME=nvim-Kickstart nvim"
+alias mnvim="NVIM_APPNAME=nvim-Mini nvim"
 
 ## [alias.trash-cli]
 alias rm='echo "This is not the command you are looking for."; false'
