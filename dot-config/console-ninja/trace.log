@@ -2373,3 +2373,5 @@
 17:41:56.694 info host patching /users/s-a-c/nc/projects/git/angular/tic-tac-toe/node_modules/.pnpm/node_modules/@angular/build/src/tools/angular/compilation/parallel-worker.js
 17:41:56.747 info host Host's startup and patch time: 909 ms
 17:41:56.748 info host completed tools discovery and integration
+18:17:42.857 info extension stopping host
+18:17:42.875 info host removing cache folder: 46def5a5e0f6359e195ec006dc996487
