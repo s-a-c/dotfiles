@@ -66,3 +66,59 @@ git add . && git commit -pm "disable sketchybar" && git push
 git add . && git commit -pm "disable sketchybar" && git push
 nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
 git add . && git commit -pm "+prettier" && git push
+ng generate component --inline-style --inline-template square
+cp ~/.editorconfig ~/.prettierrc ./
+ng generate component --inline-style --inline-template square
+ng new --package-manager pnpm tic-tac-toe
+ng new --experimental-zoneless true --package-manager pnpm --routing true --ssr true --strict true --style css --view-encapsulation ShadowDom dashboard-app
+\ng add @nebular/theme@latest
+ng generate component --inline-style --inline-template square
+ng new --experimental-zoneless true --package-manager pnpm --routing true --style scss tic_tac_toe
+pnpx create-nx-workspace
+git add . && git commit -pm 'initialise monorepo'
+git add . && git commit -am 'editorconfig & prettierrc' && git push
+git add . && git commit -am 'first angular app'
+git remote add origin git:github.com/s-a-c/nx
+pnpm update --recursive --latest
+git add . && git commit -am 'nx initialise' && git push
+git remote add origin git@github.com:s-a-c/nx
+git add . && git commit -am 'nx initialise' && git push
+git add . && git commit -am 'nx initialise with @analogjs/platform' && git push
+pnpm up --recursive --latest -w
+git add . && git commit -am '+@angular/material' && git push
+git add . && git commit -am 'nx migrate; pnpm audit --fix' && git push
+nx g @analogjs/platform:app my-app --verbose
+nx up
+pnpm up -D --recursive --latest -w
+pnpm install --no-frozen-lockfile
+nx add less@latest
+git add . && git commit -am 'package.json ; pnpm up' && git push
+git add . && git commit -am 'package.json ; pnpm up' && git push
+git remote add origin git@github.com:s-a-c/nx.git\
+git branch -M main\
+git push -u origin main --force
+nx reset && nx g @nx/workspace:remove my-nlg-app --verbose
+pnpx create-nx-workspace@latest --pm pnpm --name nx --e2e-test-runner cypress --nx-cloud github --preset apps --routing --ssr --use-github --workspaces --workspace-type integrated --style scss
+nx migrate latest --verbose --createCommits --commitPrefix 'nx-m:'
+pnpm up -D --recursive --latest -w
+nx g @analogjs/platform:app --analogAppName my-nlg-app --addTailwind --addTRPC
+pnpm i @analogjs/platform@latest
+nx migrate latest --interactive --verbose --createCommits --commitPrefix 'nx-m:'
+nx add @angular/material@latest
+nx reset && nx g @nx/workspace:remove my-nlg-app --verbose
+git add . && git commit -am '.prettierrc' && git push
+nx migrate latest --interactive --verbose --createCommits --commitPrefix 'nx-m:'
+nx g @angular/material:ng-add --verbose --help 2>&1 | bat --language=help --style=plain
+php -S localhost:8888
+nx migrate latest --interactive --verbose --createCommits --commitPrefix 'nx-m:'
+pnpm up --recursive --latest --no-frozen-lockfile -w
+cd PHP-For-Beginners-Series
+cd PHP-For-Beginners-Series
+php -S localhost:8889 -t public
+pnpm up --recursive --latest --no-frozen-lockfile -w
+git add . && git commit -am '+analogjs +material' && git push
+pnpm up --recursive --latest
+pnpm install --no-frozen-lockfile
+git add . && git commit -am '+my-app' && git push
+nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+git add . && git commit -am '+ng-auto-animate' && git push

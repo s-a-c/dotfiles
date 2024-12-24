@@ -1,1 +1,0 @@
-dot-config/zsh/dot-zshenv

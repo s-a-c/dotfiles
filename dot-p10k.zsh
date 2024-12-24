@@ -1,1 +1,0 @@
-dot-config/zsh/dot-p10k.zsh

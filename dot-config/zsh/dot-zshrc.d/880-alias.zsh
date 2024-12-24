@@ -109,6 +109,9 @@ alias treea='eza --long --header --git --tree --all'
 alias disablehistory="function zshaddhistory() {  return 1 }"
 alias enablehistory="unset -f zshaddhistory"
 
+## [alias.mkdir]
+#alias md='mkdir -p'
+
 ## [alias.nvim]
 alias ksvim="NVIM_APPNAME=nvim-Kickstart nvim"
 alias lmvim="NVIM_APPNAME=nvim-Lazyman nvim"
