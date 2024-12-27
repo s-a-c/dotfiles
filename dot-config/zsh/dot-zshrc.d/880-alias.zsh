@@ -110,7 +110,7 @@ alias disablehistory="function zshaddhistory() {  return 1 }"
 alias enablehistory="unset -f zshaddhistory"
 
 ## [alias.mkdir]
-#alias md='mkdir -p'
+alias md='mkdir -p'
 
 ## [alias.nvim]
 alias ksvim="NVIM_APPNAME=nvim-Kickstart nvim"

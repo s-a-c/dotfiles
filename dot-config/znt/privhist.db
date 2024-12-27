@@ -122,3 +122,10 @@ pnpm install --no-frozen-lockfile
 git add . && git commit -am '+my-app' && git push
 nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
 git add . && git commit -am '+ng-auto-animate' && git push
+php -S localhost:8889 -t public
+nx migrate latest
+pnpm run nx g @angular/material:ng-add --project=my-app
+nx reset && nx g @nx/workspace:remove my-app --verbose
+npm i -g -u @angular/cli@latest corepack@latest million@latest neovim@latest npm@latest nx@latest pnpm@latest semver@latest vite@latest yarn@latest
+git add . && git commit -am 'mv erlang to brew' && git push
+nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback

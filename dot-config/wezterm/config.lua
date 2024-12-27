@@ -83,9 +83,9 @@ config = {
   enable_tab_bar = true,
 
   font = wezterm.font_with_fallback {
-    'OpenDyslexicM Nerd Font', 'Iosevka Nerd Font Mono', 'JetBrains Mono', 'NotoColorEmoji',
+    'Dank Mono', 'GeistMono NF', 'OpenDyslexicM Nerd Font', 'Iosevka Nerd Font Mono', 'JetBrains Mono', 'NotoColorEmoji',
   },
-  font_size = 12,
+  font_size = 16,
 
   force_reverse_video_cursor = true,
 
