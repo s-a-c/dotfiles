@@ -963,28 +963,29 @@ fi
 
 
 ## [herd] ## {{{
-## Herd injected PHP 8.4 configuration.
-export HERD_PHP_84_INI_SCAN_DIR="${HOME}/Library/Application Support/Herd/config/php/84/"
+[[ -d "${HOME}/Library/Application Support/Herd" ]] && {
+  local _herd_dir="${HOME}/Library/Application Support/Herd"
+  ## Herd injected PHP 8.4 configuration.
+  [[ -d "${_herd_dir}/config/php/84/" ]] && export HERD_PHP_84_INI_SCAN_DIR="${_herd_dir}/config/php/84/"
+  ## Herd injected PHP 8.3 configuration.
+  [[ -d "${_herd_dir}/config/php/83/" ]] && export HERD_PHP_83_INI_SCAN_DIR="${_herd_dir}/config/php/83/"
+  ## Herd injected PHP 8.2 configuration.
+  [[ -d "${_herd_dir}/config/php/82/" ]] && export HERD_PHP_82_INI_SCAN_DIR="${_herd_dir}/config/php/82/"
 
-## Herd injected PHP 8.3 configuration.
-export HERD_PHP_83_INI_SCAN_DIR="${HOME}/Library/Application Support/Herd/config/php/83/"
+  ## Herd injected PHP binary.
+  _path_prepend "${_herd_dir}/bin/"
 
-## Herd injected PHP 8.2 configuration.
-export HERD_PHP_82_INI_SCAN_DIR="${HOME}/Library/Application Support/Herd/config/php/82/"
+  ## [herd.nvm]
+  ## Herd injected NVM configuration
+  export NVM_DIR="${_herd_dir}/config/nvm"
+  [[ -s "$NVM_DIR/nvm.sh" ]] && builtin source "$NVM_DIR/nvm.sh" --no-use # This loads nvm
 
-## Herd injected PHP binary.
-export PATH="${HOME}/Library/Application Support/Herd/bin/":$PATH
+  zstyle ':omz:plugins:nvm' lazy yes
+  zstyle ':omz:plugins:nvm' lazy-cmd nvm node npm pnpm yarn corepack eslint prettier typescript
+  zstyle ':omz:plugins:nvm' autoload yes
+  zstyle ':omz:plugins:nvm' silent-autoload yes
+  ## [herd.nvm]  ## }}}
 
-## [herd.nvm]
-## Herd injected NVM configuration
-export NVM_DIR="${HOME}/Library/Application Support/Herd/config/nvm"
-[[ -s "$NVM_DIR/nvm.sh" ]] && builtin source "$NVM_DIR/nvm.sh" --no-use # This loads nvm
-zstyle ':omz:plugins:nvm' lazy yes
-zstyle ':omz:plugins:nvm' lazy-cmd nvm node npm pnpm yarn corepack eslint prettier typescript
-zstyle ':omz:plugins:nvm' autoload yes
-zstyle ':omz:plugins:nvm' silent-autoload yes
-
-## [herd.nvm]  ## }}}
-
-[[ -f "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh" ]] && builtin source "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh"
+  [[ -f "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh" ]] && builtin source "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh"
+}
 ## }}}  ## [herd]

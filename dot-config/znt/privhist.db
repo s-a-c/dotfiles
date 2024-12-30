@@ -129,3 +129,17 @@ nx reset && nx g @nx/workspace:remove my-app --verbose
 npm i -g -u @angular/cli@latest corepack@latest million@latest neovim@latest npm@latest nx@latest pnpm@latest semver@latest vite@latest yarn@latest
 git add . && git commit -am 'mv erlang to brew' && git push
 nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+laravel new realtime-laravel-basics
+laravel new realtime-laravel-basics
+laravel new realtime-laravel-basics -vvv
+cd ~/Herd/apps/realtime-laravel-basics && pnpm install && pnpm run build && composer run dev
+ghostty +list-themes
+pnpm install --global @angular/cli corepack mapscii million neovim pnpm semver vite vitest yarn
+NXDAEMON=false pnpm exec nx g @angular/material:ng-add --project=my-mat-app
+ng new --help 2>&1 | bat --language=help --style=plain
+ng new angular --experimental-zoneless --inline-style --inline-template --package-manager pnpm --standalone --strict --style css
+ng new angular --experimental-zoneless --inline-style --inline-template --package-manager pnpm --standalone --strict --style css
+composer up --lock --with-all-dependencies --optimize-autoloader -vv
+composer require $(composer show -s --format=json | jq '.requires | keys | map(.+" ") | add' -r)
+composer require --dev $(composer show -s --format=json | jq '.devRequires | keys | map(.+" ") | add' -r)
+git add . && git commit -am '-visual-studio-code, upd8 ghostty' && git push

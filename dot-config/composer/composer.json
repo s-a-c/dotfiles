@@ -1,5 +1,6 @@
 {
     "require": {
-        "darkterminal/turso-php-installer": "^2.0"
+        "darkterminal/turso-php-installer": "^2.0",
+        "beyondcode/expose": "^2.6"
     }
 }

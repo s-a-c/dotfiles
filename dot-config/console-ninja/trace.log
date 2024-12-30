@@ -5753,3 +5753,331 @@
 15:24:34.812 info host completed tools discovery and integration
 15:25:08.537 info extension stopping host
 15:25:08.576 info extension client disconnected: 1006 
+16:57:35.658 info extension stopping host
+17:49:25.514 info extension stopping host
+20:15:07.079 info extension stopping host
+02:38:24.341 info extension stopping host
+02:56:59.655 info extension stopping host
+02:56:59.656 info extension Console Ninja extension version: 1.0.376
+02:56:59.915 info host ------------ starting ------------
+02:56:59.947 info host removing cache folder: b569456113013053f721ea1feaa70742
+02:57:00.057 info host worker Starting Host Worker...
+02:57:00.156 info extension host process output: port:[51457]
+02:57:00.156 info extension 
+02:57:00.177 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 51457 }
+02:57:00.354 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.376","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.376/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.376/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.376/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/herd/example/vendor/laravel/framework/src/illuminate/foundation/resources/exceptions/renderer/dist/scripts.js","reason":"search"},{"path":"/users/s-a-c/herd/example/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/bootstrap.bundle.min.js","reason":"search"},{"path":"/users/s-a-c/herd/example/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/jquery.min.js","reason":"search"},{"path":"/users/s-a-c/herd/example/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/nv.d3.min.js","reason":"search"},{"path":"/users/s-a-c/herd/example/public/build/assets/app-xaw6oio1.js","reason":"search"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":16,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.71"],"host":"127.0.0.1","forcedStart":false,"startTime":1735354619656}
+02:57:00.379 info host starting tools discovery and integration
+02:57:00.386 info host looking for tools to patch
+02:57:00.568 info host found 3 tool file(s) to patch
+02:57:00.570 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+02:57:00.570 info host patching /users/s-a-c/herd/example/node_modules/vite/bin/vite.js
+02:57:00.623 info host Host's startup and patch time: 966 ms
+02:57:00.623 info host completed tools discovery and integration
+02:57:26.139 info buildHook-14456 installing build hook for vite at /users/s-a-c/herd/example, node v23.5.0
+02:57:26.144 info buildHook-14456 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+02:57:26.144 info buildHook-14456 running tools: vite
+02:57:26.148 info buildHook-14456 installing fs interceptor
+02:57:26.171 info host client connected: buildHook { address: '127.0.0.1', family: 'IPv4', port: 51457 }
+02:57:26.174 info buildHook-14456 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+02:57:26.174 info buildHook-14456 running tools: vite
+04:33:16.626 info host client disconnected: buildHook 4100
+04:33:16.626 info host client disconnected: buildHook 4100, has clients false
+04:36:35.300 info host client disconnected: extension 1006
+04:36:35.301 info host client disconnected: extension { id: 1, clientType: 'extension' }
+04:42:33.322 info extension stopping host
+04:42:33.323 info extension Console Ninja extension version: 1.0.376
+04:42:33.695 info host ------------ starting ------------
+04:42:33.815 info extension host process output: port:[51457]
+04:42:33.819 info extension 
+04:42:33.860 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 51457 }
+04:42:33.861 info host worker Starting Host Worker...
+04:42:34.031 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.376","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.376/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.376/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.376/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/herd/example/vendor/laravel/framework/src/illuminate/foundation/resources/exceptions/renderer/dist/scripts.js","reason":"search"},{"path":"/users/s-a-c/herd/example/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/nv.d3.min.js","reason":"search"},{"path":"/users/s-a-c/herd/example/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/bootstrap.bundle.min.js","reason":"search"},{"path":"/users/s-a-c/herd/example/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/jquery.min.js","reason":"search"},{"path":"/users/s-a-c/herd/example/public/build/assets/app-xaw6oio1.js","reason":"search"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":16,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.71"],"host":"127.0.0.1","forcedStart":false,"startTime":1735360953323}
+04:42:34.071 info host starting tools discovery and integration
+04:42:34.101 info host looking for tools to patch
+04:42:34.397 info host found 3 tool file(s) to patch
+04:42:34.398 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+04:42:34.399 info host patching /users/s-a-c/herd/example/node_modules/vite/bin/vite.js
+04:42:34.556 info host Host's startup and patch time: 1232 ms
+04:42:34.558 info host completed tools discovery and integration
+04:42:34.566 info host removing cache folder: b522dcd9a2d53add7ed80b864fca0250
+04:52:49.522 info extension stopping host
+04:52:49.531 info host removing cache folder: d0d71da560551d894c70e2ea3b8d19fb
+04:52:49.608 info extension client disconnected: 1006 
+04:56:26.060 info extension stopping host
+04:56:26.061 info extension Console Ninja extension version: 1.0.376
+04:56:26.523 info host ------------ starting ------------
+04:56:26.697 info extension host process output: port:[51457]
+04:56:26.699 info extension 
+04:56:26.803 info host worker Starting Host Worker...
+04:56:26.819 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 51457 }
+04:56:27.339 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.376","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.376/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.376/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.376/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/herd/example/vendor/laravel/framework/src/illuminate/foundation/resources/exceptions/renderer/dist/scripts.js","reason":"search"},{"path":"/users/s-a-c/herd/example/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/bootstrap.bundle.min.js","reason":"search"},{"path":"/users/s-a-c/herd/example/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/nv.d3.min.js","reason":"search"},{"path":"/users/s-a-c/herd/example/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/jquery.min.js","reason":"search"},{"path":"/users/s-a-c/herd/example/public/build/assets/app-xaw6oio1.js","reason":"search"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":16,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.71"],"host":"127.0.0.1","forcedStart":false,"startTime":1735361786061}
+04:56:27.368 info host starting tools discovery and integration
+04:56:27.372 info host looking for tools to patch
+04:56:28.008 info host found 3 tool file(s) to patch
+04:56:28.010 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+04:56:28.011 info host patching /users/s-a-c/herd/example/node_modules/vite/bin/vite.js
+04:56:28.066 info host Host's startup and patch time: 2005 ms
+04:56:28.066 info host completed tools discovery and integration
+04:56:57.160 info buildHook-43185 installing build hook for vite at /users/s-a-c/herd/example, node v23.5.0
+04:56:57.166 info buildHook-43185 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+04:56:57.166 info buildHook-43185 running tools: vite
+04:56:57.168 info buildHook-43185 installing fs interceptor
+04:56:57.170 info host client connected: buildHook { address: '127.0.0.1', family: 'IPv4', port: 51457 }
+04:56:57.178 info buildHook-43185 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+04:56:57.178 info buildHook-43185 running tools: vite
+05:01:37.348 info host client disconnected: buildHook 4100
+05:01:37.348 info host client disconnected: buildHook 4100, has clients false
+05:08:14.590 info buildHook-63142 installing build hook for vite at /users/s-a-c/herd/example, node v23.5.0
+05:08:14.595 info buildHook-63142 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+05:08:14.595 info buildHook-63142 running tools: vite
+05:08:14.597 info buildHook-63142 installing fs interceptor
+05:08:14.599 info host client connected: buildHook { address: '127.0.0.1', family: 'IPv4', port: 51457 }
+05:08:14.606 info buildHook-63142 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+05:08:14.607 info buildHook-63142 running tools: vite
+12:19:51.448 info extension stopping host
+12:19:51.457 info host removing cache folder: 49e9a3e49f00a27f81d2428cb826afc6
+12:19:51.526 info buildHook-63142 client disconnected: 1006 
+12:19:51.526 info buildHook-63142 disconnected from host: 51457
+12:19:51.526 info buildHook-63142 disconnected from all hosts
+12:19:51.579 info extension client disconnected: 1006 
+19:46:13.787 info extension stopping host
+19:51:26.091 info extension stopping host
+19:51:32.349 info extension stopping host
+19:51:32.350 info extension Console Ninja extension version: 1.0.376
+19:51:32.649 info host ------------ starting ------------
+19:51:32.680 info extension host process output: port:[51457]
+19:51:32.680 info extension 
+19:51:32.691 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 51457 }
+19:51:32.814 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.376","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.376/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.376/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.376/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/herd/example/vendor/laravel/framework/src/illuminate/foundation/resources/exceptions/renderer/dist/scripts.js","reason":"search"},{"path":"/users/s-a-c/herd/example/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/bootstrap.bundle.min.js","reason":"search"},{"path":"/users/s-a-c/herd/example/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/jquery.min.js","reason":"search"},{"path":"/users/s-a-c/herd/example/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/nv.d3.min.js","reason":"search"},{"path":"/users/s-a-c/herd/example/public/build/assets/app-xaw6oio1.js","reason":"search"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":16,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.71"],"host":"127.0.0.1","forcedStart":false,"startTime":1735415492350}
+19:51:32.973 info host worker Starting Host Worker...
+19:51:32.984 info host starting tools discovery and integration
+19:51:32.992 info host looking for tools to patch
+19:51:33.264 info host found 3 tool file(s) to patch
+19:51:33.265 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+19:51:33.266 info host patching /users/s-a-c/herd/example/node_modules/vite/bin/vite.js
+19:51:33.324 info host Host's startup and patch time: 974 ms
+19:51:33.324 info host completed tools discovery and integration
+19:52:08.101 info buildHook-19243 installing build hook for vite at /users/s-a-c/herd/example, node v23.5.0
+19:52:08.105 info buildHook-19243 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+19:52:08.105 info buildHook-19243 running tools: vite
+19:52:08.108 info buildHook-19243 installing fs interceptor
+19:52:08.110 info host client connected: buildHook { address: '127.0.0.1', family: 'IPv4', port: 51457 }
+19:52:08.117 info buildHook-19243 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+19:52:08.117 info buildHook-19243 running tools: vite
+20:11:51.107 info host client disconnected: buildHook 4100
+20:11:51.108 info host client disconnected: buildHook 4100, has clients false
+20:12:17.314 info buildHook-30512 installing build hook for vite at /users/s-a-c/herd/example, node v23.5.0
+20:12:17.319 info buildHook-30512 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+20:12:17.319 info buildHook-30512 running tools: vite
+20:12:17.320 info buildHook-30512 installing fs interceptor
+20:12:17.330 info host client connected: buildHook { address: '127.0.0.1', family: 'IPv4', port: 51457 }
+20:12:17.333 info buildHook-30512 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+20:12:17.333 info buildHook-30512 running tools: vite
+21:53:32.846 info extension stopping host
+21:53:32.855 info host removing cache folder: 30de70a2ddef0db1030d86b00cf13aea
+21:53:32.863 info buildHook-30512 client disconnected: 1006 
+21:53:32.864 info buildHook-30512 disconnected from host: 51457
+21:53:32.864 info buildHook-30512 disconnected from all hosts
+21:53:32.891 info extension client disconnected: 1006 
+21:53:42.597 info extension stopping host
+21:53:42.598 info extension Console Ninja extension version: 1.0.376
+21:53:43.178 info host ------------ starting ------------
+21:53:43.274 info extension host process output: port:[51457]
+21:53:43.274 info extension 
+21:53:43.291 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 51457 }
+21:53:43.319 info host worker Starting Host Worker...
+21:53:43.501 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.376","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.376/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.376/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.376/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/herd/example/vendor/laravel/framework/src/illuminate/foundation/resources/exceptions/renderer/dist/scripts.js","reason":"search"},{"path":"/users/s-a-c/herd/example/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/bootstrap.bundle.min.js","reason":"search"},{"path":"/users/s-a-c/herd/example/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/nv.d3.min.js","reason":"search"},{"path":"/users/s-a-c/herd/example/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/jquery.min.js","reason":"search"},{"path":"/users/s-a-c/herd/example/public/build/assets/app-xaw6oio1.js","reason":"search"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":16,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.71"],"host":"127.0.0.1","forcedStart":false,"startTime":1735422822598}
+21:53:43.524 info host starting tools discovery and integration
+21:53:43.534 info host looking for tools to patch
+21:53:43.734 info host found 3 tool file(s) to patch
+21:53:43.735 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+21:53:43.735 info host patching /users/s-a-c/herd/example/node_modules/vite/bin/vite.js
+21:53:43.789 info host Host's startup and patch time: 1191 ms
+21:53:43.790 info host completed tools discovery and integration
+21:53:43.882 info buildHook-30512 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+21:53:43.882 info buildHook-30512 running tools: vite
+21:53:43.885 info host client connected: buildHook { address: '127.0.0.1', family: 'IPv4', port: 51457 }
+21:53:43.887 info buildHook-30512 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+21:53:43.887 info buildHook-30512 running tools: vite
+21:54:13.729 info buildHook-76275 installing build hook for vite at /users/s-a-c/herd/example, node v23.5.0
+21:54:13.735 info buildHook-76275 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+21:54:13.735 info buildHook-76275 running tools: vite
+21:54:13.736 info buildHook-76275 installing fs interceptor
+21:54:13.738 info host client connected: buildHook { address: '127.0.0.1', family: 'IPv4', port: 51457 }
+21:54:13.740 info buildHook-76275 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+21:54:13.741 info buildHook-76275 running tools: vite
+22:46:44.816 info host client disconnected: buildHook 4100
+22:46:44.817 info host client disconnected: buildHook 4100, has clients true
+22:46:50.124 info host client disconnected: buildHook 4100
+22:46:50.124 info host client disconnected: buildHook 4100, has clients false
+23:03:37.003 info buildHook-53603 installing build hook for vite at /users/s-a-c/herd/example, node v23.5.0
+23:03:37.009 info buildHook-53603 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+23:03:37.009 info buildHook-53603 running tools: vite
+23:03:37.012 info buildHook-53603 installing fs interceptor
+23:03:37.014 info host client connected: buildHook { address: '127.0.0.1', family: 'IPv4', port: 51457 }
+23:03:37.022 info buildHook-53603 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+23:03:37.023 info buildHook-53603 running tools: vite
+23:06:23.381 info host client disconnected: buildHook 4100
+23:06:23.382 info host client disconnected: buildHook 4100, has clients false
+23:07:36.585 info buildHook-59313 installing build hook for vite at /users/s-a-c/herd/example, node v23.5.0
+23:07:36.590 info buildHook-59313 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+23:07:36.590 info buildHook-59313 running tools: vite
+23:07:36.591 info buildHook-59313 installing fs interceptor
+23:07:36.593 info host client connected: buildHook { address: '127.0.0.1', family: 'IPv4', port: 51457 }
+23:07:36.596 info buildHook-59313 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+23:07:36.596 info buildHook-59313 running tools: vite
+16:09:43.650 info extension stopping host
+16:09:43.662 info host removing cache folder: 563fce4030d1d567e7b8ccda36ef70e7
+16:09:43.674 info buildHook-59313 client disconnected: 1006 
+16:09:43.675 info buildHook-59313 disconnected from host: 51457
+16:09:43.675 info buildHook-59313 disconnected from all hosts
+16:09:43.750 info extension client disconnected: 1006 
+16:09:51.227 info extension stopping host
+16:09:51.230 info extension Console Ninja extension version: 1.0.376
+16:09:52.453 info host ------------ starting ------------
+16:09:52.481 info extension host process output: port:[63345]
+16:09:52.481 info extension 
+16:09:52.490 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 63345 }
+16:09:52.534 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.376","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.376/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.376/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.376/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/herd/laravel-angular/resources/angular/src/main.ts","reason":"search"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":16,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.71"],"host":"127.0.0.1","forcedStart":false,"startTime":1735488591230}
+16:09:52.557 info host starting tools discovery and integration
+16:09:52.561 info host looking for tools to patch
+16:09:52.598 info host worker Starting Host Worker...
+16:09:53.684 info host found 23 tool file(s) to patch
+16:09:53.688 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+16:09:53.689 info host patching /users/s-a-c/herd/laravel-angular/node_modules/vite/bin/vite.js
+16:09:53.689 info host patching /users/s-a-c/herd/laravel-angular/node_modules/.pnpm/@angular+build@19.0.6_@angular+compiler-cli@19.0.5_@angular+compiler@19.0.5_@angular+core@19._45v6lj7427fg3vvg6n2ugvrga4/node_modules/vite/bin/vite.js
+16:09:53.689 info host patching /users/s-a-c/herd/laravel-angular/node_modules/.pnpm/@vitejs+plugin-react@4.3.4_vite@6.0.6_@types+node@18.19.68_jiti@1.21.7_yaml@2.6.1_/node_modules/vite/bin/vite.js
+16:09:53.689 info host patching /users/s-a-c/herd/laravel-angular/node_modules/.pnpm/@vitejs+plugin-react@4.3.4_vite@6.0.6_@types+node@22.10.2_jiti@1.21.7_yaml@2.6.1_/node_modules/vite/bin/vite.js
+16:09:53.689 info host patching /users/s-a-c/herd/laravel-angular/ /Users/s-a-c/.local/share/pnpm/global/5/node_modules/vite/bin/vite.js
+16:09:53.689 info host patching /users/s-a-c/herd/laravel-angular/ /Users/s-a-c/.local/share/pnpm/global/5/.pnpm/@vitest+mocker@2.1.8_vite@5.4.11_@types+node@22.10.2_/node_modules/vite/bin/vite.js
+16:09:53.689 info host patching /users/s-a-c/herd/laravel-angular/node_modules/.pnpm/node_modules/webpack/lib/WebpackOptionsApply.js
+16:09:53.689 info host patching /users/s-a-c/herd/laravel-angular/node_modules/.pnpm/node_modules/webpack/lib/index.js
+16:09:53.689 info host patching /users/s-a-c/herd/laravel-angular/node_modules/.pnpm/node_modules/webpack/lib/webpack.js
+16:09:53.689 info host patching /users/s-a-c/herd/laravel-angular/resources/angular/node_modules/@angular/cli/bin/ng.js
+16:09:53.689 info host patching /users/s-a-c/herd/laravel-angular/node_modules/.pnpm/node_modules/@angular/build/src/tools/esbuild/javascript-transformer-worker.js
+16:09:53.689 info host patching /users/s-a-c/herd/laravel-angular/node_modules/.pnpm/node_modules/@angular/build/src/tools/angular/compilation/parallel-worker.js
+16:09:53.690 info host patching /users/s-a-c/herd/laravel-angular/ /Users/s-a-c/.local/share/pnpm/global/5/node_modules/@angular/cli/bin/ng.js
+16:09:53.753 info host Host's startup and patch time: 2523 ms
+16:09:53.753 info host completed tools discovery and integration
+17:06:24.210 info extension stopping host
+17:06:24.221 info host removing cache folder: 790d0365da79f1050f888a6f66b66f91
+17:06:24.291 info extension client disconnected: 1006 
+17:52:01.568 info extension stopping host
+17:52:08.375 info extension stopping host
+17:52:08.376 info extension Console Ninja extension version: 1.0.376
+17:52:08.636 info host ------------ starting ------------
+17:52:08.669 info extension host process output: port:[65428]
+17:52:08.669 info extension 
+17:52:08.691 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 65428 }
+17:52:08.775 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.376","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.376/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.376/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.376/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/nc/projects/git/angularstart/apps/my-mat-app/src/main.ts","reason":"search"},{"path":"/users/s-a-c/nc/projects/git/angularstart/apps/my-app/src/main.ts","reason":"search"},{"path":"/users/s-a-c/nc/projects/git/angularstart/apps/my-tw-app/src/main.ts","reason":"search"},{"path":"/users/s-a-c/nc/projects/git/angularstart/apps/my-app/src/app/app.component.ts","reason":"search"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":16,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.71"],"host":"127.0.0.1","forcedStart":false,"startTime":1735494728376}
+17:52:08.825 info host starting tools discovery and integration
+17:52:08.856 info host looking for tools to patch
+17:52:08.965 info host worker Starting Host Worker...
+17:52:11.665 info host found 46 tool file(s) to patch
+17:52:11.669 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+17:52:11.669 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/cypress/lib/cypress.js
+17:52:11.669 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/node_modules/http-server/bin/http-server
+17:52:11.669 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/jest/bin/jest.js
+17:52:11.670 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/node_modules/jest-runner/build/testWorker.js
+17:52:11.670 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/vite/bin/vite.js
+17:52:11.670 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@angular+build@19.0.6_7mec6sw6rfxhucvb7etl3pn6ny/node_modules/vite/bin/vite.js
+17:52:11.670 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@angular+build@19.0.6_lfcqvl6jhj55vq5g2v3d5rt5iq/node_modules/vite/bin/vite.js
+17:52:11.670 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@angular+build@19.0.6_pygc5g34infctmv3eog7o4lh7e/node_modules/vite/bin/vite.js
+17:52:11.670 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@angular+build@19.0.6_k6q27j4tyeccmonc4vxi6ub5hu/node_modules/vite/bin/vite.js
+17:52:11.670 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@nx+vite@20.3.0_@babel+traverse@7.26.4_@swc-node+register@1.10.9_@swc+core@1.10.1_@swc+helper_z36arsmg3rmudlosf54jlh32qe/node_modules/vite/bin/vite.js
+17:52:11.671 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/node_modules/webpack/lib/WebpackOptionsApply.js
+17:52:11.671 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/node_modules/webpack/lib/index.js
+17:52:11.671 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/node_modules/webpack/lib/webpack.js
+17:52:11.671 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@module-federation+enhanced@0.7.6_react-dom@18.3.1_react@18.3.1__react@18.3.1_typescript@5.6._nue3m6r2yyej5oddyqyrn5efdy/node_modules/webpack/lib/WebpackOptionsApply.js
+17:52:11.672 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@module-federation+enhanced@0.7.6_react-dom@18.3.1_react@18.3.1__react@18.3.1_typescript@5.6._nue3m6r2yyej5oddyqyrn5efdy/node_modules/webpack/lib/index.js
+17:52:11.672 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@module-federation+enhanced@0.7.6_react-dom@18.3.1_react@18.3.1__react@18.3.1_typescript@5.6._nue3m6r2yyej5oddyqyrn5efdy/node_modules/webpack/lib/webpack.js
+17:52:11.672 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@module-federation+enhanced@0.7.6_react-dom@18.3.1_react@18.3.1__react@18.3.1_typescript@5.6._ssxofeleqq3bh2vsxn54sssvky/node_modules/webpack/lib/WebpackOptionsApply.js
+17:52:11.672 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@module-federation+enhanced@0.7.6_react-dom@18.3.1_react@18.3.1__react@18.3.1_typescript@5.6._ssxofeleqq3bh2vsxn54sssvky/node_modules/webpack/lib/index.js
+17:52:11.672 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@module-federation+enhanced@0.7.6_react-dom@18.3.1_react@18.3.1__react@18.3.1_typescript@5.6._ssxofeleqq3bh2vsxn54sssvky/node_modules/webpack/lib/webpack.js
+17:52:11.672 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/@angular/cli/bin/ng.js
+17:52:11.672 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/node_modules/@angular/build/src/tools/esbuild/javascript-transformer-worker.js
+17:52:11.673 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@analogjs+vite-plugin-angular@1.10.3_@angular-devkit+build-angular@19.0.6_4y3ehwtf7qbkhh6oc6m_shq7auqm7mcce6ih274rbyul3e/node_modules/@angular/build/src/tools/esbuild/javascript-transformer-worker.js
+17:52:11.673 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@angular+build@19.0.6_7mec6sw6rfxhucvb7etl3pn6ny/node_modules/@angular/build/src/tools/esbuild/javascript-transformer-worker.js
+17:52:11.673 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@angular+build@19.0.6_lfcqvl6jhj55vq5g2v3d5rt5iq/node_modules/@angular/build/src/tools/esbuild/javascript-transformer-worker.js
+17:52:11.673 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/node_modules/@angular/build/src/tools/angular/compilation/parallel-worker.js
+17:52:11.673 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@analogjs+vite-plugin-angular@1.10.3_@angular-devkit+build-angular@19.0.6_4y3ehwtf7qbkhh6oc6m_shq7auqm7mcce6ih274rbyul3e/node_modules/@angular/build/src/tools/angular/compilation/parallel-worker.js
+17:52:11.673 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@angular+build@19.0.6_7mec6sw6rfxhucvb7etl3pn6ny/node_modules/@angular/build/src/tools/angular/compilation/parallel-worker.js
+17:52:11.673 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@angular+build@19.0.6_lfcqvl6jhj55vq5g2v3d5rt5iq/node_modules/@angular/build/src/tools/angular/compilation/parallel-worker.js
+17:52:11.744 info host Host's startup and patch time: 3368 ms
+17:52:11.744 info host completed tools discovery and integration
+18:37:09.237 info extension stopping host
+18:37:09.250 info host removing cache folder: d59c40f2a38fbf93c573c41c6e1c1d82
+18:37:09.354 info extension client disconnected: 1006 
+18:37:14.508 info extension stopping host
+18:37:14.509 info extension Console Ninja extension version: 1.0.376
+18:37:14.701 info host ------------ starting ------------
+18:37:14.766 info extension host process output: port:[65428]
+18:37:14.766 info extension 
+18:37:14.822 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 65428 }
+18:37:15.063 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.376","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.376/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.376/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.376/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/nc/projects/git/angularstart/apps/my-app/src/main.ts","reason":"search"},{"path":"/users/s-a-c/nc/projects/git/angularstart/apps/my-mat-app/src/main.ts","reason":"search"},{"path":"/users/s-a-c/nc/projects/git/angularstart/apps/my-tw-app/src/main.ts","reason":"search"},{"path":"/users/s-a-c/nc/projects/git/angularstart/apps/my-app/src/app/app.component.ts","reason":"search"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":16,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.71"],"host":"127.0.0.1","forcedStart":false,"startTime":1735497434509}
+18:37:15.095 info host starting tools discovery and integration
+18:37:15.114 info host looking for tools to patch
+18:37:15.215 info host worker Starting Host Worker...
+18:37:17.259 info host found 46 tool file(s) to patch
+18:37:17.262 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+18:37:17.263 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/node_modules/http-server/bin/http-server
+18:37:17.263 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/cypress/lib/cypress.js
+18:37:17.263 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/jest/bin/jest.js
+18:37:17.263 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/node_modules/jest-runner/build/testWorker.js
+18:37:17.264 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/vite/bin/vite.js
+18:37:17.264 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@angular+build@19.0.6_7mec6sw6rfxhucvb7etl3pn6ny/node_modules/vite/bin/vite.js
+18:37:17.264 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@angular+build@19.0.6_k6q27j4tyeccmonc4vxi6ub5hu/node_modules/vite/bin/vite.js
+18:37:17.264 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@angular+build@19.0.6_lfcqvl6jhj55vq5g2v3d5rt5iq/node_modules/vite/bin/vite.js
+18:37:17.264 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@angular+build@19.0.6_pygc5g34infctmv3eog7o4lh7e/node_modules/vite/bin/vite.js
+18:37:17.264 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@nx+vite@20.3.0_@babel+traverse@7.26.4_@swc-node+register@1.10.9_@swc+core@1.10.1_@swc+helper_z36arsmg3rmudlosf54jlh32qe/node_modules/vite/bin/vite.js
+18:37:17.265 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/node_modules/webpack/lib/WebpackOptionsApply.js
+18:37:17.265 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/node_modules/webpack/lib/index.js
+18:37:17.265 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/node_modules/webpack/lib/webpack.js
+18:37:17.265 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@module-federation+enhanced@0.7.6_react-dom@18.3.1_react@18.3.1__react@18.3.1_typescript@5.6._ssxofeleqq3bh2vsxn54sssvky/node_modules/webpack/lib/WebpackOptionsApply.js
+18:37:17.265 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@module-federation+enhanced@0.7.6_react-dom@18.3.1_react@18.3.1__react@18.3.1_typescript@5.6._ssxofeleqq3bh2vsxn54sssvky/node_modules/webpack/lib/index.js
+18:37:17.265 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@module-federation+enhanced@0.7.6_react-dom@18.3.1_react@18.3.1__react@18.3.1_typescript@5.6._ssxofeleqq3bh2vsxn54sssvky/node_modules/webpack/lib/webpack.js
+18:37:17.265 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@module-federation+enhanced@0.7.6_react-dom@18.3.1_react@18.3.1__react@18.3.1_typescript@5.6._nue3m6r2yyej5oddyqyrn5efdy/node_modules/webpack/lib/WebpackOptionsApply.js
+18:37:17.265 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@module-federation+enhanced@0.7.6_react-dom@18.3.1_react@18.3.1__react@18.3.1_typescript@5.6._nue3m6r2yyej5oddyqyrn5efdy/node_modules/webpack/lib/index.js
+18:37:17.265 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@module-federation+enhanced@0.7.6_react-dom@18.3.1_react@18.3.1__react@18.3.1_typescript@5.6._nue3m6r2yyej5oddyqyrn5efdy/node_modules/webpack/lib/webpack.js
+18:37:17.265 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/@angular/cli/bin/ng.js
+18:37:17.266 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/node_modules/@angular/build/src/tools/esbuild/javascript-transformer-worker.js
+18:37:17.266 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@analogjs+vite-plugin-angular@1.10.3_@angular-devkit+build-angular@19.0.6_4y3ehwtf7qbkhh6oc6m_shq7auqm7mcce6ih274rbyul3e/node_modules/@angular/build/src/tools/esbuild/javascript-transformer-worker.js
+18:37:17.266 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@angular+build@19.0.6_7mec6sw6rfxhucvb7etl3pn6ny/node_modules/@angular/build/src/tools/esbuild/javascript-transformer-worker.js
+18:37:17.266 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@angular+build@19.0.6_lfcqvl6jhj55vq5g2v3d5rt5iq/node_modules/@angular/build/src/tools/esbuild/javascript-transformer-worker.js
+18:37:17.266 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/node_modules/@angular/build/src/tools/angular/compilation/parallel-worker.js
+18:37:17.266 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@analogjs+vite-plugin-angular@1.10.3_@angular-devkit+build-angular@19.0.6_4y3ehwtf7qbkhh6oc6m_shq7auqm7mcce6ih274rbyul3e/node_modules/@angular/build/src/tools/angular/compilation/parallel-worker.js
+18:37:17.266 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@angular+build@19.0.6_7mec6sw6rfxhucvb7etl3pn6ny/node_modules/@angular/build/src/tools/angular/compilation/parallel-worker.js
+18:37:17.266 info host patching /users/s-a-c/nc/projects/git/angularstart/node_modules/.pnpm/@angular+build@19.0.6_lfcqvl6jhj55vq5g2v3d5rt5iq/node_modules/@angular/build/src/tools/angular/compilation/parallel-worker.js
+18:37:17.321 info host Host's startup and patch time: 2812 ms
+18:37:17.321 info host completed tools discovery and integration
+18:55:27.031 WARN host No clients connected
+19:11:43.425 WARN host No clients connected
+19:11:52.600 WARN host No clients connected
+19:13:33.493 WARN host No clients connected
+19:13:37.476 WARN host No clients connected
+19:13:49.734 WARN host No clients connected
+19:16:16.500 WARN host No clients connected
+19:24:11.438 WARN host No clients connected
+19:30:29.641 WARN host No clients connected
+19:31:15.716 WARN host No clients connected
+19:38:20.849 WARN host No clients connected
+19:38:58.646 WARN host No clients connected
+20:02:16.513 WARN host No clients connected
+20:08:39.874 WARN host No clients connected
+20:10:14.077 WARN host No clients connected
+20:10:32.396 WARN host No clients connected
+20:25:01.357 WARN host No clients connected
+20:28:59.212 WARN host No clients connected
+21:40:57.445 WARN host No clients connected
+22:24:44.701 WARN host No clients connected
+22:25:19.346 WARN host No clients connected
+23:16:19.367 WARN host No clients connected
+23:17:33.532 WARN host No clients connected
+23:20:31.878 WARN host No clients connected
+23:20:52.896 WARN host No clients connected
+23:21:13.113 WARN host No clients connected
+23:21:24.233 WARN host No clients connected
+23:22:57.688 WARN host No clients connected
+23:29:12.837 info extension stopping host
+23:29:12.860 info host removing cache folder: 08d535d609330a0e07edd942b47893c5
+23:29:12.916 info extension client disconnected: 1006 

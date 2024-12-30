@@ -1,5 +1,5 @@
 # Add deno completions to search path
-if [[ ":$FPATH:" != *":/Users/s-a-c/.config/zsh/completions:"* ]]; then export FPATH="/Users/s-a-c/.config/zsh/completions:$FPATH"; fi
+if [[ ":$FPATH:" != *": ${HOME}/.config/zsh/completions:"* ]]; then export FPATH=" ${HOME}/.config/zsh/completions:$FPATH"; fi
 # Copyright 2006-2024 Joseph Block <jpb@unixorn.net>
 #
 # BSD licensed, see LICENSE.txt
@@ -1004,21 +1004,6 @@ export PATH
 eval "$(brew shellenv)"
 
 
-# Herd injected PHP binary.
-export PATH="/Users/s-a-c/Library/Application Support/Herd/bin/":$PATH
-
-
-# Herd injected PHP 8.3 configuration.
-export HERD_PHP_83_INI_SCAN_DIR="/Users/s-a-c/Library/Application Support/Herd/config/php/83/"
-
-
-# Herd injected PHP 8.4 configuration.
-export HERD_PHP_84_INI_SCAN_DIR="/Users/s-a-c/Library/Application Support/Herd/config/php/84/"
-
-
-# Herd injected PHP 8.2 configuration.
-export HERD_PHP_82_INI_SCAN_DIR="/Users/s-a-c/Library/Application Support/Herd/config/php/82/"
-
 PATH=~/.console-ninja/.bin:$PATH
 
 # BEGIN opam configuration
@@ -1026,11 +1011,11 @@ PATH=~/.console-ninja/.bin:$PATH
 #   - the correct directories to the PATH
 #   - auto-completion for the opam binary
 # This section can be safely removed at any time if needed.
-[[ ! -r '/Users/s-a-c/.local/share/opam/opam-init/init.zsh' ]] || source '/Users/s-a-c/.local/share/opam/opam-init/init.zsh' > /dev/null 2> /dev/null
+[[ ! -r ' ${HOME}/.local/share/opam/opam-init/init.zsh' ]] || source ' ${HOME}/.local/share/opam/opam-init/init.zsh' > /dev/null 2> /dev/null
 # END opam configuration
 
 # pnpm
-export PNPM_HOME="/Users/s-a-c/.local/share/pnpm"
+export PNPM_HOME=" ${HOME}/.local/share/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
@@ -1039,4 +1024,26 @@ esac
 
 
 # Load Angular CLI autocompletion.
-source <(ng completion script)
+# source <(ng completion script)
+
+# Create and source Angular CLI completion file
+if command -v ng &> /dev/null; then
+  ng completion script > "$ZDOTDIR/.angular-completion"
+  source "$ZDOTDIR/.angular-completion"
+fi
+
+
+# Herd injected PHP 8.2 configuration.
+export HERD_PHP_82_INI_SCAN_DIR=" ${HOME}/Library/Application Support/Herd/config/php/82/"
+
+
+# Herd injected PHP 8.3 configuration.
+export HERD_PHP_83_INI_SCAN_DIR=" ${HOME}/Library/Application Support/Herd/config/php/83/"
+
+
+# Herd injected PHP 8.4 configuration.
+export HERD_PHP_84_INI_SCAN_DIR=" ${HOME}/Library/Application Support/Herd/config/php/84/"
+
+export NVM_DIR="$HOME/Library/Application Support/Herd/config/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

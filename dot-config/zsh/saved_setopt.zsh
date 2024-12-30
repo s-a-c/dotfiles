@@ -18,6 +18,7 @@ histverify
 incappendhistory
 interactive
 interactivecomments
+login
 longlistjobs
 monitor
 promptsubst
