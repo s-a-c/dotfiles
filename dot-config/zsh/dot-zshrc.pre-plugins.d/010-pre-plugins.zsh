@@ -38,14 +38,14 @@ zle -N self-insert url-quote-magic
 # export ZSH_ABBR_PROMPT_SYMBOL="⚡"
 ## Configuration
 ##   The following variables may be set:
-##   • ABBR_AUTOLOAD Should `abbr load` run before every `abbr` command? (0 or 1, default 1)
-##   • ABBR_DEFAULT_BINDINGS Use the default key bindings? (0 or 1, default 1)
-##   • ABBR_DEBUG Print debugging logs? (0 or 1, default 0)
-##   • ABBR_DRY_RUN Behave as if `--dry-run` was passed? (0 or 1, default 0)
-##   • ABBR_FORCE Behave as if `--force` was passed? (0 or 1, default 0)
-##   • ABBR_QUIET Behave as if `--quiet` was passed? (0 or 1, default 0)
-##   • ABBR_USER_ABBREVIATIONS_FILE File abbreviations are stored in (default ${HOME}/.config/zsh/abbreviations)
-##   • NO_COLOR If `NO_COLOR` is set, color output is disabled. See https://no-color.org/.
+##   * ABBR_AUTOLOAD Should `abbr load` run before every `abbr` command? (0 or 1, default 1)
+##   * ABBR_DEFAULT_BINDINGS Use the default key bindings? (0 or 1, default 1)
+##   * ABBR_DEBUG Print debugging logs? (0 or 1, default 0)
+##   * ABBR_DRY_RUN Behave as if `--dry-run` was passed? (0 or 1, default 0)
+##   * ABBR_FORCE Behave as if `--force` was passed? (0 or 1, default 0)
+##   * ABBR_QUIET Behave as if `--quiet` was passed? (0 or 1, default 0)
+##   * ABBR_USER_ABBREVIATIONS_FILE File abbreviations are stored in (default ${HOME}/.config/zsh/abbreviations)
+##   * NO_COLOR If `NO_COLOR` is set, color output is disabled. See https://no-color.org/.
 export ABBR_AUTOLOAD=1
 export ABBR_DEFAULT_BINDINGS=1
 export ABBR_DEBUG=0
@@ -61,18 +61,17 @@ export ABBR_USER_ABBREVIATIONS_FILE="${XDG_CONFIG_HOME}/zsh-abbr/user-abbreviati
 rm -f "${ABBR_USER_ABBREVIATIONS_FILE}"
 unset NO_COLOR
 
-# .zshrc
+## [plugins.zsh-abbr.bindkey]
+# bindkey " "  abbr-expand
+# bindkey "^E" abbr-expand
+# bindkey "^A" abbr-expand-and-insert
 
-bindkey " "  abbr-expand
-bindkey "^E" abbr-expand
-bindkey "^A" abbr-expand-and-insert
-
-bindkey -M viins " " abbr-expand-and-insert
-bindkey -M viins "^ " magic-space
-bindkey -M viins "^M" abbr-expand-and-accept
+# bindkey -M viins " " abbr-expand-and-insert
+# bindkey -M viins "^ " magic-space
+# bindkey -M viins "^M" abbr-expand-and-accept
 ## }}}  ## [plugins.zsh-abbr]
 
-## [plugins.alias-tips]
+## [plugins.zsh-alias-tips]
 #export ZSH_PLUGINS_ALIAS_TIPS_REVEAL_EXCLUDES=(_ ll vi)
 export ZSH_PLUGINS_ALIAS_TIPS_REVEAL_TEXT="Alias tip: "
 export ZSH_PLUGINS_ALIAS_TIPS_REVEAL=1
@@ -96,6 +95,8 @@ export ZSH_AUTOSUGGEST_USE_ASYNC=1
 ZSH_AUTOSUGGEST_STRATEGY=( abbreviations $ZSH_AUTOSUGGEST_STRATEGY )
 
 ## [plugins.brew] ## {{{
+export BREW_LOCATION="/opt/homebrew/bin/brew"
+
 if [[ ! -n "${commands[brew]}" ]]; then
     #if (( ! $+commands[brew] )); then
     if [[ -n "${BREW_LOCATION}" ]]; then
@@ -345,7 +346,7 @@ zstyle :omz:plugins:iterm2 shell-integration yes
             builtin source "${KITTY_INSTALLATION_DIR}/shell-integration/zsh/kitty.zsh"
         fi
         :
-      elif [[ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]]; then
+    elif [[ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]]; then
         ## Do something under 32 bits Windows NT platform
         :
     elif [[ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]]; then
@@ -964,28 +965,30 @@ fi
 
 ## [herd] ## {{{
 [[ -d "${HOME}/Library/Application Support/Herd" ]] && {
-  local _herd_dir="${HOME}/Library/Application Support/Herd"
-  ## Herd injected PHP 8.4 configuration.
-  [[ -d "${_herd_dir}/config/php/84/" ]] && export HERD_PHP_84_INI_SCAN_DIR="${_herd_dir}/config/php/84/"
-  ## Herd injected PHP 8.3 configuration.
-  [[ -d "${_herd_dir}/config/php/83/" ]] && export HERD_PHP_83_INI_SCAN_DIR="${_herd_dir}/config/php/83/"
-  ## Herd injected PHP 8.2 configuration.
-  [[ -d "${_herd_dir}/config/php/82/" ]] && export HERD_PHP_82_INI_SCAN_DIR="${_herd_dir}/config/php/82/"
+    export _HERD_DIR="${HOME}/Library/Application Support/Herd"
+    ## Herd injected PHP 8.4 configuration.
+    [[ -d "${_HERD_DIR}/config/php/84/" ]] && export HERD_PHP_84_INI_SCAN_DIR="${_HERD_DIR}/config/php/84/"
+    ## Herd injected PHP 8.3 configuration.
+    [[ -d "${_HERD_DIR}/config/php/83/" ]] && export HERD_PHP_83_INI_SCAN_DIR="${_HERD_DIR}/config/php/83/"
+    ## Herd injected PHP 8.2 configuration.
+    [[ -d "${_HERD_DIR}/config/php/82/" ]] && export HERD_PHP_82_INI_SCAN_DIR="${_HERD_DIR}/config/php/82/"
 
-  ## Herd injected PHP binary.
-  _path_prepend "${_herd_dir}/bin/"
+    ## Herd injected PHP binary.
+    _path_prepend "${_HERD_DIR}/bin/"
 
-  ## [herd.nvm]
-  ## Herd injected NVM configuration
-  export NVM_DIR="${_herd_dir}/config/nvm"
-  [[ -s "$NVM_DIR/nvm.sh" ]] && builtin source "$NVM_DIR/nvm.sh" --no-use # This loads nvm
+    ## [herd.nvm]
+    ## Herd injected NVM configuration
+    export NVM_DIR="${_HERD_DIR}/config/nvm"
+    [[ -s "$NVM_DIR/nvm.sh" ]] && builtin source "$NVM_DIR/nvm.sh" --no-use # This loads nvm
 
-  zstyle ':omz:plugins:nvm' lazy yes
-  zstyle ':omz:plugins:nvm' lazy-cmd nvm node npm pnpm yarn corepack eslint prettier typescript
-  zstyle ':omz:plugins:nvm' autoload yes
-  zstyle ':omz:plugins:nvm' silent-autoload yes
-  ## [herd.nvm]  ## }}}
+    zstyle ':omz:plugins:nvm' lazy yes
+    zstyle ':omz:plugins:nvm' lazy-cmd nvm node npm pnpm yarn corepack eslint prettier typescript
+    zstyle ':omz:plugins:nvm' autoload yes
+    zstyle ':omz:plugins:nvm' silent-autoload yes
+    ## [herd.nvm]  ## }}}
 
-  [[ -f "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh" ]] && builtin source "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh"
+    [[ -n "${commands[composer]}" ]] && export COMPOSER_BIN_DIR="$(composer config --global home)/vendor/bin" && _path_prepend $COMPOSER_BIN_DIR
+
+    [[ -f "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh" ]] && builtin source "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh"
 }
 ## }}}  ## [herd]

@@ -25,7 +25,7 @@ font-family = "Dank Mono"
 
 font-size = 18
 
-theme = light:tokyonight-day,dark:tokyonight
+theme = dark:tokyonight_night,light:tokyonight-day
 
 # Swap the foreground and background colors of cells for selection. This
 # option overrides the `selection-foreground` and `selection-background`
@@ -39,7 +39,7 @@ minimum-contrast = 5
 
 cursor-style = block_hollow
 
-background-opacity = 0.7
+background-opacity = 0.6
 
 background-blur-radius = 20
 
@@ -67,7 +67,7 @@ custom-shader = shaders/bloom025.glsl
 custom-shader = shaders/cubes.glsl
 # custom-shader = shaders/gradient-background.glsl
 # custom-shader = shaders/just-snow.glsl
-# custom-shader = shaders/starfield-colors.glsl
+custom-shader = shaders/starfield-colors.glsl
 # custom-shader = shaders/starfield.glsl
 
 custom-shader-animation = true

@@ -36,14 +36,13 @@ unset ZGEN_DIR ZGENOM_BIN_DIR
 # export ZGEN_DIR=${ZGEN_DIR:-$ZGENOM_PARENT_DIR/.zgenom}
 # export ZGENOM_BIN_DIR=$ZGEN_DIR/_bin
 
-
 export SHELL_SESSIONS_DISABLE=1
 
 export HISTDUP=erase
-export HISTFILE="${ZDOTDIR}/.zsh_history"         ## History filepath
-export HISTSIZE=1000000                         ## Maximum events for internal history
+export HISTFILE="${ZDOTDIR}/.zsh_history" ## History filepath
+export HISTSIZE=1000000                   ## Maximum events for internal history
 export HISTTIMEFORMAT='%F %T %z %a %V '
-export SAVEHIST=1100000                         ## Maximum events in history file
+export SAVEHIST=1100000 ## Maximum events in history file
 
 export DISPLAY=:0.0
 export EDITOR=$(which nvim)
@@ -60,38 +59,37 @@ export LESS=' --HILITE-UNREAD --LONG-PROMPT --no-histdups --ignore-case --incsea
 export MY_SESSION_BUS_SOCKET=/tmp/dbus/$USER.session.usock
 export DBUS_SESSION_BUS_ADDRESS=unix:path=${MY_SESSION_BUS_SOCKET}
 
-
 ## [_path]  ## {{{
 ## [_path.remove] ## {{{
 function _path_remove() {
-  for ARG in "$@"; do
-    while [[ ":${PATH}:" == *":${ARG}:"* ]]; do
-      ## Delete path by parts so we can never accidentally remove sub paths
-      [[ "${PATH}" == "${ARG}" ]] && PATH=""
-      PATH=${PATH//":${ARG}:"/":"}  ## delete any instances in the middle
-      PATH=${PATH/#"${ARG}:"/}  ## delete any instance at the beginning
-      PATH=${PATH/%":${ARG}"/}  ## delete any instance in the at the end
-      export PATH
+    for ARG in "$@"; do
+        while [[ ":${PATH}:" == *":${ARG}:"* ]]; do
+            ## Delete path by parts so we can never accidentally remove sub paths
+            [[ "${PATH}" == "${ARG}" ]] && PATH=""
+            PATH=${PATH//":${ARG}:"/":"} ## delete any instances in the middle
+            PATH=${PATH/#"${ARG}:"/}     ## delete any instance at the beginning
+            PATH=${PATH/%":${ARG}"/}     ## delete any instance in the at the end
+            export PATH
+        done
     done
-  done
 }
 ## }}}  ## [_path.remove]
 
 ## [_path.append] ## {{{
 function _path_append() {
-  for ARG in "$@"; do
-    _path_remove "${ARG}"
-    [[ -d "${ARG}" ]] && export PATH="${PATH:+"${PATH}:"}${ARG}"
-  done
+    for ARG in "$@"; do
+        _path_remove "${ARG}"
+        [[ -d "${ARG}" ]] && export PATH="${PATH:+"${PATH}:"}${ARG}"
+    done
 }
 ## }}}  ## [_path.append]
 
 ## [_path.prepend]  ## {{{
 function _path_prepend() {
-  for ARG in "$@"; do
-    _path_remove "${ARG}"
-    [[ -d "${ARG}" ]] && export PATH="${ARG}${PATH:+":${PATH}"}"
-  done
+    for ARG in "$@"; do
+        _path_remove "${ARG}"
+        [[ -d "${ARG}" ]] && export PATH="${ARG}${PATH:+":${PATH}"}"
+    done
 }
 ## }}}  ## [_path.prepend]
 ## }}}  ## [_path]

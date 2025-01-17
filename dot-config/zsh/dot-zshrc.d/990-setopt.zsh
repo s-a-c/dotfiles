@@ -1,5 +1,5 @@
 ## [setopt] ## (http://zsh.sourceforge.net/Doc/Release/Options.html)
-setopt >| "${ZDOTDIR}/saved_setopt.zsh"
+setopt >|"${ZDOTDIR}/saved_setopt_begin.zsh"
 
 setopt alwaystoend
 setopt autocd
@@ -27,4 +27,7 @@ setopt promptsubst
 setopt pushdignoredups
 setopt pushdminus
 setopt sharehistory
+setopt shwordsplit
 setopt zle
+
+setopt >|"${ZDOTDIR}/saved_setopt_end.zsh"

@@ -1,3 +1,5 @@
+typeset -U PATH
+
 ## [splash_screen]  ## {{{
 if [[ -n "${commands[lolcat]}" ]]; then
     [[ -n "${commands[colorscript]}" ]] && colorscript random | lolcat

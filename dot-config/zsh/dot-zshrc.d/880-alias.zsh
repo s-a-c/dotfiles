@@ -1,11 +1,11 @@
 ## [alias]
-## [alias.save]
-alias -L >|"${ZDOTDIR}/saved_alias.zsh"
+## [alias.save_begin]
+alias -L >|"${ZDOTDIR}/saved_alias_begin.zsh"
 
 ## [alias.bat]
 alias -g bathelp='bat --plain --language=help'
 function help() {
-  "$@" --help 2>&1 | bathelp
+    '$@' --help 2>&1 | bathelp
 }
 alias -g -- -h='-h 2>&1 | bat --language=help --style=plain'
 alias -g -- --help='--help 2>&1 | bat --language=help --style=plain'
@@ -14,11 +14,10 @@ alias man=batman
 ## [alias.cd]
 alias cd='z'
 alias -- -='cd -'
-alias ..='cd ..'
-alias ...='cd ../..'
-alias -g ....=../../..
-alias -g .....=../../../..
-alias -g ......=../../../../..
+alias '..'='cd ../..'
+alias '...'='cd ../../..'
+alias '....'='cd ../../../..'
+alias '.....'='cd ../../../../..'
 alias 1='cd -1'
 alias 2='cd -2'
 alias 3='cd -3'
@@ -106,27 +105,25 @@ alias tree='eza --long --header --git --tree'
 alias treea='eza --long --header --git --tree --all'
 
 ## [alias.history]
-alias disablehistory="function zshaddhistory() {  return 1 }"
-alias enablehistory="unset -f zshaddhistory"
+alias disablehistory='function zshaddhistory() {  return 1 }'
+alias enablehistory='unset -f zshaddhistory'
 
 ## [alias.mkdir]
 alias md='mkdir -p'
 
 ## [alias.nvim]
-alias ksvim="NVIM_APPNAME=nvim-Kickstart nvim"
-alias lmvim="NVIM_APPNAME=nvim-Lazyman nvim"
-alias lzvim="NVIM_APPNAME=nvim-Lazyvim nvim"
-alias mnvim="NVIM_APPNAME=nvim-Mini nvim"
+alias ksvim='NVIM_APPNAME=nvim-Kickstart nvim'
+alias lmvim='NVIM_APPNAME=nvim-Lazyman nvim'
+alias lzvim='NVIM_APPNAME=nvim-Lazyvim nvim'
+alias mnvim='NVIM_APPNAME=nvim-Mini nvim'
 
 ## [alias.trash-cli]
-alias rm='echo "This is not the command you are looking for."; false'
+alias rm='echo "This is not the \`rm\` command you are looking for."; false'
 alias trash='trash-put'
 
 ## [alias.vim]
-alias vim="/run/current-system/sw/bin/vim"
-alias vi="/run/current-system/sw/bin/vim"
+alias vim='/run/current-system/sw/bin/vim'
+alias vi='/run/current-system/sw/bin/vim'
 
-## [alias.unset]
-#unalias -m '*'
-## [alias.load]
-#source ${ZDOTDIR}/saved_aliases.zsh
+## [alias.save_end]
+alias -L >|"${ZDOTDIR}/saved_alias_end.zsh"

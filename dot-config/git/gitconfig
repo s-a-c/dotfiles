@@ -1,6 +1,6 @@
 [alias]
-	cp = cherry-pick
-	co = checkout
+cp = cherry-pick
+co = checkout
 [color]
 	ui = true
 [color "diff-highlight"]
@@ -17,35 +17,39 @@
 	new = green bold
 	whitespace = red reverse
 [commit]
-	gpgsign = true
+gpgsign = true
 [core]
-	editor = cursor --wait
-	autocrlf = input
+editor = cursor --wait
+autocrlf = input
 	pager = diff-so-fancy | less --tabs=4 -RF
-	excludesFile = /Users/s-a-c/.gitignore
+excludesFile = /Users/s-a-c/.gitignore
 [credential]
-	helper =
-	helper = /usr/local/share/gcm-core/git-credential-manager
+helper =
+helper = /usr/local/share/gcm-core/git-credential-manager
 [credential "https://dev.azure.com"]
-	useHttpPath = true
+useHttpPath = true
+[diff]
+tool = vscode
+[difftool "vscode"]
+cmd = code --wait --diff $LOCAL $REMOTE
 [filter "lfs"]
-	process = git-lfs filter-process
-	required = true
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
+process = git-lfs filter-process
+required = true
+clean = git-lfs clean -- %f
+smudge = git-lfs smudge -- %f
 [help]
-	autocorrect = 1
+autocorrect = 1
 [init]
-	defaultBranch = main
+defaultBranch = main
 [interactive]
 	diffFilter = diff-so-fancy --patch
 [user]
-	name = StandAloneComplex
-	email = 71233932+s-a-c@users.noreply.github.com
-	signingkey = 54D630CB5F0B5FD6
+name = StandAloneComplex
+email = 71233932+s-a-c@users.noreply.github.com
+signingkey = 54D630CB5F0B5FD6
 [safe]
-	directory = /Users/s-a-c/.local/share/nvim/lazy/nvim-web-devicons
+directory = /Users/s-a-c/.local/share/nvim/lazy/nvim-web-devicons
 [pull]
-	rebase = true
+rebase = true
 [push]
-	autoSetupRemote = true
+autoSetupRemote = true
