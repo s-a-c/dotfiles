@@ -3,7 +3,7 @@
 ## up aliases, functions, options, key bindings, etc.
 ##
 
-# vim: ft=zsh sw=2 ts=2 et nu rnu ai si
+# vim: ft=zsh sw=4 ts=4 et nu rnu ai si
 
 
 export HISTDUP=erase

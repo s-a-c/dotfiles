@@ -1,3 +1,10 @@
+##
+## This file is sourced by zsh upon start-up. It should contain commands to set
+## up aliases, functions, options, key bindings, etc.
+##
+
+# vim: ft=zsh sw=4 ts=4 et nu rnu ai si
+
 ## [_path]    ## {{{
 ## [_path.remove] ## {{{
 function _path_remove() {
@@ -33,45 +40,44 @@ function _path_prepend() {
 ## }}}    ## [_path.prepend]
 
 ## [my_path]
-unset my_path
-typeset -a my_path=( \
-    "$HOME/.local/bin" \
-    "$HOME/.local/sbin" \
-    "$HOME/bin" \
-    "$HOME/sbin" \
-    "$HOME/.nix-profile/bin" \
-    "$HOME/.nix-profile/sbin" \
-    "$HOME/.turso" \
-    "$ZDOTDIR/.cabal/bin" \
-    "$ZDOTDIR/.cargo/bin" \
-    "$ZDOTDIR/.linuxbrew/bin" \
-    "$ZDOTDIR/.linuxbrew/sbin" \
-    "$ZDOTDIR/.rbenv/bin" \
-    "$ZDOTDIR/bin" \
-    "$ZDOTDIR/gocode" \
-    "$ZDOTDIR/src/gocode/bin" \
-    "/Applications/Herd.app/Contents/Resources" \
-    "/Applications/Xcode.app/Contents/Developer/usr/bin" \
-    "/home/linuxbrew/.linuxbrew/bin" \
-    "/home/linuxbrew/.linuxbrew/sbin" \
-    "/opt/homebrew/bin" \
-    "/opt/homebrew/sbin" \
-    "/opt/local/bin" \
-    "/opt/local/sbin" \
-    "/run/current-system/sw/bin" \
-    "/nix/var/nix/profiles/default/bin" \
-    "/usr/local/bin" \
-    "/usr/local/sbin" \
-    "/usr/bin" \
-    "/usr/sbin" \
-    "/bin" \
+_path_prepend \
     "/sbin" \
-)
-# Prepend my_path to path
-path[0,${#my_path[@]}]="${my_path[@]}" "${path[@]}"
+    "/bin" \
+    "/usr/sbin" \
+    "/usr/bin" \
+    "/usr/local/sbin" \
+    "/usr/local/bin" \
+    "/nix/var/nix/profiles/default/bin" \
+    "/run/current-system/sw/bin" \
+    "/opt/local/sbin" \
+    "/opt/local/bin" \
+    "/opt/homebrew/sbin" \
+    "/opt/homebrew/bin" \
+    "/home/linuxbrew/.linuxbrew/sbin" \
+    "/home/linuxbrew/.linuxbrew/bin" \
+    "/Applications/Xcode.app/Contents/Developer/usr/bin" \
+    "/Applications/Herd.app/Contents/Resources" \
+    "$ZDOTDIR/src/gocode/bin" \
+    "$ZDOTDIR/gocode" \
+    "$ZDOTDIR/bin" \
+    "$ZDOTDIR/.rbenv/bin" \
+    "$ZDOTDIR/.linuxbrew/sbin" \
+    "$ZDOTDIR/.linuxbrew/bin" \
+    "$ZDOTDIR/.cargo/bin" \
+    "$ZDOTDIR/.cabal/bin" \
+    "$HOME/.nix-profile/sbin" \
+    "$HOME/.nix-profile/bin" \
+    "$HOME/Library/Application Support/Herd" \
+    "$HOME/Library/Application Support/Herd/bin" \
+    "$HOME/.turso" \
+    "$HOME/sbin" \
+    "$HOME/bin" \
+    "$HOME/.local/sbin" \
+    "$HOME/.local/bin"
 
 # Prevent duplicate entries in PATH and FPATH
 typeset -U PATH path FPATH fpath
+export PATH path FPATH fpath
 
 # for _dir in `echo "${PATH}" | tr ':' '\n'`; do
 #     echo "${_dir}"

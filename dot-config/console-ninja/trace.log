@@ -8789,3 +8789,23 @@
 01:24:23.874 info extension stopping host
 01:59:48.858 info extension stopping host
 13:14:23.286 info extension stopping host
+14:56:41.368 info extension stopping host
+16:17:45.154 info extension stopping host
+16:29:48.014 info extension stopping host
+16:29:48.015 info extension Console Ninja extension version: 1.0.381
+16:29:48.216 info host ------------ starting ------------
+16:29:48.236 info extension host process output: port:[58968]
+16:29:48.236 info extension 
+16:29:48.244 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 58968 }
+16:29:48.285 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.381","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.381/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.381/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.381/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":14,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.71"],"host":"127.0.0.1","forcedStart":false,"startTime":1737131388015}
+16:29:48.307 info host starting tools discovery and integration
+16:29:48.311 info host updating /Users/s-a-c/.console-ninja/.bin/loader.js
+16:29:48.313 info host installing /Users/s-a-c/.zshrc
+16:29:48.314 info host looking for tools to patch
+16:29:48.324 info host found 1 tool file(s) to patch
+16:29:48.324 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+16:29:48.342 info host worker Starting Host Worker...
+16:29:48.385 info host completed tools discovery and integration
+16:37:16.939 info extension stopping host
+16:37:16.954 info host removing cache folder: aa66fc1b88f17ab8885e6a5f4360700e
+16:37:16.990 info extension client disconnected: 1006 

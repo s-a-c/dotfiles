@@ -45,9 +45,9 @@ background-blur-radius = 20
 
 # command = zsh --login -c "if command -v tmux >/dev/null 2>&1; then tmux attach || tmux; else zsh; fi"
 
-scrollback-limit = 10000000
+scrollback-limit = 320000000
 
-fullscreen = true
+maximize = true
 
 window-decoration = true
 

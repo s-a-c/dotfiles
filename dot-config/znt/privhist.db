@@ -185,3 +185,4 @@ composer require -W $(composer show -s --format=json | jq '.requires | keys | ma
 composer require tursodatabase/turso-driver-laravel
 laravel new renesdeals --database=sqlite --stack=livewire --jet --dark --api --teams --verification
 laravel new renesdeals --database=sqlite --stack=livewire --jet --dark --api --teams --verification
+git add . && git commit -pm "mv carapace & eza to brew" && git push
