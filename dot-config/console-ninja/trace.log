@@ -8809,3 +8809,654 @@
 16:37:16.939 info extension stopping host
 16:37:16.954 info host removing cache folder: aa66fc1b88f17ab8885e6a5f4360700e
 16:37:16.990 info extension client disconnected: 1006 
+17:12:18.779 info extension stopping host
+17:12:18.858 info extension stopping host
+23:41:19.820 info extension stopping host
+23:41:19.943 info extension stopping host
+23:54:29.389 info extension stopping host
+23:54:29.514 info extension stopping host
+00:06:11.492 info extension stopping host
+00:06:11.603 info extension stopping host
+00:21:45.820 info extension stopping host
+00:21:45.942 info extension stopping host
+01:32:03.398 info extension stopping host
+01:32:03.400 info extension Console Ninja extension version: 1.0.381
+01:32:03.616 info host ------------ starting ------------
+01:32:03.634 info extension host process output: port:[55167]
+01:32:03.634 info extension 
+01:32:03.643 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 55167 }
+01:32:03.743 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.381","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.381/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.381/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.381/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/herd/lw3fs/vendor/maximebf/debugbar/src/debugbar/resources/widgets/sqlqueries/widget.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/maximebf/debugbar/src/debugbar/resources/vendor/highlightjs/highlight.pack.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/maximebf/debugbar/src/debugbar/resources/vendor/jquery/dist/jquery.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/laravel/framework/src/illuminate/foundation/resources/exceptions/renderer/dist/scripts.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/bootstrap.bundle.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/nv.d3.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/jquery.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/livewire/dist/livewire.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/livewire/dist/livewire.esm.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/livewire/dist/livewire.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/barryvdh/laravel-debugbar/src/resources/queries/widget.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/public/build/assets/app-xaw6oio1.js","reason":"search"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":14,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.71"],"host":"127.0.0.1","forcedStart":false,"startTime":1737163923400}
+01:32:03.751 info host worker Starting Host Worker...
+01:32:03.768 info host starting tools discovery and integration
+01:32:03.774 info host looking for tools to patch
+01:32:03.944 info host found 3 tool file(s) to patch
+01:32:03.946 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+01:32:03.946 info host patching /users/s-a-c/herd/lw3fs/node_modules/vite/bin/vite.js
+01:32:04.000 info host Host's startup and patch time: 600 ms
+01:32:04.000 info host completed tools discovery and integration
+02:29:52.453 WARN buildHook-64564 not running build hook for vite: process.env.NODE_ENV = "production" var is used
+14:40:49.233 info extension stopping host
+14:40:49.242 info host removing cache folder: d5c262ef171c268e03599df4ca7f5b5a
+14:40:49.263 info extension client disconnected: 1006 
+22:52:02.349 info extension stopping host
+22:52:03.202 info extension stopping host
+22:52:03.203 info extension Console Ninja extension version: 1.0.381
+22:52:03.402 info host ------------ starting ------------
+22:52:03.425 info extension host process output: port:[55167]
+22:52:03.425 info extension 
+22:52:03.434 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 55167 }
+22:52:03.535 info host worker Starting Host Worker...
+22:52:03.660 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.381","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.381/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.381/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.381/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/herd/lw3fs/vendor/maximebf/debugbar/src/debugbar/resources/widgets/sqlqueries/widget.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/laravel/octane/bin/file-watcher.cjs","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/maximebf/debugbar/src/debugbar/resources/vendor/jquery/dist/jquery.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/maximebf/debugbar/src/debugbar/resources/vendor/highlightjs/highlight.pack.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/laravel/pulse/dist/pulse.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/laravel/horizon/dist/app.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/laravel/framework/src/illuminate/foundation/resources/exceptions/renderer/dist/scripts.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/js/dropdown.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux/dist/flux-lite.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/js/toast.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/js/tooltip.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/dist/flux.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/dist/flux.module.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/js/disclosure.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/js/selected.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/dist/editor.module.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/livewire/dist/livewire.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/dist/flux.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/build.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/dist/editor.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/dist/editor.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/livewire/dist/livewire.esm.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/laravel/telescope/public/app.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/livewire/dist/livewire.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/bootstrap.bundle.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/jquery.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/nv.d3.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/orchestra/workbench/public/build/assets/app-mratx3s_.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/barryvdh/laravel-debugbar/src/resources/queries/widget.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/public/build/assets/app-zhmnltw1.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/public/vendor/telescope/app.js","reason":"search"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":14,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.71"],"host":"127.0.0.1","forcedStart":false,"startTime":1737240723203}
+22:52:03.682 info host starting tools discovery and integration
+22:52:03.686 info host looking for tools to patch
+22:52:03.835 info host found 3 tool file(s) to patch
+22:52:03.836 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+22:52:03.836 info host patching /users/s-a-c/herd/lw3fs/node_modules/vite/bin/vite.js
+22:52:03.889 info host Host's startup and patch time: 686 ms
+22:52:03.889 info host completed tools discovery and integration
+22:54:30.346 WARN host No clients connected
+02:50:26.802 info extension stopping host
+02:50:26.815 info host removing cache folder: 1c847936c2da56170254df59e49aad93
+02:50:26.842 info extension client disconnected: 1006 
+02:52:39.972 info extension stopping host
+02:52:39.973 info extension Console Ninja extension version: 1.0.381
+02:52:40.198 info host ------------ starting ------------
+02:52:40.322 info host worker Starting Host Worker...
+02:52:40.430 info extension host process output: port:[55167]
+02:52:40.430 info extension 
+02:52:40.535 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 55167 }
+02:52:41.225 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.381","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.381/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.381/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.381/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/herd/lw3fs/vendor/maximebf/debugbar/src/debugbar/resources/widgets/sqlqueries/widget.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/barryvdh/laravel-debugbar/src/resources/queries/widget.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/maximebf/debugbar/src/debugbar/resources/vendor/highlightjs/highlight.pack.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/maximebf/debugbar/src/debugbar/resources/vendor/jquery/dist/jquery.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/laravel/octane/bin/file-watcher.cjs","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/laravel/pulse/dist/pulse.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/laravel/horizon/dist/app.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/laravel/framework/src/illuminate/foundation/resources/exceptions/renderer/dist/scripts.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/laravel/telescope/public/app.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/bootstrap.bundle.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/jquery.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/nv.d3.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/livewire/dist/livewire.esm.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/livewire/dist/livewire.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/dist/editor.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/build.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/dist/flux.module.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/js/toast.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/js/selected.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/dist/flux.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/js/disclosure.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/dist/flux.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/livewire/dist/livewire.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/dist/editor.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/js/tooltip.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/js/dropdown.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/dist/editor.module.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux/dist/flux-lite.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/orchestra/workbench/public/build/assets/app-mratx3s_.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/public/build/assets/app-zhmnltw1.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/public/vendor/telescope/app.js","reason":"search"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":14,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.71"],"host":"127.0.0.1","forcedStart":false,"startTime":1737255159973}
+02:52:41.253 info host starting tools discovery and integration
+02:52:41.257 info host looking for tools to patch
+02:52:41.429 info host found 3 tool file(s) to patch
+02:52:41.430 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+02:52:41.430 info host patching /users/s-a-c/herd/lw3fs/node_modules/vite/bin/vite.js
+02:52:41.483 info host Host's startup and patch time: 1510 ms
+02:52:41.483 info host completed tools discovery and integration
+09:03:10.293 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+09:03:10.296 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+09:03:10.296 ERR! host   type: 'system',
+09:03:10.296 ERR! host   errno: 'ENOTFOUND',
+09:03:10.296 ERR! host   code: 'ENOTFOUND',
+09:03:10.296 ERR! host   erroredSysCall: 'getaddrinfo'
+09:03:10.296 ERR! host }
+09:08:10.297 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+09:08:10.298 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+09:08:10.298 ERR! host   type: 'system',
+09:08:10.298 ERR! host   errno: 'ENOTFOUND',
+09:08:10.298 ERR! host   code: 'ENOTFOUND',
+09:08:10.298 ERR! host   erroredSysCall: 'getaddrinfo'
+09:08:10.298 ERR! host }
+09:13:10.294 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+09:13:10.295 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+09:13:10.295 ERR! host   type: 'system',
+09:13:10.295 ERR! host   errno: 'ENOTFOUND',
+09:13:10.295 ERR! host   code: 'ENOTFOUND',
+09:13:10.295 ERR! host   erroredSysCall: 'getaddrinfo'
+09:13:10.295 ERR! host }
+09:18:10.301 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+09:18:10.302 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+09:18:10.302 ERR! host   type: 'system',
+09:18:10.302 ERR! host   errno: 'ENOTFOUND',
+09:18:10.302 ERR! host   code: 'ENOTFOUND',
+09:18:10.302 ERR! host   erroredSysCall: 'getaddrinfo'
+09:18:10.302 ERR! host }
+09:23:10.294 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+09:23:10.297 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+09:23:10.297 ERR! host   type: 'system',
+09:23:10.297 ERR! host   errno: 'ENOTFOUND',
+09:23:10.297 ERR! host   code: 'ENOTFOUND',
+09:23:10.297 ERR! host   erroredSysCall: 'getaddrinfo'
+09:23:10.297 ERR! host }
+09:28:10.300 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+09:28:10.302 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+09:28:10.302 ERR! host   type: 'system',
+09:28:10.302 ERR! host   errno: 'ENOTFOUND',
+09:28:10.302 ERR! host   code: 'ENOTFOUND',
+09:28:10.302 ERR! host   erroredSysCall: 'getaddrinfo'
+09:28:10.302 ERR! host }
+09:33:10.296 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+09:33:10.297 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+09:33:10.298 ERR! host   type: 'system',
+09:33:10.298 ERR! host   errno: 'ENOTFOUND',
+09:33:10.298 ERR! host   code: 'ENOTFOUND',
+09:33:10.298 ERR! host   erroredSysCall: 'getaddrinfo'
+09:33:10.298 ERR! host }
+09:38:10.303 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+09:38:10.303 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+09:38:10.303 ERR! host   type: 'system',
+09:38:10.303 ERR! host   errno: 'ENOTFOUND',
+09:38:10.303 ERR! host   code: 'ENOTFOUND',
+09:38:10.303 ERR! host   erroredSysCall: 'getaddrinfo'
+09:38:10.303 ERR! host }
+09:43:10.295 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+09:43:10.299 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+09:43:10.299 ERR! host   type: 'system',
+09:43:10.299 ERR! host   errno: 'ENOTFOUND',
+09:43:10.299 ERR! host   code: 'ENOTFOUND',
+09:43:10.299 ERR! host   erroredSysCall: 'getaddrinfo'
+09:43:10.299 ERR! host }
+09:48:10.303 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+09:48:10.303 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+09:48:10.303 ERR! host   type: 'system',
+09:48:10.303 ERR! host   errno: 'ENOTFOUND',
+09:48:10.303 ERR! host   code: 'ENOTFOUND',
+09:48:10.303 ERR! host   erroredSysCall: 'getaddrinfo'
+09:48:10.303 ERR! host }
+09:53:10.302 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+09:53:10.302 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+09:53:10.302 ERR! host   type: 'system',
+09:53:10.302 ERR! host   errno: 'ENOTFOUND',
+09:53:10.302 ERR! host   code: 'ENOTFOUND',
+09:53:10.302 ERR! host   erroredSysCall: 'getaddrinfo'
+09:53:10.302 ERR! host }
+09:58:10.311 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+09:58:10.311 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+09:58:10.311 ERR! host   type: 'system',
+09:58:10.311 ERR! host   errno: 'ENOTFOUND',
+09:58:10.312 ERR! host   code: 'ENOTFOUND',
+09:58:10.312 ERR! host   erroredSysCall: 'getaddrinfo'
+09:58:10.312 ERR! host }
+10:03:10.307 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+10:03:10.307 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+10:03:10.307 ERR! host   type: 'system',
+10:03:10.307 ERR! host   errno: 'ENOTFOUND',
+10:03:10.307 ERR! host   code: 'ENOTFOUND',
+10:03:10.307 ERR! host   erroredSysCall: 'getaddrinfo'
+10:03:10.307 ERR! host }
+10:08:10.300 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+10:08:10.301 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+10:08:10.301 ERR! host   type: 'system',
+10:08:10.301 ERR! host   errno: 'ENOTFOUND',
+10:08:10.301 ERR! host   code: 'ENOTFOUND',
+10:08:10.301 ERR! host   erroredSysCall: 'getaddrinfo'
+10:08:10.301 ERR! host }
+10:13:10.304 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+10:13:10.305 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+10:13:10.305 ERR! host   type: 'system',
+10:13:10.305 ERR! host   errno: 'ENOTFOUND',
+10:13:10.305 ERR! host   code: 'ENOTFOUND',
+10:13:10.305 ERR! host   erroredSysCall: 'getaddrinfo'
+10:13:10.305 ERR! host }
+10:18:10.315 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+10:18:10.316 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+10:18:10.316 ERR! host   type: 'system',
+10:18:10.316 ERR! host   errno: 'ENOTFOUND',
+10:18:10.316 ERR! host   code: 'ENOTFOUND',
+10:18:10.316 ERR! host   erroredSysCall: 'getaddrinfo'
+10:18:10.316 ERR! host }
+10:23:10.309 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+10:23:10.309 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+10:23:10.309 ERR! host   type: 'system',
+10:23:10.309 ERR! host   errno: 'ENOTFOUND',
+10:23:10.309 ERR! host   code: 'ENOTFOUND',
+10:23:10.310 ERR! host   erroredSysCall: 'getaddrinfo'
+10:23:10.310 ERR! host }
+10:28:10.318 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+10:28:10.320 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+10:28:10.320 ERR! host   type: 'system',
+10:28:10.320 ERR! host   errno: 'ENOTFOUND',
+10:28:10.320 ERR! host   code: 'ENOTFOUND',
+10:28:10.320 ERR! host   erroredSysCall: 'getaddrinfo'
+10:28:10.320 ERR! host }
+10:33:10.309 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+10:33:10.309 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+10:33:10.309 ERR! host   type: 'system',
+10:33:10.309 ERR! host   errno: 'ENOTFOUND',
+10:33:10.309 ERR! host   code: 'ENOTFOUND',
+10:33:10.309 ERR! host   erroredSysCall: 'getaddrinfo'
+10:33:10.309 ERR! host }
+10:38:10.312 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+10:38:10.314 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+10:38:10.314 ERR! host   type: 'system',
+10:38:10.314 ERR! host   errno: 'ENOTFOUND',
+10:38:10.314 ERR! host   code: 'ENOTFOUND',
+10:38:10.314 ERR! host   erroredSysCall: 'getaddrinfo'
+10:38:10.314 ERR! host }
+10:43:10.312 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+10:43:10.312 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+10:43:10.312 ERR! host   type: 'system',
+10:43:10.312 ERR! host   errno: 'ENOTFOUND',
+10:43:10.312 ERR! host   code: 'ENOTFOUND',
+10:43:10.312 ERR! host   erroredSysCall: 'getaddrinfo'
+10:43:10.312 ERR! host }
+10:48:10.313 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+10:48:10.314 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+10:48:10.314 ERR! host   type: 'system',
+10:48:10.314 ERR! host   errno: 'ENOTFOUND',
+10:48:10.314 ERR! host   code: 'ENOTFOUND',
+10:48:10.314 ERR! host   erroredSysCall: 'getaddrinfo'
+10:48:10.314 ERR! host }
+10:53:10.314 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+10:53:10.314 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+10:53:10.314 ERR! host   type: 'system',
+10:53:10.314 ERR! host   errno: 'ENOTFOUND',
+10:53:10.314 ERR! host   code: 'ENOTFOUND',
+10:53:10.314 ERR! host   erroredSysCall: 'getaddrinfo'
+10:53:10.314 ERR! host }
+10:58:10.320 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+10:58:10.321 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+10:58:10.321 ERR! host   type: 'system',
+10:58:10.321 ERR! host   errno: 'ENOTFOUND',
+10:58:10.321 ERR! host   code: 'ENOTFOUND',
+10:58:10.321 ERR! host   erroredSysCall: 'getaddrinfo'
+10:58:10.321 ERR! host }
+11:03:10.317 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+11:03:10.317 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+11:03:10.317 ERR! host   type: 'system',
+11:03:10.317 ERR! host   errno: 'ENOTFOUND',
+11:03:10.317 ERR! host   code: 'ENOTFOUND',
+11:03:10.317 ERR! host   erroredSysCall: 'getaddrinfo'
+11:03:10.317 ERR! host }
+11:08:10.320 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+11:08:10.321 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+11:08:10.321 ERR! host   type: 'system',
+11:08:10.321 ERR! host   errno: 'ENOTFOUND',
+11:08:10.321 ERR! host   code: 'ENOTFOUND',
+11:08:10.321 ERR! host   erroredSysCall: 'getaddrinfo'
+11:08:10.322 ERR! host }
+11:13:10.317 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+11:13:10.319 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+11:13:10.319 ERR! host   type: 'system',
+11:13:10.319 ERR! host   errno: 'ENOTFOUND',
+11:13:10.320 ERR! host   code: 'ENOTFOUND',
+11:13:10.320 ERR! host   erroredSysCall: 'getaddrinfo'
+11:13:10.320 ERR! host }
+11:18:10.325 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+11:18:10.325 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+11:18:10.325 ERR! host   type: 'system',
+11:18:10.325 ERR! host   errno: 'ENOTFOUND',
+11:18:10.325 ERR! host   code: 'ENOTFOUND',
+11:18:10.325 ERR! host   erroredSysCall: 'getaddrinfo'
+11:18:10.325 ERR! host }
+11:23:10.318 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+11:23:10.320 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+11:23:10.320 ERR! host   type: 'system',
+11:23:10.320 ERR! host   errno: 'ENOTFOUND',
+11:23:10.320 ERR! host   code: 'ENOTFOUND',
+11:23:10.320 ERR! host   erroredSysCall: 'getaddrinfo'
+11:23:10.320 ERR! host }
+11:28:10.322 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+11:28:10.324 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+11:28:10.324 ERR! host   type: 'system',
+11:28:10.324 ERR! host   errno: 'ENOTFOUND',
+11:28:10.324 ERR! host   code: 'ENOTFOUND',
+11:28:10.324 ERR! host   erroredSysCall: 'getaddrinfo'
+11:28:10.324 ERR! host }
+11:33:10.320 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+11:33:10.320 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+11:33:10.320 ERR! host   type: 'system',
+11:33:10.321 ERR! host   errno: 'ENOTFOUND',
+11:33:10.321 ERR! host   code: 'ENOTFOUND',
+11:33:10.321 ERR! host   erroredSysCall: 'getaddrinfo'
+11:33:10.321 ERR! host }
+11:38:10.325 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+11:38:10.325 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+11:38:10.325 ERR! host   type: 'system',
+11:38:10.326 ERR! host   errno: 'ENOTFOUND',
+11:38:10.326 ERR! host   code: 'ENOTFOUND',
+11:38:10.326 ERR! host   erroredSysCall: 'getaddrinfo'
+11:38:10.326 ERR! host }
+11:43:10.323 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+11:43:10.324 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+11:43:10.324 ERR! host   type: 'system',
+11:43:10.324 ERR! host   errno: 'ENOTFOUND',
+11:43:10.324 ERR! host   code: 'ENOTFOUND',
+11:43:10.324 ERR! host   erroredSysCall: 'getaddrinfo'
+11:43:10.324 ERR! host }
+11:48:10.329 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+11:48:10.330 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+11:48:10.330 ERR! host   type: 'system',
+11:48:10.330 ERR! host   errno: 'ENOTFOUND',
+11:48:10.330 ERR! host   code: 'ENOTFOUND',
+11:48:10.330 ERR! host   erroredSysCall: 'getaddrinfo'
+11:48:10.330 ERR! host }
+11:53:10.325 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+11:53:10.326 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+11:53:10.326 ERR! host   type: 'system',
+11:53:10.326 ERR! host   errno: 'ENOTFOUND',
+11:53:10.326 ERR! host   code: 'ENOTFOUND',
+11:53:10.326 ERR! host   erroredSysCall: 'getaddrinfo'
+11:53:10.326 ERR! host }
+11:58:10.333 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+11:58:10.334 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+11:58:10.334 ERR! host   type: 'system',
+11:58:10.334 ERR! host   errno: 'ENOTFOUND',
+11:58:10.334 ERR! host   code: 'ENOTFOUND',
+11:58:10.334 ERR! host   erroredSysCall: 'getaddrinfo'
+11:58:10.334 ERR! host }
+12:03:10.327 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+12:03:10.330 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+12:03:10.330 ERR! host   type: 'system',
+12:03:10.330 ERR! host   errno: 'ENOTFOUND',
+12:03:10.330 ERR! host   code: 'ENOTFOUND',
+12:03:10.330 ERR! host   erroredSysCall: 'getaddrinfo'
+12:03:10.330 ERR! host }
+12:08:10.334 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+12:08:10.334 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+12:08:10.334 ERR! host   type: 'system',
+12:08:10.334 ERR! host   errno: 'ENOTFOUND',
+12:08:10.335 ERR! host   code: 'ENOTFOUND',
+12:08:10.335 ERR! host   erroredSysCall: 'getaddrinfo'
+12:08:10.335 ERR! host }
+12:13:10.327 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+12:13:10.327 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+12:13:10.327 ERR! host   type: 'system',
+12:13:10.327 ERR! host   errno: 'ENOTFOUND',
+12:13:10.328 ERR! host   code: 'ENOTFOUND',
+12:13:10.328 ERR! host   erroredSysCall: 'getaddrinfo'
+12:13:10.328 ERR! host }
+12:18:10.333 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+12:18:10.333 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+12:18:10.333 ERR! host   type: 'system',
+12:18:10.334 ERR! host   errno: 'ENOTFOUND',
+12:18:10.334 ERR! host   code: 'ENOTFOUND',
+12:18:10.334 ERR! host   erroredSysCall: 'getaddrinfo'
+12:18:10.334 ERR! host }
+12:23:10.329 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+12:23:10.330 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+12:23:10.330 ERR! host   type: 'system',
+12:23:10.330 ERR! host   errno: 'ENOTFOUND',
+12:23:10.330 ERR! host   code: 'ENOTFOUND',
+12:23:10.330 ERR! host   erroredSysCall: 'getaddrinfo'
+12:23:10.330 ERR! host }
+12:28:10.338 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+12:28:10.338 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+12:28:10.338 ERR! host   type: 'system',
+12:28:10.338 ERR! host   errno: 'ENOTFOUND',
+12:28:10.338 ERR! host   code: 'ENOTFOUND',
+12:28:10.338 ERR! host   erroredSysCall: 'getaddrinfo'
+12:28:10.338 ERR! host }
+12:33:10.337 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+12:33:10.340 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+12:33:10.340 ERR! host   type: 'system',
+12:33:10.340 ERR! host   errno: 'ENOTFOUND',
+12:33:10.340 ERR! host   code: 'ENOTFOUND',
+12:33:10.340 ERR! host   erroredSysCall: 'getaddrinfo'
+12:33:10.340 ERR! host }
+12:38:10.337 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+12:38:10.337 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+12:38:10.337 ERR! host   type: 'system',
+12:38:10.338 ERR! host   errno: 'ENOTFOUND',
+12:38:10.338 ERR! host   code: 'ENOTFOUND',
+12:38:10.338 ERR! host   erroredSysCall: 'getaddrinfo'
+12:38:10.338 ERR! host }
+12:43:10.334 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+12:43:10.335 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+12:43:10.335 ERR! host   type: 'system',
+12:43:10.335 ERR! host   errno: 'ENOTFOUND',
+12:43:10.335 ERR! host   code: 'ENOTFOUND',
+12:43:10.335 ERR! host   erroredSysCall: 'getaddrinfo'
+12:43:10.335 ERR! host }
+12:48:10.339 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+12:48:10.340 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+12:48:10.340 ERR! host   type: 'system',
+12:48:10.340 ERR! host   errno: 'ENOTFOUND',
+12:48:10.340 ERR! host   code: 'ENOTFOUND',
+12:48:10.340 ERR! host   erroredSysCall: 'getaddrinfo'
+12:48:10.340 ERR! host }
+12:53:10.335 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+12:53:10.336 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+12:53:10.336 ERR! host   type: 'system',
+12:53:10.336 ERR! host   errno: 'ENOTFOUND',
+12:53:10.336 ERR! host   code: 'ENOTFOUND',
+12:53:10.336 ERR! host   erroredSysCall: 'getaddrinfo'
+12:53:10.336 ERR! host }
+12:58:10.343 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+12:58:10.345 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+12:58:10.345 ERR! host   type: 'system',
+12:58:10.345 ERR! host   errno: 'ENOTFOUND',
+12:58:10.345 ERR! host   code: 'ENOTFOUND',
+12:58:10.345 ERR! host   erroredSysCall: 'getaddrinfo'
+12:58:10.345 ERR! host }
+13:03:10.340 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+13:03:10.341 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+13:03:10.341 ERR! host   type: 'system',
+13:03:10.341 ERR! host   errno: 'ENOTFOUND',
+13:03:10.341 ERR! host   code: 'ENOTFOUND',
+13:03:10.341 ERR! host   erroredSysCall: 'getaddrinfo'
+13:03:10.341 ERR! host }
+13:08:10.341 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+13:08:10.342 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+13:08:10.342 ERR! host   type: 'system',
+13:08:10.342 ERR! host   errno: 'ENOTFOUND',
+13:08:10.342 ERR! host   code: 'ENOTFOUND',
+13:08:10.342 ERR! host   erroredSysCall: 'getaddrinfo'
+13:08:10.342 ERR! host }
+13:13:10.342 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+13:13:10.345 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+13:13:10.345 ERR! host   type: 'system',
+13:13:10.345 ERR! host   errno: 'ENOTFOUND',
+13:13:10.345 ERR! host   code: 'ENOTFOUND',
+13:13:10.345 ERR! host   erroredSysCall: 'getaddrinfo'
+13:13:10.345 ERR! host }
+13:18:10.347 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+13:18:10.347 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+13:18:10.347 ERR! host   type: 'system',
+13:18:10.347 ERR! host   errno: 'ENOTFOUND',
+13:18:10.348 ERR! host   code: 'ENOTFOUND',
+13:18:10.348 ERR! host   erroredSysCall: 'getaddrinfo'
+13:18:10.348 ERR! host }
+13:23:10.344 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+13:23:10.344 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+13:23:10.344 ERR! host   type: 'system',
+13:23:10.344 ERR! host   errno: 'ENOTFOUND',
+13:23:10.344 ERR! host   code: 'ENOTFOUND',
+13:23:10.344 ERR! host   erroredSysCall: 'getaddrinfo'
+13:23:10.344 ERR! host }
+13:28:10.350 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+13:28:10.353 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+13:28:10.353 ERR! host   type: 'system',
+13:28:10.353 ERR! host   errno: 'ENOTFOUND',
+13:28:10.353 ERR! host   code: 'ENOTFOUND',
+13:28:10.353 ERR! host   erroredSysCall: 'getaddrinfo'
+13:28:10.353 ERR! host }
+13:33:10.347 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+13:33:10.349 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+13:33:10.349 ERR! host   type: 'system',
+13:33:10.349 ERR! host   errno: 'ENOTFOUND',
+13:33:10.349 ERR! host   code: 'ENOTFOUND',
+13:33:10.349 ERR! host   erroredSysCall: 'getaddrinfo'
+13:33:10.349 ERR! host }
+13:38:10.351 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+13:38:10.352 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+13:38:10.352 ERR! host   type: 'system',
+13:38:10.352 ERR! host   errno: 'ENOTFOUND',
+13:38:10.352 ERR! host   code: 'ENOTFOUND',
+13:38:10.352 ERR! host   erroredSysCall: 'getaddrinfo'
+13:38:10.352 ERR! host }
+13:43:10.347 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+13:43:10.349 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+13:43:10.349 ERR! host   type: 'system',
+13:43:10.349 ERR! host   errno: 'ENOTFOUND',
+13:43:10.349 ERR! host   code: 'ENOTFOUND',
+13:43:10.349 ERR! host   erroredSysCall: 'getaddrinfo'
+13:43:10.349 ERR! host }
+13:48:10.353 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+13:48:10.355 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+13:48:10.355 ERR! host   type: 'system',
+13:48:10.356 ERR! host   errno: 'ENOTFOUND',
+13:48:10.356 ERR! host   code: 'ENOTFOUND',
+13:48:10.356 ERR! host   erroredSysCall: 'getaddrinfo'
+13:48:10.356 ERR! host }
+13:53:10.352 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+13:53:10.352 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+13:53:10.352 ERR! host   type: 'system',
+13:53:10.352 ERR! host   errno: 'ENOTFOUND',
+13:53:10.352 ERR! host   code: 'ENOTFOUND',
+13:53:10.352 ERR! host   erroredSysCall: 'getaddrinfo'
+13:53:10.352 ERR! host }
+13:58:10.356 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+13:58:10.356 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+13:58:10.356 ERR! host   type: 'system',
+13:58:10.356 ERR! host   errno: 'ENOTFOUND',
+13:58:10.356 ERR! host   code: 'ENOTFOUND',
+13:58:10.356 ERR! host   erroredSysCall: 'getaddrinfo'
+13:58:10.356 ERR! host }
+14:03:10.353 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+14:03:10.355 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+14:03:10.355 ERR! host   type: 'system',
+14:03:10.355 ERR! host   errno: 'ENOTFOUND',
+14:03:10.355 ERR! host   code: 'ENOTFOUND',
+14:03:10.355 ERR! host   erroredSysCall: 'getaddrinfo'
+14:03:10.355 ERR! host }
+14:08:10.359 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+14:08:10.360 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+14:08:10.360 ERR! host   type: 'system',
+14:08:10.360 ERR! host   errno: 'ENOTFOUND',
+14:08:10.360 ERR! host   code: 'ENOTFOUND',
+14:08:10.360 ERR! host   erroredSysCall: 'getaddrinfo'
+14:08:10.360 ERR! host }
+14:13:10.357 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+14:13:10.358 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+14:13:10.358 ERR! host   type: 'system',
+14:13:10.358 ERR! host   errno: 'ENOTFOUND',
+14:13:10.358 ERR! host   code: 'ENOTFOUND',
+14:13:10.358 ERR! host   erroredSysCall: 'getaddrinfo'
+14:13:10.358 ERR! host }
+14:18:10.363 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+14:18:10.363 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+14:18:10.363 ERR! host   type: 'system',
+14:18:10.363 ERR! host   errno: 'ENOTFOUND',
+14:18:10.363 ERR! host   code: 'ENOTFOUND',
+14:18:10.363 ERR! host   erroredSysCall: 'getaddrinfo'
+14:18:10.363 ERR! host }
+14:23:10.358 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+14:23:10.359 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+14:23:10.359 ERR! host   type: 'system',
+14:23:10.359 ERR! host   errno: 'ENOTFOUND',
+14:23:10.359 ERR! host   code: 'ENOTFOUND',
+14:23:10.359 ERR! host   erroredSysCall: 'getaddrinfo'
+14:23:10.359 ERR! host }
+14:28:10.362 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+14:28:10.363 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+14:28:10.363 ERR! host   type: 'system',
+14:28:10.363 ERR! host   errno: 'ENOTFOUND',
+14:28:10.363 ERR! host   code: 'ENOTFOUND',
+14:28:10.363 ERR! host   erroredSysCall: 'getaddrinfo'
+14:28:10.363 ERR! host }
+14:33:10.356 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+14:33:10.356 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+14:33:10.356 ERR! host   type: 'system',
+14:33:10.356 ERR! host   errno: 'ENOTFOUND',
+14:33:10.356 ERR! host   code: 'ENOTFOUND',
+14:33:10.356 ERR! host   erroredSysCall: 'getaddrinfo'
+14:33:10.356 ERR! host }
+14:38:10.366 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+14:38:10.367 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+14:38:10.367 ERR! host   type: 'system',
+14:38:10.367 ERR! host   errno: 'ENOTFOUND',
+14:38:10.367 ERR! host   code: 'ENOTFOUND',
+14:38:10.367 ERR! host   erroredSysCall: 'getaddrinfo'
+14:38:10.367 ERR! host }
+14:43:10.361 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+14:43:10.363 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+14:43:10.363 ERR! host   type: 'system',
+14:43:10.363 ERR! host   errno: 'ENOTFOUND',
+14:43:10.363 ERR! host   code: 'ENOTFOUND',
+14:43:10.363 ERR! host   erroredSysCall: 'getaddrinfo'
+14:43:10.363 ERR! host }
+14:48:10.366 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+14:48:10.368 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+14:48:10.368 ERR! host   type: 'system',
+14:48:10.368 ERR! host   errno: 'ENOTFOUND',
+14:48:10.368 ERR! host   code: 'ENOTFOUND',
+14:48:10.368 ERR! host   erroredSysCall: 'getaddrinfo'
+14:48:10.368 ERR! host }
+14:53:10.363 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+14:53:10.363 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+14:53:10.363 ERR! host   type: 'system',
+14:53:10.363 ERR! host   errno: 'ENOTFOUND',
+14:53:10.363 ERR! host   code: 'ENOTFOUND',
+14:53:10.363 ERR! host   erroredSysCall: 'getaddrinfo'
+14:53:10.363 ERR! host }
+14:58:10.370 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+14:58:10.371 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+14:58:10.371 ERR! host   type: 'system',
+14:58:10.371 ERR! host   errno: 'ENOTFOUND',
+14:58:10.371 ERR! host   code: 'ENOTFOUND',
+14:58:10.371 ERR! host   erroredSysCall: 'getaddrinfo'
+14:58:10.371 ERR! host }
+15:03:10.363 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+15:03:10.364 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+15:03:10.364 ERR! host   type: 'system',
+15:03:10.364 ERR! host   errno: 'ENOTFOUND',
+15:03:10.364 ERR! host   code: 'ENOTFOUND',
+15:03:10.364 ERR! host   erroredSysCall: 'getaddrinfo'
+15:03:10.364 ERR! host }
+15:08:10.366 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+15:08:10.369 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+15:08:10.369 ERR! host   type: 'system',
+15:08:10.369 ERR! host   errno: 'ENOTFOUND',
+15:08:10.369 ERR! host   code: 'ENOTFOUND',
+15:08:10.369 ERR! host   erroredSysCall: 'getaddrinfo'
+15:08:10.369 ERR! host }
+15:13:10.365 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+15:13:10.367 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+15:13:10.367 ERR! host   type: 'system',
+15:13:10.367 ERR! host   errno: 'ENOTFOUND',
+15:13:10.367 ERR! host   code: 'ENOTFOUND',
+15:13:10.367 ERR! host   erroredSysCall: 'getaddrinfo'
+15:13:10.367 ERR! host }
+15:18:10.367 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+15:18:10.370 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+15:18:10.370 ERR! host   type: 'system',
+15:18:10.370 ERR! host   errno: 'ENOTFOUND',
+15:18:10.370 ERR! host   code: 'ENOTFOUND',
+15:18:10.370 ERR! host   erroredSysCall: 'getaddrinfo'
+15:18:10.370 ERR! host }
+15:23:10.368 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+15:23:10.369 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+15:23:10.369 ERR! host   type: 'system',
+15:23:10.369 ERR! host   errno: 'ENOTFOUND',
+15:23:10.369 ERR! host   code: 'ENOTFOUND',
+15:23:10.369 ERR! host   erroredSysCall: 'getaddrinfo'
+15:23:10.369 ERR! host }
+15:28:10.380 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+15:28:10.381 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+15:28:10.381 ERR! host   type: 'system',
+15:28:10.381 ERR! host   errno: 'ENOTFOUND',
+15:28:10.381 ERR! host   code: 'ENOTFOUND',
+15:28:10.381 ERR! host   erroredSysCall: 'getaddrinfo'
+15:28:10.381 ERR! host }
+15:33:10.372 ERR! host wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com
+15:33:10.373 ERR! host  failed to verify subscription [wt: request to https://licensing.wallabyjs.com/licensing failed, reason: getaddrinfo ENOTFOUND licensing.wallabyjs.com] {
+15:33:10.373 ERR! host   type: 'system',
+15:33:10.373 ERR! host   errno: 'ENOTFOUND',
+15:33:10.373 ERR! host   code: 'ENOTFOUND',
+15:33:10.373 ERR! host   erroredSysCall: 'getaddrinfo'
+15:33:10.373 ERR! host }
+18:19:36.401 info extension stopping host
+18:19:36.411 info host removing cache folder: 2e0963ab02c591516ce0cbd190f2e890
+18:19:36.446 info extension client disconnected: 1006 
+18:19:41.130 info extension stopping host
+18:19:41.131 info extension Console Ninja extension version: 1.0.381
+18:19:41.569 info host ------------ starting ------------
+18:19:41.628 info extension host process output: port:[55167]
+18:19:41.628 info extension 
+18:19:41.667 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 55167 }
+18:19:41.821 info host worker Starting Host Worker...
+18:19:42.540 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.381","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.381/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.381/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.381/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/herd/lw3fs/vendor/maximebf/debugbar/src/debugbar/resources/vendor/highlightjs/highlight.pack.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/nv.d3.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/maximebf/debugbar/src/debugbar/resources/widgets/sqlqueries/widget.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/maximebf/debugbar/src/debugbar/resources/vendor/jquery/dist/jquery.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/laravel/pulse/dist/pulse.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/laravel/horizon/dist/app.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/laravel/telescope/public/app.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/laravel/framework/src/illuminate/foundation/resources/exceptions/renderer/dist/scripts.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/jquery.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/bootstrap.bundle.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/laravel/octane/bin/file-watcher.cjs","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/build.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/livewire/dist/livewire.esm.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/livewire/dist/livewire.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/livewire/dist/livewire.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/js/toast.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/dist/flux.module.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/js/selected.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/dist/flux.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/js/disclosure.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/dist/editor.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/dist/flux.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/dist/editor.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/js/dropdown.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/js/tooltip.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux/dist/flux-lite.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/dist/editor.module.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/orchestra/workbench/public/build/assets/app-mratx3s_.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/barryvdh/laravel-debugbar/src/resources/queries/widget.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/public/build/assets/app-zhmnltw1.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/public/vendor/telescope/app.js","reason":"search"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":14,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.71"],"host":"127.0.0.1","forcedStart":false,"startTime":1737310781131}
+18:19:42.560 info host starting tools discovery and integration
+18:19:42.564 info host looking for tools to patch
+18:19:42.747 info host found 3 tool file(s) to patch
+18:19:42.748 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+18:19:42.748 info host patching /users/s-a-c/herd/lw3fs/node_modules/vite/bin/vite.js
+18:19:42.802 info host Host's startup and patch time: 1671 ms
+18:19:42.802 info host completed tools discovery and integration
+22:45:11.850 info extension stopping host
+22:45:11.851 info extension Console Ninja extension version: 1.0.381
+22:45:12.112 info host ------------ starting ------------
+22:45:12.170 info extension host process output: port:[61948]
+22:45:12.170 info extension 
+22:45:12.203 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 61948 }
+22:45:12.251 info host worker Starting Host Worker...
+22:45:12.251 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.381","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.381/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.381/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.381/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":14,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.71"],"host":"127.0.0.1","forcedStart":false,"startTime":1737326711851}
+22:45:12.285 info host starting tools discovery and integration
+22:45:12.326 info host looking for tools to patch
+22:45:12.646 info host found 3 tool file(s) to patch
+22:45:12.647 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+22:45:12.647 info host patching /users/s-a-c/herd/fluent-folio/node_modules/vite/bin/vite.js
+22:45:12.701 info host Host's startup and patch time: 849 ms
+22:45:12.701 info host completed tools discovery and integration
+11:32:09.328 info extension stopping host

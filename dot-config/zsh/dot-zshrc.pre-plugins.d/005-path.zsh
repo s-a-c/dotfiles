@@ -5,6 +5,14 @@
 
 # vim: ft=zsh sw=4 ts=4 et nu rnu ai si
 
+echo ""
+echo "# ++++++++++++++++++++++++++++++++++++++++++++++"
+echo "# ++++++++++++++++++++++++++++++++++++++++++++++"
+echo "# 005-path.zsh"
+echo "# ++++++++++++++++++++++++++++++++++++++++++++++"
+echo "# ++++++++++++++++++++++++++++++++++++++++++++++"
+echo ""
+
 ## [_path]    ## {{{
 ## [_path.remove] ## {{{
 function _path_remove() {
@@ -40,21 +48,23 @@ function _path_prepend() {
 ## }}}    ## [_path.prepend]
 
 ## [my_path]
-_path_prepend \
-    "/sbin" \
-    "/bin" \
-    "/usr/sbin" \
-    "/usr/bin" \
-    "/usr/local/sbin" \
-    "/usr/local/bin" \
-    "/nix/var/nix/profiles/default/bin" \
-    "/run/current-system/sw/bin" \
-    "/opt/local/sbin" \
-    "/opt/local/bin" \
-    "/opt/homebrew/sbin" \
-    "/opt/homebrew/bin" \
-    "/home/linuxbrew/.linuxbrew/sbin" \
+_path_append \
     "/home/linuxbrew/.linuxbrew/bin" \
+    "/home/linuxbrew/.linuxbrew/sbin" \
+    "/opt/local/bin" \
+    "/opt/local/sbin" \
+    "/opt/homebrew/bin" \
+    "/opt/homebrew/sbin" \
+    "/run/current-system/sw/bin" \
+    "/nix/var/nix/profiles/default/bin" \
+    "/usr/local/bin" \
+    "/usr/local/sbin" \
+    "/usr/bin" \
+    "/usr/sbin" \
+    "/bin" \
+    "/sbin"
+
+_path_prepend \
     "/Applications/Xcode.app/Contents/Developer/usr/bin" \
     "/Applications/Herd.app/Contents/Resources" \
     "$ZDOTDIR/src/gocode/bin" \
@@ -76,8 +86,7 @@ _path_prepend \
     "$HOME/.local/bin"
 
 # Prevent duplicate entries in PATH and FPATH
-typeset -U PATH path FPATH fpath
-export PATH path FPATH fpath
+typeset -xU PATH path FPATH fpath
 
 # for _dir in `echo "${PATH}" | tr ':' '\n'`; do
 #     echo "${_dir}"
@@ -89,4 +98,3 @@ export PATH path FPATH fpath
 #_field_prepend PATH "${HOME}/bin"
 #_field_prepend PATH "${HOME}/sbin"
 ## }}}    ## [_path]
-#

@@ -5,6 +5,101 @@
 
 # vim: ft=zsh sw=4 ts=4 et nu rnu ai si
 
+echo ""
+echo "# ++++++++++++++++++++++++++++++++++++++++++++++"
+echo "# ++++++++++++++++++++++++++++++++++++++++++++++"
+echo "# 010-pre-plugins.zsh"
+echo "# ++++++++++++++++++++++++++++++++++++++++++++++"
+echo "# ++++++++++++++++++++++++++++++++++++++++++++++"
+echo ""
+
+
+## [_path]    ## {{{
+## [_path.remove] ## {{{
+function _path_remove() {
+    for ARG in "$@"; do
+        while [[ ":$PATH:" == *":$ARG:"* ]]; do
+            ## Delete path by parts so we can never accidentally remove sub paths
+            [[ "$PATH" == "$ARG" ]] && PATH=""
+            PATH=${PATH//":$ARG:"/":"} ## delete any instances in the middle
+            PATH=${PATH/#"$ARG:"/}     ## delete any instance at the beginning
+            PATH=${PATH/%":$ARG"/}     ## delete any instance in the at the end
+            export PATH
+        done
+    done
+}
+## }}}    ## [_path.remove]
+
+## [_path.append] ## {{{
+function _path_append() {
+    for ARG in "$@"; do
+        _path_remove "$ARG"
+        [[ -d "$ARG" ]] && export PATH="${PATH:+"$PATH:"}$ARG"
+    done
+}
+## }}}    ## [_path.append]
+
+## [_path.prepend]    ## {{{
+function _path_prepend() {
+    for ARG in "$@"; do
+        _path_remove "$ARG"
+        [[ -d "$ARG" ]] && export PATH="$ARG${PATH:+":$PATH"}"
+    done
+}
+## }}}    ## [_path.prepend]
+
+## [my_path]
+_path_append \
+    "/home/linuxbrew/.linuxbrew/bin" \
+    "/home/linuxbrew/.linuxbrew/sbin" \
+    "/opt/local/bin" \
+    "/opt/local/sbin" \
+    "/opt/homebrew/bin" \
+    "/opt/homebrew/sbin" \
+    "/run/current-system/sw/bin" \
+    "/nix/var/nix/profiles/default/bin" \
+    "/usr/local/bin" \
+    "/usr/local/sbin" \
+    "/usr/bin" \
+    "/usr/sbin" \
+    "/bin" \
+    "/sbin"
+
+_path_prepend \
+    "/Applications/Xcode.app/Contents/Developer/usr/bin" \
+    "/Applications/Herd.app/Contents/Resources" \
+    "$ZDOTDIR/src/gocode/bin" \
+    "$ZDOTDIR/gocode" \
+    "$ZDOTDIR/bin" \
+    "$ZDOTDIR/.rbenv/bin" \
+    "$ZDOTDIR/.linuxbrew/sbin" \
+    "$ZDOTDIR/.linuxbrew/bin" \
+    "$ZDOTDIR/.cargo/bin" \
+    "$ZDOTDIR/.cabal/bin" \
+    "$HOME/.nix-profile/sbin" \
+    "$HOME/.nix-profile/bin" \
+    "$HOME/Library/Application Support/Herd" \
+    "$HOME/Library/Application Support/Herd/bin" \
+    "$HOME/.turso" \
+    "$HOME/sbin" \
+    "$HOME/bin" \
+    "$HOME/.local/sbin" \
+    "$HOME/.local/bin"
+
+# Prevent duplicate entries in PATH and FPATH
+typeset -xU PATH path FPATH fpath
+
+# for _dir in `echo "${PATH}" | tr ':' '\n'`; do
+#     echo "${_dir}"
+# done
+
+#_field_prepend PATH "/run/current-system/sw/bin"
+#_field_prepend PATH "${HOME}/.local/bin"
+#_field_prepend PATH "${HOME}/.local/sbin"
+#_field_prepend PATH "${HOME}/bin"
+#_field_prepend PATH "${HOME}/sbin"
+## }}}    ## [_path]
+
 
 export HISTDUP=erase
 export HISTFILE="$ZDOTDIR/.zsh_history"         ## History filepath
@@ -95,8 +190,6 @@ export ZSH_AUTOSUGGEST_USE_ASYNC=1
 ZSH_AUTOSUGGEST_STRATEGY=( abbreviations $ZSH_AUTOSUGGEST_STRATEGY )
 
 ## [plugins.brew] ## {{{
-export BREW_LOCATION="/opt/homebrew/bin/brew"
-
 if [[ ! -n "${commands[brew]}" ]]; then
     #if (( ! $+commands[brew] )); then
     if [[ -n "${BREW_LOCATION}" ]]; then
@@ -337,13 +430,13 @@ zstyle :omz:plugins:iterm2 shell-integration yes
         ## Do something under Mac OS X platform
         export KITTY_INSTALLATION_DIR="/Applications/kitty.app/Contents/MacOS"
         if test -n "${KITTY_INSTALLATION_DIR}" -a -e "${KITTY_INSTALLATION_DIR}/../Resources/kitty/shell-integration/zsh/kitty.zsh"; then
-            builtin source "${KITTY_INSTALLATION_DIR}/../Resources/kitty/shell-integration/zsh/kitty.zsh"
+            source "${KITTY_INSTALLATION_DIR}/../Resources/kitty/shell-integration/zsh/kitty.zsh"
         fi
         :
     elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
         ## Do something under GNU/Linux platform
         if test -n "${KITTY_INSTALLATION_DIR}" -a -e "${KITTY_INSTALLATION_DIR}/shell-integration/zsh/kitty.zsh"; then
-            builtin source "${KITTY_INSTALLATION_DIR}/shell-integration/zsh/kitty.zsh"
+            source "${KITTY_INSTALLATION_DIR}/shell-integration/zsh/kitty.zsh"
         fi
         :
     elif [[ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]]; then
@@ -463,7 +556,7 @@ export _ZO_RESOLVE_SYMLINKS=1
 
 ## [atuin]  ## {{{
 [[ -s "${HOME}/.atuin/bin/env" ]] && {
-    builtin source "${HOME}/.atuin/bin/env"
+    source "${HOME}/.atuin/bin/env"
     (atuin init zsh) >| "${ZDOTDIR}/saved_atuin_init.zsh"
     eval $(atuin init zsh)
     # atuin daemon
@@ -475,7 +568,7 @@ export _ZO_RESOLVE_SYMLINKS=1
 #     typeset -gx ATUIN_HOME=${ATUIN[HOME_DIR]}
 #     #_field_prepend PATH "${ATUIN[BIN_DIR]}"
 #     _path_prepend "${ATUIN[BIN_DIR]}"
-#     [[ -s "${ATUIN[BIN_DIR]}/env" ]] && builtin source "${ATUIN[BIN_DIR]}/env"
+#     [[ -s "${ATUIN[BIN_DIR]}/env" ]] && source "${ATUIN[BIN_DIR]}/env"
 #     (atuin init zsh) >| "${ZDOTDIR}/saved_atuin_init.zsh"
 #     eval $(atuin init zsh) || source "${ZDOTDIR}/saved_atuin_init.zsh" || {
 #         echo "[zshrc] atuin init failed"
@@ -638,7 +731,7 @@ export FRUM_DIR="${XDG_DATA_HOME}/frum"
 ## }}}  ## [ghcup]
 
 ## [ghostty]    ## Ghostty shell integration for Zsh. This must be at the top of your zshrc!
-[[ -n "${GHOSTTY_RESOURCES_DIR}" ]] && builtin source "${GHOSTTY_RESOURCES_DIR}/shell-integration/zsh/ghostty-integration"
+[[ -n "${GHOSTTY_RESOURCES_DIR}" ]] && source "${GHOSTTY_RESOURCES_DIR}/shell-integration/zsh/ghostty-integration"
 
 ## [github]
 export GITHUB_CONFIG_DIR="${XDG_CONFIG_HOME}/github"
@@ -728,7 +821,7 @@ export GITHUB_CONFIG_DIR="${XDG_CONFIG_HOME}/github"
         mkdir -p "${XDG_CONFIG_HOME}/julialang/autocomplete"
         juliaup completions zsh >> "${XDG_CONFIG_HOME}/julialang/autocomplete/juliaup.zsh"
     }
-    builtin source "${XDG_CONFIG_HOME}/julialang/autocomplete/juliaup.zsh"
+    source "${XDG_CONFIG_HOME}/julialang/autocomplete/juliaup.zsh"
     ## }}}  ## [juliaup]
 }
 ## }}}  ## [julia]
@@ -940,8 +1033,8 @@ _path_prepend "$PNPM_HOME"
 ## [ruby]   ## {{{
 ## [ruby.chruby]
 [[ -n "${commands[chruby-exec]}" ]] && {
-    builtin source "$(brew --prefix)/opt/chruby/share/chruby/chruby.sh"
-    builtin source "$(brew --prefix)/opt/chruby/share/chruby/auto.sh"
+    source "$(brew --prefix)/opt/chruby/share/chruby/chruby.sh"
+    source "$(brew --prefix)/opt/chruby/share/chruby/auto.sh"
     RUBIES+=("${XDG_DATA_HOME}/rubies/*")
 }
 
@@ -979,7 +1072,7 @@ fi
     ## [herd.nvm]
     ## Herd injected NVM configuration
     export NVM_DIR="${_HERD_DIR}/config/nvm"
-    [[ -s "$NVM_DIR/nvm.sh" ]] && builtin source "$NVM_DIR/nvm.sh" --no-use # This loads nvm
+    [[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh" --no-use # This loads nvm
 
     zstyle ':omz:plugins:nvm' lazy yes
     zstyle ':omz:plugins:nvm' lazy-cmd nvm node npm pnpm yarn corepack eslint prettier typescript
@@ -987,8 +1080,8 @@ fi
     zstyle ':omz:plugins:nvm' silent-autoload yes
     ## [herd.nvm]  ## }}}
 
-    [[ -n "${commands[composer]}" ]] && export COMPOSER_BIN_DIR="$(composer config --global home)/vendor/bin" && _path_prepend $COMPOSER_BIN_DIR
+    # [[ -n "${commands[composer]}" ]] && export COMPOSER_BIN_DIR="$(composer config --global home)/vendor/bin" && _path_prepend $COMPOSER_BIN_DIR
 
-    [[ -f "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh" ]] && builtin source "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh"
+    [[ -f "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh" ]] && source "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh"
 }
 ## }}}  ## [herd]

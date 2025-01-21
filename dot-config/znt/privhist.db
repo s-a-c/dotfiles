@@ -186,3 +186,11 @@ composer require tursodatabase/turso-driver-laravel
 laravel new renesdeals --database=sqlite --stack=livewire --jet --dark --api --teams --verification
 laravel new renesdeals --database=sqlite --stack=livewire --jet --dark --api --teams --verification
 git add . && git commit -pm "mv carapace & eza to brew" && git push
+laravel new --database=sqlite --stack=livewire --jet --dark --api --teams --verification libsql-laravel
+cp ~/.editorconfig ~/.prettierrc ~/Herd/renesdeals/
+nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+npm install --global corepack npm pnpm yarn @angular/cli mapscii million neovim puppeteer semver -u
+sudo brew bundle dump
+nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+git add . && git commit -pm 'brew +aspell' && git push
