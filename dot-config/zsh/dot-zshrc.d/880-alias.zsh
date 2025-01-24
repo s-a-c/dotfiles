@@ -117,6 +117,10 @@ alias lmvim='NVIM_APPNAME=nvim-Lazyman nvim'
 alias lzvim='NVIM_APPNAME=nvim-Lazyvim nvim'
 alias mnvim='NVIM_APPNAME=nvim-Mini nvim'
 
+## [alias.php]
+alias phar='php artisan'
+alias tinkerr='php tinker'
+
 ## [alias.trash-cli]
 alias rm='echo "This is not the \`rm\` command you are looking for."; false'
 alias trash='trash-put'

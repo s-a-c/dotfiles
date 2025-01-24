@@ -3,8 +3,15 @@
         "composer": "*",
         "nunomaduro/termwind": "^2.3",
         "darkterminal/turso-php-installer": "^2.0",
-        "beyondcode/expose": "*"
+        "beyondcode/expose": "*",
+        "ext-imagick": "*"
     },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://satis.spatie.be"
+        }
+    ],
     "config": {
         "allow-plugins": {
             "pestphp/pest-plugin": true

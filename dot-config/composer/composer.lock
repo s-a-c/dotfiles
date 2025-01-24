@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f5e19ce48b3e9cf116f722cfc0fce154",
+    "content-hash": "460aa70cc090376d3a33fc29936a5d4c",
     "packages": [
         {
             "name": "beyondcode/expose",
@@ -6040,7 +6040,8 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "composer": "*"
+        "composer": "*",
+        "ext-imagick": "*"
     },
     "platform-dev": {},
     "plugin-api-version": "2.6.0"

@@ -14,93 +14,6 @@ echo "# ++++++++++++++++++++++++++++++++++++++++++++++"
 echo ""
 
 
-## [_path]    ## {{{
-## [_path.remove] ## {{{
-function _path_remove() {
-    for ARG in "$@"; do
-        while [[ ":$PATH:" == *":$ARG:"* ]]; do
-            ## Delete path by parts so we can never accidentally remove sub paths
-            [[ "$PATH" == "$ARG" ]] && PATH=""
-            PATH=${PATH//":$ARG:"/":"} ## delete any instances in the middle
-            PATH=${PATH/#"$ARG:"/}     ## delete any instance at the beginning
-            PATH=${PATH/%":$ARG"/}     ## delete any instance in the at the end
-            export PATH
-        done
-    done
-}
-## }}}    ## [_path.remove]
-
-## [_path.append] ## {{{
-function _path_append() {
-    for ARG in "$@"; do
-        _path_remove "$ARG"
-        [[ -d "$ARG" ]] && export PATH="${PATH:+"$PATH:"}$ARG"
-    done
-}
-## }}}    ## [_path.append]
-
-## [_path.prepend]    ## {{{
-function _path_prepend() {
-    for ARG in "$@"; do
-        _path_remove "$ARG"
-        [[ -d "$ARG" ]] && export PATH="$ARG${PATH:+":$PATH"}"
-    done
-}
-## }}}    ## [_path.prepend]
-
-## [my_path]
-_path_append \
-    "/home/linuxbrew/.linuxbrew/bin" \
-    "/home/linuxbrew/.linuxbrew/sbin" \
-    "/opt/local/bin" \
-    "/opt/local/sbin" \
-    "/opt/homebrew/bin" \
-    "/opt/homebrew/sbin" \
-    "/run/current-system/sw/bin" \
-    "/nix/var/nix/profiles/default/bin" \
-    "/usr/local/bin" \
-    "/usr/local/sbin" \
-    "/usr/bin" \
-    "/usr/sbin" \
-    "/bin" \
-    "/sbin"
-
-_path_prepend \
-    "/Applications/Xcode.app/Contents/Developer/usr/bin" \
-    "/Applications/Herd.app/Contents/Resources" \
-    "$ZDOTDIR/src/gocode/bin" \
-    "$ZDOTDIR/gocode" \
-    "$ZDOTDIR/bin" \
-    "$ZDOTDIR/.rbenv/bin" \
-    "$ZDOTDIR/.linuxbrew/sbin" \
-    "$ZDOTDIR/.linuxbrew/bin" \
-    "$ZDOTDIR/.cargo/bin" \
-    "$ZDOTDIR/.cabal/bin" \
-    "$HOME/.nix-profile/sbin" \
-    "$HOME/.nix-profile/bin" \
-    "$HOME/Library/Application Support/Herd" \
-    "$HOME/Library/Application Support/Herd/bin" \
-    "$HOME/.turso" \
-    "$HOME/sbin" \
-    "$HOME/bin" \
-    "$HOME/.local/sbin" \
-    "$HOME/.local/bin"
-
-# Prevent duplicate entries in PATH and FPATH
-typeset -xU PATH path FPATH fpath
-
-# for _dir in `echo "${PATH}" | tr ':' '\n'`; do
-#     echo "${_dir}"
-# done
-
-#_field_prepend PATH "/run/current-system/sw/bin"
-#_field_prepend PATH "${HOME}/.local/bin"
-#_field_prepend PATH "${HOME}/.local/sbin"
-#_field_prepend PATH "${HOME}/bin"
-#_field_prepend PATH "${HOME}/sbin"
-## }}}    ## [_path]
-
-
 export HISTDUP=erase
 export HISTFILE="$ZDOTDIR/.zsh_history"         ## History filepath
 export HISTSIZE=1000000                         ## Maximum events for internal history
@@ -146,14 +59,15 @@ export ABBR_DEFAULT_BINDINGS=1
 export ABBR_DEBUG=0
 export ABBR_DRY_RUN=0
 export ABBR_FORCE=0
-typeset -gxA ABBR_GLOBAL_USER_ABBREVIATIONS=()
+# typeset -gxA ABBR_GLOBAL_USER_ABBREVIATIONS=()
 export ABBR_QUIET=1
 export ABBR_QUIETER=1
-typeset -gxA ABBR_REGULAR_USER_ABBREVIATIONS=()
+# typeset -gxA ABBR_REGULAR_USER_ABBREVIATIONS=()
 export ABBR_TMPDIR="${XDG_RUNTIME_DIR}/zsh-abbr"
-rm -fr "${ABBR_TMPDIR}" && mkdir -p "${ABBR_TMPDIR}"
-export ABBR_USER_ABBREVIATIONS_FILE="${XDG_CONFIG_HOME}/zsh-abbr/user-abbreviations"
-rm -f "${ABBR_USER_ABBREVIATIONS_FILE}"
+# rm -fr "${ABBR_TMPDIR}"
+mkdir -p "${ABBR_TMPDIR}"
+# export ABBR_USER_ABBREVIATIONS_FILE="${XDG_CONFIG_HOME}/zsh-abbr/user-abbreviations"
+# rm -f "${ABBR_USER_ABBREVIATIONS_FILE}"
 unset NO_COLOR
 
 ## [plugins.zsh-abbr.bindkey]
@@ -248,7 +162,7 @@ function brews() {
     ## A note on WASM and LLVM binaries #
     ## In order to compile for WASM, Odin calls out to wasm-ld for linking.
     ## This requires it to be available through your $PATH.
-    ## By default, brew does not add any of LLVM’s binaries to your $PATH and you will need to
+    ## By default, brew does not add any of LLVM's binaries to your $PATH and you will need to
     ## symlink it to a place where it is able to be found.
     ## You can symlink it to /usr/local/bin by doing ln -s $(brew --prefix llvm)/bin/wasm-ld /usr/local/bin/wasm-ld.
     ##
@@ -912,86 +826,86 @@ _path_prepend "${OPAMROOT}/$OPAMSWITCH/bin"
     ## [ocaml.opam.ENVIRONMENT]  ## {{{
     # Opam makes use of the environment variables listed here. Boolean variables should be set to "0", "no", "false" or the empty string to disable, "1", "yes" or "true" to enable.
     export OPAMALLPARENS=true # surround all filters with parenthesis.
-    # OPAMASSUMEDEPEXTS see option ‘--assume-depexts'.
-    # OPAMAUTOREMOVE see remove option ‘--auto-remove'.
-    # OPAMBESTEFFORT see option ‘--best-effort'.
-    # OPAMBESTEFFORTPREFIXCRITERIA sets the string that must be prepended to the criteria when the ‘--best-effort' option is set, and is expected to maximise the ‘opam-query' property in the solution.
+    # OPAMASSUMEDEPEXTS see option '--assume-depexts'.
+    # OPAMAUTOREMOVE see remove option '--auto-remove'.
+    # OPAMBESTEFFORT see option '--best-effort'.
+    # OPAMBESTEFFORTPREFIXCRITERIA sets the string that must be prepended to the criteria when the '--best-effort' option is set, and is expected to maximise the 'opam-query' property in the solution.
     # OPAMBUILDDOC Removed in 2.1.
     # OPAMBUILDTEST Removed in 2.1.
-    # OPAMCLI see option ‘--cli'.
-    export OPAMCOLOR=always # when set to always or never, sets a default value for the ‘--color' option.
-    # OPAMCONFIRMLEVEL see option ‘--confirm-level‘. OPAMCONFIRMLEVEL has priority over OPAMYES and OPAMNO.
-    # OPAMCRITERIA specifies user preferences for dependency solving. The default value depends on the solver version, use ‘config report' to know the current setting. See also option --criteria.
+    # OPAMCLI see option '--cli'.
+    export OPAMCOLOR=always # when set to always or never, sets a default value for the '--color' option.
+    # OPAMCONFIRMLEVEL see option '--confirm-level'. OPAMCONFIRMLEVEL has priority over OPAMYES and OPAMNO.
+    # OPAMCRITERIA specifies user preferences for dependency solving. The default value depends on the solver version, use 'config report' to know the current setting. See also option --criteria.
     # OPAMCUDFFILE save the cudf graph to file-actions-explicit.dot.
     # OPAMCUDFTRIM controls the filtering of unrelated packages during CUDF preprocessing.
     # OPAMCURL can be used to select a given 'curl' program. See OPAMFETCH for more options.
-    # OPAMDEBUG see options ‘--debug' and ‘--debug-level'.
-    # OPAMDEBUGSECTIONS if set, limits debug messages to the space-separated list of sections. Sections can optionally have a specific debug level (for example, CLIENT:2 or CLIENT CUDF:2), but otherwise use ‘--debug-level'.
+    # OPAMDEBUG see options '--debug' and '--debug-level'.
+    # OPAMDEBUGSECTIONS if set, limits debug messages to the space-separated list of sections. Sections can optionally have a specific debug level (for example, CLIENT:2 or CLIENT CUDF:2), but otherwise use '--debug-level'.
     # OPAMDIGDEPTH defines how aggressive the lookup for conflicts during CUDF preprocessing is.
     # OPAMDOWNLOADJOBS sets the maximum number of simultaneous downloads.
     # OPAMDROPWORKINGDIR overrides packages previously updated with --working-dir on update. Without this variable set, opam would keep them unchanged unless explicitly named on the command-line.
-    # OPAMDRYRUN see option ‘--dry-run'.
+    # OPAMDRYRUN see option '--dry-run'.
     # OPAMEDITOR sets the editor to use for opam file editing, overrides $EDITOR and $VISUAL.
     # OPAMERRLOGLEN sets the number of log lines printed when a sub-process fails. 0 to print all.
-    # OPAMEXTERNALSOLVER see option ‘--solver'.
-    # OPAMFAKE see option ‘--fake'.
-    # OPAMFETCH specifies how to download files: either ‘wget', ‘curl' or a custom command where variables %{url}%, %{out}%, %{retry}%, %{compress}% and %{checksum}% will be replaced. Overrides the 'download-command' value from the main config file.
+    # OPAMEXTERNALSOLVER see option '--solver'.
+    # OPAMFAKE see option '--fake'.
+    # OPAMFETCH specifies how to download files: either 'wget', 'curl' or a custom command where variables %{url}%, %{out}%, %{retry}%, %{compress}% and %{checksum}% will be replaced. Overrides the 'download-command' value from the main config file.
     # OPAMFIXUPCRITERIA same as OPAMUPGRADECRITERIA, but specific to fixup and reinstall.
-    # OPAMIGNORECONSTRAINTS see install option ‘--ignore-constraints-on'.
-    # OPAMIGNOREPINDEPENDS see option ‘--ignore-pin-depends'.
-    # OPAMINPLACEBUILD see option ‘--inplace-build'.
+    # OPAMIGNORECONSTRAINTS see install option '--ignore-constraints-on'.
+    # OPAMIGNOREPINDEPENDS see option '--ignore-pin-depends'.
+    # OPAMINPLACEBUILD see option '--inplace-build'.
     # OPAMJOBS sets the maximum number of parallel workers to run.
-    # OPAMJSON log json output to the given file (use character ‘%' to index the files).
-    # OPAMKEEPBUILDDIR see install option ‘--keep-build-dir'.
+    # OPAMJSON log json output to the given file (use character '%' to index the files).
+    # OPAMKEEPBUILDDIR see install option '--keep-build-dir'.
     # OPAMKEEPLOGS tells opam to not remove some temporary command logs and some backups. This skips some finalisers and may also help to get more reliable backtraces.
-    # OPAMLOCKED combination of ‘--locked' and ‘--lock-suffix' options.
+    # OPAMLOCKED combination of '--locked' and '--lock-suffix' options.
     # OPAMLOGS logdir sets log directory, default is a temporary directory in /tmp
     # OPAMMAKECMD set the system make command to use.
     # OPAMMERGEOUT merge process outputs, stderr on stdout.
-    # OPAMNO answer no to any question asked, see options ‘--no‘ and ‘--confirm-level‘. OPAMNO is ignored if either OPAMCONFIRMLEVEL or OPAMYES is set.
-    # OPAMNOAGGREGATE with ‘opam admin check', don't aggregate packages.
+    # OPAMNO answer no to any question asked, see options '--no' and '--confirm-level'. OPAMNO is ignored if either OPAMCONFIRMLEVEL or OPAMYES is set.
+    # OPAMNOAGGREGATE with 'opam admin check', don't aggregate packages.
     # OPAMNOASPCUD Deprecated.
     # OPAMNOAUTOUPGRADE disables automatic internal upgrade of repositories in an earlier format to the current one, on 'update' or 'init'.
     # OPAMNOCHECKSUMS enables option --no-checksums when available.
-    # OPAMNODEPEXTS disables system dependencies handling, see option ‘--no-depexts'.
+    # OPAMNODEPEXTS disables system dependencies handling, see option '--no-depexts'.
     # OPAMNOENVNOTICE Internal.
-    # OPAMNOSELFUPGRADE see option ‘--no-self-upgrade'
+    # OPAMNOSELFUPGRADE see option '--no-self-upgrade'
     # OPAMPINKINDAUTO sets whether version control systems should be detected when pinning to a local path. Enabled by default since 1.3.0.
     # OPAMPRECISETRACKING fine grain tracking of directories.
     # OPAMPREPRO set this to false to disable CUDF preprocessing. Less efficient, but might help debugging solver issue.
     # OPAMREPOSITORYTARRING internally store the repositories as tar.gz files. This can be much faster on filesystems that don't cope well with scanning large trees but have good caching in /tmp. However this is slower in the general case.
-    # OPAMREQUIRECHECKSUMS Enables option ‘--require-checksums' when available (e.g. for ‘opam install').
+    # OPAMREQUIRECHECKSUMS Enables option '--require-checksums' when available (e.g. for 'opam install').
     # OPAMRETRIES sets the number of tries before failing downloads.
-    # OPAMREUSEBUILDDIR see option ‘--reuse-build-dir'.
-    # OPAMROOT see option ‘--root'. This is automatically set by ‘opam env --root=DIR --set-root'.
+    # OPAMREUSEBUILDDIR see option '--reuse-build-dir'.
+    # OPAMROOT see option '--root'. This is automatically set by 'opam env --root=DIR --set-root'.
     # OPAMROOTISOK don't complain when running as root.
-    # OPAMSAFE see option ‘--safe'.
-    # OPAMSHOW see option ‘--show'.
-    # OPAMSKIPUPDATE see option ‘--skip-updates'.
+    # OPAMSAFE see option '--safe'.
+    # OPAMSHOW see option '--show'.
+    # OPAMSKIPUPDATE see option '--skip-updates'.
     # OPAMSKIPVERSIONCHECKS bypasses some version checks. Unsafe, for compatibility testing only.
-    # OPAMSOLVERALLOWSUBOPTIMAL (default ‘true') allows some solvers to still return a solution when they reach timeout; while the solution remains assured to be consistent, there is no guarantee in this case that it fits the expected optimisation criteria. If ‘true', opam willcontinue with a warning, if ‘false' a timeout is an error. Currently only the builtin-z3 backend handles this degraded case.
+    # OPAMSOLVERALLOWSUBOPTIMAL (default 'true') allows some solvers to still return a solution when they reach timeout; while the solution remains assured to be consistent, there is no guarantee in this case that it fits the expected optimisation criteria. If 'true', opam willcontinue with a warning, if 'false' a timeout is an error. Currently only the builtin-z3 backend handles this degraded case.
     # OPAMSOLVERTIMEOUT change the time allowance of the solver. Default is 60.0, set to 0 for unlimited. Note that all solvers may not support this option.
     export OPAMSTATS=false # display stats at the end of command. # true _may_ be useful for debugging but _can_ disturb batch processing.
     export OPAMSTATUSLINE=always # display a dynamic status line showing what's currently going on on the terminal. (one of one of always, never or auto)
     # OPAMSTRICT fail on inconsistencies (file reading, switch import, etc.).
-    # OPAMSWITCH see option ‘--switch'. Automatically set by ‘opam env --switch=SWITCH --set-switch'.
-    # OPAMUNLOCKBASE see install option ‘--unlock-base'.
+    # OPAMSWITCH see option '--switch'. Automatically set by 'opam env --switch=SWITCH --set-switch'.
+    # OPAMUNLOCKBASE see install option '--unlock-base'.
     # OPAMUPGRADECRITERIA specifies user preferences for dependency solving when performing an upgrade. Overrides OPAMCRITERIA in upgrades if both are set. See also option --criteria.
-    # OPAMUSEINTERNALSOLVER see option ‘--use-internal-solver'.
+    # OPAMUSEINTERNALSOLVER see option '--use-internal-solver'.
     # OPAMUSEOPENSSL Removed in 2.2.
-    export OPAMUTF8=always # use UTF8 characters in output (one of one of always, never or auto). By default ‘auto', which is determined from the locale).
+    export OPAMUTF8=always # use UTF8 characters in output (one of one of always, never or auto). By default 'auto', which is determined from the locale).
     # OPAMUTF8MSGS use extended UTF8 characters (camels) in opam messages. Implies OPAMUTF8. This is set by default on macOS only.
-    # OPAMVALIDATIONHOOK if set, uses the ‘%{hook%}' command to validate an opam repository update.
-    # OPAMVERBOSE see option ‘--verbose'.
+    # OPAMVALIDATIONHOOK if set, uses the '%{hook%}' command to validate an opam repository update.
+    # OPAMVERBOSE see option '--verbose'.
     # OPAMVERBOSEON see option --verbose-on
     # OPAMVERSIONLAGPOWER do not use.
-    # OPAMWITHDEVSETUP see install option ‘--with-dev-setup'.
-    # OPAMWITHDOC see install option ‘--with-doc'.
-    # OPAMWITHTEST see install option ‘--with-test.
-    # OPAMWORKINGDIR see option ‘--working-dir'.
-    # OPAMYES see options ‘--yes' and ‘--confirm-level‘. OPAMYES has priority over OPAMNO and is ignored if OPAMCONFIRMLEVEL is set.
-    # OPAMVAR_var overrides the contents of the variable var when substituting ‘%{var}%‘ strings in ‘opam‘ files.
-    # OPAMVAR_package_var overrides the contents of the variable package:var when substituting ‘%{package:var}%‘ strings in ‘opam‘ files.
+    # OPAMWITHDEVSETUP see install option '--with-dev-setup'.
+    # OPAMWITHDOC see install option '--with-doc'.
+    # OPAMWITHTEST see install option '--with-test.
+    # OPAMWORKINGDIR see option '--working-dir'.
+    # OPAMYES see options '--yes' and '--confirm-level'. OPAMYES has priority over OPAMNO and is ignored if OPAMCONFIRMLEVEL is set.
+    # OPAMVAR_var overrides the contents of the variable var when substituting '%{var}%' strings in 'opam' files.
+    # OPAMVAR_package_var overrides the contents of the variable package:var when substituting '%{package:var}%' strings in 'opam' files.
     ## }}}  ## [ocaml.opam.ENVIRONMENT]
 
     ## [ocaml.opam.switch]  ## {{{

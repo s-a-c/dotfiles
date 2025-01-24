@@ -9460,3 +9460,392 @@
 22:45:12.701 info host Host's startup and patch time: 849 ms
 22:45:12.701 info host completed tools discovery and integration
 11:32:09.328 info extension stopping host
+08:38:10.591 info host client disconnected: extension 1006
+08:38:10.593 info host client disconnected: extension { id: 1, clientType: 'extension' }
+08:38:21.169 info extension stopping host
+08:38:21.170 info extension Console Ninja extension version: 1.0.381
+08:38:21.649 info host ------------ starting ------------
+08:38:21.785 info host worker Starting Host Worker...
+08:38:21.867 info extension host process output: port:[55167]
+08:38:21.868 info extension 
+08:38:21.973 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 55167 }
+08:38:23.729 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.381","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.381/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.381/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.381/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/herd/lw3fs/vendor/maximebf/debugbar/src/debugbar/resources/widgets/sqlqueries/widget.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/maximebf/debugbar/src/debugbar/resources/vendor/highlightjs/highlight.pack.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/laravel/octane/bin/file-watcher.cjs","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/maximebf/debugbar/src/debugbar/resources/vendor/jquery/dist/jquery.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/laravel/pulse/dist/pulse.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/js/dropdown.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/laravel/horizon/dist/app.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/js/disclosure.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/laravel/framework/src/illuminate/foundation/resources/exceptions/renderer/dist/scripts.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/bootstrap.bundle.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/nv.d3.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/build.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/dist/flux.module.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/js/toast.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/js/selected.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/dist/editor.module.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/dist/flux.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/dist/editor.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/dist/flux.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/dist/editor.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/jquery.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux-pro/js/tooltip.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/laravel/telescope/public/app.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/flux/dist/flux-lite.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/livewire/dist/livewire.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/livewire/dist/livewire.esm.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/livewire/dist/livewire.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/spatie/file-system-watcher/bin/file-watcher.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/spatie/browsershot/bin/browser.cjs","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/spatie/ignition/resources/compiled/ignition.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/orchestra/workbench/public/build/assets/app-mratx3s_.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/src/standards/mysource/tests/debug/firebugconsoleunittest.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/src/standards/squiz/tests/objects/objectmembercommaunittest.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/src/standards/squiz/tests/commenting/doccommentalignmentunittest.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/src/standards/squiz/tests/commenting/inlinecommentunittest.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/src/standards/pear/tests/controlstructures/multilineconditionunittest.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/barryvdh/laravel-debugbar/src/resources/queries/widget.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/public/build/assets/app-zhmnltw1.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/public/vendor/telescope/app.js","reason":"search"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":14,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.71"],"host":"127.0.0.1","forcedStart":false,"startTime":1737448701170}
+08:38:23.753 info host starting tools discovery and integration
+08:38:23.756 info host looking for tools to patch
+08:38:24.013 info host found 3 tool file(s) to patch
+08:38:24.015 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+08:38:24.015 info host patching /users/s-a-c/herd/lw3fs/node_modules/vite/bin/vite.js
+08:38:24.068 info host Host's startup and patch time: 2898 ms
+08:38:24.068 info host completed tools discovery and integration
+08:38:24.078 info host removing cache folder: 8353d35121df2ca01f65311ce6be26b5
+22:01:24.664 info extension stopping host
+22:01:24.707 info host removing cache folder: 3af14ee684c51f8aa66f0d2298aa72b6
+22:01:24.910 info extension client disconnected: 1006 
+22:05:47.929 info extension stopping host
+22:05:51.164 info extension stopping host
+22:05:51.165 info extension Console Ninja extension version: 1.0.382
+22:05:51.357 info host ------------ starting ------------
+22:05:51.509 info extension stopping host
+22:05:51.635 info host worker Starting Host Worker...
+22:05:51.913 info extension host process output: port:[55167]
+22:05:51.913 info extension 
+22:05:51.965 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 55167 }
+22:05:52.035 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/herd/lw3fs/vendor/laravel/framework/src/illuminate/foundation/resources/exceptions/renderer/dist/scripts.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/jquery.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/nv.d3.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/bootstrap.bundle.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/livewire/dist/livewire.esm.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/livewire/dist/livewire.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/vendor/livewire/livewire/dist/livewire.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/public/build/assets/app-xaw6oio1.js","reason":"search"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":14,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.71"],"host":"127.0.0.1","forcedStart":false,"startTime":1737497151165}
+22:05:52.067 info host starting tools discovery and integration
+22:05:52.072 info host updating /Users/s-a-c/.console-ninja/.bin/loader.js
+22:05:52.076 info host looking for tools to patch
+22:05:52.221 info host found 3 tool file(s) to patch
+22:05:52.222 info host patching /users/s-a-c/herd/lw3fs/node_modules/vite/bin/vite.js
+22:05:52.222 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+22:05:52.280 info host Host's startup and patch time: 1115 ms
+22:05:52.281 info host completed tools discovery and integration
+22:06:33.163 WARN host No clients connected
+11:29:10.886 info host scheduling tools patching
+11:29:12.888 info host looking for tools to patch
+11:29:12.992 info host found 3 tool file(s) to patch
+11:29:12.993 info host patching /users/s-a-c/herd/lw3fs/node_modules/vite/bin/vite.js
+11:29:12.993 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+11:29:13.047 info host Host's startup and patch time: 48201882 ms
+11:39:23.048 info host scheduling tools patching
+11:39:25.050 info host looking for tools to patch
+11:39:25.231 info host found 3 tool file(s) to patch
+11:39:25.231 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+11:39:25.232 info host patching /users/s-a-c/herd/lw3fs/node_modules/vite/bin/vite.js
+11:39:25.285 info host Host's startup and patch time: 48814120 ms
+11:40:49.489 WARN buildHook-7809 not running build hook for vite: process.env.NODE_ENV = "production" var is used
+11:55:18.847 WARN buildHook-27119 not running build hook for vite: "build" flag is used
+13:03:42.424 info extension stopping host
+13:03:42.426 info extension Console Ninja extension version: 1.0.382
+13:03:42.887 info host ------------ starting ------------
+13:03:42.957 info extension host process output: port:[55754]
+13:03:42.957 info extension 
+13:03:42.974 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 55754 }
+13:03:43.007 info host worker Starting Host Worker...
+13:03:43.203 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/herd/lw3fs.1/vendor/maximebf/debugbar/src/debugbar/resources/widgets/sqlqueries/widget.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/laravel/octane/bin/file-watcher.cjs","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/maximebf/debugbar/src/debugbar/resources/vendor/highlightjs/highlight.pack.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/maximebf/debugbar/src/debugbar/resources/vendor/jquery/dist/jquery.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/laravel/pulse/dist/pulse.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/laravel/horizon/dist/app.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/laravel/telescope/public/app.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/laravel/framework/src/illuminate/foundation/resources/exceptions/renderer/dist/scripts.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/livewire/livewire/dist/livewire.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/livewire/livewire/dist/livewire.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/livewire/livewire/dist/livewire.esm.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/livewire/flux-pro/build.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/livewire/flux-pro/dist/editor.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/livewire/flux-pro/js/toast.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/livewire/flux-pro/js/selected.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/livewire/flux-pro/js/dropdown.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/livewire/flux-pro/js/tooltip.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/livewire/flux-pro/js/disclosure.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/livewire/flux-pro/dist/flux.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/livewire/flux-pro/dist/flux.module.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/livewire/flux-pro/dist/editor.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/livewire/flux-pro/dist/editor.module.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/livewire/flux-pro/dist/flux.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/livewire/flux/dist/flux-lite.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/bootstrap.bundle.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/spatie/file-system-watcher/bin/file-watcher.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/nv.d3.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/jquery.min.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/spatie/browsershot/bin/browser.cjs","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/spatie/ignition/resources/compiled/ignition.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/orchestra/workbench/public/build/assets/app-mratx3s_.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/src/standards/squiz/tests/commenting/doccommentalignmentunittest.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/src/standards/squiz/tests/commenting/inlinecommentunittest.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/src/standards/squiz/tests/objects/objectmembercommaunittest.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/src/standards/mysource/tests/debug/firebugconsoleunittest.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/src/standards/pear/tests/controlstructures/multilineconditionunittest.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/vendor/barryvdh/laravel-debugbar/src/resources/queries/widget.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/public/build/assets/app-zhmnltw1.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs.1/public/vendor/telescope/app.js","reason":"search"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":14,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.71"],"host":"127.0.0.1","forcedStart":false,"startTime":1737551022425}
+13:03:43.225 info host starting tools discovery and integration
+13:03:43.229 info host looking for tools to patch
+13:03:43.465 info host found 3 tool file(s) to patch
+13:03:43.467 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+13:03:43.467 info host patching /users/s-a-c/herd/lw3fs.1/node_modules/vite/bin/vite.js
+13:03:43.520 info host Host's startup and patch time: 1095 ms
+13:03:43.520 info host completed tools discovery and integration
+16:05:51.583 info host scheduling tools patching
+16:05:53.593 info host looking for tools to patch
+16:05:53.755 info host found 3 tool file(s) to patch
+16:05:53.757 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+16:05:53.757 info host patching /users/s-a-c/herd/lw3fs/node_modules/vite/bin/vite.js
+16:05:53.809 info host Host's startup and patch time: 64802644 ms
+16:05:56.064 info host scheduling tools patching
+16:05:58.064 info host looking for tools to patch
+16:05:58.202 info host found 3 tool file(s) to patch
+16:05:58.203 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+16:05:58.203 info host patching /users/s-a-c/herd/lw3fs/node_modules/vite/bin/vite.js
+16:05:58.255 info host Host's startup and patch time: 64807090 ms
+16:15:38.488 info extension stopping host
+16:15:38.520 info host removing cache folder: df382093234f9a8d938c0f1f5d02dfd6
+16:15:38.557 info extension client disconnected: 1006 
+16:15:57.946 info extension stopping host
+16:16:05.968 info extension stopping host
+16:16:05.982 info host removing cache folder: 51a0aa0775eb2447ed6df39c70a289d3
+16:16:06.014 info extension client disconnected: 1006 
+16:16:13.893 info extension stopping host
+16:16:13.928 info host removing cache folder: 1476b719eccb071174edf9958d4db4b2
+16:16:13.956 info extension client disconnected: 1006 
+16:17:09.808 info extension stopping host
+16:17:17.283 info extension stopping host
+16:17:24.316 info extension stopping host
+16:17:28.867 info extension stopping host
+16:37:37.191 info extension stopping host
+17:16:37.742 info extension stopping host
+17:16:37.744 info extension Console Ninja extension version: 1.0.382
+17:16:37.971 info host ------------ starting ------------
+17:16:37.989 info extension host process output: port:[55167]
+17:16:37.989 info extension 
+17:16:38.004 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 55167 }
+17:16:38.060 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":14,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.71"],"host":"127.0.0.1","forcedStart":false,"startTime":1737566197744}
+17:16:38.089 info host starting tools discovery and integration
+17:16:38.111 info host worker Starting Host Worker...
+17:16:38.112 info host looking for tools to patch
+17:16:38.301 info host found 3 tool file(s) to patch
+17:16:38.303 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+17:16:38.303 info host patching /users/s-a-c/herd/lw3fs/node_modules/vite/bin/vite.js
+17:16:38.359 info host Host's startup and patch time: 615 ms
+17:16:38.359 info host completed tools discovery and integration
+17:16:39.103 info extension stopping host
+18:58:19.905 info extension stopping host
+18:58:19.914 info host removing cache folder: 1c65afd53be7d10c4165ca2c4ce73c8c
+18:58:19.950 info extension client disconnected: 1006 
+19:01:48.976 info extension stopping host
+19:01:48.977 info extension Console Ninja extension version: 1.0.382
+19:01:49.295 info host ------------ starting ------------
+19:01:49.419 info host worker Starting Host Worker...
+19:01:49.603 info extension host process output: port:[55167]
+19:01:49.603 info extension 
+19:01:49.635 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 55167 }
+19:01:49.710 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":14,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.71"],"host":"127.0.0.1","forcedStart":false,"startTime":1737572508977}
+19:01:49.748 info host starting tools discovery and integration
+19:01:49.824 info host looking for tools to patch
+19:01:50.494 info host found 3 tool file(s) to patch
+19:01:50.495 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+19:01:50.496 info host patching /users/s-a-c/herd/lw3fs/node_modules/vite/bin/vite.js
+19:01:50.562 info host Host's startup and patch time: 1585 ms
+19:01:50.562 info host completed tools discovery and integration
+19:54:08.185 info extension stopping host
+19:54:08.196 info host removing cache folder: 62526cf3a72c741c7ba9eb26388f33f0
+19:54:08.241 info extension client disconnected: 1006 
+20:52:27.456 info extension stopping host
+20:52:27.458 info extension Console Ninja extension version: 1.0.382
+20:52:27.833 info host ------------ starting ------------
+20:52:27.881 info extension host process output: port:[55167]
+20:52:27.881 info extension 
+20:52:27.892 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 55167 }
+20:52:27.947 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":14,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.71"],"host":"127.0.0.1","forcedStart":false,"startTime":1737579147458}
+20:52:27.979 info host starting tools discovery and integration
+20:52:27.984 info host worker Starting Host Worker...
+20:52:27.987 info host looking for tools to patch
+20:52:28.183 info host found 3 tool file(s) to patch
+20:52:28.184 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+20:52:28.184 info host patching /users/s-a-c/herd/lw3fs/node_modules/vite/bin/vite.js
+20:52:28.245 info host Host's startup and patch time: 786 ms
+20:52:28.245 info host completed tools discovery and integration
+21:26:29.668 WARN buildHook-76875 not running build hook for vite: "build" flag is used
+21:26:49.060 WARN buildHook-78709 not running build hook for vite: process.env.NODE_ENV = "production" var is used
+21:45:16.184 info extension stopping host
+21:45:16.199 info host removing cache folder: f1ebf11b04843f4583bb3a2eca3a3291
+21:45:16.239 info extension client disconnected: 1006 
+22:25:34.472 info extension stopping host
+22:25:34.473 info extension Console Ninja extension version: 1.0.382
+22:25:34.707 info host ------------ starting ------------
+22:25:34.729 info extension host process output: port:[55167]
+22:25:34.729 info extension 
+22:25:34.738 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 55167 }
+22:25:34.873 info host worker Starting Host Worker...
+22:25:34.886 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/herd/lw3fs/public/vendor/telescope/app.js","reason":"search"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":14,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.71"],"host":"127.0.0.1","forcedStart":false,"startTime":1737584734473}
+22:25:34.910 info host starting tools discovery and integration
+22:25:34.931 info host looking for tools to patch
+22:25:35.296 info host found 3 tool file(s) to patch
+22:25:35.298 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+22:25:35.298 info host patching /users/s-a-c/herd/lw3fs/node_modules/vite/bin/vite.js
+22:25:35.351 info host Host's startup and patch time: 878 ms
+22:25:35.351 info host completed tools discovery and integration
+22:25:39.783 info extension stopping host
+22:25:56.788 info extension stopping host
+22:25:56.826 info extension client disconnected: 1006 
+03:26:04.647 info extension stopping host
+03:26:15.791 info extension stopping host
+03:26:15.792 info extension Console Ninja extension version: 1.0.382
+03:26:16.134 info host ------------ starting ------------
+03:26:16.146 info host removing cache folder: b39139f4a46f16cb67236b16ccd7335e
+03:26:16.235 info extension host process output: port:[55167]
+03:26:16.235 info extension 
+03:26:16.251 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 55167 }
+03:26:16.259 info host worker Starting Host Worker...
+03:26:16.396 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/herd/lw3fs/public/vendor/telescope/app.js","reason":"search"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":14,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.71"],"host":"127.0.0.1","forcedStart":false,"startTime":1737602775792}
+03:26:16.418 info host starting tools discovery and integration
+03:26:16.423 info host looking for tools to patch
+03:26:16.762 info host found 5 tool file(s) to patch
+03:26:16.764 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+03:26:16.764 info host patching /users/s-a-c/herd/lw3fs/node_modules/vite/bin/vite.js
+03:26:16.765 info host patching /users/s-a-c/herd/lw3fs/node_modules/.pnpm/laravel-vite-plugin@1.2.0_vite@6.0.11_jiti@1.21.7_yaml@2.7.0_/node_modules/vite/bin/vite.js
+03:26:16.818 info host Host's startup and patch time: 1026 ms
+03:26:16.818 info host completed tools discovery and integration
+14:09:39.378 WARN host No clients connected
+14:26:13.860 WARN host No clients connected
+14:26:34.350 WARN host No clients connected
+14:26:54.414 WARN host No clients connected
+14:27:22.275 WARN host No clients connected
+14:32:19.617 WARN host No clients connected
+14:34:14.414 WARN buildHook-81018 not running build hook for vite: process.env.NODE_ENV = "production" var is used
+15:03:26.010 info extension stopping host
+15:03:26.025 info host removing cache folder: 6163075b22181b43e1f7196bdbab588b
+15:03:26.068 info extension client disconnected: 1006 
+15:17:27.681 info extension stopping host
+15:17:27.682 info extension Console Ninja extension version: 1.0.382
+15:17:27.889 info host ------------ starting ------------
+15:17:27.965 info extension host process output: port:[55167]
+15:17:27.965 info extension 
+15:17:28.017 info host worker Starting Host Worker...
+15:17:28.043 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 55167 }
+15:17:28.634 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/herd/lw3fs/public/vendor/web-tinker/app.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/public/vendor/telescope/app.js","reason":"search"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":14,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.71"],"host":"127.0.0.1","forcedStart":false,"startTime":1737645447682}
+15:17:28.662 info host starting tools discovery and integration
+15:17:28.669 info host looking for tools to patch
+15:17:29.178 info host found 5 tool file(s) to patch
+15:17:29.180 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+15:17:29.181 info host patching /users/s-a-c/herd/lw3fs/node_modules/vite/bin/vite.js
+15:17:29.181 info host patching /users/s-a-c/herd/lw3fs/node_modules/.pnpm/laravel-vite-plugin@1.2.0_vite@6.0.11_jiti@1.21.7_yaml@2.7.0_/node_modules/vite/bin/vite.js
+15:17:29.234 info host Host's startup and patch time: 1552 ms
+15:17:29.234 info host completed tools discovery and integration
+16:11:42.567 info extension stopping host
+16:11:42.575 info host removing cache folder: fd92acd3b4eb4a6df570c9317639d3cd
+16:11:42.631 info extension client disconnected: 1006 
+16:12:00.753 info extension stopping host
+16:12:00.754 info extension Console Ninja extension version: 1.0.382
+16:12:00.982 info host ------------ starting ------------
+16:12:01.009 info extension host process output: port:[55167]
+16:12:01.009 info extension 
+16:12:01.019 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 55167 }
+16:12:01.134 info host worker Starting Host Worker...
+16:12:01.150 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/herd/lw3fs/public/vendor/web-tinker/app.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/public/vendor/telescope/app.js","reason":"search"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":14,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.71"],"host":"127.0.0.1","forcedStart":false,"startTime":1737648720754}
+16:12:01.170 info host starting tools discovery and integration
+16:12:01.176 info host looking for tools to patch
+16:12:01.473 info host found 5 tool file(s) to patch
+16:12:01.475 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+16:12:01.476 info host patching /users/s-a-c/herd/lw3fs/node_modules/vite/bin/vite.js
+16:12:01.476 info host patching /users/s-a-c/herd/lw3fs/node_modules/.pnpm/laravel-vite-plugin@1.2.0_vite@6.0.11_jiti@1.21.7_yaml@2.7.0_/node_modules/vite/bin/vite.js
+16:12:01.529 info host Host's startup and patch time: 775 ms
+16:12:01.529 info host completed tools discovery and integration
+21:20:14.245 info extension stopping host
+21:20:14.256 info host removing cache folder: e9cfa737a6ea6fba454ec77a770f00ec
+21:20:14.295 info extension client disconnected: 1006 
+22:29:23.787 info extension stopping host
+22:29:26.101 info extension stopping host
+22:29:27.089 info extension stopping host
+22:30:46.393 info extension stopping host
+22:45:31.197 info extension stopping host
+22:47:43.363 info extension stopping host
+22:47:43.528 info extension stopping host
+22:47:43.544 info extension stopping host
+22:49:41.856 info extension stopping host
+22:49:48.675 info extension stopping host
+22:59:37.478 info extension stopping host
+23:10:27.535 info extension stopping host
+23:31:47.337 info extension stopping host
+23:31:47.425 info extension stopping host
+23:37:50.569 info extension stopping host
+23:57:44.992 info extension stopping host
+23:57:44.993 info extension Console Ninja extension version: 1.0.382
+23:57:45.561 info host ------------ starting ------------
+23:57:45.680 info extension host process output: port:[51239]
+23:57:45.681 info extension 
+23:57:45.715 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 51239 }
+23:57:45.737 info host worker Starting Host Worker...
+23:57:45.839 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/herd/genesis/vendor/laravel/framework/src/illuminate/foundation/resources/exceptions/renderer/dist/scripts.js","reason":"search"},{"path":"/users/s-a-c/herd/genesis/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/bootstrap.bundle.min.js","reason":"search"},{"path":"/users/s-a-c/herd/genesis/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/jquery.min.js","reason":"search"},{"path":"/users/s-a-c/herd/genesis/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/nv.d3.min.js","reason":"search"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":14,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.71"],"host":"127.0.0.1","forcedStart":false,"startTime":1737676664993}
+23:57:45.863 info host starting tools discovery and integration
+23:57:45.868 info host looking for tools to patch
+23:57:45.949 info host found 1 tool file(s) to patch
+23:57:45.949 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+23:57:46.012 info host completed tools discovery and integration
+00:21:45.794 WARN host No clients connected
+00:25:11.243 WARN host No clients connected
+00:25:21.710 WARN host No clients connected
+00:34:58.457 WARN host No clients connected
+00:36:27.415 WARN host No clients connected
+00:39:57.586 WARN host No clients connected
+00:55:06.580 info host scheduling tools patching
+00:55:08.582 info host looking for tools to patch
+00:55:08.676 info host found 3 tool file(s) to patch
+00:55:08.677 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+00:55:08.677 info host patching /users/s-a-c/herd/genesis/node_modules/vite/bin/vite.js
+00:55:08.729 info host Host's startup and patch time: 3443736 ms
+00:55:10.150 WARN buildHook-61839 not running build hook for vite: process.env.NODE_ENV = "production" var is used
+00:55:47.942 WARN host No clients connected
+01:00:31.515 WARN host No clients connected
+01:00:43.290 WARN host No clients connected
+01:05:28.943 WARN host No clients connected
+01:06:09.985 WARN host No clients connected
+01:42:51.721 WARN host No clients connected
+01:43:45.802 info extension stopping host
+01:43:45.803 info extension Console Ninja extension version: 1.0.382
+01:43:46.661 info host ------------ starting ------------
+01:43:46.842 info extension host process output: port:[55167]
+01:43:46.842 info extension 
+01:43:46.851 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 55167 }
+01:43:46.921 info host worker Starting Host Worker...
+01:43:46.948 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/herd/lw3fs/public/vendor/web-tinker/app.js","reason":"search"},{"path":"/users/s-a-c/herd/lw3fs/public/vendor/telescope/app.js","reason":"search"},{"path":"/Users/s-a-c/Herd/lw3fs/tailwind.config.js","reason":"open"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":14,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.71"],"host":"127.0.0.1","forcedStart":false,"startTime":1737683025803}
+01:43:46.977 info host starting tools discovery and integration
+01:43:46.983 info host looking for tools to patch
+01:43:47.621 info host found 5 tool file(s) to patch
+01:43:47.624 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+01:43:47.625 info host patching /users/s-a-c/herd/lw3fs/node_modules/vite/bin/vite.js
+01:43:47.625 info host patching /users/s-a-c/herd/lw3fs/node_modules/.pnpm/laravel-vite-plugin@1.2.0_vite@6.0.11_jiti@1.21.7_yaml@2.7.0_/node_modules/vite/bin/vite.js
+01:43:47.680 info host Host's startup and patch time: 1876 ms
+01:43:47.680 info host completed tools discovery and integration
+01:43:47.696 WARN host No clients connected
+01:50:07.959 WARN host No clients connected
+01:50:10.133 WARN host No clients connected
+01:50:31.857 WARN host No clients connected
+01:57:04.293 WARN host No clients connected
+01:59:22.880 WARN host No clients connected
+02:14:17.330 info extension stopping host
+02:14:17.342 info host removing cache folder: c285b53602ac0a9ab4cc4dc960a4001f
+02:14:17.373 info extension client disconnected: 1006 
+02:14:28.525 info extension stopping host
+02:14:28.526 info extension Console Ninja extension version: 1.0.382
+02:14:29.007 info host ------------ starting ------------
+02:14:29.130 info extension host process output: port:[51239]
+02:14:29.130 info extension 
+02:14:29.134 info host worker Starting Host Worker...
+02:14:29.344 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 51239 }
+02:14:29.659 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/herd/genesis/vendor/laravel/ui/src/presets/vue-stubs/examplecomponent.vue","reason":"search"},{"path":"/users/s-a-c/herd/genesis/vendor/laravel/framework/src/illuminate/foundation/resources/exceptions/renderer/dist/scripts.js","reason":"search"},{"path":"/users/s-a-c/herd/genesis/vendor/livewire/flux-pro/js/dropdown.js","reason":"search"},{"path":"/users/s-a-c/herd/genesis/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/jquery.min.js","reason":"search"},{"path":"/users/s-a-c/herd/genesis/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/nv.d3.min.js","reason":"search"},{"path":"/users/s-a-c/herd/genesis/vendor/livewire/livewire/dist/livewire.min.js","reason":"search"},{"path":"/users/s-a-c/herd/genesis/vendor/livewire/flux-pro/dist/flux.js","reason":"search"},{"path":"/users/s-a-c/herd/genesis/vendor/livewire/flux-pro/build.js","reason":"search"},{"path":"/users/s-a-c/herd/genesis/vendor/livewire/flux-pro/js/selected.js","reason":"search"},{"path":"/users/s-a-c/herd/genesis/vendor/livewire/flux-pro/dist/editor.js","reason":"search"},{"path":"/users/s-a-c/herd/genesis/vendor/livewire/flux-pro/dist/flux.module.js","reason":"search"},{"path":"/users/s-a-c/herd/genesis/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/bootstrap.bundle.min.js","reason":"search"},{"path":"/users/s-a-c/herd/genesis/vendor/livewire/flux-pro/js/tooltip.js","reason":"search"},{"path":"/users/s-a-c/herd/genesis/vendor/livewire/flux-pro/js/disclosure.js","reason":"search"},{"path":"/users/s-a-c/herd/genesis/vendor/livewire/flux-pro/dist/editor.min.js","reason":"search"},{"path":"/users/s-a-c/herd/genesis/vendor/livewire/flux-pro/dist/flux.min.js","reason":"search"},{"path":"/users/s-a-c/herd/genesis/vendor/livewire/livewire/dist/livewire.js","reason":"search"},{"path":"/users/s-a-c/herd/genesis/vendor/livewire/livewire/dist/livewire.esm.js","reason":"search"},{"path":"/users/s-a-c/herd/genesis/vendor/livewire/flux-pro/js/toast.js","reason":"search"},{"path":"/users/s-a-c/herd/genesis/vendor/livewire/flux-pro/dist/editor.module.js","reason":"search"},{"path":"/users/s-a-c/herd/genesis/vendor/livewire/flux/dist/flux-lite.min.js","reason":"search"},{"path":"/users/s-a-c/herd/genesis/public/build/assets/app-xaw6oio1.js","reason":"search"},{"path":"/Users/s-a-c/Herd/genesis/tailwind.config.js","reason":"open"},{"path":"/Users/s-a-c/Herd/genesis/postcss.config.js","reason":"open"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":14,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.71"],"host":"127.0.0.1","forcedStart":false,"startTime":1737684868526}
+02:14:29.688 info host starting tools discovery and integration
+02:14:29.692 info host looking for tools to patch
+02:14:29.856 info host found 5 tool file(s) to patch
+02:14:29.858 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+02:14:29.858 info host patching /users/s-a-c/herd/genesis/node_modules/vite/bin/vite.js
+02:14:29.858 info host patching /users/s-a-c/herd/genesis/node_modules/.pnpm/laravel-vite-plugin@1.2.0_vite@6.0.11/node_modules/vite/bin/vite.js
+02:14:29.912 info host Host's startup and patch time: 1386 ms
+02:14:29.912 info host completed tools discovery and integration
+02:14:29.920 WARN host No clients connected
+02:17:38.252 info extension stopping host
+02:17:38.261 info host removing cache folder: 969f6c7374d39a8f601ed6cc47b2f7ac
+02:17:38.286 info extension client disconnected: 1006 
+02:17:53.697 info extension stopping host
+02:17:53.709 info host removing cache folder: f85202367498b454546878f5c58aef60
+02:17:53.742 info extension client disconnected: 1006 
+02:26:21.590 info extension stopping host
+02:26:21.591 info extension Console Ninja extension version: 1.0.382
+02:26:22.360 info host ------------ starting ------------
+02:26:22.405 info extension host process output: port:[64952]
+02:26:22.405 info extension 
+02:26:22.493 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 64952 }
+02:26:22.610 info host worker Starting Host Worker...
+02:26:22.691 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/herd/devdojo-genesis/vendor/laravel/framework/src/illuminate/foundation/resources/exceptions/renderer/dist/scripts.js","reason":"search"},{"path":"/users/s-a-c/herd/devdojo-genesis/vendor/laravel/ui/src/presets/vue-stubs/examplecomponent.vue","reason":"search"},{"path":"/users/s-a-c/herd/devdojo-genesis/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/nv.d3.min.js","reason":"search"},{"path":"/users/s-a-c/herd/devdojo-genesis/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/bootstrap.bundle.min.js","reason":"search"},{"path":"/users/s-a-c/herd/devdojo-genesis/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/jquery.min.js","reason":"search"},{"path":"/users/s-a-c/herd/devdojo-genesis/vendor/livewire/livewire/dist/livewire.js","reason":"search"},{"path":"/users/s-a-c/herd/devdojo-genesis/vendor/livewire/livewire/dist/livewire.esm.js","reason":"search"},{"path":"/users/s-a-c/herd/devdojo-genesis/vendor/livewire/livewire/dist/livewire.min.js","reason":"search"},{"path":"/Users/s-a-c/Herd/devdojo-genesis/tailwind.config.js","reason":"open"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":14,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.71"],"host":"127.0.0.1","forcedStart":false,"startTime":1737685581591}
+02:26:22.716 info host starting tools discovery and integration
+02:26:22.721 info host looking for tools to patch
+02:26:22.882 info host found 5 tool file(s) to patch
+02:26:22.884 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+02:26:22.884 info host patching /users/s-a-c/herd/devdojo-genesis/node_modules/vite/bin/vite.js
+02:26:22.884 info host patching /users/s-a-c/herd/devdojo-genesis/node_modules/.pnpm/laravel-vite-plugin@1.2.0_vite@6.0.11_jiti@1.21.7_yaml@2.7.0_/node_modules/vite/bin/vite.js
+02:26:22.941 info host Host's startup and patch time: 1350 ms
+02:26:22.941 info host completed tools discovery and integration
+02:26:22.949 WARN host No clients connected
+02:26:28.459 WARN host No clients connected
+02:26:38.810 WARN host No clients connected
+02:27:13.649 WARN host No clients connected
+02:32:21.372 info buildHook-27433 installing build hook for vite at /users/s-a-c/herd/devdojo-genesis, node v22.13.1
+02:32:21.377 info buildHook-27433 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+02:32:21.377 info buildHook-27433 running tools: vite
+02:32:21.379 info buildHook-27433 installing fs interceptor
+02:32:21.382 info host client connected: buildHook { address: '127.0.0.1', family: 'IPv4', port: 64952 }
+02:32:21.387 info buildHook-27433 allowed tools: vite, angular, jest, webpack, next.js, nest.js, cypress, http-server, serve, live-server, nuxt, remix, qwik, hydrogen, serverless, astro, live-server-extension, live-preview-extension, node
+02:32:21.387 info buildHook-27433 running tools: vite
+02:32:58.913 info host client disconnected: buildHook 4100
+02:32:58.913 info host client disconnected: buildHook 4100, has clients false
+02:38:59.973 info extension stopping host
+02:38:59.982 info host removing cache folder: ddda2c5f79fa926a9b2c4b5e44c8423c
+02:38:59.984 WARN host unable to revert access and modified time for file /users/s-a-c/herd/devdojo-genesis/vendor/laravel/framework/src/illuminate/foundation/resources/exceptions/renderer/dist/scripts.js
+02:38:59.984 WARN host unable to revert access and modified time for file /users/s-a-c/herd/devdojo-genesis/vendor/laravel/ui/src/presets/vue-stubs/examplecomponent.vue
+02:38:59.984 WARN host unable to revert access and modified time for file /users/s-a-c/herd/devdojo-genesis/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/nv.d3.min.js
+02:38:59.984 WARN host unable to revert access and modified time for file /users/s-a-c/herd/devdojo-genesis/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/bootstrap.bundle.min.js
+02:38:59.984 WARN host unable to revert access and modified time for file /users/s-a-c/herd/devdojo-genesis/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/jquery.min.js
+02:38:59.984 WARN host unable to revert access and modified time for file /users/s-a-c/herd/devdojo-genesis/vendor/livewire/livewire/dist/livewire.js
+02:38:59.984 WARN host unable to revert access and modified time for file /users/s-a-c/herd/devdojo-genesis/vendor/livewire/livewire/dist/livewire.esm.js
+02:38:59.984 WARN host unable to revert access and modified time for file /users/s-a-c/herd/devdojo-genesis/vendor/livewire/livewire/dist/livewire.min.js
+02:39:00.007 info extension client disconnected: 1006 
+02:39:19.584 info extension stopping host
+02:39:19.586 info extension Console Ninja extension version: 1.0.382
+02:39:19.810 info host ------------ starting ------------
+02:39:19.836 info extension host process output: port:[49882]
+02:39:19.837 info extension 
+02:39:19.845 info host client connected: extension { address: '127.0.0.1', family: 'IPv4', port: 49882 }
+02:39:19.933 info host starting host: {"extensionFolder":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382","runtimeHookFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/tracer.js","globalErrorHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/errorHandler.js","networkLoggingHandlerFile":"/Users/s-a-c/.cursor/extensions/wallabyjs.console-ninja-1.0.382/out/runtimeHook/networkLoggingHandler.js","filesToInstrument":[{"path":"/users/s-a-c/herd/devdojo.genesis/vendor/laravel/framework/src/illuminate/foundation/resources/exceptions/renderer/dist/scripts.js","reason":"search"},{"path":"/users/s-a-c/herd/devdojo.genesis/vendor/laravel/ui/src/presets/vue-stubs/examplecomponent.vue","reason":"search"},{"path":"/users/s-a-c/herd/devdojo.genesis/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/nv.d3.min.js","reason":"search"},{"path":"/users/s-a-c/herd/devdojo.genesis/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/bootstrap.bundle.min.js","reason":"search"},{"path":"/users/s-a-c/herd/devdojo.genesis/vendor/phpunit/php-code-coverage/src/report/html/renderer/template/js/jquery.min.js","reason":"search"},{"path":"/users/s-a-c/herd/devdojo.genesis/vendor/livewire/livewire/dist/livewire.min.js","reason":"search"},{"path":"/users/s-a-c/herd/devdojo.genesis/vendor/livewire/livewire/dist/livewire.js","reason":"search"},{"path":"/users/s-a-c/herd/devdojo.genesis/vendor/livewire/livewire/dist/livewire.esm.js","reason":"search"}],"debug":false,"config":{"dateTimeFormat":"HH:mm:ss.SSS","dateTimeDisplayMode":"Absolute","installBinToPath":true,"openLinksInEditor":true,"maxLogViewerEntries":150000,"showWelcomeMessageInTools":true,"fontSize":14,"outputMode":"Beside File","captureFunctions":true,"searchUrl":"https://duckduckgo.com?q={query}","enableProFeatures":true,"toolsToAutoPatch":["vite","angular","jest","webpack","next.js","nest.js","cypress","http-server","serve","live-server","nuxt","remix","qwik","hydrogen","serverless","astro","live-server-extension","live-preview-extension"],"showErrors":true,"showLogsOnlyFromOpenedFiles":true,"showLogsFromLogPointsOnly":true,"showLogsFromMultipleRunningToolsTogether":true,"predictiveLoggingEnabled":true,"allowConsoleLogToTriggerPredictions":true,"showNetworkRequests":true},"allowedHosts":["localhost","127.0.0.1","example.cypress.io","StandAloneComplexs-MacBook-Pro.local","192.168.0.108","192.168.0.71"],"host":"127.0.0.1","forcedStart":false,"startTime":1737686359586}
+02:39:19.945 info host worker Starting Host Worker...
+02:39:19.958 info host starting tools discovery and integration
+02:39:19.962 info host looking for tools to patch
+02:39:20.111 info host found 3 tool file(s) to patch
+02:39:20.112 info host patching /Users/s-a-c/.cursor/extensions/ritwickdey.liveserver-5.7.9/node_modules/live-server/index.js
+02:39:20.112 info host patching /users/s-a-c/herd/devdojo.genesis/node_modules/vite/bin/vite.js
+02:39:20.166 info host Host's startup and patch time: 579 ms
+02:39:20.166 info host completed tools discovery and integration
+12:20:33.661 info extension stopping host
+12:20:39.007 info extension stopping host

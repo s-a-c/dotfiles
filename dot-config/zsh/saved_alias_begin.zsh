@@ -108,7 +108,7 @@ alias dimp='docker import'
 alias din='docker info'
 alias dins='docker insert'
 alias dinsp='docker inspect'
-alias disablehistory='function zshaddhistory() {    return 1 }'
+alias disablehistory='function zshaddhistory() { return 1 }'
 alias dk='docker kill'
 alias dli='deno lint'
 alias dlogin='docker login'
@@ -560,10 +560,10 @@ alias procs_for_path=procs-for-path
 alias psax='ps ax'
 alias pswax='ps wax'
 alias psxa='ps ax'
-alias py=python3
 alias pyfind='find . -name "*.py"'
 alias pygrep='grep -nr --include="*.py"'
 alias pyserver='python3 -m http.server'
+alias python=python3
 alias python_module_path='echo '\''import sys; t=__import__(sys.argv[1],fromlist=["."]); print(t.__file__)'\''  | python - '
 alias ql='qlmanage -p'
 alias raek=rake

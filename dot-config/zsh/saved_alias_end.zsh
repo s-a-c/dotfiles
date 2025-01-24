@@ -589,6 +589,7 @@ alias pbu='perlbrew use'
 alias pd=perldoc
 alias perl-grep=pgrep
 alias perlgrep=pgrep
+alias phar='php artisan'
 alias pip='noglob pip3'
 alias pipgi='pip freeze | grep'
 alias pipi='pip install'
@@ -603,10 +604,10 @@ alias procs_for_path=procs-for-path
 alias psax='ps ax'
 alias pswax='ps wax'
 alias psxa='ps ax'
-alias py=python3
 alias pyfind='find . -name "*.py"'
 alias pygrep='grep -nr --include="*.py"'
 alias pyserver='python3 -m http.server'
+alias python=python3
 alias python_module_path='echo '\''import sys; t=__import__(sys.argv[1],fromlist=["."]); print(t.__file__)'\''  | python - '
 alias ql='qlmanage -p'
 alias raek=rake
@@ -654,6 +655,7 @@ alias tarxvzf='tar xvzf'
 alias tds=_tmux_directory_session
 alias te='/Users/s-a-c/.config/zsh/.zgenom/ohmyzsh/ohmyzsh/___/plugins/emacs/emacsclient.sh -nw'
 alias test-broadband='wget -O /dev/null http://speedtest.wdc01.softlayer.com/downloads/test500.zip'
+alias tinkerr='php tinker'
 alias tksv='tmux kill-server'
 alias tl='tmux list-sessions'
 alias tldrf='tldr --list | fzf --preview "tldr {1} --color=always" --preview-window=right:70% | xargs tldr --color=always'

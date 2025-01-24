@@ -53,8 +53,6 @@ _path_append \
     "/home/linuxbrew/.linuxbrew/sbin" \
     "/opt/local/bin" \
     "/opt/local/sbin" \
-    "/opt/homebrew/bin" \
-    "/opt/homebrew/sbin" \
     "/run/current-system/sw/bin" \
     "/nix/var/nix/profiles/default/bin" \
     "/usr/local/bin" \
@@ -65,6 +63,8 @@ _path_append \
     "/sbin"
 
 _path_prepend \
+    "/opt/homebrew/sbin" \
+    "/opt/homebrew/bin" \
     "/Applications/Xcode.app/Contents/Developer/usr/bin" \
     "/Applications/Herd.app/Contents/Resources" \
     "$ZDOTDIR/src/gocode/bin" \
@@ -99,7 +99,7 @@ typeset -xU PATH path FPATH fpath
 #_field_prepend PATH "${HOME}/sbin"
 ## }}}    ## [_path]
 
-# [[ -n "${commands[composer]}" ]] && export COMPOSER_BIN_DIR="$(composer config --global home)/vendor/bin" && _path_prepend $COMPOSER_BIN_DIR
+[[ -n "${commands[composer]}" ]] && _path_prepend "$(composer config --global home)/vendor/bin"
 
 export EDITOR=$commands[nvim]
 export VISUAL=$commands[cursor]
@@ -129,8 +129,7 @@ fi
 }
 
 ## [plugins.ssh]
-#ssh-add ${HOME}/.ssh/id_ed25519
-ssh-add -q --apple-load-keychain --apple-use-keychain ~/.ssh/id_ed25519
+ssh-add -q --apple-load-keychain --apple-use-keychain "${HOME}/.ssh/id_ed25519"
 
 ## [plugins.starship]
 [[ -n "${commands[starship]}" ]] && eval "$(starship init zsh)"

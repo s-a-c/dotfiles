@@ -194,3 +194,11 @@ sudo brew bundle dump
 nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
 nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
 git add . && git commit -pm 'brew +aspell' && git push
+laravel new --database=sqlite --stack=livewire --jet --dark --api --teams --verification lw3fs
+cp ~/.editorconfig ~/.prettierrc ~/Herd/renesdeals/
+laravel new --database=sqlite --stack=livewire --jet --dark --api --teams --verification lw3fs
+cp ~/.editorconfig ~/.prettierrc ~/Herd/lw3fs/
+composer require tursodatabase/turso-driver-laravel
+nvim ~/.config/zsh/.zshrc.d/880-alias.zsh
+git add . && git commit -pm 'brew +aspell' && git push
+laravel new --database=sqlite --stack=livewire --jet --dark --api --teams --verification lw3fs

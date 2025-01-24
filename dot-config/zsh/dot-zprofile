@@ -31,7 +31,7 @@ function _field_test() {
 function _field_get() {
     printf "$# : $@"
     local varName=$1 fieldNum=$2 IFS=${3:-':'}
-    read -ra auxArr <<< "${!varName}"
+    read -ra auxArr <<<"${!varName}"
     printf '%s' "${auxArr[fieldNum]}"
 }
 ## }}}    ## [_field.get]
@@ -42,7 +42,7 @@ function _field_get() {
 ## EXAMPLE: field_set PATH 2 /usr/local/bin
 function _field_set() {
     local varName=$1 fieldNum=$2 fieldVal=$3 IFS=${4:-':'}
-    read -ra auxArr <<< "${!varName}"
+    read -ra auxArr <<<"${!varName}"
     auxArr[fieldNum]="$fieldVal"
     printf -v "$varName" '%s' "${auxArr[*]}"
 }
@@ -54,7 +54,7 @@ function _field_set() {
 ## EXAMPLE: field_insert PATH 2 /usr/local/bin
 function _field_insert() {
     local varName=$1 fieldNum=$2 fieldVal=$3 IFS=${4:-':'}
-    read -ra auxArr <<< "${!varName}"
+    read -ra auxArr <<<"${!varName}"
     auxArr=("${auxArr[@]:0:fieldNum}" "$fieldVal" "${auxArr[@]:fieldNum}")
     printf -v "$varName" '%s' "${auxArr[*]}"
 }
@@ -66,7 +66,7 @@ function _field_insert() {
 ## EXAMPLE: field_delete PATH 2
 function _field_delete() {
     local varName=$1 fieldNum=$2 IFS=${3:-':'}
-    read -ra auxArr <<< "${!varName}"
+    read -ra auxArr <<<"${!varName}"
     unset 'auxArr[fieldNum]'
     printf -v "$varName" '%s' "${auxArr[*]}"
 }
@@ -78,7 +78,7 @@ function _field_delete() {
 ## EXAMPLE: field_find PATH /usr/local/bin
 function _field_find() {
     local varName=$1 fieldVal=$2 IFS=${3:-':'}
-    read -ra auxArr <<< "${!varName}"
+    read -ra auxArr <<<"${!varName}"
     for i in "${!auxArr[@]}"; do
         [[ ${auxArr[i]} == "$fieldVal" ]] && return 0
     done
@@ -92,7 +92,7 @@ function _field_find() {
 ## EXAMPLE: field_replace PATH /usr/local/bin /usr/local/bin2
 function _field_replace() {
     local varName=$1 fieldVal=$2 newFieldVal=$3 IFS=${4:-':'}
-    read -ra auxArr <<< "${!varName}"
+    read -ra auxArr <<<"${!varName}"
     for i in "${!auxArr[@]}"; do
         [[ ${auxArr[i]} == "$fieldVal" ]] && auxArr[i]="$newFieldVal"
     done
@@ -106,9 +106,9 @@ function _field_replace() {
 ## EXAMPLE: field_contains PATH /usr/local/bin
 function _field_contains() {
     local varName=$1 fieldVal=$2 IFS=${3:-':'}
-    read -ra auxArr <<< "${!varName}"
+    read -ra auxArr <<<"${!varName}"
     for i in "${!auxArr[@]}"; do
-            [[ ${auxArr[i]} == "$fieldVal" ]] && return 0
+        [[ ${auxArr[i]} == "$fieldVal" ]] && return 0
     done
     return 1
 }
@@ -122,7 +122,7 @@ function _field_contains() {
 ## EXAMPLE: field_append PATH /usr/local/bin
 function _field_append() {
     local varName=$1 fieldVal=$2 IFS=${3:-':'}
-    read -ra auxArr <<< "${!varName}"
+    read -ra auxArr <<<"${!varName}"
     for i in "${!auxArr[@]}"; do
         [[ ${auxArr[i]} == "$fieldVal" ]] && unset 'auxArr[i]'
     done
@@ -139,7 +139,7 @@ function _field_append() {
 ## EXAMPLE: field_prepend PATH /usr/local/bin
 function _field_prepend() {
     local varName=$1 fieldVal=$2 IFS=${3:-':'}
-    read -ra auxArr <<< "${!varName}"
+    read -ra auxArr <<<"${!varName}"
     for i in "${!auxArr[@]}"; do
         [[ ${auxArr[i]} == "$fieldVal" ]] && unset 'auxArr[i]'
     done
@@ -155,7 +155,7 @@ function _field_prepend() {
 ## EXAMPLE: field_remove PATH /usr/local/bin
 function _field_remove() {
     local varName=$1 fieldVal=$2 IFS=${3:-':'}
-    read -ra auxArr <<< "${!varName}"
+    read -ra auxArr <<<"${!varName}"
     for i in "${!auxArr[@]}"; do
         [[ ${auxArr[i]} == "$fieldVal" ]] && unset 'auxArr[i]'
     done
@@ -164,7 +164,6 @@ function _field_remove() {
 ## }}}    ## [_field.remove]
 ## }}}    ## [_field]
 
-
 ## [_path]    ## {{{
 ## [_path.remove] ## {{{
 function _path_remove() {
@@ -172,9 +171,9 @@ function _path_remove() {
         while [[ ":$PATH:" == *":$ARG:"* ]]; do
             ## Delete path by parts so we can never accidentally remove sub paths
             [[ "$PATH" == "$ARG" ]] && PATH=""
-            PATH=${PATH//":$ARG:"/":"}    ## delete any instances in the middle
-            PATH=${PATH/#"$ARG:"/}    ## delete any instance at the beginning
-            PATH=${PATH/%":$ARG"/}    ## delete any instance in the at the end
+            PATH=${PATH//":$ARG:"/":"} ## delete any instances in the middle
+            PATH=${PATH/#"$ARG:"/}     ## delete any instance at the beginning
+            PATH=${PATH/%":$ARG"/}     ## delete any instance in the at the end
             export PATH
         done
     done
@@ -201,5 +200,5 @@ function _path_prepend() {
 ## }}}    ## [_path]
 
 ## [history]
-alias disablehistory="function zshaddhistory() {    return 1 }"
+alias disablehistory="function zshaddhistory() { return 1 }"
 alias enablehistory="unset -f zshaddhistory"
