@@ -58,7 +58,8 @@ _path_prepend \
 
 local _dir
 for _dir in `echo "${PATH}" | tr ':' '\n'`; do
-    echo "${_dir}" &>2
+    echo "${_dir}" >&2
+
 done
 
 ## }}}    ## [_path]
