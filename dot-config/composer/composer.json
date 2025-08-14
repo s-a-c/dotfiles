@@ -1,0 +1,66 @@
+{
+    "require": {
+        "ext-imagick": "*",
+        "composer": "*",
+        "beyondcode/expose": "^3.0",
+        "blackfire/php-sdk": "^2.5",
+        "darkterminal/turso-php-installer": "^2.1",
+        "driftingly/rector-laravel": "^2.0",
+        "ergebnis/composer-normalize": "^2.47",
+        "fakerphp/faker": "^1.24",
+        "friendsofphp/php-cs-fixer": "^3.75",
+        "infection/infection": "^0.29",
+        "larastan/larastan": "^3.5",
+        "laravel-zero/installer": "^2.10",
+        "laravel/installer": "^5.15",
+        "laravel/pint": "^1.22",
+        "laravel/prompts": "^0.3.5",
+        "laravel/sail": "^1.43",
+        "laravel/tinker": "^2.10",
+        "livewire/flux": "^2.2",
+        "livewire/flux-pro": "^2.2",
+        "livewire/livewire": "^3.6",
+        "livewire/volt": "^1.7",
+        "mockery/mockery": "^1.6",
+        "nunomaduro/collision": "^8.8",
+        "nunomaduro/phpinsights": "^2.13",
+        "nunomaduro/termwind": "^2.3",
+        "peckphp/peck": "^0.1",
+        "pestphp/pest": "^4.x-dev",
+        "pestphp/pest-plugin": "^4.x-dev",
+        "pestphp/pest-plugin-arch": "^4.x-dev",
+        "pestphp/pest-plugin-laravel": "^4.x-dev",
+        "pestphp/pest-plugin-mutate": "^4.x-dev",
+        "pestphp/pest-plugin-type-coverage": "^4.x-dev",
+        "php-parallel-lint/php-parallel-lint": "^1.4",
+        "phpbench/phpbench": "^1.4",
+        "phpstan/phpstan-deprecation-rules": "^2.0",
+        "rector/rector": "^2.0",
+        "rector/type-perfect": "^2.0",
+        "roave/security-advisories": "dev-latest",
+        "soloterm/solo": "^0.5",
+        "statamic/cli": "^3.6"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "ergebnis/composer-normalize": true,
+            "infection/extension-installer": true,
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "repositories": {
+        "flux-pro": {
+            "type": "composer",
+            "url": "https://composer.fluxui.dev"
+        },
+        "laravel-comments": {
+            "type": "composer",
+            "url": "https://satis.spatie.be"
+        }
+    }
+}

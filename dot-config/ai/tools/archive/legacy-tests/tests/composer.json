@@ -1,0 +1,41 @@
+{
+    "name": "link-validator/test-suite",
+    "description": "Test suite for PHP Link Validation and Remediation Tools",
+    "type": "library",
+    "require": {
+        "php": "^8.1"
+    },
+    "require-dev": {
+        "pestphp/pest": "^2.0",
+        "pestphp/pest-plugin-coverage": "^2.0"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": ".",
+            "LinkValidator\\": "../LinkValidator/",
+            "LinkRectifier\\": "../LinkRectifier/"
+        },
+        "files": [
+            "Helpers/ConfigurationHelper.php",
+            "Helpers/FileSystemHelper.php", 
+            "Helpers/LinkValidationHelper.php",
+            "Helpers/FixtureHelper.php"
+        ]
+    },
+    "scripts": {
+        "test": "pest",
+        "test:unit": "pest Unit/",
+        "test:integration": "pest Integration/",
+        "test:configuration": "pest Configuration/",
+        "test:performance": "pest Performance/",
+        "test:coverage": "pest --coverage --coverage-html=coverage-html",
+        "test:filter": "pest --filter",
+        "test:verbose": "pest --verbose"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

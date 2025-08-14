@@ -1,0 +1,320 @@
+{
+  "name": "UME Tutorial Interactive Code Examples",
+  "short_name": "UME Examples",
+  "description": "Interactive code examples for the User Model Enhancements (UME) tutorial",
+  "version": "1.0.0",
+  "author": "StandAloneComplex",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/s-a-c/ume-app"
+  },
+  "homepage": "https://github.com/s-a-c/ume-app",
+  "keywords": [
+    "laravel",
+    "php",
+    "user-model",
+    "tutorial",
+    "interactive",
+    "code-examples"
+  ],
+  "phases": [
+    {
+      "id": 0,
+      "name": "Foundation",
+      "description": "PHP 8 attributes and their usage in Laravel",
+      "examples": [
+        {
+          "id": "01",
+          "title": "PHP 8 Attributes Basics",
+          "file": "phase0-01-php8-attributes-basics.md"
+        },
+        {
+          "id": "02",
+          "title": "Attribute Reflection and Usage",
+          "file": "phase0-02-attribute-reflection.md"
+        },
+        {
+          "id": "03",
+          "title": "Custom Attribute Creation",
+          "file": "phase0-03-custom-attributes.md"
+        },
+        {
+          "id": "04",
+          "title": "Attribute Validation",
+          "file": "phase0-04-attribute-validation.md"
+        },
+        {
+          "id": "05",
+          "title": "Attribute-based Behavior Modification",
+          "file": "phase0-05-behavior-modification.md"
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "name": "Core Models & STI",
+      "description": "Model structure and single table inheritance",
+      "examples": [
+        {
+          "id": "01",
+          "title": "Model Structure",
+          "file": "phase1-01-model-structure.md"
+        },
+        {
+          "id": "02",
+          "title": "Single Table Inheritance",
+          "file": "phase1-02-single-table-inheritance.md"
+        },
+        {
+          "id": "03",
+          "title": "Model Relationships",
+          "file": "phase1-03-model-relationships.md"
+        },
+        {
+          "id": "04",
+          "title": "Model Traits",
+          "file": "phase1-04-model-traits.md"
+        },
+        {
+          "id": "05",
+          "title": "Model Factories",
+          "file": "phase1-05-model-factories.md"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Auth & Profiles",
+      "description": "Authentication, authorization, and user profiles",
+      "examples": [
+        {
+          "id": "01",
+          "title": "Authentication",
+          "file": "phase2-01-authentication.md"
+        },
+        {
+          "id": "02",
+          "title": "Authorization",
+          "file": "phase2-02-authorization.md"
+        },
+        {
+          "id": "03",
+          "title": "User Profiles",
+          "file": "phase2-03-user-profiles.md"
+        },
+        {
+          "id": "04",
+          "title": "User Settings",
+          "file": "phase2-04-user-settings.md"
+        },
+        {
+          "id": "05",
+          "title": "User Preferences",
+          "file": "phase2-05-user-preferences.md"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Advanced User Management",
+      "description": "Role-based access control and user types",
+      "examples": [
+        {
+          "id": "01",
+          "title": "Role Management",
+          "file": "phase3-01-role-management.md"
+        },
+        {
+          "id": "02",
+          "title": "Permission Management",
+          "file": "phase3-02-permission-management.md"
+        },
+        {
+          "id": "03",
+          "title": "Team Management",
+          "file": "phase3-03-team-management.md"
+        },
+        {
+          "id": "04",
+          "title": "User Type Management",
+          "file": "phase3-04-user-type-management.md"
+        },
+        {
+          "id": "05",
+          "title": "Permission Caching",
+          "file": "phase3-05-permission-caching.md"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Real-time Features",
+      "description": "Real-time functionality with WebSockets",
+      "examples": [
+        {
+          "id": "01",
+          "title": "WebSockets Basics",
+          "file": "phase4-01-websockets-basics.md"
+        },
+        {
+          "id": "02",
+          "title": "Reverb Setup",
+          "file": "phase4-02-reverb-setup.md"
+        },
+        {
+          "id": "03",
+          "title": "Presence Indicators",
+          "file": "phase4-03-presence-indicators.md"
+        },
+        {
+          "id": "04",
+          "title": "Real-time Chat",
+          "file": "phase4-04-real-time-chat.md"
+        },
+        {
+          "id": "05",
+          "title": "Activity Logging",
+          "file": "phase4-05-activity-logging.md"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Advanced Features",
+      "description": "Advanced Laravel features for enhanced user models",
+      "examples": [
+        {
+          "id": "01",
+          "title": "Search Implementation",
+          "file": "phase5-01-search-implementation.md"
+        },
+        {
+          "id": "02",
+          "title": "Notifications System",
+          "file": "phase5-02-notifications-system.md"
+        },
+        {
+          "id": "03",
+          "title": "Audit Trail",
+          "file": "phase5-03-audit-trail.md"
+        },
+        {
+          "id": "04",
+          "title": "API Rate Limiting",
+          "file": "phase5-04-api-rate-limiting.md"
+        },
+        {
+          "id": "05",
+          "title": "Internationalization",
+          "file": "phase5-05-internationalization.md"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Testing and Quality Assurance",
+      "description": "Testing strategies for user model enhancements",
+      "examples": [
+        {
+          "id": "01",
+          "title": "Unit Testing Basics",
+          "file": "phase6-01-unit-testing-basics.md"
+        },
+        {
+          "id": "02",
+          "title": "Feature Testing",
+          "file": "phase6-02-feature-testing.md"
+        },
+        {
+          "id": "03",
+          "title": "Integration Testing",
+          "file": "phase6-03-integration-testing.md"
+        },
+        {
+          "id": "04",
+          "title": "API Testing",
+          "file": "phase6-04-api-testing.md"
+        },
+        {
+          "id": "05",
+          "title": "Performance Testing",
+          "file": "phase6-05-performance-testing.md"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Deployment and Maintenance",
+      "description": "Deployment, monitoring, and maintenance strategies",
+      "examples": [
+        {
+          "id": "01",
+          "title": "Deployment Strategies",
+          "file": "phase7-01-deployment-strategies.md"
+        },
+        {
+          "id": "02",
+          "title": "Monitoring and Logging",
+          "file": "phase7-02-monitoring-logging.md"
+        },
+        {
+          "id": "03",
+          "title": "Backup and Recovery",
+          "file": "phase7-03-backup-recovery-part1.md"
+        },
+        {
+          "id": "04",
+          "title": "Scaling Considerations",
+          "file": "phase7-04-scaling-considerations.md"
+        },
+        {
+          "id": "05",
+          "title": "Maintenance and Updates",
+          "file": "phase7-05-maintenance-updates.md"
+        }
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "title": "All Phases Summary",
+      "file": "all-phases-summary.md",
+      "description": "A comprehensive overview of all phases"
+    },
+    {
+      "title": "Using Interactive Examples",
+      "file": "using-interactive-examples.md",
+      "description": "Guide to using the interactive examples"
+    },
+    {
+      "title": "Browser Compatibility Report",
+      "file": "browser-compatibility-report.md",
+      "description": "Compatibility testing across different browsers"
+    },
+    {
+      "title": "Device Compatibility Report",
+      "file": "device-compatibility-report.md",
+      "description": "Compatibility testing across different devices"
+    },
+    {
+      "title": "Future Enhancements",
+      "file": "future-enhancements.md",
+      "description": "Planned improvements for the interactive examples"
+    },
+    {
+      "title": "Phase 7 Combined Explanation",
+      "file": "phase7-00-combined-explanation.md",
+      "description": "Comprehensive overview of Phase 7 examples"
+    }
+  ],
+  "meta": {
+    "lastUpdated": "2023-05-11",
+    "contributors": [
+      "StandAloneComplex",
+      "AI Assistant"
+    ],
+    "totalExamples": 40,
+    "totalPhases": 8
+  }
+}

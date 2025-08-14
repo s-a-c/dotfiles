@@ -1,0 +1,152 @@
+Ú0# phpstan.neon.dist - Comprehensive PHPStan configuration for Laravel 12 with PHP 8.4
+# Optimized for Laravel, Livewire, Volt, and Blade templates
+
+includes:
+    - vendor/larastan/larastan/extension.neon
+    # The baseline is conditionally included via an environment variable in the includes.php file
+    - includes.php
+    # Custom rules
+    - phpstan-custom-rules.neon
+
+parameters:
+    # Maximum level for strict type checking (level 10 is the strictest)
+    level: 10
+
+    # PHP version specification
+    phpVersion: 80400
+
+    # Paths to analyze - standardized across tools
+    paths:
+        - app
+        - config
+        - database
+        - routes
+        - tests
+        - bootstrap
+        - resources
+        - packages/s-a-c/ai-prompt-addenda/src
+        - packages/s-a-c/ai-prompt-addenda/tests
+
+    # Paths to exclude from analysis - standardized across tools
+    excludePaths:
+        - bootstrap/cache/*
+        - vendor/*
+        - node_modules/*
+        - storage/*
+        - public/*
+
+    # Performance optimization - aligned with other tools
+    parallel:
+        jobSize: 20
+        maximumNumberOfProcesses: 8
+        minimumNumberOfJobsPerProcess: 2
+        processTimeout: 300.0
+
+    # Temporary directory for cache - standardized path
+    tmpDir: reports/phpstan/cache
+
+    # Error reporting configuration
+    errorFormat: table
+    tipsOfTheDay: false
+    reportUnmatchedIgnoredErrors: true
+
+    # Core type-checking behavior
+    checkUnionTypes: true
+    checkUninitializedProperties: true
+    treatPhpDocTypesAsCertain: false
+    checkGenericClassInNonGenericObjectType: false
+    checkMissingIterableValueType: false
+    reportMaybesInMethodSignatures: false
+    checkModelProperties: false
+
+    # Stubbed files for Laravel's macros and other dynamic features
+    stubFiles:
+        - stubs/Macroable.stub
+
+    # Define "magic" classes that can have dynamic properties/methods
+    universalObjectCratesClasses:
+        - Illuminate\Database\Eloquent\Model
+        - Illuminate\Database\Eloquent\Collection
+        - Illuminate\Database\Eloquent\Builder
+        - Illuminate\Support\Collection
+        - Illuminate\Http\Request
+        - Illuminate\Contracts\Auth\Authenticatable
+        - Illuminate\View\ComponentAttributeBag
+        - Livewire\Component
+        - stdClass
+
+    # Laravel's dynamic global functions and static method calls
+    dynamicConstantNames:
+        - view
+        - auth
+        - app
+        - config
+        - session
+        - env
+        - request
+
+    # Methods that terminate execution (important for control flow analysis)
+    earlyTerminatingMethodCalls:
+        PHPUnit\Framework\TestCase:
+            - fail
+            - markTestIncomplete
+            - markTestSkipped
+        Illuminate\Support\Facades\App:
+            - abort
+        Illuminate\Support\Facades\Response:
+            - abort
+        Symfony\Component\HttpFoundation\Response:
+            - abort
+
+    # Comprehensive pattern list to ignore Laravel-specific issues
+    ignoreErrors:
+        # Livewire/Volt specific patterns
+        - '#Expression "new.*#\[\\Livewire\\Attributes\\Layout\(.*\).*class extends \\Livewire\\Volt\\Component.*" on a separate line does not do anything\.#'
+        - '#Livewire\\Component::\$[a-zA-Z0-9_]+ is never written, only read#'
+
+        # Blade template variables
+        - '#Variable \$[a-zA-Z0-9_]+ might not be defined\.#'
+        - '#Undefined variable: \$this#'
+        - '#Undefined variable: \$expandable#'
+        - '#Undefined variable: \$heading#'
+
+        # Auth-related checks (for nullable user)
+        - '#Cannot access property .* on App\\Models\\User\|null\.#'
+        - '#Cannot call method .* on App\\Models\\User\|null\.#'
+        - '#Cannot call method hasVerifiedEmail\(\) on App\\Models\\User\|null\.#'
+        - '#Parameter \#1 \$user of class Illuminate\\Auth\\Events\\PasswordReset constructor expects Illuminate\\Contracts\\Auth\\Authenticatable, mixed given\.#'
+
+        # Form inputs and request data handling
+        - '#Cannot access offset .* on mixed\.#'
+        - '#Parameter \#1 \$value of static method Illuminate\\Support\\Facades\\Hash::make\(\) expects string, mixed given\.#'
+        - '#Parameter \#1 \$(credentials|attributes) of static method .* expects array(\<string, mixed\>)?, mixed given\.#'
+        - '#Parameter \#1 \$(user|key) of .* expects .*, mixed given\.#'
+        - '#Cannot call method (forceFill|save|fill|isDirty|delete|update|sendEmailVerificationNotification)\(\) on mixed\.#'
+
+        # Database migrations
+        - '#Parameter \#1 \$name of static method Illuminate\\Support\\Facades\\Schema::connection\(\) expects string\|null, mixed given\.#'
+        - '#Parameter \#1 \$table of method Illuminate\\Database\\Schema\\Builder::(create|table)\(\) expects string, mixed given\.#'
+
+        # PHPDoc issues
+        - '#PHPDoc tag @var#'
+        - '#PHPDoc tag @var for variable \$[a-zA-Z0-9_]+ has invalid type#'
+        - '#PHPDoc tag @phpstan-return has invalid value \(array<model property of \\App\\Models\\User, mixed>\): Unexpected token "property"#'
+
+        # Test response assertions
+        - '#Call to an undefined method PHPUnit\\Framework\\TestCase::(get|actingAs|assertAuthenticated|assertGuest)\(\)\.#'
+        - '#Cannot call method (assertStatus|assertRedirect|assertOk|get|post)\(\) on mixed\.#'
+        - '#Cannot call method toBe\(\) on mixed\.#'
+
+        # String concatenation with mixed types (common in views/templates)
+        - '#Binary operation "." between .* and mixed results in an error\.#'
+
+        # Laravel facades and dynamic methods
+        - '#Call to an undefined (static )?method Illuminate\\Support\\Facades\\[a-zA-Z]+::[a-zA-Z]+\(\)\.#'
+        - '#Access to an undefined property [a-zA-Z0-9\\_]+::\$[a-zA-Z0-9_]+\.#'
+        - '#Access to an undefined property Illuminate\\Database\\Eloquent\\Model::\$[a-zA-Z0-9_]+#'
+        - '#Access to an undefined property Illuminate\\Database\\Eloquent\\Collection::\$[a-zA-Z0-9_]+#'
+        - '#Parameter \#1 \$callback of method [a-zA-Z0-9\\_]+::tap\(\) expects callable\(\): mixed, .* given\.#'
+
+        # Template type resolution
+        - '#Unable to resolve the template type T in call to method static method#'
+Ú0 "(3ae679aae66fa0c02e851818130d386ac099924e27file:///Users/s-a-c/Herd/lsk-livewire/phpstan.neon.dist:%file:///Users/s-a-c/Herd/lsk-livewire

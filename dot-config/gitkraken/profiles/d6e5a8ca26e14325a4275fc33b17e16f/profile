@@ -1,0 +1,90 @@
+{
+  "integration": {
+    "hasConnectedIntegrationByType": {
+      "github": true,
+      "gitlab": true,
+      "azureDevops": true
+    }
+  },
+  "tabInfo": {
+    "permanentTabs": {
+      "FOCUS_VIEW": {
+        "closed": false
+      },
+      "REPO_MANAGEMENT": {}
+    },
+    "selectedTabId": "9974f240-66d2-4433-a1ae-ac733f4644d3",
+    "tabs": [
+      {
+        "id": "9974f240-66d2-4433-a1ae-ac733f4644d3",
+        "type": "REPO",
+        "repoName": "herd-example-app",
+        "repoPath": "/Users/s-a-c/Herd/herd-example-app/",
+        "skipWSLChecks": false
+      },
+      {
+        "id": "264e7ee8-0c86-4206-bd8c-ce906a9f370a",
+        "type": "RELEASE_NOTES"
+      }
+    ]
+  },
+  "projects": {},
+  "externalEditor": "VS Code",
+  "organizationId": "67125b983b27a48b36d76f49",
+  "userEmail": "embrace.s0ul+s-a-c@gmail.com",
+  "userName": "s-a-c",
+  "gpg": {
+    "commitGpgSign": false,
+    "tagForceSignAnnotated": false
+  },
+  "editor": {
+    "fontFamily": "\"OpenDyslexicM Nerd Font\"",
+    "tabSize": "2",
+    "wordWrap": true
+  },
+  "cli": {
+    "fontFamily": "\"OpenDyslexicM Nerd Font\"",
+    "cursorStyle": "bar",
+    "tabBehavior": "NAVIGATION"
+  },
+  "focusView": {
+    "provider": "github",
+    "issueTracker": {
+      "provider": "github",
+      "settings": {
+        "azureOrganizationId": null,
+        "azureProject": null,
+        "jiraProjectId": null,
+        "jiraResourceId": null,
+        "repoId": null,
+        "trelloBoardId": null
+      }
+    }
+  },
+  "services": {
+    "azureDevops": {
+      "url": "https://dev.azure.com/sunavlys"
+    }
+  },
+  "ui": {
+    "theme": "dark-high-contrast",
+    "useAuthorInitialsForAvatars": true,
+    "useGenericRemoteHostingServiceIconsInRefs": true,
+    "graphOptions": {
+      "columns": {
+        "commitAuthorZone": {
+          "visible": true
+        },
+        "commitDateTimeZone": {
+          "visible": true
+        }
+      }
+    }
+  },
+  "defaultIssueTrackerType": "NONE",
+  "layout": {
+    "RefPanel": {
+      "open": true
+    }
+  }
+}

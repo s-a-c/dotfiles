@@ -1,0 +1,50 @@
+#!/usr/bin/env zsh
+
+function __zgenom_compile() {
+    if [[ ! -f $file.zwc || $file -nt $file.zwc ]] && [[ -r $file ]]; then
+        zcompile $opts $file
+    fi
+}
+
+function zgenom-compile() {
+    local opts=()
+    zparseopts -a opts -D -- M R U k z || return
+    if [[ $# -eq 0 ]]; then
+        __zgenom_err '`compile` requires one parameter:'
+        __zgenom_err '`zgenom compile <location>`'
+    fi
+
+    local file
+    while [[ $# -gt 0 ]]; do
+        file=$1; shift
+        if [ -f $file ]; then
+            __zgenom_compile
+        else
+            # only files, ignore compiled files and ignore .git folders
+            for file in $file/**/*~*/.git/*~*.zwc(.DN); do
+                # Check *.sh if it can be parsed from zsh
+                if [[ $file = *.sh ]]; then
+                    if ! zsh -n $file 2>/dev/null; then
+                        continue
+                    fi
+
+                # Check for shebang if not:
+                # - zsh startup file
+                # - *.zsh
+                # - zcompdump*
+                elif [[ $file != *.zsh ]] \
+                    && [[ $file != *zcompdump* ]] \
+                    && [[ ! $file =~ '\.z(shenv|profile|shrc|login|logout)$' ]]; then
+                    read -r firstline < $file
+                    if [[ ! $firstline =~ '^#!.*zsh' ]] 2>/dev/null; then
+                        continue
+                    fi
+                fi
+
+                __zgenom_compile
+            done
+        fi
+    done
+}
+
+zgenom-compile $@
