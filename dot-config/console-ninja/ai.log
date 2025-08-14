@@ -1,0 +1,15 @@
+# Agent tool invoked: errors
+# Agent tool options: {
+  "input": {},
+  "toolInvocationToken": {
+    "sessionId": "47a75d27-55c1-4858-9241-68a24a575151"
+  },
+  "tokenizationOptions": {
+    "tokenBudget": 20044
+  }
+}
+# Agent tool result: {
+  "description": "Application runtime errors and log locations. The logLocations property provides a list of files and line numbers within those files where logs are available, this information can be used to get logs via runtime logs tool.",
+  "errors": [],
+  "logLocations": []
+}

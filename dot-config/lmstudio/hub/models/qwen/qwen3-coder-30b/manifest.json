@@ -1,0 +1,40 @@
+{
+  "type": "model",
+  "owner": "qwen",
+  "name": "qwen3-coder-30b",
+  "dependencies": [
+    {
+      "type": "model",
+      "purpose": "baseModel",
+      "modelKeys": [
+        "lmstudio-community/qwen3-coder-30b-a3b-instruct-gguf",
+        "lmstudio-community/qwen3-coder-30b-a3b-instruct-mlx-4bit",
+        "lmstudio-community/qwen3-coder-30b-a3b-instruct-mlx-6bit",
+        "lmstudio-community/qwen3-coder-30b-a3b-instruct-mlx-8bit"
+      ],
+      "sources": [
+        {
+          "type": "huggingface",
+          "user": "lmstudio-community",
+          "repo": "Qwen3-Coder-30B-A3B-Instruct-GGUF"
+        },
+        {
+          "type": "huggingface",
+          "user": "lmstudio-community",
+          "repo": "Qwen3-Coder-30B-A3B-Instruct-MLX-4bit"
+        },
+        {
+          "type": "huggingface",
+          "user": "lmstudio-community",
+          "repo": "Qwen3-Coder-30B-A3B-Instruct-MLX-6bit"
+        },
+        {
+          "type": "huggingface",
+          "user": "lmstudio-community",
+          "repo": "Qwen3-Coder-30B-A3B-Instruct-MLX-8bit"
+        }
+      ]
+    }
+  ],
+  "revision": 1
+}

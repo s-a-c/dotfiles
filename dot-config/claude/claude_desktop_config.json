@@ -1,0 +1,111 @@
+{
+    "filesystem": {
+        "allowed_directories": [
+            "/Users/s-a-c/Desktop",
+            "/Users/s-a-c/Downloads",
+            "/Users/s-a-c/Herd",
+            "/Users/s-a-c/code",
+            "/Users/s-a-c/dotfiles",
+            "/Users/s-a-c/nc",
+            "/Users/s-a-c/.config"
+        ]
+    },
+    "mcpServers": {
+        "Context7": {
+            "args": [
+                "dlx",
+                "@upstash/context7-mcp@latest"
+            ],
+            "command": "pnpm",
+            "type": "stdio"
+        },
+        "fetch": {
+            "args": [
+                "mcp-server-fetch"
+            ],
+            "command": "uvx"
+        },
+        "filesystem": {
+            "args": [
+                "dlx",
+                "@modelcontextprotocol/server-filesystem",
+                "/Users/s-a-c/Desktop",
+                "/Users/s-a-c/Downloads",
+                "/Users/s-a-c/Herd",
+                "/Users/s-a-c/code",
+                "/Users/s-a-c/dotfiles",
+                "/Users/s-a-c/nc",
+                "/Users/s-a-c/.config"
+            ],
+            "command": "pnpm"
+        },
+        "github": {
+            "args": [
+                "dlx",
+                "@modelcontextprotocol/server-github"
+            ],
+            "command": "pnpm",
+            "env": {
+                "GITHUB_PERSONAL_ACCESS_TOKEN": "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"
+            }
+        },
+        "grep": {
+            "url": "https://mcp.grep.app"
+        },
+        "jetbrains": {
+            "args": [
+                "dlx",
+                "@jetbrains/mcp-proxy"
+            ],
+            "command": "pnpm"
+        },
+        "json": {
+            "args": [
+                "dlx",
+                "@gongrzhe/server-json-mcp@1.0.3"
+            ],
+            "command": "pnpm"
+        },
+        "mcp-installer": {
+            "args": [
+                "dlx",
+                "@anaisbetts/mcp-installer"
+            ],
+            "command": "pnpm"
+        },
+        "memory": {
+            "args": [
+                "dlx",
+                "@modelcontextprotocol/server-memory"
+            ],
+            "command": "pnpm"
+        },
+        "sequential-thinking": {
+            "args": [
+                "dlx",
+                "@modelcontextprotocol/server-sequential-thinking"
+            ],
+            "command": "pnpm"
+        },
+        "serena": {
+            "command": "uvx",
+            "args": ["--from", "git+https://github.com/oraios/serena", "serena", "start-mcp-server"]
+        },
+        "tavily-mcp": {
+            "args": [
+                "dlx",
+                "tavily-mcp@latest"
+            ],
+            "command": "pnpm",
+            "env": {
+                "TAVILY_API_KEY": "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"
+            }
+        },
+        "time": {
+            "args": [
+                "mcp-server-time --local-timezone Europe/London"
+            ],
+            "command": "uvx"
+        }
+    }
+}
