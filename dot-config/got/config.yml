@@ -1,0 +1,4 @@
+backend: lingvatranslate
+engine: google
+source: en
+target: es

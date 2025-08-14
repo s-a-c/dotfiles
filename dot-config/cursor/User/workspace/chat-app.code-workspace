@@ -1,0 +1,38 @@
+{
+	"folders": [
+		{
+			"path": "../../../../../code/chat-app"
+		}
+	],
+	"settings": {
+		"workbench.colorCustomizations": {
+			"activityBar.activeBackground": "#57e03e",
+			"activityBar.background": "#57e03e",
+			"activityBar.foreground": "#15202b",
+			"activityBar.inactiveForeground": "#15202b99",
+			"activityBarBadge.background": "#5a70e5",
+			"activityBarBadge.foreground": "#e7e7e7",
+			"commandCenter.border": "#15202b99",
+			"editorGroup.border": "#57e03e",
+			"panel.border": "#57e03e",
+			"sash.hoverBorder": "#57e03e",
+			"sideBar.border": "#57e03e",
+			"statusBar.background": "#3bca21",
+			"statusBar.border": "#3bca21",
+			"statusBar.debuggingBackground": "#b021ca",
+			"statusBar.debuggingBorder": "#b021ca",
+			"statusBar.debuggingForeground": "#e7e7e7",
+			"statusBar.foreground": "#15202b",
+			"statusBarItem.hoverBackground": "#2e9e1a",
+			"statusBarItem.remoteBackground": "#3bca21",
+			"statusBarItem.remoteForeground": "#15202b",
+			"tab.activeBorder": "#57e03e",
+			"titleBar.activeBackground": "#3bca21",
+			"titleBar.activeForeground": "#15202b",
+			"titleBar.border": "#3bca21",
+			"titleBar.inactiveBackground": "#3bca2199",
+			"titleBar.inactiveForeground": "#15202b99"
+		},
+		"peacock.color": "#3bca21"
+	}
+}

@@ -1,0 +1,38 @@
+{
+	"folders": [
+		{
+			"path": "../../../../../.config/nvim"
+		}
+	],
+	"settings": {
+		"workbench.colorCustomizations": {
+			"activityBar.activeBackground": "#e8c64c",
+			"activityBar.background": "#e8c64c",
+			"activityBar.foreground": "#15202b",
+			"activityBar.inactiveForeground": "#15202b99",
+			"activityBarBadge.background": "#128d72",
+			"activityBarBadge.foreground": "#e7e7e7",
+			"commandCenter.border": "#15202b99",
+			"editorGroup.border": "#e8c64c",
+			"panel.border": "#e8c64c",
+			"sash.hoverBorder": "#e8c64c",
+			"sideBar.border": "#e8c64c",
+			"statusBar.background": "#e2b71f",
+			"statusBar.border": "#e2b71f",
+			"statusBar.debuggingBackground": "#1f4ae2",
+			"statusBar.debuggingBorder": "#1f4ae2",
+			"statusBar.debuggingForeground": "#e7e7e7",
+			"statusBar.foreground": "#15202b",
+			"statusBarItem.hoverBackground": "#b69318",
+			"statusBarItem.remoteBackground": "#e2b71f",
+			"statusBarItem.remoteForeground": "#15202b",
+			"tab.activeBorder": "#e8c64c",
+			"titleBar.activeBackground": "#e2b71f",
+			"titleBar.activeForeground": "#15202b",
+			"titleBar.border": "#e2b71f",
+			"titleBar.inactiveBackground": "#e2b71f99",
+			"titleBar.inactiveForeground": "#15202b99"
+		},
+		"peacock.color": "#e2b71f"
+	}
+}

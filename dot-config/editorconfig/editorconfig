@@ -1,0 +1,80 @@
+# EditorConfig helps maintain consistent coding styles across different editors and IDEs
+# See: https://editorconfig.org
+
+# Top-most EditorConfig file
+root = true
+
+# Default settings for all files
+[*]
+# Use UTF-8 character encoding
+charset = utf-8
+# Unix-style line endings
+end_of_line = lf
+# Insert final newline at end of file
+insert_final_newline = true
+# Remove trailing whitespace on save
+trim_trailing_whitespace = true
+# Indentation
+indent_style = space
+indent_size = 4
+
+# Markdown files
+[*.md]
+# Preserve trailing whitespace for Markdown files
+trim_trailing_whitespace = false
+
+# YAML files
+[*.{yml,yaml}]
+indent_size = 2
+
+# JSON files
+[*.json]
+indent_size = 4
+
+# JavaScript and TypeScript files
+[*.{js,ts,jsx,tsx,mjs,cjs}]
+indent_size = 2
+
+# CSS, SCSS, and Less files
+[*.{css,scss,less}]
+indent_size = 2
+
+# HTML and Blade template files
+[*.{htm,html,blade.php}]
+indent_size = 2
+
+# PHP files
+[*.php]
+indent_size = 4
+
+# Composer files
+[composer.json]
+indent_size = 4
+
+# Docker files
+[{Dockerfile,docker-compose.yml}]
+indent_size = 2
+
+# Shell scripts
+[*.sh]
+# Use line feed (LF) line endings
+end_of_line = lf
+# Ensure files are executable in Linux
+file_type = shell
+
+# Ignore paths
+[/vendor/**]
+charset = unset
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
+indent_style = unset
+indent_size = unset
+
+[/node_modules/**]
+charset = unset
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
+indent_style = unset
+indent_size = unset

@@ -1,0 +1,11 @@
+remotes::install_github("REditorSupport/languageserver")
+install.packages("rmarkdown")
+if (!requireNamespace("devtools"))
+  install.packages('devtools')
+devtools::install_github('rstudio/rmarkdown')
+quit()
+remotes::install_github("ManuelHentschel/vscDebugger")
+install.packages("httpgd", repos = c("https://nx10.r-universe.dev", "https://cran.r-project.org"))
+install.packages("httpgd", repos = c("https://nx10.r-universe.dev", "https://cran.r-project.org"))
+locate herd.yml
+quit()
