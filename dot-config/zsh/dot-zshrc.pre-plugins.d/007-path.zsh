@@ -5,8 +5,6 @@
 
 # vim: ft=zsh sw=4 ts=4 et nu rnu ai si
 
-unset ZSH_DEBUG
-
 [[ -n "$ZSH_DEBUG" ]] && printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
 
 ## [_path]    ## {{{

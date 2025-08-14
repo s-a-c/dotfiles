@@ -500,3 +500,7 @@ echo 'Terminal capability test'
 echo 'Terminal capability test'
 echo 'Terminal capability test'
 echo 'Terminal capability test'
+eza -al dot-config/zsh/dot-zshrc
+z ~/.config/zsh
+cd ~/.config/zsh
+which zqs

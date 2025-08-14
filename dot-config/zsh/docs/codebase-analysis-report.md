@@ -261,9 +261,47 @@ rm ~/.zqs-zprof-enabled
 3. Backup and recovery mechanisms
 4. Configuration health checks
 
+## Investigation: compinit:141 Parse Error
+
+### **Analysis of "compinit:141: parse error: condition expected: $1"**
+
+**Root Cause Investigation:**
+After thorough examination of the codebase, the `compinit:141: parse error: condition expected: $1` message is not directly traceable to specific files in the current configuration. However, several factors contribute to potential completion system failures:
+
+**Primary Issues Identified:**
+1. **Configuration Loading Failure**: The main `.zshrc` file doesn't call `load-shell-fragments`, meaning completion setup in `.zshrc.pre-plugins.d/020-pre-plugins.zsh` (lines 22-30) is never executed
+2. **Completion System Setup**: While `compinit -C` is properly configured in 020-pre-plugins.zsh, it's never loaded due to the broken loading mechanism
+3. **Large Completion Files**: The `_deno.zsh` completion file (184KB, 2475 lines) could potentially cause parsing issues if there are syntax errors deeper in the file
+4. **Syntax Error in Configuration**: Line 69 of `020-pre-plugins.zsh` contains a malformed comment: `# Alt+End#` which could cause parsing issues
+
+**Potential Triggers:**
+- **Missing Configuration Loading**: Since the pre-plugins directory isn't sourced, completion initialization may fail silently
+- **Custom Completion Files**: The large deno completion file might contain syntax errors in later sections
+- **Environment Dependencies**: The error typically occurs when compinit encounters malformed completion functions or when `$1` parameter is expected but not provided in completion contexts
+
+**Recommended Investigation Steps:**
+1. **Enable Configuration Loading**: Fix the main .zshrc to load configuration directories
+2. **Test Completion System**: 
+   ```bash
+   # Manually test compinit
+   autoload -Uz compinit
+   compinit -C
+   
+   # Check for completion errors
+   compinit 2>&1 | grep -i error
+   ```
+3. **Validate Completion Files**: Check custom completion files for syntax errors
+4. **Enable Debug Mode**: Use `zsh -x` to trace where the parse error occurs
+
+**Status**: This error is likely a consequence of the broken configuration loading mechanism rather than a direct syntax issue in the visible code.
+
+---
+
 ## Conclusion
 
 The zsh configuration codebase demonstrates advanced functionality but suffers from critical architectural flaws that prevent it from working correctly. The most urgent issues are the incomplete main configuration file and unmaintainable configuration lines that block any debugging or maintenance efforts.
+
+The `compinit:141` parse error is symptomatic of the broader configuration loading problems - the completion system setup exists but is never executed due to the broken loading mechanism.
 
 With systematic implementation of the recommended fixes, this configuration can become a robust, maintainable, and high-performance zsh environment. The reorganization opportunities will significantly improve long-term maintainability and user experience.
 
