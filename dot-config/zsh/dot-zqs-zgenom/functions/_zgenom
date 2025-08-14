@@ -1,0 +1,101 @@
+#compdef zgenom
+
+function _zgenom_api() {
+    _arguments '2: :->cmd' '*: :->opts'
+    case $state in
+        cmd)
+            local commands=(
+                'clone_dir[get directory where the repository is cloned to]'
+                'err[error method of zgenom]'
+                'out[output method of zgenom]'
+            )
+            _values -w commands $commands ;;
+        opts)
+            if [[ $words[3] = 'clone_dir' ]]; then
+                local options=(
+                    '--branch[define which branch to use (default: follow head)]'
+                    '--legacy[use the zgen naming pattern]'
+                )
+                _values -w options $options
+            fi
+            ;;
+    esac
+}
+
+function _zgenom_autoupdate() {
+    local days=(1 2 3 5 7 14)
+    if [[ $words[-2] = '--plugin' || $words[-2] = '--self' ]]; then
+        _values 'interval in days' $days
+    else
+        local options=(
+            "--no-background[don't update in the background]"
+            '--keep-ohmyzsh[keep ohmyzshs built-in autoupdate enabled]'
+            '--self[update zgenom every INT days]'
+            '--plugin[update plugins every INT days]'
+            "--silent[don't show the update log of background updates]"
+            '--verbose[verbose logging while updating]'
+            '-v[verbose logging while updating]'
+        )
+        _values -w options $options
+
+        # Don't complete numbers when a number was already entered
+        [[ $BUFFER = *[0-9]\ * ]] && return
+
+        case ${(q)words} in
+            # Only valid if neither --self or --plugins was entered
+            *--self*|*--plugins*) :;;
+            *) _values 'interval in days' $days ;;
+        esac
+    fi
+}
+
+function _zgenom_bin() {
+    if [[ $words[-2] =~ '--'* ]] return
+    local options=(
+        '--location[file or folder to add]'
+        '--branch[define git branch]'
+        '--name[define name (only when location is a file)]'
+        '--glob[everything matching the glob will be added]'
+    )
+    _values -w options $options
+}
+
+function _zgenom_compile() {
+    local options=(
+        '-M[mark as mapped]'
+        '-R[mark as read]'
+        "-U[don't expand aliases]"
+        '-k[ksh-style autoloading]'
+        '-z[zsh-style autoloading]'
+    )
+    _values -w options $options
+    _files
+}
+
+function _zgenom() {
+    _arguments '1: :->cmd' '*: :->opts'
+
+    case $state in
+        cmd)
+            local -a commands
+            commands=$ZGENOM_EXTENSIONS
+            for line in "${(@f)$(< "$ZGEN_SOURCE"/commands.txt)}"; do
+                commands+=( "${line//\^/}" )
+            done
+            _describe -t commands 'command' commands "$@"
+            ;;
+        opts)
+            local subcmd=$words[2]
+            case $subcmd in
+                list) _values -w options '--bin[list bins]' '--init[show init file]';;
+                selfupdate|update) _values -w options "--no-reset[don't remove init.zsh after updating]";;
+                load) _values -w options '--completion[only add to fpath]' '--pin[pin to this commit (full hash)]';;
+                clone) _values -w options '--pin[pin to this commit (full hash)]' '--no-submodules[prevent submodules from being cloned]';;
+                ohmyzsh) _values -w options "--completion[only add to fpath]";;
+                *) functions _zgenom_$subcmd &> /dev/null && _zgenom_$subcmd "$@";;
+            esac
+            ;;
+    esac
+}
+
+_zgenom $@

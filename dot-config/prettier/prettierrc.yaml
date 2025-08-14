@@ -1,0 +1,45 @@
+arrowParens: always
+bracketSameLine: true
+bracketSpacing: true
+cursorOffset: -1
+embeddedLanguageFormatting: auto
+endOfLine: lf
+experimentalTernaries: true
+htmlWhitespaceSensitivity: css
+insertPragma: true
+jsxBracketSameLine: true
+jsxSingleQuote: true
+overrides:
+  - files: '**/*.{js,mjs,cjs}'
+    options:
+      parser: meriyah
+  - files: bin/prettier.cjs
+    options:
+      trailingComma: none
+  - files:
+      - .vscode/*.json
+      - tsconfig.json
+    options:
+      parser: jsonc
+  - files: '*.json'
+    options:
+      printWidth: 200
+plugins: []
+printWidth: 120
+proseWrap: always
+quoteProps: consistent
+requirePragma: false
+semi: false
+singgleAttributePerLine: true
+singleQuote: true
+svelteAllowShorthand: false
+svelteBracketNewLine: false
+svelteIndentScript: true
+svelteIndentScriptAndStyle: true
+svelteIndentStyle: true
+svelteSortOrder: styles-scripts-markup
+svelteStrictMode: true
+tabWidth: 2
+trailingComma: all
+useTabs: false
+vueIndentScriptAndStyle: true

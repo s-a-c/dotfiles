@@ -1,0 +1,170 @@
+# ~/.config/sheldon/plugins.toml
+shell = "zsh"
+
+[templates]
+source = '''
+{{ hooks?.pre | nl }}{% for file in files %}source "{{ file }}"
+{% endfor %}{{ hooks?.post | nl }}
+'''
+PATH = 'export PATH="{{ dir }}:$PATH"'
+path = 'path=( "{{ dir }}" $path )'
+fpath = 'fpath=( "{{ dir }}" $fpath )'
+
+defer = "{{ hooks?.pre | nl }}{% for file in files %}zsh-defer source \"{{ file }}\"\n{% endfor %}{{ hooks?.post | nl }}"
+
+
+#           ┌─ Unique name for the plugin
+#        ┌──┴─┐
+[plugins.zsh-defer]
+github = "romkatv/zsh-defer"
+#         └─────┬────┘ └─────┬────┘
+#               │            └─ GitHub repository name
+#               └─ GitHub user or organization
+
+
+[plugins.colored-manpages]
+github = "ael-code/zsh-colored-man-pages"
+apply = ["defer"]
+
+[plugins.colors]
+github = "zpm-zsh/colors"
+
+[plugins.zsh-autopair]
+github = "hlissner/zsh-autopair"
+use = ["autopair.zsh"]
+apply = ["defer"]
+[plugins.zsh-autopair.hooks]
+pre = "autoload -Uz add-zsh-hook"
+post = '''
+add-zsh-hook preexec autopair-preexec
+typeset -gA AUTOPAIR_PAIRS
+#export AUTOPAIR_PAIRS+=('<' '>')
+AUTOPAIR_PAIRS += (
+  '<' '>' # HTML tags
+  '(' ')' # Parentheses
+  '[' ']' # Brackets
+  '{' '}' # Braces
+  '"' '"' # Double quotes
+  "'" "'" # Single quotes
+  '`' '`' # Backticks
+)
+'''
+
+#           ┌─ Unique name for the plugin
+#        ┌──┴─┐
+[plugins.base16]
+github = "chriskempson/base16-shell"
+#         └─────┬────┘ └─────┬────┘
+#               │            └─ GitHub repository name
+#               └─ GitHub user or organization
+apply = ["defer"]
+
+[plugins.enhancd]
+github = "b4b4r07/enhancd"
+use = ["init.sh"]
+apply = ["defer"]
+
+[plugins.fast-syntax-highlighting]
+github = "zdharma-continuum/fast-syntax-highlighting"
+apply = ["defer"]
+
+[plugins.fzf-tab]
+github = "Aloxaf/fzf-tab"
+apply = ["defer"]
+[plugins.fzf-tab.hooks]
+pre = "autoload -Uz add-zsh-hook"
+post = '''
+add-zsh-hook precmd fzf-tab-precmd
+add-zsh-hook zle-line-init fzf-tab-line-init
+add-zsh-hook zle-keymap-select fzf-tab-keymap-select
+# disable sort when completing `git checkout`
+zstyle ':completion:*:git-checkout:*' sort false
+# set descriptions format to enable group support
+# NOTE: don't use escape sequences (like '%F{red}%d%f') here, fzf-tab will ignore them
+zstyle ':completion:*:descriptions' format '[%d]'
+# set list-colors to enable filename colorizing
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+# force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
+zstyle ':completion:*' menu no
+# preview directory's content with eza when completing cd
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
+# custom fzf flags
+# NOTE: fzf-tab does not follow FZF_DEFAULT_OPTS by default
+#zstyle ':fzf-tab:*' fzf-flags --color=fg:1,fg+:2 --bind=tab:accept
+# To make fzf-tab follow FZF_DEFAULT_OPTS.
+# NOTE: This may lead to unexpected behavior since some flags break this plugin. See Aloxaf/fzf-tab#455.
+zstyle ':fzf-tab:*' use-fzf-default-opts yes
+# switch group using `<` and `>`
+#zstyle ':fzf-tab:*' switch-group '<' '>'
+'''
+
+[plugins.fzf-zsh-plugin]
+github = "unixorn/fzf-zsh-plugin"
+apply = ["defer"]
+[plugins.fzf-zsh-plugin.hooks]
+pre = "autoload -Uz add-zsh-hook"
+post = '''
+add-zsh-hook precmd fzf-zsh-precmd
+add-zsh-hook zle-line-init fzf-zsh-line-init
+add-zsh-hook zle-keymap-select fzf-zsh-keymap-select
+'''
+
+[plugins.oh-my-zsh]
+github = "ohmyzsh/ohmyzsh"
+
+[plugins.zhooks]
+github = "agkozak/zhooks"
+apply = ["defer"]
+
+[plugins.zsh-abbr]
+github = "olets/zsh-abbr"
+apply = ["defer"]
+
+[plugins.zsh-async]
+github = "mafredri/zsh-async"
+#apply = ["defer"]
+
+[plugins.zsh-autocomplete]
+github = "marlonrichert/zsh-autocomplete"
+apply = ["defer"]
+
+[plugins.zsh-autosuggestions]
+github = "zsh-users/zsh-autosuggestions"
+use = ["{{ name }}.zsh"]
+apply = ["defer"]
+
+[plugins.zsh-autosuggestions-abbreviations-strategy]
+github = "olets/zsh-autosuggestions-abbreviations-strategy"
+apply = ["defer"]
+
+[plugins.zsh-completions]
+github = "zsh-users/zsh-completions"
+apply = ["defer"]
+
+[plugins.zsh-history-search-multi-word]
+github = "zpm-zsh/history-search-multi-word"
+apply = ["defer"]
+
+[plugins.zsh-history-substring-search]
+github = "zsh-users/zsh-history-substring-search"
+apply = ["defer"]
+
+[plugins.zsh-hooks]
+github = "zsh-hooks/zsh-hooks"
+apply = ["defer"]
+
+[plugins.zsh-navigation-tools]
+github = "psprint/zsh-navigation-tools"
+apply = ["defer"]
+
+[plugins.zsh-nix-shell]
+github = "chisui/zsh-nix-shell"
+apply = ["defer"]
+
+[plugins.zsh-you-should-use]
+github = "MichaelAquilina/zsh-you-should-use"
+apply = ["defer"]
+
+[plugins.zsh-zoxide]
+github = "z-shell/zsh-zoxide"
+apply = ["defer"]

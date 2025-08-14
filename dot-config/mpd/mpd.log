@@ -1,0 +1,21 @@
+2025-07-10T15:07:53 config: inotify: auto_update was disabled. enable during compilation phase
+2025-07-10T15:07:53 mpg123: mpg123_getformat() failed: Message: I am done with this track.
+2025-07-10T15:07:53 mpg123: mpg123_getformat() failed: Message: I am done with this track.
+2025-07-10T15:07:53 ffmpeg/mp3: Format mp3 detected only with low score of 1, misdetection possible!
+2025-07-10T15:07:53 ffmpeg/mp3: Failed to find two consecutive MPEG audio frames.
+2025-07-10T15:07:53 ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: Format mov,mp4,m4a,3gp,3g2,mj2 detected only with low score of 1, misdetection possible!
+2025-07-10T15:07:53 ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: moov atom not found
+2025-07-11T21:54:32 config: inotify: auto_update was disabled. enable during compilation phase
+2025-07-13T02:26:57 config: inotify: auto_update was disabled. enable during compilation phase
+2025-07-14T19:15:08 config: inotify: auto_update was disabled. enable during compilation phase
+2025-07-14T23:55:16 config: inotify: auto_update was disabled. enable during compilation phase
+2025-07-15T13:17:42 config: inotify: auto_update was disabled. enable during compilation phase
+2025-07-20T01:42:19 config: inotify: auto_update was disabled. enable during compilation phase
+2025-07-20T19:52:31 config: inotify: auto_update was disabled. enable during compilation phase
+2025-07-24T13:43:22 config: inotify: auto_update was disabled. enable during compilation phase
+2025-07-24T22:41:44 config: inotify: auto_update was disabled. enable during compilation phase
+2025-08-01T07:43:33 config: inotify: auto_update was disabled. enable during compilation phase
+2025-08-04T04:51:37 config: inotify: auto_update was disabled. enable during compilation phase
+2025-08-09T07:25:21 config: inotify: auto_update was disabled. enable during compilation phase
+2025-08-11T20:24:02 config: inotify: auto_update was disabled. enable during compilation phase
+2025-08-12T08:21:26 config: inotify: auto_update was disabled. enable during compilation phase

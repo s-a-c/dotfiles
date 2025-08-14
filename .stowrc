@@ -1,0 +1,7 @@
+--dotfiles
+--ignore=\.DS_Store
+--ignore=\.cache
+--ignore=\.local
+--ignore=\.vscode
+--ignore=\.idea
+--ignore=\.git

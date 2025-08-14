@@ -1,0 +1,8 @@
+ls -al /
+softwareupdate --install-rosetta --agree-to-license
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+diskutil apfs deleteVolume "Nix Store"
+mkdir -p ~/.config/nix\
+cd ~/.config/nix\
+nix flake init -t nix-darwin\
+sed -i '' "s/simple/$(scutil --get LocalHostName)/" flake.nix

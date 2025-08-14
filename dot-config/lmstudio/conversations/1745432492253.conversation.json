@@ -1,0 +1,21 @@
+{
+  "name": null,
+  "pinned": false,
+  "createdAt": 1745432492253,
+  "preset": "",
+  "tokenCount": 0,
+  "systemPrompt": "",
+  "messages": [],
+  "usePerChatPredictionConfig": true,
+  "perChatPredictionConfig": {
+    "fields": []
+  },
+  "clientInput": "",
+  "clientInputFiles": [],
+  "userFilesSizeBytes": 0,
+  "notes": [],
+  "plugins": [],
+  "pluginConfigs": {},
+  "disabledPluginTools": [],
+  "looseFiles": []
+}

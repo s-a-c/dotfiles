@@ -1,0 +1,29 @@
+# model.yaml is an open standard for defining cross-platform, composable AI models
+# Learn more at https://modelyaml.org
+model: google/gemma-3-27b
+base:
+  - key: lmstudio-community/gemma-3-27b-it-qat-gguf
+    sources:
+      - type: huggingface
+        user: lmstudio-community
+        repo: gemma-3-27B-it-qat-GGUF
+  - key: mlx-community/gemma-3-27b-it-qat
+    sources:
+      - type: huggingface
+        user: mlx-community
+        repo: gemma-3-27b-it-qat-4bit
+description: gemma 3 27b it by google
+metadataOverrides:
+  domain: llm
+  architectures:
+    - gemma3
+  compatibilityTypes:
+    - gguf
+    - safetensors
+  paramsStrings:
+    - 27B
+  minMemoryUsageBytes: 15600000000
+  contextLengths:
+    - 128000
+  vision: true
+  trainedForToolUse: true

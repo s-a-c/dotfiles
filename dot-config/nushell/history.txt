@@ -1,0 +1,38 @@
+brew search jetbrains
+brew info jetbrains-space
+brew info jetbrains-gateway
+cd ~/.config/nix-darwin
+ll
+ls -al
+git status
+rm -rf ./.git
+echo $nu.config-path
+nvim $nu.config-path
+mv ../starship/init.nu ./starship.nu
+$env
+nvim $nu.config-path
+atuin init nu | save config-atuin.nu
+mv starship.nu config-starship.nu
+touch config_overrides.nu
+mv config-atuin.nu config_atuin.nu
+mv config-starship.nu config_starship.nu
+nvim config_overrides.nu
+nvim env_carapace.nu
+carapace _carapace nushell | save --force config_carapace.nu
+nvim config_overrides.nu
+nvim config_carapace.nu
+eza -al
+nvim env_overrides.nu
+eza -al
+nvim env.nu
+nvim env_overrides.nu
+nvim config_overrides.nu
+eza -al
+zoxide init nushell | save -f config_zoxide.nu
+echo £SHELL
+echo $SHELL
+echo $env.SHELL
+$nu
+$env
+buz amethyst
+brew uninstall --zap amethyst

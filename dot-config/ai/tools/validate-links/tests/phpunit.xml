@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+         bootstrap="bootstrap.php"
+         colors="true"
+         cacheDirectory=".phpunit.cache"
+         executionOrder="depends,defects"
+         requireCoverageMetadata="true"
+         beStrictAboutCoverageMetadata="true"
+         beStrictAboutOutputDuringTests="true"
+         failOnRisky="true"
+         failOnWarning="true">
+    
+    <testsuites>
+        <testsuite name="Unit Tests">
+            <directory>Unit</directory>
+        </testsuite>
+        <testsuite name="Integration Tests">
+            <directory>Integration</directory>
+        </testsuite>
+        <testsuite name="Configuration Tests">
+            <directory>Configuration</directory>
+        </testsuite>
+        <testsuite name="Performance Tests">
+            <directory>Performance</directory>
+        </testsuite>
+    </testsuites>
+
+    <source>
+        <include>
+            <directory suffix=".php">../LinkValidator</directory>
+            <directory suffix=".php">../LinkRectifier</directory>
+        </include>
+        <exclude>
+            <directory>../LinkValidator/Tests</directory>
+            <directory>../LinkRectifier/Tests</directory>
+        </exclude>
+    </source>
+
+    <coverage>
+        <report>
+            <html outputDirectory="coverage-html"/>
+            <text outputFile="coverage.txt"/>
+            <clover outputFile="coverage.xml"/>
+        </report>
+    </coverage>
+
+    <logging>
+        <junit outputFile="junit.xml"/>
+    </logging>
+
+    <php>
+        <env name="TEST_ENV" value="true"/>
+        <env name="LINK_VALIDATOR_TEST_MODE" value="true"/>
+    </php>
+</phpunit>

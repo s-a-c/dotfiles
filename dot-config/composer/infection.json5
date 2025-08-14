@@ -1,0 +1,96 @@
+{
+    // Configuration for PHP Mutation Testing Framework
+    "$schema": "vendor/infection/infection/resources/schema.json",
+
+    // Source code to mutate - standardized paths across tools
+    "source": {
+        "directories": [
+            "app",
+            "packages/s-a-c/ai-prompt-addenda/src"
+        ],
+        "excludes": [
+            "vendor",
+            "node_modules",
+            "storage",
+            "bootstrap/cache",
+            "public",
+            "tests",
+            "reports/rector/cache"
+        ]
+    },
+
+    // Mutation testing settings
+    "mutators": {
+        "@default": true,
+        "@function_signature": false,
+        "global-ignore": [
+            "App\\Exceptions\\*"
+        ],
+        // Customize specific mutators
+        "ArrayItem": {
+            "ignore": [
+                "src/Model/Traits/*"
+            ]
+        },
+        "Boolean": {
+            "ignore": [
+                "src/Model/BaseMethodModel.php::isVirtual"
+            ]
+        }
+    },
+
+    // Logging and reporting
+    "logs": {
+        "text": "reports/infection/infection.log",
+        "html": "reports/infection/infection.html",
+        "summary": "reports/infection/summary.log",
+        "json": "reports/infection/infection-log.json",
+        "perMutator": "reports/infection/per-mutator.md",
+        "badge": {
+            "branch": "main"
+        }
+    },
+
+    // Test framework configuration
+    "testFramework": "pest",
+    "bootstrap": "./vendor/autoload.php",
+    "initialTestsPhpOptions": "-d memory_limit=-1",
+
+    // Execution settings - standardized across tools
+    "timeout": 30,
+    "threads": 8,
+    "minMsi": 85,
+    "minCoveredMsi": 90,
+
+    // Process configuration
+    "phpUnit": {
+        "configDir": ".",
+        "customPath": "./vendor/bin/pest"
+    },
+
+    // Metrics
+    "metrics": {
+        "perMutator": true,
+        "perTestSuite": true
+    },
+
+    // Git integration
+    "git": {
+        "addGitDiffBaseline": true,
+        "commitValidationEnabled": true,
+        "ignoredCommitsRegex": [
+            "^Release: "
+        ]
+    },
+
+    // Continuous Integration
+    "ci": {
+        "fastestMode": true,
+        "skipInitialTests": true,
+        "gitDiffFilter": [
+            "A",    // Added
+            "M",    // Modified
+            "R"     // Renamed
+        ]
+    }
+}

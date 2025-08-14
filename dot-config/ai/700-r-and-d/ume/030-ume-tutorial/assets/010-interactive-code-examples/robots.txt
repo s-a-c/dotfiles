@@ -1,0 +1,10 @@
+# robots.txt for UME Tutorial Interactive Code Examples
+
+User-agent: *
+Allow: /
+
+# Allow all search engines to index the content
+# This is educational material that should be discoverable
+
+# Sitemap location (if implemented in the future)
+# Sitemap: https://example.com/sitemap.xml
