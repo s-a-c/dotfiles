@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phars xmlns="https://phar.io/phive/installdb">
+  <phar name="composer" version="2.8.3" location="/Users/s-a-c/.phive/phars/composer-2.8.3.phar">
+    <hash type="sha1">3816f6e92c3526eff1aeec4d216c0bae7a0f483a</hash>
+    <signature fingerprint="161DFBE342889F01DDAC4E61CBB3D576F2A0946F"/>
+    <usage destination="/Users/s-a-c/.cache/trunk/tools/composer/2.8.3-4dc2fb99b6a9cd829633abb859a78925/composer"/>
+  </phar>
+</phars>

@@ -1,0 +1,61 @@
+[alias]
+cp = cherry-pick
+co = checkout
+[color]
+	ui = true
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+[color "diff"]
+	meta = 11
+	frag = magenta bold
+	func = 146 bold
+	commit = yellow bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
+[commit]
+gpgsign = true
+	template = /Users/s-a-c/.gitmessage
+	cleanup = strip
+[core]
+editor = nvim --wait
+autocrlf = input
+	pager = diff-so-fancy | less --tabs=4 -RF
+excludesFile = /Users/s-a-c/.gitignore
+	commentChar = "#"
+[diff]
+tool = vscode
+[difftool "vscode"]
+cmd = code --wait --diff $LOCAL $REMOTE
+[filter "lfs"]
+process = git-lfs filter-process
+required = true
+clean = git-lfs clean -- %f
+smudge = git-lfs smudge -- %f
+[help]
+autocorrect = 1
+[init]
+defaultBranch = main
+[interactive]
+	diffFilter = diff-so-fancy --patch
+[user]
+name = StandAloneComplex
+email = 71233932+s-a-c@users.noreply.github.com
+signingkey = 54D630CB5F0B5FD6
+[safe]
+directory = /Users/s-a-c/.local/share/nvim/lazy/nvim-web-devicons
+[pull]
+rebase = true
+[push]
+autoSetupRemote = true
+[credential]
+	helper =
+	helper = /usr/local/share/gcm-core/git-credential-manager
+[credential "https://dev.azure.com"]
+	useHttpPath = true
+[format]
+	commitMessageColumns = 72
+	subjectPrefix = ^(feat|fix|chore|refactor|docs|style|test|perf|ci|build|revert)(\\([a-z-]+\\))?: [✨🐛🔧♻️📝💄✅⚡️👷🏗️⏪]

@@ -1,0 +1,160 @@
+/**
+ * Dark Theme for Interactive Examples
+ */
+
+body.theme-dark {
+  /* Base colors */
+  --bg-color: #1e1e1e;
+  --text-color: #f0f0f0;
+  --code-bg-color: #2d2d2d;
+  --code-text-color: #f0f0f0;
+  --border-color: #444444;
+  --primary-color: #6c8eff;
+  --secondary-color: #4a6ee0;
+  --success-color: #48c774;
+  --warning-color: #ffdd57;
+  --error-color: #f14668;
+  
+  /* Component colors */
+  --header-bg-color: #2d2d2d;
+  --header-text-color: var(--primary-color);
+  --toolbar-bg-color: #2d2d2d;
+  --toolbar-text-color: #f0f0f0;
+  --button-bg-color: #3a3a3a;
+  --button-text-color: #f0f0f0;
+  --button-hover-bg-color: var(--primary-color);
+  --button-hover-text-color: #ffffff;
+  --output-bg-color: #2d2d2d;
+  --output-text-color: #f0f0f0;
+  --output-header-bg-color: #3a3a3a;
+  --output-header-text-color: #f0f0f0;
+  --explanation-bg-color: #1e1e1e;
+  --explanation-text-color: #f0f0f0;
+  --challenges-bg-color: #2d2d2d;
+  --challenges-text-color: #f0f0f0;
+  
+  /* Syntax highlighting */
+  --syntax-keyword-color: #569cd6;
+  --syntax-string-color: #ce9178;
+  --syntax-comment-color: #6a9955;
+  --syntax-number-color: #b5cea8;
+  --syntax-class-color: #4ec9b0;
+  --syntax-variable-color: #9cdcfe;
+  --syntax-function-color: #dcdcaa;
+  --syntax-operator-color: #d4d4d4;
+  --syntax-annotation-color: #c586c0;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Interactive Code Example Container */
+body.theme-dark .interactive-code-example {
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  background-color: var(--bg-color);
+}
+
+/* Example Title */
+body.theme-dark .interactive-code-example .example-title {
+  background-color: var(--header-bg-color);
+  color: var(--header-text-color);
+}
+
+/* Example Description */
+body.theme-dark .interactive-code-example .example-description {
+  background-color: var(--bg-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+body.theme-dark .interactive-code-example .example-description p {
+  color: var(--text-color);
+}
+
+/* Editor Toolbar */
+body.theme-dark .interactive-code-example .editor-toolbar {
+  background-color: var(--toolbar-bg-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+body.theme-dark .interactive-code-example .editor-toolbar button {
+  border: 1px solid var(--border-color);
+  background-color: var(--button-bg-color);
+  color: var(--button-text-color);
+}
+
+body.theme-dark .interactive-code-example .editor-toolbar button:hover {
+  background-color: var(--button-hover-bg-color);
+  color: var(--button-hover-text-color);
+  border-color: var(--button-hover-bg-color);
+}
+
+body.theme-dark .interactive-code-example .editor-toolbar .editor-status {
+  color: var(--text-color);
+}
+
+/* Output Panel */
+body.theme-dark .interactive-code-example .output-panel {
+  border-top: 1px solid var(--border-color);
+  background-color: var(--output-bg-color);
+}
+
+body.theme-dark .interactive-code-example .output-header {
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--output-header-bg-color);
+  color: var(--output-header-text-color);
+}
+
+body.theme-dark .interactive-code-example .output-content {
+  color: var(--output-text-color);
+}
+
+/* Example Explanation */
+body.theme-dark .interactive-code-example .example-explanation {
+  border-top: 1px solid var(--border-color);
+  background-color: var(--explanation-bg-color);
+  color: var(--explanation-text-color);
+}
+
+body.theme-dark .interactive-code-example .example-explanation h4 {
+  color: var(--primary-color);
+}
+
+/* Example Challenges */
+body.theme-dark .interactive-code-example .example-challenges {
+  border-top: 1px solid var(--border-color);
+  background-color: var(--challenges-bg-color);
+  color: var(--challenges-text-color);
+}
+
+body.theme-dark .interactive-code-example .example-challenges h4 {
+  color: var(--primary-color);
+}
+
+/* Code blocks */
+body.theme-dark pre code {
+  background-color: var(--code-bg-color);
+  color: var(--code-text-color);
+}
+
+/* Links */
+body.theme-dark a {
+  color: var(--primary-color);
+}
+
+body.theme-dark a:hover {
+  color: var(--secondary-color);
+}
+
+/* Theme toggle button */
+body.theme-dark #theme-toggle {
+  background-color: var(--button-bg-color);
+  color: var(--button-text-color);
+}
+
+body.theme-dark #theme-toggle:hover {
+  background-color: var(--button-hover-bg-color);
+  color: var(--button-hover-text-color);
+}
