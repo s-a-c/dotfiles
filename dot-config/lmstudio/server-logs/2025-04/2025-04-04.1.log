@@ -1,0 +1,1390 @@
+[2025-04-04 00:00:05][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 00:03:05][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 00:06:05][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 00:09:05][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 00:12:05][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 00:15:05][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 00:18:05][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 00:21:05][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 00:24:05][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 00:27:05][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 00:30:05][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 00:33:05][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 00:36:05][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 00:39:05][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 00:42:05][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 00:45:05][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 00:48:05][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 00:51:05][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 00:54:05][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 00:57:05][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 01:00:08][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 01:03:09][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 01:06:09][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 01:09:09][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 01:12:10][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 01:15:10][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 01:18:10][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 01:21:10][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 01:24:10][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 01:27:10][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 01:30:10][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 01:33:10][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 01:36:10][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 01:38:11][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 01:40:52][INFO][LM STUDIO SERVER] Success! HTTP server listening on port 1234
+[2025-04-04 01:40:52][INFO] 
+[2025-04-04 01:40:52][INFO][LM STUDIO SERVER] Supported endpoints:
+[2025-04-04 01:40:52][INFO][LM STUDIO SERVER] ->	GET  http://localhost:1234/v1/models
+[2025-04-04 01:40:52][INFO][LM STUDIO SERVER] ->	POST http://localhost:1234/v1/chat/completions
+[2025-04-04 01:40:52][INFO][LM STUDIO SERVER] ->	POST http://localhost:1234/v1/completions
+[2025-04-04 01:40:52][INFO][LM STUDIO SERVER] ->	POST http://localhost:1234/v1/embeddings
+[2025-04-04 01:40:52][INFO] 
+[2025-04-04 01:40:52][INFO][LM STUDIO SERVER] Logs are saved into /Users/s-a-c/.lmstudio/server-logs
+[2025-04-04 01:40:52][INFO] Server started.
+[2025-04-04 01:40:52][INFO] Just-in-time model loading active.
+[2025-04-04 01:40:56][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 01:58:40][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-04 15:35:18][INFO][LM STUDIO SERVER] Success! HTTP server listening on port 1234
+[2025-04-04 15:35:18][INFO] 
+[2025-04-04 15:35:18][INFO][LM STUDIO SERVER] Supported endpoints:
+[2025-04-04 15:35:18][INFO][LM STUDIO SERVER] ->	GET  http://localhost:1234/v1/models
+[2025-04-04 15:35:18][INFO][LM STUDIO SERVER] ->	POST http://localhost:1234/v1/chat/completions
+[2025-04-04 15:35:18][INFO][LM STUDIO SERVER] ->	POST http://localhost:1234/v1/completions
+[2025-04-04 15:35:18][INFO][LM STUDIO SERVER] ->	POST http://localhost:1234/v1/embeddings
+[2025-04-04 15:35:18][INFO] 
+[2025-04-04 15:35:18][INFO][LM STUDIO SERVER] Logs are saved into /Users/s-a-c/.lmstudio/server-logs
+[2025-04-04 15:35:18][INFO] Server started.
+[2025-04-04 15:35:18][INFO] Just-in-time model loading active.

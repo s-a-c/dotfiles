@@ -1,0 +1,52 @@
+ls -al /
+softwareupdate --install-rosetta --agree-to-license
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+diskutil apfs deleteVolume "Nix Store"
+mkdir -p ~/.config/nix\
+cd ~/.config/nix\
+nix flake init -t nix-darwin\
+sed -i '' "s/simple/$(scutil --get LocalHostName)/" flake.nix
+which fastfetch
+nix
+mkdir -p ~/.config/nix\
+cd ~/.config/nix\
+nix flake init -t nix-darwin\
+sed -i '' "s/simple/$(scutil --get LocalHostName)/" flake.nix
+git init
+less flake.nix
+vim darwin.nix
+vim flake.nix
+nix-shell -p fastfetch --run fastfetch
+fastfetch
+mkdir -p ~/.config/nix-darwin\
+cd ~/.config/nix-darwin\
+nix flake init -t nix-darwin\
+sed -i '' "s/simple/$(scutil --get LocalHostName)/" flake.nix
+mkdir -p ~/.config/nix-darwin\
+cd ~/.config/nix-darwin\
+nix flake init -t nix-darwin --extra-experimental-features "nix-command flakes"\
+sed -i '' "s/simple/$(scutil --get LocalHostName)/" flake.nix
+cd ..
+rm -rf nix-darwin
+mkdir -p ~/.config/nix-darwin\
+cd ~/.config/nix-darwin\
+nix flake init -t nix-darwin --extra-experimental-features "nix-command flakes"\
+sed -i '' "s/simple/$(scutil --get LocalHostName)/" flake.nix
+vim flake.nix
+vim flake.nix
+nix run nix-darwin --extra-experimental-features "nix-command flakes" -- switch --flake $(realpath ~/.config/nix-darwin) --dry-run
+vim flake.nix
+/usr/sbin/softwareupdate --install-rosetta --agree-to-license
+vim flake.nix
+nix run nix-darwin --extra-experimental-features "nix-command flakes" -- switch --flake $(realpath ~/.config/nix-darwin) --dry-run
+vim flake.nix
+nix run nix-darwin --extra-experimental-features "nix-command flakes" -- switch --flake $(realpath ~/.config/nix-darwin) --dry-run
+vim flake.nix
+nix run nix-darwin --extra-experimental-features "nix-command flakes" -- switch --flake $(realpath ~/.config/nix-darwin) --dry-run
+vim flake.nix
+nix run nix-darwin --extra-experimental-features "nix-command flakes" -- switch --flake $(realpath ~/.config/nix-darwin) --dry-run
+nix run nix-darwin --extra-experimental-features "nix-command flakes" -- switch --flake $(realpath ~/.config/nix-darwin)
+vim flake.nix
+nix run nix-darwin --extra-experimental-features "nix-command flakes" -- switch --flake $(realpath ~/.config/nix-darwin)
+fastfetch
+which fastfetch
