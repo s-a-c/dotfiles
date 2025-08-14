@@ -1,0 +1,1652 @@
+Ğ£{
+    "$schema":              "https://getcomposer.org/schema.json",
+    "autoload":             {
+        "psr-4": {
+            "App\\":                 "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\":   "database/seeders/"
+        }
+    },
+    "autoload-dev":         {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "config":               {
+        "allow-plugins":       {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "ergebnis/composer-normalize":                    true,
+            "infection/extension-installer":                  true,
+            "pestphp/pest-plugin":                            true,
+            "php-http/discovery":                             true
+        },
+        "optimize-autoloader": true,
+        "preferred-install":   "dist",
+        "sort-packages":       true
+    },
+    "description":          "The official Laravel starter kit for Livewire.",
+    "extra":                {
+        "laravel": {
+            "dont-discover": [ ]
+        }
+    },
+    "keywords":             [
+        "laravel",
+        "framework"
+    ],
+    "license":              "MIT",
+    "minimum-stability":    "dev",
+    "name":                 "s-a-c/lks-livewire",
+    "prefer-stable":        true,
+    "repositories":         {
+        "ai-prompt-addenda":        {
+            "type": "path",
+            "url":  "./packages/s-a-c/ai-prompt-addenda"
+        },
+        "eloquent-model-generator": {
+            "type": "path",
+            "url":  "/Users/s-a-c/nc/Projects/Git/eloquent-model-generator"
+        },
+        "flux-pro":                 {
+            "type": "composer",
+            "url":  "https://composer.fluxui.dev"
+        },
+        "laravel-comments":         {
+            "type": "composer",
+            "url":  "https://satis.spatie.be"
+        },
+        "translatable":             {
+            "type": "github",
+            "url":  "https://github.com/lara-zeus/translatable"
+        }
+    },
+    "require":              {
+        "http-interop/http-factory-guzzle":            "^1.2",
+        "inertiajs/inertia-laravel":                   "^2.0",
+        "kirschbaum-development/eloquent-power-joins": "^4.2",
+        "lab404/laravel-impersonate":                  "^1.7",
+        "laravel/folio":                               "^1.1",
+        "laravel/framework":                           "^12.0",
+        "laravel/horizon":                             "^5.31.1",
+        "laravel/octane":                              "^2.8.3",
+        "laravel/pennant":                             "^1.16.1",
+        "laravel/prompts":                             "^0.3.5",
+        "laravel/pulse":                               "^1.4.1",
+        "laravel/reverb":                              "^1.0",
+        "laravel/sanctum":                             "^4.0",
+        "laravel/scout":                               "^10.14.1",
+        "laravel/slack-notification-channel":          "^3.5.0",
+        "laravel/socialite":                           "^5.19",
+        "laravel/tinker":                              "^2.10.1",
+        "livewire/flux":                               "^2.1.4",
+        "livewire/flux-pro":                           "^2.1",
+        "livewire/volt":                               "^1.7.0",
+        "php":                                         "^8.2",
+        "spatie/laravel-activitylog":                  "^4.10",
+        "spatie/laravel-backup":                       "^9.2",
+        "spatie/laravel-comments":                     "^2.2",
+        "spatie/laravel-comments-livewire":            "^3.2",
+        "spatie/laravel-medialibrary":                 "^11.12",
+        "spatie/laravel-model-states":                 "^2.11",
+        "spatie/laravel-model-status":                 "^1.18",
+        "spatie/laravel-permission":                   "^6.17",
+        "spatie/laravel-settings":                     "^3.4",
+        "spatie/laravel-sluggable":                    "^3.7",
+        "spatie/laravel-tags":                         "^4.10",
+        "spatie/laravel-translatable":                 "^6.11",
+        "spatie/laravel-translation-loader":           "^2.8",
+        "statikbe/laravel-cookie-consent":             "^1.10.1",
+        "symfony/http-client":                         "^7.2",
+        "tightenco/ziggy":                             "^2.4",
+        "typesense/typesense-php":                     "^5.0"
+    },
+    "require-dev":          {
+        "barryvdh/laravel-debugbar":             "^3.15.2",
+        "barryvdh/laravel-ide-helper":           "^3.5.5",
+        "brianium/paratest":                     "^7.8.3",
+        "doctrine/dbal":                         "^4.2",
+        "driftingly/rector-laravel":             "^2.0.2",
+        "ergebnis/composer-normalize":           "^2.45.0",
+        "fakerphp/faker":                        "^1.23",
+        "infection/infection":                   "^0.29.14",
+        "jasonmccreary/laravel-test-assertions": "^2.8",
+        "larastan/larastan":                     "^3.2.0",
+        "laravel-shift/blueprint":               "^2.12",
+        "laravel/dusk":                          "^8.3",
+        "laravel/pail":                          "^1.2.2",
+        "laravel/pint":                          "^1.18.0",
+        "laravel/sail":                          "^1.41",
+        "laravel/telescope":                           "^5.7.0",
+        "mockery/mockery":                       "^1.6",
+        "nunomaduro/collision":                  "^8.6",
+        "nunomaduro/phpinsights":                "^2.13.1",
+        "peckphp/peck":                          "^0.1.3",
+        "pestphp/pest":                          "^3.8",
+        "pestphp/pest-plugin-arch":              "^3.1.0",
+        "pestphp/pest-plugin-laravel":           "^3.1.0",
+        "php-parallel-lint/php-parallel-lint":   "^1.4.0",
+        "rector/rector":                         "^2.0.11",
+        "rector/type-perfect":                   "^2.0.2",
+        "roave/security-advisories":             "dev-latest",
+        "soloterm/solo":                         "^0.5.0",
+        "spatie/laravel-blade-comments":         "^1.3.1",
+        "spatie/laravel-horizon-watcher":        "^1.1",
+        "spatie/laravel-ray":                    "^1.40.2",
+        "spatie/laravel-web-tinker":             "^1.10.1",
+        "spatie/pest-plugin-snapshots":          "^2.2.0",
+        "symfony/polyfill-php84":                "^1.31.0",
+        "symfony/var-dumper":                    "^7.2.3"
+    },
+    "scripts":              {
+        "analyze":                   [
+            "./vendor/bin/phpstan analyse --memory-limit=1G --ansi"
+        ],
+        "analyze:baseline":          [
+            "./vendor/bin/phpstan analyse --generate-baseline --memory-limit=1G --ansi"
+        ],
+        "analyze:baseline-review":   [
+            "php artisan code-quality:review-baseline --interactive"
+        ],
+        "analyze:baseline-update":   [
+            "php artisan code-quality:review-baseline",
+            "./vendor/bin/phpstan analyse --generate-baseline --memory-limit=1G --ansi"
+        ],
+        "analyze:changed":           [
+            "php artisan code-quality:changed-files | xargs -r ./vendor/bin/phpstan analyse --memory-limit=1G --ansi"
+        ],
+        "analyze:clear-cache":       [
+            "rm -rf reports/phpstan/cache/* && echo 'PHPStan cache cleared'"
+        ],
+        "analyze:fix":               [
+            "./vendor/bin/rector process"
+        ],
+        "analyze:fresh-baseline":    [
+            "bin/phpstan-baseline-generator.sh"
+        ],
+        "analyze:full":              [
+            "./vendor/bin/phpstan analyse --level=10 --memory-limit=1G --ansi"
+        ],
+        "analyze:quick":             [
+            "./vendor/bin/phpstan analyse --level=5 --memory-limit=1G --ansi"
+        ],
+        "analyze:show-errors":       [
+            "./vendor/bin/phpstan analyse --memory-limit=1G --error-format=table"
+        ],
+        "analyze:staged":            [
+            "php artisan code-quality:changed-files --staged | xargs -r ./vendor/bin/phpstan analyse --memory-limit=1G --ansi"
+        ],
+        "detect-cores":              [
+            "echo $([ ! -z \"${PARALLEL_PROCESSES}\" ] && echo \"${PARALLEL_PROCESSES}\" || (command -v nproc >/dev/null && nproc || echo 8))"
+        ],
+        "dev":                       [
+            "Composer\\Config::disableProcessTimeout",
+            "pnpm dlx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:work redis --tries=1\" \"php artisan pail --timeout=0\" \"pnpm run dev\" --names=server,queue,logs,vite"
+        ],
+        "dev:ssr":                   [
+            "pnpm run build:ssr",
+            "Composer\\Config::disableProcessTimeout",
+            "pnpm dlx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:work redis --tries=1\" \"php artisan pail --timeout=0\" \"php artisan inertia:start-ssr\" --names=server,queue,logs,ssr"
+        ],
+        "fix:all":                   [
+            "./vendor/bin/pint",
+            "./vendor/bin/rector process",
+            "php artisan insights --fix",
+            "@php artisan optimize:clear",
+            "echo 'All automatic fixes applied!'"
+        ],
+        "format":                    [
+            "./vendor/bin/pint"
+        ],
+        "git:hooks":                 [
+            "php artisan git:install-hooks"
+        ],
+        "lint":                      [
+            "./vendor/bin/pint --test"
+        ],
+        "monitor:check":             [
+            "@php artisan pulse:check"
+        ],
+        "monitor:start":             [
+            "@php artisan pulse:install",
+            "@php artisan pulse:work"
+        ],
+        "post-autoload-dump":        [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+        ],
+        "post-create-project-cmd":   [
+            "@php artisan key:generate --ansi",
+            "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
+            "@php artisan migrate --graceful --ansi"
+        ],
+        "post-install-cmd":          [
+            "@php -r \"file_exists('.git') && exec('php artisan git:install-hooks --force');\""
+        ],
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-update-cmd":           [
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+        ],
+        "quality:check":             [
+            "@test:lint",
+            "@validate:deps",
+            "@analyze",
+            "@metrics",
+            "@test:all"
+        ],
+        "quality:fix":               [
+            "@lint",
+            "@analyze:fix"
+        ],
+        "quality:gate":              [
+            "php artisan code-quality:check-thresholds"
+        ],
+        "quality:phase":             [
+            "php artisan code-quality:phase"
+        ],
+        "quality:phase:next":        [
+            "php artisan code-quality:phase next"
+        ],
+        "quality:report":            [
+            "echo '\nâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•'\n   Quality Check Results\nâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•\n'",
+            "for f in reports/*/*.log; do if [ -f \"$f\" ]; then echo \"\n[$(basename $(dirname $f))/$(basename $f)]\n\"; tail -n 20 \"$f\"; fi; done",
+            "./vendor/bin/phpstan analyse --error-format=json > reports/phpstan/report.json || true",
+            "php artisan insights --format=json > reports/phpinsights/report.json || true",
+            "php artisan code-quality:generate-dashboard",
+            "echo '\nVisual dashboard generated at: reports/dashboard/index.html\n'"
+        ],
+        "queue:work":                [
+            "Composer\\Config::disableProcessTimeout",
+            "@php artisan queue:work redis --tries=3 --backoff=3 --max-time=3600"
+        ],
+        "queue:work:all":            [
+            "Composer\\Config::disableProcessTimeout",
+            "pnpm dlx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan queue:work redis --tries=3\" \"php artisan queue:work redis --queue=media --tries=3\" \"php artisan queue:work redis --queue=scout --tries=3\" \"php artisan queue:work redis --queue=telescope --tries=3\" --names=default,media,scout,telescope"
+        ],
+        "queue:work:media":          [
+            "Composer\\Config::disableProcessTimeout",
+            "@php artisan queue:work redis --queue=media --tries=3 --backoff=3 --max-time=3600"
+        ],
+        "queue:work:scout":          [
+            "Composer\\Config::disableProcessTimeout",
+            "@php artisan queue:work redis --queue=scout --tries=3 --backoff=3 --max-time=3600"
+        ],
+        "queue:work:telescope":      [
+            "Composer\\Config::disableProcessTimeout",
+            "@php artisan queue:work redis --queue=telescope --tries=3 --backoff=3 --max-time=3600"
+        ],
+        "refactor":                  [
+            "./vendor/bin/rector process"
+        ],
+        "refactor:dry":              [
+            "./vendor/bin/rector process --dry-run"
+        ],
+        "test":                      [
+            "@php artisan config:clear --ansi",
+            "@php artisan test"
+        ],
+        "test:all":                  [
+            "@test:lint",
+            "@test:refactor",
+            "@test",
+            "@test:arch",
+            "@test:type-coverage",
+            "@test:types",
+            "@test:unit",
+            "@test:feature",
+            "@test:integration",
+            "@test:mutation",
+            "@test:snapshots",
+            "@test:security"
+        ],
+        "test:arch":                 [
+            "./vendor/bin/pest --parallel --group=arch"
+        ],
+        "test:coverage":             [
+            "@test:coverage:pcov"
+        ],
+        "test:coverage:pcov":        [
+            "@putenv PCOV_ENABLED=1",
+            "@php artisan test --coverage"
+        ],
+        "test:coverage:xdebug":      [
+            "@putenv XDEBUG_MODE=coverage",
+            "@php artisan test --coverage"
+        ],
+        "test:feature":              [
+            "./vendor/bin/pest --parallel --min=90 --filter Feature"
+        ],
+        "test:integration":          [
+            "./vendor/bin/pest --parallel --min=90 --filter Integration"
+        ],
+        "test:lint":                 [
+            "./vendor/bin/pint --test"
+        ],
+        "test:mutation":             [
+            "./vendor/bin/infection --threads=$(@composer detect-cores) --min-msi=85"
+        ],
+        "test:parallel":             [
+            "@php artisan test --parallel"
+        ],
+        "test:refactor":             [
+            "./vendor/bin/rector --dry-run"
+        ],
+        "test:security":             [
+            "./vendor/bin/pest --parallel --group=security",
+            "./vendor/bin/security-checker security:check",
+            "@composer audit"
+        ],
+        "test:snapshots":            [
+            "./vendor/bin/pest --group=snapshots"
+        ],
+        "test:snapshots:update":     [
+            "./vendor/bin/pest --group=snapshots -d --update-snapshots"
+        ],
+        "test:type-coverage":        [
+            "./vendor/bin/pest --parallel --type-coverage --min=90"
+        ],
+        "test:types":                [
+            "./vendor/bin/pint --test --ansi"
+        ],
+        "test:unit":                 [
+            "./vendor/bin/pest --parallel --coverage --exactly=100 --filter Unit"
+        ],
+        "type-safety:autofix":       [
+            "./vendor/bin/rector process -c rector-type-safety.php"
+        ],
+        "type-safety:baseline":      [
+            "./vendor/bin/phpstan analyse -c phpstan-strict.neon --generate-baseline --memory-limit=1G"
+        ],
+        "type-safety:detect":        [
+            "./vendor/bin/phpstan analyse -c phpstan-strict.neon --memory-limit=1G --error-format=table"
+        ],
+        "type-safety:verify":        [
+            "./vendor/bin/phpstan analyse -c phpstan-strict.neon --memory-limit=1G"
+        ],
+        "type-safety:workflow":      [
+            "@type-safety:detect",
+            "@type-safety:autofix",
+            "@type-safety:verify"
+        ],
+        "validate:deps":             [
+            "@composer validate",
+            "@composer normalize --dry-run || exit 0",
+            "@composer audit --no-dev || echo 'Found abandoned packages'"
+        ]
+    },
+    "scripts-descriptions": {
+        "analyze":                   "Run static code analysis using PHPStan to find potential bugs",
+        "analyze:baseline":          "Generate a PHPStan baseline to gradually improve code quality",
+        "analyze:clear-cache":       "Clear PHPStan cache directory",
+        "analyze:fix":               "Apply automated fixes using Rector",
+        "analyze:fresh-baseline":    "Generate a clean PHPStan baseline without dependency on existing configuration",
+        "analyze:show-errors":       "Display PHPStan errors in detailed table format",
+        "build":                     "Build frontend assets for production",
+        "detect-cores":              "Detect number of CPU cores for parallel execution",
+        "dev":                       "Start development server with Vite",
+        "format":                    "Format code to comply with Laravel coding standards",
+        "lint":                      "Check code style against Laravel standards without making changes",
+        "miggi":                     "Quick alias to migrate and seed the database",
+        "monitor:check":             "Run Laravel Pulse health checks",
+        "monitor:start":             "Install and start Laravel Pulse for monitoring",
+        "post-autoload-dump":        "Generates optimized autoloader and regenerates caches",
+        "post-create-project-cmd":   "Generates application key after project creation",
+        "post-root-package-install": "Creates .env file from example",
+        "post-update-cmd":           "Clears caches after dependency updates",
+        "quality:check":             "Run comprehensive code quality analysis in proper order",
+        "quality:fix":               "Fix code quality issues automatically",
+        "quality:report":            "Generate a consolidated quality check report",
+        "queue:work":                "Start the default queue worker with Redis",
+        "queue:work:all":            "Start all queue workers in parallel using concurrently",
+        "queue:work:media":          "Start the media queue worker with Redis",
+        "queue:work:scout":          "Start the scout/search queue worker with Redis",
+        "queue:work:telescope":      "Start the telescope queue worker with Redis",
+        "refactor":                  "Run Rector to automatically refactor code based on configured rules",
+        "refactor:dry":              "Preview Rector changes without modifying files",
+        "test":                      "Run tests with Pest",
+        "test:all":                  "Run all test suites including architecture and snapshots",
+        "test:arch":                 "Run architecture tests using Pest Arch plugin",
+        "test:coverage":             "Run tests with code coverage using one of the following configurations",
+        "test:coverage-html":        "Generate HTML coverage report",
+        "test:coverage:pcov":        "Run tests with code coverage using PCOV (faster than Xdebug for coverage)",
+        "test:coverage:xdebug":      "Run tests with code coverage reporting enabled (requires Xdebug)",
+        "test:feature":              "Run feature tests only",
+        "test:integration":          "Run integration tests",
+        "test:lint":                 "Check code style against Laravel standards without making changes",
+        "test:mutation":             "Run mutation tests using Infection",
+        "test:parallel":             "Run tests in parallel for faster execution",
+        "test:security":             "Run security checks",
+        "test:snapshots":            "Run snapshot tests",
+        "test:snapshots:update":     "Update snapshot test baselines",
+        "test:types":                "Verify type consistency with PHPStan",
+        "test:unit":                 "Run unit tests with coverage",
+        "validate:deps":             "Validate composer.json structure and dependencies"
+    },
+    "type":                 "project"
+}
+ J J»
+»¼ ¼Á
+ÁÂ ÂÅ
+ÅÉ ÉÏ
+ÏĞ Ğ¶
+¶· ·²
+²³ ³·
+·¸ ¸á
+áâ âã
+ãä ä
+‚ ‚©
+©ª ª¬
+¬­ ­²
+²´ ´â
+âã ãó
+óô ôû
+ûü ü“
+“” ”¢
+¢£ £Ø
+ØÚ Úâ
+âç çì
+ìí íø
+øù ù²
+²³ ³¸
+¸¹ ¹Ä
+ÄÇ ÇÕ
+ÕØ Øİ
+İŞ Şğ
+ğô ôŸ
+Ÿ± ±º
+ºò ò×
+×á áí
+í­	 ­	º	
+º	Æ	 Æ	½
+
+½
+Ì
+ Ì
+Ô
+
+Ô
+ß
+ ß
+å
+å° °±
+±‰ ‰™
+™Í ÍÎ
+Î” ”œ
+œĞ ĞÑ
+Ñ ›
+›Í ÍÎ
+Î‰ ‰Š
+Š“ “•
+•™ ™š
+šÖ Öá
+á  
+  
+¿ ¿İ
+İ‚ ‚œ
+œÀ ÀÜ
+Ü 
+Ã Ãß
+ß… …¡
+¡Ä Äâ
+â† †£
+£Æ Æâ
+âƒ ƒ¡
+¡Û Ûä
+ä‹ ‹œ
+œ© ©«
+«È Èå
+å‰ ‰§
+§Î Îè
+è‰ ‰§
+§º ºù
+ù– –§
+§Ñ Ñç
+ç’ ’¦
+¦Ú Úå
+å” ”¤
+¤Æ 
+ÆÆ 
+ÆÓ Óå
+å‘ ‘¥
+¥Ğ Ğã
+ã‹  ‹ £ 
+£ Ó  Ó ã 
+ã ™! ™!£!
+£!Ö! Ö!â!
+â!Œ" Œ"¤"
+¤"Ç" Ç"ã"
+ã"# #¢#
+¢#Ã# Ã#Ì#
+Ì#ó# ó#ÿ#
+ÿ#±$ ±$»$
+»$â$ â$ö$
+ö$™% ™%±%
+±%Ş% Ş%ê%
+ê%›& ›&¥&
+¥&Ê& Ê&á&
+á&ˆ' ˆ'š'
+š'ü' ü'(
+(¾( ¾(Ì(
+Ì(í( í(†)
+†)¦) ¦)¿)
+¿)á) á)ú)
+ú)* *¶*
+¶*È* È*‰+
+‰+›+ ›+±+
+±+Ù+ Ù+ê+
+ê+”, ”,£,
+£,Æ, Æ,ß,
+ß,- -š-
+š-Æ- Æ-Ó-
+Ó-„. „..
+.Ç. Ç.É.
+É.ì. ì.„/
+„/®/ ®/À/
+À/ï/ ï/û/
+û/¢0 ¢0º0
+º0í0 í0õ0
+õ0©1 ©1°1
+°1Ö1 Ö1é1
+é1™2 ™2¥2
+¥2Ø2 Ø2á2
+á23 3œ3
+œ3Å3 Å3Ç3
+Ç3Ù3 Ù3ß3
+ß3å3 å3æ3
+æ3ñ3 ñ3ó3
+ó3„4 „4…4
+…44 4‘4
+‘4’4 ’4•4
+•4«4 «4¬4
+¬4º4 º4Á4
+Á4Â4 Â4Ä4
+Ä4Å4 Å4Ç4
+Ç4È4 È4Ê4
+Ê4Ì4 Ì4Í4
+Í4Ô4 Ô4Õ4
+Õ4×4 ×4Ü4
+Ü4İ4 İ4è4
+è4é4 é4ë4
+ë4ï4 ï4ó4
+ó4ù4 ù4ú4
+ú4˜5 ˜5™5
+™5¡5 ¡5¢5
+¢5«5 «5®5
+®5°5 °5³5
+³5¸5 ¸5»5
+»5¼5 ¼5½5
+½5¾5 ¾5¿5
+¿5À5 À5Á5
+Á5Í5 Í5Ğ5
+Ğ5×5 ×5Ø5
+Ø5á5 á5ä5
+ä5å5 å5æ5
+æ5ç5 ç5ë5
+ë5ì5 ì5í5
+í5î5 î5ò5
+ò5ó5 ó5ö5
+ö5÷5 ÷5ø5
+ø5ú5 ú5„6
+„6—6 —6™6
+™6›6 ›6œ6
+œ6Ÿ6 Ÿ6 6
+ 6¢6 ¢6£6
+£6¥6 ¥6¨6
+¨6©6 ©6ª6
+ª6«6 «6¬6
+¬6¹6 ¹6º6
+º6»6 »6¿6
+¿6Â6 Â6Ä6
+Ä6Æ6 Æ6È6
+È6Ê6 Ê6Ğ6
+Ğ6Ñ6 Ñ6Ó6
+Ó6Õ6 Õ6×6
+×6Ø6 Ø6İ6
+İ6Ş6 Ş6à6
+à6ã6 ã6è6
+è6î6 î6ğ6
+ğ6ú6 ú6û6
+û6‡7 ‡7ˆ7
+ˆ7‹7 ‹77
+77 7‘7
+‘7•7 •7™7
+™7›7 ›77
+77 7£7
+£7°7 °7´7
+´7¸7 ¸7¹7
+¹7¾7 ¾7À7
+À7Á7 Á7Ã7
+Ã7È7 È7Ê7
+Ê7Ì7 Ì7Î7
+Î7Ï7 Ï7Ñ7
+Ñ7Õ7 Õ7Ö7
+Ö7è7 è7ë7
+ë7î7 î7ï7
+ï7ñ7 ñ7ó7
+ó7õ7 õ7ø7
+ø7ü7 ü7ş7
+ş78 8ƒ8
+ƒ8†8 †8ˆ8
+ˆ88 8’8
+’8•8 •8˜8
+˜8™8 ™8š8
+š88 8 8
+ 8¡8 ¡8£8
+£8¥8 ¥8¦8
+¦8¨8 ¨8«8
+«8¼8 ¼8½8
+½8È8 È8Ê8
+Ê8Í8 Í8Î8
+Î8Ò8 Ò8Ó8
+Ó8Ô8 Ô8Õ8
+Õ8×8 ×8Ù8
+Ù8ä8 ä8æ8
+æ8ó8 ó8õ8
+õ8ø8 ø8ù8
+ù8ú8 ú8ü8
+ü8ı8 ı8ş8
+ş8ƒ9 ƒ9„9
+„9‹9 ‹9Œ9
+Œ99 9‘9
+‘9’9 ’9—9
+—9˜9 ˜9™9
+™9š9 š9›9
+›9œ9 œ99
+9Ÿ9 Ÿ9¡9
+¡9¢9 ¢9¤9
+¤9¥9 ¥9¨9
+¨9©9 ©9«9
+«9­9 ­9¶9
+¶9·9 ·9¹9
+¹9»9 »9¼9
+¼9Â9 Â9Å9
+Å9Æ9 Æ9Ç9
+Ç9Ê9 Ê9Ì9
+Ì9Í9 Í9Ï9
+Ï9Ğ9 Ğ9Ó9
+Ó9Ô9 Ô9Ö9
+Ö9ä9 ä9å9
+å9ô9 ô9ö9
+ö9÷9 ÷9ø9
+ø9ú9 ú9û9
+û9ı9 ı9ş9
+ş9ÿ9 ÿ9€:
+€:: :‚:
+‚:„: „:…:
+…:Œ: Œ::
+:š: š::
+:: :¡:
+¡:¢: ¢:£:
+£:¤: ¤:­:
+­:¯: ¯:²:
+²:´: ´:¶:
+¶:·: ·:¹:
+¹:º: º:¼:
+¼:¾: ¾:Á:
+Á:Â: Â:Ç:
+Ç:È: È:Ê:
+Ê:Ì: Ì:Ï:
+Ï:Ò: Ò:Ó:
+Ó:Ô: Ô:Õ:
+Õ:×: ×:Û:
+Û:Ü: Ü:Ş:
+Ş:ã: ã:ä:
+ä:ò: ò:õ:
+õ:ö: ö:ú:
+ú:û: û:ü:
+ü:‹; ‹;;
+;š; š;œ;
+œ;; ;Ÿ;
+Ÿ; ;  ;£;
+£;¤; ¤;¥;
+¥;¦; ¦;¨;
+¨;©; ©;ª;
+ª;°; °;²;
+²;³; ³;´;
+´;¿; ¿;À;
+À;Ë; Ë;Ñ;
+Ñ;Ó; Ó;Ô;
+Ô;Õ; Õ;Ú;
+Ú;Û; Û;Ş;
+Ş;à; à;á;
+á;ä; ä;å;
+å;ç; ç;è;
+è;õ; õ;÷;
+÷;ù; ù;ı;
+ı;< <ƒ<
+ƒ<…< …<‡<
+‡<‰< ‰<‹<
+‹<Œ< Œ<<
+<< <•<
+•<–< –<—<
+—<¡< ¡<¢<
+¢<®< ®<¯<
+¯<±< ±<·<
+·<É< É<Ì<
+Ì<Ø< Ø<Û<
+Û<İ< İ<Ş<
+Ş<ß< ß<ã<
+ã<ä< ä<å<
+å<ë< ë<ì<
+ì<ğ< ğ<ò<
+ò<ó< ó<ô<
+ô<õ< õ<ú<
+ú<û< û<ÿ<
+ÿ<€= €=ƒ=
+ƒ=„= „=‰=
+‰=‹= ‹=•=
+•=—= —=˜=
+˜=¢= ¢=£=
+£=®= ®=´=
+´=¶= ¶=·=
+·=¹= ¹=»=
+»=Ê= Ê=Ì=
+Ì=Ù= Ù=Ü=
+Ü=İ= İ=ß=
+ß=á= á=ã=
+ã=ä= ä=ê=
+ê=ì= ì=í=
+í=î= î=ğ=
+ğ=ñ= ñ=õ=
+õ=ö= ö=ù=
+ù=ú= ú=û=
+û=ü= ü=ÿ=
+ÿ=€> €>…>
+…>‡> ‡>Œ>
+Œ>> >‘>
+‘>’> ’>—>
+—>¢> ¢>£>
+£>®> ®>´>
+´>¶> ¶>¹>
+¹>º> º>¾>
+¾>Ê> Ê>Ë>
+Ë>Ô> Ô>Õ>
+Õ>Ø> Ø>Ü>
+Ü>İ> İ>ß>
+ß>á> á>é>
+é>ê> ê>ì>
+ì>ï> ï>ğ>
+ğ>ò> ò>ó>
+ó>ô> ô>õ>
+õ>ö> ö>û>
+û>ş> ş>ÿ>
+ÿ>? ?‚?
+‚?„? „?‡?
+‡?ˆ? ˆ?Š?
+Š?Œ? Œ??
+?? ?•?
+•?–? –?˜?
+˜?™? ™?›?
+›?¦? ¦?¨?
+¨?²? ²?º?
+º?½? ½?¿?
+¿?Î? Î?Ï?
+Ï?é? é?ğ?
+ğ?ñ? ñ?ö?
+ö?÷? ÷?ø?
+ø?ù? ù?ú?
+ú?ı? ı?ÿ?
+ÿ?€@ €@@
+@‚@ ‚@ƒ@
+ƒ@‰@ ‰@Š@
+Š@@ @@
+@@ @@
+@’@ ’@“@
+“@”@ ”@—@
+—@˜@ ˜@š@
+š@ @  @¡@
+¡@£@ £@¨@
+¨@«@ «@­@
+­@®@ ®@¯@
+¯@±@ ±@²@
+²@´@ ´@Â@
+Â@Ã@ Ã@Æ@
+Æ@ã@ ã@å@
+å@æ@ æ@è@
+è@ë@ ë@í@
+í@ÿ@ ÿ@€A
+€AA AA
+AA A‘A
+‘A“A “A•A
+•A—A —A˜A
+˜A™A ™A›A
+›AœA œAµA
+µA¶A ¶A·A
+·A¸A ¸AºA
+ºA»A »A¿A
+¿AÀA ÀAÙA
+ÙAÚA ÚAÜA
+ÜAİA İAâA
+âAäA äAåA
+åAçA çAèA
+èAéA éAêA
+êAìA ìAîA
+îAïA ïAñA
+ñAóA óAôA
+ôAõA õAøA
+øAùA ùA‚B
+‚B†B †B‡B
+‡B‰B ‰BB
+B˜B ˜B›B
+›B B  B¢B
+¢B£B £B¥B
+¥B¦B ¦BªB
+ªB«B «B®B
+®BôD ôD†E
+†EâG âGéG
+éGşG şG€H
+€H‚H ‚HƒH
+ƒHŒH ŒHH
+H‘H ‘H“H
+“H”H ”HH
+HŸH ŸH H
+ H®H ®H°H
+°H²H ²H³H
+³H´H ´H¼H
+¼H½H ½HÂH
+ÂHÃH ÃHÈH
+ÈHÊH ÊHËH
+ËHÚH ÚHÜH
+ÜHŞH ŞHàH
+àHáH áHâH
+âHãH ãHëH
+ëHìH ìHóH
+óH…I …I‰I
+‰IŠI ŠII
+II II
+I‘I ‘I”I
+”I˜I ˜I›I
+›IœI œII
+I´I ´I·I
+·I¹I ¹I»I
+»I¼I ¼I½I
+½I¾I ¾IÀI
+ÀIÁI ÁIÅI
+ÅIÇI ÇIĞI
+ĞIçI çIëI
+ëIìI ìIíI
+íIıI ıIşI
+şIƒJ ƒJ…J
+…J J  J¡J
+¡J¹J ¹J¼J
+¼J½J ½JÁJ
+ÁJÉJ ÉJËJ
+ËJğJ ğJñJ
+ñJüJ üJıJ
+ıJşJ şJ€K
+€KšK šK›K
+›K¬K ¬K­K
+­K³K ³K´K
+´K¾K ¾KÀK
+ÀKÏK ÏKÒK
+ÒKÔK ÔK×K
+×KÙK ÙKÚK
+ÚKğK ğKòK
+òKóK óK÷K
+÷KûK ûKıK
+ıKL L‚L
+‚LŒL ŒLL
+L–L –L˜L
+˜L›L ›LœL
+œL¨L ¨L©L
+©L«L «L­L
+­L±L ±LµL
+µLÉL ÉLÎL
+ÎLĞL ĞLÓL
+ÓLÔL ÔLÕL
+ÕLÙL ÙLÚL
+ÚLæL æLçL
+çLñL ñLòL
+òLM MœM
+œM¶M ¶M¾M
+¾MËM ËMÌM
+ÌMÍM ÍMÒM
+ÒMÔM ÔMİM
+İMàM àMçM
+çMèM èMôM
+ôMöM öMıM
+ıMÿM ÿM‡N
+‡NˆN ˆN‹N
+‹NŒN ŒN‘N
+‘N’N ’N“N
+“N•N •N—N
+—N˜N ˜N¯N
+¯N»N »N½N
+½NÀN ÀNÆN
+ÆNÈN ÈNÊN
+ÊNÌN ÌNÍN
+ÍNÎN ÎNĞN
+ĞNÑN ÑNÒN
+ÒNÕN ÕNÖN
+ÖN×N ×NÜN
+ÜNİN İNßN
+ßNáN áNâN
+âNäN äNåN
+åNæN æNìN
+ìNùN ùNüN
+üNıN ıN€O
+€OƒO ƒO†O
+†OˆO ˆOO
+O’O ’O”O
+”O¥O ¥O«O
+«O¬O ¬O­O
+­O¯O ¯O²O
+²OµO µO¶O
+¶O·O ·O¸O
+¸O¹O ¹O»O
+»O¼O ¼OÄO
+ÄOÕO ÕO×O
+×OØO ØOãO
+ãOäO äOæO
+æOçO çOìO
+ìOíO íOòO
+òOóO óOöO
+öO÷O ÷OùO
+ùOúO úO‹P
+‹PŒP ŒP’P
+’P“P “P¥P
+¥P¦P ¦P­P
+­P¾P ¾PÄP
+ÄPÅP ÅPÆP
+ÆPÈP ÈPÏP
+ÏPÑP ÑPÕP
+ÕPÖP ÖPÙP
+ÙPÚP ÚPãP
+ãPúP úPûP
+ûPıP ıPQ
+Q‚Q ‚Q†Q
+†Q‡Q ‡Q‰Q
+‰QŒQ ŒQ•Q
+•Q–Q –Q¢Q
+¢Q¤Q ¤Q¥Q
+¥Q¨Q ¨Q¶Q
+¶Q¸Q ¸QÁQ
+ÁQÂQ ÂQÇQ
+ÇQÉQ ÉQËQ
+ËQÎQ ÎQÏQ
+ÏQÒQ ÒQÕQ
+ÕQ×Q ×QØQ
+ØQÙQ ÙQÛQ
+ÛQÜQ ÜQŞQ
+ŞQßQ ßQèQ
+èQîQ îQïQ
+ïQğQ ğQôQ
+ôQõQ õQşQ
+şQ‹R ‹RR
+RR R•R
+•R–R –R›R
+›RR RŸR
+ŸR¢R ¢R¤R
+¤R¨R ¨R´R
+´R¶R ¶R¼R
+¼R½R ½RÁR
+ÁRÂR ÂRÃR
+ÃRÄR ÄRÅR
+ÅRÆR ÆRÈR
+ÈRÉR ÉRÊR
+ÊRËR ËRÓR
+ÓRÔR ÔRÖR
+ÖRÙR ÙRÚR
+ÚRÛR ÛRŞR
+ŞRßR ßRäR
+äRåR åRèR
+èRéR éRíR
+íRîR îRöR
+öR÷R ÷RÿR
+ÿRS SS
+S‘S ‘S”S
+”S—S —S›S
+›S¢S ¢S¦S
+¦S¨S ¨S©S
+©SªS ªS®S
+®S·S ·S¸S
+¸S¹S ¹S¼S
+¼S½S ½S¾S
+¾S¿S ¿SÀS
+ÀSÁS ÁSÂS
+ÂSÊS ÊSÍS
+ÍSÎS ÎSÏS
+ÏSĞS ĞSÑS
+ÑSÒS ÒSÕS
+ÕS×S ×SÚS
+ÚSÛS ÛSÜS
+ÜSİS İSŞS
+ŞSßS ßSàS
+àSãS ãSäS
+äSåS åSçS
+çSëS ëSìS
+ìSñS ñSòS
+òSôS ôSöS
+öS÷S ÷SÿS
+ÿS”T ”T™T
+™TœT œT¨T
+¨T©T ©TµT
+µT¸T ¸T½T
+½TÃT ÃTÏT
+ÏTÒT ÒTÓT
+ÓTÕT ÕTÙT
+ÙTÛT ÛTßT
+ßTêT êTîT
+îTïT ïTòT
+òTôT ôT÷T
+÷TøT øTùT
+ùT‡U ‡U‰U
+‰UŠU ŠU‹U
+‹UU UU
+UŸU ŸU U
+ U£U £U¨U
+¨U²U ²UµU
+µU»U »UÂU
+ÂUÄU ÄUÆU
+ÆUÊU ÊUÛU
+ÛUêU êUëU
+ëUşU şUÿU
+ÿU€V €VV
+V‚V ‚V‡V
+‡V¯V ¯V¼V
+¼V½V ½VÉV
+ÉVõV õVıV
+ıVšW šW¦W
+¦W§W §W³W
+³WÔW ÔWÜW
+ÜWşW şW…X
+…X†X †X’X
+’XÍX ÍXÏX
+ÏXÑX ÑXÔX
+ÔXØX ØXÙX
+ÙXÛX ÛXÜX
+ÜXçX çXèX
+èX€Y €Y„Z
+„Z¡Z ¡Z¥[
+¥[©_ ©_±_
+±_²_ ²_Ú_
+Ú_Û_ Û_á_
+á_â_ â_é_
+é_ê_ ê_ğ_
+ğ_ñ_ ñ_ú_
+ú_û_ û_Ÿ`
+Ÿ`¡` ¡`Î`
+Î`Ï` Ï`é`
+é`ê` ê`ÿ`
+ÿ`a a i
+ i¾i ¾iÆi
+Æiâi âiïi
+ïiği ğiüi
+üi¤j ¤j®k
+®kÆk Æk×k
+×kØk Økäk
+äkòk òkşk
+şkl lœl
+œl¿l ¿lËl
+Ëlâl âlîl
+îl—m —m£m
+£m´m ´mÀm
+Àmóm ómÿm
+ÿm’n ’nn
+nĞn Ğnàn
+ànán ánín
+ín™o ™o¡o
+¡o¾o ¾oÊo
+ÊoËo Ëo×o
+×oío íoõo
+õo–p –pp
+pœq œq¡q
+¡qr rªr
+ªr«r «r·r
+·rğr ğrør
+ør˜s ˜s¡s
+¡s¢s ¢s®s
+®sës ësós
+ósŒt Œtœt
+œtt t©t
+©tÄt ÄtÌt
+Ìtét étõt
+õtöt öt‚u
+‚uÌu ÌuÔu
+Ôuñu ñuıu
+ıuşu şuŠv
+Šv©v ©v±v
+±vÎv ÎvÚv
+ÚvÛv Ûvçv
+çv‡w ‡ww
+w«w «w·w
+·wöx öxy
+y‚y ‚yy
+y´y ´y¼y
+¼yáy áyåy
+åyæy æyòy
+òy®z ®z¶z
+¶zØz Øzßz
+ßzàz àzìz
+ìz¤{ ¤{¬{
+¬{Æ{ Æ{Õ{
+Õ{Ö{ Ö{â{
+â{„| „|Œ|
+Œ|¥| ¥|µ|
+µ|¶| ¶|Â|
+Â|ˆ} ˆ}}
+}} } }
+ }¡} ¡}¢}
+¢}£} £}¦}
+¦}§} §}°}
+°}³} ³}¹}
+¹}È} È}Ï}
+Ï}Ğ} Ğ}Ò}
+Ò}Ô} Ô}×}
+×}Ø} Ø}Ù}
+Ù}Ú} Ú}ß}
+ß}á} á}ã}
+ã}å} å}í}
+í}î} î}ô}
+ô}õ} õ}¡~
+¡~¢~ ¢~¤~
+¤~¥~ ¥~§~
+§~¨~ ¨~°~
+°~¾~ ¾~Ë~
+Ë~Î~ Î~Ò~
+Ò~Ô~ Ô~è~
+è~é~ é~ë~
+ë~ì~ ì~ğ~
+ğ~ò~ ò~ú~
+ú~ü~ ü~ÿ~
+ÿ~€ €“
+“” ”—
+—­ ­°
+°± ±µ
+µ¶ ¶¸
+¸¹ ¹¿
+¿Â ÂÉ
+ÉØ ØÛ
+ÛŞ Şâ
+âã ãè
+èé éí
+íî îğ
+ğñ ñó
+óô ôö
+ö÷ ÷û
+ûü 	ü€€€€€ 
+€ƒ€ƒ€„€ 
+„€€€€ 
+€‘€‘€’€ 
+’€­€­€®€ 
+®€²€²€¼€ 
+¼€¿€¿€Ã€ 
+Ã€Å€Å€Æ€ 
+Æ€È€È€É€ 
+É€Í€Í€Ï€ 
+Ï€Ğ€Ğ€Ñ€ 
+Ñ€Õ€Õ€Ö€ 
+Ö€Û€Û€Ü€ 
+Ü€İ€İ€Ş€ 
+Ş€ö€ö€÷€ 
+÷€ø€ø€ù€ 
+ù€ı€ı€ş€ 
+ş€ƒƒ„ 
+„‘ 
+‘šš› 
+›œœŸ 
+Ÿ££¥ 
+¥¦¦ª 
+ª¯¯° 
+°±±³ 
+³µµ¶ 
+¶¸¸Î 
+ÎÑÑÒ 
+ÒÖÖ× 
+×ÙÙŞ 
+Şââä 
+äééù 
+ùüüı 
+ıÿÿ€‚ 
+€‚‚‚‚‚ƒ‚ 
+ƒ‚…‚…‚ˆ‚ 
+ˆ‚Š‚Š‚‹‚ 
+‹‚ ‚ ‚¡‚ 
+¡‚¢‚¢‚£‚ 
+£‚¥‚¥‚¦‚ 
+¦‚ª‚ª‚¬‚ 
+¬‚°‚°‚Á‚ 
+Á‚Ã‚Ã‚Ä‚ 
+Ä‚ã‚ã‚ä‚ 
+ä‚ê‚ê‚ë‚ 
+ë‚ì‚ì‚í‚ 
+í‚î‚î‚ï‚ 
+ï‚ğ‚ğ‚ñ‚ 
+ñ‚ó‚ó‚ô‚ 
+ô‚÷‚÷‚ø‚ 
+ø‚™ƒ™ƒšƒ 
+šƒœƒœƒƒ 
+ƒ¥ƒ¥ƒ¦ƒ 
+¦ƒ¼ƒ¼ƒ½ƒ 
+½ƒÉƒÉƒÌƒ 
+ÌƒÑƒÑƒÒƒ 
+Òƒ×ƒ×ƒØƒ 
+Øƒğƒğƒñƒ 
+ñƒôƒôƒõƒ 
+õƒùƒùƒûƒ 
+ûƒüƒüƒÿƒ 
+ÿƒ‰„‰„Š„ 
+Š„”„”„•„ 
+•„–„–„˜„ 
+˜„š„š„›„ 
+›„„„Ÿ„ 
+Ÿ„ „ „¡„ 
+¡„¥„¥„¦„ 
+¦„¨„¨„¸„ 
+¸„»„»„À„ 
+À„Â„Â„Ã„ 
+Ã„Ê„Ê„Ì„ 
+Ì„Ï„Ï„Ğ„ 
+Ğ„Ô„Ô„×„ 
+×„Ø„Ø„á„ 
+á„ú„ú„ÿ„ 
+ÿ„‹…‹…Œ… 
+Œ………… 
+………‘… 
+‘…•…•…–… 
+–…œ…œ…… 
+…¬…¬…­… 
+­…´…´…µ… 
+µ…»…»…¼… 
+¼…È…È…É… 
+É…Ğ…Ğ…Ñ… 
+Ñ…Ô…Ô…Õ… 
+Õ…×…×…Ø… 
+Ø…é…é…ê… 
+ê…ì…ì…í… 
+í…ú…ú…û… 
+û…††† 
+†”†”†•† 
+•†—†—†˜† 
+˜†œ†œ†† 
+† † †¡† 
+¡†¢†¢†­† 
+­†Æ†Æ†Ë† 
+Ë†Ü†Ü†İ† 
+İ†Ş†Ş†ß† 
+ß†á†á†â† 
+â†ä†ä†å† 
+å†ô†ô†ö† 
+ö††‡†‡‡‡ 
+‡‡˜‡˜‡™‡ 
+™‡‡‡Ÿ‡ 
+Ÿ‡§‡§‡¨‡ 
+¨‡®‡®‡¯‡ 
+¯‡±‡±‡³‡ 
+³‡½‡½‡¾‡ 
+¾‡È‡È‡Ê‡ 
+Ê‡Ò‡Ò‡Ó‡ 
+Ó‡÷‡÷‡ø‡ 
+ø‡ı‡ı‡ş‡ 
+ş‡ƒˆƒˆ„ˆ 
+„ˆ‡ˆ‡ˆˆˆ 
+ˆˆŒˆŒˆˆ 
+ˆ—ˆ—ˆ˜ˆ 
+˜ˆˆˆŸˆ 
+Ÿˆ£ˆ£ˆ¤ˆ 
+¤ˆ¦ˆ¦ˆ§ˆ 
+§ˆ­ˆ­ˆ®ˆ 
+®ˆÂˆÂˆÃˆ 
+Ãˆßˆßˆàˆ 
+àˆåˆåˆæˆ 
+æˆêˆêˆëˆ 
+ëˆîˆîˆïˆ 
+ïˆõˆõˆöˆ 
+öˆ÷ˆ÷ˆøˆ 
+øˆüˆüˆıˆ 
+ıˆÿˆÿˆ‚‰ 
+‚‰‰‰‘‰ 
+‘‰“‰“‰”‰ 
+”‰œ‰œ‰¤‰ 
+¤‰Ğ‰Ğ‰Û‰ 
+Û‰Ü‰Ü‰İ‰ 
+İ‰Ş‰Ş‰ß‰ 
+ß‰ã‰ã‰å‰ 
+å‰è‰è‰é‰ 
+é‰ú‰ú‰ü‰ 
+ü‰›Š›ŠœŠ 
+œŠ Š Š¡Š 
+¡Š£Š£Š¤Š 
+¤Š§Š§Š¨Š 
+¨Š¶Š¶Š·Š 
+·Š¸Š¸Š»Š 
+»ŠöŠöŠıŠ 
+ıŠ–‹–‹‹ 
+‹‹‹Ÿ‹ 
+Ÿ‹ ‹ ‹¡‹ 
+¡‹¥‹¥‹¦‹ 
+¦‹§‹§‹¨‹ 
+¨‹º‹º‹»‹ 
+»‹Á‹Á‹Â‹ 
+Â‹Ä‹Ä‹Å‹ 
+Å‹İ‹İ‹Ş‹ 
+Ş‹á‹á‹â‹ 
+â‹ŒŒ‚Œ 
+‚ŒŒŒŒ 
+ŒŒŒŒ 
+Œ“Œ“Œ”Œ 
+”Œ˜Œ˜Œ™Œ 
+™Œ Œ Œ¡Œ 
+¡Œ¨Œ¨Œ©Œ 
+©Œ³Œ³Œ´Œ 
+´Œ¸Œ¸ŒºŒ 
+ºŒíŒíŒîŒ 
+îŒóŒóŒôŒ 
+ôŒøŒøŒùŒ 
+ùŒƒƒ„ 
+„š 
+š³³¸ 
+¸»»¼ 
+¼½½¿ 
+¿ÎÎÏ 
+Ïææç 
+çëëì 
+ìííî 
+î‚ 
+‚‡‡ˆ 
+ˆ——˜ 
+˜››œ 
+œŸ 
+Ÿ¡¡¤ 
+¤ªª¬ 
+¬²²³ 
+³¾¾¿ 
+¿ÇÇÈ 
+ÈÉÉÊ 
+ÊÚÚÛ 
+ÛŞŞß 
+ßããä 
+äèèé 
+éïïğ 
+ğƒƒ… 
+…ˆˆ‰ 
+‰ŠŠ‹ 
+‹ 
+œœ 
+££¤ 
+¤ªª« 
+«¹¹º 
+º¼¼À 
+ÀÄÄÅ 
+ÅËËÌ 
+Ì××Ø 
+Øîîï 
+ïõõö 
+öúúû 
+ûüüı 
+ı‚‚ƒ 
+ƒ††‡ 
+‡œœ 
+££¤ 
+¤¥¥¦ 
+¦¬¬­ 
+­®®· 
+·üü‰‘ 
+‰‘‘‘‘‘’‘ 
+’‘“‘“‘¤‘ 
+¤‘©‘©‘­‘ 
+­‘°‘°‘±‘ 
+±‘²‘²‘³‘ 
+³‘¸‘¸‘¹‘ 
+¹‘¿‘¿‘À‘ 
+À‘Å‘Å‘Ç‘ 
+Ç‘È‘È‘É‘ 
+É‘Ê‘Ê‘Ë‘ 
+Ë‘Ì‘Ì‘Í‘ 
+Í‘Ó‘Ó‘Ô‘ 
+Ô‘Ö‘Ö‘×‘ 
+×‘è‘è‘é‘ 
+é‘ì‘ì‘í‘ 
+í‘ò‘ò‘ó‘ 
+ó‘÷‘÷‘„’ 
+„’‡’‡’ˆ’ 
+ˆ’Š’Š’‹’ 
+‹’’’‘’ 
+‘’”’”’•’ 
+•’Ÿ’Ÿ’ ’ 
+ ’¤’¤’¥’ 
+¥’¶’¶’·’ 
+·’½’½’¾’ 
+¾’Á’Á’Â’ 
+Â’Ó’Ó’Õ’ 
+Õ’Ø’Ø’Ù’ 
+Ù’Ú’Ú’Û’ 
+Û’Ü’Ü’Ş’ 
+Ş’ä’ä’å’ 
+å’è’è’é’ 
+é’ì’ì’í’ 
+í’ñ’ñ’ò’ 
+ò’ó’ó’ô’ 
+ô’ú’ú’û’ 
+û’ü’ü’ş’ 
+ş’ˆ“ˆ“‰“ 
+‰“Š“Š“”“ 
+”“¥“¥“¦“ 
+¦“ª“ª“«“ 
+«“¯“¯“°“ 
+°“±“±“²“ 
+²“¾“¾“¿“ 
+¿“Á“Á“Â“ 
+Â“Ç“Ç“È“ 
+È“Ì“Ì“Í“ 
+Í“Ï“Ï“Ñ“ 
+Ñ“Ö“Ö“×“ 
+×“Û“Û“Ü“ 
+Ü“õ“õ“ö“ 
+ö“û“û“ş“ 
+ş“ÿ“ÿ“€” 
+€”‚”‚”ˆ” 
+ˆ”‰”‰”” 
+”“”“””” 
+””–”–”—” 
+—”š”š”›” 
+›”Ÿ”Ÿ” ” 
+ ”¹”¹”º” 
+º”»”»”À” 
+À”Æ”Æ”Ì” 
+Ì”Ï”Ï”Ğ” 
+Ğ”×”×”Ø” 
+Ø”Ú”Ú”İ” 
+İ”å”å”í” 
+í”î”î”ò” 
+ò”ó”ó”ô” 
+ô”û”û”ÿ” 
+ÿ”†•†•‡• 
+‡•‹•‹•• 
+•–•–•›• 
+›•¥•¥•¦• 
+¦•©•©•ª• 
+ª•«•«•¬• 
+¬•­•­•®• 
+®•¯•¯•°• 
+°•±•±•²• 
+²•¶•¶•·• 
+·•¸•¸•¹• 
+¹•º•º•»• 
+»•¾•¾•Ä• 
+Ä•Å•Å•É• 
+É•Ë•Ë•Ì• 
+Ì•Ò•Ò•Ö• 
+Ö•Ù•Ù•Ú• 
+Ú•â•â•ç• 
+ç•í•í•ö• 
+ö•ü•ü•ı• 
+ı•€–€–– 
+–‚–‚–ƒ– 
+ƒ–Œ–Œ–– 
+–˜–˜–™– 
+™–––– 
+–§–§–¨– 
+¨–·–·–º– 
+º–Ô–Ô–Õ– 
+Õ–ã–ã–ä– 
+ä–å–å–æ– 
+æ–ğ–ğ–ñ– 
+ñ–ú–ú–û– 
+û–ş–ş–€— 
+€—†—†—ˆ— 
+ˆ—Œ—Œ—— 
+———— 
+—“—“—–— 
+–—¦—¦—§— 
+§—¨—¨—©— 
+©—®—®—¯— 
+¯—²—²—¾— 
+¾—î—î—ğ— 
+ğ—ô—ô—ù— 
+ù—ú—ú—û— 
+û—ü—ü—€˜ 
+€˜«˜«˜µ˜ 
+µ˜º˜º˜»˜ 
+»˜¼˜¼˜À˜ 
+À˜Å˜Å˜Ò˜ 
+Ò˜ë˜ë˜ì˜ 
+ì˜í˜í˜î˜ 
+î˜õ˜õ˜ö˜ 
+ö˜ÿ˜ÿ˜€™ 
+€™…™…™†™ 
+†™‡™‡™ˆ™ 
+ˆ™—™—™˜™ 
+˜™œ™œ™™ 
+™Ÿ™Ÿ™¢™ 
+¢™¥™¥™±™ 
+±™á™á™ã™ 
+ã™å™å™é™ 
+é™ë™ë™ì™ 
+ì™ñ™ñ™ó™ 
+ó™÷™÷™ø™ 
+ø™ù™ù™ü™ 
+ü™ı™ı™…š 
+…šˆšˆš‰š 
+‰š¢š¢š£š 
+£š¹š¹š½š 
+½š¿š¿šÀš 
+ÀšÅšÅšÆš 
+ÆšÍšÍšĞš 
+ĞšÓšÓšÔš 
+ÔšÖšÖšÚš 
+Úšïšïšøš 
+øš‰›‰›Š› 
+Š›‹›‹›Œ› 
+Œ›››› 
+›››› 
+›“›“›”› 
+”›¢›¢›£› 
+£›¤›¤›¥› 
+¥›¯›¯›²› 
+²›Ã›Ã›Å› 
+Å›É›É›Ê› 
+Ê›Í›Í›Ï› 
+Ï›Ó›Ó›Ô› 
+Ô›Õ›Õ›×› 
+×›İ›İ›ß› 
+ß›é›é›ë› 
+ë›ğ›ğ›ñ› 
+ñ›õ›õ›ö› 
+ö›ü›ü›ş› 
+ş›‚œ‚œƒœ 
+ƒœ…œ…œ†œ 
+†œˆœˆœ“œ 
+“œ›œ›œœ 
+œœœ œ 
+ œ¤œ¤œ¥œ 
+¥œ²œ²œ³œ 
+³œ»œ»œ¼œ 
+¼œ¿œ¿œÁœ 
+ÁœÅœÅœÆœ 
+ÆœÇœÇœÉœ 
+ÉœĞœĞœÒœ 
+ÒœÙœÙœÚœ 
+ÚœÛœÛœİœ 
+İœŞœŞœßœ 
+ßœàœàœáœ 
+áœãœãœäœ 
+äœæœæœçœ 
+çœñœñœûœ 
+ûœ””™ 
+™››œ 
+œŸ 
+Ÿ  ¡ 
+¡££¤ 
+¤¥¥§ 
+§©©ª 
+ª««­ 
+­ÀÀÄ 
+ÄÅÅÆ 
+ÆËËÎ 
+ÎŞŞß 
+ßááâ 
+âééê 
+êîîõ 
+õ– 
+–ŸŸ  
+ ¡¡£ 
+£¥¥¦ 
+¦¬¬® 
+®µµ¶ 
+¶ÆÆÇ 
+ÇÎÎÏ 
+Ïííî 
+îïïó 
+ó†Ÿ†Ÿ‡Ÿ 
+‡Ÿ“Ÿ“Ÿ”Ÿ 
+”ŸœŸœŸŸ 
+Ÿ£Ÿ£Ÿ­Ÿ 
+­ŸÆŸÆŸËŸ 
+ËŸÏŸÏŸĞŸ 
+ĞŸÒŸÒŸÓŸ 
+ÓŸÕŸÕŸÖŸ 
+ÖŸçŸçŸèŸ 
+èŸïŸïŸğŸ 
+ğŸóŸóŸôŸ 
+ôŸ‚ ‚ ƒ  
+ƒ Š Š ‹  
+‹   ‘  
+‘ — —   
+ ¡ ¡ ¢  
+¢ ª ª «  
+« ² ² ¿  
+¿ Ä Ä Å  
+Å È È É  
+É Ë Ë Î  
+Î Û Û Ü  
+Ü è è é  
+é í í ø  
+ø ù ù ú  
+ú ş ş ÿ  
+ÿ ¡¡‚¡ 
+‚¡„¡„¡…¡ 
+…¡Š¡Š¡‹¡ 
+‹¡¡¡¡ 
+¡“¡“¡•¡ 
+•¡—¡—¡˜¡ 
+˜¡¯¡¯¡°¡ 
+°¡²¡²¡¿¡ 
+¿¡Á¡Á¡Â¡ 
+Â¡Ä¡Ä¡Å¡ 
+Å¡Æ¡Æ¡Ğ¡ 
+Ğ¡×¡×¡Ü¡ 
+Ü¡ß¡ß¡à¡ 
+à¡ê¡ê¡ë¡ 
+ë¡ì¡ì¡ï¡ 
+ï¡õ¡õ¡ö¡ 
+ö¡“¢“¢—¢ 
+—¢§¢§¢©¢ 
+©¢³¢³¢´¢ 
+´¢¿¢¿¢À¢ 
+À¢Å¢Å¢È¢ 
+È¢Ê¢Ê¢Î¢ 
+Î¢Ğ¢Ğ¢Ñ¢ 
+Ñ¢Ü¢Ü¢İ¢ 
+İ¢õ¢õ¢ö¢ 
+ö¢ı¢ı¢ÿ¢ 
+ÿ¢…£…£‡£ 
+‡££££ 
+£™£™£š£ 
+š£Ÿ£Ÿ£ £ 
+ £££££¤£ 
+¤£­£­£®£ 
+®£Æ£Æ£Ç£ 
+Ç£É£É£Ê£ 
+Ê£Í£Í£Ğ£ "(3ae679aae66fa0c02e851818130d386ac099924e23file:///Users/s-a-c/Herd/lsk-livewire/composer.json:%file:///Users/s-a-c/Herd/lsk-livewire

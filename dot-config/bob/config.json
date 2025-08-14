@@ -1,0 +1,6 @@
+{
+  "enable_nightly_info": true,
+  "installation_location": "/Users/s-a-c/.local/share/bob",
+  "version_sync_file_location": "/Users/s-a-c/.local/share/bob/nvim-bin",
+  "add_neovim_binary_to_path": true
+}

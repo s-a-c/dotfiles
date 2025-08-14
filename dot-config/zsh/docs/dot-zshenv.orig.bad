@@ -1,0 +1,120 @@
+
+echo "" &>2
+echo "# ++++++++++++++++++++++++++++++++++++++++++++++" &>2
+echo "# $0" &>2
+echo "# ++++++++++++++++++++++++++++++++++++++++++++++" &>2
+
+# zshell maintains array copies of PATH and FPATH.
+#   Prevent duplicate entries in either
+typeset -x PATH FPATH
+typeset -aUx path fpath
+
+## [xdg] # {{{
+## (https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html)
+export XDG_BIN_HOME=${XDG_BIN_HOME:="${HOME}/.local/bin"}
+export XDG_CACHE_HOME=${XDG_CACHE_HOME:="${HOME}/.cache"}
+export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:="${HOME}/.config"}
+export XDG_DATA_HOME=${XDG_DATA_HOME:="${HOME}/.local/share"}
+export XDG_STATE_HOME=${XDG_STATE_HOME:="${HOME}/.local/state"}
+if [[ "$(uname)" == "Darwin" ]]; then
+    ## Do something under Mac OS X platform
+    export XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR:="${HOME}/Library/Caches/TemporaryItems"}
+    mkdir -p "${XDG_RUNTIME_DIR}"
+    :
+elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
+    ## Do something under GNU/Linux platform
+    :
+elif [[ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]]; then
+    ## Do something under 32 bits Windows NT platform
+    :
+elif [[ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]]; then
+    ## Do something under 64 bits Windows NT platform
+    :
+fi
+## }}} [xdg]
+
+# export SKIP_GLOBAL_COMPINIT=1
+
+#export ZDOTDIR="$HOME"
+export ZDOTDIR=${ZDOTDIR:="${XDG_CONFIG_HOME}/zsh"}
+export ZSH_CACHE_DIR=${ZSH_CACHE_DIR:="${XDG_CACHE_HOME}/zsh"}
+export ZSH_COMPDUMP="${ZSH_CACHE_DIR:-${HOME}}/.zcompdump-${SHORT_HOST}-${ZSH_VERSION}"
+
+unset ZGENOM_PARENT_DIR ZGENOM_SOURCE_FILE
+unset ZGEN_DIR ZGENOM_BIN_DIR
+# export ZGENOM_PARENT_DIR=${ZDOTDIR}
+# export ZGENOM_SOURCE_FILE=${ZGENOM_PARENT_DIR}/.zqs-zgenom/zgenom.zsh
+# export ZGEN_DIR=${ZGEN_DIR:-$ZGENOM_PARENT_DIR/.zgenom}
+# export ZGENOM_BIN_DIR=$ZGEN_DIR/_bin
+
+export SHELL_SESSIONS_DISABLE=1
+
+export HISTDUP=erase
+export HISTFILE="${ZDOTDIR}/.zsh_history" ## History filepath
+export HISTSIZE=1000000                   ## Maximum events for internal history
+export HISTTIMEFORMAT='%F %T %z %a %V '
+export SAVEHIST=1100000 ## Maximum events in history file
+
+## [ -x "/opt/homebrew/bin/python3" ] && export CLOUDSDK_PYTHON="/opt/homebrew/bin/python3"
+export DISPLAY=:0.0
+EDITOR=$(which nvim) && export EDITOR
+JAVA_HOME="$(/usr/libexec/java_home)" && export JAVA_HOME
+export LANG='en_GB.UTF-8'
+export LC_ALL='en_GB.UTF-8'
+export TIME_STYLE=long-iso
+VISUAL=$(which hx) && export VISUAL
+
+## Get color support for 'less'
+#export LESS="--RAW-CONTROL-CHARS"
+export LESS=' --HILITE-UNREAD --LONG-PROMPT --no-histdups --ignore-case --incsearch --no-init --line-numbers --mouse --quit-if-one-screen --squeeze-blank-lines --status-column --tabs=4 --use-color --window=-4 --RAW-CONTROL-CHARS '
+
+export MY_SESSION_BUS_SOCKET=/tmp/dbus/$USER.session.usock
+export DBUS_SESSION_BUS_ADDRESS=unix:path=${MY_SESSION_BUS_SOCKET}
+
+export ALLOWED_DIRECTORIES="/Users/s-a-c/Desktop,/Users/s-a-c/Downloads,/Users/s-a-c/Herd,/Users/s-a-c/Library,/Users/s-a-c/Projects,/Users/s-a-c/Work,/Users/s-a-c/.config,/Users/s-a-c/dotfiles,/Users/s-a-c/.local,/Users/s-a-c/.zshenv,/Users/s-a-c/.zshrc,/Users/s-a-c/.zprofile,/Users/s-a-c/.zlogin"
+
+## [_path]    ## {{{
+## [_path.remove] ## {{{
+function _path_remove() {
+    for ARG in "$@"; do
+        while [[ ":$PATH:" == *":$ARG:"* ]]; do
+            ## Delete path by parts so we can never accidentally remove sub paths
+            [[ "$PATH" == "$ARG" ]] && PATH=""
+            PATH=${PATH//":$ARG:"/":"} ## delete any instances in the middle
+            PATH=${PATH/#"$ARG:"/}     ## delete any instance at the beginning
+            PATH=${PATH/%":$ARG"/}     ## delete any instance in the at the end
+        done
+    done
+}
+## }}}    ## [_path.remove]
+
+## [_path.append] ## {{{
+function _path_append() {
+    for ARG in "$@"; do
+        _path_remove "$ARG"
+        [[ -d "$ARG" ]] && PATH="${PATH:+"$PATH:"}$ARG"
+    done
+}
+## }}}    ## [_path.append]
+
+## [_path.prepend]    ## {{{
+function _path_prepend() {
+    for ARG in "$@"; do
+        _path_remove "$ARG"
+        [[ -d "$ARG" ]] && PATH="$ARG${PATH:+":$PATH"}"
+    done
+}
+## }}}    ## [_path.prepend]
+## }}}    ## [_path]
+
+# Ensure system paths are always available
+export PATH="/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
+
+"$HOME/.local/share/bob/env/env.sh"
+
+. "/Users/s-a-c/.local/share/bob/env/env.sh"
+. "/Users/s-a-c/.local/share/bob/env/env.sh"
+. "/Users/s-a-c/.local/share/bob/env/env.sh"
+. "/Users/s-a-c/.local/share/bob/env/env.sh"
+. "/Users/s-a-c/.local/share/bob/env/env.sh"
+. "/Users/s-a-c/.local/share/bob/env/env.sh"

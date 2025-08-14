@@ -1,0 +1,99 @@
+## =============================================================================
+
+# To get the default values
+# ghostty +show-config --default --docs > ~/github/dotfiles-latest/ghostty/config-default
+
+# No way of reloading config via command yet, only via keymap cmd+shift+,
+# Created a script to do it so that its reloaded with my colorscheme selector
+
+# Additional configuration files to read. This configuration can be repeated
+# to read multiple configuration files. Configuration files themselves can
+# load more configuration files. Paths are relative to the file containing the
+# `config-file` directive. For command-line arguments, paths are relative to
+# the current working directory.
+#
+# Prepend a ? character to the file path to suppress errors if the file does
+# not exist. If you want to include a file that begins with a literal ?
+# character, surround the file path in double quotes (").
+#
+# Cycles are not allowed. If a cycle is detected, an error will be logged and
+# the configuration file will be ignored.
+# config-file = ghostty-theme
+
+
+font-family = "Dank Mono"
+#font-family = "GeistMono Nerd Font"
+#font-family = "JetBrainsMono Nerd Font"
+#font-family = "Opendyslexic Nerd Font"
+
+font-size = 18
+
+theme = dark:tokyonight_night,light:tokyonight-day
+
+# Swap the foreground and background colors of cells for selection. This
+# option overrides the `selection-foreground` and `selection-background`
+# options.
+#
+# If you select across cells with differing foregrounds and backgrounds, the
+# selection color will vary across the selection.
+selection-invert-fg-bg = true
+
+minimum-contrast = 5
+
+cursor-style = block_hollow
+
+background-opacity = 0.90
+
+background-blur-radius = 10
+
+# command = zsh --login -c "if command -v tmux >/dev/null 2>&1; then tmux attach || tmux; else zsh; fi"
+
+scrollback-limit = 320000000
+
+maximize = true
+
+window-decoration = true
+
+image-storage-limit = 320000000
+
+# Some shaders can be found in this repo, they're usually uploaded to discord
+# https://github.com/hackrmomo/ghostty-shaders
+# custom-shader = shaders/animated-gradient-shader.glsl
+# custom-shader = shaders/bettercrt.glsl
+custom-shader = shaders/bloom.glsl
+# custom-shader = shaders/bloom025.glsl*
+# custom-shader = shaders/bloom050.glsl*
+# custom-shader = shaders/bloom060.glsl*
+# custom-shader = shaders/bloom075.glsl*
+# custom-shader = shaders/bloom1.glsl*
+# custom-shader = shaders/cineShader-Lava.glsl
+# custom-shader = shaders/crt.glsl
+# custom-shader = shaders/cubes.glsl
+custom-shader = shaders/cursor_blaze.glsl
+# custom-shader = shaders/dither.glsl
+# custom-shader = shaders/drunkard.glsl
+# custom-shader = shaders/fireworks-rockets.glsl
+# custom-shader = shaders/fireworks.glsl
+# custom-shader = shaders/galaxy.glsl
+# custom-shader = shaders/gears-and-belts.glsl
+# custom-shader = shaders/glitchy.glsl
+# custom-shader = shaders/glow-rgbsplit-twitchy.glsl
+# custom-shader = shaders/gradient-background.glsl
+# custom-shader = shaders/in-game-crt.glsl
+# custom-shader = shaders/inside-the-matrix.glsl
+# custom-shader = shaders/just-snow.glsl
+# custom-shader = shaders/matrix-hallway.glsl
+# custom-shader = shaders/mnoise.glsl
+# custom-shader = shaders/negative.glsl
+# custom-shader = shaders/retro-terminal.glsl
+# custom-shader = shaders/sin-interference.glsl
+# custom-shader = shaders/smoke-and-ghost.glsl
+# custom-shader = shaders/sparks-from-fire.glsl
+# custom-shader = shaders/spotlight.glsl
+# custom-shader = shaders/starfield-colors.glsl
+# custom-shader = shaders/starfield.glsl
+# custom-shader = shaders/tft.glsl
+# custom-shader = shaders/underwater.glsl
+# custom-shader = shaders/water.glsl
+
+custom-shader-animation = true

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{title}} - Interactive Example</title>
+  
+  <!-- Base styles -->
+  <link rel="stylesheet" href="/docs/030-ume-tutorial/assets/css/styles.css">
+  
+  <!-- Interactive examples styles -->
+  <link rel="stylesheet" href="/docs/030-ume-tutorial/assets/css/interactive/interactive.css">
+  
+  <!-- Theme detection -->
+  <script>
+    // Check for dark mode preference
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark-theme');
+    } else {
+      document.documentElement.classList.add('light-theme');
+    }
+  </script>
+</head>
+<body class="interactive-example-page">
+  <header class="example-header">
+    <div class="container">
+      <h1 class="example-title">{{title}}</h1>
+      <div class="example-actions">
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+          <span class="theme-toggle-icon"></span>
+        </button>
+        <a href="{{back_url}}" class="back-link">Back to Tutorial</a>
+      </div>
+    </div>
+  </header>
+  
+  <main class="example-content">
+    <div class="container">
+      <div class="example-description">
+        <p>{{description}}</p>
+      </div>
+      
+      <div class="interactive-code-example">
+        <div class="code-editor-container" data-language="php" data-editable="true">
+          <div class="editor-toolbar">
+            <button class="run-button">Run Code</button>
+            <button class="reset-button">Reset</button>
+            <button class="copy-button">Copy</button>
+            <div class="editor-status"></div>
+          </div>
+          
+          <div class="monaco-editor" data-code="{{code}}"></div>
+          
+          <div class="output-panel">
+            <div class="output-header">Output</div>
+            <div class="output-content"></div>
+          </div>
+        </div>
+        
+        <div class="example-explanation">
+          <h2>How it works</h2>
+          {{explanation}}
+        </div>
+        
+        {{#if challenges}}
+        <div class="example-challenges">
+          <h2>Challenges</h2>
+          {{challenges}}
+        </div>
+        {{/if}}
+      </div>
+    </div>
+  </main>
+  
+  <footer class="example-footer">
+    <div class="container">
+      <p>&copy; 2024 UME Tutorial</p>
+    </div>
+  </footer>
+  
+  <!-- Interactive examples scripts -->
+  <script src="/docs/030-ume-tutorial/assets/js/interactive/interactive.js"></script>
+</body>
+</html>
