@@ -1,7 +1,7 @@
 # Fixed .zshenv - Core environment setup
 # This file is sourced by all zsh instances (login, interactive, scripts)
 # Keep minimal - only essential environment variables and PATH setup
-unset ZSH_DEBUG
+
 [[ -n "$ZSH_DEBUG" ]] && printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
 
 # Ensure system paths are available FIRST - critical for basic commands
