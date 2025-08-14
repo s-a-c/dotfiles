@@ -1,0 +1,309 @@
+/**
+ * UME Documentation Enhancements CSS
+ *
+ * This stylesheet provides styling for enhanced 010-consolidated-starter-kits elements including:
+ * - Section metadata (time estimates, difficulty indicators)
+ * - Visual diagrams
+ * - Troubleshooting guides
+ * - Quick reference sections
+ * - Navigation elements
+ */
+
+/* Base Variables - Light Mode */
+:root {
+  --ume-primary-bg: #f8fafc;
+  --ume-primary-border: #60a5fa;
+  --ume-primary-text: #111827;
+  --ume-secondary-bg: #dbeafe;
+  --ume-secondary-border: #3b82f6;
+  --ume-secondary-text: #1e40af;
+  --ume-tertiary-bg: #e5e7eb;
+  --ume-tertiary-border: #9ca3af;
+  --ume-tertiary-text: #374151;
+  --ume-success-bg: #d1fae5;
+  --ume-success-border: #10b981;
+  --ume-success-text: #065f46;
+  --ume-error-bg: #fee2e2;
+  --ume-error-border: #ef4444;
+  --ume-error-text: #7f1d1d;
+  --ume-warning-bg: #fef3c7;
+  --ume-warning-border: #f59e0b;
+  --ume-warning-text: #92400e;
+  --ume-info-bg: #e0f2fe;
+  --ume-info-border: #0ea5e9;
+  --ume-info-text: #0c4a6e;
+  --ume-shadow: rgba(0, 0, 0, 0.1);
+}
+
+/* Dark Mode Variables */
+.dark {
+  --ume-primary-bg: #1e293b;
+  --ume-primary-border: #3b82f6;
+  --ume-primary-text: #f3f4f6;
+  --ume-secondary-bg: #1e3a8a;
+  --ume-secondary-border: #60a5fa;
+  --ume-secondary-text: #bfdbfe;
+  --ume-tertiary-bg: #374151;
+  --ume-tertiary-border: #6b7280;
+  --ume-tertiary-text: #d1d5db;
+  --ume-success-bg: #064e3b;
+  --ume-success-border: #10b981;
+  --ume-success-text: #a7f3d0;
+  --ume-error-bg: #7f1d1d;
+  --ume-error-border: #ef4444;
+  --ume-error-text: #fecaca;
+  --ume-warning-bg: #78350f;
+  --ume-warning-border: #f59e0b;
+  --ume-warning-text: #fef3c7;
+  --ume-info-bg: #0c4a6e;
+  --ume-info-border: #0ea5e9;
+  --ume-info-text: #e0f2fe;
+  --ume-shadow: rgba(0, 0, 0, 0.5);
+}
+
+/* Section Metadata Styling */
+.section-metadata {
+  background-color: var(--ume-primary-bg);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+  border-left: 4px solid var(--ume-primary-border);
+  box-shadow: 0 2px 4px var(--ume-shadow);
+}
+
+.section-metadata > div {
+  margin-bottom: 12px;
+}
+
+.section-metadata > div:last-child {
+  margin-bottom: 0;
+}
+
+.section-metadata .icon {
+  display: inline-block;
+  margin-right: 8px;
+  width: 24px;
+  text-align: center;
+}
+
+.section-metadata .label {
+  font-weight: 600;
+  margin-right: 8px;
+}
+
+.section-metadata .value {
+  font-weight: 400;
+}
+
+.section-metadata .explanation {
+  display: block;
+  margin-left: 32px;
+  font-size: 0.9em;
+  color: var(--ume-tertiary-text);
+}
+
+.section-metadata ul {
+  margin: 8px 0 0 32px;
+  padding: 0;
+}
+
+.section-metadata li {
+  margin-bottom: 4px;
+}
+
+.difficulty-level .icon {
+  color: #f59e0b;
+}
+
+/* Troubleshooting Guide Styling */
+.troubleshooting-guide {
+  background-color: var(--ume-primary-bg);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+  border-left: 4px solid var(--ume-error-border);
+  box-shadow: 0 2px 4px var(--ume-shadow);
+}
+
+.troubleshooting-guide h2 {
+  color: var(--ume-error-text);
+  margin-top: 0;
+}
+
+.troubleshooting-guide .symptoms {
+  background-color: var(--ume-error-bg);
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.troubleshooting-guide .symptoms h3 {
+  margin-top: 0;
+  color: var(--ume-error-text);
+}
+
+.troubleshooting-guide .causes h3 {
+  color: var(--ume-warning-text);
+}
+
+.troubleshooting-guide .solutions h3 {
+  color: var(--ume-success-text);
+}
+
+.troubleshooting-guide .prevention h3 {
+  color: var(--ume-info-text);
+}
+
+/* Quick Reference Styling */
+.quick-reference {
+  background-color: var(--ume-secondary-bg);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+  border-left: 4px solid var(--ume-secondary-border);
+  box-shadow: 0 2px 4px var(--ume-shadow);
+}
+
+.quick-reference h2 {
+  color: var(--ume-secondary-text);
+  margin-top: 0;
+}
+
+.quick-reference .key-concepts {
+  margin-bottom: 16px;
+}
+
+.quick-reference .key-concepts dt {
+  font-weight: 600;
+  color: var(--ume-secondary-text);
+}
+
+.quick-reference .key-concepts dd {
+  margin-left: 16px;
+  margin-bottom: 8px;
+}
+
+.quick-reference .syntax {
+  background-color: var(--ume-primary-bg);
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.quick-reference .patterns h3 {
+  color: var(--ume-secondary-text);
+}
+
+.quick-reference .gotchas {
+  background-color: var(--ume-warning-bg);
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.quick-reference .gotchas h3 {
+  margin-top: 0;
+  color: var(--ume-warning-text);
+}
+
+/* Navigation Enhancements */
+.page-navigation {
+  display: flex;
+  justify-content: space-between;
+  margin: 32px 0;
+  padding: 16px 0;
+  border-top: 1px solid var(--ume-tertiary-border);
+  border-bottom: 1px solid var(--ume-tertiary-border);
+}
+
+.page-navigation .prev,
+.page-navigation .next {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--ume-secondary-text);
+}
+
+.page-navigation .prev:hover,
+.page-navigation .next:hover {
+  text-decoration: underline;
+}
+
+.page-navigation .prev:before {
+  content: "←";
+  margin-right: 8px;
+}
+
+.page-navigation .next:after {
+  content: "→";
+  margin-left: 8px;
+}
+
+/* Breadcrumb Navigation */
+.breadcrumb-navigation {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px 0;
+}
+
+.breadcrumb-navigation li {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb-navigation li:not(:last-child):after {
+  content: "/";
+  margin: 0 8px;
+  color: var(--ume-tertiary-text);
+}
+
+.breadcrumb-navigation a {
+  color: var(--ume-secondary-text);
+  text-decoration: none;
+}
+
+.breadcrumb-navigation a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb-navigation li:last-child a {
+  color: var(--ume-primary-text);
+  font-weight: 600;
+}
+
+/* Mermaid Diagram Enhancements */
+.mermaid {
+  margin: 24px 0;
+  text-align: center;
+}
+
+.mermaid-caption {
+  text-align: center;
+  margin-top: 8px;
+  font-style: italic;
+  color: var(--ume-tertiary-text);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .section-metadata,
+  .troubleshooting-guide,
+  .quick-reference {
+    padding: 12px;
+  }
+
+  .section-metadata .explanation {
+    margin-left: 0;
+  }
+
+  .page-navigation {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .breadcrumb-navigation {
+    margin-bottom: 16px;
+  }
+}

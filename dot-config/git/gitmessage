@@ -1,0 +1,51 @@
+# <type>: <subject> (50 chars max)
+
+# <body> (72 chars per line)
+
+# <footer>
+
+# Types
+
+# feat     - A new feature
+
+# fix      - A bug fix
+
+# docs     - Documentation only changes
+
+# style    - Changes that don't affect the code (formatting, etc)
+
+# refactor - Code change that neither fixes a bug nor adds a feature
+
+# test     - Adding missing tests or correcting existing tests
+
+# chore    - Changes to the build process or auxiliary tools
+
+# Example
+
+# feat: implement user authentication system
+
+#
+
+# - Add JWT token generation and validation
+
+# - Create login/logout endpoints
+
+# - Implement password hashing
+
+#
+
+# Closes #123
+
+# Rules
+
+# 1. Subject line should be 50 chars or less
+
+# 2. Subject line should use imperative mood ("add" not "added")
+
+# 3. No period at the end of subject line
+
+# 4. Body should wrap at 72 chars
+
+# 5. Use the body to explain what and why vs. how
+
+# 6. Reference issues and PRs in the footer

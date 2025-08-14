@@ -1,0 +1,779 @@
+2025-06-22 13:03:34.511 | INFO     | - Starting Rovo Dev CLI
+2025-06-22 13:03:34.511 | INFO     | - Working directory: /Users/s-a-c/Herd/aureuserp
+2025-06-22 13:03:34.511 | INFO     | - Config file: /Users/s-a-c/.rovodev/config.yml
+2025-06-22 13:03:34.982 | INFO     | - Starting new session
+2025-06-22 13:03:35.238 | INFO     | - Starting MCP servers
+2025-06-22 13:03:37.635 | INFO     | - MCP servers started successfully
+2025-06-22 13:04:50.766 | INFO     | -  
+2025-06-22 13:05:03.130 | INFO     | - # Analysis of the Request
+
+The user is asking about preparing project instructions in a file. This is a common practice in software development projects to document guidelines, setup instructions, or development workflows.
+
+Based on the workspace structure, I can see that there are several directories that contain documentation files, such as:
+- `.ai/guidelines/` - Contains various guideline documents
+- `docs/` - Contains project documentation
+- `.ai/tasks/` - Contains task-related documentation
+
+I'll help the user create a new file for project instructions.
+
+## Options for Creating Project Instructions
+
+I can help you create a project instructions file. There are a few options for where to place this file and what format to use:
+
+1. Would you like to create a general project instructions file in the root directory (like `PROJECT_INSTRUCTIONS.md`)?
+2. Would you like to add it to an existing documentation directory like `docs/` or `.ai/guidelines/`?
+3. Do you have specific content in mind for these instructions, or would you like suggestions on what to include?
+
+What would you like to do next?
+2025-06-22 13:06:36.243 | INFO     | -  
+2025-06-22 13:06:47.678 | INFO     | - # Analysis of the Request
+
+The user wants me to use `.ai/guidelines.md` and associated files/folders as guidelines for this project. Let me first check if this file exists and examine its contents, along with related files in the `.ai/guidelines/` directory to understand the project guidelines better.
+2025-06-22 13:06:48.409 | INFO     | - open_files: {"file_paths": [".ai/guidelines.md"]}
+2025-06-22 13:06:48.968 | INFO     | - Successfully opened .ai/guidelines.md:
+
+````markdown
+   0 
+   1 # AI Assistant Project Guidelines
+   2 
+   3 > **Note:** The project guidelines have been restructured into a more organized format.
+   4 > Please refer to the new guidelines in the `.ai/guidelines/` directory.
+   5 
+   6 ## Core Communication Principle
+   7 
+   8 **All documents and responses should be clear, actionable, and suitable for a junior developer to understand and implement.**
+   9 
+  10 ## Guidelines Structure
+  11 
+  12 The guidelines are now organized into the following files:
+  13 
+  14 1. [Main Index](guidelines/000-index.md) - Overview and navigation of all guidelines
+  15 2. [Project Overview](guidelines/010-project-overview.md) - Core information about the project
+  16 3. [Documentation Standards](guidelines/020-documentation-standards.md) - Guidelines for documentation
+  17 4. [Development Standards](guidelines/030-development-standards.md) - Code style and architecture patterns
+  18 5. [Workflow Guidelines](guidelines/040-workflow-guidelines.md) - Git workflow and terminal management
+  19 6. [Testing Standards](guidelines/060-testing-standards.md) - Testing requirements and practices
+  20 
+  21 ## Purpose
+  22 
+  23 These guidelines serve two main purposes:
+  24 
+  25 1. To provide comprehensive information about the project structure, architecture, and development standards
+  26 2. To establish consistent formatting, behavior, and workflow standards for the AI Assistant when working with the codebase
+  27 
+  28 By following these guidelines, you'll ensure that your contributions maintain the project's high standards for code quality, performance, and user experience.
+  29 
+  30 ## Maintenance
+  31 
+  32 These guidelines should be updated whenever there are significant changes to:
+  33 
+  34 - Project architecture or structure
+  35 - Development standards or workflows
+  36 - Documentation requirements
+  37 - AI Assistant behavior or capabilities
+  38 
+  39 When updating these guidelines, ensure that all affected documents are updated consistently and that the main index reflects the current structure.
+  40 
+````
+2025-06-22 13:06:48.982 | INFO     | -  
+2025-06-22 13:06:52.999 | INFO     | - Now let me check the main index file and other guideline files to understand the project structure and guidelines better:
+2025-06-22 13:06:53.569 | INFO     | - open_files: {"file_paths": [".ai/guidelines/000-index.md"]}
+2025-06-22 13:06:54.161 | INFO     | - Successfully opened .ai/guidelines/000-index.md:
+
+````markdown
+   0 # AI Assistant Guidelines
+   1 
+   2 ## Core Communication Principle
+   3 
+   4 **All documents and responses should be clear, actionable, and suitable for a junior developer to understand and implement.**
+   5 
+   6 This principle guides all documentation, code, and communication within the project.
+   7 
+   8 ## Guidelines Index
+   9 
+  10 1. [Project Overview](010-project-overview.md) - Core information about the project
+  11 2. [Documentation Standards](020-documentation-standards.md) - Guidelines for documentation
+  12 3. [Development Standards](030-development-standards.md) - Code style and architecture patterns
+  13 4. [Workflow Guidelines](040-workflow-guidelines.md) - Git workflow and terminal management
+  14 5. [Testing Standards](060-testing-standards.md) - Testing requirements and practices
+  15 
+  16 ## Using These Guidelines
+  17 
+  18 These guidelines serve as a comprehensive reference for working with the project codebase. They are designed to be approachable for developers of all experience levels, with special attention to clarity for junior developers.
+  19 
+  20 When working on the project:
+  21 
+  22 1. Start by understanding the project structure and architecture in the Project Overview
+  23 2. Follow the Documentation Standards when creating or updating documentation
+  24 3. Adhere to Development Standards when writing or modifying code
+  25 4. Use the Workflow Guidelines for consistent Git and development workflows
+  26 5. Follow Testing Standards to ensure code quality and reliability
+  27 
+  28 ## Maintenance
+  29 
+  30 These guidelines should be updated whenever there are significant changes to:
+  31 
+  32 - Project architecture or structure
+  33 - Development standards or workflows
+  34 - Documentation requirements
+  35 - AI Assistant behavior or capabilities
+  36 
+  37 When updating these guidelines, ensure that all affected documents are updated consistently and that the main index reflects the current structure.
+  38 ## Overview
+  39 
+  40 This document serves as the main index for the AI Assistant guidelines. These guidelines are designed to ensure consistent, high-quality interactions when working with the codebase.
+  41 
+  42 ## AI Assistant Identity and Approach
+  43 
+  44 - You are a very experienced, senior IT practitioner with great expertise as Product Manager, Solution Architect, and Software Developer.
+  45 - Be informal with dry humour and a touch of sarcasm.
+  46 - Target audience:
+  47   - **highly visual learners** - use lots of color and many colored illustrations to aid understanding.
+  48   - **junior developer**. Therefore, be explicit, unambiguous, and avoid jargon where possible. Provide enough detail for them to understand the core concepts, principles, techniques, technologies and logic.
+  49 - Maximize prompt effectiveness and efficiency by enforcing strict formatting and workflow standards.
+  50 
+  51 ## Decision-Making Protocol
+  52 
+  53 - **Always review existing files** before suggesting or planning any changes.
+  54 - **Always summarise your reasons** for a proposed action.
+  55 - **Always provide a % confidence score** with short explanation.
+  56 - **DO NOT MAKE ASSUMPTIONS**
+  57 
+  58 ## File Display Standards
+  59 
+  60 When _showing_ files or snippets:
+  61 
+  62 - Use complete code fencing with alternative delimiters (NOT 3 backticks for embedded code)
+  63 - Show project-relative path and filename as precursor
+  64 - Indicate the character used for embedded code block delimiters
+  65 
+  66 When _creating/editing_ files:
+  67 
+  68 - Continue using standard 3 backticks as code fence delimiter
+  69 
+  70 ## Azure Integration
+  71 
+  72 - @azure Rule: When working with Azure (code generation, terminal commands, operations), invoke `get_azure_best_practices` tool if available.
+  73 
+  74 ## Table of Contents
+  75 
+  76 1. [Project Overview](010-project-overview.md)
+  77    - Core information about the project, its architecture, and structure
+  78 
+  79 2. [Documentation Standards](020-documentation-standards.md)
+  80    - Guidelines for creating and maintaining documentation
+  81    - Formatting rules and accessibility requirements
+  82 
+  83 3. [Development Standards](030-development-standards.md)
+  84    - Code style and architecture patterns
+  85    - Laravel and PHP best practices
+  86    - Testing requirements
+  87 
+  88 4. [Workflow Guidelines](040-workflow-guidelines.md)
+  89    - Git workflow and commit message standards
+  90    - Terminal management
+  91    - Development workflow
+  92 
+  93 5. [Testing Standards](060-testing-standards.md)
+  94    - Test organization and types
+  95    - Naming conventions and best practices
+  96    - Performance optimization and tools
+  97    - Links to detailed testing guidelines
+  98 
+  99 ## Purpose
+ 100 
+ 101 These guidelines serve two main purposes:
+ 102 
+ 103 1. To provide comprehensive information about the project structure, architecture, and development standards
+ 104 2. To establish consistent formatting, behavior, and workflow standards for the AI Assistant when working with the codebase
+ 105 
+ 106 By following these guidelines, you'll ensure that your contributions to the project maintain the project's high 
+ 107 standards for code quality, performance, and user experience.
+ 108 
+ 109 ## Maintenance
+ 110 
+ 111 ### Guidelines Maintenance Principles
+ 112 
+ 113 - Keep instructions clear and concise
+ 114 - Use markdown formatting for better readability
+ 115 - Group related instructions together
+ 116 - Use examples when helpful
+ 117 - Update files when modifying assistant behavior
+ 118 
+ 119 ### Project-Specific Conventions
+ 120 
+ 121 - Use snake_case for PHP variable names
+ 122 - Follow repository's existing code style for new code
+ 123 - Place new classes in appropriate namespaces based on functionality
+ 124 - Use PHP attributes rather than PHPDoc comments for public methods
+ 125 
+ 126 ### Communication Preferences
+ 127 
+ 128 - Be concise in explanations
+ 129 - Provide code examples when explaining concepts
+ 130 - Clearly indicate recommended approach when suggesting multiple options
+ 131 - Always explain reasoning behind architectural decisions
+ 132 
+ 133 ### Update Frequency
+ 134 
+ 135 These guidelines should be updated whenever there are significant changes to:
+ 136 
+ 137 - Project architecture or structure
+ 138 - Development standards or workflows
+ 139 - Documentation requirements
+ 140 - AI Assistant behavior or capabilities
+ 141 
+ 142 When updating these guidelines, ensure that all affected documents are updated consistently and that the main index reflects the current structure.
+ 143 
+````
+2025-06-22 13:06:54.165 | INFO     | -  
+2025-06-22 13:06:59.429 | INFO     | - Let me also check the testing standards since the workspace seems to have a focus on testing:
+2025-06-22 13:07:01.404 | INFO     | - open_files: {"file_paths": [".ai/guidelines/060-testing-standards.md"]}
+2025-06-22 13:07:01.835 | INFO     | - Successfully opened .ai/guidelines/060-testing-standards.md:
+
+````markdown
+   0 # 6. Testing Standards
+   1 
+   2 ## Overview
+   3 
+   4 This document outlines the testing standards for the project and serves as an index to more detailed testing-related guidelines. Following these standards ensures consistency, maintainability, and effectiveness of our test suite.
+   5 
+   6 ## Table of Contents
+   7 
+   8 1. [Test Organization](#test-organization)
+   9 2. [Naming Conventions](#naming-conventions)
+  10 3. [Test Data Management](#test-data-management)
+  11 4. [Assertion Best Practices](#assertion-best-practices)
+  12 5. [Documentation Standards](#documentation-standards)
+  13 6. [Test Categories and Grouping](#test-categories-and-grouping)
+  14 7. [Performance Considerations](#performance-considerations)
+  15 8. [Tools and Extensions](#tools-and-extensions)
+  16 9. [Continuous Integration](#continuous-integration)
+...
+ 126 - Use PHP attributes to categorize tests
+...
+ 204 
+````
+2025-06-22 13:07:01.839 | INFO     | -  
+2025-06-22 13:07:07.409 | INFO     | - Let me check the project overview to understand more about the project structure:
+2025-06-22 13:07:08.163 | INFO     | - open_files: {"file_paths": [".ai/guidelines/010-project-overview.md"]}
+2025-06-22 13:07:08.702 | INFO     | - Successfully opened .ai/guidelines/010-project-overview.md:
+
+````markdown
+   0 # 1. Project Overview
+   1 
+   2 ## 1.1. Introduction
+   3 
+   4 This is a comprehensive, open-source application built on Laravel 12.x and FilamentPHP 3.x. It's designed for Small and Medium Enterprises (SMEs) and large-scale enterprises, offering a modular plugin architecture for managing various business operations.
+   5 
+   6 ## 1.2. Core Technologies
+   7 
+   8 - **Laravel 12.x**: Modern PHP framework providing the foundation
+   9 - **FilamentPHP 3.x**: Admin panel framework for building the user interface
+  10 - **PHP 8.2+**: Taking advantage of modern PHP features
+  11 - **MySQL/PostgreSQL**: Database backend options
+  12 
+  13 ## 1.3. Project Structure
+  14 
+  15 ### 1.3.1. Core Directories
+  16 
+  17 - `/app` - Core application code
+  18 - `/plugins` - Modular business logic organized by domain
+  19 - `/packages` - Custom packages and third-party integrations
+  20 - `/config` - Application configuration
+  21 - `/database` - Schema and data migrations
+  22 - `/resources` - Frontend assets and views
+  23 - `/routes` - URL routing definitions
+  24 - `/tests` - Testing infrastructure
+  25 
+  26 ### 1.3.2. Plugin Architecture
+  27 
+  28 Plugins are organized under `/plugins/webkul/` with each plugin representing a business domain:
+  29 
+  30 ```
+  31 plugins/webkul/{module}/
+  32 ├── composer.json          ← Composer package definition
+  33 ├── src/
+  34 │   ├── {Module}Plugin.php ← FilamentPHP plugin class
+  35 │   ├── Models/           ← Domain models
+  36 │   ├── Resources/        ← FilamentPHP resources
+  37 │   └── Providers/        ← Service providers
+  38 ├── database/
+  39 │   ├── migrations/       ← Database schema
+  40 │   └── seeders/         ← Sample data
+  41 └── tests/               ← Plugin-specific tests
+  42 ```
+  43 
+  44 ### 1.3.3. Key Plugins
+  45 
+  46 #### 1.3.3.1. Core Plugins
+  47 
+  48 - **Analytics**: Business intelligence and reporting
+  49 - **Chatter**: Internal communication
+  50 - **Fields**: Custom field definitions
+  51 - **Security**: Authentication and authorization
+  52 - **Support**: Customer support management
+  53 - **Table View**: Enhanced data visualization
+  54 
+  55 #### 1.3.3.2. Business Plugins
+  56 
+  57 - **Accounts**: Financial accounting
+  58 - **Contacts**: Customer and contact management
+  59 - **Employees**: Human resources
+  60 - **Inventories**: Stock management
+  61 - **Invoices**: Billing and invoicing
+  62 - **Partners**: Partner relationship management
+  63 - **Payments**: Payment processing
+  64 - **Products**: Product catalog management
+  65 - **Projects**: Project management
+  66 - **Purchases**: Procurement management
+  67 - **Recruitments**: Hiring and recruitment
+  68 - **Sales**: Sales management
+  69 - **Time-off**: Leave management
+  70 - **Timesheets**: Time tracking
+  71 - **Website**: Public-facing website management
+  72 
+  73 ## 1.4. FilamentPHP Integration
+  74 
+  75 The project uses FilamentPHP extensively for admin interfaces:
+  76 
+  77 - Resources follow FilamentPHP conventions
+  78 - FilamentShield for permission management
+  79 - FilamentPHP form and table builders
+  80 - Dual-panel architecture (Admin/Customer)
+  81 
+  82 ## 1.5. Database Architecture
+  83 
+  84 - Laravel migrations for schema changes
+  85 - Eloquent ORM for data access
+  86 - Proper relationships between entities
+  87 - Database seeders for test data
+  88 
+  89 ## 1.6. Security Framework
+  90 
+  91 - Laravel security best practices
+  92 - FilamentShield for permission management
+  93 - Input validation
+  94 - Data encryption
+  95 - Laravel Sanctum for API authentication
+  96 
+````
+2025-06-22 13:07:08.705 | INFO     | -  
+2025-06-22 13:07:15.841 | INFO     | - Now I have a good understanding of the project guidelines and structure. Let me check what testing-related files are available in the project to understand the testing framework better:
+2025-06-22 13:07:16.251 | INFO     | - grep_file_paths: {"pattern": "*Test.php"}
+2025-06-22 13:07:16.837 | INFO     | - tests/Feature/AttributeExampleTest.php
+tests/Feature/ExampleTest.php
+tests/Feature/Plugins/Accounts/TaxResourceTest.php
+tests/Feature/Plugins/Accounts/AccountResourceTest.php
+tests/Feature/Plugins/Accounts/InvoiceResourceTest.php
+tests/Feature/Plugins/Accounts/PaymentsResourceTest.php
+tests/Feature/Plugins/Invoices/CreditNotesResourceTest.php
+tests/Feature/Plugins/Invoices/PartnerResourceTest.php
+tests/Feature/Plugins/Invoices/InvoiceResourceTest.php
+tests/Feature/Plugins/Invoices/PaymentsResourceTest.php
+tests/Feature/Plugins/Invoices/ProductResourceTest.php
+tests/Unit/AttributeExampleTest.php
+tests/Integration/AttributeExampleTest.php
+tests/Integration/Plugins/Accounts/AccountManagerTest.php
+tests/Integration/Plugins/Accounts/TaxManagerTest.php
+tests/Integration/ExampleTest.php
+tests/Unit/Plugins/Analytics/Models/RecordTest.php
+tests/Unit/Plugins/Fields/Models/FieldTest.php
+tests/Unit/Plugins/TableViews/Models/TableViewTest.php
+tests/Unit/Plugins/TableViews/Models/TableViewFavoriteTest.php
+tests/Unit/Plugins/Partners/Models/BankAccountTest.php
+tests/Unit/Plugins/Partners/Models/TitleTest.php
+tests/Unit/Plugins/Partners/Models/TagTest.php
+tests/Unit/Plugins/Partners/Models/PartnerTest.php
+tests/Unit/Plugins/Partners/Models/IndustryTest.php
+tests/Unit/Plugins/Accounts/AccountTest.php
+tests/Unit/Plugins/Accounts/MoveTest.php
+tests/Unit/Plugins/Accounts/SimpleAccountTest.php
+tests/Unit/Plugins/Accounts/MoveLineTest.php
+tests/Unit/Plugins/TimeOff/Models/LeaveAccrualLevelTest.php
+tests/Unit/Plugins/TimeOff/Models/LeaveAccrualPlanTest.php
+tests/Unit/Plugins/TimeOff/Models/LeaveTypeTest.php
+tests/Unit/Plugins/TimeOff/Models/ActivityTypeTest.php
+tests/Unit/Plugins/TimeOff/Models/CalendarLeaveTest.php
+tests/Unit/Plugins/TimeOff/Models/LeaveTest.php
+tests/Unit/Plugins/TimeOff/Models/LeaveAllocationTest.php
+tests/Unit/Plugins/TimeOff/Models/LeaveMandatoryDayTest.php
+tests/Unit/Plugins/Chatter/Models/AttachmentTest.php
+tests/Unit/Plugins/Chatter/Models/MessageTest.php
+tests/Unit/Plugins/Chatter/Models/FollowerTest.php
+tests/Unit/Plugins/Website/Models/PartnerTest.php
+tests/Unit/Plugins/Website/Models/PageTest.php
+tests/Unit/Plugins/Projects/Models/TimesheetTest.php
+tests/Unit/Plugins/Projects/Models/ProjectTest.php
+tests/Unit/Plugins/Projects/Models/TagTest.php
+tests/Unit/Plugins/Projects/Models/TaskTest.php
+tests/Unit/Plugins/Projects/Models/ProjectStageTest.php
+tests/Unit/Plugins/Projects/Models/MilestoneTest.php
+tests/Unit/Plugins/Projects/Models/TaskStageTest.php
+tests/Unit/Plugins/Security/Models/TeamTest.php
+tests/Unit/Plugins/Security/Models/InvitationTest.php
+tests/Unit/Plugins/Security/Models/UserTest.php
+packages/shuvroroy/filament-spatie-laravel-backup/tests/ExampleTest.php
+packages/bezhansalleh/filament-shield/tests/DatabaseTest.php
+tests/Unit/Plugins/Invoices/Models/TaxTest.php
+tests/Unit/Plugins/Invoices/Models/ProductTest.php
+tests/Unit/Plugins/Invoices/Models/BankAccountTest.php
+tests/Unit/Plugins/Invoices/Models/CategoryTest.php
+tests/Unit/Plugins/Invoices/Models/BillTest.php
+tests/Unit/Plugins/Invoices/Models/PaymentTermTest.php
+tests/Unit/Plugins/Invoices/Models/AttributeTest.php
+tests/Unit/Plugins/Invoices/Models/PartnerTest.php
+tests/Unit/Plugins/Invoices/Models/IncotermTest.php
+tests/Unit/Plugins/Invoices/Models/PaymentTest.php
+tests/Unit/Plugins/Invoices/Models/CreditNoteTest.php
+tests/Unit/Plugins/Invoices/Models/TaxGroupTest.php
+tests/Unit/Plugins/Invoices/Models/InvoiceTest.php
+tests/Unit/Plugins/Invoices/Models/RefundTest.php
+tests/Unit/Plugins/Products/Models/ProductAttributeTest.php
+tests/Unit/Plugins/Products/Models/ProductTest.php
+tests/Unit/Plugins/Products/Models/PriceListTest.php
+tests/Unit/Plugins/Products/Models/ProductAttributeValueTest.php
+tests/Unit/Plugins/Products/Models/ProductCombinationTest.php
+tests/Unit/Plugins/Products/Models/CategoryTest.php
+tests/Unit/Plugins/Products/Models/TagTest.php
+tests/Unit/Plugins/Products/Models/ProductSupplierTest.php
+tests/Unit/Plugins/Products/Models/AttributeTest.php
+tests/Unit/Plugins/Products/Models/PackagingTest.php
+tests/Unit/Plugins/Products/Models/AttributeOptionTest.php
+tests/Unit/Plugins/Products/Models/PriceRuleItemTest.php
+tests/Unit/Plugins/Products/Models/PriceRuleTest.php
+packages/pboivin/filament-peek/tests/src/Feature/InlinePreviewActionTest.php
+packages/pboivin/filament-peek/tests/src/Feature/PreviewActionTest.php
+packages/pboivin/filament-peek/tests/src/Feature/ListPreviewTest.php
+tests/Unit/Plugins/Payments/Models/PaymentTokenTest.php
+tests/Unit/Plugins/Payments/Models/PaymentTest.php
+tests/Unit/Plugins/Payments/Models/PaymentTransactionTest.php
+tests/Unit/Plugins/Blogs/Models/CategoryTest.php
+tests/Unit/Plugins/Blogs/Models/TagTest.php
+tests/Unit/Plugins/Blogs/Models/PostTest.php
+tests/Unit/ExampleTest.php
+packages/pboivin/filament-peek/tests/src/Unit/PreviewLinkTest.php
+packages/pboivin/filament-peek/tests/src/Unit/InlinePreviewActionTest.php
+packages/pboivin/filament-peek/tests/src/Unit/ListPreviewActionTest.php
+packages/pboivin/filament-peek/tests/src/Unit/PreviewActionTest.php
+packages/pboivin/filament-peek/tests/src/Unit/BuilderEditorTest.php
+packages/pboivin/filament-peek/tests/src/Unit/HasPreviewModalTest.php
+packages/pboivin/filament-peek/tests/src/Unit/HasBuilderPreviewTest.php
+packages/pboivin/filament-peek/tests/src/Integration/BasePreviewUrlTest.php
+packages/pboivin/filament-peek/tests/src/Integration/BasePreviewModalTest.php
+packages/pboivin/filament-peek/tests/src/Integration/BaseBuilderPreviewTest.php
+packages/pboivin/filament-peek/tests/src/Integration/WithPreviewUrlTest.php
+packages/pboivin/filament-peek/tests/src/Integration/WithAssetsDisabledTest.php
+packages/shuvroroy/filament-spatie-laravel-health/tests/ExampleTest.php
+packages/dotswan/filament-laravel-pulse/tests/ArchTest.php
+packages/dotswan/filament-laravel-pulse/tests/ExampleTest.php
+packages/saade/filament-adjacency-list/tests/ArchTest.php
+packages/saade/filament-adjacency-list/tests/ExampleTest.php
+app/Console/Commands/MakeIntegrationTest.php
+app/Console/Commands/MakeUnitTest.php
+app/Console/Commands/MakeFeatureTest.php
+packages/hugomyb/filament-media-action/tests/ArchTest.php
+packages/hugomyb/filament-media-action/tests/ExampleTest.php
+packages/z3d0x/filament-fabricator/tests/ExampleTest.php
+packages/awcodes/filament-tiptap-editor/tests/src/ArchTest.php
+packages/awcodes/filament-tiptap-editor/tests/src/FormsTest.php
+packages/awcodes/filament-curator/tests/src/ArchTest.php
+packages/kirschbaum-development/commentions/tests/Livewire/CommentReactionTest.php
+packages/kirschbaum-development/commentions/tests/Livewire/CommentTest.php
+packages/kirschbaum-development/commentions/tests/CommentTest.php
+2025-06-22 13:07:16.840 | INFO     | -  
+2025-06-22 13:07:23.109 | INFO     | - Let me also check the test command files to understand how tests are created:
+2025-06-22 13:07:24.094 | INFO     | - open_files: {"file_paths": ["app/Console/Commands/MakeUnitTest.php"]}
+2025-06-22 13:07:24.694 | INFO     | - Successfully opened app/Console/Commands/MakeUnitTest.php:
+
+````php
+   0 <?php
+   1 
+   2 declare(strict_types=1);
+   3 
+   4 namespace App\Console\Commands;
+   5 
+   6 use Illuminate\Console\Command;
+   7 use Illuminate\Support\Facades\File;
+   8 use Illuminate\Support\Str;
+   9 
+  10 class MakeUnitTest extends Command
+  11 {
+  12     /**
+  13      * The name and signature of the console command.
+  14      *
+  15      * @var string
+  16      */
+  17     protected $signature = 'make:unit-test
+  18                             {name : The name of the model to test}
+  19                             {--plugin= : The plugin name}
+  20                             {--path= : The path where the test should be created}';
+  21 
+  22     /**
+  23      * The console command description.
+  24      *
+  25      * @var string
+  26      */
+  27     protected $description = 'Create a new unit test based on the standard template';
+  28 
+  29     /**
+  30      * Execute the console command.
+  31      */
+  32     public function handle(): void
+  33     {
+  34         $modelName = $this->argument('name');
+  35         $pluginName = $this->option('plugin') ?? $this->ask('What is the plugin name?');
+  36         $path = $this->option('path') ?? "tests/Unit/Plugins/{$pluginName}/Models";
+  37 
+  38         // Create the directory if it doesn't exist
+  39         if (! File::isDirectory($path)) {
+  40             File::makeDirectory($path, 0755, true);
+  41         }
+  42 
+  43         // Get the template content
+  44         $templatePath = base_path('.junie/guidelines/test-templates/unit-test-template.php');
+  45         $template = File::get($templatePath);
+  46 
+  47         // Replace placeholders in the template
+  48         $content = str_replace('YourPlugin', $pluginName, $template);
+  49         $content = str_replace('YourModel', $modelName, $content);
+  50         $content = str_replace('your-plugin', Str::kebab($pluginName), $content);
+  51         $content = str_replace('your_model', Str::snake($modelName), $content);
+  52 
+  53         // Create the test file
+  54         $testPath = "{$path}/{$modelName}Test.php";
+  55 
+  56         if (File::exists($testPath) && ! $this->confirm("The file {$testPath} already exists. Do you want to overwrite it?")) {
+  57             $this->info('Command canceled.');
+  58 
+  59             return;
+  60         }
+  61 
+  62         File::put($testPath, $content);
+  63 
+  64         $this->info("Unit test created successfully: {$testPath}");
+  65     }
+  66 }
+  67 
+````
+2025-06-22 13:07:24.703 | INFO     | -  
+2025-06-22 13:07:28.551 | INFO     | - Let me check the test templates:
+2025-06-22 13:07:29.259 | INFO     | - grep_file_paths: {"pattern": "*test-template*"}
+2025-06-22 13:07:29.876 | INFO     | - .archives/.junie/guidelines/test-templates/feature-test-template.php
+.archives/.junie/guidelines/test-templates/unit-test-template.php
+.archives/.junie/guidelines/test-templates/integration-test-template.php
+.archives/.junie/testing-improvement/templates/feature-test-template.php
+.archives/.junie/testing-improvement/templates/unit-test-template.php
+.archives/.junie/testing-improvement/templates/integration-test-template.php
+.ai/guidelines/test-templates/feature-test-template.php
+.ai/guidelines/test-templates/unit-test-template.php
+.ai/guidelines/test-templates/integration-test-template.php
+.ai/300-aureuserp/testing-improvement/templates/feature-test-template.php
+.ai/300-aureuserp/testing-improvement/templates/unit-test-template.php
+.ai/300-aureuserp/testing-improvement/templates/integration-test-template.php
+2025-06-22 13:07:29.878 | INFO     | -  
+2025-06-22 13:07:33.049 | INFO     | - Let me check one of the test templates:
+2025-06-22 13:07:34.381 | INFO     | - open_files: {"file_paths": [".ai/guidelines/test-templates/unit-test-template.php"]}
+2025-06-22 13:07:34.996 | INFO     | - Successfully opened .ai/guidelines/test-templates/unit-test-template.php:
+
+````php
+   0 <?php
+   1 
+   2 /**
+   3  * Unit Test Template for Model Tests
+   4  *
+   5  * This template demonstrates how to structure unit tests for models in the project.
+   6  * Replace placeholders with actual values for your specific test case.
+   7  */
+   8 
+   9 // Import necessary classes
+  10 use PHPUnit\Framework\Attributes\Test;
+  11 use PHPUnit\Framework\Attributes\Group;
+  12 use PHPUnit\Framework\Attributes\Description;
+  13 use PHPUnit\Framework\Attributes\CoversClass;
+  14 use App\Tests\Attributes\PluginTest;
+  15 // Import the model being tested
+  16 use Webkul\YourPlugin\Models\YourModel;
+  17 // Import any related models or dependencies
+  18 use Webkul\YourPlugin\Models\RelatedModel;
+  19 
+  20 /**
+  21  * Test basic model attributes and creation
+  22  */
+  23 #[Test]
+  24 #[Group('unit')]
+  25 #[Group('your-plugin')]
+  26 #[PluginTest('YourPlugin')]
+  27 #[CoversClass(YourModel::class)]
+  28 #[Description('Test YourModel attributes and creation')]
+  29 function your_model_attributes_and_creation()
+  30 {
+  31     // Create a test model instance
+  32     $model = YourModel::factory()->create([
+  33         'attribute1' => 'value1',
+  34         'attribute2' => 'value2',
+  35         // Add other attributes as needed
+  36     ]);
+  37 
+  38     // Test attributes
+  39     expect($model->attribute1)->toBe('value1');
+  40     expect($model->attribute2)->toBe('value2');
+  41     // Test other attributes as needed
+  42 
+  43     // Test model exists in database
+  44     expect(YourModel::find($model->id))->not->toBeNull();
+  45 }
+  46 
+  47 /**
+  48  * Test model relationships
+  49  */
+  50 #[Test]
+  51 #[Group('unit')]
+  52 #[Group('your-plugin')]
+  53 #[PluginTest('YourPlugin')]
+  54 #[CoversClass(YourModel::class)]
+  55 #[Description('Test YourModel relationships')]
+  56 function your_model_relationships()
+  57 {
+  58     // Create related models
+  59     $relatedModel = RelatedModel::factory()->create();
+  60 
+  61     // Create a model with relationships
+  62     $model = YourModel::factory()->create([
+  63         'related_model_id' => $relatedModel->id,
+  64     ]);
+  65 
+  66     // Test relationship types
+  67     expect($model->relatedModel())->toBeInstanceOf(\Illuminate\Database\Eloquent\Relations\BelongsTo::class);
+  68     expect($model->otherRelationship())->toBeInstanceOf(\Illuminate\Database\Eloquent\Relations\HasMany::class);
+  69 
+  70     // Test relationship data
+  71     expect($model->relatedModel->id)->toBe($relatedModel->id);
+  72     expect($model->relatedModel->attribute)->toBe($relatedModel->attribute);
+  73 }
+  74 
+  75 /**
+  76  * Test model methods
+  77  */
+  78 #[Test]
+  79 #[Group('unit')]
+  80 #[Group('your-plugin')]
+  81 #[PluginTest('YourPlugin')]
+  82 #[CoversClass(YourModel::class)]
+  83 #[Description('Test YourModel methods')]
+  84 function your_model_methods()
+  85 {
+  86     // Create a model instance
+  87     $model = YourModel::factory()->create([
+  88         'attribute1' => 'value1',
+  89         'attribute2' => 'value2',
+  90     ]);
+  91 
+  92     // Test method results
+  93     $expectedValue = 100; // Replace with an appropriate expected value
+  94     expect($model->calculateSomething())->toBe($expectedValue);
+  95     expect($model->formatSomething())->toBe('formatted value');
+  96 
+  97     // Test method with parameters
+  98     $expectedResult = 'result'; // Replace with an appropriate expected result
+  99     expect($model->methodWithParams('param1', 'param2'))->toBe($expectedResult);
+ 100 }
+ 101 
+ 102 /**
+ 103  * Test model validation
+ 104  */
+ 105 #[Test]
+ 106 #[Group('unit')]
+ 107 #[Group('your-plugin')]
+ 108 #[Group('validation')]
+ 109 #[PluginTest('YourPlugin')]
+ 110 #[CoversClass(YourModel::class)]
+ 111 #[Description('Test YourModel validation')]
+ 112 function your_model_validation()
+ 113 {
+ 114     // Test validation failure
+ 115     $model = new YourModel();
+ 116     $model->attribute1 = null; // This should fail validation
+ 117 
+ 118     // Expect validation to fail
+ 119     expect(function() use ($model) {
+ 120         $model->save();
+ 121     })->toThrow(\Illuminate\Validation\ValidationException::class);
+ 122 
+ 123     // Test validation success
+ 124     $model->attribute1 = 'valid value';
+ 125     expect(function() use ($model) {
+ 126         $model->save();
+ 127     })->not->toThrow(\Illuminate\Validation\ValidationException::class);
+ 128 }
+ 129 
+ 130 /**
+ 131  * Test model scopes
+ 132  */
+ 133 #[Test]
+ 134 #[Group('unit')]
+ 135 #[Group('your-plugin')]
+ 136 #[PluginTest('YourPlugin')]
+ 137 #[CoversClass(YourModel::class)]
+ 138 #[Description('Test YourModel scopes')]
+ 139 function your_model_scopes()
+ 140 {
+ 141     // Create models with different attributes
+ 142     YourModel::factory()->create(['status' => 'active']);
+ 143     YourModel::factory()->create(['status' => 'inactive']);
+ 144     YourModel::factory()->create(['status' => 'active']);
+ 145 
+ 146     // Test scope results
+ 147     expect(YourModel::active()->count())->toBe(2);
+ 148     expect(YourModel::inactive()->count())->toBe(1);
+ 149 }
+ 150 
+ 151 /**
+ 152  * Test model events
+ 153  */
+ 154 #[Test]
+ 155 #[Group('unit')]
+ 156 #[Group('your-plugin')]
+ 157 #[PluginTest('YourPlugin')]
+ 158 #[CoversClass(YourModel::class)]
+ 159 #[Description('Test YourModel events')]
+ 160 function your_model_events()
+ 161 {
+ 162     // Listen for model events
+ 163     $eventDispatched = false;
+ 164     \Illuminate\Support\Facades\Event::listen('eloquent.created: ' . YourModel::class, function () use (&$eventDispatched) {
+ 165         $eventDispatched = true;
+ 166     });
+ 167 
+ 168     // Create a model to trigger the event
+ 169     YourModel::factory()->create();
+ 170 
+ 171     // Assert the event was dispatched
+ 172     expect($eventDispatched)->toBeTrue();
+ 173 }
+ 174 
+````
+2025-06-22 13:07:35.000 | INFO     | -  
+2025-06-22 13:07:42.492 | INFO     | - Based on my exploration of the project guidelines and structure, I now have a good understanding of what this project is about and how it's organized. Let me create a project instructions file that summarizes the key aspects of working with this codebase.
+2025-06-22 13:08:12.640 | INFO     | - create_file: {"file_path": "PROJECT_INSTRUCTIONS.md", "initial_content": "# Project Instructions\n\n## Project Overview\n\nThis is a comprehensive, open-source application built on Laravel 12.x and FilamentPHP 3.x, designed for Small and Medium Enterprises (SMEs) and large-scale enterprises. It features a modular plugin architecture for managing various business operations.\n\n## Core Technologies\n\n- **Laravel 12.x**: Modern PHP framework providing the foundation\n- **FilamentPHP 3.x**: Admin panel framework for building the user interface\n- **PHP 8.2+**: Taking advantage of modern PHP features\n- **MySQL/PostgreSQL**: Database backend options\n\n## Project Structure\n\n### Core Directories\n\n- `/app` - Core application code\n- `/plugins` - Modular business logic organized by domain\n- `/packages` - Custom packages and third-party integrations\n- `/config` - Application configuration\n- `/database` - Schema and data migrations\n- `/resources` - Frontend assets and views\n- `/routes` - URL routing definitions\n- `/tests` - Testing infrastructure\n\n### Plugin Architecture\n\nPlugins are organized under `/plugins/webkul/` with each plugin representing a business domain:\n\n```\nplugins/webkul/{module}/\n├── composer.json          ← Composer package definition\n├── src/\n│   ├── {Module}Plugin.php ← FilamentPHP plugin class\n│   ├── Models/           ← Domain models\n│   ├── Resources/        ← FilamentPHP resources\n│   └── Providers/        ← Service providers\n├── database/\n│   ├── migrations/       ← Database schema\n│   └── seeders/         ← Sample data\n└── tests/               ← Plugin-specific tests\n```\n\n## Development Guidelines\n\n### Code Style\n\n- Use snake_case for PHP variable names\n- Follow repository's existing code style for new code\n- Place new classes in appropriate namespaces based on functionality\n- Use PHP attributes rather than PHPDoc comments for public methods\n\n### Testing Standards\n\nThe project uses a comprehensive testing approach with three main test types:\n\n1. **Unit Tests**: For testing individual components in isolation\n2. **Integration Tests**: For testing interactions between components\n3. **Feature Tests**: For testing complete features from a user perspective\n\nTest files should be organized according to their type and the plugin they belong to:\n\n```\ntests/\n├── Unit/\n│   ├── Plugins/\n│   │   └── {PluginName}/\n│   │       └── Models/\n│   │           └── {ModelName}Test.php\n├── Integration/\n│   ├── Plugins/\n│   │   └── {PluginName}/\n│   │       └── {ComponentName}Test.php\n└── Feature/\n    ├── Plugins/\n    │   └── {PluginName}/\n    │       └── {ResourceName}Test.php\n```\n\nThe project uses PHP attributes for test categorization and metadata:\n\n```php\n#[Test]\n#[Group('unit')]\n#[Group('your-plugin')]\n#[PluginTest('YourPlugin')]\n#[CoversClass(YourModel::class)]\n#[Description('Test YourModel attributes and creation')]\nfunction your_model_attributes_and_creation()\n{\n    // Test code here\n}\n```\n\n### Creating New Tests\n\nThe project provides artisan commands to create new tests based on templates:\n\n```bash\n# Create a unit test\nphp artisan make:unit-test ModelName --plugin=PluginName\n\n# Create an integration test\nphp artisan make:integration-test ComponentName --plugin=PluginName\n\n# Create a feature test\nphp artisan make:feature-test ResourceName --plugin=PluginName\n```\n\n## Documentation Standards\n\n- Use Markdown for all documentation\n- Follow a consistent structure with numbered headings\n- Include code examples when explaining concepts\n- Document public APIs and interfaces\n- Keep documentation up-to-date with code changes\n\n## Workflow Guidelines\n\n- Follow Git workflow best practices\n- Write descriptive commit messages\n- Create feature branches for new features\n- Submit pull requests for code review\n- Ensure all tests pass before merging\n\n## Additional Resources\n\nFor more detailed information, refer to the following resources:\n\n- [Project Guidelines](.ai/guidelines/000-index.md)\n- [Testing Standards](.ai/guidelines/060-testing-standards.md)\n- [Development Standards](.ai/guidelines/030-development-standards.md)\n- [Documentation Standards](.ai/guidelines/020-documentation-standards.md)", "overwrite": false}
+2025-06-22 13:08:25.558 | INFO     | - Successfully created PROJECT_INSTRUCTIONS.md.
+2025-06-22 13:08:25.559 | INFO     | -  
+2025-06-22 13:08:35.056 | INFO     | - I've created a comprehensive PROJECT_INSTRUCTIONS.md file that summarizes the key aspects of working with this codebase. The file includes:
+
+1. **Project Overview**: A brief description of the project and its purpose
+2. **Core Technologies**: The main technologies used in the project
+3. **Project Structure**: An overview of the directory structure and plugin architecture
+4. **Development Guidelines**: Code style and testing standards
+5. **Testing Standards**: Details on the testing approach and organization
+6. **Creating New Tests**: Instructions for creating new tests using artisan commands
+7. **Documentation Standards**: Guidelines for writing documentation
+8. **Workflow Guidelines**: Best practices for Git workflow
+9. **Additional Resources**: Links to more detailed documentation
+
+This file serves as a quick reference guide for developers working on the project, providing essential information about the project structure, development standards, and workflows.
+
+Would you like me to:
+1. Add more specific details to any section of the instructions?
+2. Create additional documentation files for specific aspects of the project?
+3. Modify the existing instructions in any way?
+4. Or is the current PROJECT_INSTRUCTIONS.md file sufficient for your needs?

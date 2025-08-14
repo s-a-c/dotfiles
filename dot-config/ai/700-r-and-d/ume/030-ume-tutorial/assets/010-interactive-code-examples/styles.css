@@ -1,0 +1,303 @@
+/**
+ * Styles for UME Tutorial Interactive Code Examples
+ */
+
+:root {
+  /* Light theme colors */
+  --light-bg-color: #ffffff;
+  --light-text-color: #333333;
+  --light-code-bg-color: #f5f5f5;
+  --light-code-text-color: #333333;
+  --light-border-color: #dddddd;
+  --light-accent-color: #4a6ee0;
+  --light-success-color: #28a745;
+  --light-warning-color: #ffc107;
+  --light-error-color: #dc3545;
+  
+  /* Dark theme colors */
+  --dark-bg-color: #1e1e1e;
+  --dark-text-color: #f0f0f0;
+  --dark-code-bg-color: #2d2d2d;
+  --dark-code-text-color: #f0f0f0;
+  --dark-border-color: #444444;
+  --dark-accent-color: #6c8eff;
+  --dark-success-color: #48c774;
+  --dark-warning-color: #ffdd57;
+  --dark-error-color: #f14668;
+  
+  /* Default to light theme */
+  --bg-color: var(--light-bg-color);
+  --text-color: var(--light-text-color);
+  --code-bg-color: var(--light-code-bg-color);
+  --code-text-color: var(--light-code-text-color);
+  --border-color: var(--light-border-color);
+  --accent-color: var(--light-accent-color);
+  --success-color: var(--light-success-color);
+  --warning-color: var(--light-warning-color);
+  --error-color: var(--light-error-color);
+  
+  /* Typography */
+  --font-family-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  --font-family-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+  --font-size-base: 16px;
+  --line-height-base: 1.5;
+  
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  
+  /* Borders */
+  --border-radius-sm: 0.25rem;
+  --border-radius-md: 0.5rem;
+  --border-radius-lg: 0.75rem;
+  
+  /* Transitions */
+  --transition-fast: 0.15s ease-in-out;
+  --transition-normal: 0.3s ease-in-out;
+  --transition-slow: 0.5s ease-in-out;
+}
+
+/* Dark theme */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: var(--dark-bg-color);
+    --text-color: var(--dark-text-color);
+    --code-bg-color: var(--dark-code-bg-color);
+    --code-text-color: var(--dark-code-text-color);
+    --border-color: var(--dark-border-color);
+    --accent-color: var(--dark-accent-color);
+    --success-color: var(--dark-success-color);
+    --warning-color: var(--dark-warning-color);
+    --error-color: var(--dark-error-color);
+  }
+}
+
+/* Base styles */
+body {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  margin: 0;
+  padding: 0;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  margin-top: var(--spacing-xl);
+  margin-bottom: var(--spacing-md);
+  font-weight: 600;
+}
+
+h1 {
+  font-size: 2rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: var(--spacing-sm);
+}
+
+h2 {
+  font-size: 1.75rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+h4 {
+  font-size: 1.25rem;
+}
+
+h5 {
+  font-size: 1.1rem;
+}
+
+h6 {
+  font-size: 1rem;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: var(--spacing-md);
+}
+
+a {
+  color: var(--accent-color);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Lists */
+ul, ol {
+  margin-top: 0;
+  margin-bottom: var(--spacing-md);
+  padding-left: var(--spacing-xl);
+}
+
+li {
+  margin-bottom: var(--spacing-xs);
+}
+
+/* Code blocks */
+pre {
+  background-color: var(--code-bg-color);
+  color: var(--code-text-color);
+  font-family: var(--font-family-mono);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius-md);
+  overflow-x: auto;
+  margin-top: 0;
+  margin-bottom: var(--spacing-md);
+}
+
+code {
+  font-family: var(--font-family-mono);
+  background-color: var(--code-bg-color);
+  color: var(--code-text-color);
+  padding: 0.2em 0.4em;
+  border-radius: var(--border-radius-sm);
+  font-size: 0.9em;
+}
+
+pre code {
+  padding: 0;
+  background-color: transparent;
+}
+
+/* Interactive code container */
+.interactive-code-container {
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  margin-bottom: var(--spacing-xl);
+  overflow: hidden;
+}
+
+.interactive-code-header {
+  background-color: var(--code-bg-color);
+  padding: var(--spacing-md);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.interactive-code-title {
+  font-weight: 600;
+  margin: 0;
+}
+
+.interactive-code-controls {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.interactive-code-button {
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  padding: var(--spacing-xs) var(--spacing-md);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color var(--transition-fast);
+}
+
+.interactive-code-button:hover {
+  background-color: var(--accent-color);
+  opacity: 0.9;
+}
+
+.interactive-code-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.interactive-code-editor {
+  padding: var(--spacing-md);
+  background-color: var(--code-bg-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.interactive-code-output {
+  padding: var(--spacing-md);
+  background-color: var(--bg-color);
+  min-height: 100px;
+}
+
+.interactive-code-explanation {
+  padding: var(--spacing-md);
+  background-color: var(--bg-color);
+  border-top: 1px solid var(--border-color);
+}
+
+.interactive-code-challenges {
+  padding: var(--spacing-md);
+  background-color: var(--code-bg-color);
+  border-top: 1px solid var(--border-color);
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  .interactive-code-content {
+    flex-direction: row;
+  }
+  
+  .interactive-code-editor {
+    width: 50%;
+    border-right: 1px solid var(--border-color);
+    border-bottom: none;
+  }
+  
+  .interactive-code-output {
+    width: 50%;
+  }
+}
+
+/* Accessibility */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Focus styles */
+:focus {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+/* High contrast mode */
+.high-contrast {
+  --light-bg-color: #ffffff;
+  --light-text-color: #000000;
+  --light-code-bg-color: #f0f0f0;
+  --light-code-text-color: #000000;
+  --light-border-color: #000000;
+  --light-accent-color: #0000ff;
+  --light-success-color: #008000;
+  --light-warning-color: #ff8c00;
+  --light-error-color: #ff0000;
+  
+  --dark-bg-color: #000000;
+  --dark-text-color: #ffffff;
+  --dark-code-bg-color: #1a1a1a;
+  --dark-code-text-color: #ffffff;
+  --dark-border-color: #ffffff;
+  --dark-accent-color: #00ffff;
+  --dark-success-color: #00ff00;
+  --dark-warning-color: #ffff00;
+  --dark-error-color: #ff00ff;
+}
