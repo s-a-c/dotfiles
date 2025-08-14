@@ -249,10 +249,21 @@ export VISUAL=$commands[code-insiders]
         }
         export HOMEBREW_AUTO_UPDATE_SECS="86400"
 
+        # Remove or disable Nix's zsh function path from your config
+        # In your zsh configuration, ensure you're using Homebrew's completions:
         [[ -d "${HOMEBREW_PREFIX}/share/zsh/site-functions" ]] && {
-            fpath+=("${HOMEBREW_PREFIX}/share/zsh/site-functions")
-            #_field_append FPATH "${HOMEBREW_PREFIX}/share/zsh/site-functions"
-            export FPATH="$FPATH:${HOMEBREW_PREFIX}/share/zsh/site-functions"
+            # Remove any existing Homebrew site-functions from fpath to avoid duplicates
+            fpath=(${fpath:#${HOMEBREW_PREFIX}/share/zsh/site-functions})
+
+            # Explicitly place Homebrew functions at the FRONT of fpath array
+            fpath=("${HOMEBREW_PREFIX}/share/zsh/site-functions" ${fpath[@]})
+
+            # Export FPATH with Homebrew at the front for any tools that use FPATH directly
+            export FPATH="${HOMEBREW_PREFIX}/share/zsh/site-functions:${FPATH}"
+
+            # Initialize completion system with Homebrew functions prioritized
+            autoload -Uz compinit
+            compinit
         }
 
         function brews() {
