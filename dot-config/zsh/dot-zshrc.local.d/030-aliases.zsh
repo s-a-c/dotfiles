@@ -2,8 +2,6 @@
 ## [alias.save_begin]
 #alias -L >|"${ZDOTDIR}/saved_alias_begin.zsh"
 
-unset ZSH_DEBUG
-
 [[ -n "$ZSH_DEBUG" ]] && printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
 
 ## [aliases.default]
