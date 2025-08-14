@@ -1,0 +1,151 @@
+ö%{
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "vite build",
+        "build:ssr": "vite build && vite build --ssr",
+        "clean": "rimraf dist node_modules/.vite",
+        "clean:all": "rimraf dist node_modules .pnpm-store",
+        "dev": "vite",
+        "format": "prettier --write resources/",
+        "format:check": "prettier --check resources/",
+        "install:post": "simple-git-hooks",
+        "lint": "eslint . --fix",
+        "optimize": "vite optimize --force",
+        "preview": "vite preview",
+        "preview:dist": "vite preview --port 5000",
+        "test": "vitest",
+        "test:coverage": "vitest run --coverage",
+        "types": "tsc --noEmit",
+        "watch": "vite build --watch"
+    },
+    "dependencies": {
+        "@headlessui/react": "^2.2.2",
+        "@inertiajs/react": "^2.0.8",
+        "@radix-ui/react-avatar": "^1.1.7",
+        "@radix-ui/react-checkbox": "^1.2.3",
+        "@radix-ui/react-collapsible": "^1.1.8",
+        "@radix-ui/react-dialog": "^1.1.11",
+        "@radix-ui/react-dropdown-menu": "^2.1.12",
+        "@radix-ui/react-label": "^2.1.4",
+        "@radix-ui/react-navigation-menu": "^1.2.10",
+        "@radix-ui/react-select": "^2.2.2",
+        "@radix-ui/react-separator": "^1.1.4",
+        "@radix-ui/react-slot": "^1.2.0",
+        "@radix-ui/react-toggle": "^1.1.6",
+        "@radix-ui/react-toggle-group": "^1.1.7",
+        "@radix-ui/react-tooltip": "^1.2.4",
+        "@types/react": "^19.1.2",
+        "@types/react-dom": "^19.1.2",
+        "class-variance-authority": "^0.7.1",
+        "clsx": "^2.1.1",
+        "globals": "^16.0.0",
+        "lucide-react": "^0.503.0",
+        "puppeteer": "^24.7.2",
+        "react": "^19.1.0",
+        "react-dom": "^19.1.0",
+        "shiki": "^3.3.0",
+        "typescript": "^5.8.3"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.25.1",
+        "@tailwindcss/vite": "^4.1.4",
+        "@types/node": "^22.15.3",
+        "@vitejs/plugin-react": "^4.4.1",
+        "autoprefixer": "^10.4.21",
+        "axios": "^1.9.0",
+        "chokidar": "^4.0.3",
+        "concurrently": "^9.1.2",
+        "eslint": "^9.25.1",
+        "eslint-config-prettier": "^10.1.2",
+        "eslint-plugin-prettier": "^5.2.6",
+        "eslint-plugin-react": "^7.37.5",
+        "eslint-plugin-react-hooks": "^5.2.0",
+        "laravel-echo": "^2.0.2",
+        "laravel-vite-plugin": "^1.2.0",
+        "lint-staged": "^15.5.1",
+        "prettier": "^3.5.3",
+        "prettier-plugin-organize-imports": "^4.1.0",
+        "prettier-plugin-tailwindcss": "^0.6.11",
+        "pusher-js": "^8.4.0",
+        "rimraf": "^6.0.1",
+        "rollup-plugin-visualizer": "^5.14.0",
+        "simple-git-hooks": "^2.13.0",
+        "tailwind-merge": "^3.2.0",
+        "tailwindcss": "^4.1.4",
+        "tailwindcss-animate": "^1.0.7",
+        "typescript-eslint": "^8.31.1",
+        "vite": "^6.3.3",
+        "vite-plugin-compression": "^0.5.1",
+        "vite-plugin-dynamic-import": "^1.6.0",
+        "vite-plugin-eslint": "^1.8.1",
+        "vite-plugin-inspector": "^1.0.4",
+        "vitest": "^3.1.2"
+    },
+    "optionalDependencies": {
+        "@rollup/rollup-linux-x64-gnu": "4.40.0",
+        "@tailwindcss/oxide-linux-x64-gnu": "^4.1.4",
+        "lightningcss-linux-x64-gnu": "^1.29.3"
+    },
+    "overrides": {
+        "glob": "^10.3.10",
+        "rimraf": "^5.0.5",
+        "sourcemap-codec": "^1.4.8",
+        "stable": "^0.1.8",
+        "uuid": "^9.0.1"
+    },
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "cwebp-bin",
+            "esbuild",
+            "gifsicle",
+            "jpegtran-bin",
+            "mozjpeg",
+            "optipng-bin",
+            "pngquant-bin",
+            "puppeteer",
+            "simple-git-hooks"
+        ],
+        "overrides": {
+            "esbuild": "^0.25.2",
+            "glob": "^10.3.10",
+            "rimraf": "^6.0.1",
+            "uuid": "^9.0.1",
+            "vite": "^6.0.0"
+        },
+        "peerDependencyRules": {
+            "allowedVersions": {
+                "esbuild": "^0.25.2",
+                "vite": "^6.0.0"
+            }
+        }
+    },
+    "devEngines": {
+        "packageManager": {
+            "name": "pnpm",
+            "onFail": "warn"
+        },
+        "runtime": {
+            "name": "node",
+            "onFail": "error"
+        }
+    },
+    "engines": {
+        "node": ">=22.0.0",
+        "pnpm": ">=10.0.0"
+    },
+    "lint-staged": {
+        "*.{js,jsx,ts,tsx}": [
+            "prettier --write",
+            "eslint --fix --ignore-pattern 'public/*' --ignore-pattern 'vendor/*' --no-warn-ignored"
+        ],
+        "*.{css,md}": "prettier --write"
+    },
+    "simple-git-hooks": {
+        "commit-msg": "pnpm commitlint --edit ${1}",
+        "pre-commit": "pnpm lint-staged",
+        "pre-push": "pnpm test"
+    },
+    "packageManager": "pnpm@10.10.0"
+}
+ 	ö% "(3ae679aae66fa0c02e851818130d386ac099924e22file:///Users/s-a-c/Herd/lsk-livewire/package.json:%file:///Users/s-a-c/Herd/lsk-livewire

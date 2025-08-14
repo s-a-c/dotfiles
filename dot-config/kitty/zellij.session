@@ -1,0 +1,3 @@
+# Set the title for the next window
+title zellij
+launch /opt/homebrew/bin/zellij

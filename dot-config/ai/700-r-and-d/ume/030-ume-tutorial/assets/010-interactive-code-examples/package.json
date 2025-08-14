@@ -1,0 +1,42 @@
+{
+  "name": "ume-tutorial-interactive-code-examples",
+  "version": "1.0.0",
+  "description": "Interactive code examples for the User Model Enhancements (UME) tutorial",
+  "main": "index.js",
+  "scripts": {
+    "start": "http-server -p 8080",
+    "build": "node build.js",
+    "test": "jest",
+    "lint": "eslint *.js"
+  },
+  "keywords": [
+    "laravel",
+    "php",
+    "tutorial",
+    "interactive",
+    "code-examples"
+  ],
+  "author": "StandAloneComplex",
+  "license": "MIT",
+  "dependencies": {
+    "highlight.js": "^11.7.0",
+    "marked": "^4.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.40.0",
+    "http-server": "^14.1.1",
+    "jest": "^29.5.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/s-a-c/ume-app"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

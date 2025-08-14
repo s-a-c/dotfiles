@@ -1,0 +1,112 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2023-05-11",
+  "phases": [
+    {
+      "id": 0,
+      "name": "Foundation",
+      "description": "PHP 8 attributes and their usage in Laravel",
+      "exampleCount": 5,
+      "indexFile": "phase0-index.md"
+    },
+    {
+      "id": 1,
+      "name": "Core Models & STI",
+      "description": "Model structure and single table inheritance",
+      "exampleCount": 5,
+      "indexFile": "phase1-index.md"
+    },
+    {
+      "id": 2,
+      "name": "Auth & Profiles",
+      "description": "Authentication, authorization, and user profiles",
+      "exampleCount": 5,
+      "indexFile": "phase2-index.md"
+    },
+    {
+      "id": 3,
+      "name": "Advanced User Management",
+      "description": "Role-based access control and user types",
+      "exampleCount": 5,
+      "indexFile": "phase3-index.md"
+    },
+    {
+      "id": 4,
+      "name": "Real-time Features",
+      "description": "Real-time functionality with WebSockets",
+      "exampleCount": 5,
+      "indexFile": "phase4-index.md"
+    },
+    {
+      "id": 5,
+      "name": "Advanced Features",
+      "description": "Advanced Laravel features for enhanced user models",
+      "exampleCount": 5,
+      "indexFile": "phase5-index.md"
+    },
+    {
+      "id": 6,
+      "name": "Testing and Quality Assurance",
+      "description": "Testing strategies for user model enhancements",
+      "exampleCount": 5,
+      "indexFile": "phase6-index.md"
+    },
+    {
+      "id": 7,
+      "name": "Deployment and Maintenance",
+      "description": "Deployment, monitoring, and maintenance strategies",
+      "exampleCount": 5,
+      "indexFile": "phase7-index.md"
+    }
+  ],
+  "additionalResources": [
+    {
+      "name": "All Phases Summary",
+      "file": "all-phases-summary.md",
+      "description": "A comprehensive overview of all phases"
+    },
+    {
+      "name": "Using Interactive Examples",
+      "file": "using-interactive-examples.md",
+      "description": "Guide to using the interactive examples"
+    },
+    {
+      "name": "Browser Compatibility Report",
+      "file": "browser-compatibility-report.md",
+      "description": "Compatibility testing across different browsers"
+    },
+    {
+      "name": "Device Compatibility Report",
+      "file": "device-compatibility-report.md",
+      "description": "Compatibility testing across different devices"
+    },
+    {
+      "name": "Future Enhancements",
+      "file": "future-enhancements.md",
+      "description": "Planned improvements for the interactive examples"
+    },
+    {
+      "name": "Changelog",
+      "file": "CHANGELOG.md",
+      "description": "History of changes to the interactive examples"
+    },
+    {
+      "name": "Contributors",
+      "file": "CONTRIBUTORS.md",
+      "description": "List of contributors to the interactive examples"
+    },
+    {
+      "name": "License",
+      "file": "LICENSE.md",
+      "description": "MIT License information"
+    }
+  ],
+  "settings": {
+    "defaultTheme": "light",
+    "codeHighlightTheme": "github",
+    "enableAnimations": true,
+    "enableAccessibility": true,
+    "enablePrinting": true,
+    "enableMobileView": true
+  }
+}

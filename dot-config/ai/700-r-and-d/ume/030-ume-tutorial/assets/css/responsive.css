@@ -1,0 +1,236 @@
+/**
+ * Responsive CSS for Interactive Code Examples
+ * 
+ * This file contains responsive styles for the interactive code examples
+ * to ensure they display correctly across different screen sizes.
+ */
+
+/* Base styles for all screen sizes */
+.interactive-code-container {
+  width: 100%;
+  margin: 2rem 0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.interactive-code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: var(--header-bg-color);
+  color: var(--header-text-color);
+}
+
+.interactive-code-content {
+  display: flex;
+  flex-direction: row;
+  background-color: var(--content-bg-color);
+}
+
+.code-editor {
+  flex: 1;
+  min-height: 300px;
+  border-right: 1px solid var(--border-color);
+}
+
+.code-preview {
+  flex: 1;
+  padding: 1rem;
+  overflow: auto;
+}
+
+/* Large Desktop (1440px and above) */
+@media screen and (min-width: 1440px) {
+  .interactive-code-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+  }
+  
+  .code-editor {
+    min-height: 400px;
+  }
+}
+
+/* Desktop (1024px to 1439px) */
+@media screen and (min-width: 1024px) and (max-width: 1439px) {
+  .interactive-code-container {
+    max-width: 90%;
+    margin: 2rem auto;
+  }
+}
+
+/* Tablet Landscape (768px to 1023px) */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .interactive-code-container {
+    max-width: 95%;
+    margin: 1.5rem auto;
+  }
+  
+  .interactive-code-content {
+    flex-direction: row;
+  }
+  
+  .code-editor, .code-preview {
+    min-height: 250px;
+  }
+}
+
+/* Tablet Portrait (640px to 767px) */
+@media screen and (min-width: 640px) and (max-width: 767px) {
+  .interactive-code-container {
+    max-width: 100%;
+    margin: 1rem auto;
+  }
+  
+  .interactive-code-content {
+    flex-direction: column;
+  }
+  
+  .code-editor {
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+    min-height: 200px;
+  }
+  
+  .code-preview {
+    min-height: 200px;
+  }
+  
+  .interactive-code-tabs {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .interactive-code-tab {
+    flex: 0 0 auto;
+    padding: 0.5rem 1rem;
+  }
+}
+
+/* Mobile Landscape (480px to 639px) */
+@media screen and (min-width: 480px) and (max-width: 639px) {
+  .interactive-code-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .interactive-code-title {
+    margin-bottom: 0.5rem;
+  }
+  
+  .interactive-code-content {
+    flex-direction: column;
+  }
+  
+  .code-editor {
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+    min-height: 180px;
+  }
+  
+  .code-preview {
+    min-height: 180px;
+  }
+  
+  .interactive-code-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .interactive-code-button {
+    flex: 1 0 auto;
+    min-width: 80px;
+  }
+}
+
+/* Mobile Portrait (479px and below) */
+@media screen and (max-width: 479px) {
+  .interactive-code-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.75rem;
+  }
+  
+  .interactive-code-title {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .interactive-code-content {
+    flex-direction: column;
+  }
+  
+  .code-editor {
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+    min-height: 150px;
+  }
+  
+  .code-preview {
+    min-height: 150px;
+    padding: 0.75rem;
+  }
+  
+  .interactive-code-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .interactive-code-button {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 0.875rem;
+  }
+  
+  /* Increase touch target sizes */
+  .interactive-code-tab,
+  .interactive-code-button,
+  .code-editor-controls button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --header-bg-color: #2d2d2d;
+    --header-text-color: #ffffff;
+    --content-bg-color: #1e1e1e;
+    --border-color: #444444;
+  }
+}
+
+/* Light mode support */
+@media (prefers-color-scheme: light) {
+  :root {
+    --header-bg-color: #f5f5f5;
+    --header-text-color: #333333;
+    --content-bg-color: #ffffff;
+    --border-color: #dddddd;
+  }
+}
+
+/* Print styles */
+@media print {
+  .interactive-code-container {
+    box-shadow: none;
+    border: 1px solid #dddddd;
+  }
+  
+  .interactive-code-controls,
+  .code-editor-controls {
+    display: none;
+  }
+  
+  .code-editor,
+  .code-preview {
+    page-break-inside: avoid;
+  }
+}

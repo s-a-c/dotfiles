@@ -1,0 +1,52 @@
+# model.yaml is an open standard for defining cross-platform, composable AI models
+# Learn more at https://modelyaml.org
+model: qwen/qwen3-32b
+base:
+  - key: lmstudio-community/qwen3-32b-gguf
+    sources:
+      - type: huggingface
+        user: lmstudio-community
+        repo: Qwen3-32B-GGUF
+  - key: lmstudio-community/qwen3-32b-mlx-4bit
+    sources:
+      - type: huggingface
+        user: lmstudio-community
+        repo: Qwen3-32B-MLX-4bit
+  - key: lmstudio-community/qwen3-32b-mlx-8bit
+    sources:
+      - type: huggingface
+        user: lmstudio-community
+        repo: Qwen3-32B-MLX-8bit
+metadataOverrides:
+  domain: llm
+  architectures:
+    - qwen3
+  compatibilityTypes:
+    - gguf
+    - safetensors
+  paramsStrings:
+    - 32B
+  minMemoryUsageBytes: 18700000000
+  contextLengths:
+    - 40960
+  vision: false
+  reasoning: true
+  trainedForToolUse: true
+config:
+  operation:
+    fields:
+      - key: llm.prediction.topKSampling
+        value: 20
+      - key: llm.prediction.minPSampling
+        value:
+          checked: true
+          value: 0
+customFields:
+  - key: enableThinking
+    displayName: Enable Thinking
+    description: Controls whether the model will think before replying
+    type: boolean
+    defaultValue: true
+    effects:
+      - type: setJinjaVariable
+        variable: enable_thinking

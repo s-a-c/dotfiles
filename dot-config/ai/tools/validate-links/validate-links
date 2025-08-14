@@ -1,0 +1,128 @@
+#!/usr/bin/env php
+<?php
+/**
+ * validate-links - PHP Link Validation and Remediation Tool
+ *
+ * Comprehensive tool for validating and fixing broken links in documentation.
+ * Supports Markdown, HTML, and other text-based formats with advanced
+ * filtering, reporting, and automatic link remediation capabilities.
+ *
+ * @package SAC\ValidateLinks
+ * @author StandAloneComplex <71233932+s-a-c@users.noreply.github.com>
+ * @license MIT
+ * @version 1.0.0
+ */
+
+declare(strict_types=1);
+
+// Ensure we're running on PHP 8.1+
+if (version_compare(PHP_VERSION, '8.1.0', '<')) {
+    fwrite(STDERR, "Error: PHP 8.1.0 or higher is required. Current version: " . PHP_VERSION . "\n");
+    exit(2);
+}
+
+// Check for required extensions
+$requiredExtensions = ['json', 'mbstring', 'curl'];
+foreach ($requiredExtensions as $extension) {
+    if (!extension_loaded($extension)) {
+        fwrite(STDERR, "Error: Required PHP extension '{$extension}' is not loaded.\n");
+        exit(2);
+    }
+}
+
+// Determine the base directory
+$baseDir = __DIR__;
+
+// Try to find autoloader
+$autoloadPaths = [
+    $baseDir . '/vendor/autoload.php',           // Standalone installation
+    $baseDir . '/../autoload.php',               // Installed as dependency
+    $baseDir . '/../../autoload.php',            // Installed in vendor/bin
+    $baseDir . '/../../../autoload.php',         // Deep vendor installation
+];
+
+$autoloaderFound = false;
+foreach ($autoloadPaths as $autoloadPath) {
+    if (file_exists($autoloadPath)) {
+        require_once $autoloadPath;
+        $autoloaderFound = true;
+        break;
+    }
+}
+
+// If no Composer autoloader found, try manual loading
+if (!$autoloaderFound) {
+    // Manual autoloader for standalone usage
+    spl_autoload_register(function ($class) use ($baseDir) {
+        // Handle SAC\ValidateLinks namespace
+        if (str_starts_with($class, 'SAC\\ValidateLinks\\')) {
+            $file = $baseDir . '/src/' . str_replace(['SAC\\ValidateLinks\\', '\\'], ['', '/'], $class) . '.php';
+            if (file_exists($file)) {
+                require_once $file;
+                return;
+            }
+        }
+    });
+}
+
+// Import the main application class
+use SAC\ValidateLinks\Core\Application;
+
+// Error handling
+set_error_handler(function ($severity, $message, $file, $line) {
+    if (!(error_reporting() & $severity)) {
+        return false;
+    }
+    
+    $errorType = match ($severity) {
+        E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR => 'Fatal Error',
+        E_WARNING, E_CORE_WARNING, E_COMPILE_WARNING, E_USER_WARNING => 'Warning',
+        E_NOTICE, E_USER_NOTICE => 'Notice',
+        E_STRICT => 'Strict Standards',
+        E_DEPRECATED, E_USER_DEPRECATED => 'Deprecated',
+        default => 'Unknown Error',
+    };
+    
+    fwrite(STDERR, "{$errorType}: {$message} in {$file} on line {$line}\n");
+    
+    // Exit on fatal errors
+    if (in_array($severity, [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR])) {
+        exit(2);
+    }
+    
+    return true;
+});
+
+// Exception handling
+set_exception_handler(function (Throwable $exception) {
+    fwrite(STDERR, "Uncaught Exception: " . $exception->getMessage() . "\n");
+    fwrite(STDERR, "File: " . $exception->getFile() . " Line: " . $exception->getLine() . "\n");
+    
+    // Show stack trace in debug mode
+    if (getenv('DEBUG') === 'true' || in_array('--debug', $GLOBALS['argv'] ?? [])) {
+        fwrite(STDERR, "Stack trace:\n" . $exception->getTraceAsString() . "\n");
+    }
+    
+    exit(2);
+});
+
+// Memory limit handling
+ini_set('memory_limit', '512M');
+
+// Main execution
+try {
+    // Create and run the application
+    $app = new Application();
+    $exitCode = $app->run($argv);
+    
+    exit($exitCode);
+    
+} catch (Throwable $e) {
+    fwrite(STDERR, "Fatal error: " . $e->getMessage() . "\n");
+    
+    if (getenv('DEBUG') === 'true' || in_array('--debug', $argv ?? [])) {
+        fwrite(STDERR, "Stack trace:\n" . $e->getTraceAsString() . "\n");
+    }
+    
+    exit(2);
+}

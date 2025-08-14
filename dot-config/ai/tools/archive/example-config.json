@@ -1,0 +1,176 @@
+{
+  "_comment": "PHP Link Validator Configuration Example",
+  "_description": "Comprehensive configuration file demonstrating all available options for the PHP Link Validation and Remediation Tools",
+
+  "_validation_scope": "Specify which types of links to validate",
+  "scope": [
+    "internal",
+    "anchor",
+    "cross-reference"
+  ],
+
+  "_thresholds": "Error thresholds and limits",
+  "max_broken": 10,
+  "timeout": 30,
+  "max_depth": 5,
+
+  "_file_processing": "File discovery and filtering options",
+  "exclude_patterns": [
+    "*.backup.md",
+    "*.tmp.md",
+    "temp/*",
+    "node_modules/*",
+    ".git/*",
+    ".jj/*",
+    "vendor/*",
+    "build/*",
+    "dist/*"
+  ],
+  "include_hidden": false,
+  "case_sensitive": false,
+
+  "_external_links": "External link validation settings",
+  "check_external": false,
+
+  "_output_settings": "Report generation and formatting",
+  "format": "console",
+  "report_directory": ".ai/reports/automated",
+  "no_color": false,
+
+  "_critical_files": "Files that must have perfect link integrity",
+  "critical_files": [
+    "README.md",
+    "docs/index.md",
+    "docs/getting-started.md",
+    "docs/installation.md",
+    "docs/api-reference.md"
+  ],
+
+  "_maintenance": "Cleanup and maintenance settings",
+  "history_retention_days": 30,
+
+  "_notifications": "Integration with external systems",
+  "notification_webhook": null,
+
+  "_advanced_settings": "Advanced configuration options",
+  "parallel_processing": false,
+  "cache_results": true,
+  "incremental_validation": true,
+
+  "_link_fixing": "Settings for the link rectifier tool",
+  "fixing": {
+    "similarity_threshold": 0.8,
+    "auto_fix_case": true,
+    "auto_fix_extensions": true,
+    "backup_before_fix": true,
+    "backup_retention_days": 7,
+    "interactive_threshold": 0.6,
+    "batch_threshold": 0.9
+  },
+
+  "_project_specific": "Project-specific customizations",
+  "project": {
+    "name": "Chinook Documentation",
+    "base_url": "https://github.com/s-a-c/chinook",
+    "documentation_root": "docs/",
+    "supported_extensions": [".md", ".html", ".htm"],
+    "ignore_external_domains": [
+      "localhost",
+      "127.0.0.1",
+      "example.com",
+      "test.local"
+    ]
+  },
+
+  "_ci_cd_integration": "Continuous Integration settings",
+  "ci": {
+    "fail_on_broken_links": true,
+    "fail_on_missing_files": true,
+    "fail_on_invalid_anchors": true,
+    "generate_junit_xml": false,
+    "upload_reports": false,
+    "slack_webhook": null,
+    "github_status_check": false
+  },
+
+  "_performance_tuning": "Performance optimization settings",
+  "performance": {
+    "max_concurrent_requests": 10,
+    "request_delay_ms": 100,
+    "memory_limit_mb": 256,
+    "max_file_size_mb": 10,
+    "cache_ttl_hours": 24
+  },
+
+  "_security_settings": "Security and safety configurations",
+  "security": {
+    "allowed_protocols": ["http", "https", "ftp"],
+    "blocked_domains": [],
+    "max_redirects": 5,
+    "verify_ssl": true,
+    "user_agent": "PHP Link Validator 1.0",
+    "respect_robots_txt": false
+  },
+
+  "_custom_rules": "Custom validation rules",
+  "custom_rules": {
+    "require_https": false,
+    "forbid_external_links": false,
+    "require_alt_text": false,
+    "max_link_length": 2048,
+    "forbidden_link_patterns": [
+      "javascript:",
+      "data:",
+      "file:"
+    ]
+  },
+
+  "_reporting_customization": "Report customization options",
+  "reporting": {
+    "include_working_links": false,
+    "include_statistics": true,
+    "include_recommendations": true,
+    "group_by_file": true,
+    "group_by_type": true,
+    "sort_by": "file",
+    "max_errors_per_file": 50,
+    "truncate_long_urls": true,
+    "url_truncate_length": 80
+  },
+
+  "_environment_overrides": "Environment-specific overrides",
+  "environments": {
+    "development": {
+      "max_broken": 50,
+      "check_external": false,
+      "verbosity": "verbose"
+    },
+    "staging": {
+      "max_broken": 10,
+      "check_external": true,
+      "verbosity": "normal"
+    },
+    "production": {
+      "max_broken": 0,
+      "check_external": true,
+      "verbosity": "quiet"
+    }
+  },
+
+  "_usage_examples": "Common usage patterns",
+  "_examples": {
+    "daily_validation": "php link-validator.php docs/ --config=.link-validator.json",
+    "pre_commit": "php link-validator.php docs/ --max-broken=0 --scope=internal,anchor",
+    "ci_cd": "php link-validator.php docs/ --quiet --format=json --max-broken=5",
+    "comprehensive": "php link-validator.php docs/ --check-external --format=html --output=report.html",
+    "fix_links": "php link-rectifier.php docs/ --interactive --similarity-threshold=0.8",
+    "dry_run_fix": "php link-rectifier.php docs/ --dry-run --scope=internal",
+    "rollback": "php link-rectifier.php --rollback=2024-01-15-14-30-00"
+  },
+
+  "_version_info": "Configuration version and compatibility",
+  "config_version": "1.0.0",
+  "min_tool_version": "1.0.0",
+  "created": "2024-01-15T10:30:00Z",
+  "updated": "2024-01-15T10:30:00Z"
+}

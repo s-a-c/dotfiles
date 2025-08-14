@@ -1,0 +1,85 @@
+# ~/.codex/config.yaml
+model: o4-mini-2025-04-16                                   # 🟢 Pick your flavour
+api_key_env: OPENAI_API_KEY                                 # 🟡 Make sure you’ve exported this
+base_url: https://api.openai.com/v1/chat/completions
+timeout: 30                                                 # 🟣 Seconds before we give up on OpenAI’s brain
+
+llms:
+  openai:
+    provider: openai                                        # 🟢 “Who ya gonna call?” → OpenAI
+    model: o4-mini-2025-04-16                           # 🔵 Pick your flavour
+    api_key_env: OPENAI_API_KEY                             # 🟡 Make sure you’ve exported this
+    base_url: https://api.openai.com/v1/chat/completions    # 🔴 Vertex AI endpoint for GPT-4
+    timeout: 30                                             # 🟣 Seconds before we give up on OpenAI’s brain
+
+  google-gemini:
+    provider: google                                        # 🟢 “Who ya gonna call?” → Google
+    model: gemini-2.5-flash-preview-04-17                   # 🔵 Pick your flavour
+    api_key_env: GOOGLE_AI_API_KEY                          # 🟡 Make sure you’ve exported this
+    base_url: https://generativelanguage.googleapis.com/v1/models
+                                                            # 🔴 Vertex AI endpoint for Gemini
+    timeout: 30                                             # 🟣 Seconds before we give up on Google’s brain
+
+  anthropic-claude:
+    provider: anthropic                                     # 🟢 “Who ya gonna call?” → Anthropic
+    model: claude-v3.5.                                     # 🔵 Pick your flavour
+    api_key_env: ANTHROPIC_API_KEY                          # 🟡 Make sure you’ve exported this
+    base_url: https://api.anthropic.com/v1/complete
+                                                            # 🔴 Vertex AI endpoint for Claude
+    timeout: 30                                             # 🟣 Seconds before we give up on Anthropic’s brain
+
+  openrouter:
+    provider: openrouter                                    # 🟢 “Who ya gonna call?” → OpenRouter
+    model: openrouter-v1-alpha-7b-chat-001                  # 🔵 Pick your flavour
+    api_key_env: OPENROUTER_API_KEY                         # 🟡 Make sure you’ve exported this
+    base_url: https://openrouter.ai/api/v1
+                                                            # 🔴 Vertex AI endpoint for OpenRouter
+    timeout: 30                                             # 🟣 Seconds before we give up on OpenRouter’s brain
+
+  lmstudio:
+    provider: lmstudio                                      # 🟢 “Who ya gonna call?” → LM Studio
+    model: lmstudio-vicuna-7b-v1.3                          # 🔵 Pick your flavour
+    api_key_env: LM_STUDIO_API_KEY                          # 🟡 Make sure you’ve exported this
+    base_url: https://lmstudio.ai/api/v1
+                                                            # 🔴 Vertex AI endpoint for LM Studio
+    timeout: 30                                             # 🟣 Seconds before we give up on LM Studio’s brain
+
+fullAutoErrorMode: ask-user # or ignore-and-continue
+mode: auto-edit
+
+# Enables or disables the plugin update message when joining the server.
+update_notify: true
+
+# This option defines the time (in seconds) to automatically save
+# player data.
+player_data_save: 300
+
+# Format to display dates when a discovery was found.
+discoveries_date_format: "/yyyy-MM-dd"
+
+# Format of the %progress_bar% variable on the lore of category items.
+progress_bar_placeholder:
+  filled_symbol: "&a|"
+  empty_symbol: "&c|"
+  amount: 20
+
+# MySQL support credentials.
+mysql_database:
+  enabled: false
+  host: localhost
+  port: 3306
+  username: root
+  password: root
+  database: database
+
+# PostgreSQL support credentials.
+postgresql_database:
+  enabled: true
+  host: localhost
+  port: 5432
+  username: postgres
+  password:
+  database: codex
+
+# Don't modify.
+config_version: 2

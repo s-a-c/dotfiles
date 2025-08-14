@@ -1,0 +1,291 @@
+git add . && git commit -am "update zqs to show starship, +nix-darwin commit" && git push
+git add . && git commit -am "+cargo, +~/.zqs-settings" && git push
+git add . && git commit -am "+duti" && git push
+git add . && git commit -am "+duti" && git push
+npm i -g -u corepack melange neovim npm pnpm tree-sitter-bash yarn
+git add . && git commit -am "-dutis" && git push
+php -S localhost:8888
+git remote set-url --push origin git@github.com:s-a-c/nix-darwin.git https://github.com/s-a-c/nix-darwin.git
+nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+npm i -g -u corepack melange neovim npm pnpm tree-sitter-bash yarn
+nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+git add . && git commit -am "+zellij via brew" && git push
+php -S localhost:8888
+git add . && git commit -am "nix flake update" && git push
+nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+git add . && git commit -am "composer config" && git push
+git add . && git commit -am "-atuin" && git push
+git add . && git commit -pm "+desk" && git push
+bfg --delete-files "*saved_macos*" ~/dotfiles
+cd ~/dotfiles && git add . && git commit -pm "+desk, +dot-*" && git push
+git rev-list --objects --all | grep 0d7ab4c78248fccd44b50f006db1044afde399cc
+bfg --delete-files "*001-zshenv*" ~/dotfiles
+cd ~/dotfiles && git add . && git commit -pm "+desk, +dot-*" && git push
+bfg --delete-files "*001-zshenv.zsh*" ~/dotfiles
+git reflog expire --expire=now --all && git gc --prune=now --aggressive
+git add . && git commit -pm "tidy zsh" && git push
+bfg --delete-files "*.wakatime.cfg*" ~/dotfiles
+git reflog expire --expire=now --all && git gc --prune=now --aggressive
+git add . && git commit -am "tidy zsh" && git push
+git add . && git commit -am "zsh tidy-up" && git push
+npm i -g -u corepack melange neovim npm pnpm tree-sitter-bash yarn
+php -S localhost:8888
+nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+git add . && git commit -am "+opam, +rustup" && git push
+nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+git add . && git commit -am "+nerd-fonts via brew" && git push
+git add . && git commit -am "-deno" && git push
+git add . && git commit -am "+karabiner-elements" && git push
+deno task start
+deno add https://deno.land/x/fresh@next
+deno run -A -r https://fresh.deno.dev
+pnpm i -g corepack melange million neovim npm pnpm prettier tree-sitter-bash yarn
+nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+git add . && git commit -am "+dot-aerospace" && git push
+git add . && git commit -am "+marksman" && git push
+git add . && git commit -am "+marksman" && git push
+git add . && git commit -am "-extensions" && git push
+deno outdated -r --update --latest
+deno outdated -r --update --latest
+deno outdated -r --update --latest
+git clone git@github.com:s-a-c/risposta.org.git s-a-c/risposta.org
+deno outdated -r --update --latest
+deno run -A npm:create-vite@latest --template react-ts
+deno outdated -r --update --latest
+rm -rf analog-project/
+pnpm create analog
+deno run -A npm:create-vite@latest --template react-ts
+npm i -g -u corepack melange million neovim npm pnpm prettier semver tree-sitter-bash yarn
+npm i -g -u @angular/cli corepack melange million neovim npm pnpm prettier semver tree-sitter-bash yarn
+git add . && git commit -am "-extensions" && git push
+git add . && git commit -am "-extensions" && git push
+npm i -g -u @angular/cli@next corepack melange million neovim npm pnpm prettier semver tailwindcss@next tree-sitter-bash vite yarn
+nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+git add . && git commit -pm "working start"
+git add . && git commit -pm "disable sketchybar" && git push
+git add . && git commit -pm "disable sketchybar" && git push
+nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+git add . && git commit -pm "+prettier" && git push
+ng generate component --inline-style --inline-template square
+cp ~/.editorconfig ~/.prettierrc ./
+ng generate component --inline-style --inline-template square
+ng new --package-manager pnpm tic-tac-toe
+ng new --experimental-zoneless true --package-manager pnpm --routing true --ssr true --strict true --style css --view-encapsulation ShadowDom dashboard-app
+\ng add @nebular/theme@latest
+ng generate component --inline-style --inline-template square
+ng new --experimental-zoneless true --package-manager pnpm --routing true --style scss tic_tac_toe
+pnpx create-nx-workspace
+git add . && git commit -pm 'initialise monorepo'
+git add . && git commit -am 'editorconfig & prettierrc' && git push
+git add . && git commit -am 'first angular app'
+git remote add origin git:github.com/s-a-c/nx
+pnpm update --recursive --latest
+git add . && git commit -am 'nx initialise' && git push
+git remote add origin git@github.com:s-a-c/nx
+git add . && git commit -am 'nx initialise' && git push
+git add . && git commit -am 'nx initialise with @analogjs/platform' && git push
+pnpm up --recursive --latest -w
+git add . && git commit -am '+@angular/material' && git push
+git add . && git commit -am 'nx migrate; pnpm audit --fix' && git push
+nx g @analogjs/platform:app my-app --verbose
+nx up
+pnpm up -D --recursive --latest -w
+pnpm install --no-frozen-lockfile
+nx add less@latest
+git add . && git commit -am 'package.json ; pnpm up' && git push
+git add . && git commit -am 'package.json ; pnpm up' && git push
+git remote add origin git@github.com:s-a-c/nx.git\
+git branch -M main\
+git push -u origin main --force
+nx reset && nx g @nx/workspace:remove my-nlg-app --verbose
+pnpx create-nx-workspace@latest --pm pnpm --name nx --e2e-test-runner cypress --nx-cloud github --preset apps --routing --ssr --use-github --workspaces --workspace-type integrated --style scss
+nx migrate latest --verbose --createCommits --commitPrefix 'nx-m:'
+pnpm up -D --recursive --latest -w
+nx g @analogjs/platform:app --analogAppName my-nlg-app --addTailwind --addTRPC
+pnpm i @analogjs/platform@latest
+nx migrate latest --interactive --verbose --createCommits --commitPrefix 'nx-m:'
+nx add @angular/material@latest
+nx reset && nx g @nx/workspace:remove my-nlg-app --verbose
+git add . && git commit -am '.prettierrc' && git push
+nx migrate latest --interactive --verbose --createCommits --commitPrefix 'nx-m:'
+nx g @angular/material:ng-add --verbose --help 2>&1 | bat --language=help --style=plain
+php -S localhost:8888
+nx migrate latest --interactive --verbose --createCommits --commitPrefix 'nx-m:'
+pnpm up --recursive --latest --no-frozen-lockfile -w
+cd PHP-For-Beginners-Series
+cd PHP-For-Beginners-Series
+php -S localhost:8889 -t public
+pnpm up --recursive --latest --no-frozen-lockfile -w
+git add . && git commit -am '+analogjs +material' && git push
+pnpm up --recursive --latest
+pnpm install --no-frozen-lockfile
+git add . && git commit -am '+my-app' && git push
+nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+git add . && git commit -am '+ng-auto-animate' && git push
+php -S localhost:8889 -t public
+nx migrate latest
+pnpm run nx g @angular/material:ng-add --project=my-app
+nx reset && nx g @nx/workspace:remove my-app --verbose
+npm i -g -u @angular/cli@latest corepack@latest million@latest neovim@latest npm@latest nx@latest pnpm@latest semver@latest vite@latest yarn@latest
+git add . && git commit -am 'mv erlang to brew' && git push
+nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+laravel new realtime-laravel-basics
+laravel new realtime-laravel-basics
+laravel new realtime-laravel-basics -vvv
+cd ~/Herd/apps/realtime-laravel-basics && pnpm install && pnpm run build && composer run dev
+ghostty +list-themes
+pnpm install --global @angular/cli corepack mapscii million neovim pnpm semver vite vitest yarn
+NXDAEMON=false pnpm exec nx g @angular/material:ng-add --project=my-mat-app
+ng new --help 2>&1 | bat --language=help --style=plain
+ng new angular --experimental-zoneless --inline-style --inline-template --package-manager pnpm --standalone --strict --style css
+ng new angular --experimental-zoneless --inline-style --inline-template --package-manager pnpm --standalone --strict --style css
+composer up --lock --with-all-dependencies --optimize-autoloader -vv
+composer require $(composer show -s --format=json | jq '.requires | keys | map(.+" ") | add' -r)
+composer require --dev $(composer show -s --format=json | jq '.devRequires | keys | map(.+" ") | add' -r)
+git add . && git commit -am '-visual-studio-code, upd8 ghostty' && git push
+pnpm exec nx generate @nx/angular:application --directory=apps/my-laravel --name=my-laravel --addTailwind=true --e2eTestRunner=playwright --inlineStyle=true --inlineTemplate=true --port=4201 --standalone --unitTestRunner=vitest --no-interactive
+ng new LaravelAngularProject --create-application false --new-project-root angular --defaults --experimental-zoneless --inline-style --inline-template --package-manager pnpm --standalone --strict --style css --interactive
+nx add @angular/material@latest
+ln -s .config/npm/npmrc .npmrc
+ng generate component --interactive square
+ng new angular-material --create-application false --new-project-root projects --experimental-zoneless --inline-style --inline-template --package-manager pnpm --standalone --strict --style css
+ng g app angular-material --experimental-zoneless --inline-style --inline-template --routing --standalone --strict --style css
+nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+git add . && git commit -am '+npmrc' && git push
+nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+git add . && git commit -am "-rich-cli, +git-flow" && git push
+sed -i '' 's/DB_DATABASE=.*/DB_DATABASE=database\/database.sqlite/' .env
+sed -i '' 's/DB_CONNECTION=mysql/DB_CONNECTION=sqlite/' .env
+sed -i '' 's/DB_CONNECTION=mysql/DB_CONNECTION=sqlite/' .env
+composer require --dev $(composer show -s --format=json | jq '.devRequires | keys | map(.+" ") | add' -r)
+composer require $(composer show -s --format=json | jq '.requires | keys | map(.+" ") | add' -r)
+composer require $(composer show -s --format=json | jq '.requires | keys | map(.+" ") | add' -r)
+composer require --dev $(composer show -s --format=json | jq '.devRequires | keys | map(.+" ") | add' -r)
+php artisan migrate
+gh repo create
+nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+npm install --global corepack npm pnpm yarn @angular/cli mapscii million neovim semver
+composer global require --dev $(composer global show -s --format=json | jq '.devRequires | keys | map(.+" ") | add' -r)
+composer require --dev $(composer show -s --format=json | jq '.devRequires | keys | map(.+" ") | add' -r)
+git remote add origin https://github.com/s-a-c/fluent-folio
+git push -u origin develop --force
+git add . && git commit -am 'Initial commit'
+php artisan make:filament-user
+git add . && git commit -am "added jetstream --api --teams"
+grep -irl --exclude-dir={node_modules,vendor} -e "alpine"
+grep -irl --exclude-dir={node_modules,vendor} -e "alpine"
+git add . && git commit -am "fixed 2025_01_12_162729_add_two_factor_columns_to_users_table.php" && git push
+git remote add origin https://github.com/s-a-c/fluent-folio
+git push -u origin develop --force
+gh repo create
+git flow feature start jetstream_teams
+composer install\
+composer require -W --dev $(composer show -s --format=json | jq '.devRequires | keys | map(.+" ") | add' -r)\
+composer require -W $(composer show -s --format=json | jq '.requires | keys | map(.+" ") | add' -r)
+composer require tursodatabase/turso-driver-laravel
+laravel new renesdeals --database=sqlite --stack=livewire --jet --dark --api --teams --verification
+laravel new renesdeals --database=sqlite --stack=livewire --jet --dark --api --teams --verification
+git add . && git commit -pm "mv carapace & eza to brew" && git push
+laravel new --database=sqlite --stack=livewire --jet --dark --api --teams --verification libsql-laravel
+cp ~/.editorconfig ~/.prettierrc ~/Herd/renesdeals/
+nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+npm install --global corepack npm pnpm yarn @angular/cli mapscii million neovim puppeteer semver -u
+sudo brew bundle dump
+nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+git add . && git commit -pm 'brew +aspell' && git push
+laravel new --database=sqlite --stack=livewire --jet --dark --api --teams --verification lw3fs
+cp ~/.editorconfig ~/.prettierrc ~/Herd/renesdeals/
+laravel new --database=sqlite --stack=livewire --jet --dark --api --teams --verification lw3fs
+cp ~/.editorconfig ~/.prettierrc ~/Herd/lw3fs/
+composer require tursodatabase/turso-driver-laravel
+nvim ~/.config/zsh/.zshrc.d/880-alias.zsh
+git add . && git commit -pm 'brew +aspell' && git push
+laravel new --database=sqlite --stack=livewire --jet --dark --api --teams --verification lw3fs
+gsutil config -n
+git add . && git commit -pm 'completed initial setup' && git push
+git flow feature
+pnpx @tailwindcss/upgrade@next
+git add . && git commit -am 'feat:tw4:pnpm update --latest'
+pnpx @tailwindcss/upgrade@next
+git add . && git commit -am 'init:'
+git add . && git commit -am 'upgrade to tw4 - w/p @tailwindcss/vite'
+git add . && git commit -am 'init:'
+pnpx @tailwindcss/upgrade@next
+pnpx @tailwindcss/upgrade@next
+git add . && git commit -am 'init: working'
+pnpx @tailwindcss/upgrade@next
+php artisan key:generate
+grep -irl --exclude-dir={node_modules,vendor} -e "header"
+php artisan flux:activate embrace.s0ul+s-a-c@gmail.com e1e54a53-5b23-4cb1-9428-a4de6dc293b5
+pnpx @tailwindcss/upgrade@next
+pnpx @tailwindcss/upgrade@next
+phar flux:activate embrace.s0ul+s-a-c@gmail.com e1e54a53-5b23-4cb1-9428-a4de6dc293b5
+phar flux:activate embrace.s0ul+s-a-c@gmail.com e1e54a53-5b23-4cb1-9428-a4de6dc293b5
+phar optimize:clear
+git add . && git commit -am 'init: successful'
+pnpx @tailwindcss/upgrade@next
+git add . && git commit -am 'init: successful'
+git add . && git commit -am 'feat:tw4:success EXCEPT darkMode in fluxui'
+git add . && git commit -am 'feat:filemanet install'
+phar filament:install --panels
+pnpx @tailwindcss/upgrade@next
+pnpx @tailwindcss/upgrade@next
+pnpm dlx @tailwindcss/upgrade@next
+pnpm build && phar optimize:clear && phar optimize
+git add . && git commit -am 'Initial commit'
+git add . && git commit -am 'api, fluxui'
+cp ~/.editorconfig ~/.prettierrc ./
+phar flux:activate embrace.s0ul+s-a-c@gmail.com e1e54a53-5b23-4cb1-9428-a4de6dc293b5
+git add . && git comit -am 'config'
+git add . && git commit -m "09. remove facade && use dependency injection" && git push
+git add . && git commit -m "09. remove facade && use dependency injection" && git push
+composer dump-autoload -o
+git add . && git commit -am '09. fix `namespace` and `use` stmnts' && git push
+git add . && git commit -am 'refactor' && git push
+git add . && git commit -am 'feat:json-yaml-dataload test data:complete' && git push
+cd /Users/s-a-c/Herd/laravel-package-dev && git add . && git commit -m "feat(static-analysis): configure comprehensive static analysis tooling" -m "Set up a complete static analysis progression plan with the following tools:" -m "- PHPStan/Larastan at level 1 (will progress to level 4)\n- tomasvotruba/type-coverage for type hint analysis\n- tomasvotruba/class-leak for architectural analysis\n- rector/swiss-knife for additional checks\n- rector/rector (planned for level 5)" -m "Key Changes:\n- Removed PHPStan baseline to start fresh\n- Configured all tools to be consistent with level 1\n- Added detailed progression plan in TODO.md\n- Set up skip patterns for Laravel-specific code\n- Added type coverage thresholds\n- Configured class leak detection\n- Set up Swiss Knife integration" -m "The plan involves systematic progression through static analysis levels with focus on automated fixes where possible, while maintaining Laravel compatibility throughout."
+nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+phar flux:activate embrace.s0ul+s-a-c@gmail.com e1e54a53-5b23-4cb1-9428-a4de6dc293b5
+git add . && git commit -am 'initial'
+git add . && git commit -am 'initial setup and tw4'
+git remote add origin https://github.com/s-a-c/eloquent-model-generator
+phar flux:activate embrace.s0ul+s-a-c@gmail.com e1e54a53-5b23-4cb1-9428-a4de6dc293b5
+phar flux:activate embrace.s0ul+s-a-c@gmail.com e1e54a53-5b23-4cb1-9428-a4de6dc293b5
+phar flux:activate embrace.s0ul+s-a-c@gmail.com e1e54a53-5b23-4cb1-9428-a4de6dc293b5
+phar flux:activate embrace.s0ul+s-a-c@gmail.com e1e54a53-5b23-4cb1-9428-a4de6dc293b5
+phar flux:activate embrace.s0ul+s-a-c@gmail.com e1e54a53-5b23-4cb1-9428-a4de6dc293b5
+pnpm add -D @prettier/plugin-php prettier prettier-plugin-blade prettier-plugin-tailwindcss
+phar flux:activate embrace.s0ul+s-a-c@gmail.com e1e54a53-5b23-4cb1-9428-a4de6dc293b5
+phar flux:activate embrace.s0ul+s-a-c@gmail.com e1e54a53-5b23-4cb1-9428-a4de6dc293b5
+brew install kubectl
+nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+phar flux:activate embrace.s0ul+s-a-c@gmail.com e1e54a53-5b23-4cb1-9428-a4de6dc293b5
+cp ~/.editorconfig ~/.prettierrc ~/.composer/auth.json ./
+cp ~/.editorconfig ~/.prettierrc ~/.composer/auth.json ./
+php artisan flux:activate embrace.s0ul+s-a-c@gmail.com e1e54a53-5b23-4cb1-9428-a4de6dc293b5
+nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+git add . && git commit -am 'legcord' && git push
+nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+git add . && git commit -am 'pre tw4'
+open /Applications/Herd.app --args --enable-logfile
+phar flux:activate embrace.s0ul+s-a-c@gmail.com e1e54a53-5b23-4cb1-9428-a4de6dc293b5
+git tag v12.0.5
+git push origin v12.0.5
+COMPOSER_MEMORY_LIMIT=-1 PHP_INI_MEMORY_LIMIT=-1 COMPOSER_PROCESS_TIMEOUT=2000 composer update -Wo
+git remote add origin https://github.com/s-a-c/lks
+gh repo create GhostInTheMachine --public
+phar krlove:generate:model User
+git tag v12.0.6
+gh repo create lskfr --public
+git remote add origin https://github.com/s-a-c/lskfr
+phar flux:activate embrace.s0ul+s-a-c@gmail.com e1e54a53-5b23-4cb1-9428-a4de6dc293b5
+git remote add origin https://github.com/s-a-c/lsk-livewire
+nix flake update --flake $(realpath ~/.config/nix-darwin) && darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+nix flake update --flake $(realpath ~/.config/nix-darwin) && sudo darwin-rebuild switch --flake $(realpath ~/.config/nix-darwin) --fallback
+git add . && git commit -am 'zsh tidy up' && git push
+git add . && git commit -am '+atuin' && git push
+bat ~/.config/zsh/.zshrc.pre-plugins.d/._zshenv.zsh
+tail -3 reports/composer/analyse.log
+php vendor/bin/phpstan analyse tests/Unit/Commands/BaseValidationCommandTest.php --level=10 --no-progress --no-interaction 2>&1 | head -20
+tail -3 reports/composer/analyse.log

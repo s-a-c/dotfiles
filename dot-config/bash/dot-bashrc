@@ -1,0 +1,131 @@
+if [ -z "$SHELL" ]; then
+    SHELL="$(which bash)"
+fi
+
+
+## [carapace]    ## Carapace shell integration for Bash. This must be at the top of your bashrc!
+export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense' # optional
+builtin source <(carapace _carapace)
+
+## [fzf]    ## Fzf shell integration for Bash. This must be the top of your bashrc!
+[ -f ~/.fzf.bash ] && builtin source ~/.fzf.bash
+
+## [fzf-tab]    ## Fzf-tab shell integration for Bash. This must be the top of your bashrc!
+[ -f ~/.fzf-tab.bash ] && builtin source ~/.fzf-tab.bash
+
+## [ghostty]    ## Ghostty shell integration for Bash. This must be at the top of your bashrc!
+[ -n "${GHOSTTY_RESOURCES_DIR}" ] && builtin source "${GHOSTTY_RESOURCES_DIR}/shell-integration/bash/ghostty.bash"
+
+## [starship]    ## Starship shell integration for Bash. This must be the top of your bashrc!
+eval "$(starship init bash)"
+
+## [zoxide]    ## Zoxide shell integration for Bash. This must be the top of your bashrc!
+eval "$(zoxide init bash)"
+
+
+export HISTCONTROL=ignoredups:ignorespace
+export HISTFILE=~/.bash_history
+export HISTFILESIZE=120000
+export HISTIGNORE="ls:ll:cd:pwd:exit:mc:history:clear"
+export HISTSIZE=100000
+export HISTTIMEFORMAT="%F %T "
+export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND ;} history -a"
+
+bind '"\e[3~": delete-char'
+
+shopt -s autocd
+shopt -s assoc_expand_once
+shopt -s cdable_vars
+shopt -s cdspell
+shopt -s checkhash
+shopt -s checkjobs
+shopt -s checkwinsize
+shopt -s cmdhist
+shopt -u compat31
+shopt -u compat32
+shopt -u compat40
+shopt -u compat41
+shopt -u compat42
+shopt -u compat43
+shopt -u compat44
+shopt -s complete_fullquote
+shopt -s direxpand
+shopt -s dirspell
+shopt -u dotglob
+shopt -u execfail
+shopt -s expand_aliases
+shopt -u extdebug
+shopt -s extglob
+shopt -s extquote
+shopt -u failglob
+shopt -s force_fignore
+shopt -s globasciiranges
+shopt -s globskipdots
+shopt -u globstar
+shopt -u gnu_errfmt
+shopt -s histappend
+shopt -s histreedit
+shopt -s histverify
+shopt -s hostcomplete
+shopt -s huponexit
+shopt -u inherit_errexit
+shopt -s interactive_comments
+shopt -s lastpipe
+shopt -s lithist
+shopt -s localvar_inherit
+shopt -u localvar_unset
+#shopt -u login_shell
+shopt -u mailwarn
+shopt -s no_empty_cmd_completion
+shopt -u nocaseglob
+shopt -u nocasematch
+shopt -u noexpand_translation
+shopt -u nullglob
+shopt -s patsub_replacement
+shopt -s progcomp
+shopt -u progcomp_alias
+shopt -s promptvars
+shopt -u restricted_shell
+shopt -u shift_verbose
+shopt -s sourcepath
+shopt -u varredir_close
+shopt -u xpg_echo
+# Source the Lazyman shell initialization for aliases and nvims selector
+# shellcheck source=.config/nvim-Lazyman/.lazymanrc
+[ -f ~/.config/nvim-Lazyman/.lazymanrc ] && source ~/.config/nvim-Lazyman/.lazymanrc
+# Source the Lazyman .nvimsbind for nvims key binding
+# shellcheck source=.config/nvim-Lazyman/.nvimsbind
+[ -f ~/.config/nvim-Lazyman/.nvimsbind ] && source ~/.config/nvim-Lazyman/.nvimsbind
+. "/Users/s-a-c/.local/share/cargo/env"
+
+
+PATH=~/.console-ninja/.bin:$PATH
+. "$HOME/.atuin/bin/env"
+
+[[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
+eval "$(atuin init bash)"
+source /Users/s-a-c/.local/share/bash-completion/completions/deno.bash
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/s-a-c/.lmstudio/bin"
+
+# --- github copilot cli ---
+eval "$(gh copilot alias -- bash)"
+
+function nvimvenv {
+  if [[ -e "$VIRTUAL_ENV" && -f "$VIRTUAL_ENV/bin/activate" ]]; then
+    source "$VIRTUAL_ENV/bin/activate"
+    command nvim "$@"
+    deactivate
+  else
+    command nvim "$@"
+  fi
+}
+
+alias nvim=nvimvenv
+
+
+eval "$(uv generate-shell-completion bash)"
+
+
+eval "$(uvx generate-shell-completion bash)"
+

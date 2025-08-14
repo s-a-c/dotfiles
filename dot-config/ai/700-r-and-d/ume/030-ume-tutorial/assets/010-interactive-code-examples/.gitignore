@@ -1,0 +1,51 @@
+# IDE and editor files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Build artifacts
+/dist/
+/build/
+/node_modules/
+/vendor/
+/temp/
+/tmp/
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Dependency lock files
+package-lock.json
+yarn.lock
+composer.lock
+
+# Cache files
+.cache/
+.npm/
+.eslintcache
+.stylelintcache
+
+# Generated files
+*.generated.*

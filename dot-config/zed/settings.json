@@ -1,0 +1,59 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+    // The name of a font to use for rendering text in the UI
+    // You can set this to ".SystemUIFont" to use the system font
+    // "ui_font_family": "Zed Plex Sans",
+    "agent": {
+        "always_allow_tool_actions": true,
+        "model_parameters": [],
+        "play_sound_when_agent_done": true,
+        "version": "2"
+    },
+    "context_servers": {
+        "mcp-server-context7": {
+            "source": "extension",
+            "settings": {
+                "default_minimum_tokens": "10000"
+            }
+        },
+        "mcp-server-github": {
+            "source": "extension",
+            "settings": {
+                "github_personal_access_token": "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"
+            }
+        }
+    },
+    "ui_font_family": "Inconstant",
+    // Set the UI's font fallbacks, this will be merged with the platform's
+    // default font fallbacks.
+    "ui_font_fallbacks": null,
+    // The OpenType features to enable for text in the UI
+    "ui_font_features": {
+        // Disable ligatures:
+        "calt": true
+    },
+    // The name of a font to use for rendering text in the editor
+    "buffer_font_family": "Dank Mono",
+    // Set the buffer text's font fallbacks, this will be merged with
+    // the platform's default fallbacks.
+    "buffer_font_fallbacks": null,
+    // The OpenType features to enable for text in the editor.
+    "buffer_font_features": {
+        // Disable ligatures:
+        // "calt": false
+    },
+    "ui_font_size": 16,
+    "buffer_font_size": 16,
+    "theme": {
+        "mode": "dark",
+        "light": "Ayu Light",
+        "dark": "Colorizer Pro"
+    }
+}

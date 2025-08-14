@@ -1,0 +1,54 @@
+{
+  "installMethod": "unknown",
+  "autoUpdates": true,
+  "userID": "b93c1c2255f7280f4c2bc2ef1cee290023868ac528ff699f1664921ffe19c0b2",
+  "firstStartTime": "2025-07-25T16:41:10.151Z",
+  "projects": {
+    "/Users/s-a-c/Herd/chinook": {
+      "allowedTools": [],
+      "history": [],
+      "mcpContextUris": [],
+      "mcpServers": {
+        "Ref": {
+          "type": "http",
+          "url": "https://api.ref.tools/mcp?apiKey=ref-df73593ba105af308268"
+        }
+      },
+      "enabledMcpjsonServers": [],
+      "disabledMcpjsonServers": [],
+      "hasTrustDialogAccepted": false,
+      "projectOnboardingSeenCount": 0,
+      "hasClaudeMdExternalIncludesApproved": false,
+      "hasClaudeMdExternalIncludesWarningShown": false
+    },
+    "/Users/s-a-c/dotfiles": {
+      "allowedTools": [],
+      "history": [],
+      "mcpContextUris": [],
+      "mcpServers": {
+        "grep": {
+          "type": "http",
+          "url": "https://mcp.grep.app"
+        }
+      },
+      "enabledMcpjsonServers": [],
+      "disabledMcpjsonServers": [],
+      "hasTrustDialogAccepted": false,
+      "projectOnboardingSeenCount": 0,
+      "hasClaudeMdExternalIncludesApproved": false,
+      "hasClaudeMdExternalIncludesWarningShown": false
+    },
+    "/Users/s-a-c": {
+      "allowedTools": [],
+      "history": [],
+      "mcpContextUris": [],
+      "mcpServers": {},
+      "enabledMcpjsonServers": [],
+      "disabledMcpjsonServers": [],
+      "hasTrustDialogAccepted": false,
+      "projectOnboardingSeenCount": 0,
+      "hasClaudeMdExternalIncludesApproved": false,
+      "hasClaudeMdExternalIncludesWarningShown": false
+    }
+  }
+}

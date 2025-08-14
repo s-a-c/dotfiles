@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="UME Tutorial - Interactive Code Examples">
+  <title>{{title}} - UME Tutorial</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" href="/docs/030-ume-tutorial/assets/images/favicon.ico" type="image/x-icon">
+  
+  <!-- Base styles -->
+  <link rel="stylesheet" href="/docs/030-ume-tutorial/assets/css/styles.css">
+  <link rel="stylesheet" href="/docs/030-ume-tutorial/assets/css/ume-docs-enhancements.css">
+  
+  <!-- Syntax highlighting -->
+  <link rel="stylesheet" href="/docs/030-ume-tutorial/assets/css/syntax-highlighting.css">
+  
+  <!-- Interactive examples styles -->
+  <link rel="stylesheet" href="/docs/030-ume-tutorial/assets/css/interactive/interactive.css">
+  
+  <!-- Preload key assets -->
+  <link rel="preload" href="/docs/030-ume-tutorial/assets/js/interactive/interactive.js" as="script">
+  <link rel="preload" href="/docs/030-ume-tutorial/assets/js/interactive/core/asset-loader.js" as="script">
+  <link rel="preload" href="/docs/030-ume-tutorial/assets/js/interactive/core/style-loader.js" as="script">
+  
+  <!-- Theme detection -->
+  <script>
+    // Check for dark mode preference
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark-theme');
+    } else {
+      document.documentElement.classList.add('light-theme');
+    }
+    
+    // Listen for theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+      if (event.matches) {
+        document.documentElement.classList.remove('light-theme');
+        document.documentElement.classList.add('dark-theme');
+      } else {
+        document.documentElement.classList.remove('dark-theme');
+        document.documentElement.classList.add('light-theme');
+      }
+    });
+  </script>
+</head>
+<body class="ume-tutorial">
+  <!-- Skip to content link for accessibility -->
+  <a href="#main-content" class="skip-to-content">Skip to content</a>
+  
+  <header class="tutorial-header">
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <a href="/docs/030-ume-tutorial/index.html">
+            <img src="/docs/030-ume-tutorial/assets/images/ume-logo.svg" alt="UME Tutorial Logo" class="logo-image">
+            <span class="logo-text">UME Tutorial</span>
+          </a>
+        </div>
+        
+        <nav class="main-nav" aria-label="Main navigation">
+          <button class="menu-toggle" aria-expanded="false" aria-controls="main-menu">
+            <span class="sr-only">Toggle menu</span>
+            <span class="menu-icon"></span>
+          </button>
+          
+          <ul id="main-menu" class="nav-menu">
+            <li class="nav-item"><a href="/docs/030-ume-tutorial/index.html" class="nav-link">Home</a></li>
+            <li class="nav-item"><a href="/docs/030-ume-tutorial/050-implementation/index.html" class="nav-link">Implementation</a></li>
+            <li class="nav-item"><a href="/docs/030-ume-tutorial/060-exercises/index.html" class="nav-link">Exercises</a></li>
+            <li class="nav-item"><a href="/docs/030-ume-tutorial/070-sample-answers/index.html" class="nav-link">Sample Answers</a></li>
+            <li class="nav-item"><a href="/docs/030-ume-tutorial/090-learning-paths/index.html" class="nav-link">Learning Paths</a></li>
+          </ul>
+        </nav>
+        
+        <div class="header-actions">
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+            <span class="theme-toggle-icon"></span>
+          </button>
+          
+          <div class="search-container">
+            <button class="search-toggle" aria-expanded="false" aria-controls="search-form">
+              <span class="sr-only">Toggle search</span>
+              <span class="search-icon"></span>
+            </button>
+            
+            <form id="search-form" class="search-form" action="/docs/030-ume-tutorial/search.html" method="get">
+              <label for="search-input" class="sr-only">Search</label>
+              <input type="search" id="search-input" name="q" placeholder="Search the tutorial..." required>
+              <button type="submit" class="search-submit">
+                <span class="sr-only">Search</span>
+                <span class="search-submit-icon"></span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <div class="tutorial-layout">
+    <aside class="tutorial-sidebar">
+      <nav class="sidebar-nav" aria-label="Section navigation">
+        <div class="sidebar-section">
+          <h2 class="sidebar-heading">Getting Started</h2>
+          <ul class="sidebar-menu">
+            <li class="sidebar-item"><a href="/docs/030-ume-tutorial/010-introduction/index.html" class="sidebar-link">Introduction</a></li>
+            <li class="sidebar-item"><a href="/docs/030-ume-tutorial/020-prerequisites/index.html" class="sidebar-link">Prerequisites</a></li>
+            <li class="sidebar-item"><a href="/docs/030-ume-tutorial/030-overview/index.html" class="sidebar-link">Overview</a></li>
+            <li class="sidebar-item"><a href="/docs/030-ume-tutorial/040-setup/index.html" class="sidebar-link">Setup</a></li>
+          </ul>
+        </div>
+        
+        <div class="sidebar-section">
+          <h2 class="sidebar-heading">Implementation</h2>
+          <ul class="sidebar-menu">
+            <li class="sidebar-item"><a href="/docs/030-ume-tutorial/050-implementation/010-phase0-foundation/index.html" class="sidebar-link">Phase 0: Foundation</a></li>
+            <li class="sidebar-item"><a href="/docs/030-ume-tutorial/050-implementation/020-phase1-core-models/index.html" class="sidebar-link">Phase 1: Core Models</a></li>
+            <li class="sidebar-item"><a href="/docs/030-ume-tutorial/050-implementation/030-phase2-user-types/index.html" class="sidebar-link">Phase 2: User Types</a></li>
+            <li class="sidebar-item"><a href="/docs/030-ume-tutorial/050-implementation/040-phase3-permissions/index.html" class="sidebar-link">Phase 3: Permissions</a></li>
+            <li class="sidebar-item"><a href="/docs/030-ume-tutorial/050-implementation/050-phase4-teams/index.html" class="sidebar-link">Phase 4: Teams</a></li>
+            <li class="sidebar-item"><a href="/docs/030-ume-tutorial/050-implementation/060-phase5-advanced/index.html" class="sidebar-link">Phase 5: Advanced Features</a></li>
+            <li class="sidebar-item"><a href="/docs/030-ume-tutorial/050-implementation/070-phase6-polishing/index.html" class="sidebar-link">Phase 6: Polishing</a></li>
+          </ul>
+        </div>
+        
+        <div class="sidebar-section">
+          <h2 class="sidebar-heading">Resources</h2>
+          <ul class="sidebar-menu">
+            <li class="sidebar-item"><a href="/docs/030-ume-tutorial/060-exercises/index.html" class="sidebar-link">Exercises</a></li>
+            <li class="sidebar-item"><a href="/docs/030-ume-tutorial/070-sample-answers/index.html" class="sidebar-link">Sample Answers</a></li>
+            <li class="sidebar-item"><a href="/docs/030-ume-tutorial/080-troubleshooting/index.html" class="sidebar-link">Troubleshooting</a></li>
+            <li class="sidebar-item"><a href="/docs/030-ume-tutorial/090-learning-paths/index.html" class="sidebar-link">Learning Paths</a></li>
+          </ul>
+        </div>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <div class="progress-tracker">
+          <div class="progress-label">Your Progress</div>
+          <div class="progress-bar">
+            <div class="progress-value" style="width: 0%"></div>
+          </div>
+          <div class="progress-text">0% Complete</div>
+        </div>
+      </div>
+    </aside>
+    
+    <main id="main-content" class="tutorial-content">
+      <div class="container">
+        <nav class="breadcrumbs" aria-label="Breadcrumbs">
+          <ol class="breadcrumb-list">
+            <li class="breadcrumb-item"><a href="/docs/030-ume-tutorial/index.html">Home</a></li>
+            {{breadcrumbs}}
+          </ol>
+        </nav>
+        
+        <article class="content-article">
+          <header class="content-header">
+            <h1 class="content-title">{{title}}</h1>
+            <div class="content-meta">
+              <div class="reading-time">{{reading_time}} min read</div>
+              <div class="last-updated">Last updated: {{last_updated}}</div>
+            </div>
+          </header>
+          
+          <div class="content-toc">
+            <h2 class="toc-title">Table of Contents</h2>
+            <div class="toc-content">
+              {{toc}}
+            </div>
+          </div>
+          
+          <div class="markdown-content">
+            {{content}}
+          </div>
+          
+          <footer class="content-footer">
+            <div class="content-navigation">
+              {{#if prev_page}}
+              <a href="{{prev_page.url}}" class="prev-link">
+                <span class="nav-direction">Previous</span>
+                <span class="nav-title">{{prev_page.title}}</span>
+              </a>
+              {{/if}}
+              
+              {{#if next_page}}
+              <a href="{{next_page.url}}" class="next-link">
+                <span class="nav-direction">Next</span>
+                <span class="nav-title">{{next_page.title}}</span>
+              </a>
+              {{/if}}
+            </div>
+            
+            <div class="content-feedback">
+              <div class="feedback-question">Was this page helpful?</div>
+              <div class="feedback-buttons">
+                <button class="feedback-button" data-value="yes">Yes</button>
+                <button class="feedback-button" data-value="no">No</button>
+              </div>
+              <div class="feedback-form" style="display: none;">
+                <textarea class="feedback-text" placeholder="How can we improve this page?"></textarea>
+                <button class="feedback-submit">Submit Feedback</button>
+              </div>
+              <div class="feedback-thanks" style="display: none;">
+                Thank you for your feedback!
+              </div>
+            </div>
+          </footer>
+        </article>
+      </div>
+    </main>
+  </div>
+  
+  <footer class="tutorial-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <img src="/docs/030-ume-tutorial/assets/images/ume-logo.svg" alt="UME Tutorial Logo" class="footer-logo-image">
+          <span class="footer-logo-text">UME Tutorial</span>
+        </div>
+        
+        <div class="footer-links">
+          <div class="footer-column">
+            <h3 class="footer-heading">Tutorial</h3>
+            <ul class="footer-menu">
+              <li class="footer-item"><a href="/docs/030-ume-tutorial/index.html" class="footer-link">Home</a></li>
+              <li class="footer-item"><a href="/docs/030-ume-tutorial/010-introduction/index.html" class="footer-link">Introduction</a></li>
+              <li class="footer-item"><a href="/docs/030-ume-tutorial/050-implementation/index.html" class="footer-link">Implementation</a></li>
+              <li class="footer-item"><a href="/docs/030-ume-tutorial/060-exercises/index.html" class="footer-link">Exercises</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer-column">
+            <h3 class="footer-heading">Resources</h3>
+            <ul class="footer-menu">
+              <li class="footer-item"><a href="/docs/030-ume-tutorial/070-sample-answers/index.html" class="footer-link">Sample Answers</a></li>
+              <li class="footer-item"><a href="/docs/030-ume-tutorial/080-troubleshooting/index.html" class="footer-link">Troubleshooting</a></li>
+              <li class="footer-item"><a href="/docs/030-ume-tutorial/090-learning-paths/index.html" class="footer-link">Learning Paths</a></li>
+              <li class="footer-item"><a href="/docs/030-ume-tutorial/100-glossary/index.html" class="footer-link">Glossary</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer-column">
+            <h3 class="footer-heading">Community</h3>
+            <ul class="footer-menu">
+              <li class="footer-item"><a href="https://github.com/example/ume-tutorial" class="footer-link">GitHub</a></li>
+              <li class="footer-item"><a href="https://discord.gg/example" class="footer-link">Discord</a></li>
+              <li class="footer-item"><a href="https://twitter.com/example" class="footer-link">Twitter</a></li>
+              <li class="footer-item"><a href="https://example.com/blog" class="footer-link">Blog</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <div class="copyright">
+          &copy; 2024 UME Tutorial. All rights reserved.
+        </div>
+        
+        <div class="footer-meta">
+          <a href="/docs/030-ume-tutorial/privacy.html" class="footer-meta-link">Privacy Policy</a>
+          <a href="/docs/030-ume-tutorial/terms.html" class="footer-meta-link">Terms of Service</a>
+          <a href="/docs/030-ume-tutorial/sitemap.xml" class="footer-meta-link">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  
+  <!-- Base scripts -->
+  <script src="/docs/030-ume-tutorial/assets/js/ume-docs-enhancements.js"></script>
+  
+  <!-- Interactive examples scripts -->
+  <script src="/docs/030-ume-tutorial/assets/js/interactive/interactive.js"></script>
+  
+  <!-- Page-specific scripts -->
+  <script>
+    // Initialize progress tracking
+    document.addEventListener('DOMContentLoaded', function() {
+      // This is a placeholder - actual implementation would track progress
+      const progressValue = document.querySelector('.progress-value');
+      const progressText = document.querySelector('.progress-text');
+      
+      // Example: Set progress to 25%
+      const progress = 25;
+      progressValue.style.width = `${progress}%`;
+      progressText.textContent = `${progress}% Complete`;
+      
+      // Initialize feedback form
+      const feedbackButtons = document.querySelectorAll('.feedback-button');
+      const feedbackForm = document.querySelector('.feedback-form');
+      const feedbackThanks = document.querySelector('.feedback-thanks');
+      const feedbackSubmit = document.querySelector('.feedback-submit');
+      
+      feedbackButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const value = this.dataset.value;
+          
+          if (value === 'no') {
+            feedbackForm.style.display = 'block';
+          } else {
+            feedbackThanks.style.display = 'block';
+          }
+          
+          feedbackButtons.forEach(btn => {
+            btn.disabled = true;
+          });
+        });
+      });
+      
+      feedbackSubmit.addEventListener('click', function() {
+        feedbackForm.style.display = 'none';
+        feedbackThanks.style.display = 'block';
+      });
+    });
+  </script>
+</body>
+</html>

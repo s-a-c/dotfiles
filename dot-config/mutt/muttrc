@@ -1,0 +1,54 @@
+# vim: filetype=muttrc
+#
+# Basic Mutt GMail Configuration
+#
+# See /usr/share/asciiville/mutt/ and
+#     /usr/share/asciiville/mutt_multiple/
+# for more complex Mutt configuration examples
+#
+set from = "username@gmail.com"
+set realname = "First Last"
+# IMAP settings
+set imap_user = "username@gmail.com"
+#
+# If Google 2FA Authentication is enabled, create an App password for Mutt
+# See https://security.google.com/settings/security/apppasswords
+#
+# To use an encrypted password with Mutt, follow the guide at:
+# https://www.xmodulo.com/mutt-email-client-encrypted-passwords.html
+#
+set imap_pass = "<mailbox password>"
+# SMTP settings
+set smtp_url = "smtps://username@smtp.gmail.com"
+set smtp_pass = "<mailbox password>"
+# Remote Gmail folders
+set folder = "imaps://imap.gmail.com/"
+set spoolfile = "+INBOX"
+set postponed = "+[Gmail]/Drafts"
+set record = "+[Gmail]/Sent Mail"
+set trash = "+[Gmail]/Trash"
+# Path for mailcap to use with MIME mappings
+set mailcap_path=~/.mutt/mailcap:/usr/local/etc/mailcap:/etc/mailcap
+# Vim spell checking (enable in Vim with :set spell)
+set editor="vim -c 'set spell spelllang=en'"
+# Header Cache, Message Cache, Certificates File
+set header_cache = "~/.mutt/cache/headers"
+set message_cachedir = "~/.mutt/cache/bodies"
+set certificate_file = "~/.mutt/certificates"
+# Custom Mutt Color Settings
+source ~/.mutt/colors
+# Temporary files go here
+set tmpdir = ~/.mutt/tmp # where to keep temp files
+# Use utf-8 charset
+set send_charset = "utf-8:iso-8859-1:us-ascii"
+set charset = "utf-8"
+# View html automatically
+auto_view text/html text/calendar application/ics
+
+###############################################################
+# When in either the index or the pager (reading a message),  #
+# you can hit ^B and the urlscan program will be invoked.     #
+###############################################################
+
+macro index \cb |urlscan\n 'call urlscan to extract URLs out of a message'
+macro pager \cb |urlscan\n 'call urlscan to extract URLs out of a message'
