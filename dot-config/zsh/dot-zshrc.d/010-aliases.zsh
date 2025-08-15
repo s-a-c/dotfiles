@@ -2,7 +2,13 @@
 ## [alias.save_begin]
 #alias -L >|"${ZDOTDIR}/saved_alias_begin.zsh"
 
-[[ -n "$ZSH_DEBUG" ]] && printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+[[ -n "$ZSH_DEBUG" ]] && {
+    printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+    # Add this check to detect errant file creation:
+    if [[ -f "${ZDOTDIR:-$HOME}/2" ]] || [[ -f "${ZDOTDIR:-$HOME}/3" ]]; then
+        echo "Warning: Numbered files detected - check for redirection typos" >&2
+    fi
+}
 
 ## [aliases.default]
 {
@@ -187,6 +193,7 @@ alias md='mkdir -p'
 
 ## [aliases.nvim]
 {
+    unalias -a bob
     alias nvim=nvimvenv
     alias ksnvim='NVIM_APPNAME=nvim-Kickstart nvim'
     alias lmnvim='NVIM_APPNAME=nvim-Lazyman nvim'
