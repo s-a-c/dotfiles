@@ -2,14 +2,63 @@
 # This file is sourced by all zsh instances (login, interactive, scripts)
 # Keep minimal - only essential environment variables and PATH setup
 
-[[ -n "$ZSH_DEBUG" ]] && printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+[[ -n "$ZSH_DEBUG" ]] && {
+    printf "# ++++++ %s:zshenv ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+    # Add this check to detect errant file creation:
+    if [[ -f "${ZDOTDIR:-$HOME}/2" ]] || [[ -f "${ZDOTDIR:-$HOME}/3" ]]; then
+        echo "Warning: Numbered files detected - check for redirection typos" >&2
+    fi
+}
 
-# Ensure system paths are available FIRST - critical for basic commands
-export PATH="/usr/bin:/bin:/usr/sbin:/sbin"
+# Disable zgenom's automatic compinit (add before zgenom load calls)
+export ZGEN_AUTOLOAD_COMPINIT=0
+export ZGENOM_AUTO_COMPINIT=0
 
 # Prevent duplicate entries in PATH and FPATH arrays
 typeset -x PATH FPATH
 typeset -aUx path fpath
+
+# In .zshenv, ensure system paths are FIRST and available immediately
+export PATH="/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin${PATH:+:$PATH}"
+
+# Create safe command wrappers
+command_exists() { command -v "$1" >/dev/null 2>&1; }
+safe_uname() { command_exists uname && uname "$@" || echo "unknown"; }
+safe_sed() { command_exists sed && sed "$@" || echo "sed not available"; }
+
+## [_path]
+{
+    function _path_remove() {
+        for ARG in "$@"; do
+            while [[ ":${PATH}:" == *":${ARG}:"* ]]; do
+                # Delete path by parts to avoid accidentally removing sub paths
+                [[ "${PATH}" == "${ARG}" ]] && PATH=""
+                PATH=${PATH//":${ARG}:"/":"} # delete any instances in the middle
+                PATH=${PATH/#"${ARG}:"/}     # delete any instance at the beginning
+                PATH=${PATH/%":${ARG}"/}     # delete any instance at the end
+            done
+        done
+        export PATH
+    }
+
+    function _path_append() {
+        for ARG in "$@"; do
+            _path_remove "${ARG}"
+            [[ -d "${ARG}" ]] && export PATH="${PATH:+"${PATH}:"}${ARG}"
+        done
+    }
+
+    function _path_prepend() {
+        for ARG in "$@"; do
+            _path_remove "${ARG}"
+            [[ -d "${ARG}" ]] && export PATH="${ARG}${PATH:+":${PATH}"}"
+        done
+    }
+
+    # Add user local bin to PATH
+    _path_prepend "${XDG_BIN_HOME}"
+}
+
 
 ## XDG Base Directory Specification
 ## https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
@@ -39,6 +88,13 @@ export ZDOTDIR=${ZDOTDIR:="${XDG_CONFIG_HOME}/zsh"}
 export ZSH_CACHE_DIR=${ZSH_CACHE_DIR:="${XDG_CACHE_HOME}/zsh"}
 export ZSH_COMPDUMP="${ZSH_CACHE_DIR:-${HOME}}/.zcompdump-${SHORT_HOST:-$(hostname -s)}-${ZSH_VERSION}"
 
+typeset -gxa ZSH_AUTOSUGGEST_STRATEGY
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+
+typeset -gxa GLOBALIAS_FILTER_VALUES
+GLOBALIAS_FILTER_VALUES=("sudo" "man" "which" "bob")
+
+
 # Create required directories
 mkdir -p "${ZSH_CACHE_DIR}"
 
@@ -64,18 +120,27 @@ export LANG='en_GB.UTF-8'
 export LC_ALL='en_GB.UTF-8'
 export TIME_STYLE=long-iso
 
-# Set editors if available (with fallback)
-if command -v nvim >/dev/null 2>&1; then
-    export EDITOR="$(command -v nvim)"
-else
-    export EDITOR="$(command -v vim || command -v vi)"
-fi
+set_editor() {
+    # Set editors if available (with fallback)
+    local editors=(nvim hx vim nano)
+    for e in $editors; do
+        [[ -n "$e" ]] &&
+            command -v "$e" >/dev/null 2>&1 &&
+            { export EDITOR="$e"; break; }
+    done
+}
 
-if command -v hx >/dev/null 2>&1; then
-    export VISUAL="$(command -v hx)"
-else
-    export VISUAL="${EDITOR}"
-fi
+set_visual() {
+    # Set editors if available (with fallback)
+    set_editor
+    local editors=(code-insiders code zed hx "$EDITOR")
+    for e in $editors; do
+        [[ -n "$e" ]] &&
+            command -v "$e" >/dev/null 2>&1 &&
+            { export VISUAL="$e"; break; }
+    done
+}
+set_visual
 
 # Java setup (macOS specific)
 if [[ -x "/usr/libexec/java_home" ]]; then
@@ -92,47 +157,161 @@ export DBUS_SESSION_BUS_ADDRESS="unix:path=${MY_SESSION_BUS_SOCKET}"
 # MCP server allowed directories for file operations
 export ALLOWED_DIRECTORIES="/Users/s-a-c/Desktop,/Users/s-a-c/Downloads,/Users/s-a-c/Herd,/Users/s-a-c/Library,/Users/s-a-c/Projects,/Users/s-a-c/Work,/Users/s-a-c/.config,/Users/s-a-c/dotfiles,/Users/s-a-c/.local,/Users/s-a-c/.zshenv,/Users/s-a-c/.zshrc,/Users/s-a-c/.zprofile,/Users/s-a-c/.zlogin"
 
-# PATH manipulation functions
-function _path_remove() {
-    for ARG in "$@"; do
-        while [[ ":${PATH}:" == *":${ARG}:"* ]]; do
-            # Delete path by parts to avoid accidentally removing sub paths
-            [[ "${PATH}" == "${ARG}" ]] && PATH=""
-            PATH=${PATH//":${ARG}:"/":"} # delete any instances in the middle
-            PATH=${PATH/#"${ARG}:"/}     # delete any instance at the beginning
-            PATH=${PATH/%":${ARG}"/}     # delete any instance at the end
+
+## [_field]
+{
+    function _field_append() {
+        ## SYNOPSIS: field_append varName fieldVal [sep]
+        ##     SEP defaults to ':'
+        ## Note: Forces fieldVal into the last position, if already present.
+        ##             Duplicates are removed, too.
+        ## EXAMPLE: field_append PATH /usr/local/bin
+        local varName=$1 fieldVal=$2 IFS=${3:-':'}
+        read -ra auxArr <<<"${!varName}"
+        for i in "${!auxArr[@]}"; do
+            [[ ${auxArr[i]} == "$fieldVal" ]] && unset 'auxArr[i]'
         done
-    done
-    export PATH
+        auxArr+=("$fieldVal")
+        printf -v "$varName" '%s' "${auxArr[*]}"
+    }
+
+    function _field_contains() {
+        ## SYNOPSIS: field_contains varName fieldVal [sep]
+        ##     SEP defaults to ':'
+        ## EXAMPLE: field_contains PATH /usr/local/bin
+        local varName=$1 fieldVal=$2 IFS=${3:-':'}
+        read -ra auxArr <<<"${!varName}"
+        for i in "${!auxArr[@]}"; do
+            [[ ${auxArr[i]} == "$fieldVal" ]] && return 0
+        done
+        return 1
+    }
+
+    function _field_delete() {
+        ## SYNOPSIS: field_delete varName fieldNum [sep]
+        ##     SEP defaults to ':'
+        ## EXAMPLE: field_delete PATH 2
+        local varName=$1 fieldNum=$2 IFS=${3:-':'}
+        read -ra auxArr <<<"${!varName}"
+        unset 'auxArr[fieldNum]'
+        printf -v "$varName" '%s' "${auxArr[*]}"
+    }
+
+    function _field_find() {
+        ## SYNOPSIS: field_find varName fieldVal [sep]
+        ##     SEP defaults to ':'
+        ## EXAMPLE: field_find PATH /usr/local/bin
+        local varName=$1 fieldVal=$2 IFS=${3:-':'}
+        read -ra auxArr <<<"${!varName}"
+        for i in "${!auxArr[@]}"; do
+            [[ ${auxArr[i]} == "$fieldVal" ]] && return 0
+        done
+        return 1
+    }
+
+    function _field_get() {
+        ## SYNOPSIS: field_get varName fieldNum [sep]
+        ##     SEP defaults to ':'
+        ## EXAMPLE: field_get PATH 2
+        printf "$# : $@"
+        local varName=$1 fieldNum=$2 IFS=${3:-':'}
+        read -ra auxArr <<<"${!varName}"
+        printf '%s' "${auxArr[fieldNum]}"
+    }
+
+    function _field_insert() {
+        ## SYNOPSIS: field_insert varName fieldNum fieldVal [sep]
+        ##     SEP defaults to ':'
+        ## EXAMPLE: field_insert PATH 2 /usr/local/bin
+        local varName=$1 fieldNum=$2 fieldVal=$3 IFS=${4:-':'}
+        read -ra auxArr <<<"${!varName}"
+        auxArr=("${auxArr[@]:0:fieldNum}" "$fieldVal" "${auxArr[@]:fieldNum}")
+        printf -v "$varName" '%s' "${auxArr[*]}"
+    }
+
+    function _field_prepend() {
+        ## SYNOPSIS: field_prepend varName fieldVal [sep]
+        ##     SEP defaults to ':'
+        ## Note: Forces fieldVal into the first position, if already present.
+        ##             Duplicates are removed, too.
+        ## EXAMPLE: field_prepend PATH /usr/local/bin
+        local varName=$1 fieldVal=$2 IFS=${3:-':'}
+        read -ra auxArr <<<"${!varName}"
+        for i in "${!auxArr[@]}"; do
+            [[ ${auxArr[i]} == "$fieldVal" ]] && unset 'auxArr[i]'
+        done
+        auxArr=("$fieldVal" "${auxArr[@]}")
+        printf -v "$varName" '%s' "${auxArr[*]}"
+    }
+
+    function _field_remove() {
+        ## SYNOPSIS: field_remove varName fieldVal [sep]
+        ##     SEP defaults to ':'
+        ## Note: Duplicates are removed, too.
+        ## EXAMPLE: field_remove PATH /usr/local/bin
+        local varName=$1 fieldVal=$2 IFS=${3:-':'}
+        read -ra auxArr <<<"${!varName}"
+        for i in "${!auxArr[@]}"; do
+            [[ ${auxArr[i]} == "$fieldVal" ]] && unset 'auxArr[i]'
+        done
+        printf -v "$varName" '%s' "${auxArr[*]}"
+    }
+
+    function _field_replace() {
+        ## SYNOPSIS: field_replace varName fieldVal newFieldVal [sep]
+        ##     SEP defaults to ':'
+        ## EXAMPLE: field_replace PATH /usr/local/bin /usr/local/bin2
+        local varName=$1 fieldVal=$2 newFieldVal=$3 IFS=${4:-':'}
+        read -ra auxArr <<<"${!varName}"
+        for i in "${!auxArr[@]}"; do
+            [[ ${auxArr[i]} == "$fieldVal" ]] && auxArr[i]="$newFieldVal"
+        done
+        printf -v "$varName" '%s' "${auxArr[*]}"
+    }
+
+    function _field_set() {
+        ## SYNOPSIS: field_set varName fieldNum fieldVal [sep]
+        ##     SEP defaults to ':'
+        ## EXAMPLE: field_set PATH 2 /usr/local/bin
+        local varName=$1 fieldNum=$2 fieldVal=$3 IFS=${4:-':'}
+        read -ra auxArr <<<"${!varName}"
+        auxArr[fieldNum]="$fieldVal"
+        printf -v "$varName" '%s' "${auxArr[*]}"
+    }
+
+    function _field_test() {
+        ## SYNOPSIS: _field_test
+        ## EXAMPLE: _field_test
+        ## DESCRIPTION: Test function for the _field library.
+        ##              It tests all the functions in the library.
+        ##              It is not meant to be called directly.
+        ##              It is meant to be called from the _test function.
+        local varName=PATH fieldNum=2 fieldVal=/usr/local/bin fieldVal2=/usr/local/bin2
+        local auxArr
+        printf -v "$varName" '%s' '/usr/bin:/usr/local/bin:/bin:/usr/sbin'
+        _field_get "$varName" "$fieldNum"
+        _field_set "$varName" "$fieldNum" "$fieldVal"
+        _field_insert "$varName" "$fieldNum" "$fieldVal"
+        _field_delete "$varName" "$fieldNum"
+        _field_find "$varName" "$fieldVal"
+        _field_replace "$varName" "$fieldVal" "$fieldVal2"
+        _field_contains "$varName" "$fieldVal"
+        _field_append "$varName" "$fieldVal"
+        _field_prepend "$varName" "$fieldVal"
+        _field_append "$varName" "$fieldVal"
+        _field_remove "$varName" "$fieldVal"
+    }
 }
 
-function _path_append() {
-    for ARG in "$@"; do
-        _path_remove "${ARG}"
-        [[ -d "${ARG}" ]] && export PATH="${PATH:+"${PATH}:"}${ARG}"
-    done
-}
-
-function _path_prepend() {
-    for ARG in "$@"; do
-        _path_remove "${ARG}"
-        [[ -d "${ARG}" ]] && export PATH="${ARG}${PATH:+":${PATH}"}"
-    done
-}
-
-# Source bob environment only once if it exists
-if [[ -f "${HOME}/.local/share/bob/env/env.sh" ]]; then
-    builtin source "${HOME}/.local/share/bob/env/env.sh"
-fi
-
-# Add user local bin to PATH
-_path_prepend "${XDG_BIN_HOME}"
 
 # History management functions
+# Disables zsh history recording by overriding the zshaddhistory hook
+# shellcheck disable=SC1073
 function disablehistory() {
     function zshaddhistory() { return 1 }
 }
 
+# Re-enables zsh history recording by removing the zshaddhistory override
 function enablehistory() {
     unset -f zshaddhistory
 }
