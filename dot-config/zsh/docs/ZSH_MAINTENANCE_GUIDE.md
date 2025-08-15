@@ -11,7 +11,7 @@ cp ~/.config/zsh/.zshenv ~/.config/zsh/.zshenv.backup.$(date +%Y%m%d)
 
 # Apply the fixed configuration
 cp ~/.config/zsh/.zshenv.fixed ~/.config/zsh/.zshenv
-cp ~/.config/zsh/.zshrc.d/020-post-plugins.zsh ~/.config/zsh/.zshrc.d/020-post-plugins.zsh.orig.bad
+cp ~/.config/zsh/.zshrc.d/010-post-plugins.zsh ~/.config/zsh/.zshrc.d/010-post-plugins.zsh.orig.bad
 
 # Secure the old credentials file (DO NOT delete - extract keys first)
 chmod 000 ~/.config/zsh/.zshrc.pre-plugins.d/dot-_zshenv.zsh
