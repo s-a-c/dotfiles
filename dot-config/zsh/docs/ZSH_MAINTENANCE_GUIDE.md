@@ -11,7 +11,7 @@ cp ~/.config/zsh/.zshenv ~/.config/zsh/.zshenv.backup.$(date +%Y%m%d)
 
 # Apply the fixed configuration
 cp ~/.config/zsh/.zshenv.fixed ~/.config/zsh/.zshenv
-cp ~/.config/zsh/.zshrc.d/010-post-plugins.zsh ~/.config/zsh/.zshrc.d/010-post-plugins.zsh.orig.bad
+cp ~/.config/zsh/.zshrc.d/060-post-plugins.zsh ~/.config/zsh/.zshrc.d/060-post-plugins.zsh.orig.bad
 
 # Secure the old credentials file (DO NOT delete - extract keys first)
 chmod 000 ~/.config/zsh/.zshrc.pre-plugins.d/dot-_zshenv.zsh
@@ -152,7 +152,7 @@ type _path_prepend _path_append _path_remove
 printenv | grep -E "(API_KEY|TOKEN)" | wc -l
 
 # Test secure environment loading
-source ~/.config/zsh/.zshrc.pre-plugins.d/005-secure-env.zsh
+source ~/.config/zsh/.zshrc.pre-plugins.d/020-secure-env.zsh
 echo "Keys loaded: $(printenv | grep -E '(API_KEY|TOKEN)' | wc -l)"
 ```
 
