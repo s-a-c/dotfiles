@@ -19,19 +19,51 @@
     export SAVEHIST=1100000                         ## Maximum events in history file
 }
 
-## [compinit]
+## [compinit] - Improved version
 {
     [[ -n "$ZSH_DEBUG" ]] && echo "# [compinit]" >&2
+
+    # Check if we're in ZSH
+    if [[ -z "$ZSH_VERSION" ]]; then
+        echo "Warning: compinit setup requires ZSH" >&2
+        return 1
+    fi
+
+    # Prevent multiple initialization
+    if [[ -n "$_COMPINIT_LOADED" ]]; then
+        [[ -n "$ZSH_DEBUG" ]] && echo "# compinit already loaded" >&2
+        return 0
+    fi
+
     ## Cache Completion Loading:
     # Add to .zshrc before plugin loading
     export SKIP_GLOBAL_COMPINIT=1  # Skip system compinit
-    autoload -Uz compinit
-    compinit -C  # Skip security check for speed
+
+    # Load compinit with improved error handling
+    if ! autoload -Uz compinit; then
+        echo "Error: Failed to load compinit" >&2
+        return 1
+    fi
+
+    # Single, robust compinit call with proper error handling
+    if [[ -n "$COMPINIT_INSECURE" ]]; then
+        compinit -C -d "${ZDOTDIR:-$HOME}/.zcompdump" 2>/dev/null || {
+            echo "compinit -C failed, trying secure mode" >&2
+            compinit -d "${ZDOTDIR:-$HOME}/.zcompdump"
+        }
+    else
+        compinit -d "${ZDOTDIR:-$HOME}/.zcompdump" 2>/dev/null || {
+            echo "compinit failed, attempting recovery" >&2
+            rm -f "${ZDOTDIR:-$HOME}/.zcompdump"*
+            compinit -d "${ZDOTDIR:-$HOME}/.zcompdump"
+        }
+    fi
+
+    # Mark as loaded
+    export _COMPINIT_LOADED=1
+
+    [[ -n "$ZSH_DEBUG" ]] && echo "# compinit initialization complete" >&2
 }
-
-
-export EDITOR=$commands[nvim]
-export VISUAL=$commands[code-insiders]
 
 ## [builtins]
 {
