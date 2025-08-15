@@ -4,7 +4,13 @@
 # SECURITY NOTICE: The original file contained exposed API keys
 # This implementation uses environment files and proper security practices
 
-[[ -n "$ZSH_DEBUG" ]] && printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+[[ -n "$ZSH_DEBUG" ]] && {
+    printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+    # Add this check to detect errant file creation:
+    if [[ -f "${ZDOTDIR:-$HOME}/2" ]] || [[ -f "${ZDOTDIR:-$HOME}/3" ]]; then
+        echo "Warning: Numbered files detected - check for redirection typos" >&2
+    fi
+}
 
 # Function to securely load environment variables from a file
 load_env_file() {

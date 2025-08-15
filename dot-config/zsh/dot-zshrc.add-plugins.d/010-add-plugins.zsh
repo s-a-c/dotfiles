@@ -1,5 +1,11 @@
 
-[[ -n "$ZSH_DEBUG" ]] && printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+[[ -n "$ZSH_DEBUG" ]] && {
+    printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+    # Add this check to detect errant file creation:
+    if [[ -f "${ZDOTDIR:-$HOME}/2" ]] || [[ -f "${ZDOTDIR:-$HOME}/3" ]]; then
+        echo "Warning: Numbered files detected - check for redirection typos" >&2
+    fi
+}
 
 zgenom load mroth/evalcache
 zgenom load olets/zsh-abbr . v6
@@ -18,7 +24,7 @@ zgenom load jamesob/desk shell_plugins/zsh
 zgenom ohmyzsh plugins/direnv
 zgenom ohmyzsh plugins/dotnet
 zgenom ohmyzsh plugins/emacs
-zgenom load b4b4r07/enhancd
+#zgenom load b4b4r07/enhancd
 zgenom ohmyzsh plugins/eza
 zgenom ohmyzsh plugins/fzf
 zgenom ohmyzsh plugins/gem

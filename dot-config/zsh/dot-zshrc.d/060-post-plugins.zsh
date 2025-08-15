@@ -5,7 +5,20 @@
 # Set file type and editor options for this file
 # vim: ft=zsh sw=4 ts=4 et nu rnu ai si
 
-[[ -n "$ZSH_DEBUG" ]] && printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+[[ -n "$ZSH_DEBUG" ]] && {
+    printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+    # Add this check to detect errant file creation:
+    if [[ -f "${ZDOTDIR:-$HOME}/2" ]] || [[ -f "${ZDOTDIR:-$HOME}/3" ]]; then
+        echo "Warning: Numbered files detected - check for redirection typos" >&2
+    fi
+}
+
+# Silent PATH validation on every shell startup
+if [[ -n "$ZSH_DEBUG" ]] || [[ ! -f "${ZDOTDIR:-$HOME}/.path_check_done" ]]; then
+    path_validate_silent
+    # Create marker to reduce spam (refresh daily)
+    touch "${ZDOTDIR:-$HOME}/.path_check_done"
+fi
 
 ## [plugins]    ## Plugin Integrations
 {

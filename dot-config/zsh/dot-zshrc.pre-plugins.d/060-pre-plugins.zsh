@@ -7,7 +7,13 @@
 
 # vim: ft=zsh sw=4 ts=4 et nu rnu ai si
 
-[[ -n "$ZSH_DEBUG" ]] && printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+[[ -n "$ZSH_DEBUG" ]] && {
+    printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+    # Add this check to detect errant file creation:
+    if [[ -f "${ZDOTDIR:-$HOME}/2" ]] || [[ -f "${ZDOTDIR:-$HOME}/3" ]]; then
+        echo "Warning: Numbered files detected - check for redirection typos" >&2
+    fi
+}
 
 ## [pre-plugins]
 {
@@ -17,52 +23,6 @@
     export HISTSIZE=1000000                         ## Maximum events for internal history
     export HISTTIMEFORMAT='%F %T %z %a %V '
     export SAVEHIST=1100000                         ## Maximum events in history file
-}
-
-## [compinit] - Improved version
-{
-    [[ -n "$ZSH_DEBUG" ]] && echo "# [compinit]" >&2
-
-    # Check if we're in ZSH
-    if [[ -z "$ZSH_VERSION" ]]; then
-        echo "Warning: compinit setup requires ZSH" >&2
-        return 1
-    fi
-
-    # Prevent multiple initialization
-    if [[ -n "$_COMPINIT_LOADED" ]]; then
-        [[ -n "$ZSH_DEBUG" ]] && echo "# compinit already loaded" >&2
-        return 0
-    fi
-
-    ## Cache Completion Loading:
-    # Add to .zshrc before plugin loading
-    export SKIP_GLOBAL_COMPINIT=1  # Skip system compinit
-
-    # Load compinit with improved error handling
-    if ! autoload -Uz compinit; then
-        echo "Error: Failed to load compinit" >&2
-        return 1
-    fi
-
-    # Single, robust compinit call with proper error handling
-    if [[ -n "$COMPINIT_INSECURE" ]]; then
-        compinit -C -d "${ZDOTDIR:-$HOME}/.zcompdump" 2>/dev/null || {
-            echo "compinit -C failed, trying secure mode" >&2
-            compinit -d "${ZDOTDIR:-$HOME}/.zcompdump"
-        }
-    else
-        compinit -d "${ZDOTDIR:-$HOME}/.zcompdump" 2>/dev/null || {
-            echo "compinit failed, attempting recovery" >&2
-            rm -f "${ZDOTDIR:-$HOME}/.zcompdump"*
-            compinit -d "${ZDOTDIR:-$HOME}/.zcompdump"
-        }
-    fi
-
-    # Mark as loaded
-    export _COMPINIT_LOADED=1
-
-    [[ -n "$ZSH_DEBUG" ]] && echo "# compinit initialization complete" >&2
 }
 
 ## [builtins]
@@ -225,7 +185,9 @@
         export ZSH_DEFER_SHOW_WAIT=1
 
         # Defer non-critical commands for faster startup
-        zsh-defer -c 'autoload -U compinit; compinit' 2>/dev/null || autoload -U compinit; compinit
+        # zsh-defer disabled - conflicts with main compinit
+        #zsh-defer -c 'autoload -U compinit; compinit' 2>/dev/null || autoload -U compinit; compinit
+
     }
 
     ## [plugins.zsh-navigation-tools]
@@ -294,8 +256,8 @@
             export FPATH="${HOMEBREW_PREFIX}/share/zsh/site-functions:${FPATH}"
 
             # Initialize completion system with Homebrew functions prioritized
-            autoload -Uz compinit
-            compinit
+            #autoload -Uz compinit  # DISABLED - handled by main compinit
+            #compinit               # DISABLED - handled by main compinit
         }
 
         function brews() {
@@ -634,6 +596,17 @@
         elif [[ -d "${HOME}/.nvm" ]]; then
             export NVM_DIR="${HOME}/.nvm"
         fi
+
+        ## [tools.nvm]  ## Node.js version management (if nvm exists)
+        [[ -d "$NVM_DIR" ]] && {
+            # Load nvm lazily to improve startup time
+            nvm() {
+                unfunction nvm
+                [[ -s "$NVM_DIR/nvm.sh" ]] && builtin source "$NVM_DIR/nvm.sh"
+                [[ -s "$NVM_DIR/bash_completion" ]] && builtin source "$NVM_DIR/bash_completion"
+                nvm "$@"
+            }
+        }
 
         zstyle ':omz:plugins:nvm' lazy yes
         zstyle ':omz:plugins:nvm' lazy-cmd eslint prettier typescript

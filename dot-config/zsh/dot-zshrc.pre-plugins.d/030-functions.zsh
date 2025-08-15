@@ -1,6 +1,99 @@
 # Add to ~/.config/zsh/.zshrc.d/lazy-loading.zsh
 
-[[ -n "$ZSH_DEBUG" ]] && printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+[[ -n "$ZSH_DEBUG" ]] && {
+    printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+    # Add this check to detect errant file creation:
+    if [[ -f "${ZDOTDIR:-$HOME}/2" ]] || [[ -f "${ZDOTDIR:-$HOME}/3" ]]; then
+        echo "Warning: Numbered files detected - check for redirection typos" >&2
+    fi
+}
+
+# PATH Health Check Function
+path_health_check() {
+    echo "=== PATH Health Check ==="
+
+    # Critical development tools
+    local critical_tools=("cc" "gcc" "clang" "make" "git" "python3" "node" "cargo")
+    local missing_tools=()
+
+    for tool in "${critical_tools[@]}"; do
+        if ! command -v "$tool" >/dev/null 2>&1; then
+            missing_tools+=("$tool")
+            echo "❌ MISSING: $tool"
+        else
+            echo "✅ FOUND: $tool -> $(which "$tool")"
+        fi
+    done
+
+    echo "\n=== PATH Contents ==="
+    echo "$PATH" | tr ':' '\n' | nl
+
+    echo "\n=== Missing Tools Summary ==="
+    if [[ ${#missing_tools[@]} -gt 0 ]]; then
+        echo "🔥 CRITICAL: ${#missing_tools[@]} essential tools missing: ${(j:, :)missing_tools}"
+        echo "Run: xcode-select --install"
+    else
+        echo "✅ All critical development tools found"
+    fi
+}
+
+# Quick PATH validation on startup (silent check)
+path_validate_silent() {
+    if ! command -v cc >/dev/null 2>&1; then
+        echo "⚠️  WARNING: C compiler (cc) not found - run 'path_health_check' for details" >&2
+    fi
+}
+
+# Monitor PATH changes during session
+monitor_path_changes() {
+    if [[ -z "$_INITIAL_PATH" ]]; then
+        export _INITIAL_PATH="$PATH"
+    fi
+
+    if [[ "$PATH" != "$_INITIAL_PATH" ]]; then
+        echo "🔄 PATH CHANGED detected"
+        echo "Run 'path_diff' to see changes"
+    fi
+}
+
+# Show PATH differences
+path_diff() {
+    if [[ -n "$_INITIAL_PATH" ]]; then
+        echo "=== INITIAL PATH ==="
+        echo "$_INITIAL_PATH" | tr ':' '\n' | sort | nl
+        echo "\n=== CURRENT PATH ==="
+        echo "$PATH" | tr ':' '\n' | sort | nl
+        echo "\n=== ADDED PATHS ==="
+        comm -13 <(echo "$_INITIAL_PATH" | tr ':' '\n' | sort) <(echo "$PATH" | tr ':' '\n' | sort)
+        echo "\n=== REMOVED PATHS ==="
+        comm -23 <(echo "$_INITIAL_PATH" | tr ':' '\n' | sort) <(echo "$PATH" | tr ':' '\n' | sort)
+    else
+        echo "No initial PATH recorded"
+    fi
+}
+
+# Automated PATH problem detection
+check_critical_paths() {
+    # Check for duplicate paths
+    local path_array=(${(s/:/)PATH})
+    local unique_paths=($(printf '%s\n' "${path_array[@]}" | sort -u))
+
+    if [[ ${#path_array[@]} -ne ${#unique_paths[@]} ]]; then
+        echo "⚠️  WARNING: Duplicate paths in \$PATH detected"
+    fi
+
+    # Check for non-existent paths
+    local missing_paths=()
+    for path_entry in "${path_array[@]}"; do
+        if [[ ! -d "$path_entry" ]]; then
+            missing_paths+=("$path_entry")
+        fi
+    done
+
+    if [[ ${#missing_paths[@]} -gt 0 ]]; then
+        echo "⚠️  WARNING: ${#missing_paths[@]} non-existent paths in \$PATH"
+    fi
+}
 
 ## Text Color Variables
 readonly RED='\033[31m'   ## Red
