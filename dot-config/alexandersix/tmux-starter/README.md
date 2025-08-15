@@ -36,7 +36,7 @@ mv ~/.tmux.conf ~/.tmux.conf.bak
 ```bash
 
 # Symlinking keeps the file up to date with new versions
-ln -S /PATH/TO/FILE/tmux-starter/.tmux.conf /PATH/TO/HOME
+ln -s /PATH/TO/FILE/tmux-starter/.tmux.conf /PATH/TO/HOME
 
 # Copying moves the file but does NOT automatically keep it up to date
 mv /PATH/TO/FILE/tmux-starter/.tmux.conf /PATH/TO/HOME
