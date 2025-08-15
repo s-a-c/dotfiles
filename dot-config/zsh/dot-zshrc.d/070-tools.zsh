@@ -5,7 +5,13 @@
 # Set file type and editor options for this file
 # vim: ft=zsh sw=4 ts=4 et nu rnu ai si
 
-[[ -n "$ZSH_DEBUG" ]] && printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+[[ -n "$ZSH_DEBUG" ]] && {
+    printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+    # Add this check to detect errant file creation:
+    if [[ -f "${ZDOTDIR:-$HOME}/2" ]] || [[ -f "${ZDOTDIR:-$HOME}/3" ]]; then
+        echo "Warning: Numbered files detected - check for redirection typos" >&2
+    fi
+}
 
 # Add Composer global vendor/bin to PATH if Composer is available
 {
@@ -18,15 +24,6 @@
         fi
         unset composer_home
     fi
-}
-
-# Set application preferences based on available commands
-{
-    [[ -n "$ZSH_DEBUG" ]] && echo "# [editor]" >&2
-
-    [[ -n "${commands[nvim]}" ]] && export EDITOR="${commands[nvim]}"
-    [[ -n "${commands[code]}" ]] && export VISUAL="${commands[code]}"
-    [[ -n "${commands[code-insiders]}" ]] && export VISUAL="${commands[code-insiders]}"
 }
 
 # Platform-specific configurations
@@ -59,6 +56,27 @@
         builtin source "${HOME}/.mcp-environment.sh"
     }
 
+    ## [tools.bob]  ## Bob Neovim version manager configuration
+    {
+        [[ -n "$ZSH_DEBUG" ]] && echo "# [tools.bob]" >&2
+
+        # Laravel/PHP development - safely remove bob alias if it exists
+        if (( ${+aliases[bob]} )); then
+            unalias bob
+        fi
+
+        export BOB_CONFIG=${XDG_CONFIG_HOME}/bob/config.json
+        [[ -n "${commands[bob]}" ]] && {
+            # Source bob environment if it exists
+            if [[ -f "${XDG_DATA_HOME}/bob/env/env.sh" ]]; then
+                builtin source "${XDG_DATA_HOME}/bob/env/env.sh"
+            fi
+            bob use nightly
+            bob sync
+            bob update --all
+        }
+    }
+
     ## [tools.bun]  ## bun completions
     {
         [[ -n "$ZSH_DEBUG" ]] && echo "# [tools.bun]" >&2
@@ -74,8 +92,8 @@
 
         # The following lines have been added by Docker Desktop to enable Docker CLI completions.
         fpath=("${HOME}/.docker/completions" $fpath)
-        autoload -Uz compinit
-        compinit
+        #autoload -Uz compinit  # DISABLED - handled by main compinit
+        #compinit               # DISABLED - handled by main compinit
     }
 
     ## [tools.gcp]  ## Google Cloud SDK
