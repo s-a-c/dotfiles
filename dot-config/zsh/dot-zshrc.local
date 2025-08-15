@@ -1,0 +1,32 @@
+#!/opt/homebrew/bin/zsh
+
+# Function to source .zsh files from .zshrc.local.d
+load_zsh_configs() {
+    local config_dir="${ZDOTDIR}/.zshrc.local.d"
+
+    # Check if the directory exists
+    if [[ ! -d "$config_dir" ]]; then
+        return 0
+    fi
+
+    # Source all .zsh files in alphabetical order
+    for file in "$config_dir"/*.zsh; do
+        # Skip if no matching files (glob doesn't expand)
+        [[ ! -e "$file" ]] && continue
+
+        # Check if file is readable
+        if [[ -r "$file" ]]; then
+            # Optional: Print which file is being sourced (useful for debugging)
+            # echo "Loading: $file"
+            source "$file"
+        else
+            echo "Warning: Cannot read $file" >&2
+        fi
+    done
+}
+
+# Call the function
+load_zsh_configs
+
+# Clean up
+unset -f load_zsh_configs
