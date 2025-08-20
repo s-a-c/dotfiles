@@ -70,7 +70,7 @@ local function setup_plugins()
         { src = "https://github.com/lewis6991/gitsigns.nvim" },
 
         -- Editor enhancements
-        { src = "https://github.com/ThePrimeagen/harpoon",                     checkout = "harpoon2" },
+        { src = "https://github.com/ThePrimeagen/harpoon",                       checkout = "harpoon2" },
         { src = "https://github.com/mbbill/undotree" },
         { src = "https://github.com/kevinhwang91/nvim-ufo" },
         { src = "https://github.com/karb94/neoscroll.nvim" },
@@ -113,8 +113,10 @@ local function setup_plugins()
         { src = "https://github.com/nvzone/volt" },
         { src = "https://github.com/nvzone/typr" },
 
-        -- Learning
+        -- Learning and productivity training
         { src = "https://github.com/tris203/precognition.nvim" },
+        { src = "https://github.com/m4xshen/hardtime.nvim" },
+        { src = "https://github.com/ThePrimeagen/vim-be-good" },
 
         -- Language specific
         { src = "https://github.com/chomosuke/typst-preview.nvim" },
@@ -177,7 +179,7 @@ local function load_plugin_configs()
         phase_times[phase_name] = elapsed
         if vim.g.snacks_debug_loading then
             vim.notify(string.format("%s completed in %.2fms", phase_name, elapsed),
-                     vim.log.levels.DEBUG, { title = "Plugin Loading" })
+                vim.log.levels.DEBUG, { title = "Plugin Loading" })
         end
     end
 
@@ -329,6 +331,8 @@ local function load_plugin_configs()
         -- Learning and productivity tools (conditional)
         if vim.g.enable_learning_plugins ~= false then
             require("plugins.editor.precognition")
+            require("plugins.editor.hardtime")
+            require("plugins.editor.vim-be-good")
         end
 
         -- Time tracking (conditional)
@@ -348,7 +352,7 @@ local function load_plugin_configs()
             local total_time = vim.fn.reltimefloat(vim.fn.reltime(start_time)) * 1000
             vim.schedule(function()
                 vim.notify(string.format("Plugin loading completed in %.2fms", total_time),
-                         vim.log.levels.INFO, { title = "Performance" })
+                    vim.log.levels.INFO, { title = "Performance" })
             end)
         end
     end, 500) -- 500ms delay

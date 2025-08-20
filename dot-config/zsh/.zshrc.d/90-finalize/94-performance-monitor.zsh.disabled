@@ -1,0 +1,495 @@
+# Performance Monitor for .NG Architecture
+# This file provides automatic performance monitoring and optimization
+# File: 20-performance-monitor.zsh
+# Target: Automatic performance monitoring integrated into .ng finalization
+
+[[ "$ZSH_DEBUG" == "1" ]] && {
+    printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+}
+
+# =============================================================================
+# PERFORMANCE MONITORING SYSTEM (.NG-NATIVE)
+# =============================================================================
+# Provides automatic performance monitoring, analysis, and optimization
+# recommendations integrated into the .ng architecture
+
+# Global performance monitoring registry
+typeset -gA _NG_PERF_METRICS
+typeset -gA _NG_PERF_BENCHMARKS
+typeset -gA _NG_PERF_RECOMMENDATIONS
+typeset -ga _NG_PERF_ISSUES
+
+# Performance benchmarking baseline
+typeset -gA _NG_PERF_BASELINES=(
+    ["startup_time_target"]=3000     # Target: 3 seconds
+    ["startup_time_warning"]=5000    # Warning: 5 seconds
+    ["startup_time_critical"]=8000   # Critical: 8 seconds
+    ["function_calls_warning"]=1000  # Warning: 1000 calls
+    ["function_calls_critical"]=2000 # Critical: 2000 calls
+    ["memory_usage_warning"]=50      # Warning: 50MB
+    ["memory_usage_critical"]=100    # Critical: 100MB
+)
+
+# Automatic .ng startup time monitoring
+monitor_ng_startup_performance() {
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [PERF] Monitoring .ng startup performance..." >&2
+
+    # Calculate startup time if available
+    local startup_time="unknown"
+    if [[ -n "$_NG_ENV_BACKUP_TIMESTAMP" ]]; then
+        local current_time=$(date +%s)
+        local elapsed_ms=$(((current_time - _NG_ENV_BACKUP_TIMESTAMP) * 1000))
+        startup_time="$elapsed_ms"
+        _NG_PERF_METRICS["startup_time_ms"]="$startup_time"
+    fi
+
+    # Analyze startup performance
+    if [[ "$startup_time" != "unknown" ]]; then
+        local target="${_NG_PERF_BASELINES[startup_time_target]}"
+        local warning="${_NG_PERF_BASELINES[startup_time_warning]}"
+        local critical="${_NG_PERF_BASELINES[startup_time_critical]}"
+
+        if [[ "$startup_time" -le "$target" ]]; then
+            _NG_PERF_METRICS["startup_performance"]="excellent"
+            [[ "$ZSH_DEBUG" == "1" ]] && echo "# [PERF] Startup performance: excellent (${startup_time}ms)" >&2
+        elif [[ "$startup_time" -le "$warning" ]]; then
+            _NG_PERF_METRICS["startup_performance"]="good"
+            [[ "$ZSH_DEBUG" == "1" ]] && echo "# [PERF] Startup performance: good (${startup_time}ms)" >&2
+        elif [[ "$startup_time" -le "$critical" ]]; then
+            _NG_PERF_METRICS["startup_performance"]="degraded"
+            echo "# [PERF] WARNING: Startup performance degraded (${startup_time}ms)" >&2
+            _NG_PERF_ISSUES+=("startup_slow")
+        else
+            _NG_PERF_METRICS["startup_performance"]="critical"
+            echo "# [PERF] CRITICAL: Startup performance critical (${startup_time}ms)" >&2
+            _NG_PERF_ISSUES+=("startup_critical")
+        fi
+    fi
+
+    # Monitor .ng system initialization overhead
+    local ng_systems_loaded=0
+    local ng_systems_failed=0
+
+    # Check .ng prevention systems
+    [[ "${_NG_INTELLIGENT_PATH_LOADED:-false}" == "true" ]] && ((ng_systems_loaded++)) || ((ng_systems_failed++))
+    [[ "${_NG_COMMAND_ASSURANCE_LOADED:-false}" == "true" ]] && ((ng_systems_loaded++)) || ((ng_systems_failed++))
+    [[ "${_NG_ENVIRONMENT_VALIDATION_LOADED:-false}" == "true" ]] && ((ng_systems_loaded++)) || ((ng_systems_failed++))
+    [[ "${_NG_INTELLIGENT_PLUGIN_MANAGER_LOADED:-false}" == "true" ]] && ((ng_systems_loaded++)) || ((ng_systems_failed++))
+    [[ "${_NG_COMPLETION_INTELLIGENCE_LOADED:-false}" == "true" ]] && ((ng_systems_loaded++)) || ((ng_systems_failed++))
+
+    _NG_PERF_METRICS["ng_systems_loaded"]="$ng_systems_loaded"
+    _NG_PERF_METRICS["ng_systems_failed"]="$ng_systems_failed"
+
+    if [[ "$ng_systems_failed" -gt 0 ]]; then
+        echo "# [PERF] WARNING: $ng_systems_failed .ng systems failed to load" >&2
+        _NG_PERF_ISSUES+=("ng_systems_failed")
+    fi
+
+    [[ "$ZSH_DEBUG" == "1" ]] && {
+        echo "# [PERF] .ng systems loaded: $ng_systems_loaded, failed: $ng_systems_failed" >&2
+    }
+
+    return 0
+}
+
+# .ng performance regression detection
+detect_ng_performance_regression() {
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [PERF] Detecting .ng performance regression..." >&2
+
+    local perf_cache="${ZDOTDIR:-$HOME/.config/zsh}/.ng-performance.cache"
+    local regression_detected=false
+    local performance_changes=0
+
+    # Load previous performance metrics
+    local -A previous_metrics
+    if [[ -f "$perf_cache" ]]; then
+        while IFS='=' read -r key value; do
+            [[ -n "$key" && -n "$value" ]] && previous_metrics["$key"]="$value"
+        done < "$perf_cache"
+    fi
+
+    # Compare current metrics with previous ones
+    local current_startup="${_NG_PERF_METRICS[startup_time_ms]:-unknown}"
+    local previous_startup="${previous_metrics[startup_time_ms]:-unknown}"
+
+    if [[ "$current_startup" != "unknown" && "$previous_startup" != "unknown" ]]; then
+        local startup_diff=$((current_startup - previous_startup))
+        local regression_threshold=1000  # 1 second regression threshold
+
+        if [[ "$startup_diff" -gt "$regression_threshold" ]]; then
+            echo "# [PERF] REGRESSION: Startup time increased by ${startup_diff}ms" >&2
+            _NG_PERF_ISSUES+=("startup_regression")
+            regression_detected=true
+            ((performance_changes++))
+        elif [[ "$startup_diff" -lt -500 ]]; then
+            echo "# [PERF] IMPROVEMENT: Startup time decreased by $((startup_diff * -1))ms" >&2
+            ((performance_changes++))
+        fi
+    fi
+
+    # Check for .ng system loading regressions
+    local current_failed="${_NG_PERF_METRICS[ng_systems_failed]:-0}"
+    local previous_failed="${previous_metrics[ng_systems_failed]:-0}"
+
+    if [[ "$current_failed" -gt "$previous_failed" ]]; then
+        local new_failures=$((current_failed - previous_failed))
+        echo "# [PERF] REGRESSION: $new_failures additional .ng systems failed" >&2
+        _NG_PERF_ISSUES+=("ng_systems_regression")
+        regression_detected=true
+        ((performance_changes++))
+    fi
+
+    # Update performance cache
+    {
+        for metric in "${!_NG_PERF_METRICS[@]}"; do
+            echo "$metric=${_NG_PERF_METRICS[$metric]}"
+        done
+    } > "$perf_cache"
+
+    # Export regression status
+    export _NG_PERF_REGRESSION_DETECTED="$regression_detected"
+    export _NG_PERF_CHANGES_DETECTED="$performance_changes"
+
+    [[ "$ZSH_DEBUG" == "1" ]] && {
+        echo "# [PERF] Regression detection complete: $regression_detected ($performance_changes changes)" >&2
+    }
+
+    return 0
+}
+
+# Slow .ng function identification
+identify_slow_ng_functions() {
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [PERF] Identifying slow .ng functions..." >&2
+
+    local slow_functions=0
+    local -a performance_warnings=()
+
+    # Check .ng prevention system function performance
+    local -a ng_functions_to_check=(
+        "intelligent_path_builder"
+        "intelligent_command_discovery"
+        "validate_environment_variables"
+        "resolve_plugin_dependencies"
+        "monitor_completion_cache_health"
+        "validate_ng_configuration_integrity"
+    )
+
+    for func in "${ng_functions_to_check[@]}"; do
+        if typeset -f "$func" >/dev/null 2>&1; then
+            # Check if function exists and is reasonably sized
+            local func_lines=$(typeset -f "$func" | wc -l)
+            if [[ "$func_lines" -gt 200 ]]; then
+                echo "# [PERF] WARNING: Large .ng function may impact performance: $func ($func_lines lines)" >&2
+                performance_warnings+=("$func:large_function")
+                ((slow_functions++))
+            fi
+
+            _NG_PERF_METRICS["${func}_lines"]="$func_lines"
+        else
+            echo "# [PERF] WARNING: Expected .ng function not found: $func" >&2
+            performance_warnings+=("$func:missing_function")
+            ((slow_functions++))
+        fi
+    done
+
+    # Check for .ng functions that might be called too frequently
+    local -A function_call_patterns=(
+        ["path_health_monitor"]="should_be_infrequent"
+        ["validate_environment_variables"]="should_be_startup_only"
+        ["monitor_completion_cache_health"]="should_be_periodic"
+    )
+
+    for func in "${!function_call_patterns[@]}"; do
+        local pattern="${function_call_patterns[$func]}"
+        # This is a placeholder for actual call frequency monitoring
+        # In a real implementation, we'd track function calls over time
+        [[ "$ZSH_DEBUG" == "1" ]] && echo "# [PERF] Function call pattern check: $func ($pattern)" >&2
+    done
+
+    # Export slow function status
+    export _NG_PERF_SLOW_FUNCTIONS="$slow_functions"
+    export _NG_PERF_FUNCTION_WARNINGS="${#performance_warnings[@]}"
+
+    [[ "$ZSH_DEBUG" == "1" ]] && {
+        echo "# [PERF] Slow function identification complete: $slow_functions issues, ${#performance_warnings[@]} warnings" >&2
+    }
+
+    return 0
+}
+
+# .ng auto-optimization suggestions
+generate_ng_optimization_suggestions() {
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [PERF] Generating .ng optimization suggestions..." >&2
+
+    local suggestions_generated=0
+
+    # Analyze startup performance and suggest optimizations
+    local startup_perf="${_NG_PERF_METRICS[startup_performance]:-unknown}"
+    case "$startup_perf" in
+        "degraded"|"critical")
+            _NG_PERF_RECOMMENDATIONS["startup"]="Consider reducing .ng system overhead or deferring non-critical checks"
+            ((suggestions_generated++))
+            ;;
+        "good")
+            _NG_PERF_RECOMMENDATIONS["startup"]="Good performance, monitor for regressions"
+            ((suggestions_generated++))
+            ;;
+        "excellent")
+            _NG_PERF_RECOMMENDATIONS["startup"]="Excellent performance maintained"
+            ((suggestions_generated++))
+            ;;
+    esac
+
+    # Suggest optimizations based on system status
+    local failed_systems="${_NG_PERF_METRICS[ng_systems_failed]:-0}"
+    if [[ "$failed_systems" -gt 0 ]]; then
+        _NG_PERF_RECOMMENDATIONS["systems"]="Fix $failed_systems failed .ng systems to improve reliability"
+        ((suggestions_generated++))
+    fi
+
+    # Check for specific performance issues and suggest fixes
+    for issue in "${_NG_PERF_ISSUES[@]}"; do
+        case "$issue" in
+            "startup_slow")
+                _NG_PERF_RECOMMENDATIONS["startup_optimization"]="Enable lazy loading or reduce .ng system initialization overhead"
+                ;;
+            "startup_critical")
+                _NG_PERF_RECOMMENDATIONS["startup_emergency"]="URGENT: Disable non-essential .ng systems or investigate system issues"
+                ;;
+            "ng_systems_failed")
+                _NG_PERF_RECOMMENDATIONS["system_reliability"]="Debug failed .ng systems and ensure proper error handling"
+                ;;
+            "startup_regression")
+                _NG_PERF_RECOMMENDATIONS["regression_fix"]="Investigate recent changes that may have caused performance regression"
+                ;;
+        esac
+        ((suggestions_generated++))
+    done
+
+    # Memory usage optimization suggestions
+    local env_issues="${_NG_ENV_TOTAL_ISSUES:-0}"
+    if [[ "$env_issues" -gt 5 ]]; then
+        _NG_PERF_RECOMMENDATIONS["memory"]="High environment issue count may indicate memory inefficiency"
+        ((suggestions_generated++))
+    fi
+
+    # Plugin performance suggestions
+    local plugin_issues="${_NG_PLUGIN_PERFORMANCE_ISSUES:-0}"
+    if [[ "$plugin_issues" -gt 0 ]]; then
+        _NG_PERF_RECOMMENDATIONS["plugins"]="Optimize plugin loading order and reduce plugin conflicts"
+        ((suggestions_generated++))
+    fi
+
+    # Export optimization suggestions
+    export _NG_PERF_SUGGESTIONS_GENERATED="$suggestions_generated"
+
+    [[ "$ZSH_DEBUG" == "1" ]] && {
+        echo "# [PERF] Optimization suggestions generated: $suggestions_generated" >&2
+    }
+
+    return 0
+}
+
+# .ng performance trend analysis
+analyze_ng_performance_trends() {
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [PERF] Analyzing .ng performance trends..." >&2
+
+    local trend_file="${ZDOTDIR:-$HOME/.config/zsh}/.ng-performance-trends.log"
+    local current_timestamp=$(date +%s)
+
+    # Record current performance metrics
+    {
+        echo "$current_timestamp:startup_time:${_NG_PERF_METRICS[startup_time_ms]:-unknown}"
+        echo "$current_timestamp:ng_systems_loaded:${_NG_PERF_METRICS[ng_systems_loaded]:-0}"
+        echo "$current_timestamp:ng_systems_failed:${_NG_PERF_METRICS[ng_systems_failed]:-0}"
+        echo "$current_timestamp:performance_issues:${#_NG_PERF_ISSUES[@]}"
+    } >> "$trend_file"
+
+    # Analyze trends if we have historical data
+    local trend_analysis="stable"
+    if [[ -f "$trend_file" ]]; then
+        local entries=$(wc -l < "$trend_file" 2>/dev/null || echo 0)
+        if [[ "$entries" -gt 10 ]]; then
+            # Get recent startup times for trend analysis
+            local recent_times=($(tail -10 "$trend_file" | grep ":startup_time:" | cut -d: -f3 | grep -v "unknown"))
+
+            if [[ ${#recent_times[@]} -ge 5 ]]; then
+                local total=0
+                for time in "${recent_times[@]}"; do
+                    total=$((total + time))
+                done
+                local average=$((total / ${#recent_times[@]}))
+                local current="${_NG_PERF_METRICS[startup_time_ms]:-0}"
+
+                if [[ "$current" != "unknown" && "$current" -gt 0 ]]; then
+                    local variance=$((current - average))
+                    if [[ "$variance" -gt 1000 ]]; then
+                        trend_analysis="degrading"
+                    elif [[ "$variance" -lt -500 ]]; then
+                        trend_analysis="improving"
+                    fi
+                fi
+            fi
+        fi
+
+        # Clean up old entries (keep last 100)
+        if [[ "$entries" -gt 100 ]]; then
+            tail -100 "$trend_file" > "${trend_file}.tmp" && mv "${trend_file}.tmp" "$trend_file"
+        fi
+    fi
+
+    # Export trend analysis
+    export _NG_PERF_TREND_ANALYSIS="$trend_analysis"
+
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [PERF] Trend analysis complete: $trend_analysis" >&2
+
+    return 0
+}
+
+# Automatic .ng performance reporting
+generate_ng_performance_report() {
+    local report_file="${ZDOTDIR:-$HOME/.config/zsh}/.ng-performance-report.txt"
+
+    {
+        echo "# .NG Performance Monitoring Report"
+        echo "# Generated: $(date)"
+        echo "# =================================="
+        echo ""
+        echo "## Performance Metrics"
+        for metric in "${!_NG_PERF_METRICS[@]}"; do
+            echo "$metric: ${_NG_PERF_METRICS[$metric]}"
+        done
+        echo ""
+        echo "## Performance Issues (${#_NG_PERF_ISSUES[@]})"
+        for issue in "${_NG_PERF_ISSUES[@]}"; do
+            echo "- $issue"
+        done
+        echo ""
+        echo "## Optimization Recommendations (${#_NG_PERF_RECOMMENDATIONS[@]})"
+        for rec_key in "${!_NG_PERF_RECOMMENDATIONS[@]}"; do
+            echo "- $rec_key: ${_NG_PERF_RECOMMENDATIONS[$rec_key]}"
+        done
+        echo ""
+        echo "## Trend Analysis"
+        echo "Current trend: ${_NG_PERF_TREND_ANALYSIS:-unknown}"
+        echo "Regression detected: ${_NG_PERF_REGRESSION_DETECTED:-false}"
+        echo ""
+    } > "$report_file"
+
+    export _NG_PERF_REPORT_FILE="$report_file"
+
+    return 0
+}
+
+# Performance diagnostics and reporting
+ng_performance_doctor() {
+    echo "🔍 .NG Performance Monitor - Health Check"
+    echo "=========================================="
+    echo
+
+    echo "📊 Performance Status:"
+    echo "  Startup Performance: ${_NG_PERF_METRICS[startup_performance]:-unknown}"
+    echo "  Startup Time: ${_NG_PERF_METRICS[startup_time_ms]:-unknown}ms"
+    echo "  .NG Systems Loaded: ${_NG_PERF_METRICS[ng_systems_loaded]:-0}"
+    echo "  .NG Systems Failed: ${_NG_PERF_METRICS[ng_systems_failed]:-0}"
+    echo "  Performance Issues: ${#_NG_PERF_ISSUES[@]}"
+    echo "  Trend Analysis: ${_NG_PERF_TREND_ANALYSIS:-unknown}"
+    echo "  Regression Detected: ${_NG_PERF_REGRESSION_DETECTED:-false}"
+    echo
+
+    if [[ "${#_NG_PERF_ISSUES[@]}" -gt 0 ]]; then
+        echo "⚠️  Performance Issues:"
+        for issue in "${_NG_PERF_ISSUES[@]}"; do
+            echo "  • $issue"
+        done
+        echo
+    fi
+
+    if [[ "${#_NG_PERF_RECOMMENDATIONS[@]}" -gt 0 ]]; then
+        echo "💡 Optimization Recommendations:"
+        for rec_key in "${!_NG_PERF_RECOMMENDATIONS[@]}"; do
+            echo "  • $rec_key: ${_NG_PERF_RECOMMENDATIONS[$rec_key]}"
+        done
+        echo
+    fi
+
+    echo "📈 Performance Benchmarks:"
+    for benchmark in "${!_NG_PERF_BASELINES[@]}"; do
+        echo "  • $benchmark: ${_NG_PERF_BASELINES[$benchmark]}"
+    done
+    echo
+
+    if [[ -n "$_NG_PERF_REPORT_FILE" ]]; then
+        echo "📄 Detailed report available: $_NG_PERF_REPORT_FILE"
+    fi
+
+    return 0
+}
+
+# Performance optimization utility
+ng_performance_optimize() {
+    echo "🚀 .NG Performance Optimization System"
+    echo "======================================"
+    echo
+
+    echo "Analyzing current performance..."
+    monitor_ng_startup_performance
+    detect_ng_performance_regression
+    identify_slow_ng_functions
+    generate_ng_optimization_suggestions
+
+    echo
+    echo "Optimization analysis complete."
+    echo "Performance status: ${_NG_PERF_METRICS[startup_performance]:-unknown}"
+    echo "Suggestions generated: ${_NG_PERF_SUGGESTIONS_GENERATED:-0}"
+
+    if [[ "${#_NG_PERF_RECOMMENDATIONS[@]}" -gt 0 ]]; then
+        echo
+        echo "🎯 Top recommendations:"
+        local count=0
+        for rec_key in "${!_NG_PERF_RECOMMENDATIONS[@]}"; do
+            echo "  $((++count)). ${_NG_PERF_RECOMMENDATIONS[$rec_key]}"
+            [[ "$count" -ge 3 ]] && break
+        done
+    fi
+
+    return 0
+}
+
+# =============================================================================
+# INITIALIZE PERFORMANCE MONITORING SYSTEM
+# =============================================================================
+
+[[ "$ZSH_DEBUG" == "1" ]] && echo "# [PERF] Initializing performance monitoring system..." >&2
+
+# 1. Monitor .ng startup performance
+monitor_ng_startup_performance
+
+# 2. Detect performance regressions
+detect_ng_performance_regression
+
+# 3. Identify slow .ng functions
+identify_slow_ng_functions
+
+# 4. Generate optimization suggestions
+generate_ng_optimization_suggestions
+
+# 5. Analyze performance trends
+analyze_ng_performance_trends
+
+# 6. Generate performance report
+generate_ng_performance_report
+
+# Export functions for use by other .ng systems
+typeset -gf monitor_ng_startup_performance detect_ng_performance_regression
+typeset -gf identify_slow_ng_functions generate_ng_optimization_suggestions
+typeset -gf analyze_ng_performance_trends generate_ng_performance_report
+typeset -gf ng_performance_doctor ng_performance_optimize
+
+[[ "$ZSH_DEBUG" == "1" ]] && echo "# [PERF] Performance monitoring system initialized successfully" >&2
+
+# =============================================================================
+# .NG INTEGRATION STATUS
+# =============================================================================
+export _NG_PERFORMANCE_MONITOR_LOADED="true"
+export _NG_PERFORMANCE_SYSTEM_VERSION="1.0.0"

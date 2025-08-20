@@ -1,0 +1,468 @@
+# Completion System Intelligence for .NG Architecture
+# This file replaces bulletproof compinit with intelligent completion management
+# File: 15-completion-intelligence.zsh
+# Target: Replace emergency completion fixes in 002-ultimate-compinit.zsh
+
+[[ "$ZSH_DEBUG" == "1" ]] && {
+    printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+}
+
+# =============================================================================
+# COMPLETION SYSTEM INTELLIGENCE (.NG-NATIVE)
+# =============================================================================
+# Replaces bulletproof compinit emergency fixes with intelligent, adaptive
+# completion management integrated into the .ng architecture
+
+# Global completion system registry
+typeset -gA _NG_COMPLETION_REGISTRY
+typeset -gA _NG_COMPLETION_CACHE_STATUS
+typeset -gA _NG_COMPLETION_PERFORMANCE
+typeset -ga _NG_COMPLETION_ISSUES
+
+# Completion cache health monitoring
+monitor_completion_cache_health() {
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [COMP] Monitoring completion cache health..." >&2
+
+    local cache_issues=0
+    local cache_health="healthy"
+
+    # Check completion dump file
+    local compdump_file="${ZSH_COMPDUMP:-${ZDOTDIR:-$HOME}/.zcompdump}"
+
+    if [[ -f "$compdump_file" ]]; then
+        # Check if cache is recent (less than 24 hours old)
+        local cache_age=$(($(date +%s) - $(stat -f %m "$compdump_file" 2>/dev/null || echo 0)))
+        local max_age=$((24 * 60 * 60))  # 24 hours in seconds
+
+        if [[ "$cache_age" -gt "$max_age" ]]; then
+            echo "# [COMP] WARNING: Completion cache is old (${cache_age}s), consider rebuild" >&2
+            cache_health="stale"
+            ((cache_issues++))
+        fi
+
+        # Check cache file size (suspiciously small cache might be corrupted)
+        local cache_size=$(stat -f %z "$compdump_file" 2>/dev/null || echo 0)
+        if [[ "$cache_size" -lt 1000 ]]; then
+            echo "# [COMP] WARNING: Completion cache unusually small (${cache_size} bytes)" >&2
+            cache_health="corrupted"
+            ((cache_issues++))
+        fi
+
+        # Check if cache is readable
+        if [[ ! -r "$compdump_file" ]]; then
+            echo "# [COMP] ERROR: Completion cache not readable: $compdump_file" >&2
+            cache_health="inaccessible"
+            ((cache_issues++))
+        fi
+
+        _NG_COMPLETION_CACHE_STATUS["file_exists"]="true"
+        _NG_COMPLETION_CACHE_STATUS["file_size"]="$cache_size"
+        _NG_COMPLETION_CACHE_STATUS["file_age"]="$cache_age"
+    else
+        echo "# [COMP] INFO: No completion cache found, will create on first compinit" >&2
+        cache_health="missing"
+        _NG_COMPLETION_CACHE_STATUS["file_exists"]="false"
+    fi
+
+    # Export cache health status
+    export _NG_COMPLETION_CACHE_HEALTH="$cache_health"
+    export _NG_COMPLETION_CACHE_ISSUES="$cache_issues"
+
+    [[ "$ZSH_DEBUG" == "1" ]] && {
+        echo "# [COMP] Cache health check complete: $cache_health ($cache_issues issues)" >&2
+    }
+
+    return 0
+}
+
+# Intelligent cache rebuild triggers
+intelligent_cache_rebuild() {
+    local rebuild_reason="$1"
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [COMP] Intelligent cache rebuild triggered: $rebuild_reason" >&2
+
+    local compdump_file="${ZSH_COMPDUMP:-${ZDOTDIR:-$HOME}/.zcompdump}"
+    local backup_file="${compdump_file}.backup.$(date +%s)"
+
+    # Create backup of existing cache
+    if [[ -f "$compdump_file" ]]; then
+        cp "$compdump_file" "$backup_file" 2>/dev/null && {
+            [[ "$ZSH_DEBUG" == "1" ]] && echo "# [COMP] Backed up completion cache to: $backup_file" >&2
+        }
+    fi
+
+    # Remove potentially corrupted cache
+    rm -f "$compdump_file" 2>/dev/null
+
+    # Force rebuild with compinit
+    if autoload -Uz compinit 2>/dev/null; then
+        # Use secure mode for rebuild
+        compinit -d "$compdump_file"
+        local rebuild_result=$?
+
+        if [[ "$rebuild_result" -eq 0 ]] && [[ -f "$compdump_file" ]]; then
+            echo "# [COMP] SUCCESS: Completion cache rebuilt successfully" >&2
+            _NG_COMPLETION_CACHE_STATUS["last_rebuild"]="$(date +%s)"
+            _NG_COMPLETION_CACHE_STATUS["rebuild_reason"]="$rebuild_reason"
+            export _NG_COMPLETION_CACHE_REBUILD_SUCCESS="true"
+        else
+            echo "# [COMP] ERROR: Completion cache rebuild failed (exit code: $rebuild_result)" >&2
+
+            # Attempt to restore backup
+            if [[ -f "$backup_file" ]]; then
+                mv "$backup_file" "$compdump_file" 2>/dev/null && {
+                    echo "# [COMP] Restored completion cache from backup" >&2
+                }
+            fi
+            export _NG_COMPLETION_CACHE_REBUILD_SUCCESS="false"
+        fi
+    else
+        echo "# [COMP] ERROR: Cannot load compinit for cache rebuild" >&2
+        export _NG_COMPLETION_CACHE_REBUILD_SUCCESS="false"
+    fi
+
+    return 0
+}
+
+# Completion performance optimization
+optimize_completion_performance() {
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [COMP] Optimizing completion performance..." >&2
+
+    local optimizations_applied=0
+
+    # Set completion performance options
+    zstyle ':completion:*' use-cache on
+    zstyle ':completion:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/completions"
+    ((optimizations_applied++))
+
+    # Create cache directory if it doesn't exist
+    local cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/completions"
+    if [[ ! -d "$cache_dir" ]]; then
+        mkdir -p "$cache_dir" 2>/dev/null && {
+            [[ "$ZSH_DEBUG" == "1" ]] && echo "# [COMP] Created completion cache directory: $cache_dir" >&2
+            ((optimizations_applied++))
+        }
+    fi
+
+    # Optimize completion matching
+    zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+    ((optimizations_applied++))
+
+    # Set reasonable completion menu behavior
+    zstyle ':completion:*' menu select=2
+    zstyle ':completion:*' list-suffixes
+    zstyle ':completion:*' expand prefix suffix
+    ((optimizations_applied++))
+
+    # Optimize completion for large directories
+    zstyle ':completion:*' accept-exact '*(N)'
+    zstyle ':completion:*' separate-sections true
+    ((optimizations_applied++))
+
+    # Configure completion performance limits
+    zstyle ':completion:*' max-errors 2 numeric
+    zstyle ':completion:*:default' list-prompt '%S%M matches%s'
+    ((optimizations_applied++))
+
+    # Export optimization status
+    export _NG_COMPLETION_OPTIMIZATIONS_APPLIED="$optimizations_applied"
+
+    [[ "$ZSH_DEBUG" == "1" ]] && {
+        echo "# [COMP] Performance optimization complete: $optimizations_applied optimizations applied" >&2
+    }
+
+    return 0
+}
+
+# Plugin completion integration management
+manage_plugin_completion_integration() {
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [COMP] Managing plugin completion integration..." >&2
+
+    local integrations_managed=0
+    local integration_issues=0
+
+    # Check for plugin-specific completion configurations
+    local -a completion_plugins=(
+        "zsh-users/zsh-completions"
+        "ohmyzsh/ohmyzsh"
+        "marlonrichert/zsh-autocomplete"
+    )
+
+    for plugin in "${completion_plugins[@]}"; do
+        case "$plugin" in
+            "zsh-users/zsh-completions")
+                # Ensure zsh-completions path is in fpath
+                local completions_dir="${ZDOTDIR:-$HOME}/.zgenom/zsh-users/zsh-completions-*"
+                if compgen -G "$completions_dir" >/dev/null 2>&1; then
+                    local actual_dir=$(echo $completions_dir)
+                    if [[ -d "$actual_dir/src" ]]; then
+                        if [[ ":$FPATH:" != *":$actual_dir/src:"* ]]; then
+                            export FPATH="$actual_dir/src:$FPATH"
+                            [[ "$ZSH_DEBUG" == "1" ]] && echo "# [COMP] Added zsh-completions to FPATH: $actual_dir/src" >&2
+                            ((integrations_managed++))
+                        fi
+                    fi
+                fi
+                ;;
+            "ohmyzsh/ohmyzsh")
+                # Ensure oh-my-zsh completions are available
+                if [[ -n "$ZSH" ]] && [[ -d "$ZSH/completions" ]]; then
+                    if [[ ":$FPATH:" != *":$ZSH/completions:"* ]]; then
+                        export FPATH="$ZSH/completions:$FPATH"
+                        [[ "$ZSH_DEBUG" == "1" ]] && echo "# [COMP] Added oh-my-zsh completions to FPATH: $ZSH/completions" >&2
+                        ((integrations_managed++))
+                    fi
+                fi
+                ;;
+            "marlonrichert/zsh-autocomplete")
+                # Check if autocomplete conflicts with other completion systems
+                if typeset -f _zsh_autosuggest_bind_widgets >/dev/null 2>&1; then
+                    # Potential conflict with autosuggestions
+                    echo "# [COMP] INFO: zsh-autocomplete detected with zsh-autosuggestions" >&2
+                    echo "# [COMP] INFO: Monitor for potential completion conflicts" >&2
+                fi
+                ;;
+        esac
+    done
+
+    # Check for conflicting completion settings
+    if [[ -n "$ZSH_AUTOSUGGEST_STRATEGY" ]]; then
+        local strategy_count="${#ZSH_AUTOSUGGEST_STRATEGY[@]}"
+        if [[ "$strategy_count" -gt 3 ]]; then
+            echo "# [COMP] WARNING: Too many autosuggest strategies may impact completion performance" >&2
+            ((integration_issues++))
+        fi
+    fi
+
+    # Export integration status
+    export _NG_COMPLETION_INTEGRATIONS_MANAGED="$integrations_managed"
+    export _NG_COMPLETION_INTEGRATION_ISSUES="$integration_issues"
+
+    [[ "$ZSH_DEBUG" == "1" ]] && {
+        echo "# [COMP] Plugin integration management complete: $integrations_managed managed, $integration_issues issues" >&2
+    }
+
+    return 0
+}
+
+# Completion conflict auto-resolution
+resolve_completion_conflicts() {
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [COMP] Resolving completion conflicts..." >&2
+
+    local conflicts_resolved=0
+
+    # Check for duplicate completion functions
+    local -a duplicate_functions=()
+
+    # Common completion conflicts to check
+    local -a common_completions=("_git" "_docker" "_kubectl" "_npm")
+
+    for completion in "${common_completions[@]}"; do
+        if typeset -f "$completion" >/dev/null 2>&1; then
+            # Check if there are multiple definitions (which would indicate conflict)
+            local function_locations=$(typeset -f "$completion" | grep -c "^$completion")
+            if [[ "$function_locations" -gt 1 ]]; then
+                echo "# [COMP] WARNING: Multiple definitions found for completion: $completion" >&2
+                duplicate_functions+=("$completion")
+            fi
+        fi
+    done
+
+    # Resolve bashcompinit conflicts
+    if ! typeset -f bashcompinit >/dev/null 2>&1; then
+        # Create safe bashcompinit function if missing
+        bashcompinit() {
+            if autoload -Uz bashcompinit 2>/dev/null; then
+                if bashcompinit 2>/dev/null; then
+                    return 0
+                fi
+            fi
+            # Create dummy function if bashcompinit fails
+            return 0
+        }
+        echo "# [COMP] Created safe bashcompinit fallback function" >&2
+        ((conflicts_resolved++))
+    fi
+
+    # Check for _tags completion function issues
+    if ! typeset -f _tags >/dev/null 2>&1; then
+        echo "# [COMP] WARNING: _tags completion function not available" >&2
+        echo "# [COMP] This may indicate incomplete completion system initialization" >&2
+    fi
+
+    # Export conflict resolution status
+    export _NG_COMPLETION_CONFLICTS_RESOLVED="$conflicts_resolved"
+    export _NG_COMPLETION_DUPLICATE_FUNCTIONS="${#duplicate_functions[@]}"
+
+    [[ "$ZSH_DEBUG" == "1" ]] && {
+        echo "# [COMP] Conflict resolution complete: $conflicts_resolved conflicts resolved" >&2
+        echo "# [COMP] Duplicate functions detected: ${#duplicate_functions[@]}" >&2
+    }
+
+    return 0
+}
+
+# Completion system health assessment
+assess_completion_system_health() {
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [COMP] Assessing completion system health..." >&2
+
+    local health_score=100
+    local health_status="healthy"
+
+    # Deduct points for various issues
+    local cache_issues="${_NG_COMPLETION_CACHE_ISSUES:-0}"
+    local integration_issues="${_NG_COMPLETION_INTEGRATION_ISSUES:-0}"
+    local duplicate_functions="${_NG_COMPLETION_DUPLICATE_FUNCTIONS:-0}"
+
+    health_score=$((health_score - (cache_issues * 10)))
+    health_score=$((health_score - (integration_issues * 5)))
+    health_score=$((health_score - (duplicate_functions * 3)))
+
+    # Check if compinit is functional
+    if ! typeset -f compdef >/dev/null 2>&1; then
+        echo "# [COMP] CRITICAL: compdef function not available - completion system not initialized" >&2
+        health_score=$((health_score - 50))
+    fi
+
+    # Check if basic completions work
+    if ! compgen -c ls >/dev/null 2>&1; then
+        echo "# [COMP] WARNING: Basic command completion not working" >&2
+        health_score=$((health_score - 20))
+    fi
+
+    # Determine health status based on score
+    if [[ "$health_score" -ge 90 ]]; then
+        health_status="excellent"
+    elif [[ "$health_score" -ge 75 ]]; then
+        health_status="good"
+    elif [[ "$health_score" -ge 50 ]]; then
+        health_status="degraded"
+    elif [[ "$health_score" -ge 25 ]]; then
+        health_status="poor"
+    else
+        health_status="critical"
+    fi
+
+    # Export health assessment
+    export _NG_COMPLETION_HEALTH_SCORE="$health_score"
+    export _NG_COMPLETION_HEALTH_STATUS="$health_status"
+
+    [[ "$ZSH_DEBUG" == "1" ]] && {
+        echo "# [COMP] Health assessment complete: $health_status (score: $health_score/100)" >&2
+    }
+
+    return 0
+}
+
+# Completion system diagnostics
+ng_completion_doctor() {
+    echo "🔍 .NG Completion System Intelligence - Health Check"
+    echo "==================================================="
+    echo
+
+    echo "📊 Completion System Status:"
+    echo "  Health Status: ${_NG_COMPLETION_HEALTH_STATUS:-unknown}"
+    echo "  Health Score: ${_NG_COMPLETION_HEALTH_SCORE:-0}/100"
+    echo "  Cache Health: ${_NG_COMPLETION_CACHE_HEALTH:-unknown}"
+    echo "  Cache Issues: ${_NG_COMPLETION_CACHE_ISSUES:-0}"
+    echo "  Integration Issues: ${_NG_COMPLETION_INTEGRATION_ISSUES:-0}"
+    echo "  Conflicts Resolved: ${_NG_COMPLETION_CONFLICTS_RESOLVED:-0}"
+    echo
+
+    echo "💾 Cache Status:"
+    echo "  File Exists: ${_NG_COMPLETION_CACHE_STATUS[file_exists]:-unknown}"
+    if [[ "${_NG_COMPLETION_CACHE_STATUS[file_exists]}" == "true" ]]; then
+        echo "  File Size: ${_NG_COMPLETION_CACHE_STATUS[file_size]:-unknown} bytes"
+        echo "  File Age: ${_NG_COMPLETION_CACHE_STATUS[file_age]:-unknown} seconds"
+    fi
+    echo "  Last Rebuild: ${_NG_COMPLETION_CACHE_STATUS[last_rebuild]:-never}"
+    echo
+
+    echo "⚙️ System Functions:"
+    local -a critical_functions=("compinit" "compdef" "bashcompinit" "_tags")
+    for func in "${critical_functions[@]}"; do
+        if typeset -f "$func" >/dev/null 2>&1; then
+            echo "  ✅ $func: available"
+        else
+            echo "  ❌ $func: missing"
+        fi
+    done
+    echo
+
+    echo "🔧 Optimizations Applied: ${_NG_COMPLETION_OPTIMIZATIONS_APPLIED:-0}"
+    echo "🔗 Plugin Integrations Managed: ${_NG_COMPLETION_INTEGRATIONS_MANAGED:-0}"
+    echo
+
+    if [[ "${_NG_COMPLETION_HEALTH_SCORE:-0}" -lt 75 ]]; then
+        echo "💡 Recommendations:"
+        echo "  • Run 'ng_completion_rebuild' to rebuild completion cache"
+        echo "  • Check for plugin conflicts affecting completions"
+        echo "  • Verify FPATH includes all completion directories"
+        if [[ "${_NG_COMPLETION_CACHE_HEALTH:-unknown}" == "corrupted" ]]; then
+            echo "  • Completion cache appears corrupted - rebuild recommended"
+        fi
+        echo
+    fi
+
+    return 0
+}
+
+# Completion cache rebuild utility
+ng_completion_rebuild() {
+    echo "🔧 .NG Completion System - Cache Rebuild"
+    echo "========================================"
+    echo
+
+    echo "Starting completion cache rebuild..."
+    intelligent_cache_rebuild "manual_request"
+
+    echo "Re-assessing completion system health..."
+    monitor_completion_cache_health
+    assess_completion_system_health
+
+    echo
+    echo "Rebuild complete. Current status: ${_NG_COMPLETION_HEALTH_STATUS:-unknown}"
+    echo "Health score: ${_NG_COMPLETION_HEALTH_SCORE:-0}/100"
+
+    return 0
+}
+
+# =============================================================================
+# INITIALIZE COMPLETION SYSTEM INTELLIGENCE
+# =============================================================================
+
+[[ "$ZSH_DEBUG" == "1" ]] && echo "# [COMP] Initializing completion system intelligence..." >&2
+
+# 1. Monitor completion cache health
+monitor_completion_cache_health
+
+# 2. Optimize completion performance
+optimize_completion_performance
+
+# 3. Manage plugin completion integration
+manage_plugin_completion_integration
+
+# 4. Resolve completion conflicts
+resolve_completion_conflicts
+
+# 5. Assess overall completion system health
+assess_completion_system_health
+
+# Trigger cache rebuild if needed
+if [[ "${_NG_COMPLETION_CACHE_HEALTH:-unknown}" == "corrupted" ]]; then
+    echo "# [COMP] Detected corrupted cache, triggering rebuild..." >&2
+    intelligent_cache_rebuild "corruption_detected"
+fi
+
+# Export functions for use by other .ng systems
+typeset -gf monitor_completion_cache_health intelligent_cache_rebuild
+typeset -gf optimize_completion_performance manage_plugin_completion_integration
+typeset -gf resolve_completion_conflicts assess_completion_system_health
+typeset -gf ng_completion_doctor ng_completion_rebuild
+
+[[ "$ZSH_DEBUG" == "1" ]] && echo "# [COMP] Completion system intelligence initialized successfully" >&2
+
+# =============================================================================
+# .NG INTEGRATION STATUS
+# =============================================================================
+export _NG_COMPLETION_INTELLIGENCE_LOADED="true"
+export _NG_COMPLETION_SYSTEM_VERSION="1.0.0"

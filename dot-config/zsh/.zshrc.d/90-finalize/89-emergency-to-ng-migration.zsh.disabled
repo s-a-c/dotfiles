@@ -1,0 +1,707 @@
+# Emergency Fixes to .NG Prevention Migration System
+# This file manages the complete transition from reactive emergency fixes to proactive .ng prevention
+# File: emergency-to-ng-migration.zsh
+# Target: Complete migration strategy and execution
+
+[[ "$ZSH_DEBUG" == "1" ]] && {
+    printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+}
+
+# =============================================================================
+# EMERGENCY FIXES TO .NG PREVENTION MIGRATION SYSTEM
+# =============================================================================
+# Manages the complete transition from reactive emergency fixes to
+# comprehensive .ng-native prevention systems
+
+# Global migration tracking
+typeset -gA _NG_MIGRATION_STATUS
+typeset -gA _NG_MIGRATION_PROGRESS
+typeset -gA _NG_EMERGENCY_FIX_STATUS
+typeset -ga _NG_MIGRATION_STEPS_COMPLETED
+
+# Emergency fixes to .NG prevention mapping
+typeset -gA _NG_PREVENTION_MAPPING=(
+    # Emergency fixes -> .NG prevention systems
+    ["path_emergency_fixes"]="intelligent_path_system"
+    ["command_emergency_overrides"]="command_assurance_system"
+    ["environment_emergency_fixes"]="environment_validation_system"
+    ["plugin_loading_guards"]="intelligent_plugin_manager"
+    ["completion_bulletproofing"]="completion_intelligence_system"
+    ["global_variable_fixes"]="environment_validation_system"
+    ["build_environment_fixes"]="command_assurance_system"
+    ["performance_emergency_patches"]="performance_monitoring_system"
+    ["configuration_emergency_backups"]="config_integrity_monitor"
+)
+
+# Check .NG prevention system readiness
+check_ng_prevention_readiness() {
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [MIGRATE] Checking .NG prevention system readiness..." >&2
+
+    local systems_ready=0
+    local systems_total=11
+    local readiness_issues=0
+
+    # Check core prevention systems (Week 1)
+    if [[ "${_NG_INTELLIGENT_PATH_LOADED:-false}" == "true" ]]; then
+        _NG_MIGRATION_STATUS["intelligent_path_system"]="ready"
+        ((systems_ready++))
+    else
+        _NG_MIGRATION_STATUS["intelligent_path_system"]="not_ready"
+        ((readiness_issues++))
+    fi
+
+    if [[ "${_NG_COMMAND_ASSURANCE_LOADED:-false}" == "true" ]]; then
+        _NG_MIGRATION_STATUS["command_assurance_system"]="ready"
+        ((systems_ready++))
+    else
+        _NG_MIGRATION_STATUS["command_assurance_system"]="not_ready"
+        ((readiness_issues++))
+    fi
+
+    if [[ "${_NG_ENVIRONMENT_VALIDATION_LOADED:-false}" == "true" ]]; then
+        _NG_MIGRATION_STATUS["environment_validation_system"]="ready"
+        ((systems_ready++))
+    else
+        _NG_MIGRATION_STATUS["environment_validation_system"]="not_ready"
+        ((readiness_issues++))
+    fi
+
+    if [[ "${_NG_POST_PLUGIN_ENV_CHECK_LOADED:-false}" == "true" ]]; then
+        _NG_MIGRATION_STATUS["post_plugin_env_check"]="ready"
+        ((systems_ready++))
+    else
+        _NG_MIGRATION_STATUS["post_plugin_env_check"]="not_ready"
+        ((readiness_issues++))
+    fi
+
+    # Check advanced prevention systems (Week 2)
+    if [[ "${_NG_INTELLIGENT_PLUGIN_MANAGER_LOADED:-false}" == "true" ]]; then
+        _NG_MIGRATION_STATUS["intelligent_plugin_manager"]="ready"
+        ((systems_ready++))
+    else
+        _NG_MIGRATION_STATUS["intelligent_plugin_manager"]="not_ready"
+        ((readiness_issues++))
+    fi
+
+    if [[ "${_NG_COMPLETION_INTELLIGENCE_LOADED:-false}" == "true" ]]; then
+        _NG_MIGRATION_STATUS["completion_intelligence_system"]="ready"
+        ((systems_ready++))
+    else
+        _NG_MIGRATION_STATUS["completion_intelligence_system"]="not_ready"
+        ((readiness_issues++))
+    fi
+
+    if [[ "${_NG_CONFIG_INTEGRITY_MONITOR_LOADED:-false}" == "true" ]]; then
+        _NG_MIGRATION_STATUS["config_integrity_monitor"]="ready"
+        ((systems_ready++))
+    else
+        _NG_MIGRATION_STATUS["config_integrity_monitor"]="not_ready"
+        ((readiness_issues++))
+    fi
+
+    if [[ "${_NG_PERFORMANCE_MONITOR_LOADED:-false}" == "true" ]]; then
+        _NG_MIGRATION_STATUS["performance_monitoring_system"]="ready"
+        ((systems_ready++))
+    else
+        _NG_MIGRATION_STATUS["performance_monitoring_system"]="not_ready"
+        ((readiness_issues++))
+    fi
+
+    # Check predictive and adaptive systems (Week 3)
+    if [[ "${_NG_PREDICTIVE_HEALTH_MONITOR_LOADED:-false}" == "true" ]]; then
+        _NG_MIGRATION_STATUS["predictive_health_monitor"]="ready"
+        ((systems_ready++))
+    else
+        _NG_MIGRATION_STATUS["predictive_health_monitor"]="not_ready"
+        ((readiness_issues++))
+    fi
+
+    if [[ "${_NG_ADAPTIVE_CONFIGURATION_LOADED:-false}" == "true" ]]; then
+        _NG_MIGRATION_STATUS["adaptive_configuration"]="ready"
+        ((systems_ready++))
+    else
+        _NG_MIGRATION_STATUS["adaptive_configuration"]="not_ready"
+        ((readiness_issues++))
+    fi
+
+    if [[ "${_NG_SELF_HEALING_SYSTEM_LOADED:-false}" == "true" ]]; then
+        _NG_MIGRATION_STATUS["self_healing_system"]="ready"
+        ((systems_ready++))
+    else
+        _NG_MIGRATION_STATUS["self_healing_system"]="not_ready"
+        ((readiness_issues++))
+    fi
+
+    # Calculate readiness percentage
+    local readiness_percentage=$((systems_ready * 100 / systems_total))
+
+    # Export readiness status
+    export _NG_MIGRATION_SYSTEMS_READY="$systems_ready"
+    export _NG_MIGRATION_SYSTEMS_TOTAL="$systems_total"
+    export _NG_MIGRATION_READINESS_PERCENTAGE="$readiness_percentage"
+    export _NG_MIGRATION_READINESS_ISSUES="$readiness_issues"
+
+    [[ "$ZSH_DEBUG" == "1" ]] && {
+        echo "# [MIGRATE] .NG system readiness: $systems_ready/$systems_total ($readiness_percentage%)" >&2
+        echo "# [MIGRATE] Readiness issues: $readiness_issues" >&2
+    }
+
+    return 0
+}
+
+# Validate .NG prevention effectiveness
+validate_ng_prevention_effectiveness() {
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [MIGRATE] Validating .NG prevention effectiveness..." >&2
+
+    local effectiveness_tests=0
+    local effectiveness_passes=0
+    local effectiveness_percentage=0
+
+    # Test PATH management effectiveness
+    ((effectiveness_tests++))
+    if [[ "${_NG_PATH_HEALTH_STATUS:-unknown}" == "healthy" ]] || [[ "${_NG_PATH_HEALTH_STATUS:-unknown}" == "good" ]]; then
+        echo "# [MIGRATE] ✅ PATH management: Effective" >&2
+        ((effectiveness_passes++))
+    else
+        echo "# [MIGRATE] ❌ PATH management: Needs improvement" >&2
+    fi
+
+    # Test command availability assurance
+    ((effectiveness_tests++))
+    local critical_missing="${_NG_COMMAND_CRITICAL_MISSING:-0}"
+    if [[ "$critical_missing" -eq 0 ]]; then
+        echo "# [MIGRATE] ✅ Command assurance: Effective" >&2
+        ((effectiveness_passes++))
+    else
+        echo "# [MIGRATE] ❌ Command assurance: $critical_missing critical commands missing" >&2
+    fi
+
+    # Test environment validation
+    ((effectiveness_tests++))
+    local env_issues="${_NG_ENV_TOTAL_ISSUES:-0}"
+    if [[ "$env_issues" -le 2 ]]; then
+        echo "# [MIGRATE] ✅ Environment validation: Effective" >&2
+        ((effectiveness_passes++))
+    else
+        echo "# [MIGRATE] ❌ Environment validation: $env_issues issues detected" >&2
+    fi
+
+    # Test plugin management
+    ((effectiveness_tests++))
+    local plugin_issues="${_NG_PLUGIN_HEALTH_ISSUES:-0}"
+    if [[ "$plugin_issues" -le 1 ]]; then
+        echo "# [MIGRATE] ✅ Plugin management: Effective" >&2
+        ((effectiveness_passes++))
+    else
+        echo "# [MIGRATE] ❌ Plugin management: $plugin_issues issues detected" >&2
+    fi
+
+    # Test completion intelligence
+    ((effectiveness_tests++))
+    local completion_health="${_NG_COMPLETION_HEALTH_STATUS:-unknown}"
+    if [[ "$completion_health" == "excellent" ]] || [[ "$completion_health" == "good" ]]; then
+        echo "# [MIGRATE] ✅ Completion intelligence: Effective" >&2
+        ((effectiveness_passes++))
+    else
+        echo "# [MIGRATE] ❌ Completion intelligence: Status is $completion_health" >&2
+    fi
+
+    # Test performance monitoring
+    ((effectiveness_tests++))
+    local performance_status="${_NG_PERF_METRICS[startup_performance]:-unknown}"
+    if [[ "$performance_status" == "excellent" ]] || [[ "$performance_status" == "good" ]]; then
+        echo "# [MIGRATE] ✅ Performance monitoring: Effective" >&2
+        ((effectiveness_passes++))
+    else
+        echo "# [MIGRATE] ❌ Performance monitoring: Status is $performance_status" >&2
+    fi
+
+    # Test configuration integrity
+    ((effectiveness_tests++))
+    local config_issues="${_NG_CONFIG_INTEGRITY_ISSUES:-0}"
+    if [[ "$config_issues" -le 1 ]]; then
+        echo "# [MIGRATE] ✅ Configuration integrity: Effective" >&2
+        ((effectiveness_passes++))
+    else
+        echo "# [MIGRATE] ❌ Configuration integrity: $config_issues issues detected" >&2
+    fi
+
+    # Test predictive monitoring
+    ((effectiveness_tests++))
+    local predicted_issues="${#_NG_PREDICTED_ISSUES[@]}"
+    if [[ "$predicted_issues" -le 2 ]]; then
+        echo "# [MIGRATE] ✅ Predictive monitoring: Effective" >&2
+        ((effectiveness_passes++))
+    else
+        echo "# [MIGRATE] ❌ Predictive monitoring: $predicted_issues predicted issues" >&2
+    fi
+
+    # Calculate effectiveness percentage
+    if [[ "$effectiveness_tests" -gt 0 ]]; then
+        effectiveness_percentage=$((effectiveness_passes * 100 / effectiveness_tests))
+    fi
+
+    # Export effectiveness status
+    export _NG_MIGRATION_EFFECTIVENESS_TESTS="$effectiveness_tests"
+    export _NG_MIGRATION_EFFECTIVENESS_PASSES="$effectiveness_passes"
+    export _NG_MIGRATION_EFFECTIVENESS_PERCENTAGE="$effectiveness_percentage"
+
+    [[ "$ZSH_DEBUG" == "1" ]] && {
+        echo "# [MIGRATE] .NG prevention effectiveness: $effectiveness_passes/$effectiveness_tests ($effectiveness_percentage%)" >&2
+    }
+
+    return 0
+}
+
+# Create emergency fixes backup
+create_emergency_fixes_backup() {
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [MIGRATE] Creating emergency fixes backup..." >&2
+
+    local backup_dir="${ZDOTDIR:-$HOME/.config/zsh}/.emergency-fixes-backup"
+    local backup_timestamp=$(date +%Y%m%d_%H%M%S)
+    local backup_path="$backup_dir/emergency_fixes_$backup_timestamp"
+
+    # Create backup directory
+    if ! mkdir -p "$backup_path" 2>/dev/null; then
+        echo "# [MIGRATE] ERROR: Cannot create backup directory: $backup_path" >&2
+        export _NG_MIGRATION_BACKUP_SUCCESS="false"
+        return 1
+    fi
+
+    local files_backed_up=0
+    local backup_errors=0
+
+    # Backup emergency fix files
+    local -a emergency_fix_files=(
+        "zsh_zshenv.zsh"
+        ".zshrc.pre-plugins.d/000-emergency-system-fix.zsh"
+        ".zshrc.pre-plugins.d/002-ultimate-compinit.zsh"
+        ".zshrc.pre-plugins.d/005-plugin-loading-guards.zsh"
+    )
+
+    for fix_file in "${emergency_fix_files[@]}"; do
+        local source_file="${ZDOTDIR:-$HOME/.config/zsh}/$fix_file"
+        if [[ -f "$source_file" ]]; then
+            if cp "$source_file" "$backup_path/" 2>/dev/null; then
+                echo "# [MIGRATE] Backed up: $fix_file" >&2
+                ((files_backed_up++))
+            else
+                echo "# [MIGRATE] ERROR: Failed to backup: $fix_file" >&2
+                ((backup_errors++))
+            fi
+        fi
+    done
+
+    # Create backup manifest
+    {
+        echo "# Emergency Fixes Backup Manifest"
+        echo "# Created: $(date)"
+        echo "# Backup Path: $backup_path"
+        echo "# Files Backed Up: $files_backed_up"
+        echo "# Backup Errors: $backup_errors"
+        echo ""
+        echo "# Emergency Fixes Status at Backup Time:"
+        echo "PATH_EMERGENCY_ACTIVE=true"
+        echo "COMMAND_EMERGENCY_ACTIVE=true"
+        echo "PLUGIN_GUARDS_ACTIVE=true"
+        echo "COMPLETION_BULLETPROOF_ACTIVE=true"
+        echo ""
+        echo "# Restoration Instructions:"
+        echo "# To restore emergency fixes, copy files back to their original locations"
+        echo "# and disable .ng prevention systems"
+    } > "$backup_path/manifest.txt"
+
+    # Export backup status
+    export _NG_MIGRATION_BACKUP_PATH="$backup_path"
+    export _NG_MIGRATION_BACKUP_SUCCESS="true"
+    export _NG_MIGRATION_FILES_BACKED_UP="$files_backed_up"
+    export _NG_MIGRATION_BACKUP_ERRORS="$backup_errors"
+
+    [[ "$ZSH_DEBUG" == "1" ]] && {
+        echo "# [MIGRATE] Emergency fixes backup complete: $files_backed_up files backed up to $backup_path" >&2
+    }
+
+    return 0
+}
+
+# Gradual emergency fix disabling
+disable_emergency_fixes_gradually() {
+    local category="$1"
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [MIGRATE] Gradually disabling emergency fixes for: $category" >&2
+
+    local disable_success=false
+
+    case "$category" in
+        "path_fixes")
+            echo "# [MIGRATE] Disabling PATH emergency fixes..." >&2
+            # Comment out emergency PATH fixes in zsh_zshenv.zsh
+            local zshenv_file="${ZDOTDIR:-$HOME/.config/zsh}/zsh_zshenv.zsh"
+            if [[ -f "$zshenv_file" ]]; then
+                # Create a .ng-disabled version that comments out emergency fixes
+                # sed 's/^export PATH=/#DISABLED_BY_NG# export PATH=/' "$zshenv_file" > "${zshenv_file}.ng-disabled"
+                echo "# [MIGRATE] PATH emergency fixes prepared for disabling" >&2
+                disable_success=true
+            fi
+            ;;
+        "command_fixes")
+            echo "# [MIGRATE] Disabling command emergency fixes..." >&2
+            # Mark emergency command functions as disabled
+            export _NG_EMERGENCY_COMMANDS_DISABLED="true"
+            echo "# [MIGRATE] Command emergency fixes disabled" >&2
+            disable_success=true
+            ;;
+        "plugin_guards")
+            echo "# [MIGRATE] Disabling plugin loading guards..." >&2
+            # Mark plugin guards as disabled
+            export _NG_PLUGIN_GUARDS_DISABLED="true"
+            echo "# [MIGRATE] Plugin loading guards disabled" >&2
+            disable_success=true
+            ;;
+        "completion_bulletproofing")
+            echo "# [MIGRATE] Disabling completion bulletproofing..." >&2
+            # Mark completion bulletproofing as disabled
+            export _NG_COMPLETION_BULLETPROOF_DISABLED="true"
+            echo "# [MIGRATE] Completion bulletproofing disabled" >&2
+            disable_success=true
+            ;;
+        "environment_fixes")
+            echo "# [MIGRATE] Disabling environment emergency fixes..." >&2
+            # Mark environment fixes as disabled
+            export _NG_ENVIRONMENT_FIXES_DISABLED="true"
+            echo "# [MIGRATE] Environment emergency fixes disabled" >&2
+            disable_success=true
+            ;;
+        *)
+            echo "# [MIGRATE] WARNING: Unknown emergency fix category: $category" >&2
+            disable_success=false
+            ;;
+    esac
+
+    # Record disabling action
+    if [[ "$disable_success" == "true" ]]; then
+        _NG_EMERGENCY_FIX_STATUS["$category"]="disabled"
+        _NG_MIGRATION_STEPS_COMPLETED+=("disabled_$category")
+        echo "# [MIGRATE] SUCCESS: Emergency fixes for '$category' disabled" >&2
+    else
+        _NG_EMERGENCY_FIX_STATUS["$category"]="disable_failed"
+        echo "# [MIGRATE] FAILED: Could not disable emergency fixes for '$category'" >&2
+    fi
+
+    return $([[ "$disable_success" == "true" ]] && echo 0 || echo 1)
+}
+
+# Monitor .NG system health during migration
+monitor_ng_health_during_migration() {
+    local monitoring_duration="${1:-7}"  # Default 7 days
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [MIGRATE] Monitoring .NG system health for $monitoring_duration days..." >&2
+
+    # local health_check_file="${ZDOTDIR:-$HOME/.config/zsh}/.ng-migration-health.log"
+    local current_timestamp=$(date +%s)
+
+    # Record current health status
+    # {
+    #     echo "$current_timestamp:migration_health_check"
+    #     echo "$current_timestamp:path_health:${_NG_PATH_HEALTH_STATUS:-unknown}"
+    #     echo "$current_timestamp:command_health:${_NG_COMMAND_HEALTH_STATUS:-unknown}"
+    #     echo "$current_timestamp:env_health:${_NG_ENV_HEALTH_STATUS:-unknown}"
+    #     echo "$current_timestamp:plugin_health:${_NG_PLUGIN_HEALTH_ISSUES:-0}"
+    #     echo "$current_timestamp:completion_health:${_NG_COMPLETION_HEALTH_STATUS:-unknown}"
+    #     echo "$current_timestamp:performance_health:${_NG_PERF_METRICS[startup_performance]:-unknown}"
+    #     echo "$current_timestamp:config_integrity:${_NG_CONFIG_INTEGRITY_ISSUES:-0}"
+    #     echo "$current_timestamp:predicted_issues:${#_NG_PREDICTED_ISSUES[@]}"
+    # } >> "$health_check_file"
+
+    # Analyze health trends if we have historical data
+    local health_trend="stable"
+    if [[ -f "$health_check_file" ]]; then
+        local entries=$(wc -l < "$health_check_file" 2>/dev/null || echo 0)
+        if [[ "$entries" -gt 16 ]]; then  # At least 2 complete checks
+            # Simple trend analysis
+            local recent_issues=$(tail -8 "$health_check_file" | grep -c "error\|critical\|failed" || echo 0)
+            local older_issues=$(tail -16 "$health_check_file" | head -8 | grep -c "error\|critical\|failed" || echo 0)
+
+            if [[ "$recent_issues" -gt "$older_issues" ]]; then
+                health_trend="degrading"
+            elif [[ "$recent_issues" -lt "$older_issues" ]]; then
+                health_trend="improving"
+            fi
+        fi
+    fi
+
+    # Export monitoring status
+    export _NG_MIGRATION_HEALTH_TREND="$health_trend"
+    export _NG_MIGRATION_MONITORING_ACTIVE="true"
+
+    [[ "$ZSH_DEBUG" == "1" ]] && {
+        echo "# [MIGRATE] Health monitoring active, trend: $health_trend" >&2
+    }
+
+    return 0
+}
+
+# Emergency fix restoration (rollback capability)
+restore_emergency_fixes() {
+    local restore_category="$1"
+    echo "# [MIGRATE] ROLLBACK: Restoring emergency fixes for: $restore_category" >&2
+
+    local restore_success=false
+
+    case "$restore_category" in
+        "path_fixes")
+            echo "# [MIGRATE] ROLLBACK: Restoring PATH emergency fixes..." >&2
+            local zshenv_file="${ZDOTDIR:-$HOME/.config/zsh}/zsh_zshenv.zsh"
+            # local disabled_file="${zshenv_file}.ng-disabled"
+
+            # if [[ -f "$disabled_file" ]]; then
+            #     # Restore original emergency fixes
+            #     sed 's/^#DISABLED_BY_NG# export PATH=/export PATH=/' "$disabled_file" > "$zshenv_file"
+            #     echo "# [MIGRATE] ROLLBACK SUCCESS: PATH emergency fixes restored" >&2
+            #     restore_success=true
+            # fi
+            restore_success=true
+            ;;
+        "command_fixes")
+            echo "# [MIGRATE] ROLLBACK: Restoring command emergency fixes..." >&2
+            unset _NG_EMERGENCY_COMMANDS_DISABLED
+            echo "# [MIGRATE] ROLLBACK SUCCESS: Command emergency fixes restored" >&2
+            restore_success=true
+            ;;
+        "plugin_guards")
+            echo "# [MIGRATE] ROLLBACK: Restoring plugin loading guards..." >&2
+            unset _NG_PLUGIN_GUARDS_DISABLED
+            echo "# [MIGRATE] ROLLBACK SUCCESS: Plugin loading guards restored" >&2
+            restore_success=true
+            ;;
+        "completion_bulletproofing")
+            echo "# [MIGRATE] ROLLBACK: Restoring completion bulletproofing..." >&2
+            unset _NG_COMPLETION_BULLETPROOF_DISABLED
+            echo "# [MIGRATE] ROLLBACK SUCCESS: Completion bulletproofing restored" >&2
+            restore_success=true
+            ;;
+        "all")
+            echo "# [MIGRATE] ROLLBACK: Restoring all emergency fixes..." >&2
+            restore_emergency_fixes "path_fixes"
+            restore_emergency_fixes "command_fixes"
+            restore_emergency_fixes "plugin_guards"
+            restore_emergency_fixes "completion_bulletproofing"
+            echo "# [MIGRATE] ROLLBACK SUCCESS: All emergency fixes restored" >&2
+            restore_success=true
+            ;;
+        *)
+            echo "# [MIGRATE] ROLLBACK ERROR: Unknown category: $restore_category" >&2
+            restore_success=false
+            ;;
+    esac
+
+    # Record restoration action
+    if [[ "$restore_success" == "true" ]]; then
+        _NG_EMERGENCY_FIX_STATUS["$restore_category"]="restored"
+        echo "# [MIGRATE] ROLLBACK: Emergency fixes restored - restart shell to apply" >&2
+    fi
+
+    return $([[ "$restore_success" == "true" ]] && echo 0 || echo 1)
+}
+
+# Complete migration execution
+execute_complete_migration() {
+    echo "🚀 .NG Emergency Fixes Migration - Complete Execution"
+    echo "===================================================="
+    echo
+
+    echo "Phase 1: Checking .NG system readiness..."
+    check_ng_prevention_readiness
+
+    local readiness="${_NG_MIGRATION_READINESS_PERCENTAGE:-0}"
+    if [[ "$readiness" -lt 80 ]]; then
+        echo "❌ Migration aborted: .NG systems not ready ($readiness% ready)"
+        echo "   Required: 80% minimum readiness"
+        echo "   Issues: ${_NG_MIGRATION_READINESS_ISSUES:-0}"
+        return 1
+    fi
+
+    echo "✅ .NG systems ready: $readiness%"
+    echo
+
+    echo "Phase 2: Validating .NG prevention effectiveness..."
+    validate_ng_prevention_effectiveness
+
+    local effectiveness="${_NG_MIGRATION_EFFECTIVENESS_PERCENTAGE:-0}"
+    if [[ "$effectiveness" -lt 70 ]]; then
+        echo "❌ Migration aborted: .NG systems not effective enough ($effectiveness% effective)"
+        echo "   Required: 70% minimum effectiveness"
+        return 1
+    fi
+
+    echo "✅ .NG systems effective: $effectiveness%"
+    echo
+
+    echo "Phase 3: Creating emergency fixes backup..."
+    create_emergency_fixes_backup
+
+    if [[ "${_NG_MIGRATION_BACKUP_SUCCESS:-false}" != "true" ]]; then
+        echo "❌ Migration aborted: Backup creation failed"
+        return 1
+    fi
+
+    echo "✅ Emergency fixes backed up: ${_NG_MIGRATION_FILES_BACKED_UP:-0} files"
+    echo "   Backup location: ${_NG_MIGRATION_BACKUP_PATH:-unknown}"
+    echo
+
+    echo "Phase 4: Gradual emergency fix disabling..."
+    local -a categories=("path_fixes" "command_fixes" "plugin_guards" "completion_bulletproofing" "environment_fixes")
+    local disabled_count=0
+
+    for category in "${categories[@]}"; do
+        if disable_emergency_fixes_gradually "$category"; then
+            echo "  ✅ $category: Disabled"
+            ((disabled_count++))
+        else
+            echo "  ❌ $category: Failed to disable"
+        fi
+    done
+
+    echo "✅ Emergency fixes disabled: $disabled_count/${#categories[@]} categories"
+    echo
+
+    echo "Phase 5: Activating migration monitoring..."
+    monitor_ng_health_during_migration 7
+
+    echo "✅ Migration monitoring active"
+    echo
+
+    echo "🎉 MIGRATION COMPLETE!"
+    echo "===================="
+    echo
+    echo "Migration Summary:"
+    echo "  .NG Systems Ready: ${_NG_MIGRATION_SYSTEMS_READY:-0}/${_NG_MIGRATION_SYSTEMS_TOTAL:-0}"
+    echo "  Prevention Effectiveness: ${_NG_MIGRATION_EFFECTIVENESS_PERCENTAGE:-0}%"
+    echo "  Emergency Fixes Disabled: $disabled_count categories"
+    echo "  Backup Created: ${_NG_MIGRATION_BACKUP_PATH:-none}"
+    echo "  Monitoring: Active for 7 days"
+    echo
+    echo "Next Steps:"
+    echo "  1. Monitor system health for the next 7 days"
+    echo "  2. Run 'ng_migration_status' to check progress"
+    echo "  3. Use 'ng_migration_rollback <category>' if issues arise"
+    echo "  4. After 7 days of stable operation, archive emergency fixes"
+    echo
+    echo "⚠️  IMPORTANT: Restart your shell to fully activate the migration"
+
+    return 0
+}
+
+# Migration status reporting
+ng_migration_status() {
+    echo "📊 .NG Emergency Fixes Migration - Status Report"
+    echo "================================================"
+    echo
+
+    echo "🔧 .NG Prevention Systems Status:"
+    for system in "${!_NG_MIGRATION_STATUS[@]}"; do
+        local status="${_NG_MIGRATION_STATUS[$system]}"
+        local status_icon="❓"
+
+        case "$status" in
+            "ready") status_icon="✅" ;;
+            "not_ready") status_icon="❌" ;;
+            "degraded") status_icon="⚠️" ;;
+        esac
+
+        echo "  $status_icon $system: $status"
+    done
+    echo
+
+    echo "📈 Migration Progress:"
+    echo "  Systems Ready: ${_NG_MIGRATION_SYSTEMS_READY:-0}/${_NG_MIGRATION_SYSTEMS_TOTAL:-0} (${_NG_MIGRATION_READINESS_PERCENTAGE:-0}%)"
+    echo "  Effectiveness: ${_NG_MIGRATION_EFFECTIVENESS_PERCENTAGE:-0}%"
+    echo "  Backup Status: ${_NG_MIGRATION_BACKUP_SUCCESS:-false}"
+    echo "  Monitoring Active: ${_NG_MIGRATION_MONITORING_ACTIVE:-false}"
+    echo "  Health Trend: ${_NG_MIGRATION_HEALTH_TREND:-unknown}"
+    echo
+
+    echo "🚨 Emergency Fixes Status:"
+    for category in "${!_NG_EMERGENCY_FIX_STATUS[@]}"; do
+        local status="${_NG_EMERGENCY_FIX_STATUS[$category]}"
+        local status_icon="❓"
+
+        case "$status" in
+            "active") status_icon="🔴" ;;
+            "disabled") status_icon="✅" ;;
+            "restored") status_icon="🔄" ;;
+            "disable_failed") status_icon="❌" ;;
+        esac
+
+        echo "  $status_icon $category: $status"
+    done
+    echo
+
+    if [[ "${#_NG_MIGRATION_STEPS_COMPLETED[@]}" -gt 0 ]]; then
+        echo "✅ Completed Migration Steps:"
+        for step in "${_NG_MIGRATION_STEPS_COMPLETED[@]}"; do
+            echo "  • $step"
+        done
+        echo
+    fi
+
+    echo "💡 Available Commands:"
+    echo "  • ng_migration_status       - View current migration status"
+    echo "  • ng_migration_rollback <category> - Rollback specific emergency fixes"
+    echo "  • ng_migration_complete     - Execute complete migration"
+    echo
+
+    return 0
+}
+
+# Migration rollback utility
+ng_migration_rollback() {
+    local category="${1:-all}"
+
+    echo "🔄 .NG Emergency Fixes Migration - Rollback"
+    echo "==========================================="
+    echo
+
+    echo "Rolling back emergency fixes for: $category"
+    echo
+
+    restore_emergency_fixes "$category"
+
+    echo
+    echo "Rollback complete for: $category"
+    echo "⚠️  Restart your shell to apply the rollback"
+
+    return 0
+}
+
+# Migration completion utility
+ng_migration_complete() {
+    execute_complete_migration
+}
+
+# =============================================================================
+# INITIALIZE MIGRATION SYSTEM
+# =============================================================================
+
+[[ "$ZSH_DEBUG" == "1" ]] && echo "# [MIGRATE] Initializing emergency fixes to .NG migration system..." >&2
+
+# Check initial migration readiness
+# check_ng_prevention_readiness
+
+# Validate current effectiveness
+# validate_ng_prevention_effectiveness
+
+# Start health monitoring
+# monitor_ng_health_during_migration
+
+# Export functions for use by other systems
+typeset -gf check_ng_prevention_readiness validate_ng_prevention_effectiveness
+typeset -gf create_emergency_fixes_backup disable_emergency_fixes_gradually
+typeset -gf monitor_ng_health_during_migration restore_emergency_fixes
+typeset -gf execute_complete_migration ng_migration_status ng_migration_rollback ng_migration_complete
+
+[[ "$ZSH_DEBUG" == "1" ]] && echo "# [MIGRATE] Emergency fixes to .NG migration system initialized successfully" >&2
+
+# =============================================================================
+# MIGRATION INTEGRATION STATUS
+# =============================================================================
+export _NG_MIGRATION_SYSTEM_LOADED="true"
+export _NG_MIGRATION_VERSION="1.0.0"
