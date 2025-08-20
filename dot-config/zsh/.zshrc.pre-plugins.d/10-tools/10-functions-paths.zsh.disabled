@@ -1,0 +1,280 @@
+# Functions and PATH Management - PRE-PLUGIN PHASE
+# CONSOLIDATED FROM: 030-functions.zsh + 040-path.zsh
+# Essential utilities and PATH management that must be available before plugins
+
+[[ "$ZSH_DEBUG" == "1" ]] && {
+    printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+    echo "# [functions-paths] Essential functions and PATH management" >&2
+}
+
+## [functions-paths.path-management] - Critical PATH setup and health checks
+# MERGED FROM: 030-functions.zsh + 040-path.zsh
+
+# PATH Health Check Function
+path_health_check() {
+    echo "=== PATH Health Check ==="
+
+    # Critical development tools
+    local critical_tools=("cc" "gcc" "clang" "make" "git" "python3" "node" "cargo")
+    local missing_tools=()
+
+    for tool in "${critical_tools[@]}"; do
+        if ! command -v "$tool" >/dev/null 2>&1; then
+            missing_tools+=("$tool")
+            echo "❌ MISSING: $tool"
+        else
+            echo "✅ FOUND: $tool -> $(which "$tool")"
+        fi
+    done
+
+    echo "\n=== PATH Contents ==="
+    echo "$PATH" | tr ':' '\n' | nl
+
+    echo "\n=== Missing Tools Summary ==="
+    if [[ ${#missing_tools[@]} -gt 0 ]]; then
+        echo "🔥 CRITICAL: ${#missing_tools[@]} essential tools missing: ${(j:, :)missing_tools}"
+        echo "Run: xcode-select --install"
+    else
+        echo "✅ All critical development tools found"
+    fi
+}
+
+# Quick PATH validation on startup (silent check)
+path_validate_silent() {
+    local path_to_check="$1"
+    [[ -d "$path_to_check" ]] && return 0 || return 1
+}
+
+# Monitor PATH changes during session
+monitor_path_changes() {
+    if [[ -z "$_INITIAL_PATH" ]]; then
+        export _INITIAL_PATH="$PATH"
+    fi
+
+    if [[ "$PATH" != "$_INITIAL_PATH" ]]; then
+        echo "🔄 PATH CHANGED detected"
+        echo "Run 'path_diff' to see changes"
+    fi
+}
+
+# Show PATH differences
+path_diff() {
+    if [[ -n "$_INITIAL_PATH" ]]; then
+        echo "=== INITIAL PATH ==="
+        echo "$_INITIAL_PATH" | tr ':' '\n' | sort | nl
+        echo "\n=== CURRENT PATH ==="
+        echo "$PATH" | tr ':' '\n' | sort | nl
+        echo "\n=== ADDED PATHS ==="
+        comm -13 <(echo "$_INITIAL_PATH" | tr ':' '\n' | sort) <(echo "$PATH" | tr ':' '\n' | sort)
+        echo "\n=== REMOVED PATHS ==="
+        comm -23 <(echo "$_INITIAL_PATH" | tr ':' '\n' | sort) <(echo "$PATH" | tr ':' '\n' | sort)
+    else
+        echo "No initial PATH recorded"
+    fi
+}
+
+# Automated PATH problem detection
+check_critical_paths() {
+    # Check for duplicate paths
+    local path_array=(${(s/:/)PATH})
+    local unique_paths=($(printf '%s\n' "${path_array[@]}" | sort -u))
+
+    if [[ ${#path_array[@]} -ne ${#unique_paths[@]} ]]; then
+        echo "⚠️  WARNING: Duplicate paths in \$PATH detected"
+    fi
+
+    # Check for non-existent paths
+    local missing_paths=()
+    for path_entry in "${path_array[@]}"; do
+        if [[ ! -d "$path_entry" ]]; then
+            missing_paths+=("$path_entry")
+        fi
+    done
+
+    if [[ ${#missing_paths[@]} -gt 0 ]]; then
+        echo "⚠️  WARNING: ${#missing_paths[@]} non-existent paths in \$PATH"
+    fi
+}
+
+## [functions-paths.path-construction] - Smart PATH building
+# MERGED FROM: 040-path.zsh
+
+# Function to safely add to PATH
+add_to_path() {
+    local new_path="$1"
+    local position="${2:-end}" # 'start' or 'end'
+
+    [[ ! -d "$new_path" ]] && return 1
+
+    # Remove from PATH if already exists
+    PATH="${PATH//":$new_path:"/:}"  # middle
+    PATH="${PATH/#"$new_path:"/}"    # beginning
+    PATH="${PATH/%":$new_path"/}"    # end
+
+    # Add to specified position
+    case "$position" in
+        start|beginning|front)
+            PATH="$new_path:$PATH"
+            ;;
+        *)
+            PATH="$PATH:$new_path"
+            ;;
+    esac
+
+    export PATH
+}
+
+# Deduplicate PATH
+dedupe_path() {
+    if [[ -n "$PATH" ]]; then
+        local new_path
+        new_path=$(echo -n "$PATH" | awk -v RS=: '!($0 in a) {a[$0]; printf("%s%s", length(a) > 1 ? ":" : "", $0)}')
+        export PATH="$new_path"
+    fi
+}
+
+# Build optimized development PATH
+build_dev_path() {
+    # Essential system paths first
+    local essential_paths=(
+        "/usr/bin"
+        "/bin"
+        "/usr/sbin"
+        "/sbin"
+        "/usr/local/bin"
+        "/usr/local/sbin"
+    )
+
+    # Development tools
+    local dev_paths=(
+        "/opt/homebrew/bin"
+        "/opt/homebrew/sbin"
+        "/usr/local/opt/python/libexec/bin"
+        "$HOME/.cargo/bin"
+        "$HOME/.local/bin"
+        "$HOME/bin"
+    )
+
+    # Start with essential paths
+    PATH=""
+    for path in "${essential_paths[@]}"; do
+        [[ -d "$path" ]] && add_to_path "$path" end
+    done
+
+    # Add development paths
+    for path in "${dev_paths[@]}"; do
+        [[ -d "$path" ]] && add_to_path "$path" end
+    done
+
+    dedupe_path
+    export PATH
+}
+
+## [functions-paths.nvm-integration] - Fast NVM integration
+# MERGED AND OPTIMIZED FROM: multiple files
+
+# Ultra-fast NVM directory finder
+nvm_find_nvmrc() {
+    local dir="$PWD"
+    while [[ "$dir" != "/" ]]; do
+        if [[ -f "$dir/.nvmrc" ]]; then
+            echo "$dir/.nvmrc"
+            return 0
+        fi
+        dir="${dir%/*}"
+        [[ -z "$dir" ]] && dir="/"
+    done
+    return 1
+}
+
+# Get version from .nvmrc file
+nvm_rc_version() {
+    local nvmrc_path
+    if nvmrc_path="$(nvm_find_nvmrc 2>/dev/null)" && [[ -r "$nvmrc_path" ]]; then
+        local version
+        version="$(< "$nvmrc_path")"
+        version="${version// /}"     # Remove spaces
+        version="${version//$'\n'/}" # Remove newlines
+        version="${version//$'\r'/}" # Remove carriage returns
+        echo "$version"
+    fi
+}
+
+# Ultra-fast herd-load-nvmrc replacement - optimized version
+herd-load-nvmrc() {
+    local dir="${PWD}" nvmrc_path version current_version
+
+    # Fast directory traversal using ZSH parameter expansion only
+    while [[ "$dir" != "/" ]]; do
+        if [[ -f "${dir}/.nvmrc" ]]; then
+            nvmrc_path="${dir}/.nvmrc"
+            break
+        fi
+        dir="${dir%/*}"
+        [[ -z "$dir" ]] && dir="/"
+    done
+
+    [[ -z "$nvmrc_path" ]] && return 0
+
+    # Fast version reading using ZSH built-ins
+    [[ -r "$nvmrc_path" ]] && {
+        version="$(< "$nvmrc_path")"
+        version="${version// /}"      # Remove spaces
+        version="${version//$'\n'/}"  # Remove newlines
+        version="${version//$'\r'/}"  # Remove carriage returns
+        version="${version//$'\t'/}"  # Remove tabs
+    }
+
+    [[ -z "$version" ]] && return 0
+
+    # Only switch if NVM is available and version differs
+    command -v nvm > /dev/null 2>&1 && {
+        current_version="$(nvm version 2>/dev/null)"
+        if [[ "$current_version" != "v$version" ]]; then
+            nvm use "$version" > /dev/null 2>&1 || {
+                nvm install "$version" > /dev/null 2>&1 && nvm use "$version" > /dev/null 2>&1
+            }
+        fi
+    }
+
+    return 0
+}
+
+## [functions-paths.utility-functions] - General utility functions
+
+# Text Color Variables
+readonly RED='\033[31m'     # Red
+readonly GREEN='\033[32m'   # Green
+readonly YELLOW='\033[33m'  # Yellow
+readonly BLUE='\033[34m'    # Blue
+readonly MAGENTA='\033[35m' # Magenta
+readonly CYAN='\033[36m'    # Cyan
+readonly WHITE='\033[37m'   # White
+readonly CLEAR='\033[0m'    # Clear color and formatting
+
+# Smart directory creation
+mkcd() {
+    [[ $# -eq 1 ]] && mkdir -p "$1" && cd "$1" || {
+        echo "Usage: mkcd <directory>" >&2
+        return 1
+    }
+}
+
+# Safe file operations
+backup_file() {
+    local file="$1"
+    [[ -f "$file" ]] && cp "$file" "${file}.backup.$(date +%Y%m%d_%H%M%S)"
+}
+
+# Export essential functions globally
+typeset -gf path_health_check path_validate_silent monitor_path_changes path_diff
+typeset -gf check_critical_paths add_to_path dedupe_path build_dev_path
+typeset -gf nvm_find_nvmrc nvm_rc_version herd-load-nvmrc mkcd backup_file
+
+# Initialize PATH monitoring
+[[ -z "$_INITIAL_PATH" ]] && export _INITIAL_PATH="$PATH"
+
+# Run silent PATH validation
+path_validate_silent /usr/bin || echo "⚠️  WARNING: Basic system paths missing" >&2
+
+[[ "$ZSH_DEBUG" == "1" ]] && echo "# [functions-paths] ✅ Functions and PATH management initialized" >&2

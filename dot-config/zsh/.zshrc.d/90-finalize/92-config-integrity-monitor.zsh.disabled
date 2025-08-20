@@ -1,0 +1,584 @@
+# Configuration Integrity Monitor for .NG Architecture
+# This file provides proactive configuration monitoring and validation
+# File: 15-config-integrity-monitor.zsh
+# Target: Proactive configuration monitoring integrated into .ng finalization
+
+[[ "$ZSH_DEBUG" == "1" ]] && {
+    printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+}
+
+# =============================================================================
+# CONFIGURATION INTEGRITY SYSTEM (.NG-NATIVE)
+# =============================================================================
+# Provides proactive configuration monitoring, validation, and integrity
+# checking integrated into the .ng architecture
+
+# Global configuration integrity registry
+typeset -gA _NG_CONFIG_INTEGRITY_STATUS
+typeset -gA _NG_CONFIG_FILE_CHECKSUMS
+typeset -gA _NG_CONFIG_DRIFT_DETECTION
+typeset -ga _NG_CONFIG_VALIDATION_ERRORS
+
+# .NG configuration file integrity checking
+validate_ng_configuration_integrity() {
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [CONFIG] Validating .ng configuration integrity..." >&2
+
+    local integrity_issues=0
+    local files_checked=0
+
+    # Define critical .ng configuration files to monitor
+    local -a critical_ng_files=(
+        # ".zshrc.pre-plugins.d.ng/00-core/05-intelligent-path-system.zsh"
+        # ".zshrc.pre-plugins.d.ng/00-core/10-command-assurance-system.zsh"
+        # ".zshrc.pre-plugins.d.ng/00-core/15-environment-validation.zsh"
+        # ".zshrc.pre-plugins.d.ng/20-plugins/35-intelligent-plugin-manager.zsh"
+        # ".zshrc.d.ng/00-core/15-completion-intelligence.zsh"
+        # ".zshrc.d.ng/90-finalize/10-environment-health-check.zsh"
+    )
+
+    # Check each critical .ng file
+    for file in "${critical_ng_files[@]}"; do
+        local full_path="${ZDOTDIR:-$HOME/.config/zsh}/$file"
+        ((files_checked++))
+
+        if [[ -f "$full_path" ]]; then
+            # Check file readability
+            if [[ ! -r "$full_path" ]]; then
+                echo "# [CONFIG] ERROR: .ng file not readable: $file" >&2
+                _NG_CONFIG_VALIDATION_ERRORS+=("$file:not_readable")
+                ((integrity_issues++))
+                continue
+            fi
+
+            # Check file size (detect truncation)
+            local file_size=$(stat -f %z "$full_path" 2>/dev/null || echo 0)
+            if [[ "$file_size" -lt 500 ]]; then
+                echo "# [CONFIG] WARNING: .ng file suspiciously small: $file ($file_size bytes)" >&2
+                _NG_CONFIG_VALIDATION_ERRORS+=("$file:suspicious_size")
+                ((integrity_issues++))
+            fi
+
+            # Check for syntax errors in .ng files
+            if ! zsh -n "$full_path" 2>/dev/null; then
+                echo "# [CONFIG] ERROR: Syntax error in .ng file: $file" >&2
+                _NG_CONFIG_VALIDATION_ERRORS+=("$file:syntax_error")
+                ((integrity_issues++))
+            fi
+
+            # Generate checksum for drift detection
+            local checksum=$(shasum -a 256 "$full_path" 2>/dev/null | cut -d' ' -f1)
+            _NG_CONFIG_FILE_CHECKSUMS["$file"]="$checksum"
+
+            _NG_CONFIG_INTEGRITY_STATUS["$file"]="valid"
+            [[ "$ZSH_DEBUG" == "1" ]] && echo "# [CONFIG] Validated .ng file: $file" >&2
+        else
+            echo "# [CONFIG] ERROR: Critical .ng file missing: $file" >&2
+            _NG_CONFIG_VALIDATION_ERRORS+=("$file:missing")
+            _NG_CONFIG_INTEGRITY_STATUS["$file"]="missing"
+            ((integrity_issues++))
+        fi
+    done
+
+    # Export integrity status
+    export _NG_CONFIG_INTEGRITY_ISSUES="$integrity_issues"
+    export _NG_CONFIG_FILES_CHECKED="$files_checked"
+
+    [[ "$ZSH_DEBUG" == "1" ]] && {
+        echo "# [CONFIG] .ng integrity check complete: $integrity_issues issues in $files_checked files" >&2
+    }
+
+    return 0
+}
+
+# Automatic backup creation before .ng changes
+create_ng_configuration_backup() {
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [CONFIG] Creating .ng configuration backup..." >&2
+
+    # local backup_dir="${ZDOTDIR:-$HOME/.config/zsh}/.ng-backups"
+    local backup_timestamp=$(date +%Y%m%d_%H%M%S)
+    # local backup_path="$backup_dir/ng_backup_$backup_timestamp"
+
+    # Create backup directory
+    if ! mkdir -p "$backup_path" 2>/dev/null; then
+        echo "# [CONFIG] ERROR: Cannot create backup directory: $backup_path" >&2
+        export _NG_CONFIG_BACKUP_SUCCESS="false"
+        return 1
+    fi
+
+    local files_backed_up=0
+    local backup_errors=0
+
+    # Backup .ng directories
+    local -a ng_dirs=(
+        # ".zshrc.pre-plugins.d.ng"
+        # ".zshrc.d.ng"
+    )
+
+    for ng_dir in "${ng_dirs[@]}"; do
+        local source_dir="${ZDOTDIR:-$HOME/.config/zsh}/$ng_dir"
+        if [[ -d "$source_dir" ]]; then
+            if cp -R "$source_dir" "$backup_path/" 2>/dev/null; then
+                ((files_backed_up++))
+                [[ "$ZSH_DEBUG" == "1" ]] && echo "# [CONFIG] Backed up: $ng_dir" >&2
+            else
+                echo "# [CONFIG] ERROR: Failed to backup: $ng_dir" >&2
+                ((backup_errors++))
+            fi
+        fi
+    done
+
+    # Create backup manifest
+    {
+        echo "# .NG Configuration Backup Manifest"
+        echo "# Created: $(date)"
+        echo "# Backup Path: $backup_path"
+        echo "# Files Backed Up: $files_backed_up"
+        echo "# Backup Errors: $backup_errors"
+        echo ""
+        echo "# File Checksums:"
+        for file in "${!_NG_CONFIG_FILE_CHECKSUMS[@]}"; do
+            echo "$file:${_NG_CONFIG_FILE_CHECKSUMS[$file]}"
+        done
+    } > "$backup_path/manifest.txt"
+
+    # Export backup status
+    export _NG_CONFIG_BACKUP_PATH="$backup_path"
+    export _NG_CONFIG_BACKUP_SUCCESS="true"
+    export _NG_CONFIG_FILES_BACKED_UP="$files_backed_up"
+    export _NG_CONFIG_BACKUP_ERRORS="$backup_errors"
+
+    # Clean up old backups (keep last 10)
+    if [[ -d "$backup_dir" ]]; then
+        local old_backups=($(ls -t "$backup_dir" | tail -n +11))
+        for old_backup in "${old_backups[@]}"; do
+            rm -rf "$backup_dir/$old_backup" 2>/dev/null && {
+                [[ "$ZSH_DEBUG" == "1" ]] && echo "# [CONFIG] Cleaned up old backup: $old_backup" >&2
+            }
+        done
+    fi
+
+    [[ "$ZSH_DEBUG" == "1" ]] && {
+        echo "# [CONFIG] Backup complete: $files_backed_up files backed up to $backup_path" >&2
+    }
+
+    return 0
+}
+
+# .NG configuration drift detection
+detect_ng_configuration_drift() {
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [CONFIG] Detecting .ng configuration drift..." >&2
+
+    local drift_detected=false
+    local files_changed=0
+    local -a changed_files=()
+
+    # Load previous checksums if available
+    # local checksum_cache="${ZDOTDIR:-$HOME/.config/zsh}/.ng-checksums.cache"
+    local -A previous_checksums
+
+    if [[ -f "$checksum_cache" ]]; then
+        while IFS=':' read -r file checksum; do
+            [[ -n "$file" && -n "$checksum" ]] && previous_checksums["$file"]="$checksum"
+        done < "$checksum_cache"
+    fi
+
+    # Compare current checksums with previous ones
+    for file in "${!_NG_CONFIG_FILE_CHECKSUMS[@]}"; do
+        local current_checksum="${_NG_CONFIG_FILE_CHECKSUMS[$file]}"
+        local previous_checksum="${previous_checksums[$file]:-}"
+
+        if [[ -n "$previous_checksum" ]] && [[ "$current_checksum" != "$previous_checksum" ]]; then
+            echo "# [CONFIG] DRIFT: .ng file changed: $file" >&2
+            changed_files+=("$file")
+            _NG_CONFIG_DRIFT_DETECTION["$file"]="changed"
+            drift_detected=true
+            ((files_changed++))
+        elif [[ -z "$previous_checksum" ]]; then
+            echo "# [CONFIG] NEW: .ng file added: $file" >&2
+            _NG_CONFIG_DRIFT_DETECTION["$file"]="new"
+        else
+            _NG_CONFIG_DRIFT_DETECTION["$file"]="unchanged"
+        fi
+    done
+
+    # Check for deleted files
+    for file in "${!previous_checksums[@]}"; do
+        if [[ -z "${_NG_CONFIG_FILE_CHECKSUMS[$file]}" ]]; then
+            echo "# [CONFIG] REMOVED: .ng file deleted: $file" >&2
+            _NG_CONFIG_DRIFT_DETECTION["$file"]="deleted"
+            drift_detected=true
+            ((files_changed++))
+        fi
+    done
+
+    # Update checksum cache
+    {
+        for file in "${!_NG_CONFIG_FILE_CHECKSUMS[@]}"; do
+            echo "$file:${_NG_CONFIG_FILE_CHECKSUMS[$file]}"
+        done
+    } > "$checksum_cache"
+
+    # Export drift detection status
+    export _NG_CONFIG_DRIFT_DETECTED="$drift_detected"
+    export _NG_CONFIG_FILES_CHANGED="$files_changed"
+
+    [[ "$ZSH_DEBUG" == "1" ]] && {
+        echo "# [CONFIG] Drift detection complete: $drift_detected ($files_changed files changed)" >&2
+    }
+
+    return 0
+}
+
+# Auto-repair of minor .ng configuration issues
+repair_ng_configuration_issues() {
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [CONFIG] Attempting .ng configuration repairs..." >&2
+
+    local repairs_attempted=0
+    local repairs_successful=0
+
+    # Repair missing .ng directories
+    local -a required_ng_dirs=(
+        # ".zshrc.pre-plugins.d.ng/00-core"
+        # ".zshrc.pre-plugins.d.ng/10-tools"
+        # ".zshrc.pre-plugins.d.ng/20-plugins"
+        # ".zshrc.pre-plugins.d.ng/30-ui"
+        # ".zshrc.pre-plugins.d.ng/90-finalize"
+        # ".zshrc.d.ng/00-core"
+        # ".zshrc.d.ng/10-tools"
+        # ".zshrc.d.ng/20-plugins"
+        # ".zshrc.d.ng/30-ui"
+        # ".zshrc.d.ng/90-finalize"
+    )
+
+    for dir in "${required_ng_dirs[@]}"; do
+        local full_dir_path="${ZDOTDIR:-$HOME/.config/zsh}/$dir"
+        if [[ ! -d "$full_dir_path" ]]; then
+            echo "# [CONFIG] REPAIR: Creating missing .ng directory: $dir" >&2
+            if mkdir -p "$full_dir_path" 2>/dev/null; then
+                echo "# [CONFIG] REPAIR SUCCESS: Created directory: $dir" >&2
+                ((repairs_successful++))
+            else
+                echo "# [CONFIG] REPAIR FAILED: Cannot create directory: $dir" >&2
+            fi
+            ((repairs_attempted++))
+        fi
+    done
+
+    # Repair file permissions if needed
+    for file in "${!_NG_CONFIG_INTEGRITY_STATUS[@]}"; do
+        local status="${_NG_CONFIG_INTEGRITY_STATUS[$file]}"
+        if [[ "$status" == "not_readable" ]]; then
+            local full_path="${ZDOTDIR:-$HOME/.config/zsh}/$file"
+            echo "# [CONFIG] REPAIR: Fixing permissions for: $file" >&2
+            if chmod 644 "$full_path" 2>/dev/null; then
+                echo "# [CONFIG] REPAIR SUCCESS: Fixed permissions for: $file" >&2
+                _NG_CONFIG_INTEGRITY_STATUS["$file"]="valid"
+                ((repairs_successful++))
+            else
+                echo "# [CONFIG] REPAIR FAILED: Cannot fix permissions for: $file" >&2
+            fi
+            ((repairs_attempted++))
+        fi
+    done
+
+    # Export repair status
+    export _NG_CONFIG_REPAIRS_ATTEMPTED="$repairs_attempted"
+    export _NG_CONFIG_REPAIRS_SUCCESSFUL="$repairs_successful"
+
+    [[ "$ZSH_DEBUG" == "1" ]] && {
+        echo "# [CONFIG] Repair complete: $repairs_successful/$repairs_attempted successful" >&2
+    }
+
+    return 0
+}
+
+# .NG configuration version tracking
+track_ng_configuration_version() {
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [CONFIG] Tracking .ng configuration version..." >&2
+
+    # local version_file="${ZDOTDIR:-$HOME/.config/zsh}/.ng-version"
+    local current_version="1.0.0"
+    local version_changed=false
+
+    # Check if version file exists
+    if [[ -f "$version_file" ]]; then
+        local previous_version=$(<"$version_file" 2>/dev/null || echo "unknown")
+        if [[ "$previous_version" != "$current_version" ]]; then
+            echo "# [CONFIG] VERSION: .ng configuration updated from $previous_version to $current_version" >&2
+            version_changed=true
+        fi
+    else
+        echo "# [CONFIG] VERSION: Initial .ng configuration version: $current_version" >&2
+        version_changed=true
+    fi
+
+    # Update version file
+    echo "$current_version" > "$version_file"
+
+    # Export version status
+    export _NG_CONFIG_VERSION="$current_version"
+    export _NG_CONFIG_VERSION_CHANGED="$version_changed"
+
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [CONFIG] Version tracking complete: $current_version" >&2
+
+    return 0
+}
+
+# Rollback capability for failed .ng configurations
+prepare_ng_rollback_capability() {
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [CONFIG] Preparing .ng rollback capability..." >&2
+
+    # Create rollback script
+    # local rollback_script="${ZDOTDIR:-$HOME/.config/zsh}/.ng-rollback.zsh"
+
+    cat > "$rollback_script" << 'EOF'
+#!/usr/bin/env zsh
+# .NG Configuration Rollback Script
+# Auto-generated by Configuration Integrity Monitor
+
+ng_rollback() {
+    echo "🔄 .NG Configuration Rollback System"
+    echo "===================================="
+    echo
+
+    local backup_dir="${ZDOTDIR:-$HOME/.config/zsh}/.ng-backups"
+
+    if [[ ! -d "$backup_dir" ]]; then
+        echo "❌ No backups found in: $backup_dir"
+        return 1
+    fi
+
+    echo "📋 Available backups:"
+    local -a backups=($(ls -t "$backup_dir" 2>/dev/null))
+
+    if [[ ${#backups[@]} -eq 0 ]]; then
+        echo "❌ No backup directories found"
+        return 1
+    fi
+
+    local i=1
+    for backup in "${backups[@]}"; do
+        local backup_date=$(echo "$backup" | sed 's/ng_backup_//' | sed 's/_/ /')
+        echo "  $i. $backup ($backup_date)"
+        ((i++))
+    done
+
+    echo
+    read "choice?Select backup to restore (1-${#backups[@]}): "
+
+    if [[ "$choice" -ge 1 && "$choice" -le "${#backups[@]}" ]]; then
+        local selected_backup="${backups[$choice]}"
+        local backup_path="$backup_dir/$selected_backup"
+
+        echo "🔄 Restoring from: $selected_backup"
+
+        # Create safety backup of current state
+        local safety_backup="${ZDOTDIR:-$HOME/.config/zsh}/.ng-safety-backup"
+        rm -rf "$safety_backup" 2>/dev/null
+        mkdir -p "$safety_backup"
+
+        cp -R "${ZDOTDIR:-$HOME/.config/zsh}/.zshrc.pre-plugins.d.ng" "$safety_backup/" 2>/dev/null
+        cp -R "${ZDOTDIR:-$HOME/.config/zsh}/.zshrc.d.ng" "$safety_backup/" 2>/dev/null
+
+        # Restore from backup
+        if cp -R "$backup_path"/.zshrc.pre-plugins.d.ng "${ZDOTDIR:-$HOME/.config/zsh}/" 2>/dev/null &&
+           cp -R "$backup_path"/.zshrc.d.ng "${ZDOTDIR:-$HOME/.config/zsh}/" 2>/dev/null; then
+            echo "✅ Rollback successful!"
+            echo "💾 Current configuration backed up to: $safety_backup"
+            echo "🔄 Please restart your shell to apply changes"
+        else
+            echo "❌ Rollback failed!"
+            echo "🔄 Attempting to restore current state..."
+            cp -R "$safety_backup"/.zshrc.pre-plugins.d.ng "${ZDOTDIR:-$HOME/.config/zsh}/" 2>/dev/null
+            cp -R "$safety_backup"/.zshrc.d.ng "${ZDOTDIR:-$HOME/.config/zsh}/" 2>/dev/null
+        fi
+    else
+        echo "❌ Invalid selection"
+        return 1
+    fi
+}
+
+# Execute rollback if called directly
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]] || [[ "$0" == *"ng-rollback.zsh" ]]; then
+    ng_rollback "$@"
+fi
+EOF
+
+    chmod +x "$rollback_script"
+
+    # Export rollback capability status
+    export _NG_CONFIG_ROLLBACK_AVAILABLE="true"
+    export _NG_CONFIG_ROLLBACK_SCRIPT="$rollback_script"
+
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [CONFIG] Rollback capability prepared: $rollback_script" >&2
+
+    return 0
+}
+
+# Configuration integrity diagnostics
+ng_config_doctor() {
+    echo "🔍 .NG Configuration Integrity Monitor - Health Check"
+    echo "====================================================="
+    echo
+
+    echo "📊 Configuration Status:"
+    echo "  Integrity Issues: ${_NG_CONFIG_INTEGRITY_ISSUES:-0}"
+    echo "  Files Checked: ${_NG_CONFIG_FILES_CHECKED:-0}"
+    echo "  Validation Errors: ${#_NG_CONFIG_VALIDATION_ERRORS[@]}"
+    echo "  Configuration Drift: ${_NG_CONFIG_DRIFT_DETECTED:-false}"
+    echo "  Files Changed: ${_NG_CONFIG_FILES_CHANGED:-0}"
+    echo "  Repairs Attempted: ${_NG_CONFIG_REPAIRS_ATTEMPTED:-0}"
+    echo "  Repairs Successful: ${_NG_CONFIG_REPAIRS_SUCCESSFUL:-0}"
+    echo
+
+    echo "💾 Backup Status:"
+    echo "  Last Backup: ${_NG_CONFIG_BACKUP_PATH:-none}"
+    echo "  Backup Success: ${_NG_CONFIG_BACKUP_SUCCESS:-unknown}"
+    echo "  Files Backed Up: ${_NG_CONFIG_FILES_BACKED_UP:-0}"
+    echo "  Backup Errors: ${_NG_CONFIG_BACKUP_ERRORS:-0}"
+    echo "  Rollback Available: ${_NG_CONFIG_ROLLBACK_AVAILABLE:-false}"
+    echo
+
+    if [[ "${#_NG_CONFIG_VALIDATION_ERRORS[@]}" -gt 0 ]]; then
+        echo "❌ Configuration Issues:"
+        for error in "${_NG_CONFIG_VALIDATION_ERRORS[@]}"; do
+            local file="${error%:*}"
+            local issue="${error#*:}"
+            echo "  • $file: $issue"
+        done
+        echo
+    fi
+
+    echo "📁 File Integrity Status:"
+    for file in "${!_NG_CONFIG_INTEGRITY_STATUS[@]}"; do
+        local status="${_NG_CONFIG_INTEGRITY_STATUS[$file]}"
+        local status_icon="❓"
+
+        case "$status" in
+            "valid") status_icon="✅" ;;
+            "missing") status_icon="❌" ;;
+            "not_readable") status_icon="🔒" ;;
+            "corrupted") status_icon="⚠️" ;;
+        esac
+
+        echo "  $status_icon $file: $status"
+    done
+    echo
+
+    if [[ "${_NG_CONFIG_DRIFT_DETECTED:-false}" == "true" ]]; then
+        echo "🔄 Configuration Changes:"
+        for file in "${!_NG_CONFIG_DRIFT_DETECTION[@]}"; do
+            local change_type="${_NG_CONFIG_DRIFT_DETECTION[$file]}"
+            local change_icon="❓"
+
+            case "$change_type" in
+                "unchanged") change_icon="✅" ;;
+                "changed") change_icon="🔄" ;;
+                "new") change_icon="🆕" ;;
+                "deleted") change_icon="❌" ;;
+            esac
+
+            echo "  $change_icon $file: $change_type"
+        done
+        echo
+    fi
+
+    if [[ "${_NG_CONFIG_INTEGRITY_ISSUES:-0}" -gt 0 ]]; then
+        echo "💡 Recommendations:"
+        echo "  • Run 'ng_config_repair' to fix configuration issues"
+        echo "  • Create backup before making changes: ng_config_backup"
+        echo "  • Use 'ng_config_rollback' if system becomes unstable"
+        echo
+    fi
+
+    return 0
+}
+
+# Configuration repair utility
+ng_config_repair() {
+    echo "🔧 .NG Configuration Repair System"
+    echo "=================================="
+    echo
+
+    echo "Starting configuration repair..."
+    repair_ng_configuration_issues
+
+    echo "Re-validating configuration..."
+    validate_ng_configuration_integrity
+
+    echo
+    echo "Repair complete."
+    echo "Repairs attempted: ${_NG_CONFIG_REPAIRS_ATTEMPTED:-0}"
+    echo "Repairs successful: ${_NG_CONFIG_REPAIRS_SUCCESSFUL:-0}"
+    echo "Remaining issues: ${_NG_CONFIG_INTEGRITY_ISSUES:-0}"
+
+    return 0
+}
+
+# Manual backup utility
+ng_config_backup() {
+    echo "💾 .NG Configuration Backup System"
+    echo "=================================="
+    echo
+
+    echo "Creating configuration backup..."
+    create_ng_configuration_backup
+
+    echo
+    echo "Backup complete."
+    echo "Backup path: ${_NG_CONFIG_BACKUP_PATH:-failed}"
+    echo "Backup success: ${_NG_CONFIG_BACKUP_SUCCESS:-unknown}"
+    echo "Files backed up: ${_NG_CONFIG_FILES_BACKED_UP:-0}"
+
+    return 0
+}
+
+# Rollback utility wrapper
+ng_config_rollback() {
+    local rollback_script="${_NG_CONFIG_ROLLBACK_SCRIPT:-${ZDOTDIR:-$HOME/.config/zsh}/.ng-rollback.zsh}"
+
+    if [[ -x "$rollback_script" ]]; then
+        "$rollback_script" "$@"
+    else
+        echo "❌ Rollback script not available: $rollback_script"
+        return 1
+    fi
+}
+
+# =============================================================================
+# INITIALIZE CONFIGURATION INTEGRITY MONITOR
+# =============================================================================
+
+[[ "$ZSH_DEBUG" == "1" ]] && echo "# [CONFIG] Initializing configuration integrity monitor..." >&2
+
+# 1. Validate .ng configuration integrity
+validate_ng_configuration_integrity
+
+# 2. Create configuration backup
+create_ng_configuration_backup
+
+# 3. Detect configuration drift
+detect_ng_configuration_drift
+
+# 4. Repair minor configuration issues
+repair_ng_configuration_issues
+
+# 5. Track configuration version
+track_ng_configuration_version
+
+# 6. Prepare rollback capability
+prepare_ng_rollback_capability
+
+# Export functions for use by other .ng systems
+typeset -gf validate_ng_configuration_integrity create_ng_configuration_backup
+typeset -gf detect_ng_configuration_drift repair_ng_configuration_issues
+typeset -gf track_ng_configuration_version prepare_ng_rollback_capability
+typeset -gf ng_config_doctor ng_config_repair ng_config_backup ng_config_rollback
+
+[[ "$ZSH_DEBUG" == "1" ]] && echo "# [CONFIG] Configuration integrity monitor initialized successfully" >&2
+
+# =============================================================================
+# .NG INTEGRATION STATUS
+# =============================================================================
+export _NG_CONFIG_INTEGRITY_MONITOR_LOADED="true"
+export _NG_CONFIG_MONITOR_VERSION="1.0.0"
