@@ -1,0 +1,358 @@
+# Post-Plugin Environment Health Check System for .NG Architecture
+# This file provides comprehensive environment validation after all plugins are loaded
+# File: 10-environment-health-check.zsh
+# Target: Final environment validation and cleanup in the .ng finalization phase
+
+[[ "$ZSH_DEBUG" == "1" ]] && {
+    printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+}
+
+# =============================================================================
+# POST-PLUGIN ENVIRONMENT HEALTH CHECK SYSTEM (.NG-NATIVE)
+# =============================================================================
+# Provides comprehensive environment validation after plugins have been loaded
+# and configured, ensuring the complete .ng system is healthy and functional
+
+# Post-plugin environment validation
+validate_post_plugin_environment() {
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [ENV-POST] Starting post-plugin environment validation..." >&2
+
+    local post_plugin_issues=0
+    local environment_drift_detected=false
+
+    # Check if critical pre-plugin systems are still functional
+    if [[ "${_NG_INTELLIGENT_PATH_LOADED:-false}" != "true" ]]; then
+        echo "# [ENV-POST] ERROR: Intelligent PATH system not loaded" >&2
+        ((post_plugin_issues++))
+    fi
+
+    if [[ "${_NG_COMMAND_ASSURANCE_LOADED:-false}" != "true" ]]; then
+        echo "# [ENV-POST] ERROR: Command assurance system not loaded" >&2
+        ((post_plugin_issues++))
+    fi
+
+    if [[ "${_NG_ENVIRONMENT_VALIDATION_LOADED:-false}" != "true" ]]; then
+        echo "# [ENV-POST] ERROR: Environment validation system not loaded" >&2
+        ((post_plugin_issues++))
+    fi
+
+    # Check for environment drift caused by plugins
+    local initial_path="${_NG_ENV_INITIAL_PATH:-}"
+    if [[ -n "$initial_path" ]]; then
+        local path_length_change=$((${#PATH} - ${#initial_path}))
+        if [[ "$path_length_change" -gt 500 ]]; then
+            echo "# [ENV-POST] WARNING: Significant PATH expansion detected (${path_length_change} chars)" >&2
+            environment_drift_detected=true
+        elif [[ "$path_length_change" -lt -100 ]]; then
+            echo "# [ENV-POST] ERROR: PATH appears to have been truncated (${path_length_change} chars)" >&2
+            ((post_plugin_issues++))
+        fi
+    fi
+
+    # Check plugin-specific environment pollution
+    local -a problematic_vars=()
+
+    # Check for variables that plugins commonly pollute
+    for var in PROMPT PS1 RPROMPT RPS1; do
+        local var_value="${(P)var}"
+        if [[ -n "$var_value" ]] && [[ "${#var_value}" -gt 1000 ]]; then
+            echo "# [ENV-POST] WARNING: $var is unusually large (${#var_value} chars)" >&2
+            problematic_vars+=("$var")
+        fi
+    done
+
+    # Check for plugin-introduced global variables that might cause issues
+    local -a potential_conflicts=(
+        "NVM_DIR" "PYENV_ROOT" "RBENV_ROOT" "GOPATH" "JAVA_HOME"
+    )
+
+    for var in "${potential_conflicts[@]}"; do
+        local var_value="${(P)var}"
+        if [[ -n "$var_value" ]] && [[ ! -d "$var_value" ]]; then
+            echo "# [ENV-POST] WARNING: $var points to non-existent directory: $var_value" >&2
+            problematic_vars+=("$var")
+        fi
+    done
+
+    # Set post-plugin validation status
+    export _NG_POST_PLUGIN_ISSUES="$post_plugin_issues"
+    export _NG_ENV_DRIFT_DETECTED="$environment_drift_detected"
+    export _NG_PROBLEMATIC_VARS="${#problematic_vars[@]}"
+
+    [[ "$ZSH_DEBUG" == "1" ]] && {
+        echo "# [ENV-POST] Post-plugin validation complete: $post_plugin_issues issues" >&2
+        echo "# [ENV-POST] Environment drift: $environment_drift_detected" >&2
+        echo "# [ENV-POST] Problematic variables: ${#problematic_vars[@]}" >&2
+    }
+
+    return 0
+}
+
+# Environment drift detection and correction
+detect_and_correct_environment_drift() {
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [ENV-POST] Checking for environment drift..." >&2
+
+    # Check PATH for unusual patterns that indicate plugin issues
+    local path_issues=0
+
+    # Check for excessive PATH duplication
+    local -a path_dirs
+    IFS=':' read -ra path_dirs <<< "$PATH"
+    local -A path_counts
+
+    for dir in "${path_dirs[@]}"; do
+        ((path_counts["$dir"]++))
+        if [[ "${path_counts["$dir"]}" -gt 3 ]]; then
+            echo "# [ENV-POST] WARNING: PATH directory appears ${path_counts["$dir"]} times: $dir" >&2
+            ((path_issues++))
+        fi
+    done
+
+    # Trigger PATH optimization if significant duplication detected
+    if [[ "$path_issues" -gt 5 ]]; then
+        echo "# [ENV-POST] Triggering PATH optimization due to excessive duplication..." >&2
+        if typeset -f path_optimization_system >/dev/null 2>&1; then
+            path_optimization_system
+        fi
+    fi
+
+    # Check for environment variables that may have been corrupted
+    local -a env_check_vars=("HOME" "USER" "SHELL")
+    for var in "${env_check_vars[@]}"; do
+        local current_value="${(P)var}"
+        local initial_var="_NG_ENV_INITIAL_${var}"
+        local initial_value="${(P)initial_var}"
+
+        if [[ -n "$initial_value" ]] && [[ "$current_value" != "$initial_value" ]]; then
+            echo "# [ENV-POST] CRITICAL: Core variable $var was modified during startup!" >&2
+            echo "# [ENV-POST]   Initial: $initial_value" >&2
+            echo "# [ENV-POST]   Current: $current_value" >&2
+
+            # Attempt to restore if safe to do so
+            if [[ "$var" == "SHELL" ]] && [[ -x "$initial_value" ]]; then
+                export SHELL="$initial_value"
+                echo "# [ENV-POST] Restored $var to initial value" >&2
+            fi
+        fi
+    done
+
+    return 0
+}
+
+# Global variable proper declaration enforcement
+enforce_proper_global_declarations() {
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [ENV-POST] Enforcing proper global variable declarations..." >&2
+
+    # Check for improperly declared arrays that plugins might have created
+    local -a common_plugin_arrays=(
+        "ZSH_AUTOSUGGEST_STRATEGY"
+        "ZSH_HIGHLIGHT_HIGHLIGHTERS"
+        "GLOBALIAS_FILTER_VALUES"
+        "FZF_DEFAULT_OPTS"
+    )
+
+    for array_var in "${common_plugin_arrays[@]}"; do
+        # Check if variable exists and is properly typed
+        if [[ -n "${(P)array_var}" ]]; then
+            # Ensure it's properly typed as an array/export if needed
+            case "$array_var" in
+                "ZSH_AUTOSUGGEST_STRATEGY")
+                    typeset -gxa ZSH_AUTOSUGGEST_STRATEGY
+                    ;;
+                "ZSH_HIGHLIGHT_HIGHLIGHTERS")
+                    typeset -ga ZSH_HIGHLIGHT_HIGHLIGHTERS
+                    ;;
+                "GLOBALIAS_FILTER_VALUES")
+                    typeset -gxa GLOBALIAS_FILTER_VALUES
+                    ;;
+            esac
+            [[ "$ZSH_DEBUG" == "1" ]] && echo "# [ENV-POST] Ensured proper typing for $array_var" >&2
+        fi
+    done
+
+    return 0
+}
+
+# Environment optimization and cleanup
+optimize_and_cleanup_environment() {
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [ENV-POST] Optimizing and cleaning environment..." >&2
+
+    local cleanup_actions=0
+
+    # Clean up any temporary variables that may have been left behind
+    local -a temp_var_patterns=(
+        "_ZGENOM_*" "_ZGEN_*" "_PLUGIN_*" "_LOAD_*"
+    )
+
+    for pattern in "${temp_var_patterns[@]}"; do
+        # Use parameter expansion to find matching variables
+        local vars_to_unset=()
+        for var in ${(k)parameters}; do
+            if [[ "$var" == ${~pattern} ]]; then
+                # Don't unset variables that look like they should be permanent
+                if [[ "$var" != *"_DIR" ]] && [[ "$var" != *"_HOME" ]] && [[ "$var" != *"_ROOT" ]]; then
+                    vars_to_unset+=("$var")
+                fi
+            fi
+        done
+
+        for var in "${vars_to_unset[@]}"; do
+            unset "$var"
+            ((cleanup_actions++))
+            [[ "$ZSH_DEBUG" == "1" ]] && echo "# [ENV-POST] Cleaned temporary variable: $var" >&2
+        done
+    done
+
+    # Optimize common environment arrays by removing duplicates
+    if [[ -n "$ZSH_AUTOSUGGEST_STRATEGY" ]]; then
+        # Remove duplicates from ZSH_AUTOSUGGEST_STRATEGY
+        typeset -gUxa ZSH_AUTOSUGGEST_STRATEGY
+    fi
+
+    export _NG_ENV_CLEANUP_ACTIONS="$cleanup_actions"
+
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [ENV-POST] Cleanup complete: $cleanup_actions actions taken" >&2
+
+    return 0
+}
+
+# Final environment health assessment
+perform_final_health_assessment() {
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [ENV-POST] Performing final health assessment..." >&2
+
+    local final_health="healthy"
+    local total_issues=0
+
+    # Aggregate all issue counts
+    local pre_plugin_errors="${_NG_ENV_VALIDATION_ERRORS:-0}"
+    local post_plugin_issues="${_NG_POST_PLUGIN_ISSUES:-0}"
+    local problematic_vars="${_NG_PROBLEMATIC_VARS:-0}"
+
+    total_issues=$((pre_plugin_errors + post_plugin_issues + problematic_vars))
+
+    # Assess PATH health
+    local path_health="${_NG_PATH_HEALTH_STATUS:-unknown}"
+    if [[ "$path_health" == "degraded" ]]; then
+        ((total_issues++))
+    elif [[ "$path_health" == "critical" ]]; then
+        total_issues=$((total_issues + 3))
+    fi
+
+    # Assess command availability
+    local command_health="${_NG_COMMAND_HEALTH_STATUS:-unknown}"
+    if [[ "$command_health" == "degraded" ]]; then
+        ((total_issues++))
+    elif [[ "$command_health" == "critical" ]]; then
+        total_issues=$((total_issues + 3))
+    fi
+
+    # Determine final health status
+    if [[ "$total_issues" -gt 5 ]]; then
+        final_health="critical"
+    elif [[ "$total_issues" -gt 2 ]]; then
+        final_health="degraded"
+    elif [[ "$total_issues" -gt 0 ]]; then
+        final_health="minor_issues"
+    fi
+
+    # Export final assessment
+    export _NG_FINAL_HEALTH_STATUS="$final_health"
+    export _NG_TOTAL_ENVIRONMENT_ISSUES="$total_issues"
+
+    # Report final status
+    case "$final_health" in
+        "healthy")
+            [[ "$ZSH_DEBUG" == "1" ]] && echo "# [ENV-POST] ✅ Environment is healthy and fully functional" >&2
+            ;;
+        "minor_issues")
+            echo "# [ENV-POST] ⚠️  Environment has minor issues but is functional" >&2
+            ;;
+        "degraded")
+            echo "# [ENV-POST] 🔶 Environment is degraded - some functionality may be impacted" >&2
+            ;;
+        "critical")
+            echo "# [ENV-POST] 🔴 Environment has critical issues - system may not function properly" >&2
+            ;;
+    esac
+
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [ENV-POST] Final assessment: $final_health ($total_issues total issues)" >&2
+
+    return 0
+}
+
+# Comprehensive environment status report
+ng_environment_status() {
+    echo "🏥 .NG Environment Health Status Report"
+    echo "======================================="
+    echo
+
+    echo "🎯 Overall System Health: ${_NG_FINAL_HEALTH_STATUS:-unknown}"
+    echo "📊 Total Issues Detected: ${_NG_TOTAL_ENVIRONMENT_ISSUES:-0}"
+    echo
+
+    echo "📋 Component Health Status:"
+    echo "  🛤️  PATH System: ${_NG_PATH_HEALTH_STATUS:-unknown}"
+    echo "  ⚙️  Command Availability: ${_NG_COMMAND_HEALTH_STATUS:-unknown}"
+    echo "  🌍 Environment Variables: ${_NG_ENV_HEALTH_STATUS:-unknown}"
+    echo
+
+    echo "📈 Issue Breakdown:"
+    echo "  Pre-Plugin Errors: ${_NG_ENV_VALIDATION_ERRORS:-0}"
+    echo "  Post-Plugin Issues: ${_NG_POST_PLUGIN_ISSUES:-0}"
+    echo "  Problematic Variables: ${_NG_PROBLEMATIC_VARS:-0}"
+    echo "  Cleanup Actions Taken: ${_NG_ENV_CLEANUP_ACTIONS:-0}"
+    echo
+
+    echo "🔧 Prevention Systems Status:"
+    echo "  Intelligent PATH: ${_NG_INTELLIGENT_PATH_LOADED:-false}"
+    echo "  Command Assurance: ${_NG_COMMAND_ASSURANCE_LOADED:-false}"
+    echo "  Environment Validation: ${_NG_ENVIRONMENT_VALIDATION_LOADED:-false}"
+    echo
+
+    if [[ "${_NG_TOTAL_ENVIRONMENT_ISSUES:-0}" -gt 0 ]]; then
+        echo "💡 Recommendations:"
+        echo "  • Run 'ng_environment_doctor' for detailed diagnostics"
+        echo "  • Run 'ng_command_doctor' to check command availability"
+        echo "  • Check .ng system logs for detailed error information"
+        if [[ "${_NG_FINAL_HEALTH_STATUS:-unknown}" == "critical" ]]; then
+            echo "  • Consider system restart or manual intervention"
+        fi
+        echo
+    fi
+
+    return 0
+}
+
+# =============================================================================
+# INITIALIZE POST-PLUGIN ENVIRONMENT HEALTH CHECK
+# =============================================================================
+
+[[ "$ZSH_DEBUG" == "1" ]] && echo "# [ENV-POST] Initializing post-plugin environment health check..." >&2
+
+# 1. Validate post-plugin environment
+validate_post_plugin_environment
+
+# 2. Detect and correct environment drift
+detect_and_correct_environment_drift
+
+# 3. Enforce proper global variable declarations
+enforce_proper_global_declarations
+
+# 4. Optimize and cleanup environment
+optimize_and_cleanup_environment
+
+# 5. Perform final health assessment
+perform_final_health_assessment
+
+# Export functions for use by other .ng systems
+typeset -gf validate_post_plugin_environment detect_and_correct_environment_drift
+typeset -gf enforce_proper_global_declarations optimize_and_cleanup_environment
+typeset -gf perform_final_health_assessment ng_environment_status
+
+[[ "$ZSH_DEBUG" == "1" ]] && echo "# [ENV-POST] Post-plugin environment health check completed successfully" >&2
+
+# =============================================================================
+# .NG INTEGRATION STATUS
+# =============================================================================
+export _NG_POST_PLUGIN_ENV_CHECK_LOADED="true"
+export _NG_ENV_HEALTH_CHECK_VERSION="1.0.0"

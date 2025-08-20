@@ -1,0 +1,246 @@
+# Final Configuration and Integration - POST-PLUGIN PHASE
+# Final setup and integration tasks from refactored zsh configuration
+# This file handles remaining configurations and system finalizations
+
+[[ "$ZSH_DEBUG" == "1" ]] && {
+    printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+    echo "# [final-config] Applying final configurations and integrations" >&2
+}
+
+## [final.homebrew-advanced] - Advanced Homebrew integration
+{
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [final.homebrew-advanced]" >&2
+
+    if command -v brew >/dev/null 2>&1; then
+        # Add Homebrew paths with priority
+        [[ -n "${HOMEBREW_PREFIX}" ]] && {
+            # WASM and LLVM binaries for development
+            # Note: For WASM compilation, wasm-ld needs to be available in PATH
+            # Alternative: ln -s $(brew --prefix llvm)/bin/wasm-ld /usr/local/bin/wasm-ld
+            _path_prepend "${HOMEBREW_PREFIX}/sbin"
+            _path_prepend "${HOMEBREW_PREFIX}/bin"
+
+            # Export FPATH with Homebrew functions prioritized
+            if [[ -d "${HOMEBREW_PREFIX}/share/zsh/site-functions" ]]; then
+                export FPATH="${HOMEBREW_PREFIX}/share/zsh/site-functions:${FPATH}"
+            fi
+        }
+
+        [[ "$ZSH_DEBUG" == "1" ]] && echo "# [final.homebrew-advanced] Advanced Homebrew paths configured" >&2
+    fi
+}
+
+## [final.environment-validation] - Validate and fix environment
+{
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [final.environment-validation]" >&2
+
+    # Ensure XDG directories exist
+    local xdg_dirs=(
+        "${XDG_CONFIG_HOME:-$HOME/.config}"
+        "${XDG_DATA_HOME:-$HOME/.local/share}"
+        "${XDG_CACHE_HOME:-$HOME/.cache}"
+        "${XDG_RUNTIME_DIR:-/tmp}"
+    )
+
+    for dir in "${xdg_dirs[@]}"; do
+        [[ ! -d "$dir" ]] && mkdir -p "$dir" 2>/dev/null
+    done
+
+    # Ensure plugin directories exist
+    mkdir -p "${ABBR_TMPDIR}" 2>/dev/null
+    mkdir -p "${ZSH_EVALCACHE_DIR}" 2>/dev/null
+    mkdir -p "${FAST_WORK_DIR}" 2>/dev/null
+    mkdir -p "${_ZO_DATA_DIR}" 2>/dev/null
+
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [final.environment-validation] Environment directories validated" >&2
+}
+
+## [final.completion-finalization] - Finalize completion system
+{
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [final.completion-finalization]" >&2
+
+    # Ensure fpath is properly configured and unique
+    typeset -gU fpath
+
+    # Add custom completions directory if it exists
+    [[ -d "${ZDOTDIR:-$HOME}/.zsh-completions.d" ]] && {
+        fpath=("${ZDOTDIR:-$HOME}/.zsh-completions.d" $fpath)
+    }
+
+    # Trigger final completion rebuild if needed
+    if [[ -n "$FORCE_COMPLETION_REBUILD" ]] || [[ ! -f "$ZSH_COMPDUMP" ]]; then
+        autoload -Uz compinit
+        compinit -d "$ZSH_COMPDUMP"
+        [[ "$ZSH_DEBUG" == "1" ]] && echo "# [final.completion-finalization] Completion system rebuilt" >&2
+    fi
+
+    # Enable bash completion compatibility
+    autoload -Uz bashcompinit && bashcompinit 2>/dev/null
+}
+
+## [final.security-hardening] - Security and privacy settings
+{
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [final.security-hardening]" >&2
+
+    # Disable telemetry for various tools
+    export DOTNET_CLI_TELEMETRY_OPTOUT="true"
+    export HOMEBREW_NO_ANALYTICS=1
+    export HOMEBREW_NO_AUTO_UPDATE=1
+    export DISABLE_TELEMETRY=1
+    export DO_NOT_TRACK=1
+
+    # Secure history settings
+    unset HISTFILE_BACKUP
+    chmod 600 "${HISTFILE}" 2>/dev/null || true
+
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [final.security-hardening] Security settings applied" >&2
+}
+
+## [final.performance-optimization] - Performance optimizations
+{
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [final.performance-optimization]" >&2
+
+    # Optimize completion caching
+    zstyle ':completion:*' use-cache true
+    zstyle ':completion:*' cache-path "${ZDOTDIR:-$HOME}/.zsh/.zcompcache"
+
+    # Optimize globbing
+    setopt GLOB_COMPLETE
+    setopt NO_CASE_GLOB
+    setopt NUMERIC_GLOB_SORT
+
+    # Optimize history
+    setopt HIST_EXPIRE_DUPS_FIRST
+    setopt HIST_IGNORE_DUPS
+    setopt HIST_IGNORE_ALL_DUPS
+    setopt HIST_FIND_NO_DUPS
+    setopt HIST_SAVE_NO_DUPS
+    setopt HIST_VERIFY
+    setopt SHARE_HISTORY
+    setopt EXTENDED_HISTORY
+
+    # Optimize directory navigation
+    setopt AUTO_CD
+    setopt AUTO_PUSHD
+    setopt PUSHD_IGNORE_DUPS
+    setopt PUSHD_SILENT
+
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [final.performance-optimization] Performance optimizations applied" >&2
+}
+
+## [final.integration-hooks] - Final integration hooks
+{
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [final.integration-hooks]" >&2
+
+    # Initialize tools that need late binding
+
+    # Starship prompt (if available and no other prompt is set)
+    if command -v starship >/dev/null 2>&1 && [[ -z "$ZSH_THEME" || "$ZSH_THEME" == "jonathan" ]]; then
+        eval "$(starship init zsh)" 2>/dev/null || true
+        [[ "$ZSH_DEBUG" == "1" ]] && echo "# [final.integration-hooks] Starship prompt initialized" >&2
+    fi
+
+    # Atuin history search (if available)
+    if command -v atuin >/dev/null 2>&1; then
+        eval "$(atuin init zsh)" 2>/dev/null || true
+        [[ "$ZSH_DEBUG" == "1" ]] && echo "# [final.integration-hooks] Atuin history search initialized" >&2
+    fi
+
+    # Zoxide smart cd (if available)
+    if command -v zoxide >/dev/null 2>&1; then
+        eval "$(zoxide init zsh)" 2>/dev/null || true
+        [[ "$ZSH_DEBUG" == "1" ]] && echo "# [final.integration-hooks] Zoxide smart cd initialized" >&2
+    fi
+
+    # The Fuck command correction (if available)
+    if command -v thefuck >/dev/null 2>&1; then
+        eval "$(thefuck --alias)" 2>/dev/null || true
+        [[ "$ZSH_DEBUG" == "1" ]] && echo "# [final.integration-hooks] The Fuck command correction initialized" >&2
+    fi
+}
+
+## [final.health-check] - Final system health check
+{
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [final.health-check]" >&2
+
+    final_health_check() {
+        local issues=()
+        local warnings=()
+
+        # Check essential commands
+        local essential_commands=(brew git curl)
+        for cmd in "${essential_commands[@]}"; do
+            if ! command -v "$cmd" >/dev/null 2>&1; then
+                issues+=("Missing essential command: $cmd")
+            fi
+        done
+
+        # Check PATH length (warn if too long)
+        local path_entries=$(echo "$PATH" | tr ':' '\n' | wc -l)
+        if [[ $path_entries -gt 50 ]]; then
+            warnings+=("PATH has many entries ($path_entries), consider cleanup")
+        fi
+
+        # Check for common issues
+        if [[ ! -d "$HOMEBREW_PREFIX" ]]; then
+            warnings+=("HOMEBREW_PREFIX directory not found: $HOMEBREW_PREFIX")
+        fi
+
+        if [[ ! -f "$HISTFILE" ]]; then
+            warnings+=("History file not found: $HISTFILE")
+        fi
+
+        # Report issues
+        if [[ ${#issues[@]} -gt 0 ]]; then
+            echo "❌ Final configuration issues detected:" >&2
+            printf '   - %s\n' "${issues[@]}" >&2
+            return 1
+        fi
+
+        if [[ ${#warnings[@]} -gt 0 ]] && [[ "$ZSH_DEBUG" == "1" ]]; then
+            echo "⚠️  Configuration warnings:" >&2
+            printf '   - %s\n' "${warnings[@]}" >&2
+        fi
+
+        [[ "$ZSH_DEBUG" == "1" ]] && echo "✅ Final configuration health check passed" >&2
+        return 0
+    }
+
+    # Run the health check
+    final_health_check
+}
+
+## [final.cleanup] - Clean up temporary variables and functions
+{
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [final.cleanup]" >&2
+
+    # Clean up temporary variables that were used during setup
+    unset BREW_LOCATION 2>/dev/null || true
+    unset FORCE_COMPLETION_REBUILD 2>/dev/null || true
+
+    # Ensure PATH is clean and unique
+    path_dedupe 2>/dev/null || true
+
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [final.cleanup] Cleanup completed" >&2
+}
+
+## [final.welcome] - Display welcome message and statistics
+{
+    if [[ "$ZSH_DEBUG" == "1" ]]; then
+        echo "# [final.welcome]" >&2
+
+        local load_time_end=$(date +%s.%N)
+        local load_time_start=${ZSH_LOAD_TIME_START:-$load_time_end}
+        local load_time=$(echo "$load_time_end - $load_time_start" | bc 2>/dev/null || echo "unknown")
+
+        echo "🚀 ZSH Configuration Summary:" >&2
+        echo "   • Load time: ${load_time}s" >&2
+        echo "   • PATH entries: $(echo "$PATH" | tr ':' '\n' | wc -l)" >&2
+        echo "   • FPATH entries: ${#fpath[@]}" >&2
+        echo "   • Functions loaded: $(typeset -f | grep -c '^[a-zA-Z_][a-zA-Z0-9_]* ()')" >&2
+        echo "   • Aliases defined: $(alias | wc -l)" >&2
+        echo "   • Environment ready for development! 🎉" >&2
+    fi
+}
+
+[[ "$ZSH_DEBUG" == "1" ]] && echo "# [final-config] ✅ Final configuration and integration completed successfully" >&2

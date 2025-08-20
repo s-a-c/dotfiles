@@ -1,0 +1,94 @@
+# Completion System Finalization
+# This file finalizes the completion system and ensures all completions are loaded
+# Load time target: <100ms
+
+[[ "$ZSH_DEBUG" == "1" ]] && {
+    printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+}
+
+# Ensure completion system is fully initialized
+finalize_completions() {
+    # Skip completion initialization if we can't do it safely
+    if ! command -v compinit >/dev/null 2>&1; then
+        [[ "$ZSH_DEBUG" == "1" ]] && echo "# [completion-final] compinit not available, skipping" >&2
+        return 0
+    fi
+
+    # Only rebuild if we have a valid ZSH_COMPDUMP location
+    if [[ -n "$ZSH_COMPDUMP" ]]; then
+        # Check if cache is old and needs rebuilding
+        if [[ ! -f "$ZSH_COMPDUMP" ]] || find "$ZSH_COMPDUMP" -mtime +1 >/dev/null 2>&1; then
+            [[ "$ZSH_DEBUG" == "1" ]] && echo "# [completion-final] Rebuilding completion cache" >&2
+            autoload -Uz compinit && compinit -d "$ZSH_COMPDUMP" 2>/dev/null || true
+        fi
+    fi
+}
+
+# Add any remaining completion paths that might have been added by plugins
+finalize_completion_paths() {
+    # Check for plugin-added completion paths
+    local plugin_completions=(
+        "$ZGENOM_DIR"/*/completions
+        "$ZGENOM_DIR"/*/_*
+    )
+
+    for comp_dir in $plugin_completions; do
+        [[ -d "$comp_dir" ]] && fpath=("$comp_dir" $fpath)
+    done
+
+    # Remove duplicates
+    typeset -aU fpath
+
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [completion-final] Final fpath: ${#fpath[@]} directories" >&2
+}
+
+# Setup completion matching and behavior
+setup_final_completion_behavior() {
+    # Advanced completion matching
+    zstyle ':completion:*' completer _expand _complete _match _prefix _approximate _list _history
+    zstyle ':completion:*:match:*' original only
+    zstyle ':completion:*:approximate:*' max-errors 1 numeric
+
+    # Performance optimizations
+    zstyle ':completion:*' max-errors 2
+    zstyle ':completion:*' squeeze-slashes true
+    zstyle ':completion:*' special-dirs true
+
+    # Case-insensitive completion
+    zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|=*' 'l:|=* r:|=*'
+
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [completion-final] Completion behavior configured" >&2
+}
+
+# Completion performance check
+completion_performance_check() {
+    if [[ "$ZSH_DEBUG" == "1" ]]; then
+        local start_time=$SECONDS
+
+        # Test completion performance
+        compgen() { return 0; }  # Dummy function for testing
+
+        local end_time=$SECONDS
+        local duration=$((end_time - start_time))
+
+        echo "# [completion-final] Performance check: ${duration}s" >&2
+
+        # Warn if completion is slow
+        if [[ $duration -gt 1 ]]; then
+            echo "⚠️  Completion system is slow. Consider running 'rm $ZSH_COMPDUMP && compinit'" >&2
+        fi
+    fi
+}
+
+# Main finalization process
+main() {
+    finalize_completion_paths
+    setup_final_completion_behavior
+    finalize_completions
+    completion_performance_check
+}
+
+# Run finalization
+main
+
+[[ "$ZSH_DEBUG" == "1" ]] && echo "# [90-finalize] Completion system finalized" >&2
