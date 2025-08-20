@@ -1,0 +1,96 @@
+# Completion System Configuration
+# This file sets up the ZSH completion system with optimizations
+# Load time target: <200ms
+
+[[ "$ZSH_DEBUG" == "1" ]] && {
+    printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+}
+
+# Completion system paths and cache
+export ZSH_COMPDUMP="${ZSH_CACHE_DIR}/zcompdump"
+export _comp_dumpfile="$ZSH_COMPDUMP"
+
+# Ensure completion cache directory exists
+[[ ! -d "${ZSH_COMPDUMP:h}" ]] && mkdir -p "${ZSH_COMPDUMP:h}"
+
+# Initialize completion system with error handling
+init_completions() {
+    # Load and initialize the completion system
+    autoload -Uz compinit
+
+    # Use cached completions if less than 24 hours old
+    local comp_files=($ZSH_COMPDUMP(Nm-24))
+    if [[ $#comp_files -gt 0 ]]; then
+        compinit -C -d "$ZSH_COMPDUMP"
+        [[ "$ZSH_DEBUG" == "1" ]] && echo "# [completion] Using cached completions" >&2
+    else
+        compinit -d "$ZSH_COMPDUMP"
+        [[ "$ZSH_DEBUG" == "1" ]] && echo "# [completion] Rebuilding completions cache" >&2
+    fi
+
+    # Initialize bashcompinit for bash completions
+    autoload -Uz bashcompinit && bashcompinit 2>/dev/null
+}
+
+# Completion styles for better performance and appearance
+setup_completion_styles() {
+    # Performance optimizations
+    zstyle ':completion:*' use-cache yes
+    zstyle ':completion:*' cache-path "$ZSH_CACHE_DIR/completions"
+    zstyle ':completion:*' accept-exact '*(N)'
+    zstyle ':completion:*' use-compctl false
+
+    # Appearance and behavior
+    zstyle ':completion:*' menu select
+    zstyle ':completion:*' list-colors ''
+    zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
+    zstyle ':completion:*' group-name ''
+    zstyle ':completion:*' verbose yes
+
+    # Directory completion
+    zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
+    zstyle ':completion:*:*:cd:*:directory-stack' menu yes select
+    zstyle ':completion:*:-tilde-:*' group-order 'named-directories' 'path-directories' 'users' 'expand'
+
+    # Process completion
+    zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm -w -w"
+    zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
+    zstyle ':completion:*:*:kill:*' menu yes select
+    zstyle ':completion:*:*:kill:*' force-list always
+
+    # Git completion optimizations
+    zstyle ':completion:*:git-checkout:*' sort false
+    zstyle ':completion:*:git-branch:*' sort false
+
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [completion] Completion styles configured" >&2
+}
+
+# Add tool-specific completion paths
+add_completion_paths() {
+    # Homebrew completions
+    if [[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/share/zsh/site-functions" ]]; then
+        fpath=("$HOMEBREW_PREFIX/share/zsh/site-functions" $fpath)
+    fi
+
+    # Custom completions directory
+    if [[ -d "$ZDOTDIR/completions" ]]; then
+        fpath=("$ZDOTDIR/completions" $fpath)
+    fi
+
+    # Remove duplicates from fpath
+    typeset -aU fpath
+
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [completion] Completion paths added to fpath" >&2
+}
+
+# Main completion initialization
+main() {
+    add_completion_paths
+    setup_completion_styles
+    init_completions
+}
+
+# Run the completion setup
+main
+
+[[ "$ZSH_DEBUG" == "1" ]] && echo "# [10-tools] Completion system configured" >&2

@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+#
+# Kill screensaver
+#
+# Copyright 2017, Joe Block <jpb@unixorn.net>
+
+set -e
+set -o pipefail
+
+if [[ "$(uname -s)" != 'Darwin' ]]; then
+  echo 'Sorry, this script only works on macOS'
+  exit 1
+fi
+
+# macOS doesn't ship with pgrep, so ps | grep instead
+# shellcheck disable=SC2009,SC2046
+exec kill -9 $(ps ww | \
+  grep ScreenSaverEngine | \
+  grep -v grep | \
+  awk "{print $1}")
