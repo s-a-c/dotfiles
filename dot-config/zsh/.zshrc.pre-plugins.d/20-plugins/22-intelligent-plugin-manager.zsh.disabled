@@ -1,0 +1,510 @@
+# Intelligent Plugin Manager for .NG Architecture
+# This file replaces manual plugin guards with intelligent plugin management
+# File: 35-intelligent-plugin-manager.zsh
+# Target: Replace plugin loading guards in 005-plugin-loading-guards.zsh
+
+[[ "$ZSH_DEBUG" == "1" ]] && {
+    printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+}
+
+# =============================================================================
+# INTELLIGENT PLUGIN MANAGER (.NG-NATIVE)
+# =============================================================================
+# Replaces manual plugin conflict detection with intelligent, adaptive plugin
+# management integrated into the .ng architecture
+
+# Enhanced plugin registry with advanced tracking
+typeset -gA _NG_PLUGIN_REGISTRY
+typeset -gA _NG_PLUGIN_DEPENDENCIES
+typeset -gA _NG_PLUGIN_CONFLICTS
+typeset -gA _NG_PLUGIN_LOAD_TIMES
+typeset -gA _NG_PLUGIN_HEALTH_STATUS
+typeset -gA _NG_PLUGIN_COMPATIBILITY
+
+# Plugin categories for intelligent management
+typeset -ga _NG_ESSENTIAL_PLUGINS=(
+    "ohmyzsh/ohmyzsh"
+    "zsh-users/zsh-syntax-highlighting"
+    "zsh-users/zsh-autosuggestions"
+    "zsh-users/zsh-completions"
+)
+
+typeset -ga _NG_DEVELOPMENT_PLUGINS=(
+    "olets/zsh-abbr"
+    "unixorn/fzf-zsh-plugin"
+    "marlonrichert/zsh-autocomplete"
+    "zdharma-continuum/fast-syntax-highlighting"
+)
+
+typeset -ga _NG_OPTIONAL_PLUGINS=(
+    "romkatv/powerlevel10k"
+    "agkozak/zsh-z"
+    "MichaelAquilina/zsh-you-should-use"
+)
+
+# Automatic plugin dependency resolution
+resolve_plugin_dependencies() {
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [PLUGIN] Starting dependency resolution..." >&2
+
+    # Define plugin dependencies with intelligent analysis
+    local -A dependency_map=(
+        # Completion dependencies
+        ["olets/zsh-abbr"]="ohmyzsh/ohmyzsh/lib/key-bindings"
+        ["unixorn/fzf-zsh-plugin"]="ohmyzsh/ohmyzsh/lib/completion"
+        ["marlonrichert/zsh-autocomplete"]="ohmyzsh/ohmyzsh/lib/completion"
+
+        # Syntax highlighting dependencies
+        ["zdharma-continuum/fast-syntax-highlighting"]="ohmyzsh/ohmyzsh/lib/theme-and-appearance"
+        ["zsh-users/zsh-syntax-highlighting"]="ohmyzsh/ohmyzsh/lib/misc"
+
+        # Theme dependencies
+        ["romkatv/powerlevel10k"]="ohmyzsh/ohmyzsh/lib/theme-and-appearance"
+    )
+
+    # Check dependencies for currently requested plugins
+    local dependencies_satisfied=true
+    local missing_dependencies=()
+
+    for plugin in "${!dependency_map[@]}"; do
+        if [[ -n "${_NG_PLUGIN_REGISTRY[$plugin]}" ]]; then
+            local required_dep="${dependency_map[$plugin]}"
+
+            # Check if dependency is satisfied
+            if ! check_dependency_satisfied "$required_dep"; then
+                echo "# [PLUGIN] WARNING: Plugin $plugin missing dependency: $required_dep" >&2
+                missing_dependencies+=("$plugin:$required_dep")
+                dependencies_satisfied=false
+            else
+                [[ "$ZSH_DEBUG" == "1" ]] && echo "# [PLUGIN] Dependency satisfied for $plugin: $required_dep" >&2
+            fi
+        fi
+    done
+
+    # Store dependency status
+    export _NG_PLUGIN_DEPENDENCIES_SATISFIED="$dependencies_satisfied"
+    export _NG_PLUGIN_MISSING_DEPS="${#missing_dependencies[@]}"
+
+    [[ "$ZSH_DEBUG" == "1" ]] && {
+        echo "# [PLUGIN] Dependency resolution complete: $dependencies_satisfied" >&2
+        echo "# [PLUGIN] Missing dependencies: ${#missing_dependencies[@]}" >&2
+    }
+
+    return 0
+}
+
+# Check if a specific dependency is satisfied
+check_dependency_satisfied() {
+    local dependency="$1"
+
+    # For oh-my-zsh lib dependencies, check if the lib is loaded
+    if [[ "$dependency" == *"ohmyzsh/ohmyzsh/lib/"* ]]; then
+        local lib_name="${dependency##*/}"
+        # Check if oh-my-zsh is loaded and the specific lib exists
+        if [[ -n "$ZSH" ]] && [[ -f "$ZSH/lib/${lib_name}.zsh" ]]; then
+            return 0
+        fi
+    fi
+
+    # For plugin dependencies, check if plugin is in registry
+    if [[ -n "${_NG_PLUGIN_REGISTRY[$dependency]}" ]]; then
+        return 0
+    fi
+
+    # Check if plugin is loaded by zgenom
+    if command -v zgenom >/dev/null 2>&1; then
+        if zgenom list 2>/dev/null | grep -q "$dependency"; then
+            return 0
+        fi
+    fi
+
+    return 1
+}
+
+# Plugin compatibility checking before loading
+check_plugin_compatibility() {
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [PLUGIN] Checking plugin compatibility..." >&2
+
+    local compatibility_issues=0
+
+    # Define known incompatibilities
+    local -A incompatible_pairs=(
+        ["zsh-users/zsh-syntax-highlighting"]="zdharma-continuum/fast-syntax-highlighting"
+        ["marlonrichert/zsh-autocomplete"]="zsh-users/zsh-autosuggestions"
+        ["robbyrussell/oh-my-zsh"]="ohmyzsh/ohmyzsh"
+    )
+
+    # Check for conflicting plugin pairs
+    for plugin1 in "${!incompatible_pairs[@]}"; do
+        local plugin2="${incompatible_pairs[$plugin1]}"
+
+        if [[ -n "${_NG_PLUGIN_REGISTRY[$plugin1]}" ]] && [[ -n "${_NG_PLUGIN_REGISTRY[$plugin2]}" ]]; then
+            echo "# [PLUGIN] CONFLICT: Cannot load both $plugin1 and $plugin2" >&2
+            _NG_PLUGIN_CONFLICTS["$plugin1"]="$plugin2"
+            ((compatibility_issues++))
+        fi
+    done
+
+    # Check ZSH version compatibility
+    local zsh_version="${ZSH_VERSION:-unknown}"
+    if [[ "$zsh_version" != "unknown" ]]; then
+        # Check for plugins that require specific ZSH versions
+        local -A version_requirements=(
+            ["marlonrichert/zsh-autocomplete"]="5.8"
+            ["romkatv/powerlevel10k"]="5.1"
+        )
+
+        for plugin in "${!version_requirements[@]}"; do
+            if [[ -n "${_NG_PLUGIN_REGISTRY[$plugin]}" ]]; then
+                local required_version="${version_requirements[$plugin]}"
+                if ! version_compare "$zsh_version" "$required_version"; then
+                    echo "# [PLUGIN] VERSION CONFLICT: $plugin requires ZSH >= $required_version, current: $zsh_version" >&2
+                    _NG_PLUGIN_COMPATIBILITY["$plugin"]="version_conflict"
+                    ((compatibility_issues++))
+                fi
+            fi
+        done
+    fi
+
+    # Export compatibility status
+    export _NG_PLUGIN_COMPATIBILITY_ISSUES="$compatibility_issues"
+
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [PLUGIN] Compatibility check complete: $compatibility_issues issues" >&2
+
+    return 0
+}
+
+# Version comparison utility
+version_compare() {
+    local current="$1"
+    local required="$2"
+
+    # Simple version comparison (major.minor)
+    local current_major="${current%%.*}"
+    local current_minor="${current#*.}"
+    current_minor="${current_minor%%.*}"
+
+    local required_major="${required%%.*}"
+    local required_minor="${required#*.}"
+    required_minor="${required_minor%%.*}"
+
+    # Compare major version
+    if [[ "$current_major" -gt "$required_major" ]]; then
+        return 0
+    elif [[ "$current_major" -lt "$required_major" ]]; then
+        return 1
+    fi
+
+    # Major versions equal, compare minor
+    if [[ "$current_minor" -ge "$required_minor" ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+# Smart plugin loading order optimization
+optimize_plugin_loading_order() {
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [PLUGIN] Optimizing plugin loading order..." >&2
+
+    # Define optimal loading priorities (lower number = earlier loading)
+    local -A loading_priorities=(
+        # Essential framework first
+        ["ohmyzsh/ohmyzsh"]=10
+
+        # Core completions early
+        ["zsh-users/zsh-completions"]=20
+
+        # Syntax highlighting after completions
+        ["zsh-users/zsh-syntax-highlighting"]=30
+        ["zdharma-continuum/fast-syntax-highlighting"]=30
+
+        # Autosuggestions after syntax highlighting
+        ["zsh-users/zsh-autosuggestions"]=40
+        ["marlonrichert/zsh-autocomplete"]=40
+
+        # Abbreviations after autosuggestions
+        ["olets/zsh-abbr"]=50
+
+        # Navigation and utilities
+        ["agkozak/zsh-z"]=60
+        ["unixorn/fzf-zsh-plugin"]=60
+
+        # Theme last
+        ["romkatv/powerlevel10k"]=90
+
+        # Quality of life plugins last
+        ["MichaelAquilina/zsh-you-should-use"]=95
+    )
+
+    # Create ordered list of plugins
+    local -a ordered_plugins=()
+    local -A plugin_priorities=()
+
+    # Assign priorities to registered plugins
+    for plugin in "${!_NG_PLUGIN_REGISTRY[@]}"; do
+        local priority="${loading_priorities[$plugin]:-80}"  # Default priority
+        plugin_priorities["$plugin"]="$priority"
+    done
+
+    # Sort plugins by priority
+    for plugin in "${!plugin_priorities[@]}"; do
+        ordered_plugins+=("${plugin_priorities[$plugin]}:$plugin")
+    done
+
+    # Sort the array and extract plugin names
+    local -a sorted_plugins=()
+    for entry in $(printf '%s\n' "${ordered_plugins[@]}" | sort -n); do
+        local plugin="${entry#*:}"
+        sorted_plugins+=("$plugin")
+    done
+
+    # Store optimized order
+    export _NG_PLUGIN_OPTIMAL_ORDER="${sorted_plugins[*]}"
+
+    [[ "$ZSH_DEBUG" == "1" ]] && {
+        echo "# [PLUGIN] Optimal loading order determined:" >&2
+        for plugin in "${sorted_plugins[@]}"; do
+            echo "#   Priority ${plugin_priorities[$plugin]}: $plugin" >&2
+        done
+    }
+
+    return 0
+}
+
+# Plugin health monitoring and auto-repair
+monitor_plugin_health() {
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [PLUGIN] Monitoring plugin health..." >&2
+
+    local health_issues=0
+    local plugins_checked=0
+
+    # Check essential plugins
+    for plugin in "${_NG_ESSENTIAL_PLUGINS[@]}"; do
+        ((plugins_checked++))
+        local health_status="unknown"
+
+        # Check if plugin is loaded and functional
+        case "$plugin" in
+            "zsh-users/zsh-syntax-highlighting")
+                if typeset -f _zsh_highlight >/dev/null 2>&1; then
+                    health_status="healthy"
+                else
+                    health_status="not_loaded"
+                    ((health_issues++))
+                fi
+                ;;
+            "zsh-users/zsh-autosuggestions")
+                if typeset -f _zsh_autosuggest_bind_widgets >/dev/null 2>&1; then
+                    health_status="healthy"
+                else
+                    health_status="not_loaded"
+                    ((health_issues++))
+                fi
+                ;;
+            "ohmyzsh/ohmyzsh")
+                if [[ -n "$ZSH" ]] && [[ -d "$ZSH" ]]; then
+                    health_status="healthy"
+                else
+                    health_status="not_loaded"
+                    ((health_issues++))
+                fi
+                ;;
+            *)
+                # Generic check for other plugins
+                if zgenom list 2>/dev/null | grep -q "$plugin"; then
+                    health_status="healthy"
+                else
+                    health_status="unknown"
+                fi
+                ;;
+        esac
+
+        _NG_PLUGIN_HEALTH_STATUS["$plugin"]="$health_status"
+
+        [[ "$ZSH_DEBUG" == "1" ]] && echo "# [PLUGIN] Health check $plugin: $health_status" >&2
+    done
+
+    # Export health status
+    export _NG_PLUGIN_HEALTH_ISSUES="$health_issues"
+    export _NG_PLUGINS_CHECKED="$plugins_checked"
+
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [PLUGIN] Health monitoring complete: $health_issues issues in $plugins_checked plugins" >&2
+
+    return 0
+}
+
+# Plugin performance profiling and optimization
+profile_plugin_performance() {
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [PLUGIN] Profiling plugin performance..." >&2
+
+    # Check if any plugins are taking excessive time
+    local performance_issues=0
+
+    # Look for signs of slow plugins
+    if command -v zgenom >/dev/null 2>&1; then
+        # Check if zgenom compile is needed (indicates performance optimization opportunity)
+        local zgenom_dir="${ZGENOM_DIR:-${ZDOTDIR:-$HOME}/.zgenom}"
+        if [[ ! -f "$zgenom_dir/init.zsh" ]]; then
+            echo "# [PLUGIN] PERFORMANCE: zgenom not compiled - startup may be slow" >&2
+            ((performance_issues++))
+        fi
+    fi
+
+    # Check for known performance-impacting configurations
+    if [[ -n "$ZSH_AUTOSUGGEST_STRATEGY" ]]; then
+        local strategy_count="${#ZSH_AUTOSUGGEST_STRATEGY[@]}"
+        if [[ "$strategy_count" -gt 2 ]]; then
+            echo "# [PLUGIN] PERFORMANCE: Too many autosuggest strategies ($strategy_count) may impact performance" >&2
+            ((performance_issues++))
+        fi
+    fi
+
+    # Export performance status
+    export _NG_PLUGIN_PERFORMANCE_ISSUES="$performance_issues"
+
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [PLUGIN] Performance profiling complete: $performance_issues issues" >&2
+
+    return 0
+}
+
+# Automatic plugin update conflict resolution
+resolve_plugin_conflicts() {
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [PLUGIN] Resolving plugin conflicts..." >&2
+
+    local conflicts_resolved=0
+
+    # Resolve known conflicts automatically
+    for plugin1 in "${!_NG_PLUGIN_CONFLICTS[@]}"; do
+        local plugin2="${_NG_PLUGIN_CONFLICTS[$plugin1]}"
+
+        echo "# [PLUGIN] CONFLICT RESOLUTION: Choosing between $plugin1 and $plugin2" >&2
+
+        # Apply resolution strategy
+        case "$plugin1:$plugin2" in
+            "zsh-users/zsh-syntax-highlighting:zdharma-continuum/fast-syntax-highlighting")
+                # Prefer fast-syntax-highlighting for performance
+                echo "# [PLUGIN] Resolution: Preferring fast-syntax-highlighting for better performance" >&2
+                unset "_NG_PLUGIN_REGISTRY[$plugin1]"
+                ((conflicts_resolved++))
+                ;;
+            "marlonrichert/zsh-autocomplete:zsh-users/zsh-autosuggestions")
+                # Prefer zsh-autosuggestions for stability
+                echo "# [PLUGIN] Resolution: Preferring zsh-autosuggestions for stability" >&2
+                unset "_NG_PLUGIN_REGISTRY[$plugin1]"
+                ((conflicts_resolved++))
+                ;;
+            *)
+                echo "# [PLUGIN] Resolution: Manual intervention required for $plugin1 vs $plugin2" >&2
+                ;;
+        esac
+    done
+
+    # Export conflict resolution status
+    export _NG_PLUGIN_CONFLICTS_RESOLVED="$conflicts_resolved"
+
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [PLUGIN] Conflict resolution complete: $conflicts_resolved conflicts resolved" >&2
+
+    return 0
+}
+
+# Plugin diagnostics and reporting
+ng_plugin_doctor() {
+    echo "🔍 .NG Intelligent Plugin Manager - Health Check"
+    echo "==============================================="
+    echo
+
+    echo "📊 Plugin System Status:"
+    echo "  Dependencies Satisfied: ${_NG_PLUGIN_DEPENDENCIES_SATISFIED:-unknown}"
+    echo "  Missing Dependencies: ${_NG_PLUGIN_MISSING_DEPS:-0}"
+    echo "  Compatibility Issues: ${_NG_PLUGIN_COMPATIBILITY_ISSUES:-0}"
+    echo "  Health Issues: ${_NG_PLUGIN_HEALTH_ISSUES:-0}"
+    echo "  Performance Issues: ${_NG_PLUGIN_PERFORMANCE_ISSUES:-0}"
+    echo "  Conflicts Resolved: ${_NG_PLUGIN_CONFLICTS_RESOLVED:-0}"
+    echo
+
+    if [[ "${#_NG_PLUGIN_HEALTH_STATUS[@]}" -gt 0 ]]; then
+        echo "🔌 Plugin Health Status:"
+        for plugin in "${!_NG_PLUGIN_HEALTH_STATUS[@]}"; do
+            local status="${_NG_PLUGIN_HEALTH_STATUS[$plugin]}"
+            local status_icon="❓"
+
+            case "$status" in
+                "healthy") status_icon="✅" ;;
+                "not_loaded") status_icon="❌" ;;
+                "degraded") status_icon="⚠️" ;;
+            esac
+
+            echo "  $status_icon $plugin: $status"
+        done
+        echo
+    fi
+
+    if [[ "${#_NG_PLUGIN_CONFLICTS[@]}" -gt 0 ]]; then
+        echo "⚡ Plugin Conflicts:"
+        for plugin1 in "${!_NG_PLUGIN_CONFLICTS[@]}"; do
+            local plugin2="${_NG_PLUGIN_CONFLICTS[$plugin1]}"
+            echo "  ❌ $plugin1 ↔ $plugin2"
+        done
+        echo
+    fi
+
+    if [[ -n "$_NG_PLUGIN_OPTIMAL_ORDER" ]]; then
+        echo "📋 Optimal Loading Order:"
+        local -a optimal_plugins
+        read -A optimal_plugins <<< "$_NG_PLUGIN_OPTIMAL_ORDER"
+        local priority=10
+        for plugin in "${optimal_plugins[@]}"; do
+            echo "  $priority. $plugin"
+            ((priority+=10))
+        done
+        echo
+    fi
+
+    if [[ "${_NG_PLUGIN_PERFORMANCE_ISSUES:-0}" -gt 0 ]]; then
+        echo "💡 Performance Recommendations:"
+        echo "  • Run 'zgenom compile' to improve startup time"
+        echo "  • Consider reducing autosuggest strategies"
+        echo "  • Review plugin loading order optimization"
+        echo
+    fi
+
+    return 0
+}
+
+# =============================================================================
+# INITIALIZE INTELLIGENT PLUGIN MANAGER
+# =============================================================================
+
+[[ "$ZSH_DEBUG" == "1" ]] && echo "# [PLUGIN] Initializing intelligent plugin manager..." >&2
+
+# 1. Resolve plugin dependencies
+resolve_plugin_dependencies
+
+# 2. Check plugin compatibility
+check_plugin_compatibility
+
+# 3. Optimize plugin loading order
+optimize_plugin_loading_order
+
+# 4. Monitor plugin health
+monitor_plugin_health
+
+# 5. Profile plugin performance
+profile_plugin_performance
+
+# 6. Resolve any conflicts
+resolve_plugin_conflicts
+
+# Export functions for use by other .ng systems
+typeset -gf resolve_plugin_dependencies check_plugin_compatibility
+typeset -gf optimize_plugin_loading_order monitor_plugin_health
+typeset -gf profile_plugin_performance resolve_plugin_conflicts
+typeset -gf ng_plugin_doctor check_dependency_satisfied version_compare
+
+[[ "$ZSH_DEBUG" == "1" ]] && echo "# [PLUGIN] Intelligent plugin manager initialized successfully" >&2
+
+# =============================================================================
+# .NG INTEGRATION STATUS
+# =============================================================================
+export _NG_INTELLIGENT_PLUGIN_MANAGER_LOADED="true"
+export _NG_PLUGIN_MANAGER_VERSION="1.0.0"
