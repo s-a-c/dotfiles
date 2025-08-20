@@ -1,0 +1,201 @@
+#!/usr/bin/env bash
+#
+# screencap-stream
+#
+# Captures a stream of PNGs to a directory. If we find ffmpeg, we then render them to .mp4
+#
+# Copyright 2022, Joe Block <jpb@unixorn.net>
+
+set -o pipefail
+if [[ -n "$DEBUG_RAW_COMMANDS" ]]; then
+  set -x
+fi
+
+function debug() {
+  if [[ -n "$DEBUG" ]]; then
+    echo "$@"
+  fi
+}
+
+function fail() {
+  printf '%s\n' "$1" >&2  ## Send message to stderr. Exclude >&2 if you don't want it that way.
+  exit "${2-1}"  ## Return a code specified by $2 or 1 by default.
+}
+
+function has() {
+  # Check if a command is in $PATH
+  which "$@" > /dev/null 2>&1
+}
+
+# on_exit and add_on_exit from http://www.linuxjournal.com/content/use-bash-trap-statement-cleanup-temporary-files
+
+# Usage:
+#   add_on_exit rm -f /tmp/foo
+#   add_on_exit echo "I am exiting"
+#   tempfile=$(mktemp)
+#   add_on_exit rm -f "$tempfile"
+
+function on_exit()
+{
+  for i in "${on_exit_items[@]}"
+  do
+      eval "$i"
+  done
+}
+
+function add_on_exit()
+{
+  local n=${#on_exit_items[*]}
+  # shellcheck disable=SC2004
+  on_exit_items[$n]="$*"
+  if [[ $n -eq 0 ]]; then
+    trap on_exit EXIT
+  fi
+}
+
+function retain_frames()
+{
+  debug "Retaining frames"
+  if [[ $keep_frames == 'true' ]]; then
+    if [[ -d "$target_d" ]]; then
+      rsync "${SCRATCH_D}"/*.png "$target_d"
+    else
+      echo "$target_d is not a directory, skipping frame retention"
+    fi
+  fi
+}
+
+function scrub_scratch() {
+  debug "Nuking scratch directory ${SCRATCH_D}"
+  if [[ -n "$DEBUG" ]]; then
+    rm -frv "${SCRATCH_D}"
+  else
+    rm -fr "${SCRATCH_D}"
+  fi
+}
+
+function makemovie()
+{
+  if [[ -n "$E_NO_POST" ]]; then
+    echo "$E_NO_POST"
+    exit 1
+  fi
+  echo "Creating movie from frames in $SCRATCH_D"
+  echo "You set the interval between frame captures to $interval, setting movie rate to ${hertz}hz"
+  retain_frames
+  echo "Stitching frames into an mp4..."
+  ffmpeg -pattern_type glob -framerate "$hertz" \
+    -i "${SCRATCH_D}/*.png" \
+    -c:v libx264 \
+    -r 30 \
+    -pix_fmt yuv420p \
+    -movflags +faststart \
+    "$moviename"
+}
+
+function usage() {
+  myname=$(basename "$0")
+  echo "Usage:"
+  echo "$myname takes the following options:"
+  echo "    -i interval in seconds between frame captures. Fractions are acceptable."
+  echo "    -k Keep captured frames as snapshots after processing"
+  echo "    -o output movie name"
+  echo "    -t target directory (only used if keepframes is set)"
+}
+
+# Set up a working scratch directory
+SCRATCH_D=$(mktemp -d)
+
+if [[ ! "$SCRATCH_D" || ! -d "$SCRATCH_D" ]]; then
+  fail "Could not create temp dir"
+fi
+
+if ! has screencapture; then
+  fail "Cannot find 'screencapture' in your PATH."
+fi
+
+# Parse CLI options
+# shellcheck disable=SC2048,SC2086
+OPTS=$(getopt kt:i:o: $*)
+# shellcheck disable=SC2181
+if [[ $? -ne 0 ]]; then
+  usage
+  exit 1
+fi
+# shellcheck disable=SC2086
+set -- $OPTS
+
+# Set reasonable default values
+keep_frames=false
+interval=0.05
+moviename="$(pwd)/screencap.mp4"
+
+if has ffmpeg; then
+  echo "Found ffmpeg, will make a movie after screen frames are captured."
+  add_on_exit makemovie
+else
+  echo "No ffmpeg found in PATH, forcing frame retention"
+  keep_frames=true
+  add_on_exit retain_frames
+fi
+add_on_exit scrub_scratch
+
+while :; do
+  case "$1" in
+    -i)
+      shift
+      interval=$1
+      debug "Set interval to $interval"
+      shift
+      ;;
+    -k)
+      keep_frames=true
+      debug "Set keep_frames to $keep_frames"
+      shift
+      ;;
+    -o)
+      shift
+      moviename=$1
+      debug "Set moviename to $moviename"
+      shift
+      ;;
+    -t)
+      shift
+      target_d=$1
+      debug "Set target_d to $target_d"
+      shift
+      ;;
+    --) shift;
+      break
+      ;;
+  esac
+done
+
+raw="scale=0; 1 / $interval / 4" # Was too fast until I halved the speed as a fudge factor
+hertz=$(bc <<< "$raw")
+
+debug "hertz: $hertz"
+debug "interval: $interval"
+debug "keep_frames: $keep_frames"
+debug "moviename: $moviename"
+debug "target_d: $target_d"
+
+if [[ $keep_frames == 'true' ]]; then
+  debug "Keepframes is set, checking if $target_d is a directory"
+  if [[ ! -d "$target_d" ]]; then
+    E_NO_POST="$target_d is not a directory"
+    exit 1
+  fi
+fi
+
+if [[ -f "$moviename" ]]; then
+  E_NO_POST="$moviename already exists, exiting."
+  exit 1
+fi
+
+while :; do
+  fname="${SCRATCH_D}/$(date +%s).png"
+  echo "📸 $(date +%H:%M:%S) $fname"
+  screencapture -x "$fname"
+  sleep "$interval"
+done

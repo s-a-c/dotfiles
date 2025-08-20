@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#
+# Disable smart quotes
+#
+# Copyright 2021, Joe Block <jpb@unixorn.net>
+
+if [[ "$(uname -s)" != 'Darwin' ]]; then
+  echo 'Sorry, this script only works on macOS'
+  exit 1
+fi
+
+exec defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false

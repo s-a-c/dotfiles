@@ -244,6 +244,9 @@ dot-_*
 .cache
 /.cache
 .local
+.ssh
+.zcompdump*
+.zsh_history
 
 # Add `.rake_tasks` to your global [.gitignore] (https://help.github.com/articles/ignoring-files#global-gitignore)  repositories don't get polluted.
 .rake_tasks
@@ -263,4 +266,3 @@ dist/
 
 .env
 /.env/
-
