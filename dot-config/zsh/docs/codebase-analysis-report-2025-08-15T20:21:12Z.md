@@ -354,96 +354,81 @@ _abbr_debugger() {
    - Tool configs mixed with shell configs
    - Plugin setup mixed with environment setup
 
-### 5.2 Proposed Alternative Structure (.zshrc.d.ng)
+### 5.2 Target Structure with Categorized Subfolders (.zshrc.pre-plugins.d.ng and .zshrc.d.ng)
 
+Based on the corrected understanding of ZSH-quickstart-kit execution order and the need for proper functional placement, the target structure organizes files within categorized subfolders:
+
+#### Pre-Plugin Phase (.zshrc.pre-plugins.d.ng/) - ✅ IMPLEMENTED
 ```
-.zshrc.d.ng/
-├── 000-core/                    # Essential core functionality
-│   ├── 001-environment.zsh      # Core environment variables
-│   ├── 005-functions.zsh        # Essential utility functions
-│   └── 009-error-handling.zsh   # Centralized error handling
-│
-├── 100-shell/                   # Shell behavior configuration
-│   ├── 101-options.zsh          # setopt configurations
-│   ├── 105-history.zsh          # History management
-│   ├── 110-keybindings.zsh      # Key bindings
-│   └── 115-aliases-core.zsh     # Essential aliases only
-│
-├── 200-completion/              # Completion system
-│   ├── 201-completion-init.zsh  # Completion initialization
-│   ├── 205-completion-config.zsh # Completion behavior
-│   └── 210-completion-styles.zsh # Completion styling
-│
-├── 300-plugins/                 # Plugin management
-│   ├── 301-plugin-manager.zsh   # zgenom setup
-│   ├── 305-plugins-essential.zsh # Critical plugins
-│   ├── 310-plugins-development.zsh # Development plugins
-│   ├── 315-plugins-navigation.zsh # Navigation plugins
-│   └── 320-plugins-utilities.zsh # Utility plugins
-│
-├── 400-tools/                   # External tool integration
-│   ├── 401-development/         # Development tools
-│   │   ├── git.zsh
-│   │   ├── node.zsh
-│   │   ├── python.zsh
-│   │   ├── rust.zsh
-│   │   └── docker.zsh
-│   ├── 405-productivity/        # Productivity tools
-│   │   ├── fzf.zsh
-│   │   ├── tmux.zsh
-│   │   └── editor.zsh
-│   └── 410-platform/           # Platform-specific tools
-│       ├── macos.zsh
-│       └── linux.zsh
-│
-├── 500-styling/                 # Visual configuration
-│   ├── 501-colors.zsh           # Color definitions
-│   ├── 505-prompt.zsh           # Prompt configuration
-│   └── 510-zstyles.zsh          # ZSH styling options
-│
-├── 800-custom/                  # User customizations
-│   ├── 801-aliases-extended.zsh # Extended aliases
-│   ├── 805-functions-custom.zsh # Custom functions
-│   └── 810-local-overrides.zsh  # Local machine overrides
-│
-└── 900-finalization/           # Startup finalization
-    ├── 901-path-cleanup.zsh    # PATH deduplication
-    ├── 905-post-setup.zsh      # Post-configuration setup
-    └── 910-startup-banner.zsh  # Welcome message
+.zshrc.pre-plugins.d.ng/               # Pre-plugin setup with categorization - COMPLETED
+├── 00-core/                           # Core system and environment setup
+│   ├── 00-emergency-system.zsh        # Emergency fixes + system commands
+│   ├── 00-core-environment.zsh        # Environment + security + options
+│   └── 20-completion-prep.zsh         # Basic completion initialization
+├── 10-tools/                          # Essential tools and utilities
+│   └── 10-functions-paths.zsh         # Functions + PATH management (moved from 00-core)
+├── 20-plugins/                        # Plugin loading optimization
+│   └── 30-plugin-optimization.zsh     # Plugin loading optimization + lazy loading
+├── 30-ui/                             # User interface enhancements (ready for future use)
+└── 90-finalize/                       # Pre-plugin finalization (ready for future use)
 ```
 
-### 5.3 Configuration Profiles
-
-**Minimal Profile** (Fast startup):
-```bash
-PROFILE_MODULES=(
-    "000-core/environment"
-    "000-core/functions"
-    "100-shell/options"
-    "200-completion/init"
-    "900-finalization/path-cleanup"
-)
+#### Post-Plugin Phase (.zshrc.d.ng/) - ⏸️ PENDING IMPLEMENTATION
+```
+.zshrc.d.ng/                           # Post-plugin configuration with categorization
+├── 00-core/                           # Core completion and system finalization
+│   └── 10-completion-finalization.zsh # MOVED: zstyle + completion styling (60% perf gain)
+├── 10-tools/                          # Tool environments and configuration
+│   └── 10-tool-environments.zsh       # Tool configuration + environments
+├── 20-plugins/                        # Plugin integration and configuration
+│   └── 20-plugin-integration.zsh      # MOVED: Plugin configurations (40% failure reduction)
+├── 30-ui/                             # User interface and experience
+│   └── 20-ui-enhancements.zsh         # Aliases + keybindings + prompt tuning
+└── 90-finalize/                       # Final cleanup and monitoring
+    └── 30-finalization.zsh            # PATH cleanup + performance monitoring
 ```
 
-**Development Profile** (Balanced):
-```bash
-PROFILE_MODULES=(
-    "000-core/environment"
-    "100-shell/options"
-    "200-completion/init"
-    "300-plugins/essential"
-    "300-plugins/development"
-    "400-tools/development/git"
-    "400-tools/development/node"
-    "500-styling/prompt"
-)
-```
+#### Reorganization Status Update
 
-**Full Profile** (Complete functionality):
-- Load all available modules
+**✅ COMPLETED: .zshrc.pre-plugins.d.ng Reorganization**
+- Successfully reorganized from scattered files into 5 categorized subdirectories
+- Moved functions file from 00-core to 10-tools with proper naming
+- Maintained all existing functionality while improving organization
+- File count: 5 files across 4 active subdirectories (1 empty for future use)
 
----
+**⏸️ PENDING: .zshrc.d.ng Implementation** 
+- Target structure designed but not yet implemented
+- Will address critical functional placement issues (zstyle, plugin configs)
+- Expected 60% completion performance improvement when implemented
 
+#### Key Improvements of This Structure:
+
+1. **Functional Placement Fixes (Pending .zshrc.d.ng):**
+   - **zstyle configurations moved** from pre-plugins to post-plugins (00-core/) - fixes 60% completion performance issue
+   - **Plugin configurations moved** from pre-plugins to post-plugins (20-plugins/) - fixes 40% failed operations
+   - **Completion system split** between basic init (pre-plugins) and styling (post-plugins)
+
+2. **Categorized Organization (✅ Completed for pre-plugins):**
+   - **00-core/**: Essential system and completion functionality
+   - **10-tools/**: Tool-specific configurations and utilities
+   - **20-plugins/**: Plugin management and optimization
+   - **30-ui/**: User interface and experience enhancements (ready for future use)
+   - **90-finalize/**: Cleanup, monitoring, and finalization (ready for future use)
+
+3. **Performance Benefits (Partially Realized):**
+   - **File consolidation**: Improved organization within subdirectories
+   - **Logical grouping**: Related functionality organized together ✅
+   - **Maintainability**: Clear separation of concerns ✅
+   - **Proper timing**: Will be achieved with .zshrc.d.ng implementation
+
+4. **ZSH-Quickstart-Kit Compatibility:**
+   - Works within existing `load-shell-fragments` mechanism ✅
+   - Preserves all ZQS functionality and feature toggles ✅
+   - Does not modify core `.zshrc` file ✅
+   - Maintains plugin loading process unchanged ✅
+
+This structure addresses the organizational aspects of the reorganization while preparing for the critical functional placement fixes that will deliver the major performance improvements when .zshrc.d.ng is implemented.
+````markdown
 ## 6. Implementation Plan
 
 ### Phase 1: Critical Fixes (Week 1) 🔴
@@ -485,8 +470,8 @@ PROFILE_MODULES=(
 **Priority:** Long-term maintainability
 
 7. **Create Alternative Folder Structure**
-   - Implement .zshrc.d.ng modular structure
-   - Create module loader system
+    - Implement .zshrc.d.ng modular structure
+    - Create module loader system
 
 8. **Split Monolithic Files**
    - Break down 010-pre-plugins.zsh (32KB)

@@ -1,0 +1,345 @@
+# Intelligent PATH Management System for .NG Architecture
+# This file replaces emergency PATH fixes with proactive, self-healing PATH management
+# File: 05-intelligent-path-system.zsh
+# Target: Replace emergency PATH fixes in zsh_zshenv.zsh and 000-emergency-system-fix.zsh
+
+[[ "$ZSH_DEBUG" == "1" ]] && {
+    printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+}
+
+# =============================================================================
+# INTELLIGENT PATH MANAGEMENT SYSTEM (.NG-NATIVE)
+# =============================================================================
+# Replaces emergency PATH fixes with proactive, self-healing PATH management
+# integrated into the .ng categorized architecture
+
+# Proactive PATH builder with health monitoring
+intelligent_path_builder() {
+    local -a system_paths development_paths tool_paths
+    local path_health_status="healthy"
+
+    # Core system paths - absolutely essential for basic operations
+    system_paths=(
+        "/usr/bin"
+        "/bin"
+        "/usr/sbin"
+        "/sbin"
+        "/usr/local/bin"
+        "/usr/local/sbin"
+    )
+
+    # Development environment paths - detect and validate
+    development_paths=(
+        "/Applications/Herd.app/Contents/Resources"
+        "/Applications/Xcode.app/Contents/Developer/usr/bin"
+        "/Library/Developer/CommandLineTools/usr/bin"
+        "/opt/homebrew/bin"
+        "/opt/homebrew/sbin"
+    )
+
+    # Tool-specific paths that may exist
+    tool_paths=(
+        "${XDG_CONFIG_HOME:-$HOME/.config}/composer/vendor/bin"
+        "$HOME/.cabal/bin"
+        "$HOME/.cargo/bin"
+        "$HOME/.local/bin"
+        "$HOME/.local/sbin"
+        "${XDG_DATA_HOME:-$HOME/.local/share}/cargo/bin"
+        "${XDG_DATA_HOME:-$HOME/.local/share}/gem/ruby/3.3.0/bin"
+        "${XDG_DATA_HOME:-$HOME/.local/share}/go/bin"
+        "$HOME/.nix-profile/bin"
+        "$HOME/.nix-profile/sbin"
+        "$HOME/.turso"
+        "$HOME/Library/Application Support/Herd"
+        "$HOME/Library/Application Support/Herd/bin"
+        "$HOME/bin"
+        "$HOME/gocode"
+        "$HOME/sbin"
+        "/opt/local/bin"
+        "/opt/local/sbin"
+    )
+
+    # Build PATH intelligently with validation
+    local -a validated_paths
+    local missing_critical_count=0
+
+    # Validate and add system paths (critical)
+    for path_dir in "${system_paths[@]}"; do
+        if [[ -d "$path_dir" ]]; then
+            validated_paths+=("$path_dir")
+        else
+            [[ "$ZSH_DEBUG" == "1" ]] && echo "# [PATH] Warning: Missing critical system path: $path_dir" >&2
+            ((missing_critical_count++))
+            path_health_status="degraded"
+        fi
+    done
+
+    # Validate and add development paths (important but not critical)
+    for path_dir in "${development_paths[@]}"; do
+        if [[ -d "$path_dir" ]]; then
+            validated_paths+=("$path_dir")
+            [[ "$ZSH_DEBUG" == "1" ]] && echo "# [PATH] Added development path: $path_dir" >&2
+        fi
+    done
+
+    # Validate and add tool paths (optional)
+    for path_dir in "${tool_paths[@]}"; do
+        if [[ -d "$path_dir" ]]; then
+            validated_paths+=("$path_dir")
+            [[ "$ZSH_DEBUG" == "1" ]] && echo "# [PATH] Added tool path: $path_dir" >&2
+        fi
+    done
+
+    # Set PATH health status globally for monitoring
+    export _NG_PATH_HEALTH_STATUS="$path_health_status"
+    export _NG_PATH_MISSING_CRITICAL="$missing_critical_count"
+
+    # Build the final PATH
+    local new_path
+    new_path=$(IFS=':'; echo "${validated_paths[*]}")
+
+    # Preserve existing PATH elements that aren't duplicates
+    if [[ -n "$PATH" ]]; then
+        # Add existing PATH elements that aren't already included
+        local -a existing_paths
+        IFS=':' read -ra existing_paths <<< "$PATH"
+
+        for existing_path in "${existing_paths[@]}"; do
+            # Skip if already in our validated paths or empty
+            [[ -z "$existing_path" ]] && continue
+            [[ ":$new_path:" == *":$existing_path:"* ]] && continue
+
+            # Add if it's a real directory
+            if [[ -d "$existing_path" ]]; then
+                new_path="$new_path:$existing_path"
+            fi
+        done
+    fi
+
+    export PATH="$new_path"
+
+    [[ "$ZSH_DEBUG" == "1" ]] && {
+        echo "# [PATH] Intelligent PATH built with ${#validated_paths[@]} directories" >&2
+        echo "# [PATH] Health Status: $path_health_status" >&2
+        [[ "$missing_critical_count" -gt 0 ]] && echo "# [PATH] Missing $missing_critical_count critical directories" >&2
+    }
+
+    return 0
+}
+
+# PATH health monitoring and self-healing
+path_health_monitor() {
+    local current_health="${_NG_PATH_HEALTH_STATUS:-unknown}"
+    local missing_count="${_NG_PATH_MISSING_CRITICAL:-0}"
+
+    # Check if PATH has been corrupted
+    if ! command -v ls >/dev/null 2>&1 || ! command -v cat >/dev/null 2>&1; then
+        echo "# [PATH] CRITICAL: Basic commands not available - PATH corruption detected" >&2
+        echo "# [PATH] Initiating emergency PATH reconstruction..." >&2
+
+        # Emergency PATH reconstruction
+        export PATH="/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin"
+
+        # Retry intelligent PATH building
+        intelligent_path_builder
+
+        # Verify repair
+        if command -v ls >/dev/null 2>&1 && command -v cat >/dev/null 2>&1; then
+            echo "# [PATH] SUCCESS: PATH corruption repaired" >&2
+        else
+            echo "# [PATH] ERROR: Unable to repair PATH corruption" >&2
+            return 1
+        fi
+    fi
+
+    # Report PATH health status
+    case "$current_health" in
+        "healthy")
+            [[ "$ZSH_DEBUG" == "1" ]] && echo "# [PATH] Status: All critical paths available" >&2
+            ;;
+        "degraded")
+            echo "# [PATH] Warning: $missing_count critical paths missing but system functional" >&2
+            ;;
+        *)
+            echo "# [PATH] Warning: PATH health status unknown" >&2
+            ;;
+    esac
+
+    return 0
+}
+
+# Missing directory detection and warning system
+path_directory_audit() {
+    [[ "$ZSH_DEBUG" == "1" ]] || return 0
+
+    local -a common_missing_paths
+
+    # Check for commonly expected directories that might be missing
+    local -a expected_dirs=(
+        "/opt/homebrew/bin"           # Apple Silicon Homebrew
+        "/usr/local/homebrew/bin"     # Intel Homebrew
+        "/Applications/Xcode.app/Contents/Developer/usr/bin"  # Xcode
+        "/Library/Developer/CommandLineTools/usr/bin"         # Command Line Tools
+        "$HOME/.cargo/bin"            # Rust tools
+        "$HOME/.local/bin"            # User local tools
+    )
+
+    for dir in "${expected_dirs[@]}"; do
+        if [[ ! -d "$dir" ]]; then
+            case "$dir" in
+                *homebrew*)
+                    echo "# [PATH] Info: Homebrew not detected at $dir" >&2
+                    ;;
+                *Xcode*)
+                    echo "# [PATH] Info: Xcode not detected - some development tools may be unavailable" >&2
+                    ;;
+                *CommandLineTools*)
+                    echo "# [PATH] Info: Command Line Tools not detected" >&2
+                    ;;
+                *cargo*)
+                    echo "# [PATH] Info: Rust toolchain not detected" >&2
+                    ;;
+                *.local*)
+                    # Silent for user local directories - very common to be missing
+                    ;;
+            esac
+        fi
+    done
+}
+
+# Self-healing PATH reconstruction when corruption detected
+path_self_healing_system() {
+    # Monitor for specific PATH corruption patterns
+    local path_corruption_detected=false
+
+    # Check for empty PATH
+    if [[ -z "$PATH" ]]; then
+        echo "# [PATH] CRITICAL: PATH is empty - initiating reconstruction" >&2
+        path_corruption_detected=true
+    fi
+
+    # Check for PATH that's too short (suspicious)
+    if [[ "${#PATH}" -lt 20 ]]; then
+        echo "# [PATH] WARNING: PATH suspiciously short (${#PATH} chars) - checking integrity" >&2
+
+        # Verify basic commands are available
+        if ! command -v ls >/dev/null 2>&1; then
+            echo "# [PATH] CRITICAL: Basic commands unavailable - PATH corrupted" >&2
+            path_corruption_detected=true
+        fi
+    fi
+
+    # Check for missing system directories in PATH
+    if [[ ":$PATH:" != *":/usr/bin:"* ]] || [[ ":$PATH:" != *":/bin:"* ]]; then
+        echo "# [PATH] CRITICAL: Essential system directories missing from PATH" >&2
+        path_corruption_detected=true
+    fi
+
+    # Perform self-healing if corruption detected
+    if [[ "$path_corruption_detected" == "true" ]]; then
+        echo "# [PATH] Initiating self-healing PATH reconstruction..." >&2
+
+        # Store current PATH as backup
+        export _NG_PATH_BACKUP="$PATH"
+
+        # Perform intelligent PATH rebuild
+        intelligent_path_builder
+
+        # Verify self-healing success
+        if command -v ls >/dev/null 2>&1 && command -v cat >/dev/null 2>&1; then
+            echo "# [PATH] SUCCESS: Self-healing completed - PATH restored" >&2
+            export _NG_PATH_SELF_HEAL_SUCCESS="true"
+        else
+            echo "# [PATH] ERROR: Self-healing failed - manual intervention may be required" >&2
+            export _NG_PATH_SELF_HEAL_SUCCESS="false"
+            return 1
+        fi
+    fi
+
+    return 0
+}
+
+# PATH optimization and deduplication
+path_optimization_system() {
+    # Remove duplicate directories from PATH
+    local -a path_dirs unique_dirs
+    local new_path=""
+
+    # Split PATH into array
+    IFS=':' read -ra path_dirs <<< "$PATH"
+
+    # Build unique path array
+    for dir in "${path_dirs[@]}"; do
+        # Skip empty entries
+        [[ -z "$dir" ]] && continue
+
+        # Skip if already in unique_dirs
+        local already_added=false
+        for unique_dir in "${unique_dirs[@]}"; do
+            if [[ "$dir" == "$unique_dir" ]]; then
+                already_added=true
+                break
+            fi
+        done
+
+        # Add if not duplicate and directory exists
+        if [[ "$already_added" == "false" ]] && [[ -d "$dir" ]]; then
+            unique_dirs+=("$dir")
+        elif [[ "$already_added" == "false" ]] && [[ "$ZSH_DEBUG" == "1" ]]; then
+            echo "# [PATH] Removed non-existent directory: $dir" >&2
+        fi
+    done
+
+    # Rebuild PATH
+    new_path=$(IFS=':'; echo "${unique_dirs[*]}")
+
+    # Update PATH if changed
+    if [[ "$PATH" != "$new_path" ]]; then
+        local old_count="${#path_dirs[@]}"
+        local new_count="${#unique_dirs[@]}"
+        local removed_count=$((old_count - new_count))
+
+        export PATH="$new_path"
+
+        [[ "$ZSH_DEBUG" == "1" ]] && {
+            echo "# [PATH] Optimization complete: removed $removed_count duplicate/invalid entries" >&2
+            echo "# [PATH] Final PATH contains $new_count directories" >&2
+        }
+    fi
+
+    return 0
+}
+
+# =============================================================================
+# INITIALIZE INTELLIGENT PATH MANAGEMENT
+# =============================================================================
+
+# Execute intelligent PATH management system
+[[ "$ZSH_DEBUG" == "1" ]] && echo "# [PATH] Initializing intelligent PATH management system..." >&2
+
+# 1. Build intelligent PATH
+intelligent_path_builder
+
+# 2. Perform self-healing check
+path_self_healing_system
+
+# 3. Monitor PATH health
+path_health_monitor
+
+# 4. Audit for missing directories (debug mode only)
+path_directory_audit
+
+# 5. Optimize and deduplicate PATH
+path_optimization_system
+
+# Export functions for use by other .ng systems
+typeset -gf intelligent_path_builder path_health_monitor path_directory_audit
+typeset -gf path_self_healing_system path_optimization_system
+
+[[ "$ZSH_DEBUG" == "1" ]] && echo "# [PATH] Intelligent PATH management system initialized successfully" >&2
+
+# =============================================================================
+# .NG INTEGRATION STATUS
+# =============================================================================
+export _NG_INTELLIGENT_PATH_LOADED="true"
+export _NG_PATH_SYSTEM_VERSION="1.0.0"

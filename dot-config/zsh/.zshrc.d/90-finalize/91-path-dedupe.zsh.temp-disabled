@@ -1,0 +1,86 @@
+# PATH Deduplication and Cleanup
+# This file removes duplicate entries and optimizes the final PATH
+# Load time target: <30ms
+
+[[ "$ZSH_DEBUG" == "1" ]] && {
+    printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+}
+
+# PATH deduplication function
+dedupe_path() {
+    local new_path=""
+    local -A seen_dirs
+    local dir
+
+    # Split PATH and process each directory
+    IFS=':' read -rA path_dirs <<< "$PATH"
+
+    for dir in "${path_dirs[@]}"; do
+        # Skip empty directories
+        [[ -z "$dir" ]] && continue
+
+        # Skip if we've already seen this directory
+        [[ -n "${seen_dirs[$dir]}" ]] && continue
+
+        # Only include if directory exists
+        if [[ -d "$dir" ]]; then
+            seen_dirs[$dir]=1
+            [[ -n "$new_path" ]] && new_path="$new_path:" || true
+            new_path="$new_path$dir"
+        elif [[ "$ZSH_DEBUG" == "1" ]]; then
+            echo "# [path-dedupe] Removed non-existent directory: $dir" >&2
+        fi
+    done
+
+    export PATH="$new_path"
+}
+
+# FPATH deduplication function
+dedupe_fpath() {
+    local -A seen_dirs
+    local new_fpath=()
+    local dir
+
+    for dir in $fpath; do
+        # Skip if we've already seen this directory
+        [[ -n "${seen_dirs[$dir]}" ]] && continue
+
+        # Only include if directory exists
+        if [[ -d "$dir" ]]; then
+            seen_dirs[$dir]=1
+            new_fpath+=("$dir")
+        elif [[ "$ZSH_DEBUG" == "1" ]]; then
+            echo "# [path-dedupe] Removed non-existent fpath: $dir" >&2
+        fi
+    done
+
+    fpath=($new_fpath)
+}
+
+# Main deduplication process
+main() {
+    local original_path_count=$(echo "$PATH" | grep -o ':' | wc -l 2>/dev/null || echo 0)
+    local original_fpath_count=${#fpath[@]}
+
+    # Deduplicate PATH
+    dedupe_path
+
+    # Deduplicate FPATH
+    dedupe_fpath
+
+    # Make arrays unique (removes duplicates)
+    typeset -aU path fpath
+
+    if [[ "$ZSH_DEBUG" == "1" ]]; then
+        local new_path_count=$(echo "$PATH" | grep -o ':' | wc -l 2>/dev/null || echo 0)
+        local new_fpath_count=${#fpath[@]}
+
+        echo "# [path-dedupe] PATH: $original_path_count → $new_path_count entries" >&2
+        echo "# [path-dedupe] FPATH: $original_fpath_count → $new_fpath_count entries" >&2
+    fi
+}
+
+# Run deduplication
+main
+
+[[ "$ZSH_DEBUG" == "1" ]] && echo "# [90-finalize] PATH deduplication complete" >&2

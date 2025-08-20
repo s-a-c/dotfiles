@@ -234,7 +234,7 @@ export ZGEN_AUTOLOAD_COMPINIT=0  # Disable zgenom's compinit
 - **Source:** Likely from debug output redirection, not a critical redirection typo
 - **Pattern Match:** The plus signs pattern matches the debug headers used throughout configuration files:
   ```bash
-  [[ -n "$ZSH_DEBUG" ]] && printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+  [[ "$ZSH_DEBUG" == "1" ]] && printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
   ```
 
 **Probable Cause:** 
@@ -426,7 +426,7 @@ path_validate_silent() {
 Add to `.zshrc.d/010-post-plugins.zsh`:
 ```bash
 # Silent PATH validation on every shell startup
-if [[ -n "$ZSH_DEBUG" ]] || [[ ! -f "${ZDOTDIR:-$HOME}/.path_check_done" ]]; then
+if [[ "$ZSH_DEBUG" == "1" ]] || [[ ! -f "${ZDOTDIR:-$HOME}/.path_check_done" ]]; then
     path_validate_silent
     # Create marker to reduce spam (refresh daily)
     touch "${ZDOTDIR:-$HOME}/.path_check_done"
@@ -545,7 +545,7 @@ if [[ -z "$_COMPINIT_EXECUTED" ]]; then
         fi
     fi
 else
-    [[ -n "$ZSH_DEBUG" ]] && echo "ℹ️  compinit: Skipping - already executed in this session"
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "ℹ️  compinit: Skipping - already executed in this session"
 fi
 ```
 
@@ -607,13 +607,13 @@ flowchart TD
 **Optimization Strategy:**
 ```bash
 # Add to compinit section for performance monitoring
-if [[ -n "$ZSH_DEBUG" ]]; then
+if [[ "$ZSH_DEBUG" == "1" ]]; then
     local compinit_start=$EPOCHREALTIME
 fi
 
 # ... compinit execution ...
 
-if [[ -n "$ZSH_DEBUG" ]]; then
+if [[ "$ZSH_DEBUG" == "1" ]]; then
     local compinit_end=$EPOCHREALTIME
     printf "compinit execution time: %.2fms\n" $((($compinit_end - $compinit_start) * 1000))
 fi
@@ -871,7 +871,7 @@ fi
 ```zsh
 # Enhanced multiple initialization prevention
 if [[ -n "$_COMPINIT_LOADED" ]]; then
-    [[ -n "$ZSH_DEBUG" ]] && echo "# compinit already loaded" >&2
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# compinit already loaded" >&2
     return 0
 fi
 ```
@@ -1032,7 +1032,7 @@ The "condition expected: $1" error indicates parameter handling problems in the 
 ```zsh
 # compinit execution guard
 if [[ -n "$_COMPINIT_LOADED" ]]; then
-    [[ -n "$ZSH_DEBUG" ]] && echo "# compinit already loaded, skipping" >&2
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# compinit already loaded, skipping" >&2
     return 0
 fi
 
@@ -1068,7 +1068,7 @@ fi
 # Set guard to prevent multiple calls
 export _COMPINIT_LOADED=1
 
-[[ -n "$ZSH_DEBUG" ]] && echo "# compinit initialization complete" >&2
+[[ "$ZSH_DEBUG" == "1" ]] && echo "# compinit initialization complete" >&2
 ```
 
 #### 4.2.2 Ensuring Single Execution
@@ -1469,7 +1469,7 @@ fi
 **File:** `.zshrc.pre-plugins.d/004-compdef-optimization.zsh`
 ```zsh
 # Compdef optimization - defer non-critical completions
-[[ -n "$ZSH_DEBUG" ]] && echo "# Loading compdef optimizations" >&2
+[[ "$ZSH_DEBUG" == "1" ]] && echo "# Loading compdef optimizations" >&2
 
 # Create array to defer compdef calls
 typeset -ga _deferred_compdef_calls
