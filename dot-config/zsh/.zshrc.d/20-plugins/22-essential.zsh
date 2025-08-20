@@ -1,0 +1,72 @@
+# Essential Plugins - Load immediately for core functionality
+# This file loads only the most critical plugins needed for basic shell operation
+# Load time target: <300ms
+
+[[ "$ZSH_DEBUG" == "1" ]] && {
+    printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+}
+
+# Only proceed if zgenom is available
+if ! command -v zgenom >/dev/null 2>&1; then
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [essential-plugins] Zgenom not available, skipping plugins" >&2
+    return 0
+fi
+
+# Track plugin loading time
+typeset -g ESSENTIAL_PLUGINS_START=$SECONDS
+
+# Check if we need to regenerate the plugin cache
+if ! zgenom saved; then
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [essential-plugins] Regenerating plugin configuration..." >&2
+
+    # Load essential Oh My Zsh libraries first
+    zgenom ohmyzsh lib/compfix.zsh
+    zgenom ohmyzsh lib/completion.zsh
+    zgenom ohmyzsh lib/directories.zsh
+    zgenom ohmyzsh lib/history.zsh
+    zgenom ohmyzsh lib/key-bindings.zsh
+    zgenom ohmyzsh lib/theme-and-appearance.zsh
+
+    # Essential plugins for immediate functionality
+    # Fast syntax highlighting (essential for usability)
+    zgenom load zdharma-continuum/fast-syntax-highlighting
+
+    # Autosuggestions (essential for productivity)
+    zgenom load zsh-users/zsh-autosuggestions
+
+    # Basic Git completions (essential for development)
+    zgenom ohmyzsh plugins/git
+
+    # Homebrew completions if available
+    if [[ -n "$HOMEBREW_PREFIX" ]]; then
+        zgenom ohmyzsh plugins/brew
+    fi
+
+    # Essential directory navigation
+    zgenom ohmyzsh plugins/common-aliases
+
+    # Save the configuration
+    zgenom save
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [essential-plugins] Plugin configuration saved" >&2
+else
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [essential-plugins] Using cached plugin configuration" >&2
+fi
+
+# Configure autosuggestions for better performance
+if (( $+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE )); then
+    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8"
+    ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+    ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
+    ZSH_AUTOSUGGEST_USE_ASYNC=1
+fi
+
+# Configure fast-syntax-highlighting for better performance
+if (( $+FAST_HIGHLIGHT )); then
+    FAST_HIGHLIGHT[use_async]=1
+fi
+
+# Track essential plugin loading time
+local plugin_time=$((SECONDS - ESSENTIAL_PLUGINS_START))
+[[ "$ZSH_DEBUG" == "1" ]] && echo "# [essential-plugins] Essential plugins loaded in ${plugin_time}s" >&2
+
+[[ "$ZSH_DEBUG" == "1" ]] && echo "# [20-plugins] Essential plugins configured" >&2

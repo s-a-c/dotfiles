@@ -12,7 +12,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-[[ -n "$ZSH_DEBUG" ]] && {
+[[ "$ZSH_DEBUG" == "1" ]] && {
     printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
     # Add this check to detect errant file creation:
     if [[ -f "${ZDOTDIR:-$HOME}/2" ]] || [[ -f "${ZDOTDIR:-$HOME}/3" ]]; then

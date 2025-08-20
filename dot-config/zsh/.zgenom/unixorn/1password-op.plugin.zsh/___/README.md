@@ -1,0 +1,47 @@
+# 1password-op.plugin.zsh
+
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/license/apache-2-0/)
+[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Funixorn%2F1password-op.plugin.zsh%2Fbadge%3Fref%3Dmain&style=plastic)](https://actions-badge.atrox.dev/unixorn/1password-op.plugin.zsh/goto?ref=main)
+![Awesomebot](https://github.com/unixorn/1password-op.plugin.zsh/actions/workflows/awesomebot.yml/badge.svg)
+![Megalinter](https://github.com/unixorn/1password-op.plugin.zsh/actions/workflows/mega-linter.yml/badge.svg)
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+## Table of Contents
+
+- [Description](#description)
+- [Installation](#installation)
+  - [Oh-My-Zsh](#oh-my-zsh)
+  - [Zgenom](#zgenom)
+- [Contributors](#contributors)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+## Description
+
+1Password has a command line tool, [op](https://developer.1password.com/docs/cli/get-started/), for accessing secrets in your vaults.
+
+This plugin loads the completions for `op` and its subcommands if it finds `op` in your `$PATH`. It has only been tested on `op` version 2, but should work with version 1 as well.
+
+The plugin does lazy loading of the `op` completions, and updates them every 5 days by default. If you want a different interval, set `OP_COMPLETIONS_REFRESH_TIME` using standard `find` time syntax - to set it to replace the completions file every 3 days, for example, you'd set it to `+3d`.
+
+## Installation
+
+### [Oh-My-Zsh](http://ohmyz.sh/)
+
+1. `cd ~/.oh-my-zsh/custom/plugins`
+2. `git clone git@github.com:unixorn/1password-op.plugin.zsh.git 1password-op`
+3. Add `1password-op` to your plugin list - edit `~.zshrc` and change `plugins=(...)` to `plugins=(... 1password-op)`
+
+### [Zgenom](https://github.com/jandamm/zgenom)
+
+Add `zgenom load unixorn/1password-op.plugin.zsh` to your `.zshrc` file in the same function you're doing your other `zgenom load` calls in. Zgenom will handle automatically cloning the plugin for you the next time you do a `zgenom save`.
+
+## Contributors
+
+<a href="https://github.com/unixorn/1password-op.plugin.zsh/graphs/contributors">
+  <img src="https://contributors-img.web.app/image?repo=unixorn/1password-op.plugin.zsh" />
+</a>
+
+Made with [contributors-img](https://contributors-img.web.app).
+

@@ -1,0 +1,189 @@
+# Finalization - POST-PLUGIN PHASE
+# Final cleanup, performance monitoring, and startup completion
+# ENHANCED FROM: 090-splash.zsh + PATH cleanup + performance monitoring
+
+[[ "$ZSH_DEBUG" == "1" ]] && {
+    printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+    echo "# [finalization] Final cleanup and performance monitoring" >&2
+}
+
+## [finalization.path-cleanup] - Final PATH optimization and cleanup
+# Clean up and optimize PATH after all plugins and tools have modified it
+
+typeset -gU path PATH
+
+# Remove any invalid directories that may have been added
+path_validate_silent
+
+# Ensure critical directories are still at the front
+critical_paths=(
+    "$HOME/bin"
+    "$HOME/.local/bin"
+    "/usr/local/bin"
+    "/opt/homebrew/bin"
+)
+
+for p in $critical_paths[@]; do
+    if [[ -d "$p" ]]; then
+        path=(${path[@]:#$p})
+        path=("$p" $path[@])
+    fi
+done
+
+export PATH
+
+## [finalization.fpath-cleanup] - Final FPATH optimization
+typeset -gU fpath FPATH
+
+completion_paths=(
+    "${ZDOTDIR:-$HOME}/.zsh-completions.d"
+    "${ZDOTDIR:-$HOME}/.zgenom/completions"
+    "/usr/local/share/zsh/site-functions"
+    "/opt/homebrew/share/zsh/site-functions"
+)
+
+for p in $completion_paths[@]; do
+    if [[ -d "$p" ]]; then
+        fpath=(${fpath[@]:#$p})
+        fpath=("$p" $fpath[@])
+    fi
+done
+
+export FPATH
+
+## [finalization.performance-monitoring] - Startup performance tracking
+if [[ -n "${ZSH_STARTUP_TIME:-}" ]]; then
+    local current_time=$(date +%s.%N 2>/dev/null || date +%s)
+    local startup_duration
+
+    if command -v bc >/dev/null 2>&1; then
+        startup_duration=$(echo "$current_time - $ZSH_STARTUP_TIME" | bc)
+    else
+        startup_duration="unknown"
+    fi
+
+    if [[ "$ZSH_DEBUG" == "1" ]] || [[ "$startup_duration" > "2.0" ]] 2>/dev/null; then
+        echo "# [finalization] ⚡ Shell startup completed in ${startup_duration}s" >&2
+    fi
+
+    echo "$current_time:$startup_duration" >> "${ZDOTDIR:-$HOME}/.zsh/startup_times.log" 2>/dev/null
+fi
+
+## [finalization.plugin-performance] - Plugin performance summary
+if [[ -n "${PLUGIN_LOAD_TIMES:-}" ]] && [[ "$ZSH_DEBUG" == "1" ]]; then
+    echo "# [finalization] Plugin load times:" >&2
+    for plugin time in ${(kv)PLUGIN_LOAD_TIMES}; do
+        echo "#   $plugin: ${time}s" >&2
+    done
+fi
+
+## [finalization.environment-validation] - Final environment validation
+validate_environment() {
+    local issues=()
+
+    [[ -z "$PATH" ]] && issues+=("PATH is empty")
+
+    local essential_commands=("ls" "cd" "pwd" "echo" "cat")
+    for cmd in $essential_commands[@]; do
+        if ! command -v "$cmd" >/dev/null 2>&1; then
+            issues+=("Essential command missing: $cmd")
+        fi
+    done
+
+    if [[ ${#issues[@]} -gt 0 ]]; then
+        echo "# [finalization] ⚠️  Environment issues detected:" >&2
+        for issue in $issues[@]; do
+            echo "#   - $issue" >&2
+        done
+        return 1
+    fi
+
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [finalization] ✅ Environment validation passed" >&2
+    return 0
+}
+
+validate_environment
+
+## [finalization.cleanup] - Final cleanup operations
+unset ZSH_STARTUP_TIME 2>/dev/null
+unset COMPLETION_WAITING_DOTS 2>/dev/null
+
+setopt AUTO_LIST                    # Re-enable auto listing after plugin loading
+setopt MENU_COMPLETE               # Re-enable menu completion
+
+[[ -f "${TMPDIR:-/tmp}/zsh-startup-$$" ]] && rm -f "${TMPDIR:-/tmp}/zsh-startup-$$"
+
+## [finalization.feature-detection] - Runtime feature detection
+detect_features() {
+    local features=()
+
+    command -v eza >/dev/null 2>&1 && features+=("eza")
+    command -v bat >/dev/null 2>&1 && features+=("bat")
+    command -v fzf >/dev/null 2>&1 && features+=("fzf")
+    command -v zoxide >/dev/null 2>&1 && features+=("zoxide")
+    command -v git >/dev/null 2>&1 && features+=("git")
+    command -v docker >/dev/null 2>&1 && features+=("docker")
+    command -v kubectl >/dev/null 2>&1 && features+=("kubectl")
+    command -v nvim >/dev/null 2>&1 && features+=("nvim")
+
+    export ZSH_DETECTED_FEATURES="${features[*]}"
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [finalization] Detected features: ${features[*]}" >&2
+}
+
+detect_features
+
+## [finalization.startup-message] - Startup completion message
+show_startup_completion() {
+    if [[ "$ZSH_DEBUG" == "1" ]] || [[ -n "${ZSH_SHOW_STARTUP:-}" ]]; then
+        echo "" >&2
+        echo "🚀 ZSH Configuration Loaded Successfully" >&2
+        echo "   • Optimized structure: $(echo $path | wc -w | tr -d ' ') PATH entries" >&2
+        echo "   • Enhanced features: $(echo ${ZSH_DETECTED_FEATURES:-none} | wc -w | tr -d ' ') tools detected" >&2
+        echo "   • Plugin system: zgenom with lazy loading" >&2
+
+        if [[ -n "${startup_duration:-}" ]]; then
+            echo "   • Startup time: ${startup_duration}s" >&2
+        fi
+
+        echo "" >&2
+    fi
+}
+
+show_startup_completion
+
+## [finalization.runtime-optimizations] - Final runtime optimizations
+hash -rf 2>/dev/null
+compinit -C 2>/dev/null
+
+# Set up periodic maintenance
+if ! command -v _zsh_maintenance >/dev/null 2>&1; then
+    _zsh_maintenance() {
+        path_validate_silent
+
+        local startup_log="${ZDOTDIR:-$HOME}/.zsh/startup_times.log"
+        if [[ -f "$startup_log" ]] && [[ $(wc -l < "$startup_log") -gt 100 ]]; then
+            tail -100 "$startup_log" > "${startup_log}.tmp" && mv "${startup_log}.tmp" "$startup_log"
+        fi
+    }
+
+    local startup_count_file="${ZDOTDIR:-$HOME}/.zsh/startup_count"
+    local startup_count=1
+
+    if [[ -f "$startup_count_file" ]]; then
+        startup_count=$(cat "$startup_count_file" 2>/dev/null || echo 1)
+        startup_count=$((startup_count + 1))
+    fi
+
+    echo "$startup_count" > "$startup_count_file"
+
+    if [[ $((startup_count % 50)) -eq 0 ]]; then
+        _zsh_maintenance
+        [[ "$ZSH_DEBUG" == "1" ]] && echo "# [finalization] Periodic maintenance completed" >&2
+    fi
+fi
+
+# Mark configuration as fully loaded
+export ZSH_CONFIG_LOADED=1
+export ZSH_CONFIG_VERSION="ng-optimized-$(date +%Y%m%d)"
+
+[[ "$ZSH_DEBUG" == "1" ]] && echo "# [finalization] ✅ ZSH configuration finalization completed - optimized and ready" >&2
