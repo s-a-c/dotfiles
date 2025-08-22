@@ -231,6 +231,8 @@ The configuration follows these principles:
 - ✅ Tool integrations (atuin, fzf, etc.)
 - ✅ Health monitoring
 - ✅ macOS-specific configurations
+- ✅ **NPM plugin disabled for NVM compatibility**
+- ✅ **Native macOS ssh-add for Keychain integration**
 
 ### Disabled Systems
 - 🚫 `.ng` emergency fix system (commented out)
