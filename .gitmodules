@@ -16,3 +16,6 @@
 [submodule "dot-config/zsh/zgenom"]
 	path = dot-config/zsh/zgenom
 	url = https://github.com/jandamm/zgenom
+[submodule "dot-config/zsh/.zgenom/romkatv/powerlevel10k/___"]
+	path = dot-config/zsh/.zgenom/romkatv/powerlevel10k/___
+	url = https://github.com/romkatv/powerlevel10k
