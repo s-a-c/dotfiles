@@ -1,10 +1,28 @@
-_alias_tips__PLUGIN_DIR=${0:a:h}
+# Get the directory of this plugin file with robust path resolution
+_alias_tips__PLUGIN_DIR="${0:A:h}"
 
 # If alias-tips is loaded from a symlink, then work out
 # where the actual file is located
-if [[ -L ${0:a} ]]; then
-  _alias_tips__PLUGIN_DIR=$(readlink ${0:a})
-  _alias_tips__PLUGIN_DIR=${_alias_tips__PLUGIN_DIR:h}
+if [[ -L "${0:A}" ]]; then
+  _alias_tips__PLUGIN_DIR=$(readlink "${0:A}")
+  _alias_tips__PLUGIN_DIR="${_alias_tips__PLUGIN_DIR:h}"
+fi
+
+# Fallback: if we still don't have the right directory, try to find it
+if [[ ! -f "${_alias_tips__PLUGIN_DIR}/alias-tips.py" ]]; then
+  # Try to locate the actual plugin directory
+  local possible_dirs=(
+    "${HOME}/.config/zsh/.zgenom/djui/alias-tips/___"
+    "${ZDOTDIR}/.zgenom/djui/alias-tips/___"
+    "${ZSH_CUSTOM}/plugins/djui/alias-tips"
+  )
+  
+  for dir in $possible_dirs; do
+    if [[ -f "$dir/alias-tips.py" ]]; then
+      _alias_tips__PLUGIN_DIR="$dir"
+      break
+    fi
+  done
 fi
 
 #export ZSH_PLUGINS_ALIAS_TIPS_TEXT="💡 Alias tip: "
@@ -47,10 +65,17 @@ _alias_tips__preexec () {
 
   # Exit code returned from python script when we want to force use of aliases.
   local force_exit_code=10
-  echo $shell_functions "\n" $git_aliases "\n" $shell_aliases | \
-    python3 ${_alias_tips__PLUGIN_DIR}/alias-tips.py $*
-  local ret=$?
-  if [[ $ret = $force_exit_code ]]; then kill -s INT $$ ; fi
+  
+  # Check if the alias-tips.py file exists before trying to execute it
+  if [[ -f "${_alias_tips__PLUGIN_DIR}/alias-tips.py" ]]; then
+    echo $shell_functions "\n" $git_aliases "\n" $shell_aliases | \
+      python3 "${_alias_tips__PLUGIN_DIR}/alias-tips.py" $*
+    local ret=$?
+    if [[ $ret = $force_exit_code ]]; then kill -s INT $$ ; fi
+  else
+    # If alias-tips.py is not found, print a warning and skip alias tips
+    echo "Warning: alias-tips.py not found in ${_alias_tips__PLUGIN_DIR}" >&2
+  fi
 }
 
 autoload -Uz add-zsh-hook

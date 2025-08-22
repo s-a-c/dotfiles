@@ -330,6 +330,131 @@ gantt
 
 ---
 
+## 🔧 Critical macOS Compatibility Fixes
+
+### ⚠️ Essential Configuration Changes
+
+Two critical fixes have been implemented to ensure optimal compatibility with macOS systems, particularly when Homebrew is installed:
+
+#### 1. NPM Plugin Disabled for NVM Compatibility
+
+**Issue**: The ZSH Quickstart Kit's NPM plugin conflicts with NVM's NPM management by setting `NPM_CONFIG_PREFIX`, causing version conflicts and installation failures.
+
+**Solution**: NPM plugin explicitly disabled in plugin configuration:
+
+```bash
+# Location: ~/.config/zsh/.zshrc.d/20-plugins/23-plugin-integration.zsh
+
+# Disable npm plugin to allow NVM to manage NPM_CONFIG_PREFIX
+if [[ -n "$NVM_DIR" ]]; then
+  # NVM is active, disable npm plugin to prevent conflicts
+  export DISABLED_PLUGINS=("${DISABLED_PLUGINS[@]}" "npm")
+  # Unset NPM_CONFIG_PREFIX if NVM is managing Node.js versions
+  [[ -n "$NPM_CONFIG_PREFIX" ]] && unset NPM_CONFIG_PREFIX
+fi
+```
+
+**Why This Matters**:
+- ✅ Prevents NPM installation failures
+- ✅ Allows NVM to properly manage Node.js versions
+- ✅ Eliminates conflicts between system NPM and NVM-managed NPM
+- ✅ Ensures consistent package installation behavior
+
+#### 2. Native macOS ssh-add Required for Keychain Integration
+
+**Issue**: Homebrew's OpenSSH `ssh-add` (typically `/opt/homebrew/bin/ssh-add`) lacks macOS Keychain integration, causing password prompts during shell startup when trying to load SSH keys.
+
+**Solution**: Explicit use of native macOS `ssh-add` for keychain operations:
+
+```bash
+# Location: ~/.config/zsh/.zshrc (load-our-ssh-keys function)
+
+if [[ "$(uname -s)" == "Darwin" ]]; then
+  # Use native macOS ssh-add which has keychain integration
+  local native_ssh_add="/usr/bin/ssh-add"
+  if [[ -x "$native_ssh_add" ]]; then
+    # Check if --apple-load-keychain is supported
+    if "$native_ssh_add" --help 2>&1 | grep -q "apple-load-keychain"; then
+      # Recent macOS with --apple-load-keychain support
+      "$native_ssh_add" --apple-load-keychain 2>/dev/null || true
+    else
+      # Older macOS - use -A flag
+      "$native_ssh_add" -A 2>/dev/null || true
+    fi
+  fi
+fi
+```
+
+**Why This Matters**:
+- ✅ Eliminates SSH password prompts during shell startup
+- ✅ Properly loads SSH keys from macOS Keychain
+- ✅ Prevents creation of orphaned SSH agents
+- ✅ Maintains secure, seamless SSH key management
+
+### 🔍 Compatibility Check Commands
+
+#### Verify NPM/NVM Configuration
+```bash
+# Check NVM status
+echo "NVM_DIR: $NVM_DIR"
+echo "NPM_CONFIG_PREFIX: $NPM_CONFIG_PREFIX"
+
+# Verify npm is using NVM-managed version
+which npm
+npm config get prefix
+
+# Should show NVM-managed paths, not global system paths
+```
+
+#### Verify SSH Configuration
+```bash
+# Check which ssh-add is being used for keychain operations
+# (The function explicitly uses /usr/bin/ssh-add for keychain)
+which ssh-add  # May show Homebrew version
+ls -la /usr/bin/ssh-add  # Native macOS version should exist
+
+# Test SSH key loading (should be silent, no password prompts)
+zsh -c 'ssh-add -l; exit 0'
+```
+
+### 🚨 Troubleshooting
+
+#### NPM Issues with NVM
+If you experience NPM installation failures:
+```bash
+# Verify NPM plugin is disabled
+echo $DISABLED_PLUGINS | grep -o npm
+
+# Check NPM_CONFIG_PREFIX is unset when using NVM
+[[ -n "$NVM_DIR" ]] && echo "NPM_CONFIG_PREFIX should be unset: '$NPM_CONFIG_PREFIX'"
+
+# Reinstall global packages if needed
+npm list -g --depth=0
+```
+
+#### SSH Password Prompts
+If you still get password prompts during startup:
+```bash
+# Verify native ssh-add is accessible
+/usr/bin/ssh-add --help 2>&1 | grep -i apple
+
+# Check SSH agent status
+ssh-add -l
+
+# View SSH agent processes (should be minimal)
+ps -A | grep ssh-agent | wc -l
+```
+
+### 📝 Implementation History
+
+These fixes were implemented as part of the startup optimization project:
+- **Date**: August 20, 2025
+- **Context**: Eliminating shell startup issues on macOS with Homebrew
+- **Impact**: Resolved SSH password prompts and NPM/NVM conflicts
+- **Status**: ✅ Production ready and tested
+
+---
+
 ## 🛠️ Technical Details
 
 ### Critical Issues Resolved
