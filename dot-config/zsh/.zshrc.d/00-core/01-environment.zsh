@@ -21,9 +21,9 @@ export ZSH_DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/zsh"
 
 # History configuration - essential for all sessions
 export HISTFILE="$ZSH_DATA_DIR/history"
-export HISTSIZE=1000000
-export SAVEHIST=1000000
-export HISTDUP=erase
+export HISTSIZE="1000000"
+export SAVEHIST="1000000"
+export HISTDUP="erase"
 
 # Essential shell options for immediate functionality
 setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed;command' format

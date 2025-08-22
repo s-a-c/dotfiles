@@ -174,8 +174,10 @@ if command_exists git; then
 fi
 
 # GitHub Copilot CLI integration
+# LAZY LOADED: Now handled by ~/.config/zsh/.zshrc.pre-plugins.d/06-lazy-gh-copilot.zsh
+# GitHub Copilot aliases (ghcs, ghce) are loaded only when first used
 if command_exists gh; then
-    eval "$(gh copilot alias -- zsh)"
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [gh-copilot] Lazy loading enabled (see 06-lazy-gh-copilot.zsh)" >&2
 fi
 
 # Development aliases

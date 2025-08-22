@@ -19,7 +19,7 @@ if [[ ! "$path" == *${FZF_PLUGIN_BIN}* ]]; then
 fi
 unset FZF_PLUGIN_BIN
 
-local FZF_COMPLETIONS_D="$(dirname $0)/completions"
+local FZF_COMPLETIONS_D="${0:h}/completions"
 if [[ -d "$FZF_COMPLETIONS_D" ]]; then
   export fpath=($FZF_COMPLETIONS_D "${fpath[@]}" )
 fi
@@ -61,7 +61,7 @@ fi
 _fzf_debugOut "fzf_conf: $fzf_conf"
 if [[ ! -f $fzf_conf ]]; then
   echo "Can't find a fzf configuration file at $fzf_conf, creating a default one"
-  cp "$(dirname $0)/fzf-settings.zsh" $fzf_conf
+  cp "${0:h}/fzf-settings.zsh" $fzf_conf
 fi
 
 # Source this before we start examining things so we can override the

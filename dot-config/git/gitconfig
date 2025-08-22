@@ -1,6 +1,22 @@
 [alias]
 cp = cherry-pick
-co = checkout
+	co = checkout
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	lga = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all
+	st = status --short --branch
+	ss = stash save
+	br = branch
+	cb = checkout -b
+	ci = commit
+	ca = commit --amend
+	cm = commit -m
+	df = diff
+	dc = diff --cached
+	ps = push
+	pl = pull
+	pf = push --force-with-lease
+	sl = stash list
+	sa = stash apply
 [color]
 	ui = true
 [color "diff-highlight"]
@@ -22,10 +38,13 @@ gpgsign = true
 	cleanup = strip
 [core]
 editor = nvim --wait
-autocrlf = input
+	autocrlf = false
 	pager = diff-so-fancy | less --tabs=4 -RF
 excludesFile = /Users/s-a-c/.gitignore
 	commentChar = "#"
+	safecrlf = true
+	preloadindex = true
+	fscache = true
 [diff]
 tool = vscode
 [difftool "vscode"]
@@ -38,7 +57,7 @@ smudge = git-lfs smudge -- %f
 [help]
 autocorrect = 1
 [init]
-defaultBranch = main
+	defaultBranch = main
 [interactive]
 	diffFilter = diff-so-fancy --patch
 [user]
@@ -47,10 +66,12 @@ email = 71233932+s-a-c@users.noreply.github.com
 signingkey = 54D630CB5F0B5FD6
 [safe]
 directory = /Users/s-a-c/.local/share/nvim/lazy/nvim-web-devicons
+	directory = *
 [pull]
-rebase = true
+	rebase = false
 [push]
 autoSetupRemote = true
+	default = simple
 [credential]
 	helper =
 	helper = /usr/local/share/gcm-core/git-credential-manager
@@ -59,3 +80,7 @@ autoSetupRemote = true
 [format]
 	commitMessageColumns = 72
 	subjectPrefix = ^(feat|fix|chore|refactor|docs|style|test|perf|ci|build|revert)(\\([a-z-]+\\))?: [✨🐛🔧♻️📝💄✅⚡️👷🏗️⏪]
+[remote "origin"]
+	push = HEAD:main
+[gc]
+	auto = 256

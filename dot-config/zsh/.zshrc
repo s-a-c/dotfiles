@@ -378,85 +378,109 @@ onepassword-agent-check() {
     zqs-debug "Set SSH_AUTH_SOCK to $SSH_AUTH_SOCK"
   fi
 }
-
 load-our-ssh-keys() {
+  # Set environment variables to ensure non-interactive SSH operations
+  local original_ssh_askpass="$SSH_ASKPASS"
+  local original_display="$DISPLAY"
+  export SSH_ASKPASS="/usr/bin/false"
+  export DISPLAY=""
+
   # setup ssh-agent for 1password only if it's installed
   if can_haz op; then
     onepassword-agent-check
   fi
+
   # If keychain is installed let it take care of ssh-agent, else do it manually
   if can_haz keychain; then
     eval `keychain -q --eval`
   else
-    if [ -z "$SSH_AUTH_SOCK" ]; then
-      # If user has keychain installed, let it take care of ssh-agent, else do it manually
-      # Check for a currently running instance of the agent
-      RUNNING_AGENT="$(ps -ax | grep 'ssh-agent -s' | grep -v grep | wc -l | tr -d '[:space:]')"
-      if [ "$RUNNING_AGENT" = "0" ]; then
+    if [ -z "$SSH_AUTH_SOCK" ] || ! ssh-add -l >/dev/null 2>&1; then
+      # SSH agent is not accessible, start or restart it
+      local ssh_env_file="${HOME}/.ssh/ssh-agent-env"
+
+      # Clean up any stale agent environment file
+      if [[ -f "$ssh_env_file" ]]; then
+        source "$ssh_env_file" >/dev/null 2>&1
+        # Test if the agent from the env file is still accessible
+        if ! ssh-add -l >/dev/null 2>&1; then
+          rm -f "$ssh_env_file"
+          unset SSH_AUTH_SOCK SSH_AGENT_PID
+        fi
+      fi
+
+      # Start a new agent if needed
+      if [ -z "$SSH_AUTH_SOCK" ] || ! ssh-add -l >/dev/null 2>&1; then
         if [ ! -d ~/.ssh ] ; then
           mkdir -p ~/.ssh
         fi
-        # Launch a new instance of the agent
-        ssh-agent -s &> ~/.ssh/ssh-agent
+        # Launch a new instance of the agent and save environment
+        ssh-agent -s > "$ssh_env_file"
+        source "$ssh_env_file" >/dev/null 2>&1
+        [[ "$ZSH_DEBUG" == "1" ]] && echo "# Started new SSH agent with PID $SSH_AGENT_PID" >&2
       fi
-      eval $(cat ~/.ssh/ssh-agent)
     fi
   fi
 
   local key_manager=ssh-add
-
   if can_haz keychain; then
     key_manager=keychain
   fi
 
-  # Fun with SSH - but only if agent is accessible
+  # Load SSH keys only if agent is accessible and we have keys to load
   if ssh-add -l >/dev/null 2>&1; then
     # Agent is accessible, check if it has identities
-    if [ $($key_manager -l 2>/dev/null | grep -c "The agent has no identities." 2>/dev/null || echo "1") -eq 1 ]; then
-    if [[ "$(uname -s)" == "Darwin" ]]; then
-      # macOS allows us to store ssh key pass phrases in the keychain, so try
-      # to load ssh keys using pass phrases stored in the macOS keychain.
-      #
-      # You can use ssh-add -K /path/to/key to store pass phrases into
-      # the macOS keychain
+    local key_count=$(ssh-add -l 2>/dev/null | wc -l | tr -d '[:space:]')
+    if [ "$key_count" = "0" ] || ssh-add -l 2>/dev/null | grep -q "The agent has no identities"; then
+      [[ "$ZSH_DEBUG" == "1" ]] && echo "# Loading SSH keys from keychain and filesystem" >&2
 
-      # macOS Monterey deprecates the -K and -A flags. They have been replaced
-      # by the --apple-use-keychain and --apple-load-keychain flags.
+      if [[ "$(uname -s)" == "Darwin" ]]; then
+        # macOS: Load keys from keychain first (non-interactively)
+        # Use native macOS ssh-add which has keychain integration
+        local native_ssh_add="/usr/bin/ssh-add"
+        if [[ -x "$native_ssh_add" ]]; then
+          # Check if --apple-load-keychain is supported
+          if "$native_ssh_add" --help 2>&1 | grep -q "apple-load-keychain"; then
+            # Recent macOS with --apple-load-keychain support
+            "$native_ssh_add" --apple-load-keychain 2>/dev/null || true
+          else
+            # Older macOS - use -A flag
+            "$native_ssh_add" -A 2>/dev/null || true
+          fi
+        fi
+      fi
 
-      # check if Monterey or higher
-      # https://scriptingosx.com/2020/09/macos-version-big-sur-update/
-      if [[ $(sw_vers -productVersion | cut -d '.' -f 1) -ge "12" ]]; then
-        # Instead of loading ALL keys from keychain (which includes FIDO keys),
-        # only load specific non-FIDO keys to avoid "Cannot load FIDO key" errors
-        echo "DEBUG: Scanning for non-FIDO SSH keys to load from keychain"
-        for key in $(find ~/.ssh -type f -a \( -name '*id_rsa' -o -name '*id_dsa' -o -name '*id_ecdsa' -o -name 'id_ed25519' \) -a ! -name '*_sk*')
-        do
-          if [ -f ${key} ]; then
-            echo "DEBUG: Attempting to load key $key from keychain"
-            ssh-add --apple-use-keychain "$key" 2>/dev/null || echo "DEBUG: Key $key not in keychain or already loaded"
+      # Scan for and load additional keys from ~/.ssh (non-interactively)
+      if [[ -d ~/.ssh ]]; then
+        for key in ~/.ssh/id_rsa ~/.ssh/id_dsa ~/.ssh/id_ecdsa ~/.ssh/id_ed25519; do
+          if [[ -f "$key" ]] && [[ ! "$key" =~ .*_sk.* ]]; then
+            # Check if key is already loaded
+            local key_fingerprint
+            key_fingerprint=$(ssh-keygen -l -f "$key" 2>/dev/null | awk '{print $2}' 2>/dev/null)
+            if [[ -n "$key_fingerprint" ]] && ! ssh-add -l 2>/dev/null | grep -F -q "$key_fingerprint"; then
+              # Only add if not already loaded, and only non-interactively
+              ssh-add "$key" </dev/null 2>/dev/null || true
+            fi
           fi
         done
-        echo "DEBUG: Finished loading non-FIDO keys from keychain"
-      else
-        ssh-add -qA
       fi
-    fi
-
-    echo "DEBUG: About to scan for individual SSH keys"
-    for key in $(find ~/.ssh -type f -a \( -name '*id_rsa' -o -name '*id_dsa' -o -name '*id_ecdsa' -o -name 'id_ed25519' \) -a ! -name '*_sk*')
-    do
-      echo "DEBUG: Checking key: $key"
-      if [ -f ${key} -a $(ssh-add -l | grep -F -c "$(ssh-keygen -l -f $key | awk '{print $2}')" ) -eq 0 ]; then
-        echo "DEBUG: Adding key $key with $key_manager"
-        $key_manager -q ${key}
-      else
-        echo "DEBUG: Key $key already loaded or not found"
-      fi
-    done
-    echo "DEBUG: Finished scanning individual SSH keys"
+      [[ "$ZSH_DEBUG" == "1" ]] && echo "# SSH key loading completed" >&2
+    else
+      [[ "$ZSH_DEBUG" == "1" ]] && echo "# SSH agent already has $key_count key(s) loaded" >&2
     fi
   else
-    echo "SSH agent not accessible or not running" >&2
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# SSH agent not accessible or not running" >&2
+  fi
+
+  # Restore original environment variables
+  if [[ -n "$original_ssh_askpass" ]]; then
+    export SSH_ASKPASS="$original_ssh_askpass"
+  else
+    unset SSH_ASKPASS
+  fi
+  if [[ -n "$original_display" ]]; then
+    export DISPLAY="$original_display"
+  else
+    unset DISPLAY
   fi
 }
 
@@ -691,12 +715,19 @@ fi
 
 # Speed up autocomplete, force prefix mapping
 zstyle ':completion:*' accept-exact '*(N)'
-zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path "${HOME}/.cache/zsh"
-zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)*==34=34}:${(s.:.)LS_COLORS}")';
 
-# Ensure completion cache directory exists
-mkdir -p "${HOME}/.cache/zsh"
+# Use centralized completion cache if available, otherwise fallback
+if [[ -n "${ZSH_COMPLETION_CACHE_DIR:-}" ]]; then
+    zstyle ':completion:*' use-cache on
+    zstyle ':completion:*' cache-path "$ZSH_COMPLETION_CACHE_DIR"
+    mkdir -p "$ZSH_COMPLETION_CACHE_DIR"
+else
+    zstyle ':completion:*' use-cache on
+    zstyle ':completion:*' cache-path "${HOME}/.cache/zsh"
+    mkdir -p "${HOME}/.cache/zsh"
+fi
+
+zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)*==34=34}:${(s.:.)LS_COLORS}")';
 
 # Critical fix: Defer all completion-related operations until after plugin loading
 # This prevents _tags errors during startup by ensuring proper initialization order
@@ -719,6 +750,22 @@ fi
 if [[ -d "${ZDOTDIR:-$PWD}/completions" ]]; then
   fpath=("${ZDOTDIR:-$PWD}/completions" $fpath)
 fi
+
+# Performance optimization: disable automatic security and validation during startup
+export ZSH_ENABLE_SECURITY_CHECK=false
+export ZSH_ENABLE_VALIDATION=false
+# Disable update checking for faster startup
+unset QUICKSTART_KIT_REFRESH_IN_DAYS
+
+# Environment sanitization: disabled by default for performance, enable manually
+export ZSH_ENABLE_SANITIZATION=false
+export ZSH_SANITIZATION_STRICT_MODE=false
+export ZSH_SANITIZATION_LOG_VIOLATIONS=true
+
+# Manual security functions for on-demand use
+alias security-check='ZSH_ENABLE_SECURITY_CHECK=true source "$ZDOTDIR/.zshrc.d/00-core/99-security-check.zsh"'
+alias env-sanitize='ZSH_ENABLE_SANITIZATION=true source "$ZDOTDIR/.zshrc.d/00-core/08-environment-sanitization.zsh"'
+alias config-validate='ZSH_ENABLE_VALIDATION=true source "$ZDOTDIR/.zshrc.d/00-core/99-validation.zsh"'
 
 # Make it easy to append your own customizations that override the
 # quickstart's defaults by loading all files from the ${ZDOTDIR:-$HOME}/.zshrc.d directory
@@ -752,9 +799,13 @@ typeset -aU path;
 
 # Post-plugin completion system finalization
 # Now that all plugins are loaded, ensure completion system is fully operational
-if [[ -d "${ZDOTDIR:-$PWD}/completions" ]]; then
-  # Our completions directory exists, ensure compinit is run properly
+if [[ -n "${ZSH_COMPLETION_MANAGEMENT_LOADED:-}" ]]; then
+  # Centralized completion management is active, no additional compinit needed
+  [[ "$ZSH_DEBUG" == "1" ]] && echo "# Using centralized completion management" >&2
+elif [[ -d "${ZDOTDIR:-$PWD}/completions" ]]; then
+  # Fallback: Our completions directory exists, ensure compinit is run properly
   autoload -U compinit && compinit -C
+  [[ "$ZSH_DEBUG" == "1" ]] && echo "# Fallback completion initialization" >&2
 fi
 
 # Do selfupdate checking. We do this after processing ${ZDOTDIR:-$HOME}/.zshrc.d to make the
@@ -845,7 +896,7 @@ else
   source "${ZDOTDIR:-$HOME}/.p10k.zsh"
 fi
 
-if [[ $(_zqs-get-setting list-ssh-keys true) == 'true' ]]; then
+if [[ "${ZSH_SUPPRESS_SSH_KEYS}" != "true" && $(_zqs-get-setting list-ssh-keys true) == 'true' ]]; then
   echo
   echo "Current SSH Keys:"
   if ssh-add -l > /dev/null 2>&1; then
@@ -1073,19 +1124,39 @@ export HERD_PHP_84_INI_SCAN_DIR="/Users/s-a-c/Library/Application Support/Herd/c
 # Herd injected PHP 8.5 configuration.
 export HERD_PHP_85_INI_SCAN_DIR="/Users/s-a-c/Library/Application Support/Herd/config/php/85/"
 
-# Safe completion initialization (added by fix script)
-source "$HOME/.config/zsh/safe-completion-init.zsh" 2>/dev/null
+# Centralized completion management handles initialization
 
 
 # Herd injected PHP binary.
 export PATH="/Users/s-a-c/Library/Application Support/Herd/bin/":$PATH
 
 
-# Herd injected NVM configuration
+# Herd injected NVM configuration - OPTIMIZED FOR PERFORMANCE
 export NVM_DIR="/Users/s-a-c/Library/Application Support/Herd/config/nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
-[[ -f "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh" ]] && builtin source "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh"# Set umask to allow group read access
+# Lazy load NVM for faster startup
+if [[ -s "$NVM_DIR/nvm.sh" ]]; then
+    # Create lazy loading functions
+    node() { _load_nvm_now; node "$@"; }
+    npm() { _load_nvm_now; npm "$@"; }
+    npx() { _load_nvm_now; npx "$@"; }
+    nvm() { _load_nvm_now; nvm "$@"; }
+
+    _load_nvm_now() {
+        unfunction node npm npx nvm 2>/dev/null
+        source "$NVM_DIR/nvm.sh"
+        # Auto-use .nvmrc if present
+        if [[ -f ".nvmrc" ]]; then
+            nvm use >/dev/null 2>&1
+        fi
+        unfunction _load_nvm_now
+    }
+fi
+
+# TEMPORARILY DISABLED: Herd zshrc causing NVM function conflicts
+# [[ -f "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh" ]] && builtin source "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh"
+
+# Set umask to allow group read access
 umask 022
 
 
