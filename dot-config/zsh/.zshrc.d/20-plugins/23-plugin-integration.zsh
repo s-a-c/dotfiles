@@ -91,7 +91,10 @@
     # Initialize autosuggestions widgets and bindings
     if [[ -n "${widgets[autosuggest-accept]}" ]]; then
         # Check if key bindings are missing and establish them
-        if ! bindkey | grep -q "autosuggest-accept"; then
+        # Use zsh-native pattern matching instead of grep
+        local bindkey_output
+        bindkey_output="$(bindkey 2>/dev/null || true)"
+        if [[ "$bindkey_output" != *"autosuggest-accept"* ]]; then
             [[ "$ZSH_DEBUG" == "1" ]] && echo "# [plugins.zsh-autosuggestions] Setting up key bindings" >&2
             
             # Manual key bindings for autosuggestions
@@ -193,16 +196,21 @@
     export DOCKER_HOST="unix:///var/run/docker.sock"
 
     # Node/NPM plugin configuration
-    # CRITICAL: Only set NPM_CONFIG_PREFIX if NVM is not active
-    # NVM requires NPM_CONFIG_PREFIX to be unset to function properly
-    if [[ -z "${NVM_DIR:-}" ]] || [[ "${NODE_VERSION_MANAGER:-}" != "nvm" ]]; then
-        # NVM not detected or not configured, safe to set NPM_CONFIG_PREFIX
-        export NPM_CONFIG_PREFIX="$HOME/.local/share/npm"
-        [[ "$ZSH_DEBUG" == "1" ]] && echo "# [plugins.oh-my-zsh] NPM_CONFIG_PREFIX set (NVM not active)" >&2
+    # CRITICAL: Ensure NPM_CONFIG_PREFIX stays unset when NVM is active
+    # Some plugins/tools may set NPM_CONFIG_PREFIX after our pre-plugin phase
+    if [[ -n "${NVM_DIR:-}" ]] || [[ -f "$HOME/.nvm/nvm.sh" ]] || [[ -f "/usr/local/opt/nvm/nvm.sh" ]] || [[ -f "/opt/homebrew/opt/nvm/nvm.sh" ]]; then
+        # NVM is active - ensure NPM_CONFIG_PREFIX remains unset for compatibility
+        if [[ -n "$NPM_CONFIG_PREFIX" ]]; then
+            [[ "$ZSH_DEBUG" == "1" ]] && echo "# [plugins.oh-my-zsh] Unsetting NPM_CONFIG_PREFIX (was: $NPM_CONFIG_PREFIX) for NVM compatibility" >&2
+            unset NPM_CONFIG_PREFIX
+        fi
+        [[ "$ZSH_DEBUG" == "1" ]] && echo "# [plugins.oh-my-zsh] NPM_CONFIG_PREFIX kept unset for NVM compatibility" >&2
     else
-        # NVM is active, ensure NPM_CONFIG_PREFIX is not set
-        unset NPM_CONFIG_PREFIX
-        [[ "$ZSH_DEBUG" == "1" ]] && echo "# [plugins.oh-my-zsh] NPM_CONFIG_PREFIX unset (NVM is active)" >&2
+        # No NVM detected - safe to have NPM_CONFIG_PREFIX set
+        if [[ -z "$NPM_CONFIG_PREFIX" ]]; then
+            export NPM_CONFIG_PREFIX="$HOME/.local/share/npm"
+            [[ "$ZSH_DEBUG" == "1" ]] && echo "# [plugins.oh-my-zsh] NPM_CONFIG_PREFIX set to $NPM_CONFIG_PREFIX (no NVM)" >&2
+        fi
     fi
 
     # Verify Oh-My-Zsh functionality

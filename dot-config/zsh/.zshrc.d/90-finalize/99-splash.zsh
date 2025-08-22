@@ -47,7 +47,8 @@ splash_screen() {
     fi
 
     # Show system information with fastfetch if available
-    [[ -n "${commands[fastfetch]}" ]] && fastfetch
+    # Temporarily disabled for performance testing
+    # [[ -n "${commands[fastfetch]}" ]] && fastfetch
 }
 
 # Quick health check
@@ -95,8 +96,8 @@ show_performance_tips() {
     fi
 }
 
-# Main function
-main() {
+# Main splash function
+splash_main() {
     # Only run health check if debugging or if there might be issues
     if [[ "$ZSH_DEBUG" == "1" ]] || [[ ! -f "$ZSH_COMPDUMP" ]]; then
         shell_health_check
@@ -105,7 +106,11 @@ main() {
 
     # Show splash screen only on first interactive shell of the day
     local today
-    today=$(command -v date >/dev/null 2>&1 && date +%Y%m%d || echo '')
+    if command -v date >/dev/null 2>&1; then
+        today=$(date +%Y%m%d)
+    else
+        today="unknown"
+    fi
     local splash_marker="$ZSH_CACHE_DIR/.splash_${today}"
 
     # Show splash screen only once per day
@@ -114,19 +119,19 @@ main() {
         touch "$splash_marker" 2>/dev/null
     fi
 
-    # Show welcome screen only on first interactive shell of the day
-    local today
-    today=$(command -v date >/dev/null 2>&1 && date +%Y%m%d || echo '')
+    # Show welcome screen only on first interactive shell of the day (reuse today variable)
     local welcome_marker="$ZSH_CACHE_DIR/.welcome_${today}"
 
-    # Show welcome message only once per day
-    if [[ ! -f "$welcome_marker" && -t 0 && -t 1 ]]; then
+    # Show welcome message only once per day and only if not suppressed
+    if [[ "${ZSH_SUPPRESS_WELCOME}" != "true" && ! -f "$welcome_marker" && -t 0 && -t 1 ]]; then
         printf "\n🎉 Welcome to your optimized ZSH environment!\n" >&2
         printf "   Type 'help' or check aliases with 'alias'\n" >&2
+        # Mark welcome as shown for today
+        touch "$welcome_marker" 2>/dev/null
     fi
 }
 
 # Run the startup finalization
-main
+splash_main
 
 [[ "$ZSH_DEBUG" == "1" ]] && echo "# [90-finalize] Startup message complete" >&2

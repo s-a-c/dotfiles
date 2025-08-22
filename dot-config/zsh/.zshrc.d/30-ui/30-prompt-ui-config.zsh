@@ -88,21 +88,6 @@
     export THEFUCK_NO_COLORS=false
 }
 
-## [ui.ssh-agent] - SSH agent configuration
-{
-    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [ui.ssh-agent]" >&2
-
-    export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR:-/tmp}/ssh-agent.sock"
-    export SSH_AGENT_PID="${XDG_RUNTIME_DIR:-/tmp}/ssh-agent.pid"
-
-    # Configure OMZ ssh-agent plugin
-    zstyle :omz:plugins:ssh-agent agent-forwarding yes
-    zstyle :omz:plugins:ssh-agent autoload yes
-    zstyle :omz:plugins:ssh-agent identities ~/.ssh/id_ed25519
-    zstyle :omz:plugins:ssh-agent lazy yes
-    zstyle :omz:plugins:ssh-agent quiet yes
-    zstyle :omz:plugins:ssh-agent ssh-add-args --apple-load-keychain --apple-use-keychain
-}
 
 ## [ui.completion-styles] - Enhanced completion styling
 {

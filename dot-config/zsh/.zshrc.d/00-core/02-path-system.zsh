@@ -20,6 +20,11 @@ export DEVELOPER_DIR="${DEVELOPER_DIR:-/Applications/Xcode.app/Contents/Develope
 
 # PATH is now managed in ~/.zshenv - no function wrappers needed
 
+# Ensure basic commands are available early
+if [[ ! "$PATH" == */usr/bin* ]]; then
+    export PATH="/usr/bin:/bin:$PATH"
+fi
+
 # Prevent duplicate PATH entries
 typeset -aUx path
 

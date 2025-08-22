@@ -1900,7 +1900,57 @@ _abbr_init() {
 # _abbr_init should remain the last function defined in this file
 
 typeset -g ABBR_SOURCE_PATH
-ABBR_SOURCE_PATH=${0:A:h}
+# Robust source path detection
+_get_source_path() {
+  local script_path="$1"
+  local dir
+  
+  # Try different path resolution methods in order of preference
+  for method in "readlink -f" "realpath" "greadlink -f" "perl -MCwd -le"; do
+    case "$method" in
+      "readlink -f")
+        if command -v readlink >/dev/null && readlink -f /dev/null >/dev/null 2>&1; then
+          dir="$(dirname "$(readlink -f "$script_path" 2>/dev/null)" 2>/dev/null)"
+        fi
+        ;;
+      "realpath")
+        if command -v realpath >/dev/null; then
+          dir="$(dirname "$(realpath "$script_path" 2>/dev/null)" 2>/dev/null)"
+        fi
+        ;;
+      "greadlink -f")
+        if command -v greadlink >/dev/null; then
+          dir="$(dirname "$(greadlink -f "$script_path" 2>/dev/null)" 2>/dev/null)"
+        fi
+        ;;
+      "perl -MCwd -le")
+        if command -v perl >/dev/null; then
+          dir="$(dirname "$(perl -MCwd -le 'print Cwd::abs_path(shift)' "$script_path" 2>/dev/null)" 2>/dev/null)"
+        fi
+        ;;
+    esac
+    
+    # Test if we found a valid directory
+    if [[ -n "$dir" && -d "$dir" ]]; then
+      echo "$dir"
+      return 0
+    fi
+  done
+  
+  # Fallback methods
+  for fallback_dir in "${script_path:A:h}" "${script_path:h}" "$(dirname "$script_path")"; do
+    if [[ -d "$fallback_dir" ]]; then
+      echo "$fallback_dir"
+      return 0
+    fi
+  done
+  
+  # Last resort: return the basic dirname
+  dirname "$script_path"
+}
+
+ABBR_SOURCE_PATH="$(_get_source_path "${ZERO:-$0}")"
+unset -f _get_source_path
 _abbr_init
 
 # can't unset

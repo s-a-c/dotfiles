@@ -6,7 +6,7 @@
 # Allow debugging when ZSH_DEBUG_VERBOSE is set
 if [[ -z "$ZSH_DEBUG_VERBOSE" ]]; then
     setopt NO_VERBOSE
-    setopt NO_XTRACE
+    # setopt NO_XTRACE  # Commented out to allow testing and debugging
     # Also disable function tracing globally
     setopt NO_FUNCTION_ARGZERO
 fi

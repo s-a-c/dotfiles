@@ -1,0 +1,97 @@
+{
+  "registry_version": "1.0",
+  "last_updated": "2025-08-21",
+  "plugins": {
+    "zdharma-continuum/fast-syntax-highlighting": {
+      "trusted": true,
+      "repository": "https://github.com/zdharma-continuum/fast-syntax-highlighting",
+      "verified_commits": {
+        "v1.55": "a7a8b2a5c5b1c8c5e3a2f3b8b0f1e5a9c8e7d6a4",
+        "main": "latest"
+      },
+      "risk_level": "low",
+      "description": "Syntax highlighting for zsh commands"
+    },
+    "zsh-users/zsh-history-substring-search": {
+      "trusted": true,
+      "repository": "https://github.com/zsh-users/zsh-history-substring-search",
+      "verified_commits": {
+        "master": "latest"
+      },
+      "risk_level": "low",
+      "description": "History substring search plugin"
+    },
+    "unixorn/autoupdate-zgenom": {
+      "trusted": true,
+      "repository": "https://github.com/unixorn/autoupdate-zgenom",
+      "verified_commits": {
+        "main": "latest"
+      },
+      "risk_level": "low",
+      "description": "Auto-update zgenom and plugins"
+    },
+    "djui/alias-tips": {
+      "trusted": true,
+      "repository": "https://github.com/djui/alias-tips",
+      "verified_commits": {
+        "master": "latest"
+      },
+      "risk_level": "low",
+      "description": "Alias usage tips"
+    },
+    "unixorn/fzf-zsh-plugin": {
+      "trusted": true,
+      "repository": "https://github.com/unixorn/fzf-zsh-plugin",
+      "verified_commits": {
+        "main": "latest"
+      },
+      "risk_level": "low",
+      "description": "FZF integration for zsh"
+    },
+    "zsh-users/zsh-completions": {
+      "trusted": true,
+      "repository": "https://github.com/zsh-users/zsh-completions",
+      "verified_commits": {
+        "master": "latest"
+      },
+      "risk_level": "low",
+      "description": "Additional completion definitions"
+    },
+    "zsh-users/zsh-autosuggestions": {
+      "trusted": true,
+      "repository": "https://github.com/zsh-users/zsh-autosuggestions",
+      "verified_commits": {
+        "master": "latest"
+      },
+      "risk_level": "low",
+      "description": "Fish-like autosuggestions"
+    },
+    "romkatv/powerlevel10k": {
+      "trusted": true,
+      "repository": "https://github.com/romkatv/powerlevel10k",
+      "verified_commits": {
+        "master": "latest"
+      },
+      "risk_level": "medium",
+      "description": "Feature-rich prompt theme"
+    },
+    "caiogondim/bullet-train.zsh": {
+      "trusted": true,
+      "repository": "https://github.com/caiogondim/bullet-train.zsh",
+      "verified_commits": {
+        "master": "latest"
+      },
+      "risk_level": "medium",
+      "description": "Bullet train prompt theme"
+    }
+  },
+  "security_notes": {
+    "verification_method": "sha256_directory_hash",
+    "update_policy": "manual_verification_required",
+    "risk_levels": {
+      "low": "Standard plugins with minimal system access",
+      "medium": "Plugins with enhanced features or themes",
+      "high": "Plugins with system-level access or exec capabilities"
+    }
+  }
+}

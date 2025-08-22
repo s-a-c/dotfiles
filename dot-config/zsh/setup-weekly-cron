@@ -1,0 +1,278 @@
+#!/opt/homebrew/bin/zsh
+# ==============================================================================
+# ZSH Configuration: Weekly Security Maintenance Cron Setup
+# ==============================================================================
+# Purpose: Setup and manage weekly security maintenance cron job with proper
+#          environment configuration, logging, and notification setup.
+# 
+# Author: ZSH Configuration Management System
+# Created: 2025-08-21
+# Version: 1.0
+# Usage: ./setup-weekly-cron [install|uninstall|status]
+# ==============================================================================
+
+ZDOTDIR="${ZDOTDIR:-$HOME/.config/zsh}"
+MAINTENANCE_SCRIPT="$ZDOTDIR/weekly-security-maintenance"
+CRON_COMMENT="# ZSH Weekly Security Maintenance"
+
+# Default cron schedule: Sunday at 2:00 AM
+DEFAULT_CRON_SCHEDULE="0 2 * * 0"
+
+show_help() {
+    cat << EOF
+ZSH Weekly Security Maintenance Cron Setup
+
+USAGE:
+    $0 [COMMAND] [OPTIONS]
+
+COMMANDS:
+    install     Install weekly security maintenance cron job
+    uninstall   Remove weekly security maintenance cron job
+    status      Show current cron job status
+    test        Run maintenance script once for testing
+
+OPTIONS:
+    --schedule "CRON_EXPR"    Custom cron schedule (default: "0 2 * * 0" - Sunday 2 AM)
+    --notification METHOD     Notification method (console,log,email,macos)
+    --email EMAIL            Email address for notifications
+    --help                   Show this help
+
+EXAMPLES:
+    $0 install                                    # Install with defaults
+    $0 install --schedule "0 3 * * 1"           # Install for Monday 3 AM
+    $0 install --email user@example.com         # Install with email notifications
+    $0 uninstall                                 # Remove cron job
+    $0 status                                    # Check current status
+    $0 test                                      # Test run maintenance
+
+NOTIFICATION METHODS:
+    console     Console output (always enabled)
+    log         Log file notifications
+    email       Email notifications (requires mail command)
+    macos       macOS notification center
+
+LOG LOCATIONS:
+    Weekly logs:    $ZDOTDIR/logs/maintenance/weekly-maintenance-*.log
+    Summary logs:   $ZDOTDIR/logs/maintenance/weekly-summary.log
+    Notifications:  $ZDOTDIR/logs/maintenance/notifications.log
+
+EOF
+}
+
+install_cron_job() {
+    local schedule="${1:-$DEFAULT_CRON_SCHEDULE}"
+    local notification_methods="${2:-console,log}"
+    local user_email="${3:-$(git config user.email 2>/dev/null || echo "$USER@$(hostname)")}"
+    
+    echo "Installing weekly security maintenance cron job..."
+    echo "Schedule: $schedule"
+    echo "Notifications: $notification_methods"
+    echo "Email: $user_email"
+    echo "Script: $MAINTENANCE_SCRIPT"
+    
+    # Check if maintenance script exists
+    if [[ ! -f "$MAINTENANCE_SCRIPT" ]]; then
+        echo "ERROR: Maintenance script not found: $MAINTENANCE_SCRIPT" >&2
+        return 1
+    fi
+    
+    # Check if maintenance script is executable
+    if [[ ! -x "$MAINTENANCE_SCRIPT" ]]; then
+        echo "ERROR: Maintenance script is not executable: $MAINTENANCE_SCRIPT" >&2
+        echo "Run: chmod +x '$MAINTENANCE_SCRIPT'" >&2
+        return 1
+    fi
+    
+    # Create cron job entry
+    local cron_entry="$CRON_COMMENT
+$schedule cd '$ZDOTDIR' && ZDOTDIR='$ZDOTDIR' USER_EMAIL='$user_email' NOTIFICATION_METHODS='$notification_methods' '$MAINTENANCE_SCRIPT' >> '$ZDOTDIR/logs/maintenance/cron.log' 2>&1"
+    
+    # Remove existing cron job if present
+    crontab -l 2>/dev/null | grep -v "$CRON_COMMENT" | grep -v "$MAINTENANCE_SCRIPT" > /tmp/crontab.tmp
+    
+    # Add new cron job
+    echo "$cron_entry" >> /tmp/crontab.tmp
+    
+    # Install new crontab
+    if crontab /tmp/crontab.tmp; then
+        rm -f /tmp/crontab.tmp
+        echo "✅ Weekly security maintenance cron job installed successfully!"
+        echo ""
+        echo "Next run: $(date -j -f "%u %H %M" "$(echo "$schedule" | awk '{print $5, $2, $1}')" "+%A, %B %d at %H:%M" 2>/dev/null || echo "Check with 'crontab -l'")"
+        echo ""
+        echo "To test the setup, run:"
+        echo "  $0 test"
+        echo ""
+        echo "To check logs:"
+        echo "  tail -f '$ZDOTDIR/logs/maintenance/weekly-summary.log'"
+        return 0
+    else
+        rm -f /tmp/crontab.tmp
+        echo "ERROR: Failed to install cron job" >&2
+        return 1
+    fi
+}
+
+uninstall_cron_job() {
+    echo "Removing weekly security maintenance cron job..."
+    
+    # Remove cron job entries
+    if crontab -l 2>/dev/null | grep -v "$CRON_COMMENT" | grep -v "$MAINTENANCE_SCRIPT" | crontab -; then
+        echo "✅ Weekly security maintenance cron job removed successfully!"
+        return 0
+    else
+        echo "⚠️  No cron job found or failed to remove" >&2
+        return 1
+    fi
+}
+
+show_status() {
+    echo "Weekly Security Maintenance Cron Job Status"
+    echo "============================================"
+    echo "Maintenance script: $MAINTENANCE_SCRIPT"
+    
+    if [[ -f "$MAINTENANCE_SCRIPT" ]]; then
+        echo "Script status: ✅ Found"
+        if [[ -x "$MAINTENANCE_SCRIPT" ]]; then
+            echo "Executable: ✅ Yes"
+        else
+            echo "Executable: ❌ No (run: chmod +x '$MAINTENANCE_SCRIPT')"
+        fi
+    else
+        echo "Script status: ❌ Not found"
+    fi
+    
+    echo ""
+    echo "Current cron jobs:"
+    local cron_jobs=$(crontab -l 2>/dev/null | grep -E "$CRON_COMMENT|$MAINTENANCE_SCRIPT")
+    if [[ -n "$cron_jobs" ]]; then
+        echo "$cron_jobs"
+    else
+        echo "❌ No weekly security maintenance cron job found"
+    fi
+    
+    echo ""
+    echo "Log directories:"
+    local log_dir="$ZDOTDIR/logs/maintenance"
+    if [[ -d "$log_dir" ]]; then
+        echo "✅ Log directory exists: $log_dir"
+        local log_count=$(find "$log_dir" -name "*.log" -type f | wc -l)
+        echo "   Log files: $log_count"
+        
+        if [[ -f "$log_dir/weekly-summary.log" ]]; then
+            echo "   Latest summary:"
+            tail -3 "$log_dir/weekly-summary.log" 2>/dev/null | sed 's/^/     /'
+        fi
+    else
+        echo "⚠️  Log directory not found: $log_dir"
+    fi
+}
+
+test_maintenance() {
+    echo "Running weekly security maintenance test..."
+    echo "=========================================="
+    
+    if [[ ! -f "$MAINTENANCE_SCRIPT" ]]; then
+        echo "ERROR: Maintenance script not found: $MAINTENANCE_SCRIPT" >&2
+        return 1
+    fi
+    
+    if [[ ! -x "$MAINTENANCE_SCRIPT" ]]; then
+        echo "ERROR: Maintenance script is not executable" >&2
+        echo "Run: chmod +x '$MAINTENANCE_SCRIPT'" >&2
+        return 1
+    fi
+    
+    # Run maintenance script with test notification
+    echo "Executing: $MAINTENANCE_SCRIPT"
+    echo ""
+    
+    cd "$ZDOTDIR"
+    ZDOTDIR="$ZDOTDIR" \
+    USER_EMAIL="$(git config user.email 2>/dev/null || echo "$USER@$(hostname)")" \
+    NOTIFICATION_METHODS="console,log" \
+    "$MAINTENANCE_SCRIPT"
+    
+    local exit_code=$?
+    
+    echo ""
+    echo "Test completed with exit code: $exit_code"
+    
+    if [[ $exit_code -eq 0 ]]; then
+        echo "✅ Maintenance script executed successfully!"
+    else
+        echo "⚠️  Maintenance script completed with issues (exit code: $exit_code)"
+    fi
+    
+    echo ""
+    echo "Check logs at:"
+    echo "  $ZDOTDIR/logs/maintenance/"
+    
+    return $exit_code
+}
+
+main() {
+    local command="${1:-help}"
+    local schedule="$DEFAULT_CRON_SCHEDULE"
+    local notification_methods="console,log"
+    local user_email="$(git config user.email 2>/dev/null || echo "$USER@$(hostname)")"
+    
+    # Parse arguments
+    shift
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            --schedule)
+                schedule="$2"
+                shift 2
+                ;;
+            --notification)
+                notification_methods="$2"
+                shift 2
+                ;;
+            --email)
+                user_email="$2"
+                notification_methods="$notification_methods,email"
+                shift 2
+                ;;
+            --help)
+                show_help
+                exit 0
+                ;;
+            *)
+                echo "Unknown option: $1" >&2
+                show_help
+                exit 1
+                ;;
+        esac
+    done
+    
+    case "$command" in
+        install)
+            install_cron_job "$schedule" "$notification_methods" "$user_email"
+            ;;
+        uninstall)
+            uninstall_cron_job
+            ;;
+        status)
+            show_status
+            ;;
+        test)
+            test_maintenance
+            ;;
+        help|--help|-h)
+            show_help
+            ;;
+        *)
+            echo "Unknown command: $command" >&2
+            echo "Use '$0 --help' for usage information" >&2
+            exit 1
+            ;;
+    esac
+}
+
+# Execute main function
+main "$@"
+
+# ==============================================================================
+# END: Weekly Security Maintenance Cron Setup
+# ==============================================================================
