@@ -141,13 +141,12 @@
 }
 
 ## [tools.git] - Version control
+# LAZY LOADED: Now handled by ~/.config/zsh/.zshrc.pre-plugins.d/05-lazy-git-config.zsh
+# Git configuration is cached and loaded only when:
+# 1. git commit/log/show/config commands are used
+# 2. Cache is refreshed hourly or manually with git-refresh-config
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [tools.git]" >&2
-
-    export GIT_AUTHOR_NAME="$(git config --get user.name 2>/dev/null || echo 'Unknown')"
-    export GIT_AUTHOR_EMAIL="$(git config --get user.email 2>/dev/null || echo 'unknown@example.com')"
-    export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
-    export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [tools.git] Lazy loading with caching enabled (see 05-lazy-git-config.zsh)" >&2
 }
 
 ## [tools.gpg] - Encryption/signing
@@ -155,7 +154,10 @@
     [[ "$ZSH_DEBUG" == "1" ]] && echo "# [tools.gpg]" >&2
 
     export GPG_AGENT_INFO_FILE="${XDG_RUNTIME_DIR:-/tmp}/gpg-agent-info"
-    eval "$(ssh-agent)" 2>/dev/null || true
+    
+    # DISABLED: Don't launch ssh-agent here as it's handled by the main SSH configuration
+    # and could cause password prompts during startup
+    # eval "$(ssh-agent)" 2>/dev/null || true
 }
 
 ## [tools.emacs] - Text editor
@@ -237,9 +239,13 @@
 }
 
 ## [tools.direnv] - Environment variable management
+# LAZY LOADED: Now handled by ~/.config/zsh/.zshrc.pre-plugins.d/04-lazy-direnv.zsh
+# direnv hook is loaded only when:
+# 1. direnv command is used explicitly
+# 2. .envrc file is detected in current directory
+# 3. chpwd hook detects .envrc in new directory
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [tools.direnv]" >&2
-    eval "$(direnv hook zsh)" 2>/dev/null || true
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [tools.direnv] Lazy loading enabled (see 04-lazy-direnv.zsh)" >&2
 }
 
 [[ "$ZSH_DEBUG" == "1" ]] && echo "# [tool-configs] ✅ Development tool configurations applied" >&2
