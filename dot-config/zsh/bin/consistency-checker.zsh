@@ -1,4 +1,4 @@
-#!/opt/homebrew/bin/zsh
+#!/usr/bin/env zsh
 # ==============================================================================
 # ZSH Configuration: Automated Consistency Checker and Fixer
 # ==============================================================================
@@ -9,14 +9,17 @@
 #
 # Author: ZSH Configuration Management System
 # Created: 2025-08-22
-# Version: 1.0
+# Version: 2.0 - Updated for .zshenv consistency
 # Usage: ./consistency-checker.zsh [--fix] [--report]
 # ==============================================================================
 
-# Configuration
-ZSHRC_DIR="${ZDOTDIR:-$HOME/.config/zsh}"
-REPORT_FILE="$ZSHRC_DIR/logs/consistency-report-$(date +%Y%m%d-%H%M%S).log"
-BACKUP_DIR="$ZSHRC_DIR/.backups/consistency-$(date +%Y%m%d-%H%M%S)"
+# Source .zshenv to ensure consistent environment variables
+[[ -f "${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}/.zshenv" ]] && source "${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}/.zshenv"
+
+# Configuration - use variables from .zshenv
+ZSHRC_DIR="${ZDOTDIR}"
+REPORT_FILE="$ZSH_LOG_DIR/consistency-report-$(date "+%Y%m%d-%H%M%S" 2>/dev/null || zsh_debug_echo "unknown").log"
+BACKUP_DIR="$ZDOTDIR/.backups/consistency-$(date "+%Y%m%d-%H%M%S" 2>/dev/null || zsh_debug_echo "unknown")"
 
 # Counters
 TOTAL_FILES=0
@@ -26,29 +29,42 @@ ISSUES_FIXED=0
 # Create necessary directories
 mkdir -p "$(dirname "$REPORT_FILE")" "$BACKUP_DIR" 2>/dev/null
 
-# Logging functions
+# Use zsh_debug_echo from .zshenv if available, otherwise create fallback
+zsh_debug_echo() {
+    echo "$@"
+    if [[ "${ZSH_DEBUG:-0}" == "1" ]]; then
+        print -r -- "$@" >> "$ZSH_DEBUG_LOG"
+    fi
+}
+
+# Logging functions - consistent with .zshenv debug system
 log_info() {
-    echo "ℹ️  $1" | tee -a "$REPORT_FILE"
+        zsh_debug_echo "ℹ️  $1" | tee -a "$REPORT_FILE"
+    zsh_debug_echo "# [consistency-checker] INFO: $1"
 }
 
 log_warn() {
-    echo "⚠️  $1" | tee -a "$REPORT_FILE"
+        zsh_debug_echo "⚠️  $1" | tee -a "$REPORT_FILE"
+    zsh_debug_echo "# [consistency-checker] WARN: $1"
 }
 
 log_error() {
-    echo "❌ $1" | tee -a "$REPORT_FILE"
+        zsh_debug_echo "❌ $1" | tee -a "$REPORT_FILE"
+    zsh_debug_echo "# [consistency-checker] ERROR: $1"
 }
 
 log_success() {
-    echo "✅ $1" | tee -a "$REPORT_FILE"
+        zsh_debug_echo "✅ $1" | tee -a "$REPORT_FILE"
+    zsh_debug_echo "# [consistency-checker] SUCCESS: $1"
 }
 
 log_fix() {
-    echo "🔧 $1" | tee -a "$REPORT_FILE"
+        zsh_debug_echo "🔧 $1" | tee -a "$REPORT_FILE"
+    zsh_debug_echo "# [consistency-checker] FIX: $1"
     ISSUES_FIXED=$((ISSUES_FIXED + 1))
 }
 
-# Backup function
+# Backup function using .zshenv paths
 backup_file() {
     local file="$1"
     local backup_path="$BACKUP_DIR/$(basename "$file")"
@@ -80,7 +96,7 @@ check_environment_variables() {
 
         if [[ "$fix_mode" == "true" ]]; then
             backup_file "$file"
-            # This is complex, so we'll flag it for manual review
+            # This is complex, so we'll flag it for manual 020-review
             log_warn "Manual review needed for unquoted variables in $file"
         fi
     fi
@@ -123,7 +139,7 @@ check_function_naming() {
     if grep -n '^[a-z][a-zA-Z]*[A-Z].*()' "$file" >/dev/null 2>&1; then
         issues=$((issues + 1))
         log_warn "File $file: Found camelCase function names"
-        # This requires manual review as automatic conversion is complex
+        # This requires manual 020-review as automatic conversion is complex
         if [[ "$fix_mode" == "true" ]]; then
             log_warn "Manual review needed for camelCase functions in $file"
         fi
@@ -154,7 +170,7 @@ check_array_declarations() {
     if grep -n '=([^"]*[[:space:]][^"]*[^)])' "$file" >/dev/null 2>&1; then
         issues=$((issues + 1))
         log_warn "File $file: Found potentially unquoted array elements"
-        # This is complex to fix automatically, flag for manual review
+        # This is complex to fix automatically, flag for manual 020-review
         if [[ "$fix_mode" == "true" ]]; then
             log_warn "Manual review needed for array quoting in $file"
         fi
@@ -164,7 +180,7 @@ check_array_declarations() {
     if grep -n '\${.*\[@\]}.*\${.*\[@\]}' "$file" >/dev/null 2>&1; then
         issues=$((issues + 1))
         log_warn "File $file: Found verbose array expansion patterns"
-        # Flag for manual review
+        # Flag for manual 020-review
         if [[ "$fix_mode" == "true" ]]; then
             log_warn "Manual review needed for array expansion in $file"
         fi
@@ -188,7 +204,7 @@ check_error_handling() {
         if [[ $error_handling_ratio -gt 30 ]]; then
             issues=$((issues + 1))
             log_warn "File $file: $error_handling_ratio% of commands lack error handling"
-            # This requires manual review
+            # This requires manual 020-review
             if [[ "$fix_mode" == "true" ]]; then
                 log_warn "Manual review needed for error handling in $file"
             fi
@@ -325,30 +341,30 @@ generate_report() {
         consistency_score=100
     fi
 
-    echo "========================================================"
-    echo "ZSH Configuration Consistency Report"
-    echo "========================================================"
-    echo "Generated: $(date)"
-    echo "Files analyzed: $TOTAL_FILES"
-    echo "Issues found: $ISSUES_FOUND"
-    echo "Issues fixed: $ISSUES_FIXED"
-    echo "Consistency Score: ${consistency_score}%"
-    echo ""
+        zsh_debug_echo "========================================================"
+        zsh_debug_echo "ZSH Configuration Consistency Report"
+        zsh_debug_echo "========================================================"
+        zsh_debug_echo "Generated: $(date)"
+        zsh_debug_echo "Files analyzed: $TOTAL_FILES"
+        zsh_debug_echo "Issues found: $ISSUES_FOUND"
+        zsh_debug_echo "Issues fixed: $ISSUES_FIXED"
+        zsh_debug_echo "Consistency Score: ${consistency_score}%"
+        zsh_debug_echo ""
 
     if [[ $consistency_score -ge 95 ]]; then
-        echo "🏆 EXCELLENT: Configuration meets high consistency standards"
+            zsh_debug_echo "🏆 EXCELLENT: Configuration meets high consistency standards"
     elif [[ $consistency_score -ge 85 ]]; then
-        echo "✅ GOOD: Configuration has good consistency with minor issues"
+            zsh_debug_echo "✅ GOOD: Configuration has good consistency with minor issues"
     elif [[ $consistency_score -ge 70 ]]; then
-        echo "⚠️  ACCEPTABLE: Configuration needs consistency improvements"
+            zsh_debug_echo "⚠️  ACCEPTABLE: Configuration needs consistency improvements"
     else
-        echo "❌ NEEDS WORK: Configuration requires significant consistency fixes"
+            zsh_debug_echo "❌ NEEDS WORK: Configuration requires significant consistency fixes"
     fi
 
-    echo ""
-    echo "Report saved to: $REPORT_FILE"
+        zsh_debug_echo ""
+        zsh_debug_echo "Report saved to: $REPORT_FILE"
     if [[ $ISSUES_FIXED -gt 0 ]]; then
-        echo "Backups saved to: $BACKUP_DIR"
+            zsh_debug_echo "Backups saved to: $BACKUP_DIR"
     fi
 }
 
@@ -369,26 +385,26 @@ main() {
                 shift
                 ;;
             *)
-                echo "Usage: $0 [--fix] [--report]"
-                echo "  --fix    Apply automatic fixes"
-                echo "  --report Generate report only"
+                    zsh_debug_echo "Usage: $0 [--fix] [--report]"
+                    zsh_debug_echo "  --fix    Apply automatic fixes"
+                    zsh_debug_echo "  --report Generate report only"
                 exit 1
                 ;;
         esac
     done
 
-    echo "========================================================"
-    echo "ZSH Configuration Consistency Checker"
-    echo "========================================================"
-    echo "Mode: $(if $fix_mode; then echo "CHECK AND FIX"; else echo "CHECK ONLY"; fi)"
-    echo "Directory: $ZSHRC_DIR"
-    echo ""
+        zsh_debug_echo "========================================================"
+        zsh_debug_echo "ZSH Configuration Consistency Checker"
+        zsh_debug_echo "========================================================"
+        zsh_debug_echo "Mode: $(if $fix_mode; then     zsh_debug_echo "CHECK AND FIX"; else     zsh_debug_echo "CHECK ONLY"; fi)"
+        zsh_debug_echo "Directory: $ZSHRC_DIR"
+        zsh_debug_echo ""
 
     # Initialize report
     cat > "$REPORT_FILE" << EOF
 ZSH Configuration Consistency Report
 Generated: $(date)
-Mode: $(if $fix_mode; then echo "CHECK AND FIX"; else echo "CHECK ONLY"; fi)
+Mode: $(if $fix_mode; then     zsh_debug_echo "CHECK AND FIX"; else     zsh_debug_echo "CHECK ONLY"; fi)
 
 EOF
 
@@ -409,20 +425,20 @@ EOF
     fi
 
     log_info "Found $TOTAL_FILES ZSH configuration files"
-    echo ""
+        zsh_debug_echo ""
 
     # Check each file
     for file in "${zsh_files[@]}"; do
         check_file_consistency "$file" "$fix_mode"
     done
 
-    echo ""
+        zsh_debug_echo ""
     generate_report
 
     # Exit with appropriate code
     if [[ $ISSUES_FOUND -gt 0 && $fix_mode == false ]]; then
-        echo ""
-        echo "💡 Run with --fix to automatically fix issues"
+            zsh_debug_echo ""
+            zsh_debug_echo "💡 Run with --fix to automatically fix issues"
         exit 1
     else
         exit 0
