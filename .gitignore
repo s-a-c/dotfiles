@@ -268,3 +268,5 @@ dist/
 .env
 /.env/
 dot-config/lmstudio/server-logs/
+dot-config/zsh/.zgenom/
+dot-config/zsh/.zgenom/**
