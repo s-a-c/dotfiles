@@ -1,68 +1,90 @@
 # Additional Plugin Configuration - Extends ZSH Quickstart Kit defaults
-# Only includes plugins NOT already loaded by the default .zgen-setup
-[[ "$ZSH_DEBUG" == "1" ]] && printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+# CRITICAL: Maintains proper plugin loading order per ZSH-QS and zgenom best practices
+
+# CRITICAL FIX: Add loading guard to prevent infinite loops
+if [[ -n "${_ZSH_ADD_PLUGINS_LOADED:-}" ]]; then
+    [[ "$ZSH_DEBUG" == "1" ]] &&     zsh_debug_echo "# [add-plugins] Already loaded, skipping to prevent infinite loop"
+    return 0
+fi
+typeset -g _ZSH_ADD_PLUGINS_LOADED=1
+
+[[ "$ZSH_DEBUG" == "1" ]] &&     zsh_debug_echo "# ++++++ $0 ++++++++++++++++++++++++++++++++++++"
 
 # =============================================================================
-# PRODUCTIVITY ADDITIONS - Plugins not in default setup
+# PHASE 1: CORE FUNCTIONALITY PLUGINS (Load Early)
+# These extend core shell functionality and should load before everything else
 # =============================================================================
 
-# Abbreviations system (not in default setup)
-zgenom load olets/zsh-abbr
-
-# Auto-pair quotes, brackets, etc. (not in default setup)
+# Auto-pair quotes, brackets, etc. - loads early to avoid conflicts
 zgenom load hlissner/zsh-autopair
 
-# =============================================================================
-# ADDITIONAL OH-MY-ZSH PLUGINS - Extending defaults
-# =============================================================================
-# NOTE: Default already includes: git, colored-man-pages, pip, sudo, aws,
-# chruby, github, python, rsync, screen, vagrant, brew (if available), macos (if macOS)
+# Abbreviations system - COMMENTED OUT DUE TO RECURSION ISSUES
+# This plugin is causing infinite loops and job table overflow
+# zgenom load olets/zsh-abbr
 
-# Development essentials not in defaults
+# =============================================================================
+# PHASE 2: DEVELOPMENT ENVIRONMENT PLUGINS
+# Load after core functionality but before performance/async plugins
+# =============================================================================
+
+# Node.js development environment - COMMENTED OUT to prevent conflicts
 # DISABLED: npm plugin conflicts with NVM by setting NPM_CONFIG_PREFIX
-# zgenom oh-my-zsh plugins/npm
-# TEMPORARILY DISABLED: NVM plugin for performance testing
-# zgenom oh-my-zsh plugins/nvm
+# zgenom oh-my-zsh plugins/npm ; UNSET NPM_CONFIG_PREFIX
+# DISABLED: NVM plugin can be slow to load and may conflict with lazy loading
+# UNSET NPM_CONFIG_PREFIX ; zgenom oh-my-zsh plugins/nvm
+
+# Development essentials - safe to load mid-sequence
 zgenom oh-my-zsh plugins/composer
 zgenom oh-my-zsh plugins/laravel
 
-# File management additions
-zgenom oh-my-zsh plugins/aliases
-zgenom oh-my-zsh plugins/eza
-
-# System integration additions
+# System integration additions - load before async plugins
 zgenom oh-my-zsh plugins/gh
 zgenom oh-my-zsh plugins/iterm2
 
-# Smart directory navigation (zoxide integration)
+# =============================================================================
+# PHASE 3: FILE MANAGEMENT AND NAVIGATION
+# Load after development tools but before performance plugins
+# =============================================================================
+
+# File management additions - order matters for alias conflicts
+zgenom oh-my-zsh plugins/aliases
+zgenom oh-my-zsh plugins/eza
+
+# Smart directory navigation - load after file management
 zgenom oh-my-zsh plugins/zoxide
 
 # =============================================================================
-# PERFORMANCE PLUGINS - Not in defaults
+# PHASE 4: COMPLETION ENHANCEMENTS
+# Load before async/performance plugins to ensure proper completion setup
 # =============================================================================
 
-# Command evaluation caching for faster repeated commands
+# FZF integration - load before async plugins that might use it
+zgenom oh-my-zsh plugins/fzf
+
+# =============================================================================
+# PHASE 5: PERFORMANCE AND ASYNC PLUGINS (Load Last)
+# These plugins modify shell behavior and should load after everything else
+# CRITICAL: Load order within this section matters for performance
+# =============================================================================
+
+# Command evaluation caching - load first among performance plugins
 zgenom load mroth/evalcache
 
-# Async loading utilities
+# Async loading utilities - load after evalcache but before defer
 zgenom load mafredri/zsh-async
 
-# Deferred loading utilities
+# Deferred loading utilities - MUST be last among performance plugins
+# This allows other plugins to register deferred functions
 zgenom load romkatv/zsh-defer
-
-# =============================================================================
-# FZF INTEGRATION - Handled separately to avoid conflicts
-# =============================================================================
-
-# FZF integration is handled by the default unixorn/fzf-zsh-plugin
-# We'll add the oh-my-zsh fzf plugin for additional completions
-zgenom oh-my-zsh plugins/fzf
 
 # =============================================================================
 # COMPLETION & FINALIZATION
 # =============================================================================
 
 # Note: Key bindings for history substring search are handled by default setup
-# No need to duplicate them here
+# The default .zgen-setup already loads syntax highlighting in correct order:
+# 1. zdharma-continuum/fast-syntax-highlighting
+# 2. zsh-users/zsh-history-substring-search
+# We must NOT interfere with this critical ordering
 
-[[ "$ZSH_DEBUG" == "1" ]] && echo "# [add-plugins] Additional plugins loaded (no duplicates with defaults)" >&2
+[[ "$ZSH_DEBUG" == "1" ]] &&     zsh_debug_echo "# [add-plugins] Optimal plugin loading sequence complete"

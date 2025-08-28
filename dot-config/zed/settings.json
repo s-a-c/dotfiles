@@ -11,6 +11,11 @@
     // You can set this to ".SystemUIFont" to use the system font
     // "ui_font_family": "Zed Plex Sans",
     "agent": {
+        "default_model": {
+            "provider": "copilot_chat",
+            "model": "gpt-5-mini"
+        },
+        "use_modifier_to_send": true,
         "always_allow_tool_actions": true,
         "model_parameters": [],
         "play_sound_when_agent_done": true,
@@ -32,7 +37,7 @@
     "ui_font_family": "Inconstant",
     // Set the UI's font fallbacks, this will be merged with the platform's
     // default font fallbacks.
-    "ui_font_fallbacks": null,
+    "ui_font_fallbacks": [ "Inter" ],
     // The OpenType features to enable for text in the UI
     "ui_font_features": {
         // Disable ligatures:

@@ -18,7 +18,7 @@ alias zshrc="$EDITOR $ZDOTDIR/.zshrc"
 alias zshenv="$EDITOR $ZDOTDIR/.zshenv"
 alias aliases="$EDITOR $ZDOTDIR/.zsh_aliases"
 
-# Dotfiles testing and validation
+# Dotfiles 040-testing and validation
 if [[ -f "$PWD/dot-config/zsh/tests/test-config-validation.zsh" ]]; then
     alias test-config="$PWD/dot-config/zsh/tests/test-config-validation.zsh"
 fi
@@ -59,12 +59,12 @@ alias dots-pull="git pull"
 alias dots-sync="git add . && git commit -m 'Update dotfiles' && git push"
 
 # Backup and restore
-alias backup-zsh="cp -r $ZDOTDIR $ZDOTDIR.backup-\$(command -v date >/dev/null && date +%Y%m%d-%H%M%S || echo 'backup')"
-alias list-backups="ls -la $ZDOTDIR.backup-* 2>/dev/null || echo 'No backups found'"
+alias backup-zsh="cp -r $ZDOTDIR $ZDOTDIR.backup-\$(command -v date >/dev/null && date +%Y%m%d-%H%M%S || zsh_debug_echo 'backup')"
+alias list-backups="ls -la $ZDOTDIR.backup-* 2>/dev/null || zsh_debug_echo 'No backups found'"
 
 # Installation and setup helpers
-alias install-deps="echo 'Installing dotfiles dependencies...' && brew bundle --file=$PWD/Brewfile 2>/dev/null || echo 'No Brewfile found'"
-alias setup-symlinks="echo 'Setting up symlinks...' && $PWD/install.sh 2>/dev/null || echo 'No install script found'"
+alias install-deps="echo 'Installing dotfiles dependencies...' && brew bundle --file=$PWD/Brewfile 2>/dev/null || zsh_debug_echo 'No Brewfile found'"
+alias setup-symlinks="echo 'Setting up symlinks...' && $PWD/install.sh 2>/dev/null || zsh_debug_echo 'No install script found'"
 
 # Documentation
 alias docs="$EDITOR $PWD/README.md"
@@ -79,7 +79,7 @@ alias zsh-tests="cd $ZDOTDIR/tests"
 alias zsh-logs="cd $ZDOTDIR/logs"
 
 if command -v basename >/dev/null 2>&1; then
-    echo "⚙️  Dotfiles context loaded (dir: $(basename "$PWD"))"
+        zsh_debug_echo "⚙️  Dotfiles context loaded (dir: $(basename "$PWD"))"
 else
-    echo "⚙️  Dotfiles context loaded (dir: ${PWD##*/})"
+        zsh_debug_echo "⚙️  Dotfiles context loaded (dir: ${PWD##*/})"
 fi

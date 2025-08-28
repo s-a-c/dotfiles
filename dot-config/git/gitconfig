@@ -38,7 +38,7 @@ gpgsign = true
 	cleanup = strip
 [core]
 editor = nvim --wait
-	autocrlf = false
+	autocrlf = input
 	pager = diff-so-fancy | less --tabs=4 -RF
 excludesFile = /Users/s-a-c/.gitignore
 	commentChar = "#"

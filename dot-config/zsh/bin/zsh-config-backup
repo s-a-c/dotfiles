@@ -3,7 +3,7 @@
 # File: zsh-config-backup
 # Purpose: Create comprehensive backup of ZSH configuration
 # Dependencies: tar (system built-in)
-# Author: Configuration management system  
+# Author: Configuration management system
 # Last Modified: 2025-08-20
 #=============================================================================
 
@@ -26,18 +26,18 @@ _log() {
     local level="$1"
     shift
     case "$level" in
-        ERROR) echo -e "${RED}❌ ERROR: $*${NC}" >&2 ;;
-        SUCCESS) echo -e "${GREEN}✅ SUCCESS: $*${NC}" ;;
-        WARNING) echo -e "${YELLOW}⚠️  WARNING: $*${NC}" ;;
-        INFO) echo -e "${BLUE}ℹ️  INFO: $*${NC}" ;;
-        *) echo "$*" ;;
+        ERROR)     zsh_debug_echo -e "${RED}❌ ERROR: $*${NC}"  ;;
+        SUCCESS)     zsh_debug_echo -e "${GREEN}✅ SUCCESS: $*${NC}" ;;
+        WARNING)     zsh_debug_echo -e "${YELLOW}⚠️  WARNING: $*${NC}" ;;
+        INFO)     zsh_debug_echo -e "${BLUE}ℹ️  INFO: $*${NC}" ;;
+        *)     zsh_debug_echo "$*" ;;
     esac
 }
 
 # Create backup directory
 _setup_backup_directory() {
     _log INFO "Creating backup directory: $BACKUP_DIR"
-    
+
     if mkdir -p "$BACKUP_DIR"; then
         _log SUCCESS "Backup directory created successfully"
         return 0
@@ -50,7 +50,7 @@ _setup_backup_directory() {
 # Create manifest file
 _create_manifest() {
     _log INFO "Creating backup manifest"
-    
+
     cat > "$MANIFEST" << EOF
 #=============================================================================
 # ZSH Configuration Backup Manifest
@@ -62,36 +62,36 @@ _create_manifest() {
 #=============================================================================
 
 EOF
-    
+
     _log SUCCESS "Manifest header created"
 }
 
 # Backup main configuration files
 _backup_main_files() {
     _log INFO "Backing up main configuration files..."
-    
+
     local backed_up_files=0
     local main_files=(
         "$HOME/.zshrc"
-        "$HOME/.zshenv" 
+        "$HOME/.zshenv"
         "$HOME/.zprofile"
         "$ZSH_CONFIG_BASE/.zshrc"
         "$ZSH_CONFIG_BASE/.zshenv"
         "$ZSH_CONFIG_BASE/.p10k.zsh"
     )
-    
-    echo "## Main Configuration Files" >> "$MANIFEST"
-    
+
+        zsh_debug_echo "## Main Configuration Files" >> "$MANIFEST"
+
     for file in "${main_files[@]}"; do
         if [[ -f "$file" ]]; then
             local filename=$(basename "$file")
             local source_dir=$(dirname "$file")
-            
+
             if cp "$file" "$BACKUP_DIR/"; then
-                local lines=$(wc -l < "$file" 2>/dev/null || echo "0")
-                local size=$(stat -f%z "$file" 2>/dev/null || echo "0")
-                
-                echo "- $filename: $lines lines, $size bytes (from $source_dir)" >> "$MANIFEST"
+                local lines=$(wc -l < "$file" 2>/dev/null || zsh_debug_echo "0")
+                local size=$(stat -f%z "$file" 2>/dev/null || zsh_debug_echo "0")
+
+                    zsh_debug_echo "- $filename: $lines lines, $size bytes (from $source_dir)" >> "$MANIFEST"
                 _log SUCCESS "Backed up: $filename"
                 ((backed_up_files++))
             else
@@ -99,15 +99,15 @@ _backup_main_files() {
             fi
         fi
     done
-    
-    echo "" >> "$MANIFEST"
+
+        zsh_debug_echo "" >> "$MANIFEST"
     _log INFO "Backed up $backed_up_files main configuration files"
 }
 
 # Backup configuration directories
 _backup_config_directories() {
     _log INFO "Backing up configuration directories..."
-    
+
     local config_dirs=(
         "$ZSH_CONFIG_BASE/.zshrc.d"
         "$ZSH_CONFIG_BASE/.zshrc.pre-plugins.d"
@@ -116,67 +116,67 @@ _backup_config_directories() {
         "$ZSH_CONFIG_BASE/docs"
         "$ZSH_CONFIG_BASE/tests"
     )
-    
-    echo "## Configuration Directories" >> "$MANIFEST"
-    
+
+        zsh_debug_echo "## Configuration Directories" >> "$MANIFEST"
+
     for dir in "${config_dirs[@]}"; do
         if [[ -d "$dir" ]]; then
             local dir_name=$(basename "$dir")
-            
+
             if cp -r "$dir" "$BACKUP_DIR/"; then
                 local file_count=$(find "$dir" -type f 2>/dev/null | wc -l)
                 local zsh_file_count=$(find "$dir" -name "*.zsh" -type f 2>/dev/null | wc -l)
                 local total_lines=$(find "$dir" -name "*.zsh" -type f -exec cat {} \; 2>/dev/null | wc -l)
-                
-                echo "- $dir_name/: $file_count total files, $zsh_file_count zsh files, $total_lines lines of zsh code" >> "$MANIFEST"
+
+                    zsh_debug_echo "- $dir_name/: $file_count total files, $zsh_file_count zsh files, $total_lines lines of zsh code" >> "$MANIFEST"
                 _log SUCCESS "Backed up directory: $dir_name"
             else
                 _log ERROR "Failed to backup directory: $dir"
             fi
         fi
     done
-    
-    echo "" >> "$MANIFEST"
+
+        zsh_debug_echo "" >> "$MANIFEST"
 }
 
 # Backup important metadata files
 _backup_metadata() {
     _log INFO "Backing up metadata and configuration files..."
-    
+
     local metadata_files=(
         "$ZSH_CONFIG_BASE/README.md"
         "$ZSH_CONFIG_BASE/.gitignore"
         "$ZSH_CONFIG_BASE/FUNCTIONS_CATALOGUE.md"
         "$ZSH_CONFIG_BASE/.p10k.zsh"
     )
-    
-    echo "## Metadata and Documentation" >> "$MANIFEST"
-    
+
+        zsh_debug_echo "## Metadata and Documentation" >> "$MANIFEST"
+
     for file in "${metadata_files[@]}"; do
         if [[ -f "$file" ]]; then
             local filename=$(basename "$file")
-            
+
             if cp "$file" "$BACKUP_DIR/"; then
-                local size=$(stat -f%z "$file" 2>/dev/null || echo "0")
-                echo "- $filename: $size bytes" >> "$MANIFEST"
+                local size=$(stat -f%z "$file" 2>/dev/null || zsh_debug_echo "0")
+                    zsh_debug_echo "- $filename: $size bytes" >> "$MANIFEST"
                 _log SUCCESS "Backed up metadata: $filename"
             fi
         fi
     done
-    
-    echo "" >> "$MANIFEST"
+
+        zsh_debug_echo "" >> "$MANIFEST"
 }
 
 # Create backup statistics
 _create_backup_statistics() {
     _log INFO "Generating backup statistics..."
-    
+
     local total_files=$(find "$BACKUP_DIR" -type f | wc -l)
     local total_dirs=$(find "$BACKUP_DIR" -type d | wc -l)
     local backup_size=$(du -sh "$BACKUP_DIR" 2>/dev/null | cut -f1)
     local zsh_files=$(find "$BACKUP_DIR" -name "*.zsh" | wc -l)
     local md_files=$(find "$BACKUP_DIR" -name "*.md" | wc -l)
-    
+
     cat >> "$MANIFEST" << EOF
 ## Backup Statistics
 - Total files: $total_files
@@ -199,17 +199,17 @@ EOF
 # Create compressed archive
 _create_archive() {
     _log INFO "Creating compressed archive..."
-    
+
     local archive_file="$BACKUP_DIR.tar.gz"
-    
+
     if tar -czf "$archive_file" -C "$BACKUP_BASE_DIR" "$TIMESTAMP" 2>/dev/null; then
         local archive_size=$(du -sh "$archive_file" 2>/dev/null | cut -f1)
         _log SUCCESS "Archive created: $archive_file ($archive_size)"
-        
+
         # Update manifest with archive information
-        echo "- Archive file: $archive_file" >> "$MANIFEST"
-        echo "- Archive size: $archive_size" >> "$MANIFEST"
-        
+            zsh_debug_echo "- Archive file: $archive_file" >> "$MANIFEST"
+            zsh_debug_echo "- Archive size: $archive_size" >> "$MANIFEST"
+
         return 0
     else
         _log ERROR "Failed to create archive"
@@ -220,15 +220,15 @@ _create_archive() {
 # Verify backup integrity
 _verify_backup() {
     _log INFO "Verifying backup integrity..."
-    
+
     local issues=0
-    
+
     # Check manifest exists
     if [[ ! -f "$MANIFEST" ]]; then
         _log ERROR "Manifest file missing"
         ((issues++))
     fi
-    
+
     # Check essential files are backed up
     local essential_files=(".zshrc" ".zshenv")
     for file in "${essential_files[@]}"; do
@@ -237,7 +237,7 @@ _verify_backup() {
             ((issues++))
         fi
     done
-    
+
     # Check archive integrity if it exists
     local archive_file="$BACKUP_DIR.tar.gz"
     if [[ -f "$archive_file" ]]; then
@@ -246,7 +246,7 @@ _verify_backup() {
             ((issues++))
         fi
     fi
-    
+
     if (( issues == 0 )); then
         _log SUCCESS "Backup integrity verified - no issues found"
         return 0
@@ -260,35 +260,35 @@ _verify_backup() {
 main() {
     # Save current working directory
     local original_cwd="$(pwd)"
-    
+
     # Setup logging
     local log_date=$(date -u +%Y-%m-%d)
     local log_time=$(date -u +%H-%M-%S)
     local log_dir="/Users/s-a-c/.config/zsh/logs/$log_date"
     local log_file="$log_dir/zsh-config-backup_$log_time.log"
-    
+
     # Create log directory
     mkdir -p "$log_dir"
-    
+
     # Start logging
     exec 1> >(tee -a "$log_file")
     exec 2> >(tee -a "$log_file" >&2)
-    
-    echo "🔄 ZSH Configuration Backup System"
-    echo "=================================="
-    echo "📅 Backup Started: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-    echo "📁 Backup location: $BACKUP_DIR"
-    echo "🕒 Timestamp: $TIMESTAMP"
-    echo "📋 Log File: $log_file"
-    echo ""
-    
+
+        zsh_debug_echo "🔄 ZSH Configuration Backup System"
+        zsh_debug_echo "=================================="
+        zsh_debug_echo "📅 Backup Started: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+        zsh_debug_echo "📁 Backup location: $BACKUP_DIR"
+        zsh_debug_echo "🕒 Timestamp: $TIMESTAMP"
+        zsh_debug_echo "📋 Log File: $log_file"
+        zsh_debug_echo ""
+
     # Execute backup steps
     _setup_backup_directory || {
         cd "$original_cwd" 2>/dev/null
         exit 1
     }
     _create_manifest || {
-        cd "$original_cwd" 2>/dev/null  
+        cd "$original_cwd" 2>/dev/null
         exit 1
     }
     _backup_main_files || {
@@ -315,17 +315,17 @@ main() {
         cd "$original_cwd" 2>/dev/null
         exit 1
     }
-    
-    echo ""
-    echo "🎉 Backup completed successfully!"
-    echo "📋 Manifest: $MANIFEST"
-    echo "📦 Archive: $BACKUP_DIR.tar.gz"
-    echo ""
-    echo "✅ Task 1.2 (Backup current configuration) - COMPLETE"
-    
+
+        zsh_debug_echo ""
+        zsh_debug_echo "🎉 Backup completed successfully!"
+        zsh_debug_echo "📋 Manifest: $MANIFEST"
+        zsh_debug_echo "📦 Archive: $BACKUP_DIR.tar.gz"
+        zsh_debug_echo ""
+        zsh_debug_echo "✅ Task 1.2 (Backup current configuration) - COMPLETE"
+
     # Restore original working directory
     cd "$original_cwd" || _log WARNING "Could not restore original directory: $original_cwd"
-    
+
     return 0
 }
 
