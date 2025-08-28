@@ -3,7 +3,7 @@
 # Load time target: <50ms
 
 [[ "$ZSH_DEBUG" == "1" ]] && {
-    printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+        zsh_debug_echo "# ++++++ $0 ++++++++++++++++++++++++++++++++++++"
 }
 
 # Essential environment variables only - keep minimal for speed
@@ -58,4 +58,4 @@ unsetopt FLOWCONTROL             # Disable start/stop characters in shell editor
 # Create essential directories
 [[ ! -d "$HISTFILE:h" ]] && mkdir -p "$HISTFILE:h"
 
-[[ "$ZSH_DEBUG" == "1" ]] && echo "# [00-core] Environment setup complete" >&2
+[[ "$ZSH_DEBUG" == "1" ]] &&     zsh_debug_echo "# [00-core] Environment setup complete"

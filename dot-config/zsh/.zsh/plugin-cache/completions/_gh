@@ -7,7 +7,7 @@ __gh_debug()
 {
     local file="$BASH_COMP_DEBUG_FILE"
     if [[ -n ${file} ]]; then
-        echo "$*" >> "${file}"
+            zsh_debug_echo "$*" >> "${file}"
     fi
 }
 
