@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-exec osascript -e 'tell application "VirtualBox" to activate'
