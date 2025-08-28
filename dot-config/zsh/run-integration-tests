@@ -2,7 +2,7 @@
 # ==============================================================================
 # ZSH Configuration: Comprehensive Integration Test Runner
 # ==============================================================================
-# Purpose: Comprehensive integration testing system that validates all ZSH
+# Purpose: Comprehensive integration 040-testing system that validates all ZSH
 #          configuration components working together seamlessly, including
 #          cross-system functionality, component interactions, and end-to-end
 #          workflows with detailed reporting and CI/CD compatibility.
@@ -22,7 +22,7 @@
 SCRIPT_VERSION="1.0.0"
 ZDOTDIR="${ZDOTDIR:-$HOME/.config/zsh}"
 
-# Integration testing configuration
+# Integration 040-testing configuration
 INTEGRATION_LOG_DIR="$ZDOTDIR/logs/integration"
 INTEGRATION_LOG_FILE="$INTEGRATION_LOG_DIR/integration-tests-$(date -u '+%Y-%m-%d_%H-%M-%S').log"
 INTEGRATION_REPORT_FILE="$INTEGRATION_LOG_DIR/integration-report-$(date -u '+%Y-%m-%d_%H-%M-%S').html"
@@ -44,12 +44,12 @@ SKIPPED_TESTS=0
 log_info() {
     local message="$1"
     local timestamp=$(date -u '+%Y-%m-%d %H:%M:%S UTC')
-    echo "[$timestamp] [INFO] $message" | tee -a "$INTEGRATION_LOG_FILE"
+        zsh_debug_echo "[$timestamp] [INFO] $message" | tee -a "$INTEGRATION_LOG_FILE"
 }
 
 log_result() {
     local message="$1"
-    echo "$message" | tee -a "$INTEGRATION_LOG_FILE"
+        zsh_debug_echo "$message" | tee -a "$INTEGRATION_LOG_FILE"
 }
 
 log_test() {
@@ -63,17 +63,17 @@ log_test() {
     case "$test_status" in
         "PASS")
             PASSED_TESTS=$((PASSED_TESTS + 1))
-            echo "  ✓ PASS: $test_name" | tee -a "$INTEGRATION_LOG_FILE"
+                zsh_debug_echo "  ✓ PASS: $test_name" | tee -a "$INTEGRATION_LOG_FILE"
             ;;
         "FAIL")
             FAILED_TESTS=$((FAILED_TESTS + 1))
-            echo "  ✗ FAIL: $test_name" | tee -a "$INTEGRATION_LOG_FILE"
-            [[ -n "$details" ]] && echo "    Details: $details" | tee -a "$INTEGRATION_LOG_FILE"
+                zsh_debug_echo "  ✗ FAIL: $test_name" | tee -a "$INTEGRATION_LOG_FILE"
+            [[ -n "$details" ]] &&     zsh_debug_echo "    Details: $details" | tee -a "$INTEGRATION_LOG_FILE"
             ;;
         "SKIP")
             SKIPPED_TESTS=$((SKIPPED_TESTS + 1))
-            echo "  ⚠ SKIP: $test_name" | tee -a "$INTEGRATION_LOG_FILE"
-            [[ -n "$details" ]] && echo "    Reason: $details" | tee -a "$INTEGRATION_LOG_FILE"
+                zsh_debug_echo "  ⚠ SKIP: $test_name" | tee -a "$INTEGRATION_LOG_FILE"
+            [[ -n "$details" ]] &&     zsh_debug_echo "    Reason: $details" | tee -a "$INTEGRATION_LOG_FILE"
             ;;
     esac
 }
@@ -130,10 +130,10 @@ export ZSH_DEBUG=0
 export ZDOTDIR="${ZDOTDIR:-$HOME/.config/zsh}"
 
 # Load core components in order
-source "$ZDOTDIR/.zshrc.d/00-core/01-source-execute-detection.zsh" || exit 1
-source "$ZDOTDIR/.zshrc.d/00-core/00-standard-helpers.zsh" || exit 2
-source "$ZDOTDIR/.zshrc.d/00-core/01-environment.zsh" || exit 3
-source "$ZDOTDIR/.zshrc.d/00-core/02-path-system.zsh" || exit 4
+source "$ZDOTDIR/.zshrc.d/00_01-source-execute-detection.zsh" || exit 1
+source "$ZDOTDIR/.zshrc.d/00_00-standard-helpers.zsh" || exit 2
+source "$ZDOTDIR/.zshrc.d/00_01-environment.zsh" || exit 3
+source "$ZDOTDIR/.zshrc.d/00_02-path-system.zsh" || exit 4
 
 # Test that key functions are available
 declare -f context_echo >/dev/null || exit 5
@@ -172,12 +172,12 @@ export ZSH_ENV_SANITIZATION_TESTING=true
 export ZDOTDIR="${ZDOTDIR:-$HOME/.config/zsh}"
 
 # Load core components first
-source "$ZDOTDIR/.zshrc.d/00-core/01-source-execute-detection.zsh" || exit 1
-source "$ZDOTDIR/.zshrc.d/00-core/00-standard-helpers.zsh" || exit 2
+source "$ZDOTDIR/.zshrc.d/00_01-source-execute-detection.zsh" || exit 1
+source "$ZDOTDIR/.zshrc.d/00_00-standard-helpers.zsh" || exit 2
 
 # Load security components
-source "$ZDOTDIR/.zshrc.d/00-core/08-environment-sanitization.zsh" || exit 3
-source "$ZDOTDIR/.zshrc.d/00-core/99-security-check.zsh" || exit 4
+source "$ZDOTDIR/.zshrc.d/00_08-environment-sanitization.zsh" || exit 3
+source "$ZDOTDIR/.zshrc.d/00_99-security-check.zsh" || exit 4
 
 # Test that security functions are available
 declare -f _sanitize_environment >/dev/null || exit 5
@@ -215,7 +215,7 @@ test_performance_system_integration() {
         perf_result=$(timeout 20 "$ZDOTDIR/zsh-profile-startup" -i 3 -w 1 2>&1)
         local perf_exit_code=$?
 
-        if [[ $perf_exit_code -eq 0 ]] && echo "$perf_result" | grep -q "Performance Statistics:"; then
+        if [[ $perf_exit_code -eq 0 ]] &&     zsh_debug_echo "$perf_result" | grep -q "Performance Statistics:"; then
             local avg_time=$(echo "$perf_result" | grep "Average:" | awk '{print $2}' | sed 's/ms//')
             log_test "Performance System Integration" "PASS" "Performance monitoring working, average startup: ${avg_time}ms"
             return 0
@@ -268,7 +268,7 @@ EOF
         local startup_time_end=$(date +%s.%N 2>/dev/null || date +%s)
         local startup_duration
         if command -v bc >/dev/null 2>&1; then
-            startup_duration=$(echo "scale=3; ($startup_time_end - $startup_time_start) * 1000" | bc 2>/dev/null || echo "unknown")
+            startup_duration=$(echo "scale=3; ($startup_time_end - $startup_time_start) * 1000" | bc 2>/dev/null || zsh_debug_echo "unknown")
         else
             startup_duration="<100"
         fi
@@ -505,7 +505,7 @@ main() {
                 exit 0
                 ;;
             -v|--version)
-                echo "ZSH Configuration Integration Test Runner v$SCRIPT_VERSION"
+                    zsh_debug_echo "ZSH Configuration Integration Test Runner v$SCRIPT_VERSION"
                 exit 0
                 ;;
             -q|--quiet)
@@ -517,8 +517,8 @@ main() {
                 shift
                 ;;
             *)
-                echo "Unknown option: $1" >&2
-                echo "Use -h or --help for usage information" >&2
+                    zsh_debug_echo "Unknown option: $1"
+                    zsh_debug_echo "Use -h or --help for usage information"
                 exit 1
                 ;;
         esac
