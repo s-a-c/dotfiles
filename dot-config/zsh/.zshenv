@@ -1,385 +1,236 @@
-# Fixed .zshenv - Core environment setup
-# This file is sourced by all zsh instances (login, interactive, scripts)
-# Keep minimal - only essential environment variables and PATH setup
+# ==============================================================================
+# CRITICAL STARTUP STANZA - MUST BE FIRST
+# Sets essential environment variables before any other shell initialization
+# ==============================================================================
 
-# Conditionally disable verbose output during normal startup
-# Allow debugging when ZSH_DEBUG_VERBOSE is set
-if [[ -z "$ZSH_DEBUG_VERBOSE" ]]; then
-    setopt NO_VERBOSE
-    # setopt NO_XTRACE  # Commented out to allow testing and debugging
-    # Also disable function tracing globally
-    setopt NO_FUNCTION_ARGZERO
-fi
-
-# Simple, safe PATH - MUST BE FIRST
-export PATH="/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin"
-[[ -d /run/current-system/sw/bin ]] && PATH="/run/current-system/sw/bin:$PATH"
-[[ -d /opt/homebrew/bin ]] && PATH="/opt/homebrew/bin:$PATH"
-[[ -d $HOME/.local/bin ]] && PATH="$HOME/.local/bin:$PATH"
-# DISABLE THIS FOR NOW - CAUSING HANGS: typeset -U path PATH
-
-export ZSH_DEBUG=${ZSH_DEBUG:-0}
-
-[[ $ZSH_DEBUG == 1 ]] && {
-    printf "# ++++++ %s:zshenv ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
-    # Add this check to detect errant file creation:
-    if [[ -f "${ZDOTDIR:-$HOME}/2" ]] || [[ -f "${ZDOTDIR:-$HOME}/3" ]]; then
-        echo "Warning: Numbered files detected - check for redirection typos" >&2
+# Minimal debug logger used during early startup
+zsh_debug_echo() {
+    # Always echo to stdout for visibility in early non-interactive contexts,
+    # and optionally log to the debug file when ZSH_DEBUG=1.
+    echo "$@"
+    if [[ "${ZSH_DEBUG:-0}" == "1" && -n "${ZSH_DEBUG_LOG:-}" ]]; then
+        print -r -- "$@" >> "$ZSH_DEBUG_LOG"
     fi
 }
 
-# TEMPORARILY DISABLED: Emergency command function overrides
-# These were causing severe command interference preventing normal operations
-# The .NG prevention systems provide better alternatives
-#
-# CRITICAL: Define essential command functions IMMEDIATELY in .zshenv
-# This ensures they're available for ALL zsh instances, including scripts
-# function sed() { /usr/bin/sed "$@"; }
-# function tr() { /usr/bin/tr "$@"; }
-# function uname() { /usr/bin/uname "$@"; }
-# function dirname() { /usr/bin/dirname "$@"; }
-# function basename() { /usr/bin/basename "$@"; }
-# function cat() { /bin/cat "$@"; }
-# function cc() { /usr/bin/cc "$@"; }
-# function make() { /usr/bin/make "$@"; }
-# function ld() { /usr/bin/ld "$@"; }
+# EMERGENCY IFS PROTECTION - Prevent corruption during startup
+if [[ "$IFS" != $' \t\n' ]]; then
+    unset IFS
+    IFS=$' \t\n'
+    export IFS
+fi
 
-# Export these functions globally
-# typeset -gf sed tr uname dirname basename cat cc make ld
+# Emergency PATH fix if corrupted with literal $sep
+if [[ "$PATH" == *'$sep'* ]]; then
+    PATH="${PATH//\$sep/:}"
+    export PATH
+fi
 
-# Developer tools PATH - these append to the basic PATH set above
-[[ -d "/Applications/Xcode.app/Contents/Developer/usr/bin" ]] && PATH="$PATH:/Applications/Xcode.app/Contents/Developer/usr/bin"
-[[ -d "/Library/Developer/CommandLineTools/usr/bin" ]] && PATH="$PATH:/Library/Developer/CommandLineTools/usr/bin"
+# Minimal safe PATH to avoid command-not-found in early init
+export PATH="/opt/homebrew/bin:/run/current-system/sw/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
 
-# Export build environment variables IMMEDIATELY
-export CC="/usr/bin/cc"
-export CXX="/usr/bin/c++"
-export CPP="/usr/bin/cpp"
-export DEVELOPER_DIR="${DEVELOPER_DIR:-/Applications/Xcode.app/Contents/Developer}"
+# XDG Base Directory Specification (set early so other code can rely on them)
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-${HOME}/.cache}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}"
+export XDG_STATE_HOME="${XDG_STATE_HOME:-${HOME}/.local/state}"
+export XDG_BIN_HOME="${XDG_BIN_HOME:-${HOME}/.local/bin}"
+mkdir -p "${XDG_CONFIG_HOME}" "${XDG_CACHE_HOME}" "${XDG_DATA_HOME}" "${XDG_STATE_HOME}" "${XDG_BIN_HOME}" 2>/dev/null || true
 
-# Disable zgenom's automatic compinit (add before zgenom load calls)
-# TEMPORARILY DISABLED - Re-enabling auto compinit to fix completion issues
-# export ZGEN_AUTOLOAD_COMPINIT=0
-# export ZGENOM_AUTO_COMPINIT=0
+# Allow a localized override file to run early. This file may set ZDOTDIR
+# or other site/user-specific values. It's safe to source here because it is
+# expected to be conservative and provide defaults only.
+_local_zshenv_local="${XDG_CONFIG_HOME:-${HOME}/.config}/zsh/.zshenv.local"
+if [[ -f "${_local_zshenv_local}" ]]; then
+    # shellcheck disable=SC1090
+    source "${_local_zshenv_local}"
+fi
+unset _local_zshenv_local
 
-# DISABLED - POTENTIALLY CAUSING HANGS: Prevent duplicate entries in PATH and FPATH arrays
-# typeset -x PATH FPATH
-# typeset -aUx path fpath
+# Prefer XDG user bin early in PATH if present
+[[ -d ${XDG_BIN_HOME} ]] && PATH="${XDG_BIN_HOME}:${PATH}"
+export PATH
 
-# PATH deduplication disabled for now due to hangs
+# Set ZDOTDIR to an XDG-friendly localized default but do not overwrite
+# if the variable was already defined (e.g. by a wrapper or environment).
+# This makes the default robust for portable setups where the user may want
+# to set ZDOTDIR externally.
+export ZDOTDIR="${ZDOTDIR:-${XDG_CONFIG_HOME:-${HOME}/.config}/zsh}"
 
-# Create safe command wrappers
-command_exists() { command -v "$1" >/dev/null 2>&1; }
-safe_uname() { command_exists uname && uname "$@" || echo "unknown"; }
-safe_sed() { command_exists sed && sed "$@" || echo "sed not available"; }
+# Create common cache/log dirs (do not fail startup if mkdir fails)
+export ZSH_CACHE_DIR="${XDG_CACHE_HOME}/zsh"
+export ZSH_LOG_DIR="${ZDOTDIR}/logs"
+mkdir -p "$ZDOTDIR" "$ZSH_CACHE_DIR" "$ZSH_LOG_DIR" 2>/dev/null || true
 
-## [_path]
-{
-    function _path_remove() {
-        for ARG in "$@"; do
-            while [[ ":${PATH}:" == *":${ARG}:"* ]]; do
-                # Delete path by parts to avoid accidentally removing sub paths
-                [[ "${PATH}" == "${ARG}" ]] && PATH=""
-                PATH=${PATH//":${ARG}:"/":"} # delete any instances in the middle
-                PATH=${PATH/#"${ARG}:"/}     # delete any instance at the beginning
-                PATH=${PATH/%":${ARG}"/}     # delete any instance at the end
-            done
-        done
+# Provide a short session id for debug/log filenames
+export ZSH_SESSION_ID="${ZSH_SESSION_ID:-$$-$(date +%s 2>/dev/null || echo 'unknown')}"
+export ZSH_DEBUG_LOG="${ZSH_LOG_DIR}/${ZSH_SESSION_ID}-zsh-debug.log"
+
+# Basic optional debug flag
+export ZSH_DEBUG="${ZSH_DEBUG:-0}"
+
+zsh_debug_echo "[DEBUG] early .zshenv: ZDOTDIR=${ZDOTDIR} ZSH_CACHE_DIR=${ZSH_CACHE_DIR} ZSH_LOG_DIR=${ZSH_LOG_DIR}" >> "${ZSH_DEBUG_LOG}" 2>/dev/null || true
+
+# ------------------------------------------------------------------------------
+# Utility: PATH de-duplication (preserve first occurrence)
+# ------------------------------------------------------------------------------
+path_dedupe() {
+    local verbose=0 dry=0
+    for arg in "$@"; do
+        case $arg in
+            --verbose) verbose=1 ;;
+            --dry-run) dry=1 ;;
+        esac
+    done
+    local original=$PATH
+    local -a parts new
+    local -A seen
+    parts=(${=PATH})
+    for p in "${parts[@]}"; do
+        [[ -z $p ]] && continue
+        if [[ -z ${seen[$p]:-} ]]; then
+            new+="$p"
+            seen[$p]=1
+        fi
+    done
+    local deduped="${(j.:.)new}"
+    if (( dry )); then
+        print -r -- "${deduped:-$original}"
+        return 0
+    fi
+    if [[ $deduped != $original ]]; then
+        PATH=$deduped
         export PATH
-    }
-
-    function _path_append() {
-        for ARG in "$@"; do
-            _path_remove "${ARG}"
-            [[ -d "${ARG}" ]] && export PATH="${PATH:+"${PATH}:"}${ARG}"
-        done
-    }
-
-    function _path_prepend() {
-        for ARG in "$@"; do
-            _path_remove "${ARG}"
-            [[ -d "${ARG}" ]] && export PATH="${ARG}${PATH:+":${PATH}"}"
-        done
-    }
-
-    # DISABLED: Add user local bin to PATH - XDG_BIN_HOME not defined yet
-    # _path_prepend "${XDG_BIN_HOME}"
+    fi
+    export PATH_DEDUP_DONE=1
+    (( verbose )) && print -u2 "[path_dedupe] entries(before)=${#parts} entries(after)=${#new}"
 }
 
+# Deduplicate initial PATH (idempotent)
+path_dedupe >/dev/null 2>&1 || true
 
-## XDG Base Directory Specification
-## https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
-export XDG_BIN_HOME=${XDG_BIN_HOME:="${HOME}/.local/bin"}
-export XDG_CACHE_HOME=${XDG_CACHE_HOME:="${HOME}/.cache"}
-export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:="${HOME}/.config"}
-export XDG_DATA_HOME=${XDG_DATA_HOME:="${HOME}/.local/share"}
-export XDG_STATE_HOME=${XDG_STATE_HOME:="${HOME}/.local/state"}
+# ------------------------------------------------------------------------------
+# Helpers: command existence caching and safe wrappers
+# ------------------------------------------------------------------------------
+declare -gA _zsh_command_cache
+has_command() {
+    local cmd="$1"
+    local cache_key="cmd_$cmd"
+    [[ -z "$cmd" ]] && return 1
+    if [[ -n "${_zsh_command_cache[$cache_key]:-}" ]]; then
+        [[ "${_zsh_command_cache[$cache_key]}" == "1" ]] && return 0 || return 1
+    fi
+    if command -v "$cmd" >/dev/null 2>&1; then
+        _zsh_command_cache[$cache_key]="1"
+        return 0
+    else
+        _zsh_command_cache[$cache_key]="0"
+        return 1
+    fi
+}
+command_exists() { has_command "$@"; }
 
-# Platform-specific XDG_RUNTIME_DIR setup
-# Now safe to use uname since PATH is set
-case "$(uname -s)" in
-    Darwin)
-        export XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR:="${HOME}/Library/Caches/TemporaryItems"}
-        mkdir -p "${XDG_RUNTIME_DIR}"
-        ;;
-    Linux)
-        # Linux-specific setup if needed
-        ;;
-    MINGW32_NT*|MINGW64_NT*)
-        # Windows setup if needed
-        ;;
-esac
+safe_git() {
+    if [[ -x "/opt/homebrew/bin/git" ]]; then
+        /opt/homebrew/bin/git "$@"
+    elif [[ -x "/usr/local/bin/git" ]]; then
+        /usr/local/bin/git "$@"
+    else
+        command git "$@"
+    fi
+}
 
-# Zsh-specific directories
-export ZDOTDIR=${ZDOTDIR:="${XDG_CONFIG_HOME}/zsh"}
-export ZSH_CACHE_DIR=${ZSH_CACHE_DIR:="${XDG_CACHE_HOME}/zsh"}
-export ZSH_COMPDUMP="${ZSH_CACHE_DIR:-${HOME}}/.zcompdump-${SHORT_HOST:-$(hostname -s)}-${ZSH_VERSION}"
+# ------------------------------------------------------------------------------
+# Robustly canonicalize ZDOTDIR (resolve symlinks) WITHOUT breaking on systems
+# that lack `realpath`. We only canonicalize if ZDOTDIR is set and points to a
+# directory so we don't accidentally touch unrelated values.
+# ------------------------------------------------------------------------------
+if [[ -n "${ZDOTDIR:-}" && -d "${ZDOTDIR}" ]]; then
+    if command -v realpath >/dev/null 2>&1; then
+        # Use realpath when available (portable and resolves symlinks)
+        ZDOTDIR="$(realpath "${ZDOTDIR}")"
+    else
+        # Fallback: attempt to cd into dir and print the physical path (pwd -P)
+        # If that fails for any reason, leave ZDOTDIR as-is.
+        local _zd_prev_pwd
+        _zd_prev_pwd="$PWD" 2>/dev/null || true
+        if cd "${ZDOTDIR}" 2>/dev/null; then
+            ZDOTDIR="$(pwd -P 2>/dev/null || pwd)"
+            # return to previous working directory
+            cd "$_zd_prev_pwd" 2>/dev/null || true
+        fi
+        unset _zd_prev_pwd
+    fi
+fi
+export ZDOTDIR
 
-typeset -gxa ZSH_AUTOSUGGEST_STRATEGY
-ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+# Recreate ensured dirs now anchored to canonical ZDOTDIR
+mkdir -p "${ZDOTDIR}" "${ZSH_CACHE_DIR}" "${ZSH_LOG_DIR}" 2>/dev/null || true
 
-typeset -gxa GLOBALIAS_FILTER_VALUES
-GLOBALIAS_FILTER_VALUES=("sudo" "man" "which" "bob")
+# ------------------------------------------------------------------------------
+# ZGENOM / plugin manager variables (use ZDOTDIR to localize installs)
+# ------------------------------------------------------------------------------
+ZGENOM_PARENT_DIR="${ZDOTDIR}"
+ZGEN_SOURCE="${ZDOTDIR}/.zqs-zgenom"
+ZGENOM_SOURCE_FILE="${ZGEN_SOURCE}/zgenom.zsh"
+ZGEN_DIR="${ZDOTDIR}/.zgenom"
+ZGEN_INIT="${ZGEN_DIR}/init.zsh"
+ZGENOM_BIN_DIR="${ZGEN_DIR}/_bin"
 
+export ZGENOM_PARENT_DIR ZGEN_SOURCE ZGENOM_SOURCE_FILE ZGEN_DIR ZGEN_INIT ZGENOM_BIN_DIR
 
-# Create required directories
-mkdir -p "${ZSH_CACHE_DIR}"
-
-# Plugin manager setup - zgenom configuration
-export ZGENOM_PARENT_DIR="${ZDOTDIR}"
-export ZGEN_SOURCE="${ZDOTDIR}/.zqs-zgenom"
-export ZGENOM_SOURCE_FILE="${ZGEN_SOURCE}/zgenom.zsh"
-export ZGEN_DIR="${ZDOTDIR}/.zgenom"
-export ZGEN_INIT="${ZGEN_DIR}/init.zsh"
-export ZGENOM_BIN_DIR="${ZGEN_DIR}/_bin"
-
-# Oh-My-ZSH configuration for zgenom
-export ZGEN_OH_MY_ZSH_REPO="ohmyzsh/ohmyzsh"
-export ZGEN_OH_MY_ZSH_BRANCH="master"
-
-# Ensure zgenom functions are in fpath for autoloading
+# Add vendored zgenom functions to fpath early if present
 if [[ -d "${ZGEN_SOURCE}/functions" ]]; then
     fpath=("${ZGEN_SOURCE}/functions" $fpath)
 fi
 
-# Disable macOS session restore
-export SHELL_SESSIONS_DISABLE=1
-
-# History configuration
-export HISTDUP=erase
+# ------------------------------------------------------------------------------
+# History defaults anchored in localized ZDOTDIR
+# ------------------------------------------------------------------------------
 export HISTFILE="${ZDOTDIR}/.zsh_history"
-export HISTSIZE=1000000
-export HISTTIMEFORMAT='%F %T %z %a %V '
-export SAVEHIST=1100000
+export HISTSIZE="${HISTSIZE:-2000000}"
+export SAVEHIST="${SAVEHIST:-2000200}"
+export HISTTIMEFORMAT="${HISTTIMEFORMAT:-'%F %T %z %a %V '}"
+export HISTDUP="${HISTDUP:-erase}"
 
-# Core application settings
-export DISPLAY=:0.0
-export LANG='en_GB.UTF-8'
-export LC_ALL='en_GB.UTF-8'
-export TIME_STYLE=long-iso
-
-set_editor() {
-    # Set editors if available (with fallback)
-    local editors=(nvim hx vim nano)
-    for e in $editors; do
-        [[ -n "$e" ]] &&
-            command -v "$e" >/dev/null 2>&1 &&
-            { export EDITOR="$e"; break; }
-    done
-}
-
-set_visual() {
-    # Set editors if available (with fallback)
-    set_editor
-    local editors=(code-insiders code zed hx "$EDITOR")
-    for e in $editors; do
-        [[ -n "$e" ]] &&
-            command -v "$e" >/dev/null 2>&1 &&
-            { export VISUAL="$e"; break; }
-    done
-}
-set_visual
-
-# Java setup (macOS specific)
-if [[ -x "/usr/libexec/java_home" ]]; then
-    JAVA_HOME="$(/usr/libexec/java_home 2>/dev/null)" && export JAVA_HOME
-fi
-
-# Less configuration with color support
-export LESS=' --HILITE-UNREAD --LONG-PROMPT --no-histdups --ignore-case --incsearch --no-init --line-numbers --mouse --quit-if-one-screen --squeeze-blank-lines --status-column --tabs=4 --use-color --window=-4 --RAW-CONTROL-CHARS '
-
-# D-Bus session setup (Linux compatibility)
-export MY_SESSION_BUS_SOCKET="/tmp/dbus/${USER}.session.usock"
-export DBUS_SESSION_BUS_ADDRESS="unix:path=${MY_SESSION_BUS_SOCKET}"
-
-# MCP server allowed directories for file operations
-export ALLOWED_DIRECTORIES="/Users/s-a-c/Desktop,/Users/s-a-c/Downloads,/Users/s-a-c/Herd,/Users/s-a-c/Library,/Users/s-a-c/Projects,/Users/s-a-c/Work,/Users/s-a-c/.config,/Users/s-a-c/dotfiles,/Users/s-a-c/.local,/Users/s-a-c/.zshenv,/Users/s-a-c/.zshrc,/Users/s-a-c/.zprofile,/Users/s-a-c/.zlogin"
-
-
-## [_field]
-{
-    function _field_append() {
-        ## SYNOPSIS: field_append varName fieldVal [sep]
-        ##     SEP defaults to ':'
-        ## Note: Forces fieldVal into the last position, if already present.
-        ##             Duplicates are removed, too.
-        ## EXAMPLE: field_append PATH /usr/local/bin
-        local varName=$1 fieldVal=$2 IFS=${3:-':'}
-        read -ra auxArr <<<"${!varName}"
-        for i in "${!auxArr[@]}"; do
-            [[ ${auxArr[i]} == "$fieldVal" ]] && unset 'auxArr[i]'
-        done
-        auxArr+=("$fieldVal")
-        printf -v "$varName" '%s' "${auxArr[*]}"
-    }
-
-    function _field_contains() {
-        ## SYNOPSIS: field_contains varName fieldVal [sep]
-        ##     SEP defaults to ':'
-        ## EXAMPLE: field_contains PATH /usr/local/bin
-        local varName=$1 fieldVal=$2 IFS=${3:-':'}
-        read -ra auxArr <<<"${!varName}"
-        for i in "${!auxArr[@]}"; do
-            [[ ${auxArr[i]} == "$fieldVal" ]] && return 0
-        done
-        return 1
-    }
-
-    function _field_delete() {
-        ## SYNOPSIS: field_delete varName fieldNum [sep]
-        ##     SEP defaults to ':'
-        ## EXAMPLE: field_delete PATH 2
-        local varName=$1 fieldNum=$2 IFS=${3:-':'}
-        read -ra auxArr <<<"${!varName}"
-        unset 'auxArr[fieldNum]'
-        printf -v "$varName" '%s' "${auxArr[*]}"
-    }
-
-    function _field_find() {
-        ## SYNOPSIS: field_find varName fieldVal [sep]
-        ##     SEP defaults to ':'
-        ## EXAMPLE: field_find PATH /usr/local/bin
-        local varName=$1 fieldVal=$2 IFS=${3:-':'}
-        read -ra auxArr <<<"${!varName}"
-        for i in "${!auxArr[@]}"; do
-            [[ ${auxArr[i]} == "$fieldVal" ]] && return 0
-        done
-        return 1
-    }
-
-    function _field_get() {
-        ## SYNOPSIS: field_get varName fieldNum [sep]
-        ##     SEP defaults to ':'
-        ## EXAMPLE: field_get PATH 2
-        printf "$# : $@"
-        local varName=$1 fieldNum=$2 IFS=${3:-':'}
-        read -ra auxArr <<<"${!varName}"
-        printf '%s' "${auxArr[fieldNum]}"
-    }
-
-    function _field_insert() {
-        ## SYNOPSIS: field_insert varName fieldNum fieldVal [sep]
-        ##     SEP defaults to ':'
-        ## EXAMPLE: field_insert PATH 2 /usr/local/bin
-        local varName=$1 fieldNum=$2 fieldVal=$3 IFS=${4:-':'}
-        read -ra auxArr <<<"${!varName}"
-        auxArr=("${auxArr[@]:0:fieldNum}" "$fieldVal" "${auxArr[@]:fieldNum}")
-        printf -v "$varName" '%s' "${auxArr[*]}"
-    }
-
-    function _field_prepend() {
-        ## SYNOPSIS: field_prepend varName fieldVal [sep]
-        ##     SEP defaults to ':'
-        ## Note: Forces fieldVal into the first position, if already present.
-        ##             Duplicates are removed, too.
-        ## EXAMPLE: field_prepend PATH /usr/local/bin
-        local varName=$1 fieldVal=$2 IFS=${3:-':'}
-        read -ra auxArr <<<"${!varName}"
-        for i in "${!auxArr[@]}"; do
-            [[ ${auxArr[i]} == "$fieldVal" ]] && unset 'auxArr[i]'
-        done
-        auxArr=("$fieldVal" "${auxArr[@]}")
-        printf -v "$varName" '%s' "${auxArr[*]}"
-    }
-
-    function _field_remove() {
-        ## SYNOPSIS: field_remove varName fieldVal [sep]
-        ##     SEP defaults to ':'
-        ## Note: Duplicates are removed, too.
-        ## EXAMPLE: field_remove PATH /usr/local/bin
-        local varName=$1 fieldVal=$2 IFS=${3:-':'}
-        read -ra auxArr <<<"${!varName}"
-        for i in "${!auxArr[@]}"; do
-            [[ ${auxArr[i]} == "$fieldVal" ]] && unset 'auxArr[i]'
-        done
-        printf -v "$varName" '%s' "${auxArr[*]}"
-    }
-
-    function _field_replace() {
-        ## SYNOPSIS: field_replace varName fieldVal newFieldVal [sep]
-        ##     SEP defaults to ':'
-        ## EXAMPLE: field_replace PATH /usr/local/bin /usr/local/bin2
-        local varName=$1 fieldVal=$2 newFieldVal=$3 IFS=${4:-':'}
-        read -ra auxArr <<<"${!varName}"
-        for i in "${!auxArr[@]}"; do
-            [[ ${auxArr[i]} == "$fieldVal" ]] && auxArr[i]="$newFieldVal"
-        done
-        printf -v "$varName" '%s' "${auxArr[*]}"
-    }
-
-    function _field_set() {
-        ## SYNOPSIS: field_set varName fieldNum fieldVal [sep]
-        ##     SEP defaults to ':'
-        ## EXAMPLE: field_set PATH 2 /usr/local/bin
-        local varName=$1 fieldNum=$2 fieldVal=$3 IFS=${4:-':'}
-        read -ra auxArr <<<"${!varName}"
-        auxArr[fieldNum]="$fieldVal"
-        printf -v "$varName" '%s' "${auxArr[*]}"
-    }
-
-    function _field_test() {
-        ## SYNOPSIS: _field_test
-        ## EXAMPLE: _field_test
-        ## DESCRIPTION: Test function for the _field library.
-        ##              It tests all the functions in the library.
-        ##              It is not meant to be called directly.
-        ##              It is meant to be called from the _test function.
-        local varName=PATH fieldNum=2 fieldVal=/usr/local/bin fieldVal2=/usr/local/bin2
-        local auxArr
-        printf -v "$varName" '%s' '/usr/bin:/usr/local/bin:/bin:/usr/sbin'
-        _field_get "$varName" "$fieldNum"
-        _field_set "$varName" "$fieldNum" "$fieldVal"
-        _field_insert "$varName" "$fieldNum" "$fieldVal"
-        _field_delete "$varName" "$fieldNum"
-        _field_find "$varName" "$fieldVal"
-        _field_replace "$varName" "$fieldVal" "$fieldVal2"
-        _field_contains "$varName" "$fieldVal"
-        _field_append "$varName" "$fieldVal"
-        _field_prepend "$varName" "$fieldVal"
-        _field_append "$varName" "$fieldVal"
-        _field_remove "$varName" "$fieldVal"
-    }
-}
-
-
-# Load all environment files from .env directory
-# This ensures API keys and other environment variables are available for all shell sessions,
-# including non-interactive ones used by MCP servers
+# ------------------------------------------------------------------------------
+# Final early housekeeping
+# ------------------------------------------------------------------------------
+# Make sure .env files under ZDOTDIR/.env (if any) are loaded for both
+# interactive and non-interactive shells. These files are expected to contain
+# user-level environment variables and API keys the user wants available.
 if [[ -d "${ZDOTDIR}/.env" ]]; then
-  for env_file in "${ZDOTDIR}/.env"/*.env; do
-    [[ -r "$env_file" ]] && source "$env_file"
-  done
-  unset env_file
+    for env_file in "${ZDOTDIR}/.env"/*.env; do
+        [[ -r "$env_file" ]] && source "$env_file"
+    done
+    unset env_file
 fi
 
-# History management functions
-# Disables zsh history recording by overriding the zshaddhistory hook
-# shellcheck disable=SC1073
-function disablehistory() {
-    function zshaddhistory() { return 1 }
-}
+# Export a stable EDITOR/VISUAL if not already set (best-effort)
+if [[ -z "${EDITOR:-}" ]]; then
+    for e in nvim vim nano; do
+        if command -v "$e" >/dev/null 2>&1; then
+            export EDITOR="$e"
+            break
+        fi
+    done
+fi
+if [[ -z "${VISUAL:-}" ]]; then
+    for v in "$EDITOR" code code-insiders; do
+        command -v "${v}" >/dev/null 2>&1 && { export VISUAL="$v"; break; } || true
+    done
+fi
 
-# Re-enables zsh history recording by removing the zshaddhistory override
-function enablehistory() {
-    unset -f zshaddhistory
-}
+# Set a sane default LANG/LC if unset
+export LANG="${LANG:-en_GB.UTF-8}"
+export LC_ALL="${LC_ALL:-${LANG}}"
+
+# Ensure our path is exported (in case callers modified PATH after earlier changes)
+export PATH
+
+# Debug summary at end of .zshenv load when debugging is enabled
+if [[ "${ZSH_DEBUG}" == "1" ]]; then
+    zsh_debug_echo "[DEBUG] .zshenv completed: ZDOTDIR=${ZDOTDIR} ZSH_CACHE_DIR=${ZSH_CACHE_DIR} ZSH_LOG_DIR=${ZSH_LOG_DIR} PATH=${PATH}" >> "${ZSH_DEBUG_LOG}" 2>/dev/null || true
+fi
+
+# End of .zshenv

@@ -1,11 +1,4 @@
-# Fix for script-based loading - use the directory this file is actually in
-if [[ -n "$ZGEN_SOURCE" ]]; then
-    # Keep existing ZGEN_SOURCE if already set
-    :
-else
-    # Default behavior
-    ZGEN_SOURCE="$0:A:h"
-fi
+ZGEN_SOURCE="${${(%):-%x}:A:h}"
 
 if [[ -z "${ZGEN_DIR}" ]]; then
     if [[ -e "${HOME}/.zgen" ]]; then

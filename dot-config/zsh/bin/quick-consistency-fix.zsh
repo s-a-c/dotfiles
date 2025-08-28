@@ -3,7 +3,7 @@
 # ZSH Configuration: Quick Consistency Fixes
 # ==============================================================================
 # Purpose: Apply targeted consistency fixes to achieve 100% consistency score
-#          focusing on the most impactful improvements for standardization
+#          focusing on the most impactful 030-improvements for standardization
 #
 # Author: ZSH Configuration Management System
 # Created: 2025-08-22
@@ -29,25 +29,25 @@ backup_file() {
     local file="$1"
     local backup_path="$BACKUP_DIR/$(basename "$file")"
     cp "$file" "$backup_path" 2>/dev/null
-    echo "📁 Backed up: $(basename "$file")"
+        zsh_debug_echo "📁 Backed up: $(basename "$file")"
 }
 
 # Apply fix function
 apply_fix() {
     local description="$1"
-    echo "🔧 $description"
+        zsh_debug_echo "🔧 $description"
     FIXES_APPLIED=$((FIXES_APPLIED + 1))
 }
 
 # Fix 1: Standardize comment headers in key files
 fix_comment_headers() {
-    echo "=== Fix 1: Standardizing Comment Headers ==="
+        zsh_debug_echo "=== Fix 1: Standardizing Comment Headers ==="
 
     local key_files=(
-        "$ZSHRC_DIR/.zshrc.d/00-core/00-standard-helpers.zsh"
-        "$ZSHRC_DIR/.zshrc.d/00-core/01-source-execute-detection.zsh"
-        "$ZSHRC_DIR/.zshrc.d/00-core/01-environment.zsh"
-        "$ZSHRC_DIR/.zshrc.d/00-core/02-path-system.zsh"
+        "$ZSHRC_DIR/.zshrc.d/00_00-standard-helpers.zsh"
+        "$ZSHRC_DIR/.zshrc.d/00_01-source-execute-detection.zsh"
+        "$ZSHRC_DIR/.zshrc.d/00_01-environment.zsh"
+        "$ZSHRC_DIR/.zshrc.d/00_02-path-system.zsh"
     )
 
     for file in "${key_files[@]}"; do
@@ -64,13 +64,13 @@ fix_comment_headers() {
 
 # Fix 2: Ensure consistent export patterns
 fix_export_patterns() {
-    echo ""
-    echo "=== Fix 2: Standardizing Export Patterns ==="
+        zsh_debug_echo ""
+        zsh_debug_echo "=== Fix 2: Standardizing Export Patterns ==="
 
     local config_files=(
-        "$ZSHRC_DIR/.zshrc.d/00-core/01-environment.zsh"
-        "$ZSHRC_DIR/.zshrc.d/00-core/02-path-system.zsh"
-        "$ZSHRC_DIR/.zshrc.d/20-plugins/01-plugin-metadata.zsh"
+        "$ZSHRC_DIR/.zshrc.d/00_01-environment.zsh"
+        "$ZSHRC_DIR/.zshrc.d/00_02-path-system.zsh"
+        "$ZSHRC_DIR/.zshrc.d/20_01-plugin-metadata.zsh"
     )
 
     for file in "${config_files[@]}"; do
@@ -87,13 +87,13 @@ fix_export_patterns() {
 
 # Fix 3: Standardize array declarations
 fix_array_declarations() {
-    echo ""
-    echo "=== Fix 3: Standardizing Array Declarations ==="
+        zsh_debug_echo ""
+        zsh_debug_echo "=== Fix 3: Standardizing Array Declarations ==="
 
     local files_with_arrays=(
-        "$ZSHRC_DIR/.zshrc.d/00-core/00-standard-helpers.zsh"
-        "$ZSHRC_DIR/.zshrc.d/20-plugins/01-plugin-metadata.zsh"
-        "$ZSHRC_DIR/.zshrc.d/30-ui/35-context-aware-config.zsh"
+        "$ZSHRC_DIR/.zshrc.d/00_00-standard-helpers.zsh"
+        "$ZSHRC_DIR/.zshrc.d/20_01-plugin-metadata.zsh"
+        "$ZSHRC_DIR/.zshrc.d/30_35-context-aware-config.zsh"
     )
 
     for file in "${files_with_arrays[@]}"; do
@@ -110,14 +110,14 @@ fix_array_declarations() {
 
 # Fix 4: Remove trailing whitespace
 fix_trailing_whitespace() {
-    echo ""
-    echo "=== Fix 4: Removing Trailing Whitespace ==="
+        zsh_debug_echo ""
+        zsh_debug_echo "=== Fix 4: Removing Trailing Whitespace ==="
 
     local core_files=(
         "$ZSHRC_DIR/.zshrc.d/00-core"/*.zsh
         "$ZSHRC_DIR/.zshrc.d/20-plugins"/*.zsh
         "$ZSHRC_DIR/.zshrc.d/30-ui"/*.zsh
-        "$ZSHRC_DIR/.zshrc.d/90-finalize"/*.zsh
+        "$ZSHRC_DIR/.zshrc.d/90_"/*.zsh
     )
 
     for file in $core_files; do
@@ -134,14 +134,14 @@ fix_trailing_whitespace() {
 
 # Fix 5: Standardize indentation (convert tabs to spaces)
 fix_indentation() {
-    echo ""
-    echo "=== Fix 5: Standardizing Indentation ==="
+        zsh_debug_echo ""
+        zsh_debug_echo "=== Fix 5: Standardizing Indentation ==="
 
     local all_config_files=(
         "$ZSHRC_DIR/.zshrc.d/00-core"/*.zsh
         "$ZSHRC_DIR/.zshrc.d/20-plugins"/*.zsh
         "$ZSHRC_DIR/.zshrc.d/30-ui"/*.zsh
-        "$ZSHRC_DIR/.zshrc.d/90-finalize"/*.zsh
+        "$ZSHRC_DIR/.zshrc.d/90_"/*.zsh
     )
 
     for file in $all_config_files; do
@@ -158,14 +158,14 @@ fix_indentation() {
 
 # Fix 6: Ensure consistent error handling patterns
 fix_error_handling() {
-    echo ""
-    echo "=== Fix 6: Improving Error Handling Consistency ==="
+        zsh_debug_echo ""
+        zsh_debug_echo "=== Fix 6: Improving Error Handling Consistency ==="
 
-    # This is more complex and requires manual review, but we can add
+    # This is more complex and requires manual 020-review, but we can add
     # basic error handling to simple commands
     local key_files=(
-        "$ZSHRC_DIR/.zshrc.d/00-core/02-path-system.zsh"
-        "$ZSHRC_DIR/.zshrc.d/20-plugins/01-plugin-metadata.zsh"
+        "$ZSHRC_DIR/.zshrc.d/00_02-path-system.zsh"
+        "$ZSHRC_DIR/.zshrc.d/20_01-plugin-metadata.zsh"
     )
 
     for file in "${key_files[@]}"; do
@@ -177,12 +177,12 @@ fix_error_handling() {
 
 # Fix 7: Add missing file descriptions
 fix_file_descriptions() {
-    echo ""
-    echo "=== Fix 7: Ensuring File Descriptions ==="
+        zsh_debug_echo ""
+        zsh_debug_echo "=== Fix 7: Ensuring File Descriptions ==="
 
     local files_to_check=(
-        "$ZSHRC_DIR/.zshrc.d/00-core/06-performance-monitoring.zsh"
-        "$ZSHRC_DIR/.zshrc.d/00-core/07-review-cycles.zsh"
+        "$ZSHRC_DIR/.zshrc.d/00_06-performance-monitoring.zsh"
+        "$ZSHRC_DIR/.zshrc.d/00_07-review-cycles.zsh"
     )
 
     for file in "${files_to_check[@]}"; do
@@ -198,13 +198,13 @@ fix_file_descriptions() {
 
 # Fix 8: Standardize variable naming
 fix_variable_naming() {
-    echo ""
-    echo "=== Fix 8: Standardizing Variable Naming ==="
+        zsh_debug_echo ""
+        zsh_debug_echo "=== Fix 8: Standardizing Variable Naming ==="
 
     # Check for any lowercase environment variables
     local env_files=(
-        "$ZSHRC_DIR/.zshrc.d/00-core/01-environment.zsh"
-        "$ZSHRC_DIR/.zshrc.d/00-core/02-path-system.zsh"
+        "$ZSHRC_DIR/.zshrc.d/00_01-environment.zsh"
+        "$ZSHRC_DIR/.zshrc.d/00_02-path-system.zsh"
     )
 
     for file in "${env_files[@]}"; do
@@ -231,27 +231,27 @@ main() {
     fix_file_descriptions
     fix_variable_naming
 
-    echo ""
-    echo "========================================================"
-    echo "Consistency Fixes Complete"
-    echo "========================================================"
-    echo "Total fixes applied: $FIXES_APPLIED"
-    echo "Backup directory: $BACKUP_DIR"
-    echo ""
+        zsh_debug_echo ""
+        zsh_debug_echo "========================================================"
+        zsh_debug_echo "Consistency Fixes Complete"
+        zsh_debug_echo "========================================================"
+        zsh_debug_echo "Total fixes applied: $FIXES_APPLIED"
+        zsh_debug_echo "Backup directory: $BACKUP_DIR"
+        zsh_debug_echo ""
 
     if [[ $FIXES_APPLIED -gt 0 ]]; then
-        echo "✅ Consistency improvements applied successfully!"
-        echo "🎯 Estimated consistency score improvement: +5-10%"
-        echo "📊 Expected new consistency score: 95-100%"
+            zsh_debug_echo "✅ Consistency improvements applied successfully!"
+            zsh_debug_echo "🎯 Estimated consistency score improvement: +5-10%"
+            zsh_debug_echo "📊 Expected new consistency score: 95-100%"
     else
-        echo "✅ Configuration already highly consistent!"
-        echo "🏆 Current consistency score: 90%+"
+            zsh_debug_echo "✅ Configuration already highly consistent!"
+            zsh_debug_echo "🏆 Current consistency score: 90%+"
     fi
 
-    echo ""
-    echo "💡 To verify improvements, run configuration tests:"
-    echo "   ./tests/test-config-validation.zsh"
-    echo ""
+        zsh_debug_echo ""
+        zsh_debug_echo "💡 To verify improvements, run configuration tests:"
+        zsh_debug_echo "   ./tests/test-config-validation.zsh"
+        zsh_debug_echo ""
 }
 
 # Run main function

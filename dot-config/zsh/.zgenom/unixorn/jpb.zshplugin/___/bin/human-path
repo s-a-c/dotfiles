@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-#
-# Display $PATH in more human-friendly format.
-#
-
-echo -e "${PATH//:/\\n}"
