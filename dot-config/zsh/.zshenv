@@ -169,19 +169,42 @@ mkdir -p "${ZDOTDIR}" "${ZSH_CACHE_DIR}" "${ZSH_LOG_DIR}" 2>/dev/null || true
 
 # ------------------------------------------------------------------------------
 # ZGENOM / plugin manager variables (use ZDOTDIR to localize installs)
+# Prefer non-dot `zgenom` locations but keep backwards compatible fallbacks.
 # ------------------------------------------------------------------------------
 ZGENOM_PARENT_DIR="${ZDOTDIR}"
-ZGEN_SOURCE="${ZDOTDIR}/.zqs-zgenom"
+
+# Resolve the zgenom source directory in priority order:
+# 1) localized vendored .zqs-zgenom under $ZDOTDIR (preferred for localized installs)
+# 2) localized zgenom under $ZDOTDIR (stow-friendly, no leading dot)
+# 3) localized legacy .zgenom under $ZDOTDIR
+# 4) user-home fallback ${HOME}/.zgenom
+# If none exist, default to the stow-friendly name under ZDOTDIR so callers
+# that write into the stowed config know the expected location.
+if [[ -n "${ZDOTDIR:-}" && -d "${ZDOTDIR}/.zqs-zgenom" ]]; then
+    ZGEN_SOURCE="${ZDOTDIR}/.zqs-zgenom"
+elif [[ -n "${ZDOTDIR:-}" && -d "${ZDOTDIR}/zgenom" ]]; then
+    ZGEN_SOURCE="${ZDOTDIR}/zgenom"
+elif [[ -n "${ZDOTDIR:-}" && -d "${ZDOTDIR}/.zgenom" ]]; then
+    ZGEN_SOURCE="${ZDOTDIR}/.zgenom"
+elif [[ -d "${HOME}/.zgenom" ]]; then
+    ZGEN_SOURCE="${HOME}/.zgenom"
+else
+    ZGEN_SOURCE="${ZDOTDIR}/zgenom"
+fi
+
+# Primary zgenom entry points derived from chosen source
 ZGENOM_SOURCE_FILE="${ZGEN_SOURCE}/zgenom.zsh"
-ZGEN_DIR="${ZDOTDIR}/.zgenom"
+ZGEN_DIR="${ZGEN_SOURCE}"
 ZGEN_INIT="${ZGEN_DIR}/init.zsh"
 ZGENOM_BIN_DIR="${ZGEN_DIR}/_bin"
 
 export ZGENOM_PARENT_DIR ZGEN_SOURCE ZGENOM_SOURCE_FILE ZGEN_DIR ZGEN_INIT ZGENOM_BIN_DIR
 
-# Add vendored zgenom functions to fpath early if present
+# Add vendored zgenom functions to fpath early if present (try source then dir)
 if [[ -d "${ZGEN_SOURCE}/functions" ]]; then
     fpath=("${ZGEN_SOURCE}/functions" $fpath)
+elif [[ -d "${ZGEN_DIR}/functions" ]]; then
+    fpath=("${ZGEN_DIR}/functions" $fpath)
 fi
 
 # ------------------------------------------------------------------------------
