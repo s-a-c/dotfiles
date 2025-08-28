@@ -26558,3 +26558,86 @@
   ],
   "object": "list"
 }
+[2025-08-28 15:59:15][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "openai/gpt-oss-20b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "openai",
+      "arch": "gpt-oss",
+      "compatibility_type": "gguf",
+      "quantization": "MXFP4",
+      "state": "not-loaded",
+      "max_context_length": 131072,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "qwen/qwen3-coder-30b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "qwen",
+      "arch": "qwen3_moe",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 262144,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "text-embedding-qwen3-embedding-0.6b",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "Qwen",
+      "arch": "qwen3",
+      "compatibility_type": "gguf",
+      "quantization": "Q8_0",
+      "state": "not-loaded",
+      "max_context_length": 32768,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "qwen/qwen3-32b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "qwen",
+      "arch": "qwen3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 40960,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "google/gemma-3-27b",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "google",
+      "arch": "gemma3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
