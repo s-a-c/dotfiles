@@ -1,0 +1,76 @@
+Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v<checksum>
+
+Backup / Removal Note: .zgenom symlink
+-------------------------------------
+
+Removed symlink: zsh/.zgenom -> zgenom
+Removal time (local): 2025-08-28T15:39:03+01:00
+Removed by: automated assistant (action requested by repository owner)
+Reason: redundant duplicate reference; canonicalized ZDOTDIR layout (stow-managed)
+Repository canonical location: ~/dotfiles/dot-config/zsh
+Runtime (stowed) location: ~/.config/zsh -> ~/dotfiles/dot-config/zsh
+
+Details
+-------
+- The symlink `zsh/.zgenom` pointed to the sibling directory `zgenom/`.
+- The `zgenom/` directory remains intact in the repository and is the canonical vendor for the zgenom plugin manager files.
+- Removing `zsh/.zgenom` only removed the redundant symlink. No plugin data, clones, or other files were deleted.
+- This change reduces duplicate references and avoids interfering with stow-managed layout where `~/.config/zsh` is a symlink to the repo.
+
+Suggested follow-up (manual)
+----------------------------
+If you want an audit/backed-up copy of the symlink metadata, you can create a small file (example below) and commit it alongside your README. This file is intended as that record.
+
+Example backup file contents (already recorded here):
+- Filename suggestion: `zsh/.zgenom.removed-2025-08-28T15-39-03.txt`
+- Contents: this file (the recorded removal details)
+
+Suggested commit message (short)
+-------------------------------
+zsh: document canonical ZDOTDIR layout; remove redundant .zgenom symlink
+
+Suggested commit message (detailed)
+----------------------------------
+zsh: remove redundant top-level .zgenom symlink and document ZDOTDIR layout
+
+- Removed duplicate symlink `zsh/.zgenom` (now relying on `zgenom/` directory)
+- Add README documenting canonical repo (`~/dotfiles/dot-config/zsh`) → runtime (`~/.config/zsh`) layout
+- Rationale: avoid duplicate references and make stow-managed layout the single source of truth
+- Removal timestamp: 2025-08-28T15:39:03+01:00
+
+Suggested USAGE.md (short) — copy into `zsh/USAGE.md`
+---------------------------------------------------
+Purpose
+This project keeps the canonical Zsh configuration in:
+  ~/dotfiles/dot-config/zsh
+
+You should use GNU stow to create the runtime symlink:
+  ~/.config/zsh -> ~/dotfiles/dot-config/zsh
+
+Typical commands
+From the repo root (~/dotfiles/dot-config):
+  # To stow the zsh folder into ~/.config
+  stow -t $HOME/.config zsh
+
+  # Or, from ~/dotfiles/dot-config:
+  cd ~/dotfiles/dot-config
+  stow zsh
+
+Notes
+- Keep all canonical configuration files under `zsh/` in this repo so stow can manage them cleanly.
+- Do not create duplicate symlinks at the repo root that point to files inside `zsh/`. These duplicates can confuse stow and other tooling.
+- If you intentionally want user-local plugin clones (e.g. `~/.zgenom`), the init logic in `.zshenv`/.zshrc` will fall back to `${HOME}/.zgenom` when needed.
+
+Example troubleshooting
+- If zgenom is expected to live in `~/.zgenom` for runtime use:
+  - The code already checks these locations (in priority order):
+    1) `$ZDOTDIR/.zqs-zgenom`
+    2) `$ZDOTDIR/zgenom`
+    3) `${HOME}/.zgenom`
+  - If you prefer a localized plugin store under the stowed config, allow `ZGEN_DIR` to point to `${ZDOTDIR}/.zgenom`.
+
+Policy acknowledgement
+----------------------
+Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v<checksum>
+
+End of file

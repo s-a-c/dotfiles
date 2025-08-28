@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-#
-# Look at the http headers from a URL
-
-exec curl -I -L "$@"
