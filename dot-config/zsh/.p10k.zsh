@@ -12,7 +12,7 @@
 #
 #   for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}; done
 
-[[ "$ZSH_DEBUG" == "1" ]] && printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0" >&2
+[[ "$ZSH_DEBUG" == "1" ]] &&     zsh_debug_echo "# ++++++ $0 ++++++++++++++++++++++++++++++++++++"
 
 # Temporarily change options.
 'builtin' 'local' '-a' 'p10k_config_opts'
@@ -107,7 +107,7 @@
     timewarrior             # timewarrior tracking status (https://timewarrior.net/)
     taskwarrior             # taskwarrior task count (https://taskwarrior.org/)
     per_directory_history   # Oh My Zsh per-directory-history local/global indicator
-    # cpu_arch              # CPU architecture
+    # cpu_arch              # CPU 010-architecture
     time                    # current time
     # =========================[ Line #2 ]=========================
     newline
@@ -892,11 +892,11 @@
   # typeset -g POWERLEVEL9K_PER_DIRECTORY_HISTORY_LOCAL_VISUAL_IDENTIFIER_EXPANSION='⭐'
   # typeset -g POWERLEVEL9K_PER_DIRECTORY_HISTORY_GLOBAL_VISUAL_IDENTIFIER_EXPANSION='⭐'
 
-  ################################[ cpu_arch: CPU architecture ]################################
-  # CPU architecture color.
+  ################################[ cpu_arch: CPU 010-architecture ]################################
+  # CPU 010-architecture color.
   typeset -g POWERLEVEL9K_CPU_ARCH_FOREGROUND=172
 
-  # Hide the segment when on a specific CPU architecture.
+  # Hide the segment when on a specific CPU 010-architecture.
   # typeset -g POWERLEVEL9K_CPU_ARCH_X86_64_CONTENT_EXPANSION=
   # typeset -g POWERLEVEL9K_CPU_ARCH_X86_64_VISUAL_IDENTIFIER_EXPANSION=
 
@@ -1255,8 +1255,8 @@
   #     '*test*'  TEST
   #     '*'       DEFAULT)
   #
-  # If your current kubernetes context is "deathray-testing/default", its class is TEST
-  # because "deathray-testing/default" doesn't match the pattern '*prod*' but does match '*test*'.
+  # If your current kubernetes context is "deathray-040-testing/default", its class is TEST
+  # because "deathray-040-testing/default" doesn't match the pattern '*prod*' but does match '*test*'.
   #
   # You can define different colors, icons and content expansions for different classes:
   #
@@ -1507,7 +1507,7 @@
   #     '*:*test*:*'  TEST
   #     '*'           DEFAULT)
   #
-  # If your current Google application credentials is "service_account deathray-testing x@y.com",
+  # If your current Google application credentials is "service_account deathray-040-testing x@y.com",
   # its class is TEST because it doesn't match the pattern '* *prod* *' but does match '* *test* *'.
   #
   # You can define different colors, icons and content expansions for different classes:
