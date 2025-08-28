@@ -19,3 +19,7 @@
 [submodule "dot-config/zsh/.zgenom/romkatv/powerlevel10k/___"]
 	path = dot-config/zsh/.zgenom/romkatv/powerlevel10k/___
 	url = https://github.com/romkatv/powerlevel10k
+[submodule "dot-config/ai"]
+	path = dot-config/ai
+	url = https://github.com/s-a-c/ai-guidelines.git
+	branch = main
