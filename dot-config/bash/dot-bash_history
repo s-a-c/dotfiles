@@ -504,3 +504,9 @@ eza -al dot-config/zsh/dot-zshrc
 z ~/.config/zsh
 cd ~/.config/zsh
 which zqs
+#1755915797
+z ..
+#1755915808
+rm -rf zsh
+#1755915827
+cp -r ~/Downloads/zsh ./

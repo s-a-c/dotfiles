@@ -1,0 +1,12 @@
+{
+    "description": "Default trusted plugins for zsh-quickstart-kit",
+    "plugins": [
+        "zdharma-continuum/fast-syntax-highlighting",
+        "zsh-users/zsh-history-substring-search", 
+        "zsh-users/zsh-autosuggestions",
+        "supercrabtree/k",
+        "romkatv/powerlevel10k"
+    ],
+    "created": "2025-08-25",
+    "notes": "Core plugins from zsh-quickstart-kit - generally safe"
+}
