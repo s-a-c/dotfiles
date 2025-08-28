@@ -267,3 +267,4 @@ dist/
 
 .env
 /.env/
+dot-config/lmstudio/server-logs/
