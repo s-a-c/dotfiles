@@ -58,4 +58,4 @@ unsetopt FLOWCONTROL             # Disable start/stop characters in shell editor
 # Create essential directories
 [[ ! -d "$HISTFILE:h" ]] && mkdir -p "$HISTFILE:h"
 
-[[ "$ZSH_DEBUG" == "1" ]] &&     zsh_debug_echo "# [00-core] Environment setup complete"
+zsh_debug_echo "# [00-core] Environment setup complete"

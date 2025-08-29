@@ -50,7 +50,7 @@ if command -v _lazy_git_wrapper >/dev/null 2>&1; then
 
         # Verify git is still available before proceeding
         if ! command -v _lazy_git_wrapper >/dev/null 2>&1; then
-            [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# Git not available, skipping config cache"
+            zsh_debug_echo "# Git not available, skipping config cache"
             return 1
         fi
 
@@ -62,12 +62,12 @@ if command -v _lazy_git_wrapper >/dev/null 2>&1; then
             local cache_age=$(( $(date +%s) - $(stat -f %m "$git_cache_file" 2>/dev/null || zsh_debug_echo 0) ))
             if [[ $cache_age -lt $cache_ttl ]]; then
                 needs_refresh=false
-                [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# Using cached git config (${cache_age}s old)"
+                zsh_debug_echo "# Using cached git config (${cache_age}s old)"
             fi
         fi
 
         if [[ "$needs_refresh" == "true" ]]; then
-            [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# Refreshing git configuration cache..."
+            zsh_debug_echo "# Refreshing git configuration cache..."
 
             # Get git configuration values using safe git command
             local git_name git_email
@@ -83,16 +83,16 @@ export GIT_AUTHOR_EMAIL='$git_email'
 export GIT_COMMITTER_NAME='$git_name'
 export GIT_COMMITTER_EMAIL='$git_email'
 EOF
-            [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# Git config cached: $git_name <$git_email>"
+            zsh_debug_echo "# Git config cached: $git_name <$git_email>"
         fi
 
         # Source the cache file
         if [[ -f "$git_cache_file" ]]; then
             source "$git_cache_file"
             _GIT_CONFIG_LOADED=1
-            [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# Git configuration loaded from cache"
+            zsh_debug_echo "# Git configuration loaded from cache"
         else
-            [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# Failed to load git configuration"
+            zsh_debug_echo "# Failed to load git configuration"
             return 1
         fi
 
@@ -135,10 +135,10 @@ EOF
 
     # 2.2.3.9 Working Directory Restoration
     if ! cd "$original_cwd" 2>/dev/null; then
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "⚠️  Warning: Could not restore original directory: $original_cwd"
+        zsh_debug_echo "⚠️  Warning: Could not restore original directory: $original_cwd"
     fi
 
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [lazy-git-config] Lazy git configuration wrapper initialized with safe git: $git_cmd"
+    zsh_debug_echo "# [lazy-git-config] Lazy git configuration wrapper initialized with safe git: $git_cmd"
 else
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [lazy-git-config] git not found, skipping"
+    zsh_debug_echo "# [lazy-git-config] git not found, skipping"
 fi

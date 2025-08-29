@@ -63,4 +63,4 @@ fi
 zstyle ':completion:*' list-max-items 50
 zstyle ':completion:*' accept-exact-dirs true
 
-[[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [ui-enhancements] ✅ User interface and experience enhancements configured"
+zsh_debug_echo "# [ui-enhancements] ✅ User interface and experience enhancements configured"
