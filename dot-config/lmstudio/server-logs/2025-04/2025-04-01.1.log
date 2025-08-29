@@ -1,0 +1,87 @@
+[2025-04-01 12:49:22][INFO][LM STUDIO SERVER] Success! HTTP server listening on port 1234
+[2025-04-01 12:49:22][INFO] 
+[2025-04-01 12:49:22][INFO][LM STUDIO SERVER] Supported endpoints:
+[2025-04-01 12:49:22][INFO][LM STUDIO SERVER] ->	GET  http://localhost:1234/v1/models
+[2025-04-01 12:49:22][INFO][LM STUDIO SERVER] ->	POST http://localhost:1234/v1/chat/completions
+[2025-04-01 12:49:22][INFO][LM STUDIO SERVER] ->	POST http://localhost:1234/v1/completions
+[2025-04-01 12:49:22][INFO][LM STUDIO SERVER] ->	POST http://localhost:1234/v1/embeddings
+[2025-04-01 12:49:22][INFO] 
+[2025-04-01 12:49:22][INFO][LM STUDIO SERVER] Logs are saved into /Users/s-a-c/.lmstudio/server-logs
+[2025-04-01 12:49:22][INFO] Server started.
+[2025-04-01 12:49:22][INFO] Just-in-time model loading active.
+[2025-04-01 18:51:03][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-04-01 20:50:22][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
