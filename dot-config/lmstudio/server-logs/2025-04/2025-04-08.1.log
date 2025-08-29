@@ -1,0 +1,38 @@
+[2025-04-08 14:25:38][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "gemma-3-27b-it",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "lmstudio-community",
+      "arch": "gemma3",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "lmstudio-community",
+      "arch": "qwen2",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
