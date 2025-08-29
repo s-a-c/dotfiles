@@ -30,7 +30,7 @@ fi
 
 # Only proceed if zgenom is available
 if ! command -v zgenom >/dev/null 2>&1; then
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [essential-plugins] Zgenom not available, skipping plugins"
+    zsh_debug_echo "# [essential-plugins] Zgenom not available, skipping plugins"
     return 0
 fi
 
@@ -39,7 +39,7 @@ typeset -g ESSENTIAL_PLUGINS_START=$SECONDS
 
 # Check if we need to regenerate the plugin cache
 if ! zgenom saved; then
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [essential-plugins] Regenerating plugin configuration..."
+    zsh_debug_echo "# [essential-plugins] Regenerating plugin configuration..."
 
     # Load essential Oh My Zsh libraries first
     zgenom ohmyzsh lib/compfix.zsh
@@ -69,9 +69,9 @@ if ! zgenom saved; then
 
     # Save the configuration
     zgenom save
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [essential-plugins] Plugin configuration saved"
+    zsh_debug_echo "# [essential-plugins] Plugin configuration saved"
 else
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [essential-plugins] Using cached plugin configuration"
+    zsh_debug_echo "# [essential-plugins] Using cached plugin configuration"
 fi
 
 # Configure autosuggestions for better performance
@@ -89,6 +89,6 @@ fi
 
 # Track essential plugin loading time
 local plugin_time=$((SECONDS - ESSENTIAL_PLUGINS_START))
-[[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [essential-plugins] Essential plugins loaded in ${plugin_time}s"
+zsh_debug_echo "# [essential-plugins] Essential plugins loaded in ${plugin_time}s"
 
-[[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [20-plugins] Essential plugins configured"
+zsh_debug_echo "# [20-plugins] Essential plugins configured"

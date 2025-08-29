@@ -75,7 +75,7 @@ clear_command_cache() {
     if declare -A _zsh_command_cache >/dev/null 2>&1; then
         # Clear command cache entries
         _zsh_command_cache=()
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [functions] Command cache cleared"
+        zsh_debug_echo "# [functions] Command cache cleared"
     fi
 }
 
@@ -87,7 +87,7 @@ time_function() {
     "$func" "$@"
     local end_time=$SECONDS
     local duration=$((end_time - start_time))
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [timing] $func took ${duration}s"
+    zsh_debug_echo "# [timing] $func took ${duration}s"
     return $?
 }
 
@@ -98,4 +98,4 @@ time_function() {
     typeset -gf clear_command_cache time_function
 } >/dev/null 2>&1
 
-[[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [00-core] Core functions loaded"
+zsh_debug_echo "# [00-core] Core functions loaded"

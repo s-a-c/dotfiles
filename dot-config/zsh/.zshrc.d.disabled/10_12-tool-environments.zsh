@@ -26,7 +26,7 @@ if command -v node >/dev/null 2>&1; then
         _path_prepend "$BUN_INSTALL/bin"
     fi
 
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tool-environments] Node.js ecosystem configured"
+    zsh_debug_echo "# [tool-environments] Node.js ecosystem configured"
 fi
 
 ## [tool-environments.python] - Python development configuration
@@ -48,7 +48,7 @@ if command -v python3 >/dev/null 2>&1; then
         export PIPX_BIN_DIR="$HOME/.local/bin"
     fi
 
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tool-environments] Python development configured"
+    zsh_debug_echo "# [tool-environments] Python development configured"
 fi
 
 ## [tool-environments.rust] - Rust development configuration
@@ -65,7 +65,7 @@ if command -v rustc >/dev/null 2>&1; then
         export RUSTC_WRAPPER=sccache
     fi
 
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tool-environments] Rust development configured"
+    zsh_debug_echo "# [tool-environments] Rust development configured"
 fi
 
 ## [tool-environments.go] - Go development configuration
@@ -79,7 +79,7 @@ if command -v go >/dev/null 2>&1; then
     [[ -d "$GOPATH/bin" ]] && _path_prepend "$GOPATH/bin"
     [[ -d "/usr/local/go/bin" ]] && _path_prepend "/usr/local/go/bin"
 
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tool-environments] Go development configured"
+    zsh_debug_echo "# [tool-environments] Go development configured"
 fi
 
 ## [tool-environments.docker] - Docker and containerization
@@ -93,7 +93,7 @@ if command -v docker >/dev/null 2>&1; then
         export DOCKER_DEFAULT_PLATFORM=linux/amd64
     fi
 
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tool-environments] Docker configured"
+    zsh_debug_echo "# [tool-environments] Docker configured"
 fi
 
 ## [tool-environments.kubernetes] - Kubernetes tools
@@ -107,7 +107,7 @@ if command -v kubectl >/dev/null 2>&1; then
         source <(kubectl completion zsh)
     fi
 
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tool-environments] Kubernetes tools configured"
+    zsh_debug_echo "# [tool-environments] Kubernetes tools configured"
 fi
 
 ## [tool-environments.cloud] - Cloud provider tools
@@ -115,31 +115,31 @@ fi
 if command -v aws >/dev/null 2>&1; then
     export AWS_PAGER=""
     export AWS_CLI_AUTO_PROMPT=on-partial
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tool-environments] AWS CLI configured"
+    zsh_debug_echo "# [tool-environments] AWS CLI configured"
 fi
 
 # Google Cloud SDK
 if command -v gcloud >/dev/null 2>&1; then
     export CLOUDSDK_PYTHON_SITEPACKAGES=1
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tool-environments] Google Cloud SDK configured"
+    zsh_debug_echo "# [tool-environments] Google Cloud SDK configured"
 fi
 
 # Azure CLI
 if command -v az >/dev/null 2>&1; then
     export AZURE_CORE_OUTPUT=table
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tool-environments] Azure CLI configured"
+    zsh_debug_echo "# [tool-environments] Azure CLI configured"
 fi
 
 ## [tool-environments.databases] - Database tools
 if command -v psql >/dev/null 2>&1; then
     export PGUSER="postgres"
     export PGDATABASE="postgres"
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tool-environments] PostgreSQL configured"
+    zsh_debug_echo "# [tool-environments] PostgreSQL configured"
 fi
 
 if command -v mysql >/dev/null 2>&1; then
     export MYSQL_PS1="(\u@\h) [\d]> "
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tool-environments] MySQL configured"
+    zsh_debug_echo "# [tool-environments] MySQL configured"
 fi
 
 ## [tool-environments.editors] - Editor integrations
@@ -154,13 +154,13 @@ if command -v nvim >/dev/null 2>&1; then
         _path_prepend "$HOME/.local/share/bob"
     fi
 
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tool-environments] Neovim configured"
+    zsh_debug_echo "# [tool-environments] Neovim configured"
 fi
 
 # VS Code integration
 if command -v code >/dev/null 2>&1; then
     export VSCODE_CWD="$PWD"
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tool-environments] VS Code configured"
+    zsh_debug_echo "# [tool-environments] VS Code configured"
 fi
 
 ## [tool-environments.build-tools] - Build and development tools
@@ -191,7 +191,7 @@ if command -v git >/dev/null 2>&1; then
         export GIT_LFS_SKIP_SMUDGE=1
     fi
 
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tool-environments] Git tools configured"
+    zsh_debug_echo "# [tool-environments] Git tools configured"
 fi
 
 ## [tool-environments.performance] - Performance monitoring tools
@@ -223,7 +223,7 @@ case "$(safe_uname -s)" in
             export HOMEBREW_NO_INSECURE_REDIRECT=1
         fi
 
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tool-environments] macOS optimizations applied"
+        zsh_debug_echo "# [tool-environments] macOS optimizations applied"
         ;;
     Linux)
         # Linux-specific optimizations
@@ -235,12 +235,12 @@ case "$(safe_uname -s)" in
             export SYSTEMD_PAGER=""
         fi
 
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tool-environments] Linux optimizations applied"
+        zsh_debug_echo "# [tool-environments] Linux optimizations applied"
         ;;
     MINGW32_NT*|MINGW64_NT*)
         # Windows/Git Bash optimizations
         export MSYS2_PATH_TYPE=inherit
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tool-environments] Windows optimizations applied"
+        zsh_debug_echo "# [tool-environments] Windows optimizations applied"
         ;;
 esac
 
@@ -255,7 +255,7 @@ if command -v composer >/dev/null 2>&1; then
     fi
     export COMPOSER_MEMORY_LIMIT=-1
     unset composer_home
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tool-environments] Composer configured"
+    zsh_debug_echo "# [tool-environments] Composer configured"
 fi
 
 # Bob Neovim version manager
@@ -272,32 +272,32 @@ if command -v bob >/dev/null 2>&1; then
         builtin source "${XDG_DATA_HOME}/bob/env/env.sh"
     fi
 
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tool-environments] Bob (Neovim manager) configured"
+    zsh_debug_echo "# [tool-environments] Bob (Neovim manager) configured"
 fi
 
 # Bun completions and environment
 if [[ -s "${XDG_DATA_HOME}/bun/_bun" ]]; then
     source "${XDG_DATA_HOME}/bun/_bun"
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tool-environments] Bun completions loaded"
+    zsh_debug_echo "# [tool-environments] Bun completions loaded"
 fi
 
 # Docker Desktop completions
 if [[ -d "$HOME/.docker/completions" ]]; then
     fpath=("$HOME/.docker/completions" $fpath)
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tool-environments] Docker completions added to fpath"
+    zsh_debug_echo "# [tool-environments] Docker completions added to fpath"
 fi
 
 # Google Cloud SDK integration
 if [[ -d "$HOME/google-cloud-sdk" ]]; then
     source "$HOME/google-cloud-sdk/path.zsh.inc" 2>/dev/null
     source "$HOME/google-cloud-sdk/completion.zsh.inc" 2>/dev/null
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tool-environments] Google Cloud SDK integrated"
+    zsh_debug_echo "# [tool-environments] Google Cloud SDK integrated"
 fi
 
 # MCP Environment Setup for AugmentCode
 if [[ -f "$HOME/.mcp-environment.sh" ]]; then
     builtin source "$HOME/.mcp-environment.sh"
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tool-environments] MCP AugmentCode environment loaded"
+    zsh_debug_echo "# [tool-environments] MCP AugmentCode environment loaded"
 fi
 
 ## [tool-environments.path-helpers] - PATH management utilities
@@ -320,4 +320,4 @@ if command -v awk >/dev/null 2>&1; then
     export PATH="$new_path"
 fi
 
-[[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tool-environments] ✅ All development tools configured and optimized"
+zsh_debug_echo "# [tool-environments] ✅ All development tools configured and optimized"

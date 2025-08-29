@@ -48,7 +48,7 @@ if command -v gh >/dev/null 2>&1; then
       [[ $_GH_COPILOT_LOADED -eq 1 ]] && return 0
 
       if ! gh copilot --help >/dev/null 2>&1; then
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# gh copilot extension not available"
+        zsh_debug_echo "# gh copilot extension not available"
         return 1
       fi
 
@@ -114,9 +114,9 @@ if command -v gh >/dev/null 2>&1; then
       zsh_debug_echo "Warning: Could not restore original directory: $original_cwd"
       return 1
     }
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [lazy-gh-copilot] Lazy GitHub Copilot wrapper initialized"
+    zsh_debug_echo "# [lazy-gh-copilot] Lazy GitHub Copilot wrapper initialized"
   }
   _lazy_gh_copilot_bootstrap
 else
-  [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [lazy-gh-copilot] gh CLI not found, skipping"
+  zsh_debug_echo "# [lazy-gh-copilot] gh CLI not found, skipping"
 fi

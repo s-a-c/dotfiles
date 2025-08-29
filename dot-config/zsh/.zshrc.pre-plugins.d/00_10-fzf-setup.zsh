@@ -1,7 +1,7 @@
 # Early FZF setup to prevent widget conflicts
 # This loads FZF before other plugins to ensure widgets are properly registered
 
-[[ "$ZSH_DEBUG" == "1" ]] &&     zsh_debug_echo "# ++++++ $0 ++++++++++++++++++++++++++++++++++++"
+zsh_debug_echo "# ++++++ $0 ++++++++++++++++++++++++++++++++++++"
 
 # Detect FZF installation path
 if command -v fzf >/dev/null 2>&1; then
@@ -40,10 +40,10 @@ if command -v fzf >/dev/null 2>&1; then
         # Also try the local fzf.zsh if it exists
         [[ -f ~/.local/share/fzf/fzf.zsh ]] && source ~/.local/share/fzf/fzf.zsh
 
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# FZF integration loaded from $FZF_INSTALL_PATH, config path: $FZF_PATH"
+        zsh_debug_echo "# FZF integration loaded from $FZF_INSTALL_PATH, config path: $FZF_PATH"
     else
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# FZF installation path not found"
+        zsh_debug_echo "# FZF installation path not found"
     fi
 else
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# FZF command not found in PATH"
+    zsh_debug_echo "# FZF command not found in PATH"
 fi

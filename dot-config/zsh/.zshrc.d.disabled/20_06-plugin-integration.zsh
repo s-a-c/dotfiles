@@ -13,7 +13,7 @@
 
 ## [plugins.zsh-abbr.configuration] - Configure zsh-abbr after plugin loads
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.zsh-abbr.configuration]"
+    zsh_debug_echo "# [plugins.zsh-abbr.configuration]"
 
     # Performance and behavior settings (now applied after plugin loads)
     export ABBR_DEBUG=0                       # Disable debug output (set to 1 for debugging)
@@ -35,22 +35,22 @@
     unset NO_COLOR
     # Verify abbr plugin is loaded and functional
     if command -v abbr > /dev/null 2>&1; then
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.zsh-abbr] Plugin loaded and configured successfully"
+        zsh_debug_echo "# [plugins.zsh-abbr] Plugin loaded and configured successfully"
     elif [[ -f "${ZDOTDIR:-$HOME}/.zgenom/olets/zsh-abbr/v6/zsh-abbr.zsh" ]]; then
         # Plugin files exist but may not be loaded yet - try loading manually
         local abbr_dir="${ZDOTDIR:-$HOME}/.zgenom/olets/zsh-abbr/v6"
         [[ -d "$abbr_dir/completions" ]] && fpath+="$abbr_dir/completions"
         source "$abbr_dir/zsh-abbr.zsh" 2>/dev/null
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.zsh-abbr] Manually loaded plugin"
+        zsh_debug_echo "# [plugins.zsh-abbr] Manually loaded plugin"
     else
         # Only show warning in debug mode since plugin may be loaded later
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "⚠️  zsh-abbr plugin not found during initialization - may be loaded later"
+        zsh_debug_echo "⚠️  zsh-abbr plugin not found during initialization - may be loaded later"
     fi
 }
 
 ## [plugins.zsh-alias-tips.configuration] - Configure alias tips after plugin loads
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.zsh-alias-tips.configuration]"
+    zsh_debug_echo "# [plugins.zsh-alias-tips.configuration]"
 
     export ZSH_PLUGINS_ALIAS_TIPS_REVEAL=1
     #export ZSH_PLUGINS_ALIAS_TIPS_REVEAL_EXCLUDES=(_ ll vi)
@@ -58,25 +58,25 @@
 
     # Verify alias-tips functionality
     if [[ -n "${preexec_functions[(r)_alias_tips_preexec]}" ]]; then
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.zsh-alias-tips] Plugin configured successfully"
+        zsh_debug_echo "# [plugins.zsh-alias-tips] Plugin configured successfully"
     fi
 }
 
 ## [plugins.zsh-async.configuration] - Configure async functionality after plugin loads
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.zsh-async.configuration]"
+    zsh_debug_echo "# [plugins.zsh-async.configuration]"
 
     export ASYNC_PROMPT="async> "
 
     # Verify async plugin functionality
     if command -v async_init >/dev/null 2>&1; then
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.zsh-async] Plugin configured successfully"
+        zsh_debug_echo "# [plugins.zsh-async] Plugin configured successfully"
     fi
 }
 
 ## [plugins.zsh-autosuggestions.configuration] - Configure autosuggestions after plugin loads
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.zsh-autosuggestions.configuration]"
+    zsh_debug_echo "# [plugins.zsh-autosuggestions.configuration]"
 
     # Strategy configuration (now properly applied after plugin loads)
     typeset -ga ZSH_AUTOSUGGEST_STRATEGY
@@ -97,7 +97,7 @@
         local bindkey_output
         bindkey_output="$(bindkey 2>/dev/null || true)"
         if [[ "$bindkey_output" != *"autosuggest-accept"* ]]; then
-            [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.zsh-autosuggestions] Setting up key bindings"
+            zsh_debug_echo "# [plugins.zsh-autosuggestions] Setting up key bindings"
 
             # Manual key bindings for autosuggestions
             bindkey '^[[C' autosuggest-accept      # Right arrow
@@ -110,9 +110,9 @@
             bindkey '^[[A' history-substring-search-up    # Up arrow for history search
             bindkey '^[[B' history-substring-search-down  # Down arrow for history search
         fi
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.zsh-autosuggestions] Plugin configured successfully"
+        zsh_debug_echo "# [plugins.zsh-autosuggestions] Plugin configured successfully"
     else
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.zsh-autosuggestions] Widget not found, attempting manual initialization"
+        zsh_debug_echo "# [plugins.zsh-autosuggestions] Widget not found, attempting manual initialization"
         # Try to manually start autosuggestions if functions are available
         if type _zsh_autosuggest_start >/dev/null 2>&1; then
             _zsh_autosuggest_start 2>/dev/null
@@ -124,7 +124,7 @@
 
 ## [plugins.fast-syntax-highlighting.configuration] - Configure syntax highlighting after plugin loads
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.fast-syntax-highlighting.configuration]"
+    zsh_debug_echo "# [plugins.fast-syntax-highlighting.configuration]"
 
     # Theme and appearance settings
     export FAST_HIGHLIGHT_STYLES[default]="none"
@@ -158,13 +158,13 @@
 
     # Verify syntax highlighting plugin
     if [[ -n "${_FAST_HIGHLIGHT_VERSION}" ]]; then
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.fast-syntax-highlighting] Plugin configured successfully"
+        zsh_debug_echo "# [plugins.fast-syntax-highlighting] Plugin configured successfully"
     fi
 }
 
 ## [plugins.fzf-tab.configuration] - Configure fzf-tab after plugin loads
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.fzf-tab.configuration]"
+    zsh_debug_echo "# [plugins.fzf-tab.configuration]"
 
     # Disable sort when completing `git checkout`
     zstyle ':fzf-tab:complete:git-checkout:*' sort false
@@ -183,13 +183,13 @@
 
     # Verify fzf-tab plugin
     if [[ -n "${fzf_tab_completion_colors}" ]]; then
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.fzf-tab] Plugin configured successfully"
+        zsh_debug_echo "# [plugins.fzf-tab] Plugin configured successfully"
     fi
 }
 
 ## [plugins.oh-my-zsh.configuration] - Configure Oh-My-Zsh plugins after they load
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.oh-my-zsh.configuration]"
+    zsh_debug_echo "# [plugins.oh-my-zsh.configuration]"
 
     # Git plugin configuration
     export GIT_AUTO_FETCH_INTERVAL=1200  # Auto-fetch every 20 minutes
@@ -203,27 +203,27 @@
     if [[ -n "${NVM_DIR:-}" ]] || [[ -f "$HOME/.nvm/nvm.sh" ]] || [[ -f "/usr/local/opt/nvm/nvm.sh" ]] || [[ -f "/opt/homebrew/opt/nvm/nvm.sh" ]]; then
         # NVM is active - ensure NPM_CONFIG_PREFIX remains unset for compatibility
         if [[ -n "$NPM_CONFIG_PREFIX" ]]; then
-            [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.oh-my-zsh] Unsetting NPM_CONFIG_PREFIX (was: $NPM_CONFIG_PREFIX) for NVM compatibility"
+            zsh_debug_echo "# [plugins.oh-my-zsh] Unsetting NPM_CONFIG_PREFIX (was: $NPM_CONFIG_PREFIX) for NVM compatibility"
             unset NPM_CONFIG_PREFIX
         fi
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.oh-my-zsh] NPM_CONFIG_PREFIX kept unset for NVM compatibility"
+        zsh_debug_echo "# [plugins.oh-my-zsh] NPM_CONFIG_PREFIX kept unset for NVM compatibility"
     else
         # No NVM detected - safe to have NPM_CONFIG_PREFIX set
         if [[ -z "$NPM_CONFIG_PREFIX" ]]; then
             export NPM_CONFIG_PREFIX="$HOME/.local/share/npm"
-            [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.oh-my-zsh] NPM_CONFIG_PREFIX set to $NPM_CONFIG_PREFIX (no NVM)"
+            zsh_debug_echo "# [plugins.oh-my-zsh] NPM_CONFIG_PREFIX set to $NPM_CONFIG_PREFIX (no NVM)"
         fi
     fi
 
     # Verify Oh-My-Zsh functionality
     if [[ -n "$ZSH" ]]; then
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.oh-my-zsh] Plugins configured successfully"
+        zsh_debug_echo "# [plugins.oh-my-zsh] Plugins configured successfully"
     fi
 }
 
 ## [plugins.globalias.configuration] - Configure globalias after plugin loads
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.globalias.configuration]"
+    zsh_debug_echo "# [plugins.globalias.configuration]"
 
     # Configure globalias filter values (now properly set after plugin loads)
     typeset -ga GLOBALIAS_FILTER_VALUES
@@ -231,12 +231,12 @@
 
     # Verify globalias plugin
     if [[ -n "${widgets[globalias]}" ]]; then
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.globalias] Plugin configured successfully"
+        zsh_debug_echo "# [plugins.globalias] Plugin configured successfully"
     fi
 }
 ## [plugin-health-check] - Verify all critical plugins are loaded and configured
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugin-health-check] Verifying plugin configuration"
+    zsh_debug_echo "# [plugin-health-check] Verifying plugin configuration"
 
     local failed_plugins=()
     local configured_plugins=()
@@ -270,11 +270,11 @@
     fi
 
     if [[ ${#configured_plugins[@]} -gt 0 ]]; then
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugin-integration] Successfully configured plugins: ${configured_plugins[*]}"
+        zsh_debug_echo "# [plugin-integration] Successfully configured plugins: ${configured_plugins[*]}"
     fi
 
     if [[ ${#partially_loaded_plugins[@]} -gt 0 ]]; then
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugin-integration] Partially loaded plugins: ${partially_loaded_plugins[*]}"
+        zsh_debug_echo "# [plugin-integration] Partially loaded plugins: ${partially_loaded_plugins[*]}"
     fi
 
     # Only show warnings for actually failed plugins
@@ -284,4 +284,4 @@
     fi
 }
 
-[[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugin-integration] Plugin integration and configuration complete"
+zsh_debug_echo "# [plugin-integration] Plugin integration and configuration complete"

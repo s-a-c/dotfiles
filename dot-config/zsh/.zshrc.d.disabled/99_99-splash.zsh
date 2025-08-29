@@ -57,7 +57,7 @@ shell_health_check() {
     local issues=0
 
     # Debug: Show PATH before checks
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "[health_check]  PATH: $PATH"
+    zsh_debug_echo "[health_check]  PATH: $PATH"
 
     # Check essential commands
     local essential_commands=(sed tr uname dirname basename cat cc make ld)
@@ -65,9 +65,9 @@ shell_health_check() {
         if ! command -v "$cmd" >/dev/null 2>&1; then
             # Fallback: check if binary exists in /usr/bin or /bin
             if [[ -x "/usr/bin/$cmd" || -x "/bin/$cmd" ]]; then
-                [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "⚠️ [health_check]  $cmd not found in PATH, but exists in /usr/bin or /bin"
+                zsh_debug_echo "⚠️ [health_check]  $cmd not found in PATH, but exists in /usr/bin or /bin"
             else
-                [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "⚠️ [health_check]  Missing essential command: $cmd"
+                zsh_debug_echo "⚠️ [health_check]  Missing essential command: $cmd"
                 ((issues++))
             fi
         fi
@@ -75,13 +75,13 @@ shell_health_check() {
 
     # Check completion system
     if ! (( ${+functions[compinit]} )); then
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "⚠️ [health_check]  Completion system not loaded"
+        zsh_debug_echo "⚠️ [health_check]  Completion system not loaded"
         ((issues++))
     fi
 
     # Check plugin system
     if ! command -v zgenom >/dev/null 2>&1; then
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "⚠️ [health_check]  Plugin system (zgenom) not available"
+        zsh_debug_echo "⚠️ [health_check]  Plugin system (zgenom) not available"
         ((issues++))
     fi
 
@@ -143,4 +143,4 @@ splash_main() {
 # Run the startup finalization
 splash_main
 
-[[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [90_] Startup message complete"
+zsh_debug_echo "# [90_] Startup message complete"
