@@ -57,4 +57,4 @@ fi
 # Clean up PATH by removing any invalid directories
 path_validate
 
-[[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [10-tools] Tool paths configured"
+zsh_debug_echo "# [10-tools] Tool paths configured"

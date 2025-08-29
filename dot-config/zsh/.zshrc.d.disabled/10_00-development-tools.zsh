@@ -10,7 +10,7 @@
 
 ## [tools.bun] - JavaScript runtime and package manager
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tools.bun]"
+    zsh_debug_echo "# [tools.bun]"
 
     export BUN_INSTALL="${BUN_INSTALL:-${XDG_DATA_HOME:-$HOME/.local/share}/bun}"
     _path_prepend "${BUN_INSTALL}/bin"
@@ -18,7 +18,7 @@
 
 ## [tools.deno] - JavaScript/TypeScript runtime
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tools.deno]"
+    zsh_debug_echo "# [tools.deno]"
 
     export DENO_INSTALL="${XDG_DATA_HOME:-${HOME}/.local/share}/deno"
     mkdir -p "${DENO_INSTALL}/bin" 2>/dev/null
@@ -27,7 +27,7 @@
 
 ## [tools.dotnet] - .NET development platform
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tools.dotnet]"
+    zsh_debug_echo "# [tools.dotnet]"
 
     export DOTNET_CLI_FORCE_UTF8_ENCODING="true"
     export DOTNET_CLI_HOME="${DOTNET_CLI_HOME:-${XDG_DATA_HOME:-$HOME/.local/share}/dotnet}"
@@ -40,7 +40,7 @@
 
 ## [tools.golang] - Go programming language
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tools.golang]"
+    zsh_debug_echo "# [tools.golang]"
 
     export GOPATH="${XDG_DATA_HOME:-${HOME}/.local/share}/go"
     export GOROOT="${HOMEBREW_PREFIX}/opt/go/libexec"
@@ -49,7 +49,7 @@
 
 ## [tools.rust] - Rust programming language
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tools.rust]"
+    zsh_debug_echo "# [tools.rust]"
 
     export RUSTUP_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/rustup"
     export CARGO_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/cargo"
@@ -60,7 +60,7 @@
 
 ## [tools.gem] - Ruby gem system
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tools.gem]"
+    zsh_debug_echo "# [tools.gem]"
 
     export GEM_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/gem/ruby/3.3.0"
     export GEM_PATH="${GEM_HOME}/bin"
@@ -69,7 +69,7 @@
 
 ## [tools.pnpm] - Node.js package manager
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tools.pnpm]"
+    zsh_debug_echo "# [tools.pnpm]"
 
     export PNPM_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/pnpm"
     _path_prepend "$PNPM_HOME"
@@ -80,7 +80,7 @@
 # See: ~/.zshrc.pre-plugins.d/20_23-nvm-config.zsh
 # And: zgenom ohmyzsh plugins/nvm in ~/.zshrc.add-plugins.d/010-add-plugins.zsh
 # {
-#     [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tools.nvm]"
+#     zsh_debug_echo "# [tools.nvm]"
 #
 #     export NVM_AUTO_USE=true
 #     export NVM_LAZY_LOAD=true
@@ -108,7 +108,7 @@
 
 ## [tools.fzf] - Fuzzy finder
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tools.fzf]"
+    zsh_debug_echo "# [tools.fzf]"
 
     export FZF_BASE="${HOMEBREW_PREFIX}/opt/fzf"
     export FZF_COMPLETION_TRIGGER='**'
@@ -136,7 +136,7 @@
 
 ## [tools.docker] - Container platform
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tools.docker]"
+    zsh_debug_echo "# [tools.docker]"
 
     export DOCKER_CONFIG="${XDG_CONFIG_HOME:-${HOME}/.config}/docker"
 }
@@ -147,12 +147,12 @@
 # 1. git commit/log/show/config commands are used
 # 2. Cache is refreshed hourly or manually with git-refresh-config
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tools.git] Lazy loading with caching enabled (see 05-lazy-git-config.zsh)"
+    zsh_debug_echo "# [tools.git] Lazy loading with caching enabled (see 05-lazy-git-config.zsh)"
 }
 
 ## [tools.gpg] - Encryption/signing
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tools.gpg]"
+    zsh_debug_echo "# [tools.gpg]"
 
     export GPG_AGENT_INFO_FILE="${XDG_RUNTIME_DIR:-/tmp}/gpg-agent-info"
 
@@ -163,7 +163,7 @@
 
 ## [tools.emacs] - Text editor
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tools.emacs]"
+    zsh_debug_echo "# [tools.emacs]"
 
     export EMACS_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}/emacs"
     export EMACS_SERVER_NAME="emacs-server"
@@ -172,13 +172,13 @@
 
 ## [tools.screen] - Terminal multiplexer
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tools.screen]"
+    zsh_debug_echo "# [tools.screen]"
     export SCREENRC="${XDG_CONFIG_HOME:-${HOME}/.config}/screen/screenrc"
 }
 
 ## [tools.desk] - Workspace management
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tools.desk]"
+    zsh_debug_echo "# [tools.desk]"
 
     export DESK_TEMPLATES_DIR="${XDG_CONFIG_HOME:-${HOME}/.config}/desk"
     export DESK_DESKDIR="${XDG_DATA_HOME:-${HOME}/.local/share}/desk"
@@ -187,19 +187,19 @@
 
 ## [tools.console-ninja] - Browser debugging
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tools.console-ninja]"
+    zsh_debug_echo "# [tools.console-ninja]"
     _path_prepend "${HOME}/.console-ninja/.bin"
 }
 
 ## [tools.lmstudio] - Local language models
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tools.lmstudio]"
+    zsh_debug_echo "# [tools.lmstudio]"
     _path_append "${HOME}/.lmstudio/bin"
 }
 
 ## [tools.herd] - PHP development environment
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tools.herd]"
+    zsh_debug_echo "# [tools.herd]"
 
     export HERD_APP="/Applications/Herd.app"
     export HERD_TOOLS_HOME="${HOME}/Library/Application Support/Herd"
@@ -217,25 +217,25 @@
 
 ## [tools.composer] - PHP package manager
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tools.composer]"
+    zsh_debug_echo "# [tools.composer]"
     _path_prepend "${XDG_CONFIG_HOME:-${HOME}/.config}/composer/vendor/bin"
 }
 
 ## [tools.pip] - Python package manager
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tools.pip]"
+    zsh_debug_echo "# [tools.pip]"
     export PIPENV_VENV_IN_PROJECT=1
 }
 
 ## [tools.perl] - Perl programming language
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tools.perl]"
+    zsh_debug_echo "# [tools.perl]"
     export PERLBREW_ROOT="${XDG_DATA_HOME:-${HOME}/.local/share}/perl5/perlbrew"
 }
 
 ## [tools.gh] - GitHub CLI
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tools.gh]"
+    zsh_debug_echo "# [tools.gh]"
     export GH_CONFIG_DIR="${XDG_CONFIG_HOME:-${HOME}/.config}/gh"
 }
 
@@ -246,7 +246,7 @@
 # 2. .envrc file is detected in current directory
 # 3. chpwd hook detects .envrc in new directory
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tools.direnv] Lazy loading enabled (see 04-lazy-direnv.zsh)"
+    zsh_debug_echo "# [tools.direnv] Lazy loading enabled (see 04-lazy-direnv.zsh)"
 }
 
-[[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tool-configs] ✅ Development tool configurations applied"
+zsh_debug_echo "# [tool-configs] ✅ Development tool configurations applied"

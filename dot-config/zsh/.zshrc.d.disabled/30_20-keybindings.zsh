@@ -181,4 +181,4 @@ bindkey '^[s' insert-sudo               # Alt-S: insert sudo
 bindkey -s '^[.' '...\n'                # Alt-.: cd ../../..
 bindkey -s '^[h' 'cd ~\n'               # Alt-H: cd home
 
-[[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [30-ui] Keybindings configured"
+zsh_debug_echo "# [30-ui] Keybindings configured"

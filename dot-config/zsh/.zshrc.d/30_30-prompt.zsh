@@ -10,7 +10,7 @@
 
 ## [ui.bullet-train] - Bullet Train theme configuration
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [ui.bullet-train]"
+    zsh_debug_echo "# [ui.bullet-train]"
 
     export BULLETTRAIN_PROMPT_CHAR="$"
     export BULLETTRAIN_PROMPT_ORDER=(
@@ -36,7 +36,7 @@
 
 ## [ui.powerlevel10k] - Powerlevel10k theme configuration
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [ui.powerlevel10k]"
+    zsh_debug_echo "# [ui.powerlevel10k]"
 
     export POWERLEVEL9K_MODE='nerdfont-complete'
     export POWERLEVEL9K_DISABLE_HOT_RELOAD=false
@@ -44,7 +44,7 @@
 
 ## [ui.starship] - Starship prompt configuration
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [ui.starship]"
+    zsh_debug_echo "# [ui.starship]"
 
     export STARSHIP_CONFIG="${XDG_CONFIG_HOME:-${HOME}/.config}/starship.toml"
     export STARSHIP_CACHE="${XDG_CACHE_HOME:-${HOME}/.cache}/starship"
@@ -53,7 +53,7 @@
 
 ## [ui.colorize] - Syntax highlighting for various tools
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [ui.colorize]"
+    zsh_debug_echo "# [ui.colorize]"
 
     export ZSH_COLORIZE_CHROMA_FORMATTER="terminal256"
     export ZSH_COLORIZE_STYLE="perldoc"
@@ -62,7 +62,7 @@
 
 ## [ui.vi-mode] - Vi mode cursor configuration
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [ui.vi-mode]"
+    zsh_debug_echo "# [ui.vi-mode]"
 
     export VI_MODE_SET_CURSOR=true
     export VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true
@@ -74,7 +74,7 @@
 
 ## [ui.carapace] - Carapace completion styling
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [ui.carapace]"
+    zsh_debug_echo "# [ui.carapace]"
 
     export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense'
     zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
@@ -82,7 +82,7 @@
 
 ## [ui.thefuck] - The Fuck command correction
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [ui.thefuck]"
+    zsh_debug_echo "# [ui.thefuck]"
 
     export THEFUCK_REQUIRE_CONFIRMATION=false
     export THEFUCK_WAIT_COMMAND=10
@@ -92,7 +92,7 @@
 
 ## [ui.completion-styles] - Enhanced completion styling
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [ui.completion-styles]"
+    zsh_debug_echo "# [ui.completion-styles]"
 
     # Docker completion styling
     zstyle ':completion:*:*:docker:*' option-stacking yes
@@ -110,7 +110,7 @@
 
 ## [ui.nvm-omz] - OMZ NVM plugin styling
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [ui.nvm-omz]"
+    zsh_debug_echo "# [ui.nvm-omz]"
 
     zstyle ':omz:plugins:nvm' lazy yes
     zstyle ':omz:plugins:nvm' lazy-cmd eslint prettier typescript
@@ -121,7 +121,7 @@
 if command_exists starship; then
     # Use Starship for modern, fast prompt
     eval "$(starship init zsh)"
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [prompt] Starship prompt initialized"
+    zsh_debug_echo "# [prompt] Starship prompt initialized"
     return 0
 fi
 
@@ -149,7 +149,7 @@ setup_builtin_prompt() {
     # Right prompt with time (optional)
     RPROMPT='%F{gray}%*%f'
 
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [prompt] Built-in prompt configured"
+    zsh_debug_echo "# [prompt] Built-in prompt configured"
 }
 
 # Check for P10k (Powerlevel10k) if available
@@ -163,11 +163,11 @@ elif [[ -f "$ZDOTDIR/.p10k.zsh" ]]; then
     # Load P10k if available
     if zgenom_available; then
         zgenom load romkatv/powerlevel10k powerlevel10k
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [prompt] Powerlevel10k prompt loaded"
+        zsh_debug_echo "# [prompt] Powerlevel10k prompt loaded"
     fi
 else
     # Use built-in prompt
     setup_builtin_prompt
 fi
 
-[[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [prompt-ui] ✅ Prompt and UI configurations applied"
+zsh_debug_echo "# [prompt-ui] ✅ Prompt and UI configurations applied"

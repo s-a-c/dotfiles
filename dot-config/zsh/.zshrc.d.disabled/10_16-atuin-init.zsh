@@ -11,7 +11,7 @@
 
 # Only proceed if atuin is available
 if ! command -v atuin >/dev/null 2>&1; then
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [atuin-init] atuin not found, skipping initialization"
+    zsh_debug_echo "# [atuin-init] atuin not found, skipping initialization"
     return 0
 fi
 
@@ -124,4 +124,4 @@ bindkey -M vicmd '^[OA' atuin-up-search-vicmd
 bindkey -M viins '^[OA' atuin-up-search-viins
 bindkey -M vicmd 'k' atuin-up-search-vicmd
 
-[[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [atuin-init] Atuin initialization complete"
+zsh_debug_echo "# [atuin-init] Atuin initialization complete"

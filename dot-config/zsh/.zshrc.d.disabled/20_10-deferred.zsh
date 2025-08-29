@@ -16,7 +16,7 @@ fi
 
 # Only proceed if zgenom is available
 if ! command -v zgenom >/dev/null 2>&1; then
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [deferred-plugins] Zgenom not available, skipping lazy loading setup"
+    zsh_debug_echo "# [deferred-plugins] Zgenom not available, skipping lazy loading setup"
     return 0
 fi
 
@@ -60,7 +60,7 @@ setup_lazy_plugins() {
     _LAZY_COMMAND_MAP[multi-ping]="sysadmin-util"
     _LAZY_COMMAND_MAP[timeout3]="sysadmin-util"
 
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [deferred-plugins] Lazy plugin registry configured"
+    zsh_debug_echo "# [deferred-plugins] Lazy plugin registry configured"
 }
 
 # Create lazy loading function for a plugin
@@ -129,7 +129,7 @@ create_command_placeholders() {
             "
         } 2>/dev/null
 
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [deferred-plugins] Created lazy placeholder: $cmd"
+        zsh_debug_echo "# [deferred-plugins] Created lazy placeholder: $cmd"
     done
 }
 
@@ -146,7 +146,7 @@ init_lazy_loading() {
     # Create command placeholders
     create_command_placeholders
 
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [deferred-plugins] Lazy loading system initialized"
+    zsh_debug_echo "# [deferred-plugins] Lazy loading system initialized"
 }
 
 # Manual plugin loading function
@@ -164,7 +164,7 @@ load_lazy_plugin() {
 
 # Load all lazy plugins (for debugging/manual loading)
 load_all_lazy_plugins() {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [deferred-plugins] Loading all lazy plugins..."
+    zsh_debug_echo "# [deferred-plugins] Loading all lazy plugins..."
 
     for plugin_key in "${(@k)_LAZY_PLUGIN_REGISTRY}"; do
         [[ -z "${_LAZY_PLUGIN_LOADED[$plugin_key]}" ]] && "lazy_load_${plugin_key//-/_}"
@@ -179,4 +179,4 @@ load_all_lazy_plugins() {
 # Initialize the system
 init_lazy_loading
 
-[[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [20-plugins] Deferred plugin loading configured"
+zsh_debug_echo "# [20-plugins] Deferred plugin loading configured"

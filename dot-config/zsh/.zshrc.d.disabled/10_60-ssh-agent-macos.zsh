@@ -19,7 +19,7 @@
 
 ## [tools.ssh-agent-macos] - macOS SSH agent setup
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tools.ssh-agent-macos]"
+    zsh_debug_echo "# [tools.ssh-agent-macos]"
 
     # Function to start ssh-agent properly on macOS
     function start-ssh-agent-macos() {
@@ -70,9 +70,9 @@
 
     # Check if ssh-agent is running and accessible
     if [[ -n "$SSH_AUTH_SOCK" ]] && /usr/bin/ssh-add -l &>/dev/null; then
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tools.ssh-agent-macos] Using existing agent"
+        zsh_debug_echo "# [tools.ssh-agent-macos] Using existing agent"
     else
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [tools.ssh-agent-macos] Starting new agent"
+        zsh_debug_echo "# [tools.ssh-agent-macos] Starting new agent"
 
         # Try to source existing environment file first
         if [[ -f "$ssh_env_file" ]]; then
@@ -89,4 +89,4 @@
     fi
 }
 
-[[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [ssh-agent] ✅ macOS SSH agent setup complete"
+zsh_debug_echo "# [ssh-agent] ✅ macOS SSH agent setup complete"

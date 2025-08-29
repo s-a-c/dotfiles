@@ -7,7 +7,7 @@
 # Load Order: Early (00_02) to run before plugin initialization
 # ==============================================================================
 
-[[ "$ZSH_DEBUG" == "1" ]] &&     zsh_debug_echo "# ++++++ $0 ++++++++++++++++++++++++++++++++++++"
+zsh_debug_echo "# ++++++ $0 ++++++++++++++++++++++++++++++++++++"
 #!/usr/bin/env zsh
 # Homebrew Configuration
 # This file configures Homebrew for optimal performance
@@ -26,7 +26,7 @@ elif [[ -x "/usr/local/bin/brew" ]]; then
     HOMEBREW_PREFIX="/usr/local"
 else
     # Homebrew not found
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [homebrew] Homebrew not found"
+    zsh_debug_echo "# [homebrew] Homebrew not found"
     return 0
 fi
 
@@ -81,7 +81,7 @@ if [[ -x "$HOMEBREW_PREFIX/bin/git" ]]; then
     if command -v git >/dev/null 2>&1; then
         local git_version=$(git --version 2>/dev/null)
         if [[ "$git_version" == *"2.51.0"* ]]; then
-            [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "✅ Homebrew git (2.51.0) now active"
+            zsh_debug_echo "✅ Homebrew git (2.51.0) now active"
         else
             zsh_debug_echo "⚠️  Warning: git version is $git_version, expected Homebrew 2.51.0"
         fi
@@ -90,4 +90,4 @@ else
     zsh_debug_echo "⚠️  Homebrew git not found at $HOMEBREW_PREFIX/bin/git"
 fi
 
-[[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [00_02] Git priority configuration complete"
+zsh_debug_echo "# [00_02] Git priority configuration complete"

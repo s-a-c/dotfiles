@@ -41,4 +41,4 @@ export COMPLETION_WAITING_DOTS="true"
 # npm plugin conflicts with NVM by setting NPM_CONFIG_PREFIX
 unset NPM_CONFIG_PREFIX
 
-[[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [environment] ✅ Interactive environment configuration loaded"
+zsh_debug_echo "# [environment] ✅ Interactive environment configuration loaded"

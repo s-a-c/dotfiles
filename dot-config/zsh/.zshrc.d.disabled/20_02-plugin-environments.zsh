@@ -10,7 +10,7 @@
 
 ## [plugins.zsh-abbr] - Abbreviation expansion system
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.zsh-abbr]"
+    zsh_debug_echo "# [plugins.zsh-abbr]"
 
     export ABBR_AUTOLOAD=1                    # Auto-load abbreviations on startup
     export ABBR_DEFAULT_BINDINGS=1            # Enable default key bindings
@@ -35,7 +35,7 @@
 
 ## [plugins.zsh-alias-tips] - Alias suggestion system
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.zsh-alias-tips]"
+    zsh_debug_echo "# [plugins.zsh-alias-tips]"
 
     export ZSH_PLUGINS_ALIAS_TIPS_REVEAL=1
     export ZSH_PLUGINS_ALIAS_TIPS_REVEAL_TEXT="Alias tip: "
@@ -44,7 +44,7 @@
 
 ## [plugins.zsh-async] - Asynchronous command execution
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.zsh-async]"
+    zsh_debug_echo "# [plugins.zsh-async]"
 
     export ASYNC_PROMPT="async> "
     export ASYNC_SHOW_ON_COMMAND=1
@@ -55,7 +55,7 @@
 
 ## [plugins.zsh-autopair] - Automatic bracket/quote pairing
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.zsh-autopair]"
+    zsh_debug_echo "# [plugins.zsh-autopair]"
 
     typeset -gA AUTOPAIR_PAIRS
     AUTOPAIR_PAIRS+=("<" ">")
@@ -63,7 +63,7 @@
 
 ## [plugins.zsh-autosuggestions] - Command autosuggestions
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.zsh-autosuggestions]"
+    zsh_debug_echo "# [plugins.zsh-autosuggestions]"
 
     export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8"
     export ZSH_AUTOSUGGEST_USE_ASYNC=1
@@ -72,7 +72,7 @@
 
 ## [plugins.zsh-defer] - Deferred command execution
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.zsh-defer]"
+    zsh_debug_echo "# [plugins.zsh-defer]"
 
     export ZSH_DEFER_PROMPT="defer> "
     export ZSH_DEFER_SHOW_ON_COMMAND=1
@@ -83,7 +83,7 @@
 
 ## [plugins.zsh-navigation-tools] - Enhanced navigation
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.zsh-navigation-tools]"
+    zsh_debug_echo "# [plugins.zsh-navigation-tools]"
 
     export ZNT_HISTORY_ACTIVE_TEXT="reverse"
     export ZNT_HISTORY_NLIST_COLORING_PATTERN="*"
@@ -96,7 +96,7 @@
 
 ## [plugins.fast-syntax-highlighting] - Syntax highlighting
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.fast-syntax-highlighting]"
+    zsh_debug_echo "# [plugins.fast-syntax-highlighting]"
 
     typeset -gxA FAST_HIGHLIGHT_STYLES
     FAST_HIGHLIGHT_STYLES[command]='fg=green,bold'
@@ -117,7 +117,7 @@
 
 ## [plugins.forgit] - Interactive git with fzf
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.forgit]"
+    zsh_debug_echo "# [plugins.forgit]"
 
     export FORGIT_NO_ALIASES="1"
     export FORGIT_LOG_GRAPH_ENABLE="true"
@@ -126,7 +126,7 @@
 
 ## [plugins.globalias] - Global alias expansion
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.globalias]"
+    zsh_debug_echo "# [plugins.globalias]"
 
     GLOBALIAS_FILTER_VALUES=(
         ls
@@ -139,7 +139,7 @@
 
 ## [plugins.you-should-use] - Alias usage reminder
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.you-should-use]"
+    zsh_debug_echo "# [plugins.you-should-use]"
 
     export YSU_HARDCORE=1
     export YSU_MESSAGE_POSITION="after"
@@ -154,14 +154,14 @@
 
 ## [plugins.evalcache] - Command evaluation caching
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.evalcache]"
+    zsh_debug_echo "# [plugins.evalcache]"
 
     export ZSH_EVALCACHE_DIR="${XDG_CACHE_HOME:-${HOME}/.cache}/zsh-evalcache"
 }
 
 ## [plugins.enhancd] - Enhanced cd command
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.enhancd]"
+    zsh_debug_echo "# [plugins.enhancd]"
 
     export ENHANCD_COMMAND='cd'
     export ENHANCD_DOT_ARG='..'
@@ -174,11 +174,11 @@
 
 ## [plugins.zoxide] - Smart directory jumping
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugins.zoxide]"
+    zsh_debug_echo "# [plugins.zoxide]"
 
     export _ZO_DATA_DIR="${XDG_DATA_HOME:-${HOME}/.local/share}/zoxide"
     export _ZO_zsh_debug_echo=1
     export _ZO_RESOLVE_SYMLINKS=1
 }
 
-[[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [plugin-environments] ✅ Plugin environments configured"
+zsh_debug_echo "# [plugin-environments] ✅ Plugin environments configured"

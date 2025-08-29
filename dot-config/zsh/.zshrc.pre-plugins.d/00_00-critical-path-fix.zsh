@@ -9,13 +9,13 @@ fi
 
 # Deduplicate PATH immediately if it's corrupted
 if [[ ${#PATH} -gt 5000 ]]; then
-    echo "⚠️  Detected corrupted PATH (${#PATH} chars), fixing..."
+    zsh_debug_echo "⚠️  Detected corrupted PATH (${#PATH} chars), fixing..."
     # Split PATH and remove duplicates
     local -a path_array
     IFS=':' read -rA path_array <<< "$PATH"
     typeset -U path_array
     export PATH="${(j.:.)path_array}"
-    echo "✅ PATH fixed (now ${#PATH} chars)"
+    zsh_debug_echo "✅ PATH fixed (now ${#PATH} chars)"
 fi
 
 # Set clean, minimal PATH base

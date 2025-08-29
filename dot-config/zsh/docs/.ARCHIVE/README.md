@@ -25,8 +25,8 @@
 ## 📚 Documentation Index
 
 ### 🏗️ Architecture & Design
-- [**System Architecture**](.ARCHIVE/architecture/README.md) - Complete system overview and design patterns
-- [**Loading Sequence**](.ARCHIVE/architecture/loading-sequence.md) - Shell initialization flow and dependencies
+- [**System Architecture**](architecture/README.md) - Complete system overview and design patterns
+- [**Loading Sequence**](architecture/loading-sequence.md) - Shell initialization flow and dependencies
 - [**Directory Structure**](.ARCHIVE/architecture/directory-structure.md) - Modular organization and file naming conventions
 - [**Plugin System**](.ARCHIVE/architecture/plugin-system.md) - Zgenom integration and plugin management
 
@@ -37,10 +37,10 @@
 - [**Security Review**](review/security-review.md) - Security features and vulnerability assessment
 
 ### 🚀 Improvements & Optimizations
-- [**Master Improvement Plan**](improvements/master-plan.md) - Prioritized improvement roadmap
-- [**Phase Implementation**](improvements/phases/) - Structured improvement phases
-- [**Performance Optimization**](improvements/performance.md) - Startup time and efficiency improvements
-- [**Code Consolidation**](improvements/consolidation.md) - Script organization and cleanup
+- [**Master Improvement Plan**](.ARCHIVE/improvements/master-plan.md) - Prioritized improvement roadmap
+- [**Phase Implementation**](.ARCHIVE/improvements/phases/) - Structured improvement phases
+- [**Performance Optimization**](.ARCHIVE/improvements/performance.md) - Startup time and efficiency improvements
+- [**Code Consolidation**](.ARCHIVE/improvements/consolidation.md) - Script organization and cleanup
 
 ### 🧪 Testing & Validation
 - [**Testing Strategy**](testing/README.md) - Comprehensive test coverage design
@@ -50,8 +50,8 @@
 
 ### 🔧 Tools & Utilities
 - [**Bin Directory Analysis**](tools/bin-analysis.md) - Utility scripts and their purposes
-- [**Development Tools**](tools/development.md) - Configuration development utilities
-- [**Maintenance Scripts**](tools/maintenance.md) - System maintenance and cleanup tools
+- [**Development Tools**](.ARCHIVE/tools/development.md) - Configuration development utilities
+- [**Maintenance Scripts**](.ARCHIVE/tools/maintenance.md) - System maintenance and cleanup tools
 
 ## 🎯 Key Findings Summary
 
@@ -88,9 +88,9 @@
 
 ## 🏃 Quick Start
 
-1. **View Current Architecture**: Start with [System Architecture](.ARCHIVE/architecture/README.md)
+1. **View Current Architecture**: Start with [System Architecture](architecture/README.md)
 2. **Check Recent Fixes**: Review [Issue Tracking](review/issue-tracking.md) 
-3. **Plan Future Improvements**: Check [Master Improvement Plan](improvements/master-plan.md)
+3. **Plan Future Improvements**: Check [Master Improvement Plan](.ARCHIVE/improvements/master-plan.md)
 4. **Run Tests**: Follow [Test Execution Guide](testing/execution-guide.md)
 
 ## 🔗 Cross-References
@@ -98,7 +98,7 @@
 - **Configuration Files**: See [Active Configuration Inventory](.ARCHIVE/architecture/file-inventory.md)
 - **Performance Metrics**: Reference [Benchmarks](testing/benchmarks.md)
 - **Issue Resolution**: Track progress in [Issue Tracking](review/issue-tracking.md)
-- **Implementation Guide**: Follow [Phase Implementation](improvements/phases/)
+- **Implementation Guide**: Follow [Phase Implementation](.ARCHIVE/improvements/phases/)
 
 ---
 

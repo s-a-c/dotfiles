@@ -10,7 +10,7 @@
 
 ## [git.diff-so-fancy] - Enhanced Git diff output
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [git.diff-so-fancy]"
+    zsh_debug_echo "# [git.diff-so-fancy]"
 
     # Configure git to use diff-so-fancy for all diff output
     if command -v diff-so-fancy >/dev/null 2>&1; then
@@ -31,15 +31,15 @@
         git config --global color.diff.new "green bold" 2>/dev/null || true
         git config --global color.diff.whitespace "red reverse" 2>/dev/null || true
 
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [git.diff-so-fancy] Configured diff-so-fancy"
+        zsh_debug_echo "# [git.diff-so-fancy] Configured diff-so-fancy"
     else
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [git.diff-so-fancy] diff-so-fancy not found, skipping"
+        zsh_debug_echo "# [git.diff-so-fancy] diff-so-fancy not found, skipping"
     fi
 }
 
 ## [git.aliases] - Useful Git aliases
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [git.aliases]"
+    zsh_debug_echo "# [git.aliases]"
 
     # Only set aliases if git is available
     if command -v git >/dev/null 2>&1; then
@@ -75,13 +75,13 @@
         git config --global alias.sa "stash apply" 2>/dev/null || true
         git config --global alias.ss "stash save" 2>/dev/null || true
 
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [git.aliases] Git aliases configured"
+        zsh_debug_echo "# [git.aliases] Git aliases configured"
     fi
 }
 
 ## [git.configuration] - Core Git configuration
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [git.configuration]"
+    zsh_debug_echo "# [git.configuration]"
 
     if command -v git >/dev/null 2>&1; then
         # Core settings
@@ -105,13 +105,13 @@
             fi
         fi
 
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [git.configuration] Core Git settings applied"
+        zsh_debug_echo "# [git.configuration] Core Git settings applied"
     fi
 }
 
 ## [git.hooks] - Git hook helpers
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [git.hooks]"
+    zsh_debug_echo "# [git.hooks]"
 
     # Function to set up common Git hooks
     setup_git_hooks() {
@@ -169,7 +169,7 @@ EOF
 
 ## [git.worktree] - Git worktree helpers
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [git.worktree]"
+    zsh_debug_echo "# [git.worktree]"
 
     # Quick worktree creation
     git-worktree-create() {
@@ -203,7 +203,7 @@ EOF
 
 ## [git.integration] - Integration with other tools
 {
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [git.integration]"
+    zsh_debug_echo "# [git.integration]"
 
     # GitHub CLI integration
     if command -v gh >/dev/null 2>&1; then
@@ -242,4 +242,4 @@ EOF
     fi
 }
 
-[[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [git-config] ✅ Git and VCS configurations applied"
+zsh_debug_echo "# [git-config] ✅ Git and VCS configurations applied"

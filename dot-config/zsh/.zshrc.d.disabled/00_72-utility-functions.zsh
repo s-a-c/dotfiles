@@ -396,4 +396,4 @@
     }
 }
 
-[[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [utility-functions] ✅ Enhanced utility functions loaded"
+zsh_debug_echo "# [utility-functions] ✅ Enhanced utility functions loaded"
