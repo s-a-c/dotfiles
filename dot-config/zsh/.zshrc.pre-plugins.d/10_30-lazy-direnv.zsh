@@ -110,7 +110,7 @@ if command -v direnv >/dev/null 2>&1; then
     # Hook into directory changes to trigger direnv when needed
     _lazy_direnv_chpwd() {
       if [[ -f ".envrc" && $_DIRENV_HOOKED -eq 0 ]]; then
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# Lazy loading direnv due to .envrc presence"
+        zsh_debug_echo "# Lazy loading direnv due to .envrc presence"
         _init_direnv_hook
       fi
     }
@@ -123,9 +123,9 @@ if command -v direnv >/dev/null 2>&1; then
       zsh_debug_echo "Warning: Could not restore original directory: $original_cwd"
       return 1
     }
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [lazy-direnv] Lazy direnv wrapper initialized"
+    zsh_debug_echo "# [lazy-direnv] Lazy direnv wrapper initialized"
   }
   _lazy_direnv_bootstrap
 else
-  [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [lazy-direnv] direnv not found, skipping"
+  zsh_debug_echo "# [lazy-direnv] direnv not found, skipping"
 fi

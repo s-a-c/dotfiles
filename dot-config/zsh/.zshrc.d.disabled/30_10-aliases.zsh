@@ -416,7 +416,7 @@ fi
 # LAZY LOADED: Now handled by ~/.config/zsh/.zshrc.pre-plugins.d/06-lazy-gh-copilot.zsh
 # GitHub Copilot aliases (ghcs, ghce) are loaded only when first used
 if command_exists gh; then
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [gh-copilot] Lazy loading enabled (see 06-lazy-gh-copilot.zsh)"
+    zsh_debug_echo "# [gh-copilot] Lazy loading enabled (see 06-lazy-gh-copilot.zsh)"
 fi
 
 # Development aliases
@@ -536,4 +536,4 @@ alias c='clear'
 # Performance monitoring
 alias zshbench='for i in $(seq 1 10); do time $SHELL -i -c exit; done'
 
-[[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [30-ui] Aliases configured"
+zsh_debug_echo "# [30-ui] Aliases configured"

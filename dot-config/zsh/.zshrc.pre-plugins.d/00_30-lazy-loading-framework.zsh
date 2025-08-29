@@ -8,10 +8,8 @@
 # Category: 00 (Core) - Essential framework for performance optimization
 #=============================================================================
 
-[[ "$ZSH_DEBUG" == "1" ]] && {
-        zsh_debug_echo "# ++++++ $0 ++++++++++++++++++++++++++++++++++++"
-        zsh_debug_echo "# [performance] Loading lazy loading framework"
-}
+zsh_debug_echo "# ++++++ $0 ++++++++++++++++++++++++++++++++++++"
+zsh_debug_echo "# [performance] Loading lazy loading framework"
 
 # 1. Lazy Loading Configuration
 #=============================================================================
@@ -185,14 +183,14 @@ lazy_function "plugin_security_update_registry" \
 
 # Show lazy loading status
 lazy_loading_status() {
-        zsh_debug_echo "Lazy Loading Framework Status"
-        zsh_debug_echo "============================="
-        zsh_debug_echo "Enabled: $ZSH_LAZY_LOADING_ENABLED"
-        zsh_debug_echo "Timeout: $ZSH_LAZY_LOADING_TIMEOUT seconds"
-        zsh_debug_echo "Log File: $ZSH_LAZY_LOADING_LOG"
-        zsh_debug_echo ""
+    zsh_debug_echo "Lazy Loading Framework Status"
+    zsh_debug_echo "============================="
+    zsh_debug_echo "Enabled: $ZSH_LAZY_LOADING_ENABLED"
+    zsh_debug_echo "Timeout: $ZSH_LAZY_LOADING_TIMEOUT seconds"
+    zsh_debug_echo "Log File: $ZSH_LAZY_LOADING_LOG"
+    zsh_debug_echo ""
 
-        zsh_debug_echo "Lazy Wrappers Active:"
+    zsh_debug_echo "Lazy Wrappers Active:"
 
     # Check which lazy wrappers are still active (not yet triggered)
     local lazy_functions=(
@@ -247,7 +245,7 @@ lazy_loading_force_all() {
         fi
     done
 
-        zsh_debug_echo "✅ Force loading complete"
+    zsh_debug_echo "✅ Force loading complete"
 }
 
 # 5. Initialization
@@ -261,7 +259,6 @@ else
     _lazy_log "INFO" "Lazy loading framework disabled"
 fi
 
-[[ "$ZSH_DEBUG" == "1" ]] && {
-        zsh_debug_echo "# [performance] Lazy loading framework loaded"
-    printf "# ------ %s --------------------------------\n" "$0"
+zsh_debug_echo "# [performance] Lazy loading framework loaded"
+zsh_debug_echo "# ------ $0 --------------------------------"
 }

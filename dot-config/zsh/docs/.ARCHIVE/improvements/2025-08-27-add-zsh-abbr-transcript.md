@@ -24,7 +24,7 @@ Assistant findings (high level)
 
 # CRITICAL FIX: Add loading guard to prevent infinite loops
 if [[ -n "${_ZSH_ADD_PLUGINS_LOADED:-}" ]]; then
-    [[ "$ZSH_DEBUG" == "1" ]] &&     zsh_debug_echo "# [add-plugins] Already loaded, skipping to prevent infinite loop"
+    zsh_debug_echo "# [add-plugins] Already loaded, skipping to prevent infinite loop"
     return 0
 fi
 typeset -g _ZSH_ADD_PLUGINS_LOADED=1

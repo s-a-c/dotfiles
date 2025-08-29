@@ -1,10 +1,10 @@
 #!/usr/bin/env zsh
 # Completion System Integration with Centralized Management
-[[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# Loading completion system integration"
+zsh_debug_echo "# Loading completion system integration"
 
 # Check if centralized completion management is available
 if [[ -n "${ZSH_COMPLETION_MANAGEMENT_LOADED:-}" ]]; then
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# Using centralized completion management system"
+    zsh_debug_echo "# Using centralized completion management system"
 
     # Centralized system handles compinit, just add basic styles
     zstyle ':completion:*' menu select 2>/dev/null
@@ -15,7 +15,7 @@ if [[ -n "${ZSH_COMPLETION_MANAGEMENT_LOADED:-}" ]]; then
         bashcompinit 2>/dev/null
     fi
 else
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# Fallback: Using simple completion system"
+    zsh_debug_echo "# Fallback: Using simple completion system"
 
     # Fallback to simple completion system
     if autoload -Uz compinit 2>/dev/null; then
@@ -34,4 +34,4 @@ else
     zstyle ':completion:*' use-cache on 2>/dev/null
 fi
 
-[[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# Completion system integration loaded"
+zsh_debug_echo "# Completion system integration loaded"

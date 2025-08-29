@@ -144,4 +144,4 @@ init_path_system() {
 # Execute initialization
 init_path_system
 
-[[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [path-system] ✅ PATH system management loaded"
+zsh_debug_echo "# [path-system] ✅ PATH system management loaded"
