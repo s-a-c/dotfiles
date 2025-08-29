@@ -90,4 +90,4 @@ debug_path_state() {
 }
 
 # Log initialization
-[[ "$ZSH_DEBUG" == "1" ]] &&     zsh_debug_echo "[PATH-GUARANTEE] Safe command wrappers initialized"
+zsh_debug_echo "[PATH-GUARANTEE] Safe command wrappers initialized"

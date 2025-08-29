@@ -146,12 +146,12 @@ if [[ -o interactive ]] && [[ "$(uname -s)" == "Darwin" ]]; then
         iterm2_print_state_data
         printf "\033]1337;ShellIntegrationVersion=14;shell=zsh\007"
 
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [iterm2-shell-integration] iTerm2 integration initialized (macOS)"
+        zsh_debug_echo "# [iterm2-shell-integration] iTerm2 integration initialized (macOS)"
     else
-        [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [iterm2-shell-integration] Skipping - not compatible or already installed"
+        zsh_debug_echo "# [iterm2-shell-integration] Skipping - not compatible or already installed"
     fi
 else
-    [[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [iterm2-shell-integration] Skipping - non-interactive shell or not macOS"
+    zsh_debug_echo "# [iterm2-shell-integration] Skipping - non-interactive shell or not macOS"
 fi
 
-[[ "$ZSH_DEBUG" == "1" ]] && zsh_debug_echo "# [iterm2-shell-integration] iTerm2 shell integration complete (macOS)"
+zsh_debug_echo "# [iterm2-shell-integration] iTerm2 shell integration complete (macOS)"
