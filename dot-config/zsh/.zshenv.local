@@ -4,7 +4,7 @@
 # - Centralize ZGEN/zgenom variables for a localized install under $ZDOTDIR
 # - Keep values idempotent and safe to source multiple times
 # - Intended to be sourced from .zshenv early in startup:
-#     [[ -f "${ZDOTDIR:-$HOME/.config/zsh}/.zshenv.local" ]] && source "${ZDOTDIR:-$HOME/.config/zsh}/.zshenv.local"
+#     [[ -f "${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}/.zshenv.local" ]] && source "${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}/.zshenv.local"
 #
 # Usage:
 # - Add the single-line source above to the very top of your .zshenv (if not present).
@@ -16,52 +16,5 @@
 #   live under $ZDOTDIR (self-contained dotfiles tree).
 # - We intentionally default ZGEN_AUTOLOAD_COMPINIT=0 to avoid compinit races during
 #   debugging. Change to 1 when your completion environment is stable.
-
-# Ensure ZDOTDIR is defined (XDG-compliant default); do not override if already set.
-export ZDOTDIR="${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}"
-
-# Optional cache/log directories (respect XDG defaults)
-export ZSH_CACHE_DIR="${ZSH_CACHE_DIR:-${XDG_CACHE_HOME:-$HOME/.cache}/zsh}"
-export ZSH_LOG_DIR="${ZSH_LOG_DIR:-${ZDOTDIR}/logs}"
-
-# Localized zgenom variables (prefer the vendored copy under $ZDOTDIR)
-export ZGENOM_PARENT_DIR="${ZGENOM_PARENT_DIR:-$ZDOTDIR}"
-
-# Where the vendored zgenom source lives (this repository's recommended layout)
-export ZGEN_SOURCE="${ZGEN_SOURCE:-${ZDOTDIR}/.zqs-zgenom}"
-# Full path to the zgenom entry script (so callers can source it directly)
-export ZGENOM_SOURCE_FILE="${ZGENOM_SOURCE_FILE:-${ZGEN_SOURCE}/zgenom.zsh}"
-
-# Directory where zgenom will store plugin clones and init.zsh (localized)
-export ZGEN_DIR="${ZGEN_DIR:-${ZDOTDIR}/.zgenom}"
-export ZGEN_INIT="${ZGEN_INIT:-${ZGEN_DIR}/init.zsh}"
-export ZGENOM_BIN_DIR="${ZGENOM_BIN_DIR:-${ZGEN_DIR}/_bin}"
-
-# Completion behavior control: set to 0 to avoid automatic compinit while debugging.
-# When you are confident completions/fpath are correct, you can set this to 1.
-export ZGEN_AUTOLOAD_COMPINIT="${ZGEN_AUTOLOAD_COMPINIT:-0}"
-
-# Optional: custom compdump location and compinit flags (keeps compdump in cache)
-export ZGEN_CUSTOM_COMPDUMP="${ZGEN_CUSTOM_COMPDUMP:-${ZSH_CACHE_DIR}/zcompdump_${ZSH_VERSION:-unknown}}"
-export ZGEN_COMPINIT_FLAGS="${ZGEN_COMPINIT_FLAGS:-${ZGEN_COMPINIT_FLAGS:-}}"
-
-# Optional: oh-my-zsh repo/branch defaults used by some starter plugin lists
-export ZGEN_OH_MY_ZSH_REPO="${ZGEN_OH_MY_ZSH_REPO:-ohmyzsh/ohmyzsh}"
-export ZGEN_OH_MY_ZSH_BRANCH="${ZGEN_OH_MY_ZSH_BRANCH:-master}"
-
-# Make sure directories exist for localized zgenom + caches
-# (mkdir -p is safe to call repeatedly)
-mkdir -p "${ZDOTDIR}" "${ZGEN_DIR}" "${ZSH_CACHE_DIR}" "${ZSH_LOG_DIR}" 2>/dev/null || true
-
-# Debug info (only prints when ZSH_DEBUG=1)
-if [[ -n "${ZSH_DEBUG:-}" && "${ZSH_DEBUG}" == "1" ]]; then
-    printf '%s\n' "zsh/.zshenv.local: using localized zgenom configuration:"
-    printf '  ZDOTDIR=%s\n' "$ZDOTDIR"
-    printf '  ZGEN_SOURCE=%s\n' "$ZGEN_SOURCE"
-    printf '  ZGENOM_SOURCE_FILE=%s\n' "$ZGENOM_SOURCE_FILE"
-    printf '  ZGEN_DIR=%s\n' "$ZGEN_DIR"
-    printf '  ZGEN_INIT=%s\n' "$ZGEN_INIT"
-    printf '  ZGEN_AUTOLOAD_COMPINIT=%s\n' "$ZGEN_AUTOLOAD_COMPINIT"
-fi
 
 # End of file
