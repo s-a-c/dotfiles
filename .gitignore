@@ -268,3 +268,8 @@ dist/
 .env
 /.env/
 dot-config/lmstudio/server-logs/
+<<<<<<< HEAD
+=======
+dot-config/zsh/.zgenom/
+dot-config/zsh/.zgenom/**
+>>>>>>> ai-submodule-conversion-1756403738
