@@ -1,3 +1,0 @@
-# Attribute-Based Testing
-
-This is a placeholder file. The actual content will be added in a future update.

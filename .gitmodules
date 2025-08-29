@@ -1,13 +1,10 @@
 [submodule "dot-config/nix-darwin"]
 	path = dot-config/nix-darwin
-	url = https://github.com/s-a-c/nix-darwin
+	url = https://github.com/s-a-c/nix-darwin.git
 [submodule "dot-config/alexandersix/tmux-starter"]
 	path = dot-config/alexandersix/tmux-starter
-	url = git@github.com:alexandersix/tmux-starter.git
-[submodule "zgenom"]
-	path = dot-config/zsh/zgenom
-	url = https://github.com/jandamm/zgenom.git
-[submodule "zsh-quickstart-kit"]
+	url = https://github.com/alexandersix/tmux-starter.git
+[submodule "dot-config/zsh-quickstart-kit"]
 	path = dot-config/zsh/zsh-quickstart-kit
 	url = https://github.com/unixorn/zsh-quickstart-kit.git
 [submodule "dot-config/ai"]

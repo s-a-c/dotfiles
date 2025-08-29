@@ -1,0 +1,1399 @@
+[2025-07-09 00:01:16][INFO] Returning {
+  "data": [
+    {
+      "id": "qwen/qwen3-32b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "qwen",
+      "arch": "qwen3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "loaded",
+      "max_context_length": 40960,
+      "loaded_context_length": 4096,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "text-embedding-qwen3-embedding-0.6b",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "Qwen",
+      "arch": "qwen3",
+      "compatibility_type": "gguf",
+      "quantization": "Q8_0",
+      "state": "not-loaded",
+      "max_context_length": 32768,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "google/gemma-3-27b",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "google",
+      "arch": "gemma3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-07-09 00:04:16][INFO] Returning {
+  "data": [
+    {
+      "id": "qwen/qwen3-32b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "qwen",
+      "arch": "qwen3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "loaded",
+      "max_context_length": 40960,
+      "loaded_context_length": 4096,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "text-embedding-qwen3-embedding-0.6b",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "Qwen",
+      "arch": "qwen3",
+      "compatibility_type": "gguf",
+      "quantization": "Q8_0",
+      "state": "not-loaded",
+      "max_context_length": 32768,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "google/gemma-3-27b",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "google",
+      "arch": "gemma3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-07-09 00:07:16][INFO] Returning {
+  "data": [
+    {
+      "id": "qwen/qwen3-32b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "qwen",
+      "arch": "qwen3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "loaded",
+      "max_context_length": 40960,
+      "loaded_context_length": 4096,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "text-embedding-qwen3-embedding-0.6b",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "Qwen",
+      "arch": "qwen3",
+      "compatibility_type": "gguf",
+      "quantization": "Q8_0",
+      "state": "not-loaded",
+      "max_context_length": 32768,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "google/gemma-3-27b",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "google",
+      "arch": "gemma3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-07-09 00:10:16][INFO] Returning {
+  "data": [
+    {
+      "id": "qwen/qwen3-32b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "qwen",
+      "arch": "qwen3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "loaded",
+      "max_context_length": 40960,
+      "loaded_context_length": 4096,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "text-embedding-qwen3-embedding-0.6b",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "Qwen",
+      "arch": "qwen3",
+      "compatibility_type": "gguf",
+      "quantization": "Q8_0",
+      "state": "not-loaded",
+      "max_context_length": 32768,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "google/gemma-3-27b",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "google",
+      "arch": "gemma3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-07-09 00:13:16][INFO] Returning {
+  "data": [
+    {
+      "id": "qwen/qwen3-32b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "qwen",
+      "arch": "qwen3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "loaded",
+      "max_context_length": 40960,
+      "loaded_context_length": 4096,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "text-embedding-qwen3-embedding-0.6b",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "Qwen",
+      "arch": "qwen3",
+      "compatibility_type": "gguf",
+      "quantization": "Q8_0",
+      "state": "not-loaded",
+      "max_context_length": 32768,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "google/gemma-3-27b",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "google",
+      "arch": "gemma3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-07-09 00:16:16][INFO] Returning {
+  "data": [
+    {
+      "id": "qwen/qwen3-32b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "qwen",
+      "arch": "qwen3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "loaded",
+      "max_context_length": 40960,
+      "loaded_context_length": 4096,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "text-embedding-qwen3-embedding-0.6b",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "Qwen",
+      "arch": "qwen3",
+      "compatibility_type": "gguf",
+      "quantization": "Q8_0",
+      "state": "not-loaded",
+      "max_context_length": 32768,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "google/gemma-3-27b",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "google",
+      "arch": "gemma3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-07-09 00:19:16][INFO] Returning {
+  "data": [
+    {
+      "id": "qwen/qwen3-32b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "qwen",
+      "arch": "qwen3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "loaded",
+      "max_context_length": 40960,
+      "loaded_context_length": 4096,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "text-embedding-qwen3-embedding-0.6b",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "Qwen",
+      "arch": "qwen3",
+      "compatibility_type": "gguf",
+      "quantization": "Q8_0",
+      "state": "not-loaded",
+      "max_context_length": 32768,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "google/gemma-3-27b",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "google",
+      "arch": "gemma3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-07-09 00:22:16][INFO] Returning {
+  "data": [
+    {
+      "id": "qwen/qwen3-32b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "qwen",
+      "arch": "qwen3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "loaded",
+      "max_context_length": 40960,
+      "loaded_context_length": 4096,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "text-embedding-qwen3-embedding-0.6b",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "Qwen",
+      "arch": "qwen3",
+      "compatibility_type": "gguf",
+      "quantization": "Q8_0",
+      "state": "not-loaded",
+      "max_context_length": 32768,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "google/gemma-3-27b",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "google",
+      "arch": "gemma3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-07-09 00:25:16][INFO] Returning {
+  "data": [
+    {
+      "id": "qwen/qwen3-32b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "qwen",
+      "arch": "qwen3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "loaded",
+      "max_context_length": 40960,
+      "loaded_context_length": 4096,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "text-embedding-qwen3-embedding-0.6b",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "Qwen",
+      "arch": "qwen3",
+      "compatibility_type": "gguf",
+      "quantization": "Q8_0",
+      "state": "not-loaded",
+      "max_context_length": 32768,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "google/gemma-3-27b",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "google",
+      "arch": "gemma3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-07-09 00:27:22][INFO] Returning {
+  "data": [
+    {
+      "id": "qwen/qwen3-32b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "qwen",
+      "arch": "qwen3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "loaded",
+      "max_context_length": 40960,
+      "loaded_context_length": 4096,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "text-embedding-qwen3-embedding-0.6b",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "Qwen",
+      "arch": "qwen3",
+      "compatibility_type": "gguf",
+      "quantization": "Q8_0",
+      "state": "not-loaded",
+      "max_context_length": 32768,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "google/gemma-3-27b",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "google",
+      "arch": "gemma3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-07-09 00:52:56][INFO] Unloading model qwen/qwen3-32b due to TTL expiration.
+[2025-07-09 13:42:07][INFO] Server stopped.
+[2025-07-09 13:44:14][INFO][LM STUDIO SERVER] Success! HTTP server listening on port 1234
+[2025-07-09 13:44:14][WARN][LM STUDIO SERVER] Server accepting connections from the local network. Only use this if you know what you are doing!
+[2025-07-09 13:44:14][INFO] 
+[2025-07-09 13:44:14][INFO][LM STUDIO SERVER] Supported endpoints:
+[2025-07-09 13:44:14][INFO][LM STUDIO SERVER] ->	GET  http://192.168.0.108:1234/v1/models
+[2025-07-09 13:44:14][INFO][LM STUDIO SERVER] ->	POST http://192.168.0.108:1234/v1/chat/completions
+[2025-07-09 13:44:14][INFO][LM STUDIO SERVER] ->	POST http://192.168.0.108:1234/v1/completions
+[2025-07-09 13:44:14][INFO][LM STUDIO SERVER] ->	POST http://192.168.0.108:1234/v1/embeddings
+[2025-07-09 13:44:14][INFO] 
+[2025-07-09 13:44:14][INFO][LM STUDIO SERVER] Logs are saved into /Users/s-a-c/.lmstudio/server-logs
+[2025-07-09 13:44:14][INFO] Server started.
+[2025-07-09 13:44:14][INFO] Just-in-time model loading active.
+[2025-07-09 13:44:25][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "text-embedding-qwen3-embedding-0.6b",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "Qwen",
+      "arch": "qwen3",
+      "compatibility_type": "gguf",
+      "quantization": "Q8_0",
+      "state": "not-loaded",
+      "max_context_length": 32768,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "qwen/qwen3-32b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "qwen",
+      "arch": "qwen3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 40960,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "google/gemma-3-27b",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "google",
+      "arch": "gemma3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-07-09 16:56:13][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "text-embedding-qwen3-embedding-0.6b",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "Qwen",
+      "arch": "qwen3",
+      "compatibility_type": "gguf",
+      "quantization": "Q8_0",
+      "state": "not-loaded",
+      "max_context_length": 32768,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "qwen/qwen3-32b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "qwen",
+      "arch": "qwen3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 40960,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "google/gemma-3-27b",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "google",
+      "arch": "gemma3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-07-09 16:56:28][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "text-embedding-qwen3-embedding-0.6b",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "Qwen",
+      "arch": "qwen3",
+      "compatibility_type": "gguf",
+      "quantization": "Q8_0",
+      "state": "not-loaded",
+      "max_context_length": 32768,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "qwen/qwen3-32b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "qwen",
+      "arch": "qwen3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 40960,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "google/gemma-3-27b",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "google",
+      "arch": "gemma3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-07-09 16:56:29][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "text-embedding-qwen3-embedding-0.6b",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "Qwen",
+      "arch": "qwen3",
+      "compatibility_type": "gguf",
+      "quantization": "Q8_0",
+      "state": "not-loaded",
+      "max_context_length": 32768,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "qwen/qwen3-32b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "qwen",
+      "arch": "qwen3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 40960,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "google/gemma-3-27b",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "google",
+      "arch": "gemma3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-07-09 16:56:33][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "text-embedding-qwen3-embedding-0.6b",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "Qwen",
+      "arch": "qwen3",
+      "compatibility_type": "gguf",
+      "quantization": "Q8_0",
+      "state": "not-loaded",
+      "max_context_length": 32768,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "qwen/qwen3-32b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "qwen",
+      "arch": "qwen3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 40960,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "google/gemma-3-27b",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "google",
+      "arch": "gemma3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-07-09 16:59:28][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "text-embedding-qwen3-embedding-0.6b",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "Qwen",
+      "arch": "qwen3",
+      "compatibility_type": "gguf",
+      "quantization": "Q8_0",
+      "state": "not-loaded",
+      "max_context_length": 32768,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "qwen/qwen3-32b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "qwen",
+      "arch": "qwen3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 40960,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "google/gemma-3-27b",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "google",
+      "arch": "gemma3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-07-09 17:02:28][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "text-embedding-qwen3-embedding-0.6b",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "Qwen",
+      "arch": "qwen3",
+      "compatibility_type": "gguf",
+      "quantization": "Q8_0",
+      "state": "not-loaded",
+      "max_context_length": 32768,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "qwen/qwen3-32b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "qwen",
+      "arch": "qwen3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 40960,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "google/gemma-3-27b",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "google",
+      "arch": "gemma3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-07-09 17:05:28][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "text-embedding-qwen3-embedding-0.6b",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "Qwen",
+      "arch": "qwen3",
+      "compatibility_type": "gguf",
+      "quantization": "Q8_0",
+      "state": "not-loaded",
+      "max_context_length": 32768,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "qwen/qwen3-32b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "qwen",
+      "arch": "qwen3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 40960,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "google/gemma-3-27b",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "google",
+      "arch": "gemma3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-07-09 17:08:28][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "text-embedding-qwen3-embedding-0.6b",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "Qwen",
+      "arch": "qwen3",
+      "compatibility_type": "gguf",
+      "quantization": "Q8_0",
+      "state": "not-loaded",
+      "max_context_length": 32768,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "qwen/qwen3-32b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "qwen",
+      "arch": "qwen3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 40960,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "google/gemma-3-27b",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "google",
+      "arch": "gemma3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-07-09 17:11:28][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "text-embedding-qwen3-embedding-0.6b",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "Qwen",
+      "arch": "qwen3",
+      "compatibility_type": "gguf",
+      "quantization": "Q8_0",
+      "state": "not-loaded",
+      "max_context_length": 32768,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "qwen/qwen3-32b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "qwen",
+      "arch": "qwen3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 40960,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "google/gemma-3-27b",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "google",
+      "arch": "gemma3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-07-09 17:14:28][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "text-embedding-qwen3-embedding-0.6b",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "Qwen",
+      "arch": "qwen3",
+      "compatibility_type": "gguf",
+      "quantization": "Q8_0",
+      "state": "not-loaded",
+      "max_context_length": 32768,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "qwen/qwen3-32b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "qwen",
+      "arch": "qwen3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 40960,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "google/gemma-3-27b",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "google",
+      "arch": "gemma3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-07-09 17:17:28][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "text-embedding-qwen3-embedding-0.6b",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "Qwen",
+      "arch": "qwen3",
+      "compatibility_type": "gguf",
+      "quantization": "Q8_0",
+      "state": "not-loaded",
+      "max_context_length": 32768,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "qwen/qwen3-32b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "qwen",
+      "arch": "qwen3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 40960,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "google/gemma-3-27b",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "google",
+      "arch": "gemma3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-07-09 17:20:28][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "text-embedding-qwen3-embedding-0.6b",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "Qwen",
+      "arch": "qwen3",
+      "compatibility_type": "gguf",
+      "quantization": "Q8_0",
+      "state": "not-loaded",
+      "max_context_length": 32768,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "qwen/qwen3-32b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "qwen",
+      "arch": "qwen3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 40960,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "google/gemma-3-27b",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "google",
+      "arch": "gemma3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-07-09 17:23:28][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "text-embedding-qwen3-embedding-0.6b",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "Qwen",
+      "arch": "qwen3",
+      "compatibility_type": "gguf",
+      "quantization": "Q8_0",
+      "state": "not-loaded",
+      "max_context_length": 32768,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "qwen/qwen3-32b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "qwen",
+      "arch": "qwen3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 40960,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "google/gemma-3-27b",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "google",
+      "arch": "gemma3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}
+[2025-07-09 17:26:29][INFO] Returning {
+  "data": [
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "nomic-ai",
+      "arch": "nomic-bert",
+      "compatibility_type": "gguf",
+      "quantization": "Q4_K_M",
+      "state": "not-loaded",
+      "max_context_length": 2048
+    },
+    {
+      "id": "text-embedding-qwen3-embedding-0.6b",
+      "object": "model",
+      "type": "embeddings",
+      "publisher": "Qwen",
+      "arch": "qwen3",
+      "compatibility_type": "gguf",
+      "quantization": "Q8_0",
+      "state": "not-loaded",
+      "max_context_length": 32768,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "qwen/qwen3-32b",
+      "object": "model",
+      "type": "llm",
+      "publisher": "qwen",
+      "arch": "qwen3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 40960,
+      "capabilities": [
+        "tool_use"
+      ]
+    },
+    {
+      "id": "google/gemma-3-27b",
+      "object": "model",
+      "type": "vlm",
+      "publisher": "google",
+      "arch": "gemma3",
+      "compatibility_type": "mlx",
+      "quantization": "4bit",
+      "state": "not-loaded",
+      "max_context_length": 131072
+    }
+  ],
+  "object": "list"
+}

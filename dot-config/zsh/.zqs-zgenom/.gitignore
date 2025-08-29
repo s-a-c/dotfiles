@@ -1,8 +1,0 @@
-.DS_Store
-*.zwc
-tags
-
-bin
-polaris/*
-sources
-.last_autoupdate_log

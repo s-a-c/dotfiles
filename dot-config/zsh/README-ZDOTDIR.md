@@ -70,6 +70,54 @@ Notes / recommended follow-ups
 - If you want `ZDOTDIR` fully self-contained for stow, ensure any `.env` files or other external references are located inside `zsh/.env/` (or intentionally symlinked to your centralized secrets store).
 - If you prefer, I can also create a short `CONTRIBUTING` or `README` section explaining how to use stow with this repo; tell me if you'd like that added.
 
+Runtime compatibility note
+--------------------------
+To maintain runtime compatibility during the `.zgenom` → `zgenom` layout conversion, we provide a small, idempotent bootstrap script and Makefile helper that create a compatibility symlink `.zgenom -> zgenom`. This preserves existing runtime paths (and fixes errors like missing plugin files under `.zgenom`) without reverting the repository-level change that canonicalized the `zgenom/` directory.
+
+Bootstrapping the compatibility symlink
+-------------------------------------
+- Repo-level (create the symlink inside the repository):
+  - From the repository root:
+    - Dry-run: `bash zsh/bin/ensure-zgenom-symlink.sh --repo --dry-run`
+    - Create: `bash zsh/bin/ensure-zgenom-symlink.sh --repo`
+    - To replace an existing non-symlink path: add `--force`
+  - Makefile helper:
+    - `make -C zsh ensure-zgenom-symlink MODE=repo`
+
+- Runtime/stowed (create the symlink in your runtime ZDOTDIR, recommended in most cases):
+  - Prefer passing an explicit ZDOTDIR or rely on the environment:
+    - Example (env): `ZDOTDIR=~/.config/zsh bash zsh/bin/ensure-zgenom-symlink.sh --runtime`
+    - Example (explicit): `bash zsh/bin/ensure-zgenom-symlink.sh --runtime --zdotdir ~/.config/zsh`
+  - Makefile helper:
+    - `make -C zsh ensure-zgenom-symlink MODE=runtime`
+
+Script and Makefile locations
+-----------------------------
+- `zsh/bin/ensure-zgenom-symlink.sh` — idempotent script with options: `--zdotdir`, `--repo`, `--runtime`, `--target`, `--force`, and `--dry-run`.
+- `zsh/Makefile` — includes `ensure-zgenom-symlink` and convenience targets to run the bootstrap script from the repo.
+
+Recommended workflow
+--------------------
+1. Stow your config (example):
+       cd ~/dotfiles/dot-config && stow -t $HOME -S dot-config
+   or:
+       cd ~/dotfiles/dot-config/zsh && stow -t $HOME/.config zsh
+
+2. Ensure runtime compatibility (recommended):
+       make -C zsh ensure-zgenom-symlink MODE=runtime
+   or run the script directly:
+       bash zsh/bin/ensure-zgenom-symlink.sh --runtime --zdotdir "$ZDOTDIR"
+
+3. Verify the symlink and plugin files:
+       ls -la ~/.config/zsh/.zgenom
+       ls -la ~/.config/zsh/zgenom/djui/alias-tips/___/alias-tips.py
+
+Notes and caveats
+-----------------
+- Repo-level symlink: adding a tracked `.zgenom` symlink to the repository defeats the purpose of removing the duplicate symlink; prefer the runtime symlink unless you intentionally want `.zgenom` committed.
+- `.gitignore`: if `.zgenom` is ignored in `.gitignore`, committing a repo-level symlink will either require removing that ignore entry or forcing the add (`git add -f .zgenom`).
+- CI / automation: prefer calling the bootstrap script (or the Makefile target) from your CI/bootstrap step so test runners and automation have the same compatibility layer.
+
 Policy acknowledgement
 ----------------------
 Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v<checksum>

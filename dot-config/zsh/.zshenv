@@ -37,6 +37,8 @@ export XDG_STATE_HOME="${XDG_STATE_HOME:-${HOME}/.local/state}"
 export XDG_BIN_HOME="${XDG_BIN_HOME:-${HOME}/.local/bin}"
 mkdir -p "${XDG_CONFIG_HOME}" "${XDG_CACHE_HOME}" "${XDG_DATA_HOME}" "${XDG_STATE_HOME}" "${XDG_BIN_HOME}" 2>/dev/null || true
 
+export ZDOTDIR="${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}"
+
 # Allow a localized override file to run early. This file may set ZDOTDIR
 # or other site/user-specific values. It's safe to source here because it is
 # expected to be conservative and provide defaults only.
@@ -52,15 +54,37 @@ unset _local_zshenv_local
 export PATH
 
 # Set ZDOTDIR to an XDG-friendly localized default but do not overwrite
-# if the variable was already defined (e.g. by a wrapper or environment).
-# This makes the default robust for portable setups where the user may want
-# to set ZDOTDIR externally.
-export ZDOTDIR="${ZDOTDIR:-${XDG_CONFIG_HOME:-${HOME}/.config}/zsh}"
 
-# Create common cache/log dirs (do not fail startup if mkdir fails)
+# ------------------------------------------------------------------------------
+# Robustly canonicalize ZDOTDIR (resolve symlinks) WITHOUT breaking on systems
+# that lack `realpath`. We only canonicalize if ZDOTDIR is set and points to a
+# directory so we don't accidentally touch unrelated values.
+# ------------------------------------------------------------------------------
+if [[ -n "${ZDOTDIR:-}" && -d "${ZDOTDIR}" ]]; then
+    if command -v realpath >/dev/null 2>&1; then
+        # Use realpath when available (portable and resolves symlinks)
+        ZDOTDIR="$(realpath "${ZDOTDIR}")"
+    else
+        # Fallback: attempt to cd into dir and print the physical path (pwd -P)
+        # If that fails for any reason, leave ZDOTDIR as-is.
+        local _zd_prev_pwd
+        _zd_prev_pwd="$PWD" 2>/dev/null || true
+        if cd "${ZDOTDIR}" 2>/dev/null; then
+            ZDOTDIR="$(pwd -P 2>/dev/null || pwd)"
+            # return to previous working directory
+            cd "$_zd_prev_pwd" 2>/dev/null || true
+        fi
+        unset _zd_prev_pwd
+    fi
+fi
+
+# Create common cache/log d[submodule "zsh-quickstart-kit"]
+                           #	path = dot-config/zsh/zsh-quickstart-kit
+                           #	url = https://github.com/unixorn/zsh-quickstart-kit.gitirs (do not fail startup if mkdir fails)
+# Recreate ensured dirs now anchored to canonical ZDOTDIR
 export ZSH_CACHE_DIR="${XDG_CACHE_HOME}/zsh"
 export ZSH_LOG_DIR="${ZDOTDIR}/logs"
-mkdir -p "$ZDOTDIR" "$ZSH_CACHE_DIR" "$ZSH_LOG_DIR" 2>/dev/null || true
+mkdir -p "$ZSH_CACHE_DIR" "$ZSH_LOG_DIR" 2>/dev/null || true
 
 # Provide a short session id for debug/log filenames
 export ZSH_SESSION_ID="${ZSH_SESSION_ID:-$$-$(date +%s 2>/dev/null || echo 'unknown')}"
@@ -69,7 +93,10 @@ export ZSH_DEBUG_LOG="${ZSH_LOG_DIR}/${ZSH_SESSION_ID}-zsh-debug.log"
 # Basic optional debug flag
 export ZSH_DEBUG="${ZSH_DEBUG:-0}"
 
-zsh_debug_echo "[DEBUG] early .zshenv: ZDOTDIR=${ZDOTDIR} ZSH_CACHE_DIR=${ZSH_CACHE_DIR} ZSH_LOG_DIR=${ZSH_LOG_DIR}" >> "${ZSH_DEBUG_LOG}" 2>/dev/null || true
+zsh_debug_echo "[DEBUG] early .zshenv:" || true
+zsh_debug_echo "    ZDOTDIR=${ZDOTDIR}" || true
+zsh_debug_echo "    ZSH_CACHE_DIR=${ZSH_CACHE_DIR}" || true
+zsh_debug_echo "    ZSH_LOG_DIR=${ZSH_LOG_DIR}" || true
 
 # ------------------------------------------------------------------------------
 # Utility: PATH de-duplication (preserve first occurrence)
@@ -141,47 +168,64 @@ safe_git() {
 }
 
 # ------------------------------------------------------------------------------
-# Robustly canonicalize ZDOTDIR (resolve symlinks) WITHOUT breaking on systems
-# that lack `realpath`. We only canonicalize if ZDOTDIR is set and points to a
-# directory so we don't accidentally touch unrelated values.
-# ------------------------------------------------------------------------------
-if [[ -n "${ZDOTDIR:-}" && -d "${ZDOTDIR}" ]]; then
-    if command -v realpath >/dev/null 2>&1; then
-        # Use realpath when available (portable and resolves symlinks)
-        ZDOTDIR="$(realpath "${ZDOTDIR}")"
-    else
-        # Fallback: attempt to cd into dir and print the physical path (pwd -P)
-        # If that fails for any reason, leave ZDOTDIR as-is.
-        local _zd_prev_pwd
-        _zd_prev_pwd="$PWD" 2>/dev/null || true
-        if cd "${ZDOTDIR}" 2>/dev/null; then
-            ZDOTDIR="$(pwd -P 2>/dev/null || pwd)"
-            # return to previous working directory
-            cd "$_zd_prev_pwd" 2>/dev/null || true
-        fi
-        unset _zd_prev_pwd
-    fi
-fi
-export ZDOTDIR
-
-# Recreate ensured dirs now anchored to canonical ZDOTDIR
-mkdir -p "${ZDOTDIR}" "${ZSH_CACHE_DIR}" "${ZSH_LOG_DIR}" 2>/dev/null || true
-
-# ------------------------------------------------------------------------------
 # ZGENOM / plugin manager variables (use ZDOTDIR to localize installs)
+# Prefer non-dot `zgenom` locations but keep backwards compatible fallbacks.
 # ------------------------------------------------------------------------------
 ZGENOM_PARENT_DIR="${ZDOTDIR}"
-ZGEN_SOURCE="${ZDOTDIR}/.zqs-zgenom"
-ZGENOM_SOURCE_FILE="${ZGEN_SOURCE}/zgenom.zsh"
-ZGEN_DIR="${ZDOTDIR}/.zgenom"
+
+# Resolve the zgenom source directory in priority order:
+# 1) localized vendored .zqs-zgenom under $ZDOTDIR (preferred for localized installs)
+# 2) localized zgenom under $ZDOTDIR (stow-friendly, no leading dot)
+# 3) localized legacy .zgenom under $ZDOTDIR
+# 4) user-home fallback ${HOME}/.zgenom
+# If none exist, default to the stow-friendly name under ZDOTDIR so callers
+# that write into the stowed config know the expected location.
+if [[ -n "${ZDOTDIR:-}" && -d "${ZDOTDIR}/.zqs-zgenom" ]]; then
+    ZGEN_SOURCE="${ZDOTDIR}/.zqs-zgenom"
+elif [[ -n "${ZDOTDIR:-}" && -d "${ZDOTDIR}/zgenom" ]]; then
+    ZGEN_SOURCE="${ZDOTDIR}/zgenom"
+elif [[ -n "${ZDOTDIR:-}" && -d "${ZDOTDIR}/.zgenom" ]]; then
+    ZGEN_SOURCE="${ZDOTDIR}/.zgenom"
+elif [[ -d "${HOME}/.zgenom" ]]; then
+    ZGEN_SOURCE="${HOME}/.zgenom"
+else
+    ZGEN_SOURCE="${ZDOTDIR}/zgenom"
+fi
+
+# Primary zgenom entry points derived from chosen source
+ZGENOM_SOURCE_FILE=$ZGEN_SOURCE/zgenom.zsh
+
+ZGEN_DIR="${ZGEN_SOURCE}"
 ZGEN_INIT="${ZGEN_DIR}/init.zsh"
 ZGENOM_BIN_DIR="${ZGEN_DIR}/_bin"
 
 export ZGENOM_PARENT_DIR ZGEN_SOURCE ZGENOM_SOURCE_FILE ZGEN_DIR ZGEN_INIT ZGENOM_BIN_DIR
 
-# Add vendored zgenom functions to fpath early if present
+# Debug info (only prints when ZSH_DEBUG=1)
+zsh_debug_echo "[DEBUG]: localized zgenom configuration:" || true
+zsh_debug_echo "    ZGEN_SOURCE=$ZGEN_SOURCE" || true
+zsh_debug_echo "    ZGENOM_SOURCE_FILE=$ZGENOM_SOURCE_FILE" || true
+zsh_debug_echo "    ZGEN_DIR=$ZGEN_DIR" || true
+zsh_debug_echo "    ZGEN_INIT=$ZGEN_INIT" || true
+zsh_debug_echo "    ZGEN_AUTOLOAD_COMPINIT=$ZGEN_AUTOLOAD_COMPINIT" || true
+
+# Completion behavior control: set to 0 to avoid automatic compinit while debugging.
+# When you are confident completions/fpath are correct, you can set this to 1.
+export ZGEN_AUTOLOAD_COMPINIT="${ZGEN_AUTOLOAD_COMPINIT:-0}"
+
+# Optional: custom compdump location and compinit flags (keeps compdump in cache)
+export ZGEN_CUSTOM_COMPDUMP="${ZGEN_CUSTOM_COMPDUMP:-${ZSH_CACHE_DIR}/zcompdump_${ZSH_VERSION:-unknown}}"
+export ZGEN_COMPINIT_FLAGS="${ZGEN_COMPINIT_FLAGS:-${ZGEN_COMPINIT_FLAGS:-}}"
+
+# Optional: oh-my-zsh repo/branch defaults used by some starter plugin lists
+export ZGEN_OH_MY_ZSH_REPO="${ZGEN_OH_MY_ZSH_REPO:-ohmyzsh/ohmyzsh}"
+export ZGEN_OH_MY_ZSH_BRANCH="${ZGEN_OH_MY_ZSH_BRANCH:-master}"
+
+# Add vendored zgenom functions to fpath early if present (try source then dir)
 if [[ -d "${ZGEN_SOURCE}/functions" ]]; then
     fpath=("${ZGEN_SOURCE}/functions" $fpath)
+elif [[ -d "${ZGEN_DIR}/functions" ]]; then
+    fpath=("${ZGEN_DIR}/functions" $fpath)
 fi
 
 # ------------------------------------------------------------------------------
