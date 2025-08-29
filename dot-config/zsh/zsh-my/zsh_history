@@ -1,0 +1,5 @@
+: 1730927853:0;ln -s ./.config/zhz/.zshenv ./.zshenv
+: 1730927863:0;eza --group-directories-first -al ./
+: 1730927898:0;mv ./.p10k.zsh ./.config/zsh/
+: 1730927916:0;mv ./.zprofile ./.config/zsh/
+: 1730927936:0;bash
