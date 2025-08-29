@@ -2,13 +2,24 @@
 #
 # BSD licensed, see LICENSE.txt
 #
-# ZSH-Quickstart-Kit (ZQS) Integration with Custom Optimizations
-# This file integrates the standard ZQS framework with existing performance
-# optimizations, security features, and ZDOTDIR-based structure.
+# Set this to use case-sensitive completion
+# CASE_SENSITIVE="true"
 #
-# Version: Custom ZQS Integration
-# Performance Target: ≤2.0s startup time
-# Security: Advanced SSH agent + plugin integrity verification preserved
+# Uncomment following line if you want to disable colors in ls
+# DISABLE_LS_COLORS="true"
+#
+# Uncomment following line if you want to disable autosetting terminal title.
+# DISABLE_AUTO_TITLE="true"
+#
+# Version 1.0.0
+#
+# If you want to change settings that are in this file, the easiest way
+# to do it is by adding a file to $ZDOTDIR/.zshrc.d or $ZDOTDIR/.zshrc.pre-plugins.d that
+# redefines the settings.
+#
+# All files in there will be sourced, and keeping your customizations
+# there will keep you from having to maintain a separate fork of the
+# quickstart kit.
 
 # =================================================================================
 # === ZQS Framework with ZDOTDIR Support ===
