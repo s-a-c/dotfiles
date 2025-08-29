@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [submodule "dot-config/nix-darwin"]
 	path = dot-config/nix-darwin
 	url = https://github.com/s-a-c/nix-darwin
@@ -19,3 +20,20 @@
 [submodule "dot-config/zsh/.zgenom/romkatv/powerlevel10k/___"]
 	path = dot-config/zsh/.zgenom/romkatv/powerlevel10k/___
 	url = https://github.com/romkatv/powerlevel10k
+=======
+[submodule "dot-config/ai"]
+	path = dot-config/ai
+	url = https://github.com/s-a-c/ai-guidelines.git
+[submodule "dot-config/nix-darwin"]
+	path = dot-config/nix-darwin
+	url = https://github.com/s-a-c/nix-darwin.git
+[submodule "dot-config/alexandersix/tmux-starter"]
+	path = dot-config/alexandersix/tmux-starter
+	url = git@github.com:alexandersix/tmux-starter.git
+[submodule "dot-config/zsh/zsh-quickstart-kit"]
+	path = dot-config/zsh/zsh-quickstart-kit
+	url = https://github.com/unixorn/zsh-quickstart-kit.git
+[submodule "dot-config/zsh/zgenom"]
+	path = dot-config/zsh/zgenom
+	url = https://github.com/jandamm/zgenom.git
+>>>>>>> ai-submodule-conversion-1756403738
