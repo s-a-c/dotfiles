@@ -1,0 +1,62 @@
+name: Nightly Metrics Refresh
+
+on:
+  schedule:
+    - cron: '15 3 * * *'  # 03:15 UTC nightly
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  nightly:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Ensure scripts executable
+        run: chmod +x tools/*.zsh || true
+      - name: Capture Baseline (no overwrite)
+        run: |
+          if [ ! -f docs/redesign/metrics/perf-baseline.json ]; then
+            tools/capture-baseline-10run.zsh --runs 16 || true
+          fi
+      - name: Generate Current Performance Badge
+        run: tools/generate-perf-badge.zsh 7
+      - name: Generate Structure Audit & Badge
+        run: tools/generate-structure-audit.zsh || true
+      - name: Generate Summary Badge
+        run: tools/generate-summary-badges.zsh || true
+      - name: Prepare publish directory
+        run: |
+          mkdir -p public
+          cp -R docs/redesign/badges public/
+          cp -R docs/redesign/metrics public/
+          cat > public/index.html <<'HTML'
+          <html><head><title>ZSH Nightly Metrics</title></head><body>
+          <h1>ZSH Nightly Metrics</h1>
+          <ul>
+            <li><a href="badges/perf.json">perf.json</a></li>
+            <li><a href="badges/structure.json">structure.json</a></li>
+            <li><a href="badges/summary.json">summary.json</a></li>
+            <li><a href="metrics/perf-current.json">perf-current.json</a></li>
+            <li><a href="metrics/perf-baseline.json">perf-baseline.json</a></li>
+            <li><a href="metrics/structure-audit.md">structure-audit.md</a></li>
+          </ul>
+          <p>Auto-updated nightly at 03:15 UTC.</p>
+          </body></html>
+          HTML
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          publish_branch: gh-pages
+          keep_files: true
+      - name: Print Shield URLs
+        run: |
+          echo "Perf Badge: https://img.shields.io/endpoint?url=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/raw/gh-pages/badges/perf.json"
+          echo "Structure Badge: https://img.shields.io/endpoint?url=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/raw/gh-pages/badges/structure.json"
+          echo "Summary Badge: https://img.shields.io/endpoint?url=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/raw/gh-pages/badges/summary.json"
