@@ -17,7 +17,7 @@ FORCE ?= 0
 DRY_RUN ?= 0
 ZDOTDIR ?=
 
-.PHONY: help ensure-zgenom-symlink ensure-zgenom-symlink-repo ensure-zgenom-symlink-runtime install
+.PHONY: help ensure-zgenom-symlink ensure-zgenom-symlink-repo ensure-zgenom-symlink-runtime install baseline
 
 help:
 	@printf "zsh Makefile helper\n\n"
@@ -55,3 +55,11 @@ ensure-zgenom-symlink-runtime:
 # Default install target: run the symlink creation (runtime mode by default)
 install: ensure-zgenom-symlink
 	@echo "install complete"
+
+# Baseline: capture performance baseline and regenerate perf badge
+baseline:
+	@echo "Capturing performance baseline (16 runs, 1 warm discard)" >&2
+	@tools/capture-baseline-10run.zsh --quiet --runs 16 || tools/capture-baseline-10run.zsh --runs 16
+	@echo "Generating performance badge (5 runs)" >&2
+	@tools/generate-perf-badge.zsh 5 || true
+	@echo "Baseline + badge complete: docs/redesign/metrics/perf-baseline.json and docs/redesign/badges/perf.json" >&2
