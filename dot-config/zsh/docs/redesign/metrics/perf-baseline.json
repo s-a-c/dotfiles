@@ -1,0 +1,13 @@
+{
+    "timestamp": "2025-08-30T13:51:02Z",
+    "raw_runs": [5000,4560,4700,4780,4910,4760,4630,4880,4790,4710],
+    "raw_mean_ms": 4772,
+    "raw_stddev_ms": 125,
+    "raw_relative_stddev": 2.62,
+    "filtered_runs": [5000,4560,4700,4780,4910,4760,4630,4880,4790,4710],
+    "filtered_mean_ms": 4772,
+    "filtered_stddev_ms": 125,
+    "filtered_relative_stddev": 2.62,
+    "discarded_count": 0,
+    "discard_rule": "|v-median|<=3*MAD"
+}
