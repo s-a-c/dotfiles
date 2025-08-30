@@ -1,0 +1,44 @@
+name: Perf & Structure CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch: {}
+
+jobs:
+  perf-structure:
+    runs-on: macos-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up shell
+        run: echo "SHELL=$(which zsh)" >> $GITHUB_ENV
+      - name: Make scripts executable
+        run: |
+          chmod +x tools/generate-perf-badge.zsh || true
+          chmod +x tools/generate-structure-audit.zsh || true
+          chmod +x tools/generate-summary-badges.zsh || true
+          chmod +x tools/perf-regression-check.zsh || true
+      - name: Generate Structure Audit
+        run: tools/generate-structure-audit.zsh
+      - name: Generate Performance Badge (fail on >5% regression)
+        run: tools/generate-perf-badge.zsh 5
+      - name: Perf Regression Check (informational)
+        run: |
+          set -e
+          tools/perf-regression-check.zsh 7 > docs/redesign/metrics/perf-regression.json || true
+          echo "Perf regression report:" >&2
+          cat docs/redesign/metrics/perf-regression.json >&2
+      - name: Generate Summary Badge
+        run: tools/generate-summary-badges.zsh
+      - name: Upload Badge & Metrics Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: badges-and-metrics
+          path: |
+            docs/redesign/badges/*.json
+            docs/redesign/metrics/*.json
+            docs/redesign/metrics/structure-audit.md
