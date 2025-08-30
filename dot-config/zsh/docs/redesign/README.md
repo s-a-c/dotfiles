@@ -9,6 +9,12 @@ Baseline captured (timestamp in metrics/perf-baseline.json):
 - discarded_count: 0 (no outliers removed)
 Improvement gate: redesign accepted when startup_mean <= 3817ms (80% of baseline). Badge: docs/redesign/badges/perf.json (served via workflow).
 
+### Badge Endpoints (Shields Examples)
+Replace <ORG>/<REPO> with actual repository slug once remote is configured:
+- Perf Badge: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/<ORG>/<REPO>/gh-pages/badges/perf.json
+- Structure Badge: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/<ORG>/<REPO>/gh-pages/badges/structure.json
+- Summary Badge: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/<ORG>/<REPO>/gh-pages/badges/summary.json
+
 ## 1. Core Planning Documents
 | Doc | Purpose |
 |-----|---------|
