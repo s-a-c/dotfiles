@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+# Local pre-commit hook (install by symlinking into .git/hooks or running tools/install-git-hooks.zsh)
+# Enforces: tests (unit,integration,security), quick perf regression guard (<5%), optional style.
+# Adds: warning when committing directly to main/master without feature branch.
+set -euo pipefail
+
+branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo unknown)
+if [[ "${branch}" =~ ^(main|master)$ ]] && [[ "${ALLOW_DIRECT_MAIN_COMMIT:-0}" != "1" ]]; then
+    echo "[pre-commit][WARN] Direct commit on '${branch}'. Create a feature branch and use tools/commit-skeleton.zsh <task>."
+    echo "[pre-commit][INFO] Override with ALLOW_DIRECT_MAIN_COMMIT=1 if this is intentional (e.g., docs-only hotfix)."
+fi
+
+CHANGED=$(git diff --cached --name-only || true)
+if [[ -z "$CHANGED" ]]; then
+    echo '[pre-commit] No staged changes.'
+    exit 0
+fi
+# Skip if only docs changes
+if ! echo "$CHANGED" | grep -vq '^docs/'; then
+    echo '[pre-commit] Docs-only change; skipping tests.'
+    exit 0
+fi
+ROOT_DIR=$(git rev-parse --show-toplevel)
+TEST_RUNNER=$ROOT_DIR/tests/run-all-tests.zsh
+PERF=$ROOT_DIR/bin/test-performance.zsh
+BASE=$ROOT_DIR/docs/redesign/metrics/perf-baseline.json
+mkdir -p $ROOT_DIR/.git/tmp
+
+if [[ -x $TEST_RUNNER ]]; then
+    echo '[pre-commit] Running unit+integration+security tests'
+    if ! $TEST_RUNNER --category=unit,integration,security --fail-fast; then
+        echo '[pre-commit] Test failure.' >&2
+        exit 1
+    fi
+else
+    echo '[pre-commit] WARN: test runner missing.' >&2
+fi
+
+if [[ -x $PERF ]]; then
+    echo '[pre-commit] Quick performance check (3 runs)'
+    QUICK=$ROOT_DIR/.git/tmp/perf-quick.json
+    if $PERF --runs 3 --json-out "$QUICK" 2>/dev/null; then
+        if [[ -f $BASE ]]; then
+            base=$(grep -E 'startup_mean_ms' "$BASE" | tr -dc '0-9.')
+            cur=$(grep -E 'startup_mean_ms' "$QUICK" | tr -dc '0-9.')
+            if [[ -n $base && -n $cur && $base != 0 ]]; then
+                delta=$(awk -v b="$base" -v c="$cur" 'BEGIN{ printf "%.2f", (c-b)/b*100 }')
+                echo "[pre-commit] Perf delta: ${delta}%"
+                if awk -v d="$delta" 'BEGIN{exit (d>5?0:1)}'; then
+                    echo '[pre-commit] Perf regression >5%' >&2
+                    exit 1
+                fi
+            fi
+        fi
+    else
+        echo '[pre-commit] WARN: quick perf run failed.' >&2
+    fi
+fi
+
+exit 0

@@ -1,0 +1,91 @@
+name: CI Performance
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: '0 3 * * *'
+
+jobs:
+  performance:
+    runs-on: macos-latest
+    env:
+      STRICT_PERF: ${{ github.ref == 'refs/heads/main' && '1' || '0' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ensure jq
+        run: brew install jq || true
+      - name: Run Performance Harness
+        shell: zsh {0}
+        run: |
+          if [[ -x bin/test-performance.zsh ]]; then
+            bin/test-performance.zsh --runs 10 --json-out perf-current.json || exit 1
+          else
+            echo '{"error":"missing harness"}' > perf-current.json
+          fi
+      - name: Compare Against Baseline & Generate Badge
+        shell: zsh {0}
+        run: |
+          mkdir -p docs/badges
+          BASE=docs/redesign/metrics/perf-baseline.json
+          CUR=perf-current.json
+          if [[ -f $BASE && -f $CUR ]]; then
+            base_mean=$(jq -r '.startup_mean_ms // empty' "$BASE")
+            cur_mean=$(jq -r '.startup_mean_ms // empty' "$CUR")
+            if [[ -n $base_mean && -n $cur_mean ]]; then
+              delta=$(awk -v b="$base_mean" -v c="$cur_mean" 'BEGIN{ printf "%.2f", (c-b)/b*100 }')
+              echo "Delta %: $delta"
+              color="brightgreen"
+              if awk -v d="$delta" 'BEGIN{exit (d>5?0:1)}'; then
+                color="red"
+                echo "Performance regression >5%" >&2
+                echo "regression" > .perf_regression
+              elif awk -v d="$delta" 'BEGIN{exit (d>0?0:1)}'; then
+                color="orange"
+              elif awk -v d="$delta" 'BEGIN{exit (d>-10?0:1)}'; then
+                color="yellow"
+              fi
+              cat > docs/badges/perf.json <<EOF
+{"schemaVersion":1,"label":"startup","message":"${cur_mean}ms (${delta}% )","color":"${color}"}
+EOF
+            else
+              echo 'Missing mean values'
+            fi
+          else
+            echo 'Baseline or current file missing'
+          fi
+      - name: Generate Badges Summary (perf only)
+        shell: zsh {0}
+        run: |
+          if [[ -x tools/generate-badges-summary.zsh ]]; then
+            tools/generate-badges-summary.zsh --output docs/badges/summary.json || true
+            cat docs/badges/summary.json || true
+          fi
+      - name: Upload Performance Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: perf-current
+          path: |
+            perf-current.json
+            docs/badges/perf.json
+            docs/badges/summary.json
+      - name: Install neomutt (macOS)
+        if: always()
+        run: brew install neomutt || true
+      - name: Fail on Regression (Main Branch)
+        if: always()
+        shell: zsh {0}
+        run: |
+          if [[ -f .perf_regression && "$STRICT_PERF" == "1" ]]; then
+            echo "❌ Performance regression >5% on main" >&2
+            exit 1
+          fi
+          echo "Performance status acceptable (STRICT_PERF=$STRICT_PERF)."
+      - name: Send Regression Email (neomutt)
+        if: failure() || steps.performance.outcome == 'failure' || hashFiles('.perf_regression') != ''
+        env:
+            ALERT_EMAIL: ${{ secrets.ALERT_EMAIL }}
+        run: |
+          if command -v neomutt >/dev/null 2>&1 && [[ -n "$ALERT_EMAIL" ]]; then
+            { echo 'Performance regression detected (>5%).'; echo 'See attached artifact perf-current.json.'; } | neomutt -s '[zsh-refactor] Performance Regression' -- "$ALERT_EMAIL" || true
+          else
+            echo 'neomutt or ALERT_EMAIL not available; skipping email.'
+          fi
