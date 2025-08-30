@@ -166,6 +166,10 @@ safe_git() {
         command git "$@"
     fi
 }
+# Provide backward-compatible wrapper if legacy references exist
+if ! typeset -f _lazy_gitwrapper >/dev/null 2>&1; then
+  _lazy_gitwrapper() { safe_git "$@"; }
+fi
 
 # ------------------------------------------------------------------------------
 # ZGENOM / plugin manager variables (use ZDOTDIR to localize installs)
@@ -212,6 +216,12 @@ zsh_debug_echo "    ZGEN_AUTOLOAD_COMPINIT=$ZGEN_AUTOLOAD_COMPINIT" || true
 # Completion behavior control: set to 0 to avoid automatic compinit while debugging.
 # When you are confident completions/fpath are correct, you can set this to 1.
 export ZGEN_AUTOLOAD_COMPINIT="${ZGEN_AUTOLOAD_COMPINIT:-0}"
+
+# Feature flags (planning): pre-plugin redesign & plugin ecosystem toggles
+export ZSH_ENABLE_PREPLUGIN_REDESIGN="${ZSH_ENABLE_PREPLUGIN_REDESIGN:-0}"
+export ZSH_ENABLE_NVM_PLUGINS="${ZSH_ENABLE_NVM_PLUGINS:-1}"
+export ZSH_NODE_LAZY="${ZSH_NODE_LAZY:-1}"
+export ZSH_ENABLE_ABBR="${ZSH_ENABLE_ABBR:-0}"
 
 # Optional: custom compdump location and compinit flags (keeps compdump in cache)
 export ZGEN_CUSTOM_COMPDUMP="${ZGEN_CUSTOM_COMPDUMP:-${ZSH_CACHE_DIR}/zcompdump_${ZSH_VERSION:-unknown}}"

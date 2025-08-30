@@ -317,7 +317,13 @@ fi
 # the quickstart kit's defaults by loading all files from the
 # $ZDOTDIR/.zshrc.pre-plugins.d directory
 mkdir -p "$ZDOTDIR/.zshrc.pre-plugins.d"
-load-shell-fragments "$ZDOTDIR/.zshrc.pre-plugins.d"
+
+if [[ ${ZSH_ENABLE_PREPLUGIN_REDESIGN:-0} == 1 && -d "$ZDOTDIR/.zshrc.pre-plugins.d.redesigned" ]]; then
+    zsh_debug_echo "# [pre-plugin] Using redesigned pre-plugin directory (.zshrc.pre-plugins.d.redesigned)"
+    load-shell-fragments "$ZDOTDIR/.zshrc.pre-plugins.d.redesigned"
+else
+    load-shell-fragments "$ZDOTDIR/.zshrc.pre-plugins.d"
+fi
 
 if [[ -d "$ZDOTDIR/.zshrc.pre-plugins.$(uname).d" ]]; then
     load-shell-fragments "$ZDOTDIR/.zshrc.pre-plugins.$(uname).d"
