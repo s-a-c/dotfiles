@@ -80,8 +80,22 @@ extract_mean() {
     echo 0
 }
 
+# New helper to extract relative stddev if present
+extract_rel() {
+    local file=$1 val
+    for key in filtered_relative_stddev raw_relative_stddev relative_stddev; do
+        if grep -q "\"$key\"" "$file"; then
+            val=$(grep -m1 "\"$key\"" "$file" | sed 's/[^0-9.]*//g' | head -1)
+            [[ -n $val ]] && { echo $val; return 0; }
+        fi
+    done
+    echo 0
+}
+
 base_mean=$(extract_mean "$BASE_JSON")
 cur_mean=$mean
+base_rel=$(extract_rel "$BASE_JSON")
+[[ -z $base_rel ]] && base_rel=0
 
 if [[ $base_mean = 0 ]]; then
     echo "[perf-badge] WARNING: could not extract baseline mean (defaulting base_mean=cur_mean)" >&2
@@ -100,12 +114,17 @@ fi
 
 improvement_label=$(awk -v d=$perc_delta 'BEGIN{ if(d<0){printf "%.0f%%", -d}else{printf "+%.0f%%", d} }')
 
+var_flag=""
+if awk -v r=$base_rel 'BEGIN{exit !(r>12)}'; then
+    var_flag=" var!"
+fi
+
 BADGE_JSON=$BADGE_DIR/perf.json
 cat > $BADGE_JSON <<EOF
-{"schemaVersion":1,"label":"zsh startup","message":"${cur_mean}ms ${improvement_label}","color":"${color}"}
+{"schemaVersion":1,"label":"zsh startup","message":"${cur_mean}ms ${improvement_label}${var_flag}","color":"${color}"}
 EOF
 
-echo "[perf-badge] wrote $BADGE_JSON (delta ${perc_delta}%)" >&2
+echo "[perf-badge] wrote $BADGE_JSON (delta ${perc_delta}% baseline_rel_stddev=${base_rel}%)" >&2
 
 if [[ ${ZSH_PERF_ALLOW_REGRESSION:-0} != 1 ]]; then
     # Fail if regression >5%

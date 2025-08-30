@@ -17,7 +17,7 @@ FORCE ?= 0
 DRY_RUN ?= 0
 ZDOTDIR ?=
 
-.PHONY: help ensure-zgenom-symlink ensure-zgenom-symlink-repo ensure-zgenom-symlink-runtime install baseline
+.PHONY: help ensure-zgenom-symlink ensure-zgenom-symlink-repo ensure-zgenom-symlink-runtime install baseline perf-check
 
 help:
 	@printf "zsh Makefile helper\n\n"
@@ -63,3 +63,10 @@ baseline:
 	@echo "Generating performance badge (5 runs)" >&2
 	@tools/generate-perf-badge.zsh 5 || true
 	@echo "Baseline + badge complete: docs/redesign/metrics/perf-baseline.json and docs/redesign/badges/perf.json" >&2
+
+.PHONY: perf-check
+perf-check:
+	@echo "Running performance regression check (7 runs)" >&2
+	@mkdir -p docs/redesign/metrics
+	@tools/perf-regression-check.zsh 7 > docs/redesign/metrics/perf-regression.json || true
+	@echo "Result: docs/redesign/metrics/perf-regression.json" >&2
