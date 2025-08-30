@@ -1,0 +1,111 @@
+name: CI Core
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  tests:
+    name: Core Test Matrix
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    env:
+      STRICT_DRIFT: ${{ github.ref == 'refs/heads/main' && '1' || '0' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Shell (zsh default)
+        run: echo "SHELL=$(which zsh)" >> $GITHUB_ENV
+      - name: Install jq (for badge parsing)
+        run: |
+          if [[ "$RUNNER_OS" == "Linux" ]]; then sudo apt-get update && sudo apt-get install -y jq >/dev/null 2>&1 || true; else brew install jq || true; fi
+      - name: Cache zgenom
+        uses: actions/cache@v4
+        with:
+          path: ~/.zgenom
+          key: zgenom-${{ runner.os }}-${{ hashFiles('**/trusted-plugins.json') }}
+      - name: Ensure Exec Bits
+        shell: bash
+        run: |
+          chmod +x tests/run-all-tests.zsh || true
+          find tests -type f -name 'test-*.zsh' -exec chmod +x {} + || true
+          chmod +x tools/generate-structure-audit.zsh || true
+          chmod +x tools/generate-structure-badge.zsh || true
+          chmod +x tools/generate-badges-summary.zsh || true
+      - name: Run Design (Includes Drift) Tests First
+        shell: zsh {0}
+        run: |
+          echo "STRICT_DRIFT=$STRICT_DRIFT (main branch strict enforcement if 1)"
+          tests/run-all-tests.zsh --category=design --fail-fast || exit 1
+          echo "Design tests complete."
+      - name: Run Structure Drift Test Explicitly
+        shell: zsh {0}
+        run: |
+          if [[ -f tests/style/phase06/test-structure-drift.zsh ]]; then
+            echo "Executing structure drift test (STRICT_DRIFT=$STRICT_DRIFT)"
+            zsh tests/style/phase06/test-structure-drift.zsh || true
+          fi
+      - name: Run Remaining Core Tests
+        shell: zsh {0}
+        run: |
+          tests/run-all-tests.zsh --category=unit,feature,integration,security --json-report || exit 1
+      - name: Generate Structure Audit
+        shell: zsh {0}
+        run: |
+          tools/generate-structure-audit.zsh --expect 11 --output docs/redesign/metrics/structure-audit.json || true
+          echo "Structure audit:" && cat docs/redesign/metrics/structure-audit.json || true
+      - name: Generate Structure Badge
+        shell: zsh {0}
+        run: |
+          tools/generate-structure-badge.zsh --audit docs/redesign/metrics/structure-audit.json --output docs/badges/structure.json $([[ "$STRICT_DRIFT" == "1" ]] && echo --strict) || true
+          echo "Structure badge:" && cat docs/badges/structure.json || true
+      - name: Generate Badges Summary
+        shell: zsh {0}
+        run: |
+          if [[ -x tools/generate-badges-summary.zsh ]]; then
+            tools/generate-badges-summary.zsh --output docs/badges/summary.json || true
+            echo "Badges summary:" && cat docs/badges/summary.json || true
+          fi
+      - name: Fail on Red Structure Badge (Main Branch / Post-Promotion)
+        if: always()
+        shell: zsh {0}
+        run: |
+          if [[ -f docs/badges/structure.json ]]; then
+            color=$(jq -r '.color // empty' docs/badges/structure.json 2>/dev/null || grep -o '"color":"[^"]*"' docs/badges/structure.json | sed 's/"color":"\([^"]*\)"/\1/')
+            msg=$(jq -r '.message // empty' docs/badges/structure.json 2>/dev/null || true)
+            echo "Structure badge color=$color message=$msg"
+            # Treat color red as drift failure only if strict mode (main) AND module count indicates post-promotion (expected count reached in audit)
+            if [[ "$STRICT_DRIFT" == "1" && "$color" == "red" ]]; then
+              echo "❌ Structure drift detected (red badge) on main branch" >&2
+              exit 1
+            fi
+          else
+            echo "No structure badge found; skipping fail check"
+          fi
+      - name: Upload Test Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: core-tests-${{ matrix.os }}
+          path: docs/redesign/reports/latest-test.json
+      - name: Upload Structure Audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: structure-audit-${{ matrix.os }}
+          path: docs/redesign/metrics/structure-audit.json
+      - name: Upload Structure Badge
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: structure-badge-${{ matrix.os }}
+          path: docs/badges/structure.json
+      - name: Upload Badges Summary
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: badges-summary-${{ matrix.os }}
+          path: docs/badges/summary.json
