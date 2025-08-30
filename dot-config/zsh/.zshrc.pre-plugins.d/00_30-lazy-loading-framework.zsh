@@ -261,4 +261,3 @@ fi
 
 zsh_debug_echo "# [performance] Lazy loading framework loaded"
 zsh_debug_echo "# ------ $0 --------------------------------"
-}

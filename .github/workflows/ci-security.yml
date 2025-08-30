@@ -1,0 +1,40 @@
+name: CI Security
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: '30 3 * * *'
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ensure jq
+        run: sudo apt-get update && sudo apt-get install -y jq || true
+      - name: Run Security Tests
+        shell: zsh {0}
+        run: |
+          if [[ -x tests/run-all-tests.zsh ]]; then
+            tests/run-all-tests.zsh --category=security --json-report || exit 1
+          else
+            echo 'Missing test runner'; exit 1
+          fi
+      - name: Upload Security Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-report
+          path: docs/redesign/reports/latest-test.json
+      - name: Install neomutt
+        if: failure()
+        run: sudo apt-get install -y neomutt || true
+      - name: Send Failure Email (neomutt)
+        if: failure()
+        env:
+          ALERT_EMAIL: ${{ secrets.ALERT_EMAIL }}
+        run: |
+          if command -v neomutt >/dev/null 2>&1 && [[ -n "$ALERT_EMAIL" ]]; then
+            { echo 'Security scan failed.'; echo 'Review attached artifact in workflow run.'; } | neomutt -s '[zsh-refactor] Security Scan Failure' -- "$ALERT_EMAIL" || true
+          else
+            echo 'neomutt or ALERT_EMAIL not available; skipping email.'
+          fi
