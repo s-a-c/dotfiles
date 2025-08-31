@@ -3,7 +3,7 @@
 # Static design test: redesigned pre-plugin skeleton must not reference compinit.
 set -euo pipefail
 : ${ZDOTDIR:=${XDG_CONFIG_HOME:-$HOME/.config}/zsh}
-BASE="$ZDOTDIR/.zshrc.pre-plugins.d.redesigned"
+BASE="$ZDOTDIR/.zshrc.pre-plugins.d.REDESIGN"
 if [[ ! -d $BASE ]]; then
     echo "SKIP pre-plugin redesign directory missing"; exit 0
 fi

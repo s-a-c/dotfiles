@@ -13,7 +13,12 @@ set -euo pipefail
 runs=${1:-5}
 [[ $runs = *[^0-9]* ]] && runs=5
 ROOT_DIR=${0:A:h:h}
-BASE_JSON=$ROOT_DIR/docs/redesign/metrics/perf-baseline.json
+# Prefer new redesignv2 artifact path; fall back to legacy if not present
+if [[ -f $ROOT_DIR/docs/redesignv2/artifacts/metrics/perf-baseline.json ]]; then
+    BASE_JSON=$ROOT_DIR/docs/redesignv2/artifacts/metrics/perf-baseline.json
+else
+    BASE_JSON=$ROOT_DIR/docs/redesign/metrics/perf-baseline.json
+fi
 if [[ ! -f $BASE_JSON ]]; then
     echo "[perf-check] ERROR: baseline file missing: $BASE_JSON" >&2
     exit 2
