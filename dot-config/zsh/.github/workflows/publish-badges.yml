@@ -1,3 +1,4 @@
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v<checksum>
 name: Publish Badges & Metrics
 
 on:
@@ -16,23 +17,61 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
       - name: Generate Structure Audit
         run: |
           chmod +x tools/generate-structure-audit.zsh || true
           tools/generate-structure-audit.zsh
+
       - name: Generate Performance Badge
         run: |
           chmod +x tools/generate-perf-badge.zsh || true
           tools/generate-perf-badge.zsh 5
+
       - name: Generate Summary Badge
         run: |
           chmod +x tools/generate-summary-badges.zsh || true
           tools/generate-summary-badges.zsh
+
+      - name: Determine artifact root
+        id: artifact_root
+        run: |
+          if [ -d docs/redesignv2/artifacts/badges ] && [ -d docs/redesignv2/artifacts/metrics ]; then
+            echo "root=docs/redesignv2/artifacts" >> "$GITHUB_OUTPUT"
+          else
+            echo "root=docs/redesign" >> "$GITHUB_OUTPUT"
+          fi
+          echo "Selected artifact root: $(grep root= $GITHUB_OUTPUT | cut -d= -f2)"
+
+      - name: Soft bridge (copy new artifacts to legacy paths if using redesignv2)
+        if: steps.artifact_root.outputs.root == 'docs/redesignv2/artifacts'
+        run: |
+          mkdir -p docs/redesign/badges docs/redesign/metrics
+          rsync -a --delete docs/redesignv2/artifacts/badges/ docs/redesign/badges/
+          rsync -a --delete docs/redesignv2/artifacts/metrics/ docs/redesign/metrics/ || true
+          if [ -d docs/redesignv2/artifacts/checksums ]; then
+            mkdir -p docs/redesign/checksums
+            rsync -a --delete docs/redesignv2/artifacts/checksums/ docs/redesign/checksums/
+          fi
+          if [ -d docs/redesignv2/artifacts/inventories ]; then
+            mkdir -p docs/redesign/inventories
+            rsync -a --delete docs/redesignv2/artifacts/inventories/ docs/redesign/inventories/
+          fi
+
       - name: Prepare publish directory
         run: |
           mkdir -p public
-          cp -R docs/redesign/badges public/
-          cp -R docs/redesign/metrics public/
+          # Prefer new root when publishing
+          if [ -d docs/redesignv2/artifacts/badges ]; then
+            cp -R docs/redesignv2/artifacts/badges public/
+          else
+            cp -R docs/redesign/badges public/
+          fi
+          if [ -d docs/redesignv2/artifacts/metrics ]; then
+            cp -R docs/redesignv2/artifacts/metrics public/
+          else
+            cp -R docs/redesign/metrics public/
+          fi
           # Simple index
           cat > public/index.html <<'HTML'
           <html><head><title>ZSH Metrics</title></head><body>
@@ -46,8 +85,10 @@ jobs:
             <li><a href="metrics/perf-baseline.json">perf-baseline.json</a></li>
           </ul>
           <p>Raw badge endpoints can be consumed via shields.io endpoint parameter.</p>
+          <p>Source now prefers redesignv2 artifacts (legacy paths bridged temporarily).</p>
           </body></html>
           HTML
+
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
@@ -55,6 +96,7 @@ jobs:
           publish_dir: ./public
           publish_branch: gh-pages
           keep_files: true
+
       - name: Output Shield URLs
         run: |
           echo "Perf Badge: https://img.shields.io/endpoint?url=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/raw/gh-pages/badges/perf.json"

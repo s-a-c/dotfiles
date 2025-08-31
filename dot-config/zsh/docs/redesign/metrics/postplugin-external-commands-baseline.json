@@ -1,0 +1,8 @@
+{
+  "generated_at": "2025-08-31T01:01:46+0100",
+  "mode": "legacy-baseline",
+  "raw_trace_lines": 330,
+  "estimated_external_commands": 188,
+  "trace_file": "/var/folders/f0/2m6r6db57bxglzky2b_f49n00000gn/T/tmp.Tsb2Z380R9",
+  "notes": "Heuristic count; redesign aims to reduce this by >=30%"
+}

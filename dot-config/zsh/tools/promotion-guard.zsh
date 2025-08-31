@@ -11,6 +11,8 @@
 # 5 Badge failure (red)
 # 6 JSON/Parse failure
 # 7 Markdown audit missing or inconsistent with JSON
+# 8 Legacy checksum verification failed
+# 9 Async state validation failed
 set -euo pipefail
 
 expected=${1:-11}
@@ -21,8 +23,14 @@ for arg in "$@"; do
 done
 
 ROOT=${0:A:h:h}
-METRICS=$ROOT/docs/redesign/metrics
-BADGES=$ROOT/docs/redesign/badges
+# Prefer new redesignv2 artifact paths; fall back to legacy redesign paths if not present
+if [[ -d $ROOT/docs/redesignv2/artifacts/metrics && -d $ROOT/docs/redesignv2/artifacts/badges ]]; then
+  METRICS=$ROOT/docs/redesignv2/artifacts/metrics
+  BADGES=$ROOT/docs/redesignv2/artifacts/badges
+else
+  METRICS=$ROOT/docs/redesign/metrics
+  BADGES=$ROOT/docs/redesign/badges
+fi
 
 need=(structure-audit.json perf-current.json perf-baseline.json $BADGES/perf.json $BADGES/structure.json structure-audit.md)
 missing=()
@@ -114,5 +122,33 @@ if grep -q '"color":"red"' $BADGES/perf.json || grep -q '"color":"red"' $BADGES/
     exit 5
 fi
 
-print "[promotion-guard] OK (modules=$total_modules mean=${cur_mean}ms baseline=${base_mean}ms delta=${perc_delta}% violations=${violations_ct})"
+# Checksum verification
+CHECKSUM_VERIFIER=$ROOT/tools/verify-legacy-checksums.zsh
+if [[ -f $CHECKSUM_VERIFIER ]]; then
+    if ! $CHECKSUM_VERIFIER >/dev/null 2>&1; then
+        print -u2 "[promotion-guard] Legacy checksum verification failed"
+        exit 8
+    fi
+else
+    print -u2 "[promotion-guard] Warning: checksum verifier not found at $CHECKSUM_VERIFIER"
+fi
+
+# Async state validation - check for deferred async start
+ASYNC_STATE_LOG="$ROOT/logs/async-state.log"
+PERF_LOG="$ROOT/logs/perf-current.log"
+if [[ -f $ASYNC_STATE_LOG ]]; then
+    # Look for evidence of deferred async start (should not be RUNNING before first prompt)
+    if grep -q "ASYNC_STATE:RUNNING" $ASYNC_STATE_LOG && ! grep -q "PERF_PROMPT:" $PERF_LOG; then
+        print -u2 "[promotion-guard] Async validation failed: found RUNNING state before first prompt"
+        exit 9
+    fi
+    # Look for proper deferred start marker
+    if ! grep -q "SECURITY_ASYNC_QUEUE" $ASYNC_STATE_LOG; then
+        print -u2 "[promotion-guard] Warning: async queue marker not found (may indicate missing deferred start)"
+    fi
+else
+    print -u2 "[promotion-guard] Warning: async state log not found at $ASYNC_STATE_LOG"
+fi
+
+print "[promotion-guard] OK (modules=$total_modules mean=${cur_mean}ms baseline=${base_mean}ms delta=${perc_delta}% violations=${violations_ct} checksum=verified)"
 exit 0

@@ -1,0 +1,8 @@
+{
+  "generated_at": "2025-08-31T01:16:47+0100",
+  "mode": "legacy-multi-site",
+  "compinit_refs_active": 00,
+  "compinit_refs_legacy": 19,
+  "compinit_refs_total": 19,
+  "note": "Baseline multi-site compinit occurrences before consolidation to single guarded init"
+}
