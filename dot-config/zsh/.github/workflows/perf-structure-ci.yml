@@ -1,3 +1,4 @@
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v<checksum>
 name: Perf & Structure CI
 
 on:
@@ -11,42 +12,104 @@ jobs:
   perf-structure:
     runs-on: macos-latest
     timeout-minutes: 15
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Set up shell
         run: echo "SHELL=$(which zsh)" >> $GITHUB_ENV
+
       - name: Make scripts executable
         run: |
           chmod +x tools/generate-perf-badge.zsh || true
           chmod +x tools/generate-structure-audit.zsh || true
           chmod +x tools/generate-summary-badges.zsh || true
           chmod +x tools/perf-regression-check.zsh || true
+
       - name: Generate Structure Audit
         run: tools/generate-structure-audit.zsh
+
       - name: Generate Performance Badge (fail on >5% regression)
         run: tools/generate-perf-badge.zsh 5
+
       - name: Perf Regression Check (informational)
+        id: perf_regression
         run: |
           set -e
-          tools/perf-regression-check.zsh 7 > docs/redesign/metrics/perf-regression.json || true
+          # Decide output path preferring redesignv2
+          OUT="docs/redesign/metrics/perf-regression.json"
+          if [ -d docs/redesignv2/artifacts/metrics ]; then
+            OUT="docs/redesignv2/artifacts/metrics/perf-regression.json"
+          fi
+          tools/perf-regression-check.zsh 7 > "$OUT" || true
+          echo "file=$OUT" >> "$GITHUB_OUTPUT"
           echo "Perf regression report:" >&2
-          cat docs/redesign/metrics/perf-regression.json >&2
+          cat "$OUT" >&2
+
+      - name: Determine artifact root
+        id: artifact_root
+        run: |
+          if [ -d docs/redesignv2/artifacts/badges ] && [ -d docs/redesignv2/artifacts/metrics ]; then
+            echo "root=docs/redesignv2/artifacts" >> "$GITHUB_OUTPUT"
+          else
+            echo "root=docs/redesign" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Enforce Regression Gate
         run: |
-          STATUS=$( (command -v jq >/dev/null 2>&1 && jq -r '.status' docs/redesign/metrics/perf-regression.json) || grep -o '"status" *: *"[a-zA-Z]*"' docs/redesign/metrics/perf-regression.json | sed 's/.*"status" *: *"//;s/".*//' )
+          JSON=""
+          if [ -f docs/redesignv2/artifacts/metrics/perf-regression.json ]; then
+            JSON=docs/redesignv2/artifacts/metrics/perf-regression.json
+          elif [ -f docs/redesign/metrics/perf-regression.json ]; then
+            JSON=docs/redesign/metrics/perf-regression.json
+          else
+            echo "No perf regression JSON found; skipping gate (treat as pass)." >&2
+            exit 0
+          fi
+          STATUS=$( (command -v jq >/dev/null 2>&1 && jq -r '.status' "$JSON") || grep -o '"status" *: *"[A-Za-z]*"' "$JSON" | sed 's/.*"status" *: *"//;s/".*//' )
           echo "Detected perf status: $STATUS" >&2
           if [ "$STATUS" = "regression" ]; then
             echo "CI failing due to performance regression" >&2
             exit 2
           fi
+
       - name: Generate Summary Badge
         run: tools/generate-summary-badges.zsh
+
+      - name: Soft bridge (if using redesignv2 root)
+        if: steps.artifact_root.outputs.root == 'docs/redesignv2/artifacts'
+        run: |
+          mkdir -p docs/redesign/badges docs/redesign/metrics
+          rsync -a --delete docs/redesignv2/artifacts/badges/ docs/redesign/badges/
+            rsync -a --delete docs/redesignv2/artifacts/metrics/ docs/redesign/metrics/ || true
+          if [ -d docs/redesignv2/artifacts/checksums ]; then
+            mkdir -p docs/redesign/checksums
+            rsync -a --delete docs/redesignv2/artifacts/checksums/ docs/redesign/checksums/
+          fi
+          if [ -d docs/redesignv2/artifacts/inventories ]; then
+            mkdir -p docs/redesign/inventories
+            rsync -a --delete docs/redesignv2/artifacts/inventories/ docs/redesign/inventories/
+          fi
+
       - name: Upload Badge & Metrics Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: badges-and-metrics
           path: |
+            docs/redesignv2/artifacts/badges/*.json
+            docs/redesignv2/artifacts/metrics/*.json
+            docs/redesignv2/artifacts/metrics/structure-audit.md
             docs/redesign/badges/*.json
             docs/redesign/metrics/*.json
             docs/redesign/metrics/structure-audit.md
+
+      - name: Summary (human readable)
+        run: |
+          echo "Artifact root selected: ${{ steps.artifact_root.outputs.root }}"
+          if [ -f docs/redesignv2/artifacts/metrics/perf-regression.json ]; then
+            echo "Perf regression file: docs/redesignv2/artifacts/metrics/perf-regression.json"
+          elif [ -f docs/redesign/metrics/perf-regression.json ]; then
+            echo "Perf regression file: docs/redesign/metrics/perf-regression.json"
+          fi
+          echo "Migration mode: SOFT (dual-write / bridge enabled)"
