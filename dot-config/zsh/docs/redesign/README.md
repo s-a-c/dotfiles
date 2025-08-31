@@ -1,21 +1,30 @@
 # ZSH Redesign Documentation Index (Consolidated)
-Date: 2025-08-30
-Status: Planning Complete (Implementation Not Yet Begun)
+> **DEPRECATED**: This legacy documentation tree has been superseded by the consolidated structure in `docs/redesignv2/`.  
+> Please refer to `docs/redesignv2/README.md` for the authoritative navigation, implementation status, architecture, and reference materials.  
+> This file is retained solely for historical context and will no longer be updated.
 
-## Baseline Performance Summary
+Date: 2025-08-31
+Status: Implementation In Progress (Stage 1: Skeleton)
+
+This document tracks the ZSH startup and configuration redesign. The project is now actively in progress. For details on feature flags that control the progressive rollout, see [Gating Flags](planning/gating-flags.md). For deep analysis of the post-plugin module design, see the [Post-Plugin Redesign Analysis](planning/post-plugin-redesign-analysis.md).
+
+## 1. Baseline Performance Summary
+
 Baseline captured (timestamp in metrics/perf-baseline.json):
 - filtered_mean_ms: 4772ms
 - filtered_relative_stddev: 2.62%
 - discarded_count: 0 (no outliers removed)
 Improvement gate: redesign accepted when startup_mean <= 3817ms (80% of baseline). Badge: docs/redesign/badges/perf.json (served via workflow).
 
-### Badge Endpoints (Shields Examples)
-Replace <ORG>/<REPO> with actual repository slug once remote is configured:
-- Perf Badge: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/<ORG>/<REPO>/gh-pages/badges/perf.json
-- Structure Badge: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/<ORG>/<REPO>/gh-pages/badges/structure.json
-- Summary Badge: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/<ORG>/<REPO>/gh-pages/badges/summary.json
+### 1.1. Badge Endpoints (Shields Examples)
 
-## 1. Core Planning Documents
+Replace <ORG>/<REPO> with actual repository slug once remote is configured:
+- [Perf Badge:}( https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/<ORG>/<REPO>/gh-pages/badges/perf.json)
+- [Structure Badge:]( https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/<ORG>/<REPO>/gh-pages/badges/structure.json)
+- [Summary Badge:]( https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/<ORG>/<REPO>/gh-pages/badges/summary.json)
+
+## 2. Core Planning Documents
+
 | Doc | Purpose |
 |-----|---------|
 | planning/analysis.md | Current-state inventory & rationale |
@@ -34,14 +43,16 @@ Replace <ORG>/<REPO> with actual repository slug once remote is configured:
 | planning/migration-checklist.md | Migration verification & checklist |
 | planning/diagrams.md | Comprehensive visual architecture & flows |
 
-## 2. Architecture & Reviews
+## 3. Architecture & Reviews
+
 | Doc | Purpose |
 |-----|---------|
 | architecture-overview.md | Startup phases & module dependencies |
 | review/issues.md | Issues & risk classifications |
 | review/completion-audit.md | Completion system audit & guard plan |
 
-## 3. Supplemental / Optional
+## 4. Supplemental / Optional
+
 | Doc | Purpose |
 |-----|---------|
 | planning/optional-next-steps.md (TBD) | CI/CD scaffold (future to copy) |
@@ -49,11 +60,13 @@ Replace <ORG>/<REPO> with actual repository slug once remote is configured:
 | metrics/ | Baseline & current metrics artifacts |
 | glossary.md | Terminology & abbreviations reference |
 
-## 4. Module Target Structures
+## 5. Module Target Structures
+
 Post-plugin (planned 11): 00,05,10,20,30,40,50,60,70,80,90
 Pre-plugin (planned 8): 00,05,10,15,20,25,30,(40 reserved)
 
-## 5. Key Guard Variables
+## 6. Key Guard Variables
+
 | Var | Description |
 |-----|-------------|
 | _COMPINIT_DONE | Ensures single compinit run |
@@ -65,27 +78,57 @@ Pre-plugin (planned 8): 00,05,10,15,20,25,30,(40 reserved)
 | ZSH_ENABLE_ABBR | Optional reintroduction of abbreviation plugin |
 | _LOADED_<MODULE> | Per-file sentinel guard |
 
-## 6. Performance Gates
+## 7. Performance Gates
+
 - Baseline captured via baseline-metrics-plan (mean 4772ms ±2.62%)
 - Redesign accepted only if startup_mean <= baseline_mean * 0.80 (<=3817ms)
 - CI/perf badge fails >5% regression
 
-## 7. Integrity Strategy
+## 8. Integrity Strategy
+
 Early (00) minimal stub → Deferred (80) async deep hashing; user commands (planned) `plugin_security_status`, `plugin_scan_now`.
 
-## 8. Testing Summary (See testing-strategy)
+## 9. Testing Summary (See testing-strategy)
+
 Design, Unit, Feature, Integration, Performance, Security, Maintenance categories with threshold enforcement.
 
-## 9. Implementation Entry (See implementation-entry-criteria)
+## 10. Implementation Entry (See implementation-entry-criteria)
+
 All criteria must be ✅ before first rename/migration commit.
 
-## 10. Rollback
+## 11. Rollback
+
 Decision flow: rollback-decision-tree.md; requires preserved perf-current.json & structure-audit.json; tag rollback-DATE annotated.
 
-## 11. Consolidation Status
+## 12. Implementation Entry (See implementation-entry-criteria)
+
+All criteria must be ✅ before first rename/migration commit.
+
+## 13. Rollback
+
+Decision flow: rollback-decision-tree.md; requires preserved perf-current.json & structure-audit.json; tag rollback-DATE annotated.
+
+## 14. Implementation Entry (See implementation-entry-criteria)
+
+All criteria must be ✅ before first rename/migration commit.
+
+## 15. Rollback
+
+Decision flow: rollback-decision-tree.md; requires preserved perf-current.json & structure-audit.json; tag rollback-DATE annotated.
+
+## 16. Current Implementation Status (From Master Plan)
+
+- Stage 1: Skeleton - Structure established, feature flags active, inventories frozen
+- Stage 2: Content Migration - In progress for core modules
+- Stage 3: Performance Validation - Pending baseline completion
+- Stage 4: Promotion - Awaiting all criteria satisfaction
+
+## 13. Consolidation Status
+
 All planning docs consolidated under this directory. Original external copies (if any) are now superseded by these.
 
-## 12. Cross-Link Map
+## 14. Cross-Link Map
+
 | Doc | Back Link Present | Key Outbound Links |
 |-----|-------------------|--------------------|
 | [planning/migration-checklist.md](planning/migration-checklist.md) | ✔ Back to Index | [implementation-plan.md](planning/implementation-plan.md), [final-report.md](planning/final-report.md), [prefix-reorg-spec.md](planning/prefix-reorg-spec.md), [pre-plugin-redesign-spec.md](planning/pre-plugin-redesign-spec.md) |
