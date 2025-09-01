@@ -1,2 +1,130 @@
 # dotfiles
-learning stow
+
+Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+
+Personal dotfiles managed (or migrating toward) GNU Stow for symlink-based configuration management.
+
+## Contents
+- Consolidated `.gitignore` tuned for multi-language/editor noise and secret/material exclusion
+- Automated secret scanning GitHub Action (`.github/workflows/secret-scan.yml`)
+- Local pre-commit secret scan hook (`.githooks/pre-commit.d/secret-scan`)
+- History rewrite plan (`SECRET_HISTORY_REWRITE_PLAN.md`)
+- Gitleaks baseline configuration (`.github/gitleaks.toml`)
+
+## Secret Management & Scanning
+
+### 1. Preventive Ignore Rules
+Any directory named `.env` (and common secret file extensions) are ignored:
+```
+.env
+.env.*
+*.env
+.env/
+```
+Plus explicit ignore for `dot-config/zsh/.env/` and typical key/cert/state files (e.g. `*.pem`, `terraform.tfstate*`, `*.tfvars`).
+
+### 2. CI Secret Scanning (`secretScan` workflow)
+Runs on:
+- Pull Requests (opened, synchronize, reopen, ready_for_review)
+- Pushes to `main` / `master`
+- Manual dispatch
+
+Uses `gitleaks` with baseline config at `.github/gitleaks.toml`.
+Failure blocks merges when potential secrets are detected.
+
+Adjust sensitivity by editing `.github/gitleaks.toml`; add narrow allowlist patterns instead of broad file/path wildcards to minimize false negatives.
+
+### 3. Local Pre-Commit Hook
+Path: `.githooks/pre-commit.d/secret-scan`
+
+Enables fast feedback before pushing:
+```
+git config core.hooksPath .githooks
+```
+
+Optional environment variables:
+- `SECRET_SCAN_VERBOSE=1` for debug
+- `SECRET_SCAN_MAX_FINDINGS=20` to raise limit
+- `SECRET_SCAN_ALLOW_REGEXES='EXAMPLE,DUMMY'` comma-separated suppression
+- `SECRET_SCAN_DISABLE_GITLEAKS=1` to force fallback heuristic scanner
+- `SKIP_SECRET_SCAN=1` (discouraged) bypasses the hook
+
+### 4. Manual Local Scan Examples
+Full repo scan (HEAD):
+```
+gitleaks detect --redact --config .github/gitleaks.toml
+```
+Diff-only (against main):
+```
+git fetch origin main
+gitleaks detect --redact --config .github/gitleaks.toml --log-opts="origin/main..HEAD"
+```
+
+### 5. History Rewrite (If Secrets Entered History)
+Follow `SECRET_HISTORY_REWRITE_PLAN.md` for a surgical rewrite using:
+```
+git filter-repo --force --invert-paths \
+  --path dot-config/zsh/.env/api-keys.env \
+  --path dot-config/zsh/.env/development.env \
+  --path dot-config/zsh/.env/
+```
+Then:
+```
+git push --force-with-lease origin main
+```
+And instruct collaborators to reset:
+```
+git fetch origin
+git checkout main
+git reset --hard origin/main
+git clean -fd
+```
+
+### 6. Redaction (Optional)
+Populate `replacements.txt` with literal or `regex:` patterns and run:
+```
+git filter-repo --force --replace-text replacements.txt
+```
+Prefer deletion over redaction for environment files unless historical retention is required.
+
+## Development Workflow Notes
+1. Create/edit configs under `dot-config/`
+2. Stow (example):
+   ```
+   stow --target=$HOME zsh
+   ```
+3. Commit changes (hook scans automatically)
+4. Push; GitHub Action enforces secondary scan
+
+## Extending Scanning
+Potential future enhancements:
+- SARIF upload for GitHub Advanced Security
+- Adding entropy threshold tuning in baseline config
+- Language-specific rule additions (e.g., Terraform provider creds)
+
+## Contributing
+Changes should preserve:
+- Principle of least privilege in CI
+- Minimal false positive surface (tight allowlists)
+- Clear audit trails in rewrite/secret-related docs
+
+## License
+See `LICENSE` (if present).
+
+## Quick Reference Commands
+Rotate & rewrite:
+```
+git clone --mirror <url> mirror.git
+pip install git-filter-repo
+git filter-repo --force --invert-paths --path dot-config/zsh/.env/
+git push --force-with-lease origin main
+```
+
+Validate purge:
+```
+git grep -F 'API_KEY=' || echo 'Not found'
+git log -- dot-config/zsh/.env/ | head -1 || echo 'Directory removed'
+```
+
+## Acknowledgements
+Security automation aligns with documented security standards (authentication, logging, incident response) in the guidelines referenced above.

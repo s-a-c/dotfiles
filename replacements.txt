@@ -1,0 +1,92 @@
+# replacements.txt - search/replace directives for git filter-repo
+#
+# Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+# Sensitive action (history rewrite / secret scrubbing) citing security standards:
+# - [/Users/s-a-c/dotfiles/dot-config/ai/guidelines/100-security-standards.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines/100-security-standards.md)
+#
+# PURPOSE
+#   Provide token/string redactions across repository history using:
+#       git filter-repo --force --replace-text dotfiles/replacements.txt
+#
+# FORMAT (git filter-repo --replace-text)
+#   Each non-blank, non-comment line = <match><whitespace><replacement>
+#   - <match> is a literal substring by default (NOT a regex).
+#   - Leading/trailing whitespace around <replacement> is preserved (except a leading single space delimiter).
+#   - Use tabs or spaces (1+) to separate match from replacement.
+#   - Lines starting with '#' are comments and ignored.
+#   - To use a regex, prefix the match with 'regex:' (e.g.  regex:API_KEY_[0-9A-F]+  ***REDACTED*** )
+#
+# BEST PRACTICES
+#   1. Prefer removing entire secret files with --invert-paths when possible (see section "File Removal Commands").
+#   2. Only use regex when multiple variants need redaction; keep patterns specific to avoid collateral changes.
+#   3. Use distinct replacement markers (e.g. ***REDACTED*** or FIXED:<token-purpose>) for audit clarity.
+#   4. After rewrite: verify secrets purged:  git grep -F '<original-fragment>' || echo 'Not found'
+#
+# WORKFLOW OUTLINE
+#   1. Rotate credentials BEFORE rewriting (assume exposed).
+#   2. Populate this file with exact secrets (or distinctive substrings).
+#   3. (Optional) Remove secret files via --invert-paths in same filter-repo invocation.
+#   4. Run filter-repo.
+#   5. Force push with lease, coordinate with collaborators.
+#   6. Invalidate caches (CI artifacts, logs) if they might contain old content.
+#
+# ---------------------------------------------------------------------------
+# TEMPLATE SECTIONS
+# ---------------------------------------------------------------------------
+# LITERAL SECRETS (Exact values) ------------------------------------------------
+# Replace PLACEHOLDER_SECRET_VALUE_1  with your real secret; keep only a unique fragment if length is large.
+#PLACEHOLDER_SECRET_VALUE_1  ***REDACTED***
+#PLACEHOLDER_SECRET_VALUE_2  ***REDACTED***
+#
+# API KEYS / TOKENS (Examples) --------------------------------------------------
+#MY_PROD_API_KEY_1234567890abcdef  ***REDACTED***
+#MY_STAGING_API_KEY_abcd1234       ***REDACTED***
+#
+# REGEX TOKENS (Uncomment & adapt) ----------------------------------------------
+#regex:(?i)aws_access_key_id\\s*=\\s*AKIA[0-9A-Z]{16}  AWS_ACCESS_KEY_ID=***REDACTED***
+#regex:(?i)aws_secret_access_key\\s*=\\s*[A-Za-z0-9/+=]{40}  AWS_SECRET_ACCESS_KEY=***REDACTED***
+#regex:(?i)ghp_[0-9A-Za-z]{36}  GITHUB_PERSONAL_TOKEN_***REDACTED***
+#regex:(?i)(api|secret)_key\\s*[:=]\\s*['\"]?[A-Za-z0-9_-]{16,64}['\"]?  $1_key=***REDACTED***
+#
+# PRIVATE KEY BLOCKS ------------------------------------------------------------
+# You can aggressively nuke private key headers to ensure they cannot be reconstructed.
+#-----BEGIN PRIVATE KEY-----  ***REDACTED-PRIVATE-KEY***
+#-----BEGIN OPENSSH PRIVATE KEY-----  ***REDACTED-OPENSSH-KEY***
+#
+# MISC SECRET-LIKE PATTERNS -----------------------------------------------------
+#regex:(?i)password\\s*[:=]\\s*['\"][^'\"\\r\\n]{4,200}['\"]  password=\"***REDACTED***\"
+#regex:(?i)client_secret\\s*[:=]\\s*['\"][A-Za-z0-9._-]{8,200}['\"]  client_secret=\"***REDACTED***\"
+#
+# ---------------------------------------------------------------------------
+# FILE REMOVAL COMMANDS (run separately – NOT part of this file)
+# ---------------------------------------------------------------------------
+# To remove the entire .env directory and listed files from history, run (example):
+#   git filter-repo --force --invert-paths \
+#     --path dot-config/zsh/.env/api-keys.env \
+#     --path dot-config/zsh/.env/development.env \
+#     --path dot-config/zsh/.env/
+#
+# Combine with replacements (if you keep some files but redact content):
+#   git filter-repo --force \
+#     --replace-text dotfiles/replacements.txt \
+#     --invert-paths --path dot-config/zsh/.env/api-keys.env --path dot-config/zsh/.env/development.env
+#
+# If you prefer to KEEP the files but blank their content historically:
+#   Add a line for each sensitive full-file content fragment or unique marker here with a tiny replacement (e.g. '***REMOVED***').
+#
+# ---------------------------------------------------------------------------
+# VERIFICATION (after rewrite)
+# ---------------------------------------------------------------------------
+#   git grep -F 'PLACEHOLDER_SECRET_VALUE_1' || echo 'Secret 1 gone'
+#   git grep -F 'MY_PROD_API_KEY_' || echo 'API key gone'
+#   (Add each unique probe string.)
+#
+# OPTIONAL: commit a post-rewrite verification script (scripts/verify-secrets.sh)
+#
+# ---------------------------------------------------------------------------
+# INSERT YOUR ACTUAL REPLACEMENTS BELOW THIS LINE
+# (Keep the header comments for audit trail.)
+# ---------------------------------------------------------------------------
+
+# Example real entry (remove once replaced):
+#OLD_INTERNAL_TOKEN_abcdef1234567890  INTERNAL_TOKEN=***REDACTED***
