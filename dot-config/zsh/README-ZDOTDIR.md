@@ -130,3 +130,29 @@ Notes and caveats
 Policy acknowledgement
 ----------------------
 Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v<checksum>
+
+Pre-push hook (optional)
+------------------------
+A sample pre-push hook to block accidental direct pushes to 'main' and detect a resurrected HEAD:main refspec is provided at `.githooks/pre-push`.
+
+Enable it (local repository) with:
+    git config core.hooksPath .githooks
+
+One-off override examples (use sparingly):
+    ALLOW_MAIN_PUSH=1 git push origin HEAD:main                    # allow a single direct push to main
+    ALLOW_HEAD_REFSPEC=1 git push                                  # ignore a transient HEAD:main refspec (remove it instead)
+
+Environment toggles:
+- ALLOW_MAIN_PUSH=1          permit a single direct main push (otherwise blocked)
+- ALLOW_HEAD_REFSPEC=1       bypass refspec (HEAD:main) protection temporarily
+- BLOCK_ALIAS_FINDINGS=1     treat suspicious push aliases as fatal (default is warn)
+- ALLOW_ALIAS_WARN=0         escalate alias findings to blocking (with BLOCK_ALIAS_FINDINGS=1)
+
+Recommended workflow:
+1. Keep pushes on feature branches; open PRs into main.
+2. Remove any remote.origin.push entries like HEAD:main:
+       git config --unset-all remote.origin.push
+3. (Optional) Add a global safe push behavior:
+       git config --global push.default current
+
+This hook is an advisory safeguard complementing the repository’s documented migration & security guidelines.
