@@ -318,9 +318,9 @@ fi
 # $ZDOTDIR/.zshrc.pre-plugins.d directory
 mkdir -p "$ZDOTDIR/.zshrc.pre-plugins.d"
 
-if [[ ${ZSH_ENABLE_PREPLUGIN_REDESIGN:-0} == 1 && -d "$ZDOTDIR/.zshrc.pre-plugins.d.REDESIGN" ]]; then
-    zsh_debug_echo "# [pre-plugin] Using redesigned pre-plugin directory (.zshrc.pre-plugins.d.REDESIGN)"
-    load-shell-fragments "$ZDOTDIR/.zshrc.pre-plugins.d.REDESIGN"
+if [[ ${ZSH_ENABLE_PREPLUGIN_REDESIGN:-0} == 1 && -d "$ZDOTDIR/.zshrc.pre-plugins.d.redesigned" ]]; then
+    zsh_debug_echo "# [pre-plugin] Using redesigned pre-plugin directory (.zshrc.pre-plugins.d.redesigned)"
+    load-shell-fragments "$ZDOTDIR/.zshrc.pre-plugins.d.redesigned"
 else
     load-shell-fragments "$ZDOTDIR/.zshrc.pre-plugins.d"
 fi
@@ -534,15 +534,7 @@ fi
 # Make it easy to append your own customizations that override the
 # quickstart's defaults by loading all files from the $ZDOTDIR/.zshrc.d directory
 mkdir -p "$ZDOTDIR/.zshrc.d"
-
-# Post-plugin redesign toggle: if enabled and redesign directory exists, load redesigned set instead
-# Guard variable: ZSH_ENABLE_POSTPLUGIN_REDESIGN=1 activates .zshrc.d.REDESIGN (parallel to pre-plugin redesign gating)
-if [[ ${ZSH_ENABLE_POSTPLUGIN_REDESIGN:-0} == 1 && -d "$ZDOTDIR/.zshrc.d.REDESIGN" ]]; then
-    zsh_debug_echo "# [post-plugin] Using redesigned post-plugin directory (.zshrc.d.REDESIGN)"
-    load-shell-fragments "$ZDOTDIR/.zshrc.d.REDESIGN"
-else
-    load-shell-fragments "$ZDOTDIR/.zshrc.d"
-fi
+load-shell-fragments "$ZDOTDIR/.zshrc.d"
 
 if [[ -d "$ZDOTDIR/.zshrc.$(uname).d" ]]; then
     load-shell-fragments "$ZDOTDIR/.zshrc.$(uname).d"

@@ -3,7 +3,7 @@ Date: 2025-08-30
 Status: Planning (Draft – to be Frozen after approval)
 
 ## 1. Scope
-Redesign of `.zshrc.pre-plugins.d` into `.zshrc.pre-plugins.d.REDESIGN` mirroring principles used for `.zshrc.d.REDESIGN`:
+Redesign of `.zshrc.pre-plugins.d` into `.zshrc.pre-plugins.d.redesigned` mirroring principles used for `.zshrc.d.REDESIGN`:
 - Deterministic numeric prefixes
 - Consolidation of fragmented early path / framework prep scripts
 - Early minimal surface; heavy logic deferred post plugin load if possible
@@ -34,7 +34,7 @@ Redesign of `.zshrc.pre-plugins.d` into `.zshrc.pre-plugins.d.REDESIGN` mirrorin
 
 ## 4. Target Structure (Skeleton)
 ```
-.zshrc.pre-plugins.d.REDESIGN/
+.zshrc.pre-plugins.d.redesigned/
   00-path-safety.zsh
   05-fzf-init.zsh
   10-lazy-framework.zsh
@@ -96,7 +96,7 @@ _LOADED_<UPPER_SLUG>=1
 | test-nvm-lazy-load.zsh | Ensure calling `nvm version` triggers sourcing exactly once |
 
 ## 11. Rollback Procedure (Pre-Plugin Only)
-- Rename `.zshrc.pre-plugins.d.REDESIGN` → `.zshrc.pre-plugins.d.failed-<timestamp>`
+- Rename `.zshrc.pre-plugins.d.redesigned` → `.zshrc.pre-plugins.d.failed-<timestamp>`
 - Restore original `.zshrc.pre-plugins.d` (unchanged baseline) – no cross-impact with post-plugin modules.
 
 ## 12. Risks & Mitigations

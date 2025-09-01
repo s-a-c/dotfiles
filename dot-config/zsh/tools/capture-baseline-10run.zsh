@@ -12,14 +12,8 @@ set -euo pipefail
 setopt pipe_fail
 
 RAW_COUNT=11    # total runs INCLUDING warm runs to discard
-# Prefer new redesignv2 artifact paths if present; fallback to legacy locations
-if [[ -d docs/redesignv2/artifacts/metrics ]]; then
-  OUT_FILE="docs/redesignv2/artifacts/metrics/perf-baseline.json"
-  RAW_LOG="docs/redesignv2/artifacts/metrics/startup-times-raw.txt"
-else
-  OUT_FILE="docs/redesign/metrics/perf-baseline.json"
-  RAW_LOG="docs/redesign/planning/startup-times-raw.txt"
-fi
+OUT_FILE="docs/redesign/metrics/perf-baseline.json"
+RAW_LOG="docs/redesign/planning/startup-times-raw.txt"
 QUIET=0
 WARM_DISCARD=1  # number of leading runs to discard
 PREWARM=1       # do a separate prewarm shell not counted

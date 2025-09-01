@@ -2,15 +2,6 @@ Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v<checksum>
 
 # ZDOTDIR: canonical location and notes
 
-> ⚠ Documentation Migration In Progress  
-> The legacy redesign documentation under `docs/redesign/` is deprecated.  
-> All new work, artifacts (badges, metrics, checksums, inventories), and stage specs now live under:  
-> `docs/redesignv2/` (artifacts: `docs/redesignv2/artifacts/{badges,metrics,checksums,inventories}`)  
-> Current Stage: see [Stage 3 Core Scope](docs/redesignv2/stages/stage-3-core.md).  
-> During the soft migration phase tooling prefers redesignv2; artifacts are bridged back to legacy paths for backward compatibility.  
-> Avoid adding new non‑deprecated content under `docs/redesign/`.
-
-
 Overview
 --------
 This directory (`zsh/`) is the canonical source for your Zsh configuration in this repository.

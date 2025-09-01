@@ -34,7 +34,7 @@ Primary Goals (Measurable):
 ```
 ### 2.2 Pre-Plugin (8 Files)
 ```
-.zshrc.pre-plugins.d.REDESIGN/
+.zshrc.pre-plugins.d.redesigned/
   00-path-safety.zsh
   05-fzf-init.zsh
   10-lazy-framework.zsh
@@ -127,7 +127,7 @@ Rollback Checklist Script (planned: `tools/dry-run-promotion-check.zsh`) verifie
 |-------|------|------------------|------------------|
 | 1 Baseline | Measure startup & structure | perf-baseline.json | baseline parse test |
 | 2 Backup | Immutable snapshot | .zshrc.d.backup-* | backup presence test |
-| 3 Pre-Plugin Skeleton | 8 guarded files | .zshrc.pre-plugins.d.REDESIGN | pre-plugin structure test (allow legacy) |
+| 3 Pre-Plugin Skeleton | 8 guarded files | .zshrc.pre-plugins.d.redesigned | pre-plugin structure test (allow legacy) |
 | 4 Pre-Plugin Migration | Path safety, lazy framework, node stubs, integrations | 00/05/10/15/20/25/30 active content | lazy-node test, no-compinit test |
 | 5 Post-Plugin Skeleton | 11 guarded files | .zshrc.d.REDESIGN | structure modules test |
 | 6 Phase1 Core (Post) | security/options/functions | 00/05/10 content | unit + design tests |

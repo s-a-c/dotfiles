@@ -117,7 +117,7 @@ See consolidation/plan.md for mapping.
 
 ---
 ## 8. Pre-Plugin Redesign (Expanded)
-Planned directory `.zshrc.pre-plugins.d.REDESIGN` (8 files). Goals: collapse 12 → 8; ensure zero compinit; provide lazy infra.
+Planned directory `.zshrc.pre-plugins.d.redesigned` (8 files). Goals: collapse 12 → 8; ensure zero compinit; provide lazy infra.
 
 | New File | Detailed Responsibilities | Deferred / Guarded Elements |
 |----------|--------------------------|-----------------------------|

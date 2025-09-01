@@ -1,31 +1,20 @@
 #!/usr/bin/env zsh
 # generate-perf-badge.zsh
 # Measure interactive startup, maintain baseline, emit shields.io JSON badge & metrics
-# Outputs (preferred new layout first):
-#    docs/redesignv2/artifacts/metrics/perf-current.json   (raw numbers)
-#    docs/redesignv2/artifacts/metrics/perf-baseline.json  (if missing)
-#    docs/redesignv2/artifacts/badges/perf.json            (badge endpoint)
-# Legacy fallback (if redesignv2 paths absent):
-#    docs/redesign/metrics/perf-current.json
-#    docs/redesign/metrics/perf-baseline.json
-#    docs/redesign/badges/perf.json
+# Outputs:
+#    docs/redesign/metrics/perf-current.json (raw numbers)
+#    docs/redesign/metrics/perf-baseline.json (if missing)
+#    docs/redesign/badges/perf.json (badge)
 # Exit non-zero if regression >5% vs baseline (unless ZSH_PERF_ALLOW_REGRESSION=1)
 
 set -euo pipefail
 zmodload zsh/datetime 2>/dev/null || true
 
 ROOT_DIR=${0:A:h:h}
-# Prefer redesigned v2 artifact locations, fallback to legacy if not present
-if [[ -d $ROOT_DIR/docs/redesignv2/artifacts/metrics && -d $ROOT_DIR/docs/redesignv2/artifacts/badges ]]; then
-  DOCS_DIR=$ROOT_DIR/docs/redesignv2
-  METRICS_DIR=$DOCS_DIR/artifacts/metrics
-  BADGE_DIR=$DOCS_DIR/artifacts/badges
-else
-  DOCS_DIR=$ROOT_DIR/docs/redesign
-  METRICS_DIR=$DOCS_DIR/metrics
-  BADGE_DIR=$DOCS_DIR/badges
-fi
-mkdir -p "$METRICS_DIR" "$BADGE_DIR"
+DOCS_DIR=$ROOT_DIR/docs/redesign
+METRICS_DIR=$DOCS_DIR/metrics
+BADGE_DIR=$DOCS_DIR/badges
+mkdir -p $METRICS_DIR $BADGE_DIR
 
 runs=${1:-5}
 [[ $runs = *[^0-9]* ]] && runs=5

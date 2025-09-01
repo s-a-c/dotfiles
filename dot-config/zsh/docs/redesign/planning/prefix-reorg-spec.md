@@ -119,7 +119,7 @@ Further changes require new version suffix (v2) and migration note.
 
 ## 10. Next Steps
 1. Merge design tests asserting target pre-plugin file count (8) & naming rules (still allowing legacy until flag set).
-2. Implement skeleton `.zshrc.pre-plugins.d.REDESIGN/` directory with guarded empty files.
+2. Implement skeleton `.zshrc.pre-plugins.d.redesigned/` directory with guarded empty files.
 3. Run structure audit extension to include pre-plugin set (enhance tool plan – not yet coded).
 4. Execute baseline performance capture BEFORE first rename.
 

@@ -1,9 +1,8 @@
-# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v<checksum>
 name: Nightly Metrics Refresh
 
 on:
   schedule:
-    - cron: '15 3 * * *' # 03:15 UTC nightly
+    - cron: '15 3 * * *'  # 03:15 UTC nightly
   workflow_dispatch: {}
 
 permissions:
@@ -17,66 +16,24 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
       - name: Ensure scripts executable
+        run: chmod +x tools/*.zsh || true
+      - name: Capture Baseline (no overwrite)
         run: |
-          chmod +x tools/*.zsh || true
-
-      - name: Capture Baseline (no overwrite if exists in either location)
-        run: |
-          # Only attempt if neither legacy nor new baseline exists
-          if [ ! -f docs/redesign/metrics/perf-baseline.json ] && [ ! -f docs/redesignv2/artifacts/metrics/perf-baseline.json ]; then
+          if [ ! -f docs/redesign/metrics/perf-baseline.json ]; then
             tools/capture-baseline-10run.zsh --runs 16 || true
           fi
-
       - name: Generate Current Performance Badge
         run: tools/generate-perf-badge.zsh 7
-
       - name: Generate Structure Audit & Badge
         run: tools/generate-structure-audit.zsh || true
-
       - name: Generate Summary Badge
         run: tools/generate-summary-badges.zsh || true
-
-      - name: Determine artifact root
-        id: artifact_root
-        run: |
-          if [ -d docs/redesignv2/artifacts/badges ]; then
-            echo "root=docs/redesignv2/artifacts" >> "$GITHUB_OUTPUT"
-          else
-            echo "root=docs/redesign" >> "$GITHUB_OUTPUT"
-          fi
-          echo "Selected artifact root: $(grep root= $GITHUB_OUTPUT | cut -d= -f2)"
-
-      - name: Soft bridge (copy new artifacts to legacy paths if using redesignv2)
-        if: steps.artifact_root.outputs.root == 'docs/redesignv2/artifacts'
-        run: |
-          mkdir -p docs/redesign/badges docs/redesign/metrics
-          rsync -a --delete docs/redesignv2/artifacts/badges/ docs/redesign/badges/
-          rsync -a --delete docs/redesignv2/artifacts/metrics/ docs/redesign/metrics/ || true
-          if [ -d docs/redesignv2/artifacts/checksums ]; then
-            mkdir -p docs/redesign/checksums
-            rsync -a --delete docs/redesignv2/artifacts/checksums/ docs/redesign/checksums/
-          fi
-          if [ -d docs/redesignv2/artifacts/inventories ]; then
-            mkdir -p docs/redesign/inventories
-            rsync -a --delete docs/redesignv2/artifacts/inventories/ docs/redesign/inventories/
-          fi
-
       - name: Prepare publish directory
         run: |
           mkdir -p public
-          # Prefer new root when publishing
-          if [ -d docs/redesignv2/artifacts/badges ]; then
-            cp -R docs/redesignv2/artifacts/badges public/
-          else
-            cp -R docs/redesign/badges public/
-          fi
-          if [ -d docs/redesignv2/artifacts/metrics ]; then
-            cp -R docs/redesignv2/artifacts/metrics public/
-          else
-            cp -R docs/redesign/metrics public/
-          fi
+          cp -R docs/redesign/badges public/
+          cp -R docs/redesign/metrics public/
           cat > public/index.html <<'HTML'
           <html><head><title>ZSH Nightly Metrics</title></head><body>
           <h1>ZSH Nightly Metrics</h1>
@@ -88,11 +45,9 @@ jobs:
             <li><a href="metrics/perf-baseline.json">perf-baseline.json</a></li>
             <li><a href="metrics/structure-audit.md">structure-audit.md</a></li>
           </ul>
-          <p>Source now prefers redesignv2 artifacts (legacy paths bridged temporarily during migration).</p>
-          <p>Updated nightly at 03:15 UTC.</p>
+          <p>Auto-updated nightly at 03:15 UTC.</p>
           </body></html>
           HTML
-
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
@@ -100,7 +55,6 @@ jobs:
           publish_dir: ./public
           publish_branch: gh-pages
           keep_files: true
-
       - name: Print Shield URLs
         run: |
           echo "Perf Badge: https://img.shields.io/endpoint?url=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/raw/gh-pages/badges/perf.json"
