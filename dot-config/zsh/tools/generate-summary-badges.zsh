@@ -3,8 +3,16 @@
 # Combine existing badges (perf, structure) into summary.json
 set -euo pipefail
 ROOT=${0:A:h:h}
-BADGES=$ROOT/docs/redesign/badges
-mkdir -p $BADGES
+# Migration preamble: prefer redesignv2 artifacts (create proactively), fallback to legacy if creation fails
+PREFERRED_BADGES=$ROOT/docs/redesignv2/artifacts/badges
+LEGACY_BADGES=$ROOT/docs/redesign/badges
+mkdir -p "$PREFERRED_BADGES" 2>/dev/null || true
+if [[ -d "$PREFERRED_BADGES" ]]; then
+  BADGES=$PREFERRED_BADGES
+else
+  BADGES=$LEGACY_BADGES
+fi
+mkdir -p "$BADGES"
 PERF=$BADGES/perf.json
 STRUCT=$BADGES/structure.json
 SUMMARY=$BADGES/summary.json
