@@ -10,6 +10,7 @@
     // The name of a font to use for rendering text in the UI
     // You can set this to ".SystemUIFont" to use the system font
     // "ui_font_family": "Zed Plex Sans",
+    "icon_theme": "Icons modern material (Dark)",
     "agent": {
         "default_model": {
             "provider": "copilot_chat",
@@ -21,6 +22,12 @@
         "play_sound_when_agent_done": true,
     },
     "context_servers": {
+        "mcp-server-byterover": {
+            "source": "extension",
+            "settings": {
+                "auth_header": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwdWJsaWNLZXkiOiJway1ici1iMWZlZDNmMi0wMGEwLTRhMjItOGE1Zi0wYTNhOWVmZmQ5ZWQiLCJ1c2VySWQiOiJlbWJyYWNlLnMwdWwrcy1hLWNAZ21haWwuY29tIiwiaWF0IjoxNzU2NjgzMTIxLCJleHAiOjE3NjE4NjcxMjEsImlzcyI6IkJZVEVST1ZFUiBNQ1AgU0VSVkVSIn0.HFExB8JLJOLosuGhz2z9sGkYYMTKvAooSqYDGOaCB9A"
+            }
+        },
         "mcp-server-context7": {
             "source": "extension",
             "settings": {
@@ -58,6 +65,6 @@
     "theme": {
         "mode": "dark",
         "light": "Ayu Light",
-        "dark": "Colorizer Pro"
+        "dark": "Catppuccin Espresso (Blur) [Heavy]"
     }
 }
