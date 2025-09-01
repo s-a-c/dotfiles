@@ -80,7 +80,5 @@ autoSetupRemote = true
 [format]
 	commitMessageColumns = 72
 	subjectPrefix = ^(feat|fix|chore|refactor|docs|style|test|perf|ci|build|revert)(\\([a-z-]+\\))?: [✨🐛🔧♻️📝💄✅⚡️👷🏗️⏪]
-[remote "origin"]
-	push = HEAD:main
 [gc]
 	auto = 256

@@ -1,0 +1,155 @@
+#!/usr/bin/env bash
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v<checksum>
+#
+# pre-push hook: blocks accidental pushes to main and guards against
+# resurrection of a HEAD:main push refspec. Also audits suspicious push
+# aliases during each push attempt.
+#
+# Features:
+#   1. Reject any ref update targeting refs/heads/main unless explicitly allowed.
+#   2. Reject if remote.origin.push contains a HEAD:main (or equivalent) refspec.
+#   3. Warn (or optionally block) if git aliases referencing 'push' and 'main'
+#      or 'HEAD:' patterns are detected.
+#
+# Override / Allow:
+#   Set ALLOW_MAIN_PUSH=1 to bypass the main protection for a single push.
+#   Set ALLOW_HEAD_REFspec=1 to bypass the HEAD:main refspec protection.
+#   Set ALLOW_ALIAS_WARN=1 to treat alias findings as warnings (default).
+#   Set BLOCK_ALIAS_FINDINGS=1 to fail if suspicious aliases are found.
+#
+# Exit Codes:
+#   0  Allowed / no protection triggered
+#   21 Blocked direct push to main
+#   22 Blocked due to HEAD:main refspec
+#   23 Blocked due to suspicious alias (if BLOCK_ALIAS_FINDINGS set)
+#
+# Hook Protocol:
+#   Git supplies lines on STDIN: <local ref> <local sha> <remote ref> <remote sha>
+#
+# Installation:
+#   Place this file at .githooks/pre-push (or .git/hooks/pre-push) and ensure:
+#       chmod +x .githooks/pre-push
+#   If using a custom hooks path:
+#       git config core.hooksPath .githooks
+#
+# NOTE: This script intentionally avoids external dependencies beyond POSIX tools.
+
+set -euo pipefail
+
+color() {
+  local code=$1; shift || true
+  if [[ -t 2 ]]; then
+    printf "\033[%sm%s\033[0m" "$code" "$*" >&2
+  else
+    printf "%s" "$*" >&2
+  fi
+}
+
+info()    { color "36" "[pre-push] $*"; echo >&2; }
+warn()    { color "33" "[pre-push] $*"; echo >&2; }
+error()   { color "31" "[pre-push] $*"; echo >&2; }
+success() { color "32" "[pre-push] $*"; echo >&2; }
+
+CURRENT_BRANCH="$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "UNKNOWN")"
+
+BLOCKED_MAIN=false
+BLOCKED_REFPEC=false
+BLOCKED_ALIAS=false
+
+MAIN_BRANCH="main"
+
+ALLOW_MAIN_PUSH="${ALLOW_MAIN_PUSH:-0}"
+ALLOW_HEAD_REFSPEC="${ALLOW_HEAD_REFspec:-${ALLOW_HEAD_REFSPEC:-0}}"
+ALLOW_ALIAS_WARN="${ALLOW_ALIAS_WARN:-1}"
+BLOCK_ALIAS_FINDINGS="${BLOCK_ALIAS_FINDINGS:-0}"
+
+# 1. Inspect the pushed refs from STDIN first (capture all lines)
+mapfile -t PUSH_LINES < <(cat)
+
+for line in "${PUSH_LINES[@]}"; do
+  # Format: <local_ref> <local_sha> <remote_ref> <remote_sha>
+  # remote_ref may be 000000... for deletes; we only care about pushes to heads/main
+  local_ref=$(awk '{print $1}' <<<"$line")
+  remote_ref=$(awk '{print $3}' <<<"$line")
+  [[ -z "$remote_ref" ]] && continue
+
+  if [[ "$remote_ref" == "refs/heads/$MAIN_BRANCH" ]]; then
+    if [[ "$ALLOW_MAIN_PUSH" != "1" ]]; then
+      BLOCKED_MAIN=true
+    else
+      warn "Bypassing main protection for this push (ALLOW_MAIN_PUSH=1)."
+    fi
+  fi
+done
+
+# 2. Detect HEAD:main refspec in remote.origin.push
+# (will show up if user re‑adds the problematic mapping)
+if git config --get-all remote.origin.push >/dev/null 2>&1; then
+  while IFS= read -r ref; do
+    if grep -Eq '(^|:)HEAD(:|$).*main$' <<<"$ref" || grep -Eq 'HEAD:refs/heads/(main|master)$' <<<"$ref"; then
+      if [[ "$ALLOW_HEAD_REFSPEC" != "1" ]]; then
+        BLOCKED_REFPEC=true
+        REF_HIT="$ref"
+      else
+        warn "HEAD->main refspec ($ref) detected but ALLOW_HEAD_REFSPEC=1 permits it."
+      fi
+    fi
+  done < <(git config --get-all remote.origin.push)
+fi
+
+# 3. Alias audit
+if git config --get-regexp '^alias\.' >/dev/null 2>&1; then
+  alias_hits=()
+  while IFS= read -r line; do
+    # Format: alias.push-something value
+    name=$(cut -d' ' -f1 <<<"$line")
+    value=$(cut -d' ' -f2- <<<"$line")
+    # Heuristic: alias contains both 'push' and either 'main' or 'HEAD:' mapping.
+    if [[ "$value" =~ push ]] && (grep -qiE 'HEAD:|main' <<<"$value"); then
+      alias_hits+=("$name => $value")
+    fi
+  done < <(git config --get-regexp '^alias\.')
+
+  if (( ${#alias_hits[@]} > 0 )); then
+    if [[ "$BLOCK_ALIAS_FINDINGS" == "1" && "$ALLOW_ALIAS_WARN" != "1" ]]; then
+      BLOCKED_ALIAS=true
+      error "Suspicious push aliases detected:"
+      for a in "${alias_hits[@]}"; do error "  $a"; done
+    else
+      warn "Suspicious push aliases (monitor / consider removal):"
+      for a in "${alias_hits[@]}"; do warn "  $a"; done
+      [[ "$BLOCK_ALIAS_FINDINGS" == "1" ]] && warn "BLOCK_ALIAS_FINDINGS=1 set but ALLOW_ALIAS_WARN=1 allows continuation."
+    fi
+  fi
+fi
+
+# Summarize scanning outcome before decision.
+if $BLOCKED_MAIN; then
+  error "Direct push to '$MAIN_BRANCH' blocked. (Set ALLOW_MAIN_PUSH=1 to override once.)"
+fi
+if $BLOCKED_REFPEC; then
+  error "Found disallowed remote.origin.push refspec: $REF_HIT"
+  error "Remove via: git config --unset-all remote.origin.push"
+  error "(Set ALLOW_HEAD_REFSPEC=1 to override once, NOT recommended.)"
+fi
+if $BLOCKED_ALIAS; then
+  error "Blocked due to suspicious alias and BLOCK_ALIAS_FINDINGS=1 (remove alias or unset env to continue)."
+fi
+
+if $BLOCKED_MAIN || $BLOCKED_REFPEC || $BLOCKED_ALIAS; then
+  # Choose exit code priority hierarchy
+  if $BLOCKED_MAIN; then
+    exit 21
+  elif $BLOCKED_REFPEC; then
+    exit 22
+  else
+    exit 23
+  fi
+fi
+
+success "Pre-push protections passed (branch: $CURRENT_BRANCH)."
+# Re-emit original lines to stdout so Git continues (some hooks expect pass-through; safe even if empty)
+if ((${#PUSH_LINES[@]})); then
+  printf "%s\n" "${PUSH_LINES[@]}"
+fi
+exit 0
