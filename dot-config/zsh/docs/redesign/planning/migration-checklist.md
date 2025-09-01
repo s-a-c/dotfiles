@@ -21,7 +21,7 @@ Legend: (M) Mandatory gate  (I) Informational  (R) Rollback point  (⚠) Abort i
 10. (M) Commit backup & backup SHA256 manifest (optional) → docs/redesign/metrics/backup.SHA256
 
 ## Phase 3 – Pre-Plugin Skeleton
-11. (M) Create .zshrc.pre-plugins.d.REDESIGN with guarded empty files (00,05,10,15,20,25,30,40)
+11. (M) Create .zshrc.pre-plugins.d.redesigned with guarded empty files (00,05,10,15,20,25,30,40)
 12. (M) Add design test (allow legacy + skeleton) – test-preplugins-structure.zsh (RED→GREEN)
 13. (M) Commit skeleton (feat(preplugins): skeleton)
 
@@ -110,7 +110,7 @@ Legend: (M) Mandatory gate  (I) Informational  (R) Rollback point  (⚠) Abort i
 ## Quick Rollback Reference
 | Rollback Point | Command Summary |
 |----------------|-----------------|
-| Pre-Plugin Only | rm -rf .zshrc.pre-plugins.d.REDESIGN; restore baseline branch |
+| Pre-Plugin Only | rm -rf .zshrc.pre-plugins.d.redesigned; restore baseline branch |
 | Post Phase 1 | git revert / reset to tag refactor-baseline; restore backup dir |
 | After Async | Remove 70/80; toggle STRICT flags off |
 | After Promotion | Restore .zshrc.d.legacy-final; unset loader flag; git reset --hard refactor-baseline |

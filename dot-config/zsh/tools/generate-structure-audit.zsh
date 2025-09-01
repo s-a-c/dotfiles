@@ -6,14 +6,9 @@
 #   in both Markdown (human) and JSON (machine) forms, plus a shields.io badge.
 #
 # Outputs (created/updated):
-#   Preferred (v2):
-#     docs/redesignv2/artifacts/metrics/structure-audit.md    (markdown table + summary marker)
-#     docs/redesignv2/artifacts/metrics/structure-audit.json  (modules, violations, totals)
-#     docs/redesignv2/artifacts/badges/structure.json         (badge endpoint)
-#   Legacy (fallback if v2 paths absent):
-#     docs/redesign/metrics/structure-audit.md
-#     docs/redesign/metrics/structure-audit.json
-#     docs/redesign/badges/structure.json
+#   docs/redesign/metrics/structure-audit.md   (markdown table + summary marker)
+#   docs/redesign/metrics/structure-audit.json (modules, violations, totals)
+#   docs/redesign/badges/structure.json        (badge endpoint)
 #
 # Summary Marker (appended to markdown):
 #   <!-- STRUCTURE-AUDIT: total=<n> violations=<n> order_issue=<0|1> generated=<ts> json=metrics/structure-audit.json -->
@@ -81,16 +76,9 @@ _structure_audit_main() {
   }
 
   ROOT_DIR=$(resolve_root)
-  # Prefer new redesignv2 artifact paths; fall back to legacy redesign paths if not present.
-  if [[ -d $ROOT_DIR/docs/redesignv2/artifacts/metrics && -d $ROOT_DIR/docs/redesignv2/artifacts/badges ]]; then
-    DOCS_DIR=$ROOT_DIR/docs/redesignv2
-    METRICS_DIR=$DOCS_DIR/artifacts/metrics
-    BADGE_DIR=$DOCS_DIR/artifacts/badges
-  else
-    DOCS_DIR=$ROOT_DIR/docs/redesign
-    METRICS_DIR=$DOCS_DIR/metrics
-    BADGE_DIR=$DOCS_DIR/badges
-  fi
+  DOCS_DIR=$ROOT_DIR/docs/redesign
+  METRICS_DIR=$DOCS_DIR/metrics
+  BADGE_DIR=$DOCS_DIR/badges
   mkdir -p $METRICS_DIR $BADGE_DIR
 
   # Trap after dirs known

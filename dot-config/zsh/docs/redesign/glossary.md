@@ -1,9 +1,6 @@
 # Glossary (Redesign Documentation)
-> **DEPRECATED**: This legacy glossary has been superseded by `docs/redesignv2/REFERENCE.md` (operational terms) and `docs/redesignv2/ARCHITECTURE.md` (architectural concepts).  
-> Retained only for historical context. Do not update; add new or revised terminology exclusively in the redesignv2 documentation set.
-
 Date: 2025-08-30
-Status: Deprecated (Frozen – superseded by redesignv2)
+Status: Living (Add terms as they enter sustained usage)
 
 ## Core Terms
 | Term | Definition | Notes |

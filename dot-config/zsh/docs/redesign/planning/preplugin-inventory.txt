@@ -1,7 +1,7 @@
 # Pre-Plugin Inventory Snapshot
 # Date: 2025-08-30
 # Source Directory: .zshrc.pre-plugins.d (legacy, pre-redesign)
-# Purpose: Frozen snapshot before migration to `.zshrc.pre-plugins.d.REDESIGN`
+# Purpose: Frozen snapshot before migration to `.zshrc.pre-plugins.d.redesigned`
 # NOTE: Used by implementation-entry-criteria baseline; do not modify after freeze.
 
 00_00-critical-path-fix.zsh

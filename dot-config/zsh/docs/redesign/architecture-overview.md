@@ -1,7 +1,4 @@
 # Architecture Overview (Consolidated Copy)
-> **DEPRECATED**: This legacy architecture overview has been superseded by the consolidated documentation in `docs/redesignv2/ARCHITECTURE.md`.  
-> Refer to the new file for authoritative design principles, module taxonomy, and decision log.  
-> This legacy copy is retained only for historical context and will not be updated.
 Date: 2025-08-30
 Status: Planning (Pre-Migration)
 
@@ -15,7 +12,7 @@ Summary of startup phases, module responsibilities, and redesign targets (see or
 
 ## Redesign Targets
 - Post-plugin: 11 modules (00..90)
-- Pre-plugin: planned 8 modules (00..40) in `.zshrc.pre-plugins.d.REDESIGN`
+- Pre-plugin: planned 8 modules (00..40) in `.zshrc.pre-plugins.d.redesigned`
 - Add-plugins optimization: phased lazy Node/npm reactivation (see plugin-loading-optimization.md)
 
 ## Key Issues Addressed

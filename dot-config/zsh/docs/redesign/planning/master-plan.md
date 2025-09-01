@@ -1,68 +1,71 @@
 # Master Improvement Plan (Consolidated Copy)
 Date: 2025-08-30
-Status: Implementation In Progress
+Status: Planning – Implementation Pending
+
+(Condensed from original; canonical redesign-local reference.)
 
 ## Objectives
-- ≥20% startup reduction (gate: startup_mean <= 0.80 * baseline)
-- Consolidate into 11 post-plugin + 8 pre-plugin modules (frozen counts)
-- Single guarded compinit + deferred integrity (no blocking hash pre-prompt)
-- Automated regression & drift detection (structure, inventory, checksums, perf)
+- ≥20% startup reduction
+- Consolidate into 11 post-plugin + planned 8 pre-plugin modules
+- Single guarded compinit + deferred integrity
+- Automated regression detection
 
-## Phases (Execution Stages)
-| Stage | Label Tag | Scope | Key Exit Conditions | Commit Close-Out Example |
-|-------|-----------|-------|---------------------|--------------------------|
-| 0 | refactor-baseline | Inventories, checksum freeze | pre/post inventories + legacy-checksums.sha256 committed | chore(redesign): baseline freeze artifacts |
-| 1 | refactor-skeleton | Parallel skeleton dirs (8+11) | Structure tests green, toggles present | feat(redesign): add skeleton redesign trees |
-| 2 | refactor-pre-core | Pre-plugin 00/05/10 path + lazy framework | Path merged, lazy dispatcher stub tests pass | feat(pre): merge path safety & lazy dispatcher |
-| 3 | refactor-pre-features | Remaining pre (15/20/25/30) | Lazy node, integrations, ssh agent stubs validated | feat(pre): add node/env + integrations + ssh agent |
-| 4 | refactor-post-core | Post 00/05/10 core content | Security/options/functions implemented | feat(post): implement early security/options/functions |
-| 5 | refactor-post-features | Post 20/30/40 | Essential plugins/dev env/aliases grouped | feat(post): add feature layer modules |
-| 6 | refactor-completion-ui | Post 50/60 | Single compinit test PASS, prompt isolated | feat(post): unify completion & prompt |
-| 7 | refactor-async-perf | Post 70/80 | Perf hook records, async state machine QUEUED->COMPLETED | perf(post): add perf + async validation |
-| 8 | refactor-splash | Post 90 | Cosmetic splash optional & guard documented | chore(post): add splash module |
-| 9 | refactor-perf-ab | A/B metrics capture | perf-postplugin-ab.json & preplugin-baseline collected | perf: capture A/B redesign metrics |
-| 10 | refactor-guard | Promotion guard extended | promotion-guard passes (structure+perf+checksums+async) | chore(guard): extend promotion guard |
-| 11 | refactor-validation | Final readiness | All gates green, report generated | docs(report): promotion readiness summary |
-| 12 | refactor-promotion | Enable toggles default | New checksum snapshot generated | feat(redesign): promote redesigned config |
+## Phases (High-Level)
+(See implementation-plan.md for detailed gating)
+1 Baseline → 2 Backup → 3 Skeleton → 4 Core → 5 Feature → 6 Deferred → 7 Validation → 8 Promotion → 9 Docs → 10 CI/CD → 11 Enhancements → 12 Maintenance
 
 ## Plan Freeze Milestone (Pre-Execution Gate)
-All planning artifacts present & cross-linked BEFORE any skeleton commits. (See implementation-entry-criteria.md)
+All planning artifacts must be present & cross-linked BEFORE any skeleton or rename commits:
+| Artifact | Present | File |
+|----------|---------|------|
+| Prefix Reorg Spec | ✔ | prefix-reorg-spec.md |
+| Pre-Plugin Redesign Spec | ✔ | pre-plugin-redesign-spec.md |
+| Compinit Audit Plan | ✔ | compinit-audit-plan.md |
+| Baseline Metrics Plan | ✔ | baseline-metrics-plan.md |
+| Implementation Entry Criteria | ✔ | implementation-entry-criteria.md |
+| Rollback Decision Tree | ✔ | rollback-decision-tree.md |
+| Diagrams (complete) | ✔ | diagrams.md |
+| Pre-Plugin Inventory Snapshot | ✔ | preplugin-inventory.txt |
+| Glossary | ✔ | glossary.md |
+| Issues Review | ✔ | review/issues.md |
+| Completion Audit | ✔ | review/completion-audit.md |
+| Governance Lint Scripts | ✔ | tools/docs-governance-lint.zsh |
 
-## Key Tasks (Expanded)
-- Structural: maintain file counts, order monotonic, sentinel coverage.
-- Drift: inventories + checksum verification each CI.
-- Performance: baseline capture, segment timing, regression guard.
-- Async Integrity: state machine IDLE->QUEUED->RUNNING->COMPLETED post-prompt.
-- Testing: taxonomy coverage (design/unit/feature/integration/perf/security/maintenance).
-- Promotion Guard: aggregate structure, perf delta, checksum, async deferral.
+Freeze Declaration Procedure:
+1. Run docs governance + link lint scripts (must pass).
+2. Commit with message: `docs(plan-freeze): declare planning freeze`.
+3. Tag `plan-freeze` (annotated) containing hash of all above docs.
+4. Only after tag: begin skeleton directory creation on feature branch.
+
+## Key Tasks (Abbrev)
+- T1 Baseline capture
+- T3 Backup
+- T4 Skeleton
+- T6 Security stub
+- T8 Core functions merge
+- T12 Completion-history
+- T15 Advanced integrity async
+- T16 Perf A/B, T19 CI Core workflow
+- T20 Perf workflow + badges
+- T24 Plugin diff alert
+- T27 Structure drift guard.
 
 ## Metrics & Evidence
-| Metric | Baseline Artifact | Target | Current Status |
-|--------|-------------------|--------|----------------|
-| startup_mean_ms | perf-baseline.json | -20% | Pending post-feature phases |
-| pre_plugin_file_count | preplugin-inventory.txt | 8 redesign | Skeleton met |
-| post_plugin_file_count | postplugin-inventory.txt | 11 redesign | Skeleton met |
-| compinit_runs | compinit tests | 1 | Legacy PASS / redesign TBD |
-| async_deferred | async state test | >0ms delay | Pending async phase |
+| Metric | Baseline | Target | Artifact |
+|--------|----------|--------|----------|
+| startup_mean_ms | perf-baseline.json | -20% | perf-current.json |
+| post_plugin_file_count | manual | 11 | structure-audit.json |
+| pre_plugin_file_count | 12 | 8 | future preplugin audit |
+| compinit_runs | trace | 1 | compinit integration test |
 
-## Risks (Focused)
-| Risk | Mitigation | Detection |
-|------|-----------|-----------|
-| Silent legacy drift | Checksums + inventory diff | drift & checksum tests |
-| Multiple compinit | Single sentinel + tests | compinit test suite |
-| Async blocking prompt | Defer queue after prompt hook | perf hooks + state test |
-| Performance regression | Regression guard + bisect | perf-regression-check.zsh |
+## Risks
+Refer to issues.md; core: fragmentation, early hashing, prompt mixing, naming.
 
 ## Testing Strategy Link
-See testing-strategy.md (expanded) for taxonomy & gates.
+See testing-strategy.md.
 
-## Acceptance / Exit Checklist
-- File counts stable (8 + 11)
-- Single compinit
-- Async validation deferred
-- ≥20% startup improvement
-- Promotion guard PASS
-- Documentation updated & cross-linked
+## Acceptance / Exit Checklist (Abbrev)
+Baseline, backup, skeleton, perf gain, single compinit, async non-blocking, promotion, docs, CI/CD green, enhancements, maintenance automation.
 
 ---
 **Navigation:** [← Previous: Implementation Plan](implementation-plan.md) | [Next: Migration Checklist →](migration-checklist.md) | [Top](#) | [Back to Index](../README.md)
