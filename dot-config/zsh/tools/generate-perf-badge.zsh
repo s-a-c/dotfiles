@@ -15,13 +15,22 @@ set -euo pipefail
 zmodload zsh/datetime 2>/dev/null || true
 
 ROOT_DIR=${0:A:h:h}
-# Prefer redesigned v2 artifact locations, fallback to legacy if not present
-if [[ -d $ROOT_DIR/docs/redesignv2/artifacts/metrics && -d $ROOT_DIR/docs/redesignv2/artifacts/badges ]]; then
+# Migration preamble:
+#   Always create redesignv2 artifact skeleton so first run does not silently
+#   fall back to legacy. Fallback only if creation somehow fails.
+PREFERRED_DIR=$ROOT_DIR/docs/redesignv2/artifacts
+LEGACY_DIR=$ROOT_DIR/docs/redesign
+
+# Create preferred v2 directories (idempotent)
+mkdir -p $PREFERRED_DIR/metrics $PREFERRED_DIR/badges 2>/dev/null || true
+
+if [[ -d $PREFERRED_DIR/metrics && -d $PREFERRED_DIR/badges ]]; then
   DOCS_DIR=$ROOT_DIR/docs/redesignv2
-  METRICS_DIR=$DOCS_DIR/artifacts/metrics
-  BADGE_DIR=$DOCS_DIR/artifacts/badges
+  METRICS_DIR=$PREFERRED_DIR/metrics
+  BADGE_DIR=$PREFERRED_DIR/badges
 else
-  DOCS_DIR=$ROOT_DIR/docs/redesign
+  # Hard fallback (legacy)
+  DOCS_DIR=$LEGACY_DIR
   METRICS_DIR=$DOCS_DIR/metrics
   BADGE_DIR=$DOCS_DIR/badges
 fi
