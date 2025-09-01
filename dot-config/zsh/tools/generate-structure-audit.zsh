@@ -82,10 +82,13 @@ _structure_audit_main() {
 
   ROOT_DIR=$(resolve_root)
   # Prefer new redesignv2 artifact paths; fall back to legacy redesign paths if not present.
+  # Migration preamble: proactively create redesignv2 artifact directories so the
+  # first invocation does not fall back merely because they were absent.
+  mkdir -p $ROOT_DIR/docs/redesignv2/artifacts/metrics $ROOT_DIR/docs/redesignv2/artifacts/badges 2>/dev/null || true
   if [[ -d $ROOT_DIR/docs/redesignv2/artifacts/metrics && -d $ROOT_DIR/docs/redesignv2/artifacts/badges ]]; then
     DOCS_DIR=$ROOT_DIR/docs/redesignv2
-    METRICS_DIR=$DOCS_DIR/artifacts/metrics
-    BADGE_DIR=$DOCS_DIR/artifacts/badges
+    METRICS_DIR=$ROOT_DIR/docs/redesignv2/artifacts/metrics
+    BADGE_DIR=$ROOT_DIR/docs/redesignv2/artifacts/badges
   else
     DOCS_DIR=$ROOT_DIR/docs/redesign
     METRICS_DIR=$DOCS_DIR/metrics
