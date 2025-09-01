@@ -37,7 +37,7 @@ gpgsign = true
 	template = /Users/s-a-c/.gitmessage
 	cleanup = strip
 [core]
-editor = nvim --wait
+editor = nvim
 	autocrlf = input
 	pager = diff-so-fancy | less --tabs=4 -RF
 excludesFile = /Users/s-a-c/.gitignore
@@ -46,9 +46,9 @@ excludesFile = /Users/s-a-c/.gitignore
 	preloadindex = true
 	fscache = true
 [diff]
-tool = vscode
-[difftool "vscode"]
-cmd = code --wait --diff $LOCAL $REMOTE
+tool = zed
+[difftool "zed"]
+cmd = zed --wait --diff $LOCAL $REMOTE
 [filter "lfs"]
 process = git-lfs filter-process
 required = true
@@ -71,7 +71,7 @@ directory = /Users/s-a-c/.local/share/nvim/lazy/nvim-web-devicons
 	rebase = false
 [push]
 autoSetupRemote = true
-	default = simple
+	default = current
 [credential]
 	helper =
 	helper = /usr/local/share/gcm-core/git-credential-manager
