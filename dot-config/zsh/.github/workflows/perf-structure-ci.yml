@@ -12,6 +12,9 @@ jobs:
   perf-structure:
     runs-on: macos-latest
     timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: ./dot-config/zsh
 
     steps:
       - name: Checkout
@@ -82,7 +85,7 @@ jobs:
         run: |
           mkdir -p docs/redesign/badges docs/redesign/metrics
           rsync -a --delete docs/redesignv2/artifacts/badges/ docs/redesign/badges/
-            rsync -a --delete docs/redesignv2/artifacts/metrics/ docs/redesign/metrics/ || true
+          rsync -a --delete docs/redesignv2/artifacts/metrics/ docs/redesign/metrics/ || true
           if [ -d docs/redesignv2/artifacts/checksums ]; then
             mkdir -p docs/redesign/checksums
             rsync -a --delete docs/redesignv2/artifacts/checksums/ docs/redesign/checksums/
@@ -91,6 +94,18 @@ jobs:
             mkdir -p docs/redesign/inventories
             rsync -a --delete docs/redesignv2/artifacts/inventories/ docs/redesign/inventories/
           fi
+
+      - name: Path audit (soft)
+        run: |
+          chmod +x tools/docs-path-audit.zsh || true
+          tools/docs-path-audit.zsh || true
+
+      - name: Legacy docs guard (soft)
+        env:
+          BASE_REF: origin/main
+        run: |
+          chmod +x tools/docs-legacy-guard.zsh || true
+          tools/docs-legacy-guard.zsh || true
 
       - name: Upload Badge & Metrics Artifacts
         uses: actions/upload-artifact@v4
