@@ -36,7 +36,8 @@ _pc_parse_segment_ms() {
     local name="$1" file="$2" val
     [[ -r $file ]] || { echo 0; return 0; }
     # Example line: SEGMENT name=pre_plugin_total ms=123 phase=pre_plugin sample=mean
-    val=$(grep -E "SEGMENT name=${name} " "$file" 2>/dev/null | sed -n 's/.* ms=\([0-9]\+\).*/\1/p' | tail -1)
+    # Be tolerant of no-match under 'set -o pipefail' by wrapping grep in a subshell with || true.
+    val=$({ grep -E "SEGMENT name=${name} " "$file" 2>/dev/null || true; } | sed -n 's/.* ms=\\([0-9]\\+\\).*/\\1/p' | tail -1)
     [[ -n $val ]] && echo "$val" || echo 0
 }
 
@@ -153,6 +154,23 @@ if ((NUM_COLD_PROMPT > 0 || NUM_WARM_PROMPT > 0)); then
     PROMPT_READY_MS=$(((NUM_COLD_PROMPT + NUM_WARM_PROMPT) / 2))
 else
     PROMPT_READY_MS=0
+fi
+# Warn / fallback if prompt_ready could not be captured while other segments exist.
+# Fallback strategy (enabled by default, disable with PERF_FORCE_PROMPT_READY_FALLBACK=0):
+#   - If post_plugin_total available, approximate prompt_ready_ms = post_plugin_total
+#   - Else approximate = pre_plugin_total
+#   - Emits explicit warning noting approximation.
+if (( PROMPT_READY_MS == 0 && ( PRE_COST_MS > 0 || POST_COST_MS > 0 ) )); then
+    if [[ "${PERF_FORCE_PROMPT_READY_FALLBACK:-1}" == "1" ]]; then
+        if (( POST_COST_MS > 0 )); then
+            PROMPT_READY_MS=$POST_COST_MS
+        else
+            PROMPT_READY_MS=$PRE_COST_MS
+        fi
+        echo "[perf-capture] WARNING: prompt_ready_ms approximated (no PROMPT_READY markers). Disable with PERF_FORCE_PROMPT_READY_FALLBACK=0 or fix prompt hook ordering." >&2
+    else
+        echo "[perf-capture] WARNING: prompt_ready_ms=0 (no PROMPT_READY markers). Check 95-prompt-ready.zsh sourcing order or PERF_PROMPT_HARNESS=1 usage." >&2
+    fi
 fi
 
 # Build breakdown JSON array (average cold/warm per label)

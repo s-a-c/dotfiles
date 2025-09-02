@@ -74,6 +74,8 @@
 # -----------------------------------------------------------------------------
 
 set -euo pipefail
+: ${PERF_CAPTURE_MULTI_DEBUG:=0}
+: ${PERF_CAPTURE_RUN_TIMEOUT_SEC:=20}
 
 SCRIPT_NAME="${0##*/}"
 
@@ -181,6 +183,7 @@ fi
 
 # ---------------- Data Structures ----------------
 # Arrays of numeric values (as strings) for computation
+# Track only valid (non-zero) samples; skipped zero-runs are not counted toward aggregate.
 cold_values=()
 warm_values=()
 pre_values=()
@@ -237,29 +240,29 @@ segment_iterate_file() {
 }
 
 stats_mean() {
-  # args: list of numbers
-  awk 'BEGIN{n=0; s=0} {s+=$1; n++} END{ if(n>0) printf("%.0f", s/n); else print "0"}' <<<"$*"
+  # args: list of numbers (returns floating mean with 2 decimals)
+  awk 'BEGIN{n=0; s=0} {s+=$1; n++} END{ if(n>0) printf("%.2f", s/n); else print "0.00"}' <<<"$*"
 }
 
 stats_min() {
-  awk 'BEGIN{min=""} { if(min==""||$1<min) min=$1 } END{ if(min=="") min=0; print min }' <<<"$*"
+  awk 'BEGIN{min=""} { if(min==""||$1<min) min=$1 } END{ if(min=="") min=0; printf("%d", min) }' <<<"$*"
 }
 
 stats_max() {
-  awk 'BEGIN{max=""} { if(max==""||$1>max) max=$1 } END{ if(max=="") max=0; print max }' <<<"$*"
+  awk 'BEGIN{max=""} { if(max==""||$1>max) max=$1 } END{ if(max=="") max=0; printf("%d", max) }' <<<"$*"
 }
 
 stats_stddev() {
-  # population stddev
+  # population stddev (float with 2 decimals)
   awk '
     BEGIN{n=0; sum=0; sumsq=0}
     {n++; sum+=$1; sumsq+=$1*$1}
     END{
-      if(n<2){print 0; exit}
+      if(n<2){printf("0.00"); exit}
       mean=sum/n
       var=(sumsq/n) - (mean*mean)
       if (var<0) var=0
-      print int(sqrt(var)+0.5)
+      printf("%.2f", sqrt(var))
     }
   ' <<<"$*"
 }
@@ -284,21 +287,32 @@ add_segment_value() {
 }
 
 # ---------------- Capture Loop ----------------
-echo "[perf-capture-multi] Starting multi-sample capture: samples=$SAMPLES sleep=$SLEEP_INTERVAL segments=$((DO_SEGMENTS))"
+echo "[perf-capture-multi] Starting multi-sample capture: samples=$SAMPLES sleep=$SLEEP_INTERVAL segments=$((DO_SEGMENTS)) timeout=${PERF_CAPTURE_RUN_TIMEOUT_SEC}s debug=${PERF_CAPTURE_MULTI_DEBUG}"
 
+valid_sample_count=0
+skipped_sample_count=0
+out_index=0
 for (( i=1; i<=SAMPLES; i++ )); do
   echo "[perf-capture-multi] Run $i/$SAMPLES"
+  if (( PERF_CAPTURE_MULTI_DEBUG )); then
+    echo "[perf-capture-multi][debug] invoking perf-capture (iteration=$i)"
+  fi
+  run_rc=0
   if [[ $QUIET -eq 1 ]]; then
-    # Redirect perf-capture stdout/stderr to a buffer (still informative on error)
-    if ! zsh "$PERF_CAPTURE_BIN" >/dev/null 2>&1; then
-      echo "[perf-capture-multi] ERROR: perf-capture failed (run $i)" >&2
-      exit 2
+    if ! timeout "$PERF_CAPTURE_RUN_TIMEOUT_SEC"s zsh "$PERF_CAPTURE_BIN" >/dev/null 2>&1; then
+      run_rc=$?
     fi
   else
-    if ! zsh "$PERF_CAPTURE_BIN"; then
-      echo "[perf-capture-multi] ERROR: perf-capture failed (run $i)" >&2
-      exit 2
+    if ! timeout "$PERF_CAPTURE_RUN_TIMEOUT_SEC"s zsh "$PERF_CAPTURE_BIN"; then
+      run_rc=$?
     fi
+  fi
+  if (( run_rc != 0 )); then
+    echo "[perf-capture-multi] WARN: perf-capture exited rc=$run_rc on run $i (skipping sample)" >&2
+    (( skipped_sample_count++ ))
+    # progress marker (error)
+    print "run=$i rc=$run_rc skipped=1" >>"$METRICS_DIR/perf-multi-progress.log" 2>/dev/null || true
+    continue
   fi
 
   # After each run perf-current.json is the latest
@@ -328,6 +342,23 @@ for (( i=1; i<=SAMPLES; i++ )); do
   (( pre  < 0 )) && pre=0
   (( post < 0 )) && post=0
   (( prompt < 0 )) && prompt=0
+
+  # Skip invalid sample (both cold & warm zero implies capture failed / early abort)
+  if (( cold == 0 && warm == 0 )); then
+    (( skipped_sample_count++ ))
+    echo "[perf-capture-multi] NOTICE: Skipping sample $i (cold_ms=0 warm_ms=0)"
+    mv "$SAMPLE_FILE" "${SAMPLE_FILE}.skipped" 2>/dev/null || true
+    # Do not record metrics for this iteration
+    continue
+  fi
+
+  (( valid_sample_count++ ))
+  # Per-sample debug summary
+  if (( PERF_CAPTURE_MULTI_DEBUG )); then
+    echo "[perf-capture-multi][debug] sample $i parsed cold=$cold warm=$warm pre=$pre post=$post prompt=$prompt" >&2
+  fi
+  # Append progress marker
+  print "run=$i rc=0 cold=$cold warm=$warm pre=$pre post=$post prompt=$prompt" >>"$METRICS_DIR/perf-multi-progress.log" 2>/dev/null || true
 
   cold_values+=("$cold")
   warm_values+=("$warm")
@@ -374,6 +405,9 @@ metric_block() {
   local min=$(stats_min "${vals[*]}")
   local max=$(stats_max "${vals[*]}")
   local sd=$(stats_stddev "${vals[*]}")
+  if (( PERF_CAPTURE_MULTI_DEBUG )); then
+    echo "[perf-capture-multi][debug] metric=${name} values=${vals[*]:-} mean=${mean} min=${min} max=${max} sd=${sd}" >&2
+  fi
   cat <<EOF
     "${name}": {
       "mean": $mean,
@@ -391,7 +425,8 @@ AGG_FILE="$METRICS_DIR/perf-multi-current.json"
   echo "{"
   echo "  \"schema\": \"perf-multi.v1\","
   echo "  \"timestamp\": \"$(timestamp)\","
-  echo "  \"samples\": $SAMPLES,"
+  ACTUAL_SAMPLES=$valid_sample_count
+  echo "  \"samples\": $ACTUAL_SAMPLES,"
   if [[ -n "${GUIDELINES_CHECKSUM:-}" ]]; then
     echo "  \"guidelines_checksum\": \"${GUIDELINES_CHECKSUM}\","
   else
@@ -402,57 +437,62 @@ AGG_FILE="$METRICS_DIR/perf-multi-current.json"
   for (( i=1; i<=SAMPLES; i++ )); do
     file="$METRICS_DIR/perf-sample-${i}.json"
     # Use default 0 to avoid unbound element errors under `set -u` if array slot missing
-    cold="${cold_values[$((i-1))]:-0}"
-    warm="${warm_values[$((i-1))]:-0}"
-    pre="${pre_values[$((i-1))]:-0}"
-    post="${post_values[$((i-1))]:-0}"
-    prompt="${prompt_values[$((i-1))]:-0}"
+    cold="${cold_values[$out_index]:-0}"
+    warm="${warm_values[$out_index]:-0}"
+    pre="${pre_values[$out_index]:-0}"
+    post="${post_values[$out_index]:-0}"
+    prompt="${prompt_values[$out_index]:-0}"
+    # Skip placeholder zero-only entries (were never appended) by detecting 0-cold & 0-warm while we still have more recorded samples ahead
+    if (( cold == 0 && warm == 0 )); then
+      continue
+    fi
     comma=","
-    (( i == SAMPLES )) && comma=""
-    echo "    {\"index\": $i, \"cold_ms\": $cold, \"warm_ms\": $warm, \"pre_plugin_cost_ms\": $pre, \"post_plugin_cost_ms\": $post, \"prompt_ready_ms\": $prompt}${comma}"
+    (( out_index + 1 == ACTUAL_SAMPLES )) && comma=""
+    echo "    {\"index\": $((out_index+1)), \"cold_ms\": $cold, \"warm_ms\": $warm, \"pre_plugin_cost_ms\": $pre, \"post_plugin_cost_ms\": $post, \"prompt_ready_ms\": $prompt}${comma}"
+    (( out_index++ ))
   done
   echo "  ],"
   echo "  \"aggregate\": {"
   # Aggregate metrics
-  metric_block cold_ms "${cold_values[@]}"
+  metric_block cold_ms "${cold_values[@]:-0}"
   echo "    ,"
-  metric_block warm_ms "${warm_values[@]}"
+  metric_block warm_ms "${warm_values[@]:-0}"
   echo "    ,"
-  metric_block pre_plugin_cost_ms "${pre_values[@]}"
+  metric_block pre_plugin_cost_ms "${pre_values[@]:-0}"
   echo "    ,"
-  metric_block post_plugin_cost_ms "${post_values[@]}"
+  metric_block post_plugin_cost_ms "${post_values[@]:-0}"
   echo "    ,"
-  metric_block prompt_ready_ms "${prompt_values[@]}"
+  metric_block prompt_ready_ms "${prompt_values[@]:-0}"
   echo "  },"
   if [[ $DO_SEGMENTS -eq 1 ]]; then
-    echo "  \"segments\": ["
-    seg_labels=("${(@k)seg_count}")
-    # Sort labels for determinism
-    seg_labels=("${(on)seg_labels}")
-    for (( si=1; si<=${#seg_labels[@]}; si++ )); do
-      lab="${seg_labels[$si]}"
-      count=${seg_count[$lab]}
-      sum=${seg_sum[$lab]}
-      sum_sq=${seg_sum_sq[$lab]}
-      min=${seg_min[$lab]}
-      max=${seg_max[$lab]}
-      # mean
-      mean=$(( sum / count ))
-      # stddev (integer rounding)
-      # var = (sum_sq/count) - mean^2
-      var_num=$(( (sum_sq / count) - (mean * mean) ))
-      (( var_num < 0 )) && var_num=0
-      # Use awk for sqrt
-      stddev=$(awk -v v="$var_num" 'BEGIN{printf("%d", sqrt(v)+0.5)}')
-      csv_values=$(echo "${seg_values[$lab]}" | sed -e 's/^ *//' -e 's/  */ /g' | tr ' ' ',' )
-      [[ -z "$csv_values" ]] && csv_values="0"
-      comma=","
-      (( si == ${#seg_labels[@]} )) && comma=""
-      cat <<EOF
+    if (( ${#seg_count[@]} == 0 )); then
+      echo "  \"segments\": []"
+      echo "[perf-capture-multi] NOTICE: No post_plugin_segments detected across valid samples (seg_count=0)" >&2
+    else
+      echo "  \"segments\": ["
+      seg_labels=("${(@k)seg_count}")
+      seg_labels=("${(on)seg_labels}")
+      for (( si=1; si<=${#seg_labels[@]}; si++ )); do
+        lab="${seg_labels[$si]}"
+        count=${seg_count[$lab]}
+        sum=${seg_sum[$lab]}
+        sum_sq=${seg_sum_sq[$lab]}
+        min=${seg_min[$lab]}
+        max=${seg_max[$lab]}
+        mean=$(( sum / count ))
+        var_num=$(( (sum_sq / count) - (mean * mean) ))
+        (( var_num < 0 )) && var_num=0
+        stddev=$(awk -v v="$var_num" 'BEGIN{printf("%d", sqrt(v)+0.5)}')
+        csv_values=$(echo "${seg_values[$lab]}" | sed -e 's/^ *//' -e 's/  */ /g' | tr ' ' ',' )
+        [[ -z "$csv_values" ]] && csv_values="0"
+        comma=","
+        (( si == ${#seg_labels[@]} )) && comma=""
+        cat <<EOF
     { "label": "$lab", "samples": $count, "mean_ms": $mean, "min_ms": $min, "max_ms": $max, "stddev_ms": $stddev, "values":[${csv_values}] }${comma}
 EOF
-    done
-    echo "  ]"
+      done
+      echo "  ]"
+    fi
   else
     echo "  \"segments\": []"
   fi
@@ -460,7 +500,7 @@ EOF
 } >"$AGG_FILE"
 
 echo "[perf-capture-multi] Wrote aggregate: $AGG_FILE"
-echo "[perf-capture-multi] Samples: $SAMPLES (cold_ms mean=$(stats_mean "${cold_values[*]}"), post_plugin_cost_ms mean=$(stats_mean "${post_values[*]}"))"
+echo "[perf-capture-multi] Samples requested=$SAMPLES valid=$valid_sample_count skipped=$skipped_sample_count (cold_ms mean=$(stats_mean \"${cold_values[*]:-0}\"), post_plugin_cost_ms mean=$(stats_mean \"${post_values[*]:-0}\")) timeout=${PERF_CAPTURE_RUN_TIMEOUT_SEC}s"
 
 # Guidance for next steps (informational)
 cat <<'NOTE'
