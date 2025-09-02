@@ -248,6 +248,12 @@ export HISTTIMEFORMAT="${HISTTIMEFORMAT:-'%F %T %z %a %V '}"
 export HISTDUP="${HISTDUP:-erase}"
 
 # ------------------------------------------------------------------------------
+# Doom Emacs
+# ------------------------------------------------------------------------------
+export DOOMDIR="${XDG_CONFIG_HOME:-$HOME/.config}/doom"
+PATH="${XDG_CONFIG_HOME:-$HOME/.config}/emacs/bin"
+
+# ------------------------------------------------------------------------------
 # Final early housekeeping
 # ------------------------------------------------------------------------------
 # Make sure .env files under ZDOTDIR/.env (if any) are loaded for both
