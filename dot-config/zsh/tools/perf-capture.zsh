@@ -3,6 +3,11 @@
 # Phase 06 Tool: Capture cold & warm startup metrics (wall-clock ms) and store JSON entries.
 # Enhanced: Track pre-plugin and post-plugin duration segments for detailed analysis.
 # NOTE: Preliminary placeholder; refine after completion 020-consolidation.
+# UPDATE:
+#   - Augmented to read generic SEGMENT lines (pre_plugin_total, post_plugin_total, prompt_ready)
+#     if legacy markers (PRE_PLUGIN_COMPLETE / POST_PLUGIN_COMPLETE / PROMPT_READY_COMPLETE) are
+#     absent or report zero. This future-proofs against marker deprecation while maintaining
+#     backward compatibility.
 set -euo pipefail
 
 zmodload zsh/datetime || true
@@ -23,6 +28,16 @@ measure_startup() {
     # Convert (floating seconds) to ms (integer)
     local delta_sec=$(awk -v s=$start -v e=$end 'BEGIN{printf "%.6f", e-s}')
     awk -v d=$delta_sec 'BEGIN{printf "%d", d*1000}'
+}
+
+# Internal helper: fallback parse of generic SEGMENT line
+# Usage: _pc_parse_segment_ms <name> <file>
+_pc_parse_segment_ms() {
+    local name="$1" file="$2" val
+    [[ -r $file ]] || { echo 0; return 0; }
+    # Example line: SEGMENT name=pre_plugin_total ms=123 phase=pre_plugin sample=mean
+    val=$(grep -E "SEGMENT name=${name} " "$file" 2>/dev/null | sed -n 's/.* ms=\([0-9]\+\).*/\1/p' | tail -1)
+    [[ -n $val ]] && echo "$val" || echo 0
 }
 
 measure_startup_with_segments() {
@@ -54,15 +69,25 @@ measure_startup_with_segments() {
     local post_segments_encoded=""
 
     if [[ -f "$temp_log" ]]; then
+        # Legacy markers first
         pre_plugin_ms=$(grep "PRE_PLUGIN_COMPLETE" "$temp_log" 2>/dev/null | tail -1 | awk '{print $2}' || echo 0)
         post_plugin_ms=$(grep "POST_PLUGIN_COMPLETE" "$temp_log" 2>/dev/null | tail -1 | awk '{print $2}' || echo 0)
         prompt_ready_ms=$(grep "PROMPT_READY_COMPLETE" "$temp_log" 2>/dev/null | tail -1 | awk '{print $2}' || echo 0)
+
+        # Fallback to generic SEGMENT lines if any are zero
+        (( pre_plugin_ms == 0 )) && pre_plugin_ms=$(_pc_parse_segment_ms pre_plugin_total "$temp_log")
+        (( post_plugin_ms == 0 )) && post_plugin_ms=$(_pc_parse_segment_ms post_plugin_total "$temp_log")
+        (( prompt_ready_ms == 0 )) && prompt_ready_ms=$(_pc_parse_segment_ms prompt_ready "$temp_log")
+
         # Collect granular post-plugin segments
         post_segments_raw=$(grep "^POST_PLUGIN_SEGMENT " "$temp_log" 2>/dev/null || true)
         if [[ -n $post_segments_raw ]]; then
             # Encode as name=ms;name=ms (strip leading marker tokens)
             # Format in log: POST_PLUGIN_SEGMENT <label> <ms>
             post_segments_encoded=$(printf '%s\n' "$post_segments_raw" | awk '{print $2"="$3}' | paste -sd';' -)
+        else
+            # (Future) could also parse generic SEGMENT lines with phase=post_plugin excluding *_total
+            :
         fi
     fi
 
@@ -170,9 +195,15 @@ if [[ -n ${COLD_POST_SEGMENTS_ENC:-} || -n ${WARM_POST_SEGMENTS_ENC:-} ]]; then
   unset _cold_seg _warm_seg _labels _carr _warr lb ms c w m first
 fi
 
+if [[ -n ${GUIDELINES_CHECKSUM:-} ]]; then
+  GUIDELINES_JSON="\"$GUIDELINES_CHECKSUM\""
+else
+  GUIDELINES_JSON=null
+fi
 cat >"$OUT_DIR/$STAMP.json" <<EOF
 {
   "timestamp":"$STAMP",
+  "guidelines_checksum":$GUIDELINES_JSON,
   "cold_ms":$COLD_MS,
   "warm_ms":$WARM_MS,
   "cold_pre_plugin_ms":$COLD_PRE_MS,
@@ -200,6 +231,41 @@ cat >"$METRICS_DIR/perf-current.json" <<EOF
 }
 EOF
 
+# Emit SEGMENT lines file for perf-diff tooling
+segments_file="$METRICS_DIR/perf-current-segments.txt"
+{
+  echo "SEGMENT name=pre_plugin_total ms=$PRE_COST_MS phase=pre_plugin sample=mean"
+  echo "SEGMENT name=post_plugin_total ms=$POST_COST_MS phase=post_plugin sample=mean"
+  echo "SEGMENT name=prompt_ready ms=$PROMPT_READY_MS phase=prompt sample=mean"
+  # Reconstruct per-segment breakdown from encoded lists
+  typeset -A _sf_labels _sf_cold _sf_warm
+  IFS=';' read -rA _sf_carr <<<"${COLD_POST_SEGMENTS_ENC:-}"
+  for e in "${_sf_carr[@]}"; do
+    [[ -z $e ]] && continue
+    lb=${e%%=*}; ms=${e#*=}
+    [[ -z $lb || -z $ms ]] && continue
+    _sf_cold[$lb]=$ms; _sf_labels[$lb]=1
+  done
+  IFS=';' read -rA _sf_warr <<<"${WARM_POST_SEGMENTS_ENC:-}"
+  for e in "${_sf_warr[@]}"; do
+    [[ -z $e ]] && continue
+    lb=${e%%=*}; ms=${e#*=}
+    [[ -z $lb || -z $ms ]] && continue
+    _sf_warm[$lb]=$ms; _sf_labels[$lb]=1
+  done
+  for lb in ${(k)_sf_labels}; do
+    c=${_sf_cold[$lb]:-0}; w=${_sf_warm[$lb]:-0}
+    if (( c > 0 && w > 0 )); then
+      m=$(( (c + w)/2 ))
+    else
+      m=$(( c>0 ? c : w ))
+    fi
+    echo "SEGMENT name=${lb} ms=${m} phase=post_plugin sample=mean"
+  done
+  if [[ -n ${GUIDELINES_CHECKSUM:-} ]]; then
+    echo "SEGMENT name=policy_guidelines_checksum ms=0 phase=other sample=meta checksum=${GUIDELINES_CHECKSUM}"
+  fi
+} >"$segments_file" 2>/dev/null || true
 echo "[perf-capture] wrote $OUT_DIR/$STAMP.json"
 echo "[perf-capture] updated $METRICS_DIR/perf-current.json"
 echo "[perf-capture] cold: ${COLD_MS}ms (pre: ${COLD_PRE_MS:-N/A}ms, post: ${COLD_POST_MS:-N/A}ms, prompt: ${COLD_PROMPT_MS:-N/A}ms)"

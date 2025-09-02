@@ -1,0 +1,15 @@
+SEGMENT name=pre_plugin_total ms=79 phase=pre_plugin sample=mean
+SEGMENT name=post_plugin_total ms=0 phase=post_plugin sample=mean
+SEGMENT name=prompt_ready ms=0 phase=prompt sample=mean
+SEGMENT name=p10k_theme ms=7 phase=post_plugin sample=mean
+SEGMENT name=compinit ms=16 phase=post_plugin sample=mean
+SEGMENT name=zgenom-init ms=4 phase=post_plugin sample=mean
+SEGMENT name=syntax_highlight_init ms=4 phase=post_plugin sample=mean
+SEGMENT name=30-dev-env ms=4 phase=post_plugin sample=mean
+SEGMENT name=vcs_helpers_init ms=4 phase=post_plugin sample=mean
+SEGMENT name=completion_cache_scan ms=4 phase=post_plugin sample=mean
+SEGMENT name=20-essential ms=4 phase=post_plugin sample=mean
+SEGMENT name=theme_extras_init ms=4 phase=post_plugin sample=mean
+SEGMENT name=fzf_tools_init ms=4 phase=post_plugin sample=mean
+SEGMENT name=history_backend_init ms=4 phase=post_plugin sample=mean
+SEGMENT name=50-completion-history ms=11 phase=post_plugin sample=mean

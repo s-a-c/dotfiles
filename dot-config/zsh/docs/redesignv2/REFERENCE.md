@@ -122,6 +122,20 @@ docs/redesignv2/
 | ZSH_DISABLE_SPLASH (planned) | 0|1 | 0 | Turn off splash module |
 | ZSH_DEBUG | 0|1 | 0 | Emit debug echo traces (if implemented) |
 
+### 3.1 Async (Phase A Shadow) Environment Variables
+
+| Variable | Accepted Values | Default (Phase A) | Purpose |
+|----------|-----------------|-------------------|---------|
+| ASYNC_MODE | off \| shadow \| on | off | Select async dispatcher operating mode (shadow = run async tasks without removing sync path) |
+| ASYNC_TASKS_AUTORUN | 0 \| 1 | 0 | Auto-bootstrap async tasks registration on sourcing `async-tasks.zsh` |
+| ASYNC_TEST_FAKE_LATENCY_MS | integer (ms) | unset | Inject artificial latency into each async task (testing / variance probing) |
+| ASYNC_FORCE_TIMEOUT | <task_id> | unset | Force named task to simulate a timeout path (testing) |
+| ASYNC_MAX_CONCURRENCY | integer | 4 (planned) | Upper bound on simultaneous async tasks (effective in active phases) |
+| ASYNC_DEBUG_VERBOSE | 0 \| 1 | 0 | Enable verbose dispatcher/task debug logging |
+| ASYNC_METRICS_FILE | filesystem path | unset | Override target file for exported async metrics (`async-metrics-export.zsh`) |
+| ASYNC_SHADOW_PROMPT_DELTA_MAX | integer (ms) | 50 | Threshold used by shadow mode test for allowable prompt_ready delta |
+| ASYNC_TASK_<NAME> | 0 \| 1 | 1 (per enabled task) | Per-task feature flags (e.g. `ASYNC_TASK_THEME_EXTRAS=0` disables that task) |
+
 **Guideline**: Avoid enabling post-plugin redesign without pre-plugin redesign unless diagnosing partial staging.
 
 ---
@@ -351,6 +365,7 @@ A: `git reset --hard refactor-stage$(N-1)-*` then re-apply granular patches.
 | Date | Version | Change |
 |------|---------|--------|
 | 2025-01-03 | 2.0 | Initial consolidated reference (migration to redesignv2) |
+| 2025-09-02 | 2.0 | Added async environment variable reference (Phase A shadow) |
 
 ---
 

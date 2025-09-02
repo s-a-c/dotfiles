@@ -104,6 +104,7 @@ __pr__capture_prompt_ready() {
     if [[ -n ${PROMPT_READY_DELTA_MS:-} && -n ${PERF_SEGMENT_LOG:-} ]]; then
         {
             print "PROMPT_READY_COMPLETE ${PROMPT_READY_DELTA_MS}"
+            print "SEGMENT name=prompt_ready ms=${PROMPT_READY_DELTA_MS} phase=prompt sample=${PERF_SAMPLE_CONTEXT:-unknown}"
         } >>"${PERF_SEGMENT_LOG}" 2>/dev/null || true
     fi
 
@@ -166,7 +167,10 @@ if [[ -n ${ZSH_EXECUTION_STRING:-} && -z ${PROMPT_READY_MS:-} ]]; then
         export PROMPT_READY_DELTA_MS
     fi
     if [[ -n ${PROMPT_READY_DELTA_MS:-} && -n ${PERF_SEGMENT_LOG:-} ]]; then
-        print "PROMPT_READY_COMPLETE ${PROMPT_READY_DELTA_MS}" >>"${PERF_SEGMENT_LOG}" 2>/dev/null || true
+        {
+            print "PROMPT_READY_COMPLETE ${PROMPT_READY_DELTA_MS}"
+            print "SEGMENT name=prompt_ready ms=${PROMPT_READY_DELTA_MS} phase=prompt sample=${PERF_SAMPLE_CONTEXT:-unknown}"
+        } >>"${PERF_SEGMENT_LOG}" 2>/dev/null || true
     fi
     zsh_debug_echo "# [prompt-ready][perf][fallback] PROMPT_READY_MS=${PROMPT_READY_MS} delta=${PROMPT_READY_DELTA_MS:-n/a}"
 fi
