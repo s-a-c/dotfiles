@@ -1,4 +1,4 @@
-Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v<checksum>
+Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
 
 # ZDOTDIR: canonical location and notes
 
@@ -129,11 +129,11 @@ Notes and caveats
 
 Policy acknowledgement
 ----------------------
-Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v<checksum>
+Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
 
 Pre-push hook (optional)
 ------------------------
-A sample pre-push hook to block accidental direct pushes to 'main' and detect a resurrected HEAD:main refspec is provided at `.githooks/pre-push`.
+A sample pre-push hook to block accidental direct pushes to 'main' and detect a resurrected HEAD:main refspec is (when present) located at the root-level `../../.githooks/pre-push` (relative to this README).
 
 Enable it (local repository) with:
     git config core.hooksPath .githooks

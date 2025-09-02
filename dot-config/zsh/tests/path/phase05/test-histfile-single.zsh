@@ -4,6 +4,9 @@
 set -euo pipefail
 
 # Source .zshenv to ensure consistent environment variables
+# Unset HISTSIZE / SAVEHIST so .zshenv default exports (very large values) are applied
+# rather than any lower pre-existing shell/session values that would cause a false FAIL.
+unset HISTSIZE SAVEHIST || true
 ZDOTDIR="${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}"
 [[ -f "${ZDOTDIR}/.zshenv" ]] && source "${ZDOTDIR}/.zshenv"
 
@@ -17,38 +20,38 @@ expected_histfile="${ZDOTDIR}/.zsh_history"
 
 # Check .zshenv sets HISTFILE correctly
 if [[ "$HISTFILE" != "$expected_histfile" ]]; then
-        zsh_debug_echo "FAIL: HISTFILE not set correctly in .zshenv"
-        zsh_debug_echo "  Expected: $expected_histfile"
-        zsh_debug_echo "  Actual: $HISTFILE"
+    zsh_debug_echo "FAIL: HISTFILE not set correctly in .zshenv"
+    zsh_debug_echo "  Expected: $expected_histfile"
+    zsh_debug_echo "  Actual: $HISTFILE"
     exit 1
 fi
 
 # Test that HISTFILE directory exists and is writable
 histfile_dir="${HISTFILE:h}"
 if [[ ! -d "$histfile_dir" ]]; then
-        zsh_debug_echo "FAIL: HISTFILE directory does not exist: $histfile_dir"
+    zsh_debug_echo "FAIL: HISTFILE directory does not exist: $histfile_dir"
     exit 1
 fi
 
 if [[ ! -w "$histfile_dir" ]]; then
-        zsh_debug_echo "FAIL: HISTFILE directory is not writable: $histfile_dir"
+    zsh_debug_echo "FAIL: HISTFILE directory is not writable: $histfile_dir"
     exit 1
 fi
 
 # Test that we can create/touch the history file
 if ! touch "$HISTFILE" 2>/dev/null; then
-        zsh_debug_echo "FAIL: Cannot create/touch HISTFILE: $HISTFILE"
+    zsh_debug_echo "FAIL: Cannot create/touch HISTFILE: $HISTFILE"
     exit 1
 fi
 
 # Test that HISTSIZE and SAVEHIST are set to reasonable values from .zshenv
 if [[ -z "$HISTSIZE" ]] || [[ "$HISTSIZE" -lt 100000 ]]; then
-        zsh_debug_echo "FAIL: HISTSIZE not set or too small: $HISTSIZE"
+    zsh_debug_echo "FAIL: HISTSIZE not set or too small: $HISTSIZE"
     exit 1
 fi
 
 if [[ -z "$SAVEHIST" ]] || [[ "$SAVEHIST" -lt 100000 ]]; then
-        zsh_debug_echo "FAIL: SAVEHIST not set or too small: $SAVEHIST"
+    zsh_debug_echo "FAIL: SAVEHIST not set or too small: $SAVEHIST"
     exit 1
 fi
 

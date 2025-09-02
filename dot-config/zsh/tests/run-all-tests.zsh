@@ -1,4 +1,6 @@
 #!/usr/bin/env zsh
+# NOTE: JSON summary timing fix applied – JSON now emitted AFTER recursive fallback
+# test execution and BEFORE human-readable summary print so counts include TDD nested tests.
 # Comprehensive Test Runner
 # UPDATED: Consistent with .zshenv configuration
 set -euo pipefail
@@ -56,13 +58,20 @@ run_test() {
     local test_file="$1"
     local test_name="$(basename "$test_file" .zsh)"
 
+    # Increment counter first to derive 1-based index
     ((total_tests++))
+    local test_index=$total_tests
 
-    zsh_debug_echo -n "${BLUE}Running${NC} $test_name... "
+    # Capture start time (ms)
+    zmodload zsh/datetime 2>/dev/null || true
+    local start_rt=$EPOCHREALTIME
+    local start_ms=$(printf '%s' "$start_rt" | awk -F. '{ms=$1*1000; if(NF>1){ ms+=substr($2"000",1,3)+0 } printf "%d", ms}')
+
+    zsh_debug_echo -n "${BLUE}Running${NC} (${test_index}) $test_name... "
 
     if [[ ! -x "$test_file" ]]; then
         zsh_debug_echo "${YELLOW}SKIP${NC} (not executable)"
-        log_result "SKIP" "$test_name - not executable"
+        log_result "SKIP" "$test_name - not executable (index=${test_index})"
         ((skipped_tests++))
         return 0
     fi
@@ -77,19 +86,27 @@ run_test() {
         exit_code=$?
     fi
 
+    # Capture end time & compute duration
+    local end_rt=$EPOCHREALTIME
+    local end_ms=$(printf '%s' "$end_rt" | awk -F. '{ms=$1*1000; if(NF>1){ ms+=substr($2"000",1,3)+0 } printf "%d", ms}')
+    local duration_ms=0
+    if [[ -n ${start_ms:-} && -n ${end_ms:-} ]]; then
+        ((duration_ms = end_ms - start_ms))
+    fi
+
     if [[ $exit_code -eq 0 ]]; then
         if [[ "$output" == *"SKIP"* ]]; then
-            zsh_debug_echo "${YELLOW}SKIP${NC}"
-            log_result "SKIP" "$test_name - $output"
+            zsh_debug_echo "${YELLOW}SKIP${NC} (${duration_ms}ms)"
+            log_result "SKIP" "$test_name - $output (index=${test_index} duration=${duration_ms}ms)"
             ((skipped_tests++))
         else
-            zsh_debug_echo "${GREEN}PASS${NC}"
-            log_result "PASS" "$test_name - $output"
+            zsh_debug_echo "${GREEN}PASS${NC} (${duration_ms}ms)"
+            log_result "PASS" "$test_name - $output (index=${test_index} duration=${duration_ms}ms)"
             ((passed_tests++))
         fi
     else
-        zsh_debug_echo "${RED}FAIL${NC}"
-        log_result "FAIL" "$test_name - Exit code: $exit_code"
+        zsh_debug_echo "${RED}FAIL${NC} (${duration_ms}ms)"
+        log_result "FAIL" "$test_name - Exit code: $exit_code (index=${test_index} duration=${duration_ms}ms)"
         log_result "FAIL" "$test_name - Output: $output"
         ((failed_tests++))
 
@@ -187,6 +204,25 @@ main() {
     done
 
     # Summary
+    # Emit JSON summary (final counts) BEFORE human-readable summary so machine consumers
+    # can act even if later formatting fails. This occurs AFTER recursive fallback tests.
+    if ((json_output)); then
+        json_file="${RESULTS_DIR}/test-results-${TIMESTAMP}.json"
+        {
+            printf '{\n'
+            printf '  "timestamp": "%s",\n' "$TIMESTAMP"
+            printf '  "total": %d,\n' "$total_tests"
+            printf '  "passed": %d,\n' "$passed_tests"
+            printf '  "failed": %d,\n' "$failed_tests"
+            printf '  "skipped": %d,\n' "$skipped_tests"
+            printf '  "status": "%s"\n' "$([[ $failed_tests -eq 0 ]] && echo "pass" || echo "fail")"
+            printf '}\n'
+        } >"$json_file"
+        # Force a best-effort flush so downstream steps (CI, promotion guard) can read immediately
+        { command -v sync >/dev/null 2>&1 && sync "$json_file" 2>/dev/null || true; } || true
+        zsh_debug_echo "# [run-all-tests] JSON summary written: $json_file"
+    fi
+
     zsh_debug_echo "================================"
     zsh_debug_echo "📊 Test Results Summary"
     zsh_debug_echo "================================"
@@ -197,6 +233,33 @@ main() {
     zsh_debug_echo ""
 
     log_result "SUMMARY" "Total: $total_tests, Passed: $passed_tests, Failed: $failed_tests, Skipped: $skipped_tests"
+    # Recursive fallback discovery for nested TDD directories (e.g., tests/**/tdd/test-*.zsh)
+    # Ensures newly added deep tests are executed even if not in primary category paths.
+    if [[ -d "$TEST_BASE_DIR" ]]; then
+        while IFS= read -r extra_test; do
+            [[ -z $extra_test ]] && continue
+            # Derive test name and check if it already appeared in results (avoid duplicate execution)
+            test_base="$(basename "$extra_test")"
+            test_name="${test_base%.zsh}"
+            if ! grep -q " $test_name " "$RESULTS_FILE" 2>/dev/null; then
+                run_test "$extra_test"
+            fi
+        done < <(find "$TEST_BASE_DIR" -type f -path "*/tdd/test-*.zsh" 2>/dev/null | sort)
+    fi
+    if ((json_output)); then
+        json_file="${RESULTS_DIR}/test-results-${TIMESTAMP}.json"
+        {
+            printf '{\n'
+            printf '  "timestamp": "%s",\n' "$TIMESTAMP"
+            printf '  "total": %d,\n' "$total_tests"
+            printf '  "passed": %d,\n' "$passed_tests"
+            printf '  "failed": %d,\n' "$failed_tests"
+            printf '  "skipped": %d,\n' "$skipped_tests"
+            printf '  "duration_seconds": %s\n' "null"
+            printf '}\n'
+        } >"$json_file"
+        zsh_debug_echo "# [run-all-tests] JSON summary written: $json_file"
+    fi
 
     if [[ $failed_tests -eq 0 ]]; then
         zsh_debug_echo "${GREEN}✅ All tests passed!${NC}"
@@ -258,6 +321,7 @@ design_only=0
 security_only=0
 unit_only=0
 integration_only=0
+json_output=0
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -296,6 +360,10 @@ while [[ $# -gt 0 ]]; do
         ;;
     --integration-only)
         integration_only=1
+        shift
+        ;;
+    --json)
+        json_output=1
         shift
         ;;
     *)

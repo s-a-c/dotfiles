@@ -1,7 +1,8 @@
 # ZSH Configuration Redesign – Consolidated Implementation Guide
 Version: 2.0  
-Status: Stage 1 Complete – Stage 2 Ready to Begin  
-Last Updated: 2025-01-03 (Single Source of Truth)
+Status: Stage 2 In Progress – Pre-Plugin Migration Underway  
+Last Updated: 2025-09-02 (Single Source of Truth)  
+Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
 
 This document *replaces and consolidates* the prior `master-plan.md`, `implementation-plan.md`, `final-report.md`, and `IMPLEMENTATION_PROGRESS.md`. It is the authoritative reference for execution, progress tracking, and promotion readiness of the redesign effort.
 
@@ -42,7 +43,7 @@ Primary measurable targets:
 | Tooling Enhancements | ✅ Complete | Promotion guard, perf segment capture, verification script |
 | CI Workflow (structure) | ✅ Active | Structure badge workflow operational |
 | Async Engine | ⏳ Pending | State machine test scaffolds in place (no engine content yet) |
-| Pre-Plugin Content Migration | 🎯 Ready | Stage 2 tasks queued |
+| Pre-Plugin Content Migration | ⏳ In Progress | Skeleton modules populated; migrating legacy logic |
 | Performance Baseline | ✅ Captured | Baseline metrics available |
 | Documentation Consolidation | ✅ v2 Structure | `redesignv2/` new canonical hub |
 | Promotion Readiness | ⏳ Far | Requires completion through Stage 6 |
@@ -57,7 +58,7 @@ Primary measurable targets:
 | Stage | Label Tag | Scope | Exit Conditions | Status |
 |-------|-----------|-------|-----------------|--------|
 | 1 | `refactor-stage1-complete` | Skeletons, tests, tooling, CI, verification | All infra tests PASS & tag created | ✅ Done |
-| 2 | `refactor-stage2-preplugin` | Implement pre-plugin 00–30 content | Path safety merged, lazy framework validated, pre-plugin baseline defined | 🎯 Ready |
+| 2 | `refactor-stage2-preplugin` | Implement pre-plugin 00–30 content | Path safety merged, lazy framework validated, pre-plugin baseline defined | ⏳ In Progress |
 | 3 | `refactor-stage3-core` | Post 00/05/10 core modules | Security skeleton, interactive options, core functions implemented | ⏳ Pending |
 | 4 | `refactor-stage4-features` | Post 20/30/40 feature layers | Plugin config, dev env exports, aliases/keybindings stable | ⏳ Pending |
 | 5 | `refactor-stage5-ui-perf` | Post 50/60/70/80/90 (completion, UI, perf, async, splash) | Single compinit PASS, async queued & non-blocking | ⏳ Pending |
@@ -94,13 +95,13 @@ Artifacts:
 - Structure: `artifacts/metrics/structure-audit.json`
 
 ### 3.2 Stage 2 – Pre-Plugin Content Migration
-Goals:
-- Collapse legacy path fix scripts into `00-path-safety.zsh`.
-- Implement minimal FZF init (no remote clones, no compinit).
-- Build production lazy dispatcher (`10-lazy-framework.zsh`).
-- Add node/npm lazy stubs & deferral semantics.
-- Wrap integrations (direnv/git/copilot) with idempotent shims.
-- Harden SSH agent consolidation (single spawn logic).
+Goals (Progress Annotated) (All tasks executed with TDD: introduce/confirm failing or missing test → implement → refactor):
+- (Complete) Collapse legacy path fix scripts into `00-path-safety.zsh` — Enhanced normalization (I1–I8), edge + whitelist tests passing.
+- (Complete) Implement minimal FZF init — No-compinit guarantees enforced (`test-fzf-no-compinit.zsh`).
+- (Complete) Build production lazy dispatcher (`10-lazy-framework.zsh`) — Registry, recursion guard, negative & success path test passing.
+- (Complete) Add node/npm lazy stubs & deferral semantics — Lazy activation verified (`test-node-lazy-activation.zsh`).
+- (Complete) Wrap integrations (direnv/git/gh) with idempotent shims — Idempotence test added (`test-integrations-idempotence.zsh`).
+- (Complete) Harden SSH agent consolidation — Single spawn & reuse logic validated (`test-ssh-agent-duplicate-spawn.zsh`).
 
 Success Metrics:
 | Aspect | Gate |
@@ -195,6 +196,31 @@ Actions:
 
 ---
 
+### 4.5 Test-Driven Development (TDD) Policy
+
+All implementation and migration activity MUST follow disciplined TDD:
+
+| Aspect | Requirement | Enforcement |
+|--------|-------------|------------|
+| Test First | A failing or absent test must be added/updated before implementing or modifying functionality | PR review + Gate G10 |
+| Minimal Delta | Only write tests sufficient to express the next functional expectation | Code review |
+| Red → Green → Refactor | Commit sequence SHOULD show (a) failing test introduction (b) implementation pass (c) optional refactor without behavior change | Commit history audit |
+| Coverage of Gates | Every Gate (G1–G9) must have at least one explicit test asserting PASS/FAIL behavior | Test inventory |
+| Regression Reproduction | Bugs require a reproducing failing test before fix | PR checklist |
+| Determinism | New tests must be stable across ≥3 consecutive runs (no timing flake) | CI run-all-tests |
+| Isolation | Unit tests avoid sourcing full runtime unless explicitly integration/feature category | Category taxonomy |
+| Documentation Sync | When adding a new test category or gate test, update this section if policy expands | Review checklist |
+
+TDD Workflow (Micro Loop):
+1. Identify requirement / defect.
+2. Add or modify the smallest failing test expressing the unmet behavior (commit: test-only).
+3. Implement code to satisfy test (commit: feat/fix).
+4. Refactor for clarity/perf without changing behavior (commit: refactor).
+5. Validate full suite (design/unit/feature/integration/security/performance).
+6. Update artifacts & docs only after tests are green.
+
+Failure to supply a preceding failing test for a functional change blocks Stage exit or promotion readiness.
+
 ## 5. Metrics & Gates
 
 | Gate ID | Description | Data Source | PASS Condition | Enforced At |
@@ -208,6 +234,7 @@ Actions:
 | G7 | Regression control | perf regression test | Δ ≤ 5% vs rolling baseline | Continuous |
 | G8 | Sentinel compliance | design test | 100% modules guarded | Continuous |
 | G9 | Tool health | verification script | All checks PASS | Pre-stage close |
+| G10 | TDD policy adherence | Commit/test history, gate tests | Each functional change preceded by failing test; gates covered by explicit tests | Continuous + Stage exits |
 
 ---
 
@@ -289,13 +316,14 @@ Commit Style Examples:
 |----------|-------|--------------|
 | Structure | 8 + 11 redesign stable | ✅ |
 | Drift | Checksums unchanged | ✅ |
-| Performance | ≤3817ms startup mean | Pending |
+| Performance | ≤3817ms startup mean | In Progress (Stage 2 partial migration; baseline improvement measurement pending) |
 | Segment Budget | post_plugin_cost ≤500ms | Pending |
 | Compinit | Single run validated | Pending |
 | Async Deferral | No pre-prompt RUNNING | Pending |
 | Security Commands | Implemented & logged | Pending |
 | Documentation | Synchronized & current | ✅ |
-| Guard | `promotion-guard.zsh` PASS | Partial |
+| TDD Gate | Every functional change preceded by failing/absent test update; gates have explicit tests | Partial (path, lazy framework, ssh agent covered; remaining pre-plugin modules pending) |
+| Guard | `promotion-guard.zsh` PASS | Partial (structure & checksum gates PASS; perf/async gates pending later stages) |
 | Legacy Archive Plan | Documented | ✅ |
 
 ---
@@ -340,7 +368,8 @@ Post-plugin: `00,05,10,20,30,40,50,60,70,80,90`
 | Date | Change | Reason |
 |------|--------|--------|
 | 2025-01-03 | Initial consolidation (v2.0) | Merge of four legacy planning artifacts |
-| (Future) | Stage 2 population | Update status & metrics |
+| 2025-09-01 | Stage 2 partial progress (skeletons, lazy stubs) + Adopted TDD policy | Updated goals & status; remaining migration, perf sampling pending; added formal TDD gate |
+| 2025-09-02 | Stage 2 progress (path normalization, lazy framework, ssh agent) | Implemented invariants, dispatcher, agent consolidation; tests updated & TDD gate partial PASS |
 | (Future) | Stage 5 compinit success | Mark compinit gate PASS |
 | (Future) | Promotion readiness | Gate alignment finalization |
 
