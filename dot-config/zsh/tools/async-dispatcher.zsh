@@ -78,6 +78,7 @@ typeset -ga __ASYNC_TASK_QUEUE        # queued task ids (for zpty pool)
 # zpty pool bookkeeping
 typeset -gA __ASYNC_ZPTY_SLOT_TASK    # pty_name -> task id
 typeset -gA __ASYNC_ZPTY_SLOT_START   # pty_name -> start ms
+typeset -gA __ASYNC_ZPTY_SLOT_SCRIPT  # pty_name -> temp script path (for cleanup)
 typeset -g  __ASYNC_ZPTY_ENABLED=0
 : ${ASYNC_ZPTY_WORKERS:=2}
 
@@ -292,43 +293,65 @@ _asyncd_zpty_launch_task() {
   local label="${__ASYNC_TASK_LABEL[$id]}"
   local cmd="${__ASYNC_TASK_CMD[$id]}"
   local pty="asyncpty_${id}"
-  # Safety: avoid collision
   if [[ -n ${__ASYNC_ZPTY_SLOT_TASK[$pty]:-} ]]; then
     _asyncd_warn "PTY name collision for $pty"
     return 1
   fi
+
   __ASYNC_TASK_START_MS[$id]=$(_asyncd_ts_ms)
   __ASYNC_TASK_STATUS[$id]="running"
   __ASYNC_TASK_ENGINE[$id]="zpty"
   __ASYNC_TASK_PTY[$id]="$pty"
   _asyncd_segment_start "async_task_${id}_start"
 
-  # Wrap command to emit sentinel line for completion (single line)
-  local wrapped="{
-    if [[ -n \${ASYNC_TEST_FAKE_LATENCY_MS:-} ]]; then
-      ms=\${ASYNC_TEST_FAKE_LATENCY_MS}; (( ms > 0 )) && sleep \$(printf '%.3f' \"\$((ms))/1000\")
-    fi
-    if [[ \"${ASYNC_FORCE_TIMEOUT:-}\" == \"${id}\" ]]; then
-      sleep \$(printf '%.3f' \"\$((__ASYNC_TASK_TIMEOUT_MS[${id}]+200))/1000\")
-      rc=124
-    else
-      eval '${cmd//\'/\'\\\'\'}'
-      rc=$?
-    fi
-    print __ASYNC_DONE id=${id} rc=$rc
-    exit \$rc
-  }"
+  # Build a temp script to avoid complex in-line quoting / brace parse errors.
+  local tmp_script
+  tmp_script=$(mktemp 2>/dev/null || mktemp -t asyncpty) || {
+    _asyncd_warn "mktemp failed; falling back to background engine for $id"
+    unset __ASYNC_TASK_ENGINE[$id] __ASYNC_TASK_PTY[$id]
+    __ASYNC_TASK_STATUS[$id]="pending"
+    return 1
+  }
 
-  # Launch zpty (non-blocking)
-  if ! zpty -b "$pty" zsh -c "$wrapped"; then
+  # Safely escaped command (shell-quoted) so we can eval it in the child.
+  local escaped_cmd
+  printf -v escaped_cmd '%q' "$cmd"
+
+  cat >"$tmp_script" <<EOF
+# zpty task wrapper for id=$id
+set -eu
+rc=0
+if [ -n "\${ASYNC_TEST_FAKE_LATENCY_MS:-}" ]; then
+  ms=\${ASYNC_TEST_FAKE_LATENCY_MS}
+  if [ "\$ms" -gt 0 ] 2>/dev/null; then
+    sleep "\$(printf '%.3f' "\$((ms))/1000")"
+  fi
+fi
+if [ "\${ASYNC_FORCE_TIMEOUT:-}" = "$id" ]; then
+  # Simulated timeout: exceed logical limit
+  sleep "\$(printf '%.3f' "\$(( ${__ASYNC_TASK_TIMEOUT_MS[$id]:-${ASYNC_DEFAULT_TIMEOUT_MS}} + 200 ))/1000")"
+  rc=124
+else
+  eval $escaped_cmd
+  rc=\$?
+fi
+print "__ASYNC_DONE id=$id rc=\$rc"
+exit \$rc
+EOF
+
+  # Launch zpty (non-blocking). Use direct file execution to avoid nested quoting.
+  if ! zpty -b "$pty" zsh "$tmp_script"; then
     _asyncd_warn "Failed to launch zpty for task $id – falling back to background"
+    rm -f "$tmp_script" 2>/dev/null || true
     unset __ASYNC_TASK_ENGINE[$id] __ASYNC_TASK_PTY[$id]
     __ASYNC_TASK_STATUS[$id]="pending"
     return 1
   fi
+  # We keep tmp_script in place until completion; child references its content already.
   __ASYNC_ZPTY_SLOT_TASK[$pty]="$id"
   __ASYNC_ZPTY_SLOT_START[$pty]=${__ASYNC_TASK_START_MS[$id]}
-  _asyncd_debug "zpty launch id=$id pty=$pty"
+  _asyncd_debug "zpty launch id=$id pty=$pty script=$tmp_script"
+  __ASYNC_ZPTY_SLOT_SCRIPT[$pty]="$tmp_script"
   return 0
 }
 
@@ -386,7 +409,14 @@ _asyncd_zpty_poll() {
         _asyncd_warn "zpty task '$id' logical timeout (elapsed=${elapsed}ms > limit=${limit}ms)"
         _asyncd_segment_end "async_task_${id}_fail"
         zpty -d "$pty" 2>/dev/null || true
-        unset __ASYNC_ZPTY_SLOT_TASK[$pty] __ASYNC_ZPTY_SLOT_START[$pty]
+        [[ -n ${__ASYNC_ZPTY_SLOT_SCRIPT[$pty]:-} ]] && rm -f "${__ASYNC_ZPTY_SLOT_SCRIPT[$pty]}" 2>/dev/null || true
+        unset __ASYNC_ZPTY_SLOT_TASK[$pty] __ASYNC_ZPTY_SLOT_START[$pty] __ASYNC_ZPTY_SLOT_SCRIPT[$pty]
+      fi
+    else
+      # If the pty was removed externally, ensure we cleanup
+      if ! zpty -t "$pty" 2>/dev/null; then
+        [[ -n ${__ASYNC_ZPTY_SLOT_SCRIPT[$pty]:-} ]] && rm -f "${__ASYNC_ZPTY_SLOT_SCRIPT[$pty]}" 2>/dev/null || true
+        unset __ASYNC_ZPTY_SLOT_TASK[$pty] __ASYNC_ZPTY_SLOT_START[$pty] __ASYNC_ZPTY_SLOT_SCRIPT[$pty]
       fi
     fi
   done
