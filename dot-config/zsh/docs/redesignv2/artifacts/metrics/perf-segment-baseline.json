@@ -1,0 +1,7 @@
+{
+  "schema": "perf-segment-baseline.v1",
+  "timestamp": "20250902T013836",
+  "baseline_pre_plugin_cost_ms": 30,
+  "notes": "Seeded from current perf-current.json pre_plugin_cost_ms after Stage 2 instrumentation.",
+  "compliance": "Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v900f08def0e6f7959ffd283aebb73b625b3473f5e49c57e861c6461b50a62ef2"
+}

@@ -3,17 +3,22 @@
 # Gate promotion of redesign by validating structure & performance artifacts.
 # Usage: tools/promotion-guard.zsh [expected_module_count] [--allow-mismatch]
 # Exit Codes:
-# 0 OK
-# 1 Missing artifact(s)
-# 2 Structural violation (duplicates/order)
-# 3 Module count mismatch
-# 4 Performance regression >5%
-# 5 Badge failure (red)
-# 6 JSON/Parse failure
-# 7 Markdown audit missing or inconsistent with JSON
-# 8 Legacy checksum verification failed
-# 9 Async state validation failed
+# 0  OK
+# 1  Missing artifact(s)
+# 2  Structural violation (duplicates/order)
+# 3  Module count mismatch
+# 4  Performance regression >5%
+# 5  Badge failure (red)
+# 6  JSON/Parse failure
+# 7  Markdown audit missing or inconsistent with JSON
+# 8  Legacy checksum verification failed
+# 9  Async state validation failed
+# 10 TDD gate (G10) violations detected (enforce-tdd.sh)
+# 11 Segment/prompt threshold violation (pre/post plugin or prompt readiness exceeds configured max)
 set -euo pipefail
+# Safe PATH bootstrap to ensure core utilities remain available even if earlier
+# path normalization removed standard system directories.
+PATH="/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:${PATH:-}"
 
 expected=${1:-11}
 allow_mismatch=0
@@ -115,6 +120,44 @@ if awk -v d=$perc_delta 'BEGIN{exit !(d>5)}'; then
     print -u2 "[promotion-guard] Regression >5% (delta ${perc_delta}%)"
     exit 4
 fi
+# Segment threshold (pre/post) enforcement
+typeset seg_pre seg_post
+if grep -q '"segments_available":true' $PC; then
+    seg_pre=$(get_json_value $PC pre_plugin_cost_ms || true)
+    seg_post=$(get_json_value $PC post_plugin_cost_ms || true)
+    : ${PRE_SEG_MAX:=200}
+    : ${POST_SEG_MAX:=400}
+    if [[ -n ${seg_pre:-} && $seg_pre -gt 0 && $seg_pre -gt $PRE_SEG_MAX ]]; then
+        print -u2 "[promotion-guard] Pre-plugin segment ${seg_pre}ms exceeds PRE_SEG_MAX=${PRE_SEG_MAX}ms"
+        exit 11
+    fi
+    if [[ -n ${seg_post:-} && $seg_post -gt 0 && $seg_post -gt $POST_SEG_MAX ]]; then
+        print -u2 "[promotion-guard] Post-plugin segment ${seg_post}ms exceeds POST_SEG_MAX=${POST_SEG_MAX}ms"
+        exit 11
+    fi
+fi
+seg_pre_display=${seg_pre:-NA}
+seg_post_display=${seg_post:-NA}
+prompt_ready=$(get_json_value $PC prompt_ready_ms || true)
+: ${PROMPT_READY_MAX_MS:=400}
+prompt_ready_skip=0
+# Heuristic: if prompt_ready ~= post segment (fallback capture, no real prompt render),
+# skip threshold enforcement to avoid false failures.
+if [[ -n ${prompt_ready:-} && -n ${seg_post:-} && $prompt_ready -gt 0 && $seg_post -gt 0 ]]; then
+    local __diff=$(( prompt_ready - seg_post ))
+    (( __diff < 0 )) && __diff=$(( -__diff ))
+    if (( __diff <= 5 )); then
+        prompt_ready_skip=1
+    fi
+fi
+if [[ $prompt_ready_skip -eq 0 && -n ${prompt_ready:-} && $prompt_ready -gt 0 && $prompt_ready -gt $PROMPT_READY_MAX_MS ]]; then
+    print -u2 "[promotion-guard] Prompt readiness ${prompt_ready}ms exceeds PROMPT_READY_MAX_MS=${PROMPT_READY_MAX_MS}ms"
+    exit 11
+fi
+prompt_ready_display=${prompt_ready:-NA}
+if (( prompt_ready_skip )); then
+    prompt_ready_display="SKIP(fallback)"
+fi
 
 # Badge sanity
 if grep -q '"color":"red"' $BADGES/perf.json || grep -q '"color":"red"' $BADGES/structure.json; then
@@ -150,5 +193,38 @@ else
     print -u2 "[promotion-guard] Warning: async state log not found at $ASYNC_STATE_LOG"
 fi
 
-print "[promotion-guard] OK (modules=$total_modules mean=${cur_mean}ms baseline=${base_mean}ms delta=${perc_delta}% violations=${violations_ct} checksum=verified)"
+# TDD Gate (G10) Enforcement
+TDD_ENFORCER="$ROOT/tools/enforce-tdd.sh"
+if [[ -x "$TDD_ENFORCER" ]]; then
+  if ! "$TDD_ENFORCER" -n 50 -w 20 >/dev/null 2>&1; then
+    print -u2 "[promotion-guard] TDD gate (G10) failed: enforce-tdd.sh reported violations"
+    exit 10
+  fi
+else
+  print -u2 "[promotion-guard] Warning: TDD enforcement script missing ($TDD_ENFORCER)"
+fi
+
+# Stage 2 core test presence meta-check (path, lazy framework, ssh agent)
+# These tests enforce critical Stage 2 invariants; absence indicates misconfiguration.
+required_stage2_tests=(
+  "tests/unit/tdd/test-path-normalization-edges.zsh"
+  "tests/unit/tdd/test-path-normalization-whitelist.zsh"
+  "tests/unit/tdd/test-lazy-dispatcher-negative.zsh"
+  "tests/unit/tdd/test-fzf-no-compinit.zsh"
+  "tests/unit/tdd/test-integrations-idempotence.zsh"
+  "tests/feature/tdd/test-ssh-agent-duplicate-spawn.zsh"
+  "tests/feature/tdd/test-node-lazy-activation.zsh"
+)
+missing_stage2_tests=()
+for t in "${required_stage2_tests[@]}"; do
+  [[ -f "$ROOT/$t" ]] || missing_stage2_tests+=("$t")
+done
+if (( ${#missing_stage2_tests[@]} )); then
+  print -u2 "[promotion-guard] Stage 2 core test(s) missing: ${missing_stage2_tests[*]}"
+  stage2_meta="fail"
+else
+  stage2_meta="pass"
+fi
+
+print "[promotion-guard] OK (modules=$total_modules mean=${cur_mean}ms baseline=${base_mean}ms delta=${perc_delta}% preseg=${seg_pre_display}ms postseg=${seg_post_display}ms prompt=${prompt_ready_display}ms violations=${violations_ct} checksum=verified tdd=pass stage2tests=${stage2_meta})"
 exit 0

@@ -1,7 +1,11 @@
 {
-    "timestamp": "2025-08-30T15:01:07+0100",
-    "runs": [4696,4791,4910,4721,4523],
-    "mean_ms": 4728,
-    "best_ms": 4523,
-    "worst_ms": 4910
+  "timestamp":"20250902T031251",
+  "mean_ms":5922,
+  "cold_ms":6482,
+  "warm_ms":5363,
+  "pre_plugin_cost_ms":31,
+  "post_plugin_cost_ms":5052,
+  "prompt_ready_ms":5055,
+  "segments_available":true,
+  "post_plugin_segments": [{"label":"30-dev-env","cold_ms":4,"warm_ms":4,"mean_ms":4},{"label":"20-essential","cold_ms":4,"warm_ms":4,"mean_ms":4},{"label":"50-completion-history","cold_ms":4,"warm_ms":4,"mean_ms":4}]
 }

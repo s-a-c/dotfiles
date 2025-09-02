@@ -355,12 +355,29 @@ fi
 # vendored copy can resolve its own paths correctly before sourcing it.
 # Initialize zgenom using ZGENOM_SOURCE_FILE if set (set in .zshenv).
 if [[ -n "${ZGENOM_SOURCE_FILE:-}" && -f "${ZGENOM_SOURCE_FILE}" ]]; then
+    if [[ -n ${PERF_SEGMENT_LOG:-} && -z ${ZGENOM_INIT_START_MS:-} ]]; then
+        zmodload zsh/datetime 2>/dev/null || true
+        ZGENOM_INIT_START_MS=$(printf '%s' "$EPOCHREALTIME" | awk -F. '{ms=$1*1000; if(NF>1){ms+=substr($2"000",1,3)+0} printf "%d",ms}')
+        export ZGENOM_INIT_START_MS
+    fi
     source "${ZGENOM_SOURCE_FILE}"
+    if [[ -n ${PERF_SEGMENT_LOG:-} && -n ${ZGENOM_INIT_START_MS:-} && -z ${ZGENOM_INIT_MS:-} ]]; then
+        ZGENOM_INIT_END_MS=$(printf '%s' "$EPOCHREALTIME" | awk -F. '{ms=$1*1000; if(NF>1){ms+=substr($2"000",1,3)+0} printf "%d",ms}')
+        (( ZGENOM_INIT_MS = ZGENOM_INIT_END_MS - ZGENOM_INIT_START_MS ))
+        export ZGENOM_INIT_MS
+        print "POST_PLUGIN_SEGMENT zgenom-init ${ZGENOM_INIT_MS}" >>"${PERF_SEGMENT_LOG}" 2>/dev/null || true
+        zsh_debug_echo "# [post-plugin][perf] segment=zgenom-init delta=${ZGENOM_INIT_MS}ms"
+    fi
 else
     # Fallback resolution order:
     # 1) vendored .zqs-zgenom under $ZDOTDIR (preferred for localized installs)
     # 2) vendored zgenom under $ZDOTDIR/zgenom (legacy)
     # 3) global $HOME/.zgenom
+    if [[ -n ${PERF_SEGMENT_LOG:-} && -z ${ZGENOM_INIT_START_MS:-} ]]; then
+        zmodload zsh/datetime 2>/dev/null || true
+        ZGENOM_INIT_START_MS=$(printf '%s' "$EPOCHREALTIME" | awk -F. '{ms=$1*1000; if(NF>1){ms+=substr($2"000",1,3)+0} printf "%d",ms}')
+        export ZGENOM_INIT_START_MS
+    fi
     if [[ -f "$ZDOTDIR/.zqs-zgenom/zgenom.zsh" ]]; then
         export ZGENOM_SOURCE_FILE="$ZDOTDIR/.zqs-zgenom/zgenom.zsh"
         source "$ZGENOM_SOURCE_FILE"
@@ -372,6 +389,13 @@ else
         source "${HOME}/.zgenom/zgenom.zsh"
     else
         zsh_debug_echo "zgenom: no zgenom source found in ZGENOM_SOURCE_FILE, $ZDOTDIR/.zqs-zgenom, $ZDOTDIR/zgenom, or $HOME/.zgenom; skipping zgenom initialization"
+    fi
+    if [[ -n ${PERF_SEGMENT_LOG:-} && -n ${ZGENOM_INIT_START_MS:-} && -z ${ZGENOM_INIT_MS:-} ]]; then
+        ZGENOM_INIT_END_MS=$(printf '%s' "$EPOCHREALTIME" | awk -F. '{ms=$1*1000; if(NF>1){ms+=substr($2"000",1,3)+0} printf "%d",ms}')
+        (( ZGENOM_INIT_MS = ZGENOM_INIT_END_MS - ZGENOM_INIT_START_MS ))
+        export ZGENOM_INIT_MS
+        print "POST_PLUGIN_SEGMENT zgenom-init ${ZGENOM_INIT_MS}" >>"${PERF_SEGMENT_LOG}" 2>/dev/null || true
+        zsh_debug_echo "# [post-plugin][perf] segment=zgenom-init delta=${ZGENOM_INIT_MS}ms"
     fi
 fi
 
@@ -537,6 +561,12 @@ mkdir -p "$ZDOTDIR/.zshrc.d"
 
 # Post-plugin redesign toggle: if enabled and redesign directory exists, load redesigned set instead
 # Guard variable: ZSH_ENABLE_POSTPLUGIN_REDESIGN=1 activates .zshrc.d.REDESIGN (parallel to pre-plugin redesign gating)
+# Auto-enable post-plugin redesign when pre-plugin redesign is active and redesign directory exists,
+# unless user explicitly exported ZSH_ENABLE_POSTPLUGIN_REDESIGN (honor explicit user intent).
+if [[ ${ZSH_ENABLE_PREPLUGIN_REDESIGN:-0} == 1 && -z ${ZSH_ENABLE_POSTPLUGIN_REDESIGN+x} && -d "$ZDOTDIR/.zshrc.d.REDESIGN" ]]; then
+    export ZSH_ENABLE_POSTPLUGIN_REDESIGN=1
+    zsh_debug_echo "# [post-plugin] auto-enabled redesign (pre-plugin redesign active)"
+fi
 if [[ ${ZSH_ENABLE_POSTPLUGIN_REDESIGN:-0} == 1 && -d "$ZDOTDIR/.zshrc.d.REDESIGN" ]]; then
     zsh_debug_echo "# [post-plugin] Using redesigned post-plugin directory (.zshrc.d.REDESIGN)"
     load-shell-fragments "$ZDOTDIR/.zshrc.d.REDESIGN"
