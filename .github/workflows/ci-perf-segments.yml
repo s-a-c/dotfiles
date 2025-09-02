@@ -1,0 +1,204 @@
+name: CI Perf Segments
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+#
+# PURPOSE:
+#   Multi‑sample ZSH startup performance capture + variance gate + observe guard + budget report.
+#   Implements the sequence:
+#     1. tools/perf-capture-multi.zsh --samples 5 --sleep 0.3
+#     2. tests/performance/test-multi-sample-variance.zsh  (stability gate for observe→warn readiness)
+#     3. promotion-guard-perf.sh (G5a structured block emission)
+#     4. perf-segment-budget.sh (interim budgets, non-enforcing unless on main & env toggle)
+#
+# TRIGGERS:
+#   - Pull Requests (to surface perf telemetry early; non-fatal observe mode)
+#   - Manual dispatch
+#   - Nightly schedule (captures drift & variance under low load window)
+#
+# ENFORCEMENT MODES:
+#   - Default (PR / non-main): Observe only (no failures unless scripts encounter hard errors or variance test fails)
+#   - Main branch (optional): Enable budget enforcement by setting repository/organization variable PERF_BUDGET_ENFORCE=1
+#
+# ARTIFACTS:
+#   - perf-multi-current.json          (aggregate multi-sample stats)
+#   - perf-current-segments.txt        (latest segments)
+#   - perf-baseline-segments.txt       (if present)
+#   - perf-segment-budget.(block|json)
+#   - perf-diff.json (regression summary)
+#   - promotion-guard-perf.log (guard block)
+#
+# FUTURE:
+#   - Add badge generation for variance & budget status.
+#   - Switch to fail mode for perf-diff when Gate moves beyond observe.
+#   - Integrate JSON perf-diff output directly into promotion guard summary.
+#
+on:
+  workflow_dispatch: {}
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '15 4 * * *'   # Nightly run (UTC) – adjust as needed
+
+concurrency:
+  group: ci-perf-segments-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  perf-segments:
+    name: Multi-sample Perf (segments & guard)
+    runs-on: macos-latest
+    env:
+      # Allow optional enforcement toggles (configure in repo/organization variables)
+      PERF_BUDGET_ENFORCE: ${{ vars.PERF_BUDGET_ENFORCE || '0' }}
+      PERF_DIFF_FAIL_ON_REGRESSION: ${{ vars.PERF_DIFF_FAIL_ON_REGRESSION || '0' }}
+      # Samples & sleep tuning (override with repository variables if desired)
+      PERF_MULTI_SAMPLES: ${{ vars.PERF_MULTI_SAMPLES || '5' }}
+      PERF_MULTI_SLEEP: ${{ vars.PERF_MULTI_SLEEP || '0.3' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show Config
+        run: |
+          echo "PERF_BUDGET_ENFORCE=${PERF_BUDGET_ENFORCE}"
+          echo "PERF_DIFF_FAIL_ON_REGRESSION=${PERF_DIFF_FAIL_ON_REGRESSION}"
+          echo "PERF_MULTI_SAMPLES=${PERF_MULTI_SAMPLES}"
+          echo "PERF_MULTI_SLEEP=${PERF_MULTI_SLEEP}"
+          echo "Ref: $GITHUB_REF"
+
+      - name: Ensure Execution Bits
+        run: |
+          chmod +x tools/*.zsh 2>/dev/null || true
+          chmod +x tools/*.sh 2>/dev/null || true
+          find tests -type f -name 'test-*.zsh' -exec chmod +x {} + || true
+
+      - name: Multi-Sample Capture
+        shell: zsh {0}
+        run: |
+            if [[ ! -x tools/perf-capture-multi.zsh ]]; then
+              echo "::error::Missing tools/perf-capture-multi.zsh" && exit 1
+            fi
+            # Run multi-sample (observe mode; segments aggregated)
+            tools/perf-capture-multi.zsh --samples "${PERF_MULTI_SAMPLES}" --sleep "${PERF_MULTI_SLEEP}" || {
+              echo "::error::Multi-sample capture failed" ; exit 1; }
+
+      - name: Variance Stability Test (Observe→Warn Gate)
+        shell: zsh {0}
+        run: |
+          if [[ -f tests/performance/test-multi-sample-variance.zsh ]]; then
+            zsh tests/performance/test-multi-sample-variance.zsh || {
+              echo "::error::Variance test failed (instability detected)" ; exit 1; }
+          else
+            echo "::warning::Variance test missing (tests/performance/test-multi-sample-variance.zsh)"
+          fi
+
+      - name: Promotion Guard (G5a Observe Block)
+        shell: bash
+        run: |
+          if [[ -x tools/promotion-guard-perf.sh ]]; then
+            bash tools/promotion-guard-perf.sh | tee promotion-guard-perf.log
+            # Extract block for quick visibility
+            echo ""
+            echo "---- Guard Block (Excerpt) ----"
+            sed -n '/--- PERF_GUARD_BEGIN ---/,/--- PERF_GUARD_END ---/p' promotion-guard-perf.log || true
+          else
+            echo "::error::promotion-guard-perf.sh missing" ; exit 1
+          fi
+
+      - name: perf-diff (JSON + Text)
+        shell: bash
+        run: |
+          BASE_SEG=""
+          CUR_SEG=""
+          # Auto-detect baseline/current segment files
+          for f in docs/redesignv2/artifacts/metrics/perf-baseline-segments.txt docs/redesign/metrics/perf-baseline-segments.txt; do
+            [[ -f "$f" ]] && BASE_SEG="$f" && break
+          done
+            for f in docs/redesignv2/artifacts/metrics/perf-current-segments.txt docs/redesign/metrics/perf-current-segments.txt; do
+            [[ -f "$f" ]] && CUR_SEG="$f" && break
+          done
+          if [[ -n "$BASE_SEG" && -n "$CUR_SEG" && -x tools/perf-diff.sh ]]; then
+            echo "[perf-diff] baseline=$BASE_SEG current=$CUR_SEG"
+            tools/perf-diff.sh --baseline "$BASE_SEG" --current "$CUR_SEG" --json ${PERF_DIFF_FAIL_ON_REGRESSION:+--fail} > perf-diff.out 2>&1 || true
+            # Separate JSON to its own file (tail braces)
+            awk '
+              /^{/ {json=1}
+              {print > (json?"perf-diff.json":"perf-diff.txt")}
+            ' perf-diff.out
+            echo "perf-diff summary:"
+            grep '^perf-diff:' perf-diff.txt || true
+          else
+            echo "::warning::perf-diff prerequisites missing (baseline/current segments or tool)."
+          fi
+
+      - name: Segment Budget Check (Interim Phase, Non-Enforcing by Default)
+        shell: bash
+        run: |
+          if [[ -x tools/perf-segment-budget.sh ]]; then
+             ENF=0
+             # Enforce budgets only on main if toggle is set
+             if [[ "$GITHUB_REF" == "refs/heads/main" && "${PERF_BUDGET_ENFORCE}" == "1" ]]; then
+               ENF=1
+               echo "[budget] Enforcement enabled (main branch & PERF_BUDGET_ENFORCE=1)"
+             else
+               echo "[budget] Dry run (ENFORCE=0). Set repo variable PERF_BUDGET_ENFORCE=1 to enforce on main."
+             fi
+             OUTPUT_MODE=json ENFORCE=$ENF tools/perf-segment-budget.sh > perf-budget.json 2>&1 || code=$?
+             # Extract text block if present
+             if grep -q 'PERF_BUDGET_BEGIN' perf-budget.json; then
+               echo "---- Budget Block ----"
+               sed -n '/--- PERF_BUDGET_BEGIN ---/,/--- PERF_BUDGET_END ---/p' perf-budget.json || true
+             else
+               echo "Budget JSON / output:"
+               cat perf-budget.json || true
+             fi
+             if [[ "${code:-0}" == "2" ]]; then
+               echo "::error::Budget enforcement failure"
+               exit 2
+             fi
+          else
+            echo "::warning::perf-segment-budget.sh missing"
+          fi
+
+      - name: Summarize Key Metrics
+        shell: bash
+        run: |
+          MULTI=docs/redesignv2/artifacts/metrics/perf-multi-current.json
+          CURR=docs/redesignv2/artifacts/metrics/perf-current.json
+          if [[ -f "$MULTI" ]]; then
+            echo "[summary] multi-sample present"
+            grep -E '"samples"|post_plugin_cost_ms' "$MULTI" || true
+          fi
+          if [[ -f "$CURR" ]]; then
+            echo "[summary] single-run current present"
+            grep -E '"post_plugin_cost_ms"|\"pre_plugin_cost_ms\"|\"prompt_ready_ms\"' "$CURR" || true
+          fi
+
+      - name: Upload Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: perf-segments-${{ github.run_id }}
+          path: |
+            promotion-guard-perf.log
+            perf-diff.txt
+            perf-diff.json
+            perf-budget.json
+            docs/redesignv2/artifacts/metrics/perf-current-segments.txt
+            docs/redesignv2/artifacts/metrics/perf-baseline-segments.txt
+            docs/redesignv2/artifacts/metrics/perf-multi-current.json
+            docs/redesignv2/artifacts/metrics/perf-current.json
+
+      - name: Fail if Guard Block Missing (Structural G5a Safety)
+        if: always()
+        run: |
+          if ! grep -q 'PERF_GUARD_BEGIN' promotion-guard-perf.log 2>/dev/null; then
+            echo "::error::Missing PERF_GUARD block (G5a structural expectation)" >&2
+            exit 1
+          fi
+          echo "PERF_GUARD block present."
+
+      - name: Final Status
+        if: always()
+        run: |
+          echo "Job complete (observe mode)."
+          echo "Budget enforcement: ${PERF_BUDGET_ENFORCE} (main ref? $([[ $GITHUB_REF == refs/heads/main ]] && echo yes || echo no))"

@@ -28,6 +28,7 @@ if [[ -z ${POST_PLUGIN_END_MS:-} ]]; then
         zsh_debug_echo "# [post-plugin][perf] POST_PLUGIN_END_REALTIME=$POST_PLUGIN_END_REALTIME ms=${POST_PLUGIN_END_MS} total=${POST_PLUGIN_TOTAL_MS}"
         if [[ -n ${PERF_SEGMENT_LOG:-} ]]; then
             print "POST_PLUGIN_COMPLETE ${POST_PLUGIN_TOTAL_MS}" >>"$PERF_SEGMENT_LOG" 2>/dev/null || true
+            print "SEGMENT name=post_plugin_total ms=${POST_PLUGIN_TOTAL_MS} phase=post_plugin sample=${PERF_SAMPLE_CONTEXT:-unknown}" >>"$PERF_SEGMENT_LOG" 2>/dev/null || true
         fi
     else
         zsh_debug_echo "# [post-plugin][perf] POST_PLUGIN_END_REALTIME=$POST_PLUGIN_END_REALTIME (missing PRE_PLUGIN_END_MS for delta)"

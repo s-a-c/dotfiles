@@ -1,0 +1,54 @@
+{
+  "schema": "perf-multi.v1",
+  "timestamp": "20250902T192846",
+  "samples": 5,
+  "guidelines_checksum": null,
+  "per_run": [
+    {"index": 1, "cold_ms": 0, "warm_ms": 0, "pre_plugin_cost_ms": 0, "post_plugin_cost_ms": 0, "prompt_ready_ms": 0},
+    {"index": 2, "cold_ms": 5396, "warm_ms": 4780, "pre_plugin_cost_ms": 96, "post_plugin_cost_ms": 0, "prompt_ready_ms": 0},
+    {"index": 3, "cold_ms": 4790, "warm_ms": 4859, "pre_plugin_cost_ms": 82, "post_plugin_cost_ms": 0, "prompt_ready_ms": 0},
+    {"index": 4, "cold_ms": 4791, "warm_ms": 4835, "pre_plugin_cost_ms": 80, "post_plugin_cost_ms": 0, "prompt_ready_ms": 0},
+    {"index": 5, "cold_ms": 5054, "warm_ms": 4818, "pre_plugin_cost_ms": 80, "post_plugin_cost_ms": 0, "prompt_ready_ms": 0}
+  ],
+  "aggregate": {
+    "cold_ms": {
+      "mean": 5396,
+      "min": 5396,
+      "max": 5396,
+      "stddev": 0,
+      "values": [5396,4790,4791,5054,4874]
+    }
+    ,
+    "warm_ms": {
+      "mean": 4780,
+      "min": 4780,
+      "max": 4780,
+      "stddev": 0,
+      "values": [4780,4859,4835,4818,4924]
+    }
+    ,
+    "pre_plugin_cost_ms": {
+      "mean": 96,
+      "min": 96,
+      "max": 96,
+      "stddev": 0,
+      "values": [96,82,80,80,79]
+    }
+    ,
+    "post_plugin_cost_ms": {
+      "mean": 0,
+      "min": 0,
+      "max": 0,
+      "stddev": 0,
+      "values": [0,0,0,0,0]
+    }
+    ,
+    "prompt_ready_ms": {
+      "mean": 0,
+      "min": 0,
+      "max": 0,
+      "stddev": 0,
+      "values": [0,0,0,0,0]
+    }
+  },
+  "segments": [

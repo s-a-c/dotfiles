@@ -227,6 +227,48 @@ print_test "Performance trend analysis"
     fi
 }
 
+# Test 9: perf-diff segment regression (warn-only integration)
+print_test "perf-diff segment regression (warn-only)"
+{
+    # Locate current segments file (prefer redesignv2, fallback to redesign)
+    SEG_CURR=""
+    if [[ -f "${ZDOTDIR}/docs/redesignv2/artifacts/metrics/perf-current-segments.txt" ]]; then
+        SEG_CURR="${ZDOTDIR}/docs/redesignv2/artifacts/metrics/perf-current-segments.txt"
+    elif [[ -f "${ZDOTDIR}/docs/redesign/metrics/perf-current-segments.txt" ]]; then
+        SEG_CURR="${ZDOTDIR}/docs/redesign/metrics/perf-current-segments.txt"
+    fi
+
+    # Locate baseline segments file (expected path if established)
+    SEG_BASE=""
+    if [[ -f "${ZDOTDIR}/docs/redesignv2/artifacts/metrics/perf-baseline-segments.txt" ]]; then
+        SEG_BASE="${ZDOTDIR}/docs/redesignv2/artifacts/metrics/perf-baseline-segments.txt"
+    elif [[ -f "${ZDOTDIR}/docs/redesign/metrics/perf-baseline-segments.txt" ]]; then
+        SEG_BASE="${ZDOTDIR}/docs/redesign/metrics/perf-baseline-segments.txt"
+    fi
+
+    DIFF_TOOL="${ZDOTDIR}/tools/perf-diff.sh"
+
+    if [[ -z "$SEG_CURR" || -z "$SEG_BASE" ]]; then
+        print_pass
+        print "  (segments baseline or current segments file missing - skipping perf-diff)"
+    elif [[ ! -x "$DIFF_TOOL" ]]; then
+        print_pass
+        print "  (perf-diff tool not executable or missing: $DIFF_TOOL)"
+    else
+        # Run in warn-only mode so it never fails this test yet
+        diff_output="$("$DIFF_TOOL" --baseline "$SEG_BASE" --current "$SEG_CURR" --warn-only 2>/dev/null || true)"
+        # Basic sanity: ensure header line present
+        if printf "%s" "$diff_output" | grep -q 'perf-diff:'; then
+            print_pass
+            print "  (perf-diff executed; warn-only mode)"
+            # Show concise summary line
+            printf "%s\n" "$diff_output" | head -3 | sed 's/^/    /'
+        else
+            print_fail "perf-diff produced unexpected output"
+        fi
+    fi
+}
+
 # Summary
 print "\n=== Performance Segment Regression Test Summary ==="
 if [[ $FAILURES -eq 0 ]]; then

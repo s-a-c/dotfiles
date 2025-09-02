@@ -47,6 +47,7 @@ The ZSH configuration redesign project transforms a fragmented 40+ file configur
 - **[IMPLEMENTATION.md](IMPLEMENTATION.md)** - Complete implementation guide with stage-by-stage execution
 - **[ARCHITECTURE.md](ARCHITECTURE.md)** - System design principles and module organization  
 - **[REFERENCE.md](REFERENCE.md)** - Quick commands, troubleshooting, and operational reference
+- **[RISK-ASYNC-PLAN.md](RISK-ASYNC-PLAN.md)** - Async enablement, phased rollout, risk mitigation & gating strategy
 
 ### **📊 Implementation Tracking**
 - **[stages/stage-1-foundation.md](stages/stage-1-foundation.md)** - ✅ Foundation & testing infrastructure (complete)

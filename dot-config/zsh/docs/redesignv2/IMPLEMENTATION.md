@@ -1,7 +1,7 @@
 # ZSH Configuration Redesign – Consolidated Implementation Guide
 Version: 2.0  
-Status: Stage 2 In Progress – Pre-Plugin Migration Underway  
-Last Updated: 2025-09-02 (Single Source of Truth)  
+Status: Stage 2 In Progress – Pre-Plugin Migration Underway (Early Stage 5 Instrumentation Pulled Forward: compinit/p10k/gitstatus segmentation, perf-diff observe mode, guidelines checksum integration)  
+Last Updated: 2025-09-02 (Single Source of Truth; updated with deep instrumentation + perf-diff observe integration)  
 Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
 
 This document *replaces and consolidates* the prior `master-plan.md`, `implementation-plan.md`, `final-report.md`, and `IMPLEMENTATION_PROGRESS.md`. It is the authoritative reference for execution, progress tracking, and promotion readiness of the redesign effort.
@@ -42,12 +42,35 @@ Primary measurable targets:
 | Test Infrastructure | ✅ Complete | 6 categories (design/unit/feature/integration/security/performance) |
 | Tooling Enhancements | ✅ Complete | Promotion guard, perf segment capture, verification script |
 | CI Workflow (structure) | ✅ Active | Structure badge workflow operational |
-| Async Engine | ⏳ Pending | State machine test scaffolds in place (no engine content yet) |
+| Async Engine | 🟡 Shadow (Phase A) Active | Dispatcher + manifest + shadow tasks & tests landed; async runs in shadow (no sync deferrals yet) |
 | Pre-Plugin Content Migration | ⏳ In Progress | Skeleton modules populated; migrating legacy logic |
 | Performance Baseline | ✅ Captured | Baseline metrics available |
 | Documentation Consolidation | ✅ v2 Structure | `redesignv2/` new canonical hub |
 | Promotion Readiness | ⏳ Far | Requires completion through Stage 6 |
 | Risk Posture | Controlled | Rollback + checksum freeze in place |
+
+### 1.1 Instrumentation Snapshot (Early Stage 5 Pulled Forward)
+
+Currently emitted (mean sample) segment labels (from `perf-current-segments.txt` / observe mode):
+- Core lifecycle: `pre_plugin_total`, `post_plugin_total`, `prompt_ready`
+- Hotspot instrumentation: `compinit`, `p10k_theme` (theme sourcing)
+- Plugin manager / post-plugin scaffolding: `zgenom-init` (if present)
+- Layered module markers (coarse still visible via post-plugin breakdown): `20-essential`, `30-dev-env`, `50-completion-history`
+- Policy / governance marker: `policy_guidelines_checksum` (meta, appears when checksum exported)
+- Planned / conditional (instrumented but may not always appear): `gitstatus_init` (module `65-vcs-gitstatus-instrument.zsh`, segment shown only when gitstatus plugin detected)
+
+Coverage Status:
+- Minimum required high-level trio (pre, post, prompt) present ✅
+- Critical hotspot segments (compinit, p10k_theme) present ✅
+- VCS status segment instrumentation implemented (file present) but not yet observed in baseline sample (likely plugin path not detected) ⚠️ (informational)
+- Guidelines checksum marker present in segment file when checksum environment exported (ensures policy correlation)
+
+Next Additions (planned instrumentation expansion):
+- `gitstatus_init` (ensure plugin path resolution test)
+- Additional heavy plugin groups (syntax highlighting, history backend) once identified
+- Async security scan scheduling markers (post prompt) in later Stage 5/6 work
+
+This snapshot will be updated when new hotspot segments are added or when observe → warn/gate mode transitions occur.
 
 ---
 
@@ -163,10 +186,49 @@ Actions:
 ## 4. Cross-Cutting Strategies
 
 ### 4.1 Performance Strategy
-- Baseline captured before structural migration.
-- Segments tracked: total, pre-plugin, post-plugin.
-- Threshold enforcement: Post-plugin segment target ≤500ms average.
-- Regression guard fails >5% variance (rolling baseline acceptable after stabilization).
+- Baseline captured before structural migration (see `perf-baseline.json`).
+- Segmentation expanded early (Stage 2) to reduce risk before optimization phase.
+- Tracked segments now include lifecycle totals + hotspot sub-segments (compinit, p10k_theme, gitstatus_init (conditional), plus layered module markers).
+- Post-plugin cost is currently high (≈5s mean) and will be reduced iteratively; original Stage 6 absolute target (≤500ms) retained but now treated as final Phase “Budget” goal with interim phases.
+- Regression guard (perf-diff) currently in observe (non-failing) mode; gating will ratchet in later phases.
+- Instrumentation overhead kept minimal (segment-lib adds negligible cost; target <5ms aggregate).
+
+#### 4.1.1 Interim Performance Roadmap (Phased Activation)
+
+| Phase | Mode | Criteria / Actions | Failure Effect | Status |
+|-------|------|--------------------|----------------|--------|
+| Phase 0 | Observe | Collect `perf-current-segments.txt`, establish `perf-baseline-segments.txt` | None (informational) | ✅ Active |
+| Phase 1 | Warn | Enable `promotion-guard-perf.sh` warn thresholds (abs Δ, pct Δ, new segment allow) | Non-failing warnings | ⏳ Pending (after 2 stable baselines) |
+| Phase 2 | Gate | Fail on regressions beyond thresholds when `PROMOTION_GUARD_PERF_FAIL=1` | Stage / PR block | ⏳ Planned |
+| Phase 3 | Budget | Enforce absolute per-segment + aggregate budgets (hard fail) | Promotion block | ⏳ Planned |
+| Phase 4 | Adaptive (Optional) | Auto-adjust rolling baseline after approved gate passes | Conditional | ⏳ Optional |
+
+#### 4.1.2 Initial (Soft) Segment Budget Targets (Subject to Refinement)
+
+| Segment | Current Mean (ms)* | Interim Soft Target | Final Budget Goal | Notes |
+|---------|--------------------|---------------------|-------------------|-------|
+| post_plugin_total | ~5055 | ≤ 3000 (Phase 1–2) | ≤ 500 | Multi-pronged reduction (defer heavy loads, async) |
+| compinit | 15 | ≤ 400 | ≤ 250 | Fast strategy already low; secure mode future impact |
+| p10k_theme | 7 | ≤ 900 | ≤ 600 | Room reserved for prompt customization expansion |
+| gitstatus_init | (n/a / missing) | ≤ 250 | ≤ 150 | Will measure once segment reliably emitted |
+| pre_plugin_total | 96 | ≤ 120 | ≤ 100 | Already within targets; keep guard |
+| prompt_ready (total) | 5852 | ≤ 3500 | ≤ 1000 | Will fall as post-plugin shrinks & async defers work |
+
+*Current mean values sourced from latest `perf-current-segments.txt` (observe run). Missing segments treated as “to be measured” before hard budgets activate.
+
+#### 4.1.3 Gating & Threshold Evolution
+- Observe → Warn trigger: Two consecutive runs with <5% variance (stdev/mean) on lifecycle totals.
+- Warn → Gate trigger: Baseline refresh + validation tests for required segment coverage (compinit, p10k_theme, gitstatus_init (if applicable)).
+- Gate → Budget trigger: 3 successful gate cycles (no regressions) OR targeted optimization PR(s) hitting interim soft target for post_plugin_total.
+- Budget Enforcement: Introduce gate G6 (existing) plus per-segment hard ceilings (compinit, p10k_theme, gitstatus_init) with immediate fail on exceedance.
+
+#### 4.1.4 Additional Planned Enhancements
+- Multi-sample capture implemented via `perf-capture-multi.zsh` (N≥3 samples) with stdev aggregation output to `perf-multi-current.json`.
+- Rolling variance test implemented (`test-multi-sample-variance.zsh`) to gate observe → warn transition (checks relative stddev & stability thresholds).
+- perf-diff JSON emission implemented (`perf-diff.sh --json`) with stable schema (regressions/new/removed/improvements/unchanged) consumed by promotion guard now and intended for future automated gating correlation (e.g., combining regression + budget signals).
+- Budget enforcement via `perf-segment-budget.sh` (interim/final phases; integrates with Gate G6 when ENFORCE=1)
+
+All changes to thresholds / budgets must be reflected here and in gate tests to maintain TDD alignment.
 
 ### 4.2 Security & Integrity
 | Layer | Strategy | Timing |
@@ -185,7 +247,7 @@ Actions:
 | Feature | High-level capability | `test-preplugin-ssh-agent-skeleton.zsh` |
 | Integration | Cross-module | `test-postplugin-compinit-single-run.zsh` |
 | Security | Async deferred validation | `test-async-state-machine.zsh` |
-| Performance | Timing & thresholds | `test-segment-regression.zsh` |
+| Performance | Timing, segmentation integrity, observe→warn gating | `test-segment-regression.zsh`, `test-required-segment-labels.zsh`, `test-promotion-guard-perf-block.zsh`, `test-multi-sample-variance.zsh`, `test-p10k-instrumentation.zsh`, `test-gitstatus-instrumentation.zsh` |
 | Maintenance | Drift & checksums | `verify-legacy-checksums.zsh` |
 
 ### 4.4 Documentation Governance
@@ -230,6 +292,7 @@ Failure to supply a preceding failing test for a functional change blocks Stage 
 | G3 | Single compinit | Compinit tests | Exactly one run | Stage 5 exit |
 | G4 | Async deferral | Async logs | No RUNNING pre-prompt | Stage 5/6 |
 | G5 | Perf improvement | perf-current vs baseline | ≥20% reduction | Stage 6 |
+| G5a | Perf diff observe mode active | `promotion-guard-perf.sh` (perf-diff block) | Structured PERF_GUARD block present (status=OK or SKIP) AND segments file discovered (non-failing observe) | Stage 5 (Observe) |
 | G6 | Segment budgets | perf-current.json | post_plugin_cost ≤ 500ms | Stage 6 |
 | G7 | Regression control | perf regression test | Δ ≤ 5% vs rolling baseline | Continuous |
 | G8 | Sentinel compliance | design test | 100% modules guarded | Continuous |
@@ -257,14 +320,17 @@ Failure to supply a preceding failing test for a functional change blocks Stage 
 
 | Tool | Purpose | Maturity | Notes |
 |------|---------|----------|-------|
-| `perf-capture.zsh` | Startup & segment timing | Stable | Writes current metrics |
-| `promotion-guard.zsh` | Final eligibility gate | Extended | Checks structure + perf + checksum + async |
+| `perf-capture.zsh` | Startup & segment timing (cold/warm + breakdown) | Stable | Now emits unified SEGMENT lines + guidelines checksum |
+| `promotion-guard.zsh` | Final eligibility gate | Extended | Structure + checksum gates active; perf gating pending (observe mode via perf helper) |
 | `verify-implementation.zsh` | Quick health snapshot | Stable | Developer convenience |
 | `generate-structure-audit.zsh` | Structure enumeration | Stable | Feeds badges |
 | `verify-legacy-checksums.zsh` | Drift detection | Stable | Fails on mutation |
 | `run-all-tests.zsh` | Unified test runner | Stable | Category filters |
-| `perf-regression-check.zsh` | Δ evaluation | Stable | Enforces ≤5% |
-| (Planned) `stage-runner.zsh` | Semi-auto stage operations | Pending | Useful from Stage 3 onward |
+| `perf-regression-check.zsh` | Δ evaluation | Stable | Legacy; superseded incrementally by perf-diff observe + future gating |
+| `segment-lib.zsh` | Unified segment timing helpers | New | Provides start/end, SEGMENT emission, policy checksum export |
+| `perf-capture-multi.zsh` | Multi-sample capture & variance stats | New | Produces `perf-multi-current.json` (mean/min/max/stddev) for stability gating |
+| `promotion-guard-perf.sh` | Perf diff observe block (G5a) | New | Emits structured PERF_GUARD block + optional multi-sample summary fields |
+| `perf-segment-budget.sh` | Segment budget enforcement (Phase 3 prep) | New | Interim/final budgets; dry-run or `ENFORCE=1` hard gating |
 
 ---
 
@@ -370,8 +436,10 @@ Post-plugin: `00,05,10,20,30,40,50,60,70,80,90`
 | 2025-01-03 | Initial consolidation (v2.0) | Merge of four legacy planning artifacts |
 | 2025-09-01 | Stage 2 partial progress (skeletons, lazy stubs) + Adopted TDD policy | Updated goals & status; remaining migration, perf sampling pending; added formal TDD gate |
 | 2025-09-02 | Stage 2 progress (path normalization, lazy framework, ssh agent) | Implemented invariants, dispatcher, agent consolidation; tests updated & TDD gate partial PASS |
+| 2025-09-02 | Early instrumentation (segment-lib, compinit/p10k/gitstatus segments, perf-diff observe, guidelines checksum export, new tests) | Deep timing & policy integration pulled forward from later stages; baseline for future gating |
+| 2025-09-02 | Performance tooling expansion (multi-sample capture, variance & guard tests, budget script) | Added perf-capture-multi, promotion guard multi-sample fields (G5a), variance stability test, structured guard block test, segment budget enforcement (perf-segment-budget) |
 | (Future) | Stage 5 compinit success | Mark compinit gate PASS |
-| (Future) | Promotion readiness | Gate alignment finalization |
+| 2025-09-02 | Async Phase A (shadow) activation | Added dispatcher + manifest + shadow task registration, async integrity & shadow mode tests, placeholder sync segment probes, async metrics export & promotion guard async placeholders (no sync deferrals yet) |
 
 ---
 

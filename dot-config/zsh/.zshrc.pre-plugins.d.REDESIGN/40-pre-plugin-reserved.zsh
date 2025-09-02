@@ -19,6 +19,7 @@ if [[ -z ${PRE_PLUGIN_END_REALTIME:-} ]]; then
         # Emit segment marker used by perf-capture.zsh for structured parsing
         if [[ -n ${PERF_SEGMENT_LOG:-} ]]; then
             print "PRE_PLUGIN_COMPLETE ${PRE_PLUGIN_TOTAL_MS}" >>"$PERF_SEGMENT_LOG" 2>/dev/null || true
+            print "SEGMENT name=pre_plugin_total ms=${PRE_PLUGIN_TOTAL_MS} phase=pre_plugin sample=${PERF_SAMPLE_CONTEXT:-unknown}" >>"$PERF_SEGMENT_LOG" 2>/dev/null || true
         fi
     else
         zsh_debug_echo "# [pre-plugin][perf] PRE_PLUGIN_END_REALTIME=$PRE_PLUGIN_END_REALTIME (missing start ms for delta)"
