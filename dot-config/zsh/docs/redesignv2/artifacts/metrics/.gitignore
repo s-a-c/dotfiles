@@ -1,0 +1,36 @@
+# .gitignore for multi-sample performance artifacts
+# Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+#
+# Purpose:
+#   Avoid committing noisy per-run performance sample artifacts produced by
+#   tools/perf-capture-multi.zsh while retaining canonical baseline/current
+#   summary files that are used by gates (G5, G5a, G6) and documentation.
+#
+# Keep (tracked / source of truth):
+#   perf-baseline.json
+#   perf-current.json
+#   perf-multi-current.json              (aggregate multi-run stats)
+#   perf-baseline-segments.txt
+#   perf-current-segments.txt
+#   perf-segment-baseline.json
+#
+# Ignore (ephemeral / reproducible):
+#   perf-sample-*.json                   (raw per-run copies of perf-current.json)
+#   perf-sample-*-segments.txt           (future: if individual segment dumps are added)
+#   transient scratch / tmp files
+
+# Per-run JSON samples (multi-sample capture)
+perf-sample-*.json
+
+# Potential future per-run segment dumps
+perf-sample-*-segments.txt
+
+# Safety: explicitly keep canonical artifacts
+!perf-baseline.json
+!perf-current.json
+!perf-multi-current.json
+!perf-baseline-segments.txt
+!perf-current-segments.txt
+!perf-segment-baseline.json
+
+# End of .gitignore
