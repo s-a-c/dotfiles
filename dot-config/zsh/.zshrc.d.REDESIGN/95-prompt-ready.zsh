@@ -148,6 +148,44 @@ fi
 
 zsh_debug_echo "# [prompt-ready] instrumentation installed method=${__pr__install_method}"
 
+# ---------------------------------------------------------------------------
+# Forced / Deferred precmd trigger logic (addresses non-render environments)
+# CONFIG:
+#   PERF_FORCE_PRECMD=1              Force an early synthetic precmd trigger (after short delay) if no readiness yet.
+#   PERF_PROMPT_DEFERRED_CHECK=1     Enable a secondary deferred check (default 1).
+#   PERF_PROMPT_FORCE_DELAY_MS=50    Delay before forced precmd (default 50ms).
+#   PERF_PROMPT_DEFERRED_DELAY_MS=250 Delay before deferred fallback capture (default 250ms).
+# RATIONALE:
+#   In headless harnesses (stdin redirected, no real prompt render) precmd may never
+#   fire. We schedule lightweight background checks that invoke the capture function
+#   if readiness markers are still absent, producing a deterministic non‑zero value.
+# ---------------------------------------------------------------------------
+
+: ${PERF_PROMPT_FORCE_DELAY_MS:=50}
+: ${PERF_PROMPT_DEFERRED_DELAY_MS:=250}
+
+# Early synthetic precmd trigger (short delay)
+if [[ "${PERF_FORCE_PRECMD:-0}" == "1" && -z ${PROMPT_READY_MS:-} ]]; then
+  {
+    sleep "$(printf '%.3f' "$((PERF_PROMPT_FORCE_DELAY_MS))/1000")"
+    if [[ -z ${PROMPT_READY_MS:-} ]]; then
+      zsh_debug_echo "# [prompt-ready][force] forcing early capture (no prompt yet)"
+      __pr__capture_prompt_ready
+    fi
+  } &!
+fi
+
+# Deferred fallback capture (longer delay) if still missing
+if [[ "${PERF_PROMPT_DEFERRED_CHECK:-1}" == "1" && -z ${PROMPT_READY_MS:-} ]]; then
+  {
+    sleep "$(printf '%.3f' "$((PERF_PROMPT_DEFERRED_DELAY_MS))/1000")"
+    if [[ -z ${PROMPT_READY_MS:-} ]]; then
+      zsh_debug_echo "# [prompt-ready][deferred] readiness still missing; capturing approximate"
+      __pr__capture_prompt_ready
+    fi
+  } &!
+fi
+
 # Fallback: In scenarios like 'zsh -i -c "exit"' the precmd hook never fires, so
 # prompt readiness is never captured. If a command execution string is present
 # and we have not yet recorded PROMPT_READY_MS, approximate readiness now so
