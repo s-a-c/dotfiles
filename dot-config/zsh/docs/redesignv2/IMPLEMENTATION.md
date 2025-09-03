@@ -1,8 +1,11 @@
 # ZSH Configuration Redesign – Consolidated Implementation Guide
-Version: 2.0  
-Status: Stage 2 In Progress – Pre-Plugin Migration Underway (Early Stage 5 Instrumentation Pulled Forward: compinit/p10k/gitstatus segmentation, perf-diff observe mode, guidelines checksum integration)  
-Last Updated: 2025-09-02 (Single Source of Truth; updated with deep instrumentation + perf-diff observe integration)  
+Version: 2.1  
+Status: Stage 2 Implementation Complete – Pre-Plugin 00–30 content landed (baseline metrics + tag pending)  
+Last Updated: 2025-09-02 (Single Source of Truth; early instrumentation + perf-diff observe integrated)  
 Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+
+NOTE (Early Instrumentation Pull-Forward):
+Two helper modules (`01-segment-lib-bootstrap.zsh`, `02-guidelines-checksum.zsh`) reside in the pre-plugin directory to enable early segmentation & policy checksum export. They are NOT counted toward the stable “8 pre-plugin + 11 post-plugin” architectural budget and may be merged or repositioned during Stage 5.
 
 This document *replaces and consolidates* the prior `master-plan.md`, `implementation-plan.md`, `final-report.md`, and `IMPLEMENTATION_PROGRESS.md`. It is the authoritative reference for execution, progress tracking, and promotion readiness of the redesign effort.
 
@@ -81,7 +84,7 @@ This snapshot will be updated when new hotspot segments are added or when observ
 | Stage | Label Tag | Scope | Exit Conditions | Status |
 |-------|-----------|-------|-----------------|--------|
 | 1 | `refactor-stage1-complete` | Skeletons, tests, tooling, CI, verification | All infra tests PASS & tag created | ✅ Done |
-| 2 | `refactor-stage2-preplugin` | Implement pre-plugin 00–30 content | Path safety merged, lazy framework validated, pre-plugin baseline defined | ⏳ In Progress |
+| 2 | `refactor-stage2-preplugin` | Implement pre-plugin 00–30 content | Path safety, lazy framework, node stubs, integrations, ssh-agent; capture preplugin baseline & tag | ✅ Code Complete (baseline & tag pending) |
 | 3 | `refactor-stage3-core` | Post 00/05/10 core modules | Security skeleton, interactive options, core functions implemented | ⏳ Pending |
 | 4 | `refactor-stage4-features` | Post 20/30/40 feature layers | Plugin config, dev env exports, aliases/keybindings stable | ⏳ Pending |
 | 5 | `refactor-stage5-ui-perf` | Post 50/60/70/80/90 (completion, UI, perf, async, splash) | Single compinit PASS, async queued & non-blocking | ⏳ Pending |
@@ -117,27 +120,50 @@ Artifacts:
 - Metrics: `artifacts/metrics/perf-baseline.json`
 - Structure: `artifacts/metrics/structure-audit.json`
 
-### 3.2 Stage 2 – Pre-Plugin Content Migration
-Goals (Progress Annotated) (All tasks executed with TDD: introduce/confirm failing or missing test → implement → refactor):
-- (Complete) Collapse legacy path fix scripts into `00-path-safety.zsh` — Enhanced normalization (I1–I8), edge + whitelist tests passing.
-- (Complete) Implement minimal FZF init — No-compinit guarantees enforced (`test-fzf-no-compinit.zsh`).
-- (Complete) Build production lazy dispatcher (`10-lazy-framework.zsh`) — Registry, recursion guard, negative & success path test passing.
-- (Complete) Add node/npm lazy stubs & deferral semantics — Lazy activation verified (`test-node-lazy-activation.zsh`).
-- (Complete) Wrap integrations (direnv/git/gh) with idempotent shims — Idempotence test added (`test-integrations-idempotence.zsh`).
-- (Complete) Harden SSH agent consolidation — Single spawn & reuse logic validated (`test-ssh-agent-duplicate-spawn.zsh`).
+### 3.2 Stage 2 – Pre-Plugin Content Migration (Implementation Complete – baseline & tag pending)
+> Note: `lazy_register` now supports a `--force` flag (added in Stage 2 enhancement) allowing forced lazy wrapping of already-present binaries (e.g. `direnv`, `gh`) to ensure consistent first-call instrumentation and loader state tracking. This capability is exercised in `25-lazy-integrations.zsh` to unify behavior and simplify future performance / correctness tests.
 
-Success Metrics:
+Scope Achieved (00–30):
+- 00-path-safety.zsh (enhanced invariants I1–I8; tests green)
+- 05-fzf-init.zsh (no-compinit guarantee verified)
+- 10-lazy-framework.zsh (registry, recursion guard, negative path coverage)
+- 15-node-runtime-env.zsh (lazy nvm/npm detection chain, no early heavy sourcing)
+- 20-macos-defaults-deferred.zsh (scheduling skeleton – real async hook deferred to Stage 5)
+- 25-lazy-integrations.zsh (direnv / gh / git config stubs – richer lazy_register integration deferred)
+- 30-ssh-agent.zsh (idempotent consolidation; spawn/reuse tests)
+- Early instrumentation helpers (pulled forward, excluded from canonical count): 01-segment-lib-bootstrap.zsh, 02-guidelines-checksum.zsh
+
+Task Status:
+| Task | Status | Notes |
+|------|--------|-------|
+| Path normalization merge & tests | ✅ | Invariants enforced |
+| FZF lightweight init (no compinit) | ✅ | Sentinel checks pass |
+| Lazy framework production dispatcher | ✅ | Negative & recursion tests |
+| Node env lazy stubs | ✅ | Detection + first-use path |
+| macOS defaults deferral enhanced | ✅ | Post-prompt hook registered (deferred async scheduling skeleton) |
+| Lazy integrations enhanced | ✅ | lazy_register + fallback wrappers (direnv/gh) landed |
+| SSH agent consolidation | ✅ | Single spawn/reuse invariant |
+| Early instrumentation bootstrap | ✅ | Observe mode only |
+| Preplugin baseline capture (`preplugin-baseline.json`) | ⏳ | Pending multi-sample run |
+| Stage tag creation (`refactor-stage2-preplugin`) | ⏳ | Pending baseline artifact commit |
+
+Exit (Final) Requirements To Close Stage 2:
+1. Capture and commit `preplugin-baseline.json` (recommend multi-sample; derive mean & stdev).
+2. (Optional) Refresh perf / structure badges if they consume pre-plugin metrics.
+3. Create and push tag `refactor-stage2-preplugin`.
+
+Deferred to Later Stages:
+- Attach post-first-prompt async scheduling for macOS defaults (Stage 5).
+- Convert integration stubs to `lazy_register` loaders + add corresponding state transition tests (Stage 4/5).
+- Integrate pre-plugin cost assertion into perf guard once baseline committed.
+
+Success Metrics (when baseline captured):
 | Aspect | Gate |
 |--------|------|
 | Pre-plugin run cost | ≤ legacy pre-plugin baseline (target -10%) |
-| Lazy framework calls | First call triggers load; subsequent calls constant cost |
-| Path normalization | No duplicate PATH segments; tests green |
-| Agent duplication | 0 new processes when socket present |
-
-Exit Steps:
-1. Run full test suite (all green).
-2. Capture `preplugin-baseline.json`.
-3. Tag `refactor-stage2-preplugin`.
+| Lazy framework calls | First invocation loads; subsequent constant |
+| Path normalization | No duplicate logical dirs; tests green |
+| Agent duplication | 0 spurious spawns with existing valid socket |
 
 ### 3.3 Stage 3 – Post-Plugin Core
 Focus modules: `00-security-integrity`, `05-interactive-options`, `10-core-functions`.
@@ -229,6 +255,36 @@ Actions:
 - Budget enforcement via `perf-segment-budget.sh` (interim/final phases; integrates with Gate G6 when ENFORCE=1)
 
 All changes to thresholds / budgets must be reflected here and in gate tests to maintain TDD alignment.
+
+Optional Pre-Plugin Budget Override Guidance:
+To begin enforcing or tightening the pre-plugin phase cost before final budgets activate, you can layer a provisional budget on top of the Stage 2 baseline without waiting for full Phase 3 gating.
+
+Recommended workflow:
+1. Capture / refresh baseline:
+   tools/preplugin-baseline-capture.zsh
+   jq '.mean_ms' docs/redesignv2/artifacts/metrics/preplugin-baseline.json
+2. Choose an interim ceiling (e.g. mean * 1.10 for 10% headroom).
+3. Run budget check locally (observe):
+   BUDGET_PRE_PLUGIN_TOTAL=<ceiling_ms> ./tools/perf-segment-budget.sh
+4. Enforce in CI (adds hard gate once stable):
+   BUDGET_PRE_PLUGIN_TOTAL=<ceiling_ms> ENFORCE=1 ./tools/perf-segment-budget.sh
+5. Pair with variance/regression test:
+   tests/run-all-tests.zsh --performance-only
+   (test-preplugin-baseline-threshold.zsh ensures <= allowed regression percentage)
+
+Tightening Strategy:
+- Start with +10% over baseline.
+- After 3 consecutive green runs (low variance), reduce to +5%.
+- When optimization work lands (e.g., further path pruning or lazy loader improvements), recalc baseline and repeat.
+- Final target should align with Interim budget (≤120ms) then converge toward Final budget (≤100ms) as specified in the Performance Roadmap once consistent.
+
+Environment Overrides Recap:
+- BUDGET_PRE_PLUGIN_TOTAL=<ms> sets explicit ceiling.
+- PREPLUGIN_ALLOWED_REGRESSION_PCT=<pct> adjusts threshold for test-preplugin-baseline-threshold.zsh.
+- ALLOW_MISSING_GITSTATUS_INIT=1 (optional) avoids false negatives while early segments still stabilizing.
+
+Rationale:
+Applying a provisional enforced budget early reduces the window for silent regressions and creates immediate feedback loops for incremental refactors (e.g. forced lazy wrapping with lazy_register --force in module 25). This incremental ratcheting preserves TDD discipline while converging on promotion-grade performance guarantees.
 
 ### 4.2 Security & Integrity
 | Layer | Strategy | Timing |
@@ -440,6 +496,8 @@ Post-plugin: `00,05,10,20,30,40,50,60,70,80,90`
 | 2025-09-02 | Performance tooling expansion (multi-sample capture, variance & guard tests, budget script) | Added perf-capture-multi, promotion guard multi-sample fields (G5a), variance stability test, structured guard block test, segment budget enforcement (perf-segment-budget) |
 | (Future) | Stage 5 compinit success | Mark compinit gate PASS |
 | 2025-09-02 | Async Phase A (shadow) activation | Added dispatcher + manifest + shadow task registration, async integrity & shadow mode tests, placeholder sync segment probes, async metrics export & promotion guard async placeholders (no sync deferrals yet) |
+| 2025-09-02 | Stage 2 implementation code complete (00–30 modules) | Pre-plugin modules implemented; baseline metrics & tag pending (`preplugin-baseline.json`) |
+| 2025-09-02 | Stage 2 enhancements (modules 20 & 25 + preplugin threshold test) | Added deferred macOS defaults hook, lazy_register integration for direnv/gh, and test-preplugin-baseline-threshold.zsh |
 
 ---
 

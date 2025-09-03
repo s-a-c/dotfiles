@@ -45,25 +45,18 @@ typeset -f zsh_debug_echo >/dev/null 2>&1 || zsh_debug_echo() { :; }
 
 # If already loaded (library exports _ZSH_SEGMENT_LIB_LOADED) we are done
 if [[ -n ${_ZSH_SEGMENT_LIB_LOADED:-} ]]; then
-  zsh_debug_echo "# [segment-lib-bootstrap] already loaded (early exit)"
-  return 0
+    zsh_debug_echo "# [segment-lib-bootstrap] already loaded (early exit)"
+    return 0
 fi
 
-# Resolve library path (primary expected location under ZDOTDIR/tools)
-__slb_base="${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}"
-__slb_path="${__slb_base}/tools/segment-lib.zsh"
+# Resolve library path (if not already resolved)
+if [[ -z ${_ZSH_SEGMENT_LIB_PATH:-} ]]; then
+    _ZSH_SEGMENT_LIB_PATH="${ZDOTDIR:-${HOME}/.config/zsh}/tools/segment-lib.zsh"
+fi
 
-if [[ -r "${__slb_path}" ]]; then
-  # shellcheck disable=SC1090
-  source "${__slb_path}" 2>/dev/null || true
-  if [[ -n ${_ZSH_SEGMENT_LIB_LOADED:-} ]]; then
-    zsh_debug_echo "# [segment-lib-bootstrap] sourced segment-lib (policy=${GUIDELINES_CHECKSUM:-unset})"
-  else
-    zsh_debug_echo "# [segment-lib-bootstrap] attempted to source segment-lib but _ZSH_SEGMENT_LIB_LOADED unset"
-  fi
+# Source the library if it exists
+if [[ -f "${_ZSH_SEGMENT_LIB_PATH}" ]]; then
+    source "${_ZSH_SEGMENT_LIB_PATH}"
 else
-  zsh_debug_echo "# [segment-lib-bootstrap] segment-lib not found at ${__slb_path}"
+    zsh_debug_echo "# [segment-lib-bootstrap] library not found at ${_ZSH_SEGMENT_LIB_PATH}"
 fi
-
-unset __slb_base __slb_path
-# End of 01-segment-lib-bootstrap.zsh
