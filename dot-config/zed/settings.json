@@ -60,8 +60,8 @@
         // Disable ligatures:
         // "calt": false
     },
-    "ui_font_size": 16,
-    "buffer_font_size": 16,
+    "ui_font_size": 20,
+    "buffer_font_size": 18,
     "theme": {
         "mode": "dark",
         "light": "Ayu Light",

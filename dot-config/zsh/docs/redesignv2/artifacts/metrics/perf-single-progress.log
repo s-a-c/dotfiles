@@ -1,0 +1,7 @@
+phase=cold state=segments rc=0 total_ms=142155 pre=0 post=0 prompt=0 fast=0
+phase=warm state=segments rc=0 total_ms=310471 pre=0 post=0 prompt=0 fast=0
+state=early_written file=perf-current-early.json mean_ms=226313
+phase=cold state=segments rc=0 total_ms=357794 pre=0 post=0 prompt=0 fast=0
+phase=warm state=segments rc=0 total_ms=106094 pre=0 post=0 prompt=0 fast=0
+phase=cold state=segments rc=0 total_ms=355969 pre=0 post=0 prompt=0 fast=0
+phase=warm state=segments rc=0 total_ms=333986 pre=0 post=0 prompt=0 fast=0

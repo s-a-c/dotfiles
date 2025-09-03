@@ -1,5 +1,11 @@
 # Additional Plugin Configuration - Extends ZSH Quickstart Kit defaults
 # CRITICAL: Maintains proper plugin loading order per ZSH-QS and zgenom best practices
+#
+# PERF_CAPTURE_FAST:
+#   When PERF_CAPTURE_FAST=1 we skip all non-essential plugin loads to
+#   accelerate perf-capture harness runs (avoids network / clone latency).
+#   The core interactive configuration still establishes baseline PATH and
+#   instrumentation earlier in .zshrc/.zshenv, so skipping here is safe.
 
 # CRITICAL FIX: Add loading guard to prevent infinite loops
 if [[ -n "${_ZSH_ADD_PLUGINS_LOADED:-}" ]]; then
@@ -7,6 +13,12 @@ if [[ -n "${_ZSH_ADD_PLUGINS_LOADED:-}" ]]; then
         return 0
 fi
 typeset -g _ZSH_ADD_PLUGINS_LOADED=1
+
+# Fast path: skip plugin additions entirely during perf capture fast mode
+if [[ "${PERF_CAPTURE_FAST:-0}" == "1" ]]; then
+    zsh_debug_echo "# [add-plugins][perf-capture-fast] Skipping extended plugin list (PERF_CAPTURE_FAST=1)"
+    return 0
+fi
 
 # Track ordered plugin load sequence for design tests / diagnostics
 typeset -ga ZSH_REDESIGN_PLUGIN_SEQUENCE
