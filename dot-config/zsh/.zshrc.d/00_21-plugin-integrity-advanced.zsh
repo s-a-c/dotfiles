@@ -8,6 +8,14 @@
 # Security Level: HIGH - Advanced plugin security
 # Split from: 04-plugin-integrity-verification.zsh (13k → 7k + 6k)
 #=============================================================================
+# PERF_CAPTURE_FAST short-circuit:
+# When PERF_CAPTURE_FAST=1 (used by perf-capture tooling) we skip all advanced
+# integrity scanning & verification to avoid network/file system overhead.
+if [[ "${PERF_CAPTURE_FAST:-0}" == "1" ]]; then
+    typeset -f zsh_debug_echo >/dev/null 2>&1 || zsh_debug_echo() { :; }
+    zsh_debug_echo "# [plugin-integrity-advanced][perf-capture-fast] Skipping advanced integrity verification (PERF_CAPTURE_FAST=1)"
+    return 0
+fi
 
 # 4. Advanced Plugin Verification Functions
 #=============================================================================

@@ -12,6 +12,12 @@
 # DISABLE_AUTO_TITLE="true"
 #
 # Version 1.0.0
+# Early minimal harness short-circuit:
+# When ZSH_SKIP_FULL_INIT=1 (set by perf minimal harness) skip remainder of .zshrc
+if [[ "${ZSH_SKIP_FULL_INIT:-0}" == "1" ]]; then
+  zsh_debug_echo "# [.zshrc] Skipping full initialization (ZSH_SKIP_FULL_INIT=1)"
+  return 0
+fi
 #
 # If you want to change settings that are in this file, the easiest way
 # to do it is by adding a file to $ZDOTDIR/.zshrc.d or $ZDOTDIR/.zshrc.pre-plugins.d that
@@ -354,7 +360,12 @@ fi
 # or when zgenom is vendored into $ZDOTDIR), set XDG-aware variables so the
 # vendored copy can resolve its own paths correctly before sourcing it.
 # Initialize zgenom using ZGENOM_SOURCE_FILE if set (set in .zshenv).
-if [[ -n "${ZGENOM_SOURCE_FILE:-}" && -f "${ZGENOM_SOURCE_FILE}" ]]; then
+# PERF_CAPTURE_FAST guard: skip plugin manager initialization entirely when set.
+# This allows perf-capture tooling to avoid long first-time clone/compile overhead.
+if [[ "${PERF_CAPTURE_FAST:-0}" == "1" ]]; then
+    zsh_debug_echo "# [perf-capture-fast] Skipping zgenom initialization (PERF_CAPTURE_FAST=1)"
+else
+    if [[ -n "${ZGENOM_SOURCE_FILE:-}" && -f "${ZGENOM_SOURCE_FILE}" ]]; then
     if [[ -n ${PERF_SEGMENT_LOG:-} && -z ${ZGENOM_INIT_START_MS:-} ]]; then
         zmodload zsh/datetime 2>/dev/null || true
         ZGENOM_INIT_START_MS=$(printf '%s' "$EPOCHREALTIME" | awk -F. '{ms=$1*1000; if(NF>1){ms+=substr($2"000",1,3)+0} printf "%d",ms}')
@@ -397,6 +408,7 @@ else
         print "POST_PLUGIN_SEGMENT zgenom-init ${ZGENOM_INIT_MS}" >>"${PERF_SEGMENT_LOG}" 2>/dev/null || true
         zsh_debug_echo "# [post-plugin][perf] segment=zgenom-init delta=${ZGENOM_INIT_MS}ms"
     fi
+ fi
 fi
 
 # Do not call `zgenom compdef` unconditionally here.

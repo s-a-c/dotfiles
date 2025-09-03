@@ -1,7 +1,7 @@
 # ZSH Configuration Redesign Documentation
-**Version 2.0** - Consolidated & Streamlined  
-**Status**: Stage 1 Complete - Implementation In Progress  
-**Last Updated**: 2025-01-03
+**Version 2.1** - Consolidated & Streamlined  
+**Status**: Stage 2 Implementation Complete (baseline & tag pending)  
+**Last Updated**: 2025-09-02
 
 ---
 
@@ -25,7 +25,7 @@ The ZSH configuration redesign project transforms a fragmented 40+ file configur
 | Stage | Status | Completion | Next Action |
 |-------|--------|------------|-------------|
 | **1. Foundation & Testing** | ✅ **Complete** | 100% | Stage 2 ready |
-| **2. Pre-Plugin Migration** | 🎯 **Ready to Start** | 0% | Begin content migration |
+| **2. Pre-Plugin Migration** | ✅ **Implementation Complete** | 90% | Capture baseline & tag |
 | **3. Post-Plugin Core** | ⏳ **Pending Stage 2** | 0% | Awaiting pre-plugin |
 | **4. Features & Environment** | ⏳ **Pending Stage 3** | 0% | Future |
 | **5. UI & Performance** | ⏳ **Pending Stage 4** | 0% | Future |
@@ -51,7 +51,7 @@ The ZSH configuration redesign project transforms a fragmented 40+ file configur
 
 ### **📊 Implementation Tracking**
 - **[stages/stage-1-foundation.md](stages/stage-1-foundation.md)** - ✅ Foundation & testing infrastructure (complete)
-- **[stages/stage-2-preplugin.md](stages/stage-2-preplugin.md)** - 🎯 Pre-plugin content migration (ready)
+- **[stages/stage-2-preplugin.md](stages/stage-2-preplugin.md)** - ✅ Pre-plugin implementation (baseline & tag pending)
 - **[stages/stage-3-core.md](stages/stage-3-core.md)** - ⏳ Post-plugin core modules (pending)
 - **[stages/stage-4-features.md](stages/stage-4-features.md)** - ⏳ Features & environment (pending)
 - **[stages/stage-5-ui-performance.md](stages/stage-5-ui-performance.md)** - ⏳ UI & performance (pending)
@@ -83,6 +83,8 @@ tests/run-all-tests.zsh
 # Check performance metrics
 tools/perf-capture.zsh
 
+# Capture pre-plugin baseline (multi-sample -> preplugin-baseline.json)
+tools/preplugin-baseline-capture.zsh
 # Validate promotion readiness
 tools/promotion-guard.zsh
 ```
@@ -104,20 +106,20 @@ tests/run-all-tests.zsh --unit-only
 
 ### **Development Workflow**
 ```bash
-# Start Stage 2 development
-git checkout -b stage-2-preplugin
-cd .zshrc.pre-plugins.d.REDESIGN/
-# Begin content migration...
+# Capture pre-plugin baseline (default 5 runs)
+tools/preplugin-baseline-capture.zsh
+# Inspect baseline mean
+jq '.mean_ms' docs/redesignv2/artifacts/metrics/preplugin-baseline.json
 
-# Validate stage completion
+# Validate implementation & baseline presence
 ./verify-implementation.zsh
 tools/promotion-guard.zsh
 tests/run-all-tests.zsh
 
-# Commit stage milestone
-git add .
-git commit -m "feat: Stage 2 complete - pre-plugin content migration"
-git tag -a refactor-stage2-preplugin -m "Stage 2: Pre-plugin redesign complete"
+# Commit Stage 2 baseline & tag
+git add docs/redesignv2/artifacts/metrics/preplugin-baseline.json
+git commit -m "perf(stage2): add pre-plugin baseline"
+git tag -a refactor-stage2-preplugin -m "Stage 2: Pre-plugin implementation baseline captured"
 ```
 
 ---
@@ -131,10 +133,11 @@ git tag -a refactor-stage2-preplugin -m "Stage 2: Pre-plugin redesign complete"
 ├── 05-fzf-init.zsh              # Lightweight FZF bindings
 ├── 10-lazy-framework.zsh        # Lazy loading dispatcher
 ├── 15-node-runtime-env.zsh      # Node/npm lazy stubs
-├── 20-macos-defaults-deferred.zsh # macOS-specific deferrals
-├── 25-lazy-integrations.zsh     # Direnv/git/copilot wrappers
+├── 20-macos-defaults-deferred.zsh # macOS-specific deferrals (deferred hook)
+├── 25-lazy-integrations.zsh     # Direnv/gh lazy loaders (enhanced)
 ├── 30-ssh-agent.zsh             # SSH agent management
 └── 40-pre-plugin-reserved.zsh   # Reserved for future use
+# (Early instrumentation helpers present but not counted: 01-segment-lib-bootstrap.zsh, 02-guidelines-checksum.zsh)
 ```
 
 ### **Post-Plugin Modules (11 files)**
