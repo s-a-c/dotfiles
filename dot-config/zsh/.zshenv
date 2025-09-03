@@ -276,6 +276,30 @@ export ZSH_ENABLE_NVM_PLUGINS="${ZSH_ENABLE_NVM_PLUGINS:-1}"
 export ZSH_NODE_LAZY="${ZSH_NODE_LAZY:-1}"
 export ZSH_ENABLE_ABBR="${ZSH_ENABLE_ABBR:-0}"
 
+# ------------------------------------------------------------------
+# Core PATH fallback (Stage 2 stabilization)
+# Ensures essential system utilities (awk, date, mkdir, sed, grep, etc.)
+# are available even in constrained early interactive shells invoked
+# by performance harnesses or baseline scripts. This appends missing
+# core directories without disturbing existing ordering when present.
+# Safe: only appends; does not reorder front-of-line priorities.
+# ------------------------------------------------------------------
+{
+  _core_added=0
+  for __core_dir in /usr/local/bin /opt/homebrew/bin /usr/bin /bin /usr/sbin /sbin; do
+    [ -d "$__core_dir" ] || continue
+    case ":$PATH:" in
+      *:"$__core_dir":*) ;;
+      *)
+        PATH="${PATH:+$PATH:}$__core_dir"
+        _core_added=$(( _core_added + 1 ))
+        ;;
+    esac
+  done
+  export PATH
+  unset __core_dir _core_added
+}
+
 # Optional: custom compdump location and compinit flags (keeps compdump in cache)
 export ZGEN_CUSTOM_COMPDUMP="${ZGEN_CUSTOM_COMPDUMP:-${ZSH_CACHE_DIR}/zcompdump_${ZSH_VERSION:-unknown}}"
 export ZGEN_COMPINIT_FLAGS="${ZGEN_COMPINIT_FLAGS:-${ZGEN_COMPINIT_FLAGS:-}}"
