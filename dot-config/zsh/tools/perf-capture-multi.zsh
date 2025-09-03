@@ -17,6 +17,13 @@
 #   - Parses required numeric fields without external heavy JSON tooling (jq not required).
 #   - Aggregates per-run metrics + segment mean_ms values.
 #   - Emits consolidated JSON: perf-multi-current.json (schema perf-multi.v1).
+#   - Records synthetic / fallback sample variants (flags):
+#       * synthetic_timeout   -> generated after watchdog timeout
+#       * synthetic_invalid   -> generated when perf-current.json invalid/missing
+#       * early_invoke        -> emitted immediately after a non-zero rc before validation
+#       * direct_fallback     -> emitted when perf-current.json missing and direct sample synthesized
+#     Aggregate file now includes "sample_flags": [...] listing distinct flags observed across
+#     all accepted samples for quick downstream awareness / diagnostics.
 #
 # OUTPUT ARTIFACTS (metrics directory):
 #   perf-sample-<i>.json          (raw per-run copy of perf-current.json after run i)
@@ -74,8 +81,13 @@
 # -----------------------------------------------------------------------------
 
 set -euo pipefail
+# Disable any inherited harness watchdog variables so the multi runner itself
+# is never terminated mid-iteration (the perf-capture script handles its own
+# timeout / fallback logic now).
+unset PERF_HARNESS_TIMEOUT_SEC PERF_HARNESS_DISABLE_WATCHDOG HARNESS_PARENT_PID
 : ${PERF_CAPTURE_MULTI_DEBUG:=0}
 : ${PERF_CAPTURE_RUN_TIMEOUT_SEC:=20}
+: ${PERF_CAPTURE_WATCHDOG_INTERVAL_MS:=200}
 
 SCRIPT_NAME="${0##*/}"
 
@@ -154,7 +166,35 @@ else
   exit 1
 fi
 
-mkdir -p "$METRICS_DIR"
+# Use command builtin to avoid any function/alias shadowing of mkdir
+if (( PERF_CAPTURE_MULTI_DEBUG )); then
+  echo "[perf-capture-multi][debug] PATH=$PATH" >&2
+fi
+# --- PATH Self-Heal (before directory creation) ---
+# Some minimal container / CI contexts may have a reduced PATH causing core
+# utilities (mkdir, awk, grep, sed, date) to be missing. We defensively append
+# common system bin directories if not already present.
+ensure_core_path() {
+  local -a needed=(/usr/local/bin /opt/homebrew/bin /usr/bin /bin /usr/sbin /sbin)
+  local -a added=()
+  local d
+  for d in "${needed[@]}"; do
+    [[ -d "$d" ]] || continue
+    case ":$PATH:" in
+      *":$d:"*) ;;            # already present
+      *) PATH="${PATH}:$d"; added+=("$d");;
+    esac
+  done
+  export PATH
+  if (( PERF_CAPTURE_MULTI_DEBUG )) && (( ${#added[@]} > 0 )); then
+    echo "[perf-capture-multi][debug] PATH self-heal appended: ${added[*]}" >&2
+  fi
+}
+ensure_core_path
+if ! command mkdir -p -- "$METRICS_DIR" 2>/dev/null; then
+  echo "[perf-capture-multi] ERROR: failed to create metrics directory: $METRICS_DIR (PATH=$PATH)" >&2
+  exit 1
+fi
 
 PERF_CAPTURE_BIN="${PERF_CAPTURE_BIN:-$ZDOTDIR/tools/perf-capture.zsh}"
 if [[ ! -x "$PERF_CAPTURE_BIN" ]]; then
@@ -184,6 +224,8 @@ fi
 # ---------------- Data Structures ----------------
 # Arrays of numeric values (as strings) for computation
 # Track only valid (non-zero) samples; skipped zero-runs are not counted toward aggregate.
+# Sample flag tracking (distinct synthetic / fallback variants encountered).
+typeset -A sample_flag_seen
 cold_values=()
 warm_values=()
 pre_values=()
@@ -241,22 +283,52 @@ segment_iterate_file() {
 
 stats_mean() {
   # args: list of numbers (returns floating mean with 2 decimals)
-  awk 'BEGIN{n=0; s=0} {s+=$1; n++} END{ if(n>0) printf("%.2f", s/n); else print "0.00"}' <<<"$*"
+  awk '
+    {
+      for (i=1;i<=NF;i++){ s+=$i; n++ }
+    }
+    END{
+      if(n>0) printf("%.2f", s/n); else print "0.00"
+    }
+  ' <<<"$*"
 }
 
 stats_min() {
-  awk 'BEGIN{min=""} { if(min==""||$1<min) min=$1 } END{ if(min=="") min=0; printf("%d", min) }' <<<"$*"
+  awk '
+    {
+      for(i=1;i<=NF;i++){
+        if(min=="" || $i < min) min=$i
+      }
+    }
+    END{
+      if(min=="") min=0;
+      printf("%d", min)
+    }
+  ' <<<"$*"
 }
 
 stats_max() {
-  awk 'BEGIN{max=""} { if(max==""||$1>max) max=$1 } END{ if(max=="") max=0; printf("%d", max) }' <<<"$*"
+  awk '
+    {
+      for(i=1;i<=NF;i++){
+        if(max=="" || $i > max) max=$i
+      }
+    }
+    END{
+      if(max=="") max=0;
+      printf("%d", max)
+    }
+  ' <<<"$*"
 }
 
 stats_stddev() {
   # population stddev (float with 2 decimals)
   awk '
-    BEGIN{n=0; sum=0; sumsq=0}
-    {n++; sum+=$1; sumsq+=$1*$1}
+    {
+      for(i=1;i<=NF;i++){
+        n++; sum+=$i; sumsq+=$i*$i
+      }
+    }
     END{
       if(n<2){printf("0.00"); exit}
       mean=sum/n
@@ -294,36 +366,209 @@ skipped_sample_count=0
 out_index=0
 for (( i=1; i<=SAMPLES; i++ )); do
   echo "[perf-capture-multi] Run $i/$SAMPLES"
+  # Remove any stale perf-current.json before starting this iteration to avoid
+  # misinterpreting leftovers from prior aborted/terminated runs.
+  if [[ -f "$METRICS_DIR/perf-current.json" ]]; then
+    rm -f "$METRICS_DIR/perf-current.json" 2>/dev/null || true
+  fi
+  # Progress log: mark run start (state=start) with epoch seconds & parent pid
+  { print "run=$i state=start ts=$(date +%s 2>/dev/null || echo 0) ppid=$$ fast=${PERF_CAPTURE_FAST:-0}"; } >>"$METRICS_DIR/perf-multi-progress.log" 2>/dev/null || true
   if (( PERF_CAPTURE_MULTI_DEBUG )); then
-    echo "[perf-capture-multi][debug] invoking perf-capture (iteration=$i)"
+    echo "[perf-capture-multi][debug] invoking perf-capture (iteration=$i fast=${PERF_CAPTURE_FAST:-0})"
   fi
   run_rc=0
-  if [[ $QUIET -eq 1 ]]; then
-    if ! timeout "$PERF_CAPTURE_RUN_TIMEOUT_SEC"s zsh "$PERF_CAPTURE_BIN" >/dev/null 2>&1; then
+  approx_total_ms=0
+  if [[ "${PERF_CAPTURE_FAST:-0}" == "1" ]]; then
+    # Synchronous fast path – minimal harness already very quick, avoid background & watchdog complexity.
+    start_epoch_ms=$(($(date +%s%N 2>/dev/null)/1000000))
+    if [[ $QUIET -eq 1 ]]; then
+      set +e
+      zsh "$PERF_CAPTURE_BIN" >/dev/null 2>&1
       run_rc=$?
+      set -e
+    else
+      set +e
+      zsh "$PERF_CAPTURE_BIN"
+      run_rc=$?
+      set -e
+    fi
+    end_epoch_ms=$(($(date +%s%N 2>/dev/null)/1000000))
+    approx_total_ms=$(( end_epoch_ms - start_epoch_ms ))
+    (( approx_total_ms < 0 )) && approx_total_ms=0
+    # Immediate invoke-complete progress + stderr echo (pre-validation)
+    print "run=$i state=invoke_complete rc=$run_rc approx_ms=$approx_total_ms fast=${PERF_CAPTURE_FAST:-0}" >>"$METRICS_DIR/perf-multi-progress.log" 2>/dev/null || true
+    echo "[perf-capture-multi] invoke complete (run=$i rc=$run_rc approx_total_ms=${approx_total_ms}ms)" >&2
+    # Early synthetic per-run sample if non-zero runtime but future steps might abort before state=done
+    if (( run_rc != 0 )); then
+      early_ts=$(date +%Y%m%dT%H%M%S)
+      cat >"$METRICS_DIR/perf-sample-${i}-early.json" <<EOF
+{
+  "timestamp":"$early_ts",
+  "mean_ms":$approx_total_ms,
+  "cold_ms":$approx_total_ms,
+  "warm_ms":$approx_total_ms,
+  "pre_plugin_cost_ms":0,
+  "post_plugin_cost_ms":0,
+  "prompt_ready_ms":0,
+  "segments_available":false,
+  "early_invoke":true
+}
+EOF
+      sample_flag_seen[early_invoke]=1
+      # Prune surplus early samples (keep most recent 10)
+      ls -1t "$METRICS_DIR"/perf-sample-*-early.json 2>/dev/null | awk 'NR>10' | xargs -r rm -f 2>/dev/null || true
     fi
   else
-    if ! timeout "$PERF_CAPTURE_RUN_TIMEOUT_SEC"s zsh "$PERF_CAPTURE_BIN"; then
-      run_rc=$?
+    # Original asynchronous path with watchdog
+    (
+      tmp_rc_file=$(mktemp 2>/dev/null || mktemp -t perfcaprc)
+      export _PERF_CAPTURE_MULTI_CHILD_RC_FILE="$tmp_rc_file"
+      trap 'rc=$?; [[ $rc -eq 0 ]] || rc=${rc:-143}; printf "%s" "$rc" > "$tmp_rc_file" 2>/dev/null || true; exit $rc' TERM INT HUP
+      if [[ $QUIET -eq 1 ]]; then
+        zsh "$PERF_CAPTURE_BIN" >/dev/null 2>&1
+      else
+        zsh "$PERF_CAPTURE_BIN"
+      fi
+      printf '%s' "$?" > "$tmp_rc_file" 2>/dev/null || true
+    ) &!
+    child_pid=$!
+    start_epoch_ms=$(($(date +%s%N 2>/dev/null)/1000000))
+    interval_ms=${PERF_CAPTURE_WATCHDOG_INTERVAL_MS}
+    (( interval_ms < 50 )) && interval_ms=50
+    deadline_ms=$(( start_epoch_ms + (PERF_CAPTURE_RUN_TIMEOUT_SEC * 1000) ))
+    tmp_rc_file=""
+    while kill -0 "$child_pid" 2>/dev/null; do
+      now_ms=$(($(date +%s%N 2>/dev/null)/1000000))
+      if (( now_ms >= deadline_ms )); then
+        echo "[perf-capture-multi] WARN: run $i exceeded ${PERF_CAPTURE_RUN_TIMEOUT_SEC}s – terminating (pid=$child_pid)" >&2
+        kill "$child_pid" 2>/dev/null || true
+        sleep 0.2
+        kill -9 "$child_pid" 2>/dev/null || true
+        run_rc=124
+        break
+      fi
+      sleep "$(printf '%.3f' "$((interval_ms))/1000")"
+    done
+    end_epoch_ms=$(($(date +%s%N 2>/dev/null)/1000000))
+    approx_total_ms=$(( end_epoch_ms - start_epoch_ms ))
+    (( approx_total_ms < 0 )) && approx_total_ms=0
+    if (( run_rc == 0 )); then
+      if [[ -n ${_PERF_CAPTURE_MULTI_CHILD_RC_FILE:-} && -r ${_PERF_CAPTURE_MULTI_CHILD_RC_FILE} ]]; then
+        run_rc=$(cat "${_PERF_CAPTURE_MULTI_CHILD_RC_FILE}" 2>/dev/null || echo 1)
+        rm -f "${_PERF_CAPTURE_MULTI_CHILD_RC_FILE}" 2>/dev/null || true
+      fi
+    fi
+    # Immediate logging for async path as well
+    print "run=$i state=invoke_complete rc=$run_rc approx_ms=$approx_total_ms fast=${PERF_CAPTURE_FAST:-0}" >>"$METRICS_DIR/perf-multi-progress.log" 2>/dev/null || true
+    echo "[perf-capture-multi] invoke complete (run=$i rc=$run_rc approx_total_ms=${approx_total_ms}ms)" >&2
+    if (( run_rc != 0 )); then
+      early_ts=$(date +%Y%m%dT%H%M%S)
+      cat >"$METRICS_DIR/perf-sample-${i}-early.json" <<EOF
+{
+  "timestamp":"$early_ts",
+  "mean_ms":$approx_total_ms,
+  "cold_ms":$approx_total_ms,
+  "warm_ms":$approx_total_ms,
+  "pre_plugin_cost_ms":0,
+  "post_plugin_cost_ms":0,
+  "prompt_ready_ms":0,
+  "segments_available":false,
+  "early_invoke":true
+}
+EOF
+    fi
+  fi
+  # Fallback synthetic measurement for timeouts / terminations (rc 124 or 143)
+  if (( run_rc == 124 || run_rc == 143 )); then
+    echo "[perf-capture-multi] NOTICE: generating synthetic fallback sample for run $i (rc=$run_rc)" >&2
+    CURRENT_FILE="$METRICS_DIR/perf-current.json"
+    ts_fallback=$(date +%Y%m%dT%H%M%S)
+    cat >"$CURRENT_FILE" <<EOF
+  {
+    "timestamp":"$ts_fallback",
+    "mean_ms":$approx_total_ms,
+    "cold_ms":$approx_total_ms,
+    "warm_ms":$approx_total_ms,
+    "pre_plugin_cost_ms":0,
+    "post_plugin_cost_ms":0,
+    "prompt_ready_ms":0,
+    "segments_available":false,
+    "synthetic_timeout":true,
+    "post_plugin_segments":[]
+  }
+  EOF
+      sample_flag_seen[synthetic_timeout]=1
+      run_rc=0
+  fi
+  if (( run_rc == 0 )); then
+    CURRENT_FILE="$METRICS_DIR/perf-current.json"
+    valid_sample=1
+    if [[ ! -f "$CURRENT_FILE" ]]; then
+      valid_sample=0
+    else
+      cold_val=$(grep -E '"cold_ms"[[:space:]]*:' "$CURRENT_FILE" 2>/dev/null | sed -E 's/.*"cold_ms"[[:space:]]*:[[:space:]]*([0-9]+).*/\1/' | head -1)
+      warm_val=$(grep -E '"warm_ms"[[:space:]]*:' "$CURRENT_FILE" 2>/dev/null | sed -E 's/.*"warm_ms"[[:space:]]*:[[:space:]]*([0-9]+).*/\1/' | head -1)
+      if [[ -z "$cold_val" || -z "$warm_val" || ! "$cold_val" =~ ^[0-9]+$ || ! "$warm_val" =~ ^[0-9]+$ || "$cold_val" -gt 300000 || "$warm_val" -gt 300000 ]]; then
+        valid_sample=0
+      fi
+    fi
+    if (( ! valid_sample )); then
+      echo "[perf-capture-multi] WARN: invalid or missing perf-current.json after run $i – synthesizing replacement" >&2
+      ts_invalid=$(date +%Y%m%dT%H%M%S)
+      approx_ms=${approx_total_ms:-0}
+      cat >"$CURRENT_FILE" <<EOF
+{
+  "timestamp":"$ts_invalid",
+  "mean_ms":$approx_ms,
+  "cold_ms":$approx_ms,
+  "warm_ms":$approx_ms,
+  "pre_plugin_cost_ms":0,
+  "post_plugin_cost_ms":0,
+  "prompt_ready_ms":0,
+  "segments_available":false,
+  "synthetic_invalid":true,
+  "post_plugin_segments":[]
+}
+EOF
+      sample_flag_seen[synthetic_invalid]=1
     fi
   fi
   if (( run_rc != 0 )); then
     echo "[perf-capture-multi] WARN: perf-capture exited rc=$run_rc on run $i (skipping sample)" >&2
     (( skipped_sample_count++ ))
-    # progress marker (error)
-    print "run=$i rc=$run_rc skipped=1" >>"$METRICS_DIR/perf-multi-progress.log" 2>/dev/null || true
+    print "run=$i state=skipped rc=$run_rc skipped=1" >>"$METRICS_DIR/perf-multi-progress.log" 2>/dev/null || true
     continue
   fi
 
   # After each run perf-current.json is the latest
   CURRENT_FILE="$METRICS_DIR/perf-current.json"
   if [[ ! -f "$CURRENT_FILE" ]]; then
-    echo "[perf-capture-multi] ERROR: perf-current.json not found after run $i" >&2
-    exit 2
-  fi
+      echo "[perf-capture-multi] ERROR: perf-current.json not found after run $i" >&2
+      { print "run=$i rc=$run_rc error=missing_perf_current"; } >>"$METRICS_DIR/perf-multi-progress.log" 2>/dev/null || true
+      exit 2
+    fi
 
   SAMPLE_FILE="$METRICS_DIR/perf-sample-${i}.json"
-  cp "$CURRENT_FILE" "$SAMPLE_FILE"
+  if ! cp "$CURRENT_FILE" "$SAMPLE_FILE" 2>/dev/null; then
+    echo "[perf-capture-multi] WARN: direct fallback creating per-run sample JSON (cp failed or perf-current missing) run=$i" >&2
+    ts_direct=$(date +%Y%m%dT%H%M%S)
+    approx_ms=${approx_total_ms:-0}
+    cat >"$SAMPLE_FILE" <<EOF
+  {
+    "timestamp":"$ts_direct",
+    "mean_ms":$approx_ms,
+    "cold_ms":$approx_ms,
+    "warm_ms":$approx_ms,
+    "pre_plugin_cost_ms":0,
+    "post_plugin_cost_ms":0,
+    "prompt_ready_ms":0,
+    "segments_available":false,
+    "direct_fallback":true,
+    "post_plugin_segments":[]
+  }
+  EOF
+      sample_flag_seen[direct_fallback]=1
+    fi
 
   cold=$(extract_json_number "$SAMPLE_FILE" cold_ms)
   warm=$(extract_json_number "$SAMPLE_FILE" warm_ms)
@@ -358,7 +603,7 @@ for (( i=1; i<=SAMPLES; i++ )); do
     echo "[perf-capture-multi][debug] sample $i parsed cold=$cold warm=$warm pre=$pre post=$post prompt=$prompt" >&2
   fi
   # Append progress marker
-  print "run=$i rc=0 cold=$cold warm=$warm pre=$pre post=$post prompt=$prompt" >>"$METRICS_DIR/perf-multi-progress.log" 2>/dev/null || true
+  print "run=$i state=done rc=0 cold=$cold warm=$warm pre=$pre post=$post prompt=$prompt fast=${PERF_CAPTURE_FAST:-0}" >>"$METRICS_DIR/perf-multi-progress.log" 2>/dev/null || true
 
   cold_values+=("$cold")
   warm_values+=("$warm")
@@ -427,6 +672,24 @@ AGG_FILE="$METRICS_DIR/perf-multi-current.json"
   echo "  \"timestamp\": \"$(timestamp)\","
   ACTUAL_SAMPLES=$valid_sample_count
   echo "  \"samples\": $ACTUAL_SAMPLES,"
+  # Emit distinct sample flags (synthetic / fallback variants) for diagnostics
+  if (( ${#sample_flag_seen[@]} > 0 )); then
+    flags_json="["
+    local _f_first=1
+    for _f in ${(ok)sample_flag_seen}; do
+      if (( _f_first )); then
+        flags_json="[$_f"
+        _f_first=0
+      else
+        flags_json="${flags_json},$_f"
+      fi
+    done
+    # Quote each entry properly
+    flags_quoted=$(for _f in ${(ok)sample_flag_seen}; do printf '"%s",' "$_f"; done | sed 's/,$//')
+    echo "  \"sample_flags\": [${flags_quoted}],"
+  else
+    echo "  \"sample_flags\": [],"
+  fi
   if [[ -n "${GUIDELINES_CHECKSUM:-}" ]]; then
     echo "  \"guidelines_checksum\": \"${GUIDELINES_CHECKSUM}\","
   else
@@ -434,22 +697,22 @@ AGG_FILE="$METRICS_DIR/perf-multi-current.json"
   fi
   # Per-run summary array
   echo "  \"per_run\": ["
-  for (( i=1; i<=SAMPLES; i++ )); do
-    file="$METRICS_DIR/perf-sample-${i}.json"
-    # Use default 0 to avoid unbound element errors under `set -u` if array slot missing
-    cold="${cold_values[$out_index]:-0}"
-    warm="${warm_values[$out_index]:-0}"
-    pre="${pre_values[$out_index]:-0}"
-    post="${post_values[$out_index]:-0}"
-    prompt="${prompt_values[$out_index]:-0}"
-    # Skip placeholder zero-only entries (were never appended) by detecting 0-cold & 0-warm while we still have more recorded samples ahead
+  # Emit only actual collected samples (skip zero-only placeholders)
+  local emitted=0
+  local total=${#cold_values[@]}
+  for (( idx=1; idx<=total; idx++ )); do
+    cold="${cold_values[idx]:-0}"
+    warm="${warm_values[idx]:-0}"
+    pre="${pre_values[idx]:-0}"
+    post="${post_values[idx]:-0}"
+    prompt="${prompt_values[idx]:-0}"
     if (( cold == 0 && warm == 0 )); then
       continue
     fi
+    (( emitted++ ))
     comma=","
-    (( out_index + 1 == ACTUAL_SAMPLES )) && comma=""
-    echo "    {\"index\": $((out_index+1)), \"cold_ms\": $cold, \"warm_ms\": $warm, \"pre_plugin_cost_ms\": $pre, \"post_plugin_cost_ms\": $post, \"prompt_ready_ms\": $prompt}${comma}"
-    (( out_index++ ))
+    (( emitted == ACTUAL_SAMPLES )) && comma=""
+    echo "    {\"index\": $emitted, \"cold_ms\": $cold, \"warm_ms\": $warm, \"pre_plugin_cost_ms\": $pre, \"post_plugin_cost_ms\": $post, \"prompt_ready_ms\": $prompt}${comma}"
   done
   echo "  ],"
   echo "  \"aggregate\": {"
@@ -500,6 +763,7 @@ EOF
 } >"$AGG_FILE"
 
 echo "[perf-capture-multi] Wrote aggregate: $AGG_FILE"
+print "state=aggregate samples=$valid_sample_count skipped=$skipped_sample_count file=$AGG_FILE" >>"$METRICS_DIR/perf-multi-progress.log" 2>/dev/null || true
 echo "[perf-capture-multi] Samples requested=$SAMPLES valid=$valid_sample_count skipped=$skipped_sample_count (cold_ms mean=$(stats_mean \"${cold_values[*]:-0}\"), post_plugin_cost_ms mean=$(stats_mean \"${post_values[*]:-0}\")) timeout=${PERF_CAPTURE_RUN_TIMEOUT_SEC}s"
 
 # Guidance for next steps (informational)

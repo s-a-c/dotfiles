@@ -28,6 +28,11 @@ fi
         zsh_debug_echo "# ++++++ $0 ++++++++++++++++++++++++++++++++++++"
 }
 
+# Fast path skip for perf capture: avoid any essential plugin bootstrap
+if [[ "${PERF_CAPTURE_FAST:-0}" == "1" ]]; then
+    zsh_debug_echo "# [essential-plugins][perf-capture-fast] Skipping essential plugin bootstrap (PERF_CAPTURE_FAST=1)"
+    return 0
+fi
 # Only proceed if zgenom is available
 if ! command -v zgenom >/dev/null 2>&1; then
     zsh_debug_echo "# [essential-plugins] Zgenom not available, skipping plugins"

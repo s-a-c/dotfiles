@@ -1,11 +1,11 @@
 {
-  "timestamp":"20250902T214505",
-  "mean_ms":5060,
-  "cold_ms":5266,
-  "warm_ms":4855,
-  "pre_plugin_cost_ms":91,
+  "timestamp":"20250903T111643",
+  "mean_ms":238855,
+  "cold_ms":246318,
+  "warm_ms":231393,
+  "pre_plugin_cost_ms":0,
   "post_plugin_cost_ms":0,
-  "prompt_ready_ms":91,
-  "segments_available":true,
-  "post_plugin_segments": [{"label":"p10k_theme","cold_ms":8,"warm_ms":7,"mean_ms":7},{"label":"compinit","cold_ms":16,"warm_ms":16,"mean_ms":16},{"label":"zgenom-init","cold_ms":5,"warm_ms":5,"mean_ms":5},{"label":"syntax_highlight_init","cold_ms":4,"warm_ms":4,"mean_ms":4},{"label":"30-dev-env","cold_ms":4,"warm_ms":4,"mean_ms":4},{"label":"vcs_helpers_init","cold_ms":3,"warm_ms":3,"mean_ms":3},{"label":"completion_cache_scan","cold_ms":4,"warm_ms":3,"mean_ms":3},{"label":"20-essential","cold_ms":4,"warm_ms":4,"mean_ms":4},{"label":"theme_extras_init","cold_ms":3,"warm_ms":4,"mean_ms":3},{"label":"fzf_tools_init","cold_ms":3,"warm_ms":4,"mean_ms":3},{"label":"history_backend_init","cold_ms":4,"warm_ms":4,"mean_ms":4},{"label":"50-completion-history","cold_ms":5,"warm_ms":4,"mean_ms":4}]
+  "prompt_ready_ms":0,
+  "segments_available":false,
+  "post_plugin_segments": []
 }

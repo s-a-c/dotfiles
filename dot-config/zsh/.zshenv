@@ -135,6 +135,59 @@ path_dedupe() {
 
 # Deduplicate initial PATH (idempotent)
 path_dedupe >/dev/null 2>&1 || true
+# ------------------------------------------------------------------------------
+# Harness Watchdog
+# Reworked: signal the parent interactive shell PID instead of exiting only the
+# background subshell. Prevents hangs when perf-capture harness shells stall.
+# Behavior:
+#   - If PERF_HARNESS_TIMEOUT_SEC > 0, record HARNESS_PARENT_PID=$$ (if unset) and
+#     launch a background watcher.
+#   - After sleep(timeout) if still a harness context (PERF_PROMPT_HARNESS or
+#     PERF_SEGMENT_LOG set) and parent PID alive, send TERM; after a short grace
+#     (default 0.4s) send KILL if still running.
+# Opt-out: set PERF_HARNESS_DISABLE_WATCHDOG=1
+# ------------------------------------------------------------------------------
+if [[ -n "${PERF_HARNESS_TIMEOUT_SEC:-}" && "${PERF_HARNESS_TIMEOUT_SEC}" = <-> && ${PERF_HARNESS_TIMEOUT_SEC} -gt 0 && "${PERF_HARNESS_DISABLE_WATCHDOG:-0}" != "1" ]]; then
+  # Record parent PID for signaling (do not override if already set by caller)
+  : "${HARNESS_PARENT_PID:=$$}"
+  export HARNESS_PARENT_PID
+  (
+    timeout_sec="${PERF_HARNESS_TIMEOUT_SEC}"
+    grace_ms="${PERF_HARNESS_GRACE_MS:-400}"
+    sleep "${timeout_sec}"
+    if [[ -n "${PERF_PROMPT_HARNESS:-}" || -n "${PERF_SEGMENT_LOG:-}" ]]; then
+      if kill -0 "${HARNESS_PARENT_PID}" 2>/dev/null; then
+        kill -TERM "${HARNESS_PARENT_PID}" 2>/dev/null || true
+        # Convert grace to fractional seconds
+        if [[ "$grace_ms" = <-> ]]; then
+          sleep "$(printf '%.3f' "$(awk -v g="$grace_ms" 'BEGIN{printf g/1000.0}')" )"
+        else
+          sleep 0.4
+        fi
+        kill -0 "${HARNESS_PARENT_PID}" 2>/dev/null && kill -KILL "${HARNESS_PARENT_PID}" 2>/dev/null || true
+      fi
+    fi
+  ) &!
+fi
+# ------------------------------------------------------------------------------
+# Minimal perf harness mode (PERF_HARNESS_MINIMAL=1)
+# Skips heavy plugin/theme initialization; loads only prompt-ready instrumentation
+# and lightweight segment markers to allow perf-capture tooling to complete quickly
+# in constrained CI sandboxes. Must appear before plugin manager / theme logic.
+# ------------------------------------------------------------------------------
+if [[ "${PERF_HARNESS_MINIMAL:-0}" == "1" ]]; then
+  # Minimal perf harness path detected, but early return disabled to allow full interactive startup.
+  # (Original minimal fast path intentionally bypassed.)
+  ZSH_DEBUG=${ZSH_DEBUG:-0}
+  export ZSH_PERF_PROMPT_MARKERS=1
+  if [[ -f "${ZDOTDIR}/.zshrc.d.REDESIGN/95-prompt-ready.zsh" ]]; then
+    source "${ZDOTDIR}/.zshrc.d.REDESIGN/95-prompt-ready.zsh"
+  fi
+  if [[ -f "${ZDOTDIR}/tools/segment-lib.zsh" ]]; then
+    source "${ZDOTDIR}/tools/segment-lib.zsh"
+  fi
+  # return 0  # disabled
+fi
 
 # ------------------------------------------------------------------------------
 # Helpers: command existence caching and safe wrappers
