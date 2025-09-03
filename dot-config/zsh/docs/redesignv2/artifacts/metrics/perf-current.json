@@ -1,8 +1,8 @@
 {
-  "timestamp":"20250903T111643",
-  "mean_ms":238855,
-  "cold_ms":246318,
-  "warm_ms":231393,
+  "timestamp":"20250903T124732",
+  "mean_ms":187123,
+  "cold_ms":57496,
+  "warm_ms":316751,
   "pre_plugin_cost_ms":0,
   "post_plugin_cost_ms":0,
   "prompt_ready_ms":0,

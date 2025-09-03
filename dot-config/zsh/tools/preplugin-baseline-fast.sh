@@ -131,9 +131,13 @@ STDEV="$(awk -v vals="$VALS" -v mean="$MEAN" '
   BEGIN {
     n=0; split(vals,a," ");
     for(i in a){ if(a[i]~/^[0-9]+$/){ d=a[i]-mean; ss+=d*d; n++; } }
-    if(n>0){ printf("%d", sqrt(ss/n)); } else { print 0; }
+    if(n>0){
+      val=sqrt(ss/n);              # use built-in sqrt; avoid redefining
+      printf("%d", val);
+    } else {
+      print 0;
+    }
   }
-  function sqrt(x){ return x^0.5 }
 ')"
 
 TS="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
