@@ -34,8 +34,12 @@ if [[ "${TDD_SKIP_PATH_WHITELIST:-0}" == 1 ]]; then
     exit 2
 fi
 
-# Repo root (assumes test lives under dot-config/zsh/tests/...)
-REPO_ROOT="$(cd "${0:A:h}/../../../.." && pwd -P)"
+# Repo root (assumes test lives under dot-config/zsh/tests/...) - use resilient helper (avoid brittle ${0:A:h})
+if typeset -f zf::script_dir >/dev/null 2>&1; then
+REPO_ROOT="$(cd "$(zf::script_dir "${(%):-%N}")/../../../.." && pwd -P)"
+else
+REPO_ROOT="$(cd "${(%):-%N:h}/../../../.." && pwd -P)"
+fi
 cd "$REPO_ROOT"
 
 KEEP_PATH="/tmp/zsh-whitelist-keep-A"
