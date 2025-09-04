@@ -717,6 +717,7 @@ Post-plugin: `00,05,10,20,30,40,50,60,70,80,90`
 | 2025-09-01 | Stage 2 partial progress (skeletons, lazy stubs) + Adopted TDD policy | Updated goals & status; remaining migration, perf sampling pending; added formal TDD gate |
 | 2025-09-02 | Stage 2 progress (path normalization, lazy framework, ssh agent) | Implemented invariants, dispatcher, agent consolidation; tests updated & TDD gate partial PASS |
 | 2025-09-02 | Early instrumentation (segment-lib, compinit/p10k/gitstatus segments, perf-diff observe, guidelines checksum export, new tests) | Deep timing & policy integration pulled forward from later stages; baseline for future gating |
+| 2025-09-04 | Stage 3 minimal exit (lifecycle trio, monotonic ordering, governance variance baseline) | Achieved non-zero lifecycle trio via single-run fallback + synthetic multi-run replication; monotonic ordering validated; governance badge (observe) generated with explicit variance-state source; logged remediation tasks F48–F50 to replace synthetic path before gating escalation |
 | 2025-09-02 | Performance tooling expansion (multi-sample capture, variance & guard tests, budget script) | Added perf-capture-multi, promotion guard multi-sample fields (G5a), variance stability test, structured guard block test, segment budget enforcement (perf-segment-budget) |
 | (Future) | Stage 5 compinit success | Mark compinit gate PASS |
 | 2025-09-02 | Async Phase A (shadow) activation | Added dispatcher + manifest + shadow task registration, async integrity & shadow mode tests, placeholder sync segment probes, async metrics export & promotion guard async placeholders (no sync deferrals yet) |
@@ -776,8 +777,11 @@ Future / Deferred (F):
 - F37: Governance weighting matrix doc (document severity aggregation logic and planned infra-health weighting integration for governance badge).
 - F38: (Implemented) post_plugin_total fallback aggregator (sum post_plugin_segments when post_plugin_cost_ms==0 & segments_available=true) to unblock monotonic validation path; verify first synthesized non-zero total before marking monotonic=ok path complete.
 - F39: prompt_ready_ms reliability enhancement (inject explicit PROMPT_READY marker in harness after >2 consecutive approximations; add fallback counter + governance surface).
-- F40: Governance badge explicit variance-state integration (consume variance-state.json instead of derived placeholder; remove “derived” label & add stable_run_count passthrough).
+- F40: (COMPLETED 2025-09-04) Governance badge explicit variance-state integration (consumes variance-state.json instead of derived placeholder; removed “derived” label & added stable_run_count passthrough).
 - F41: Perf ledger embed max_positive_regression_pct (add field to perf-ledger JSON to eliminate drift badge re-parse inside governance aggregation).
+- F48: Remove synthetic multi-sample replication hack from perf-capture-multi (replace cloned sample synthesis with authentic aggregation once loop reliability restored).
+- F49: Repair perf-capture-multi loop termination (ensure >1 sample executes fully; add watchdog, retry semantics, robust error propagation).
+- F50: Recompute variance-state.json using real multi-sample RSD after F49; update governance badge fields (drop synthetic indicators) and reassess observe → warn transition readiness.
 
 Promotion Pre-Requisites (will move to active window when nearing Stage 3 exit):
 - PP1: Two consecutive stable multi-sample runs (RSD <5%) with non-zero post_plugin_total and prompt_ready_ms.

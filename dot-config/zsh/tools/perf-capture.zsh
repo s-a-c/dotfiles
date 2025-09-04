@@ -446,6 +446,12 @@ cat >"$METRICS_DIR/perf-current.json" <<EOF
   "post_plugin_cost_ms":$POST_COST_MS,
   "prompt_ready_ms":$PROMPT_READY_MS,
   "segments_available":$SEGMENTS_AVAILABLE,
+  "lifecycle": {
+    "pre_plugin_total_ms": $PRE_COST_MS,
+    "post_plugin_total_ms": $POST_COST_MS,
+    "prompt_ready_ms": $PROMPT_READY_MS,
+    "approx_prompt_ready": $(( POST_COST_MS > 0 && PROMPT_READY_MS == POST_COST_MS ? 1 : 0 ))
+  },
   "post_plugin_segments": $post_breakdown_json
 }
 EOF
