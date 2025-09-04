@@ -1,0 +1,24 @@
+{
+  "schema": "governance-badge.v1",
+  "generated_at": "2025-09-04T19:24:25Z",
+  "sources": {
+    "perf_drift": "missing",
+    "perf_ledger": "missing",
+    "variance_state": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/redesignv2/artifacts/badges/variance-state.json",
+    "micro_bench": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/redesignv2/artifacts/metrics/bench-core-baseline.json"
+  },
+  "stats": {
+    "regressions": 0,
+    "max_regression_pct": 0,
+    "over_budget_count": 0,
+    "variance_mode": "observe",
+    "microbench_regress_count": 0,
+    "microbench_worst_ratio": 1.0,
+    "shimmed": 0
+  },
+  "badge": {
+    "label": "governance",
+    "message": "ok",
+    "color": "green"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "schema":"variance-state.v1",
+  "generated_at":"2025-09-04T19:19:48Z",
+  "mode":"observe",
+  "rsd":{
+    "pre":{"mean":null,"stddev":null,"rsd":null},
+    "post":{"mean":null,"stddev":null,"rsd":null}
+  },
+  "thresholds":{
+    "rsd_warn_max":0.05,
+    "streak_required":2
+  },
+  "stable_run_count":0,
+  "previous_mode":"observe",
+  "promotion_notes":"forced_mode=observe,streak_updated",
+  "sources":{
+    "samples_file":"dot-config/zsh/docs/redesignv2/artifacts/metrics/perf-multi-current.json",
+    "state_file":"docs/redesignv2/artifacts/metrics/variance-gating-state.json"
+  }
+}
