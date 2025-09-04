@@ -11,3 +11,9 @@ phase=cold state=segments rc=0 total_ms=54755 pre=0 post=0 prompt=0 fast=0
 phase=warm state=segments rc=0 total_ms=94274 pre=0 post=0 prompt=0 fast=0
 phase=cold state=segments rc=0 total_ms=131230 pre=0 post=0 prompt=0 fast=0
 phase=warm state=segments rc=0 total_ms=130785 pre=0 post=0 prompt=0 fast=0
+phase=cold state=segments rc=0 total_ms=6039 pre=111 post=0 prompt=0 fast=0
+phase=warm state=segments rc=0 total_ms=5704 pre=90 post=0 prompt=0 fast=0
+phase=cold state=segments rc=0 total_ms=99 pre=32 post=109 prompt=109 fast=1
+phase=warm state=segments rc=0 total_ms=80 pre=26 post=89 prompt=89 fast=1
+phase=cold state=segments rc=0 total_ms=7932 pre=46 post=0 prompt=0 fast=0
+phase=warm state=segments rc=0 total_ms=5580 pre=32 post=0 prompt=0 fast=0

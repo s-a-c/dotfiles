@@ -56,7 +56,11 @@ if [[ "${TDD_ALLOW_FAIL_PATH_EDGES:-0}" == 1 ]]; then
 fi
 
 # Locate repo root (assumes file position within dot-config/zsh tree)
-REPO_ROOT="$(cd "${0:A:h}/../../../.." && pwd -P)"
+if typeset -f zf::script_dir >/dev/null 2>&1; then
+REPO_ROOT="$(cd "$(zf::script_dir "${(%):-%N}")/../../../.." && pwd -P)"
+else
+REPO_ROOT="$(cd "${(%):-%N:h}/../../../.." && pwd -P)"
+fi
 
 # Build a synthetic PATH with edge issues:
 # - Duplicate via trailing slash

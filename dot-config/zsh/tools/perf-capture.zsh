@@ -302,6 +302,43 @@ if ((NUM_COLD_POST > 0 || NUM_WARM_POST > 0)); then
 else
     POST_COST_MS=0
 fi
+# F38 fallback aggregation: if post_plugin_cost_ms is zero but we have per-segment breakdown,
+# synthesize a total by summing mean values of post_plugin_segments (cold/warm blended).
+if (( POST_COST_MS == 0 )); then
+  if [[ -n ${COLD_POST_SEGMENTS_ENC:-} || -n ${WARM_POST_SEGMENTS_ENC:-} ]]; then
+    typeset -A _f38_cold _f38_warm _f38_labels
+    IFS=';' read -rA _f38_carr <<<"${COLD_POST_SEGMENTS_ENC:-}"
+    for e in "${_f38_carr[@]}"; do
+      [[ -z $e ]] && continue
+      lb=${e%%=*}; ms=${e#*=}
+      [[ -z $lb || -z $ms ]] && continue
+      _f38_cold[$lb]=$ms; _f38_labels[$lb]=1
+    done
+    IFS=';' read -rA _f38_warr <<<"${WARM_POST_SEGMENTS_ENC:-}"
+    for e in "${_f38_warr[@]}"; do
+      [[ -z $e ]] && continue
+      lb=${e%%=*}; ms=${e#*=}
+      [[ -z $lb || -z $ms ]] && continue
+      _f38_warm[$lb]=$ms; _f38_labels[$lb]=1
+    done
+    _f38_total=0
+    for lb in ${(k)_f38_labels}; do
+      c=${_f38_cold[$lb]:-0}
+      w=${_f38_warm[$lb]:-0}
+      if (( c > 0 && w > 0 )); then
+        m=$(( (c + w) / 2 ))
+      else
+        m=$(( c > 0 ? c : w ))
+      fi
+      (( _f38_total += m ))
+    done
+    if (( _f38_total > 0 )); then
+      POST_COST_MS=$_f38_total
+      echo "[perf-capture][fallback] aggregated post_plugin_total=${POST_COST_MS}ms from per-segment breakdown (F38)" >&2
+    fi
+    unset _f38_cold _f38_warm _f38_labels _f38_carr _f38_warr _f38_total c w m lb e
+  fi
+fi
 if ((NUM_COLD_PRE > 0 || NUM_COLD_POST > 0 || NUM_WARM_PRE > 0 || NUM_WARM_POST > 0 || NUM_COLD_PROMPT > 0 || NUM_WARM_PROMPT > 0)); then
     SEGMENTS_AVAILABLE=true
 else

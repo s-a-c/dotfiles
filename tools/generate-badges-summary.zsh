@@ -38,6 +38,10 @@ read_badge(){
 entries=()
 perf_entry=$(read_badge docs/badges/perf.json perf || true)
 [[ -n ${perf_entry:-} ]] && entries+=$perf_entry
+perf_ledger_entry=$(read_badge docs/badges/perf-ledger.json perf_ledger || true)
+[[ -n ${perf_ledger_entry:-} ]] && entries+=$perf_ledger_entry
+perf_drift_entry=$(read_badge docs/badges/perf-drift.json perf_drift || true)
+[[ -n ${perf_drift_entry:-} ]] && entries+=$perf_drift_entry
 struct_entry=$(read_badge docs/badges/structure.json structure || true)
 [[ -n ${struct_entry:-} ]] && entries+=$struct_entry
 hooks_entry=$(read_badge docs/badges/hooks.json hooks || true)
@@ -113,6 +117,8 @@ compute_badge_meta() {
 }
 
 compute_badge_meta docs/badges/perf.json perf
+compute_badge_meta docs/badges/perf-ledger.json perf_ledger
+compute_badge_meta docs/badges/perf-drift.json perf_drift
 compute_badge_meta docs/badges/structure.json structure
 compute_badge_meta docs/badges/hooks.json hooks
 compute_badge_meta docs/badges/security.json security

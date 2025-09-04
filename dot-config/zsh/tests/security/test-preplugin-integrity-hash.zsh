@@ -36,7 +36,11 @@ set -euo pipefail
 typeset -f zsh_debug_echo >/dev/null 2>&1 || zsh_debug_echo() { :; }
 
 # Determine ZDOTDIR / repo root (assumes test resides under .../dot-config/zsh/tests/security/)
-TEST_DIR="${0:A:h}"
+if typeset -f zf::script_dir >/dev/null 2>&1; then
+    TEST_DIR="$(zf::script_dir "${(%):-%N}")"
+else
+    TEST_DIR="${(%):-%N:h}"
+fi
 ZSH_ROOT="$(cd "${TEST_DIR}/../../.." && pwd -P)"
 
 # Metrics directory resolution (prefer redesignv2)

@@ -2,6 +2,17 @@
 # CRITICAL STARTUP STANZA - MUST BE FIRST
 # Sets essential environment variables before any other shell initialization
 # ==============================================================================
+# RULE (Path Resolution):
+#   Avoid using the brittle form `${0:A:h}` directly inside any redesign or plugin
+#   module (especially when code may be compiled / cached by a plugin manager).
+#   Instead, use the helper `zf::script_dir` (defined later in this file) or,
+#   for very early bootstrap contexts, `resolve_script_dir` with an optional
+#   path argument. These helpers are resilient to symlinks and compilation
+#   contexts and defer to `${(%):-%N}` rather than `$0` where appropriate.
+#   Migration Plan:
+#     - New code MUST use `zf::script_dir` or `resolve_script_dir`.
+#     - Existing `${0:A:h}` usages should be incrementally refactored.
+# ==============================================================================
 
 # Minimal debug logger used during early startup
 zsh_debug_echo() {
@@ -26,8 +37,21 @@ if [[ "$PATH" == *'$sep'* ]]; then
     export PATH
 fi
 
-# Minimal safe PATH to avoid command-not-found in early init
-export PATH="/opt/homebrew/bin:/run/current-system/sw/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
+# Minimal safe PATH augmentation (append-preserving; do not clobber user/front-loaded entries)
+# If PATH is empty (very constrained subshell), seed it; otherwise append any missing core dirs.
+if [[ -z "${PATH:-}" ]]; then
+  PATH="/opt/homebrew/bin:/run/current-system/sw/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
+else
+  for __core_dir in /opt/homebrew/bin /run/current-system/sw/bin /usr/local/bin /usr/bin /bin /usr/local/sbin /usr/sbin /sbin; do
+    [ -d "$__core_dir" ] || continue
+    case ":$PATH:" in
+      *:"$__core_dir":*) ;;        # already present (preserve first occurrence)
+      *) PATH="${PATH}:$__core_dir" ;;
+    esac
+  done
+  unset __core_dir
+fi
+export PATH
 
 # XDG Base Directory Specification (set early so other code can rely on them)
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
@@ -67,7 +91,7 @@ if [[ -n "${ZDOTDIR:-}" && -d "${ZDOTDIR}" ]]; then
     else
         # Fallback: attempt to cd into dir and print the physical path (pwd -P)
         # If that fails for any reason, leave ZDOTDIR as-is.
-        local _zd_prev_pwd
+        _zd_prev_pwd=""
         _zd_prev_pwd="$PWD" 2>/dev/null || true
         if cd "${ZDOTDIR}" 2>/dev/null; then
             ZDOTDIR="$(pwd -P 2>/dev/null || pwd)"
@@ -78,9 +102,7 @@ if [[ -n "${ZDOTDIR:-}" && -d "${ZDOTDIR}" ]]; then
     fi
 fi
 
-# Create common cache/log d[submodule "zsh-quickstart-kit"]
-                           #	path = dot-config/zsh/zsh-quickstart-kit
-                           #	url = https://github.com/unixorn/zsh-quickstart-kit.gitirs (do not fail startup if mkdir fails)
+# Create common cache/log dirs (do not fail startup if mkdir fails)
 # Recreate ensured dirs now anchored to canonical ZDOTDIR
 export ZSH_CACHE_DIR="${XDG_CACHE_HOME}/zsh"
 export ZSH_LOG_DIR="${ZDOTDIR}/logs"
@@ -102,39 +124,89 @@ zsh_debug_echo "    ZSH_LOG_DIR=${ZSH_LOG_DIR}" || true
 # Utility: PATH de-duplication (preserve first occurrence)
 # ------------------------------------------------------------------------------
 path_dedupe() {
-    local verbose=0 dry=0
+    # Portable-ish PATH de-duplication (avoid zsh-only ${(j:...)} join & advanced array ops)
+    # Flags:
+    #   --verbose  : emit counts to stderr
+    #   --dry-run  : print deduped PATH without exporting
+    local verbose=0 dry=0 arg p _before=0 _after=0 _x
     for arg in "$@"; do
-        case $arg in
+        case "$arg" in
             --verbose) verbose=1 ;;
             --dry-run) dry=1 ;;
         esac
     done
-    local original=$PATH
-    local -a parts new
-    local -A seen
-    parts=(${=PATH})
-    for p in "${parts[@]}"; do
-        [[ -z $p ]] && continue
-        if [[ -z ${seen[$p]:-} ]]; then
-            new+="$p"
-            seen[$p]=1
-        fi
+    local original="$PATH"
+    # Build deduped list preserving first occurrence order
+    local IFS=:
+    local seen_list=""
+    for p in $PATH; do
+        [ -z "$p" ] && continue
+        case ":$seen_list:" in
+            *:"$p":*) continue ;;
+            *) seen_list="${seen_list:+$seen_list:}$p" ;;
+        esac
     done
-    local deduped="${(j.:.)new}"
-    if (( dry )); then
-        print -r -- "${deduped:-$original}"
+    local deduped="$seen_list"
+    if [ "$dry" -eq 1 ]; then
+        printf '%s\n' "${deduped:-$original}"
         return 0
     fi
-    if [[ $deduped != $original ]]; then
-        PATH=$deduped
+    if [ "$deduped" != "$original" ]; then
+        PATH="$deduped"
         export PATH
     fi
-    export PATH_DEDUP_DONE=1
-    (( verbose )) && print -u2 "[path_dedupe] entries(before)=${#parts} entries(after)=${#new}"
+    PATH_DEDUP_DONE=1
+    if [ "$verbose" -eq 1 ]; then
+        IFS=:; for _x in $original; do _before=$((_before+1)); done
+        IFS=:; for _x in $deduped; do _after=$((_after+1)); done
+        printf '[path_dedupe] entries(before)=%s entries(after)=%s\n' "$_before" "$_after" >&2
+    fi
 }
 
 # Deduplicate initial PATH (idempotent)
 path_dedupe >/dev/null 2>&1 || true
+
+# ------------------------------------------------------------------------------
+# Resilient Script Directory Resolution
+# ------------------------------------------------------------------------------
+# Public helper (core): resolve_script_dir [<path_or_script>]
+#   - Resolves symlinks
+#   - Uses zsh parameter expansion ${(%):-%N} when no argument given
+#   - Returns canonical physical directory (pwd -P) or empty on failure
+# Namespaced convenience (preferred in modules): zf::script_dir [<path_or_script>]
+# ------------------------------------------------------------------------------
+if ! typeset -f resolve_script_dir >/dev/null 2>&1; then
+resolve_script_dir() {
+    emulate -L zsh
+    set -o no_unset
+    local src="${1:-${(%):-%N}}"
+    # If still empty (rare non-file contexts), fallback to PWD
+    [[ -z "$src" ]] && { print -r -- "$PWD"; return 0; }
+    # Resolve symlinks iteratively
+    local link
+    while [[ -h "$src" ]]; do
+        link="$(readlink "$src" 2>/dev/null || true)"
+        [[ -z "$link" ]] && break
+        if [[ "$link" == /* ]]; then
+            src="$link"
+        else
+            src="${src:h}/$link"
+        fi
+    done
+    # Canonical directory
+    builtin cd -q "${src:h}" 2>/dev/null || { print -r -- "${src:h}"; return 0; }
+    pwd -P
+}
+fi
+
+if ! typeset -f zf::script_dir >/dev/null 2>&1; then
+zf::script_dir() {
+    resolve_script_dir "${1:-}"
+}
+fi
+
+export ZSH_SCRIPT_DIR_HELPERS=1
+# ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
 # Harness Watchdog
 # Reworked: signal the parent interactive shell PID instead of exiting only the
@@ -147,7 +219,7 @@ path_dedupe >/dev/null 2>&1 || true
 #     (default 0.4s) send KILL if still running.
 # Opt-out: set PERF_HARNESS_DISABLE_WATCHDOG=1
 # ------------------------------------------------------------------------------
-if [[ -n "${PERF_HARNESS_TIMEOUT_SEC:-}" && "${PERF_HARNESS_TIMEOUT_SEC}" = <-> && ${PERF_HARNESS_TIMEOUT_SEC} -gt 0 && "${PERF_HARNESS_DISABLE_WATCHDOG:-0}" != "1" ]]; then
+if [ "${PERF_HARNESS_TIMEOUT_SEC:-0}" -gt 0 ] && [ "${PERF_HARNESS_DISABLE_WATCHDOG:-0}" != "1" ]; then
   # Record parent PID for signaling (do not override if already set by caller)
   : "${HARNESS_PARENT_PID:=$$}"
   export HARNESS_PARENT_PID
@@ -158,16 +230,21 @@ if [[ -n "${PERF_HARNESS_TIMEOUT_SEC:-}" && "${PERF_HARNESS_TIMEOUT_SEC}" = <-> 
     if [[ -n "${PERF_PROMPT_HARNESS:-}" || -n "${PERF_SEGMENT_LOG:-}" ]]; then
       if kill -0 "${HARNESS_PARENT_PID}" 2>/dev/null; then
         kill -TERM "${HARNESS_PARENT_PID}" 2>/dev/null || true
-        # Convert grace to fractional seconds
-        if [[ "$grace_ms" = <-> ]]; then
-          sleep "$(printf '%.3f' "$(awk -v g="$grace_ms" 'BEGIN{printf g/1000.0}')" )"
-        else
-          sleep 0.4
-        fi
+        # Convert grace to fractional seconds (numeric grace_ms -> ms to s.mmm; fallback 0.4s)
+        case "$grace_ms" in
+          ''|*[!0-9]*)
+            sleep 0.4
+            ;;
+          *)
+            _g="$grace_ms"
+            sleep "$(printf '%d.%03d' $((_g/1000)) $((_g%1000)))"
+            unset _g
+            ;;
+        esac
         kill -0 "${HARNESS_PARENT_PID}" 2>/dev/null && kill -KILL "${HARNESS_PARENT_PID}" 2>/dev/null || true
       fi
     fi
-  ) &!
+  ) &
 fi
 # ------------------------------------------------------------------------------
 # Minimal perf harness mode (PERF_HARNESS_MINIMAL=1)
@@ -323,12 +400,6 @@ export HISTSIZE="${HISTSIZE:-2000000}"
 export SAVEHIST="${SAVEHIST:-2000200}"
 export HISTTIMEFORMAT="${HISTTIMEFORMAT:-'%F %T %z %a %V '}"
 export HISTDUP="${HISTDUP:-erase}"
-
-# ------------------------------------------------------------------------------
-# Doom Emacs
-# ------------------------------------------------------------------------------
-export DOOMDIR="${XDG_CONFIG_HOME:-$HOME/.config}/doom"
-PATH="${XDG_CONFIG_HOME:-$HOME/.config}/emacs/bin"
 
 # ------------------------------------------------------------------------------
 # Final early housekeeping

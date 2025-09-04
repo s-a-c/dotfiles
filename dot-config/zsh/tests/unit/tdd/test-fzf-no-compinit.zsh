@@ -30,8 +30,12 @@ if [[ "${TDD_SKIP_FZF_NO_COMPINIT:-0}" == "1" ]]; then
   exit 2
 fi
 
-# Resolve repo root (assumes file path depth)
-REPO_ROOT="$(cd "${0:A:h}/../../../.." && pwd -P)"
+# Resolve repo root (assumes file path depth) using resilient helper (avoids brittle ${0:A:h})
+if typeset -f zf::script_dir >/dev/null 2>&1; then
+  REPO_ROOT="$(cd "$(zf::script_dir "${(%):-%N}")/../../../.." && pwd -P)"
+else
+  REPO_ROOT="$(cd "${(%):-%N:h}/../../../.." && pwd -P)"
+fi
 
 # Use a temporary HOME to isolate any accidental .zcompdump creation in the real home dir
 TMP_HOME="$(mktemp -dt fzf_no_compinit_test.XXXXXX)"

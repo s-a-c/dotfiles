@@ -15,6 +15,17 @@ Personal dotfiles managed (or migrating toward) GNU Stow for symlink-based confi
 - Structure: ![structure](https://s-a-c.github.io/dotfiles/badges/structure.svg)
 - Security: ![security](https://s-a-c.github.io/dotfiles/badges/security.svg)
 
+## ZSH Redesign – Stage Dashboard
+| Stage | Name | Status | Tag | Key Metrics / Notes |
+|-------|------|--------|-----|---------------------|
+| 1 | Foundation | ✅ | refactor-stage1-complete | Structure + perf scaffolding established |
+| 2 | Pre-Plugin Migration | ✅ | refactor-stage2-preplugin | Pre-plugin baseline: mean=35ms stdev=11ms (N=5) |
+| 3 | Post-Plugin Core | ⏳ | (pending) | Planning security-integrity, interactive opts, core functions |
+| 4–5 | Feature / UI & Async | (future) | — | Plugins, async scheduling, completion gating |
+| 6–7 | Promotion / Archive | (future) | — | Promotion guard, archival policy |
+
+Stage 2 complete: pre-plugin modules (00–30) finalized; baseline locked; pre-plugin regression guard tightened to +7% (target +5% after additional low-variance sample sets). Stage 3 will add security/option core, helper namespace (`zf::`), and verify/apply PATH append fix.
+
 
 ## Contents
 - Consolidated `.gitignore` tuned for multi-language/editor noise and secret/material exclusion

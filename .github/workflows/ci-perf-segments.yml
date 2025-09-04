@@ -90,6 +90,25 @@ jobs:
           else
             echo "::warning::Variance test missing (tests/performance/test-multi-sample-variance.zsh)"
           fi
+      - name: Variance Gating Recommendation
+        shell: bash
+        run: |
+          if [[ -x tools/auto-enable-perf-warn-gate.zsh ]]; then
+            echo "[gating] Running variance stability recommender..."
+            tools/auto-enable-perf-warn-gate.zsh \
+              --output docs/redesignv2/artifacts/metrics/perf-gating-recommendation.json \
+              --state-file docs/redesignv2/artifacts/metrics/perf-gate-state.json \
+              --env-out docs/redesignv2/artifacts/metrics/perf-gating.env || true
+            echo "[gating] Recommendation (truncated):"
+            head -c 500 docs/redesignv2/artifacts/metrics/perf-gating-recommendation.json 2>/dev/null || true
+            if [[ -f docs/redesignv2/artifacts/metrics/perf-gating.env ]]; then
+              # Show env file; will be loaded later
+              echo "[gating] Env file:"
+              cat docs/redesignv2/artifacts/metrics/perf-gating.env || true
+            fi
+          else
+            echo "[gating][WARN] tools/auto-enable-perf-warn-gate.zsh missing (skipping)."
+          fi
 
       - name: Promotion Guard (G5a Observe Block)
         shell: bash
@@ -107,17 +126,26 @@ jobs:
       - name: perf-diff (JSON + Text)
         shell: bash
         run: |
+          # Load variance gating env if recommender produced it
+          if [[ -f docs/redesignv2/artifacts/metrics/perf-gating.env ]]; then
+            echo "[perf-diff] Loading perf gating environment"
+            cat docs/redesignv2/artifacts/metrics/perf-gating.env >> $GITHUB_ENV
+            source docs/redesignv2/artifacts/metrics/perf-gating.env
+            echo "[perf-diff] PERF_DIFF_FAIL_ON_REGRESSION=${PERF_DIFF_FAIL_ON_REGRESSION:-0} (streak=${PERF_DIFF_VARIANCE_STREAK:-0})"
+          else
+            echo "[perf-diff] No gating env present (observe mode)."
+          fi
           BASE_SEG=""
           CUR_SEG=""
           # Auto-detect baseline/current segment files
           for f in docs/redesignv2/artifacts/metrics/perf-baseline-segments.txt docs/redesign/metrics/perf-baseline-segments.txt; do
             [[ -f "$f" ]] && BASE_SEG="$f" && break
           done
-            for f in docs/redesignv2/artifacts/metrics/perf-current-segments.txt docs/redesign/metrics/perf-current-segments.txt; do
+          for f in docs/redesignv2/artifacts/metrics/perf-current-segments.txt docs/redesign/metrics/perf-current-segments.txt; do
             [[ -f "$f" ]] && CUR_SEG="$f" && break
           done
           if [[ -n "$BASE_SEG" && -n "$CUR_SEG" && -x tools/perf-diff.sh ]]; then
-            echo "[perf-diff] baseline=$BASE_SEG current=$CUR_SEG"
+            echo "[perf-diff] baseline=$BASE_SEG current=$CUR_SEG fail_on_reg=${PERF_DIFF_FAIL_ON_REGRESSION:-0}"
             tools/perf-diff.sh --baseline "$BASE_SEG" --current "$CUR_SEG" --json ${PERF_DIFF_FAIL_ON_REGRESSION:+--fail} > perf-diff.out 2>&1 || true
             # Separate JSON to its own file (tail braces)
             awk '
@@ -172,6 +200,113 @@ jobs:
             echo "[summary] single-run current present"
             grep -E '"post_plugin_cost_ms"|\"pre_plugin_cost_ms\"|\"prompt_ready_ms\"' "$CURR" || true
           fi
+      - name: Perf Module Ledger (Experimental)
+        shell: bash
+        run: |
+          SEG=docs/redesignv2/artifacts/metrics/perf-current-segments.txt
+          LEDGER_OUT=docs/redesignv2/artifacts/metrics/perf-ledger.json
+          BADGE=docs/badges/perf-ledger.json
+          if [[ -x tools/experimental/perf-module-ledger.zsh ]]; then
+            echo "[ledger] Generating perf ledger (observe mode)..."
+            tools/experimental/perf-module-ledger.zsh \
+              --segments "$SEG" \
+              --output "$LEDGER_OUT" \
+              --budget post_plugin_total:3000,pre_plugin_total:120 \
+              --badge "$BADGE" \
+              --summary || true
+            echo "[ledger] Truncated ledger JSON:"
+            head -c 400 "$LEDGER_OUT" 2>/dev/null || true
+          else
+            echo "[ledger][WARN] tools/experimental/perf-module-ledger.zsh missing (skipping)."
+          fi
+      - name: Perf Ledger Drift Badge
+        shell: bash
+        run: |
+          mkdir -p docs/badges
+          if [[ -x tests/performance/test-perf-ledger-drift.zsh ]]; then
+            echo "[drift] Evaluating perf ledger drift..."
+            if tests/performance/test-perf-ledger-drift.zsh > perf-ledger-drift.out 2>&1; then
+              drift_status="pass"
+            else
+              drift_status="nonpass"
+            fi
+            warn_count=$(grep '^WARN:' perf-ledger-drift.out | wc -l | tr -d ' ')
+            fail_count=$(grep '^FAIL:' perf-ledger-drift.out | wc -l | tr -d ' ')
+            color="brightgreen"
+            msg="stable"
+            if [[ "$fail_count" != "0" ]]; then
+              color="red"; msg="${fail_count} fail"
+            elif [[ "$warn_count" != "0" ]]; then
+              color="orange"; msg="${warn_count} warn"
+            fi
+            echo "{\"schemaVersion\":1,\"label\":\"perf drift\",\"message\":\"$msg\",\"color\":\"$color\"}" > docs/badges/perf-drift.json
+            echo "[drift] Badge: $(cat docs/badges/perf-drift.json)"
+          else
+            echo '{"schemaVersion":1,"label":"perf drift","message":"unavailable","color":"lightgrey"}' > docs/badges/perf-drift.json
+            echo "[drift][WARN] test-perf-ledger-drift.zsh missing."
+          fi
+
+      - name: Variance State (Mode & Streak)
+        shell: bash
+        run: |
+          set -euo pipefail
+          VS_OUT="docs/redesignv2/artifacts/badges/variance-state.json"
+          VS_BADGE="docs/badges/variance-state.json"
+          mkdir -p "$(dirname "$VS_OUT")" docs/badges
+          if [[ -x dot-config/zsh/tools/generate-variance-state-badge.zsh ]]; then
+            echo "[variance] Generating variance state..."
+            if dot-config/zsh/tools/generate-variance-state-badge.zsh \
+                --samples docs/redesignv2/artifacts/metrics/perf-multi-current.json \
+                --output "$VS_OUT" \
+                --badge "$VS_BADGE" ; then
+              echo "[variance] variance-state written: $VS_OUT"
+            else
+              echo "[variance][WARN] generation failed; creating placeholder."
+              echo '{"schema":"variance-state.v1","mode":"observe","rsd":{"pre":{"rsd":null},"post":{"rsd":null}},"stable_run_count":0,"promotion_notes":"placeholder"}' > "$VS_OUT"
+              echo '{"label":"variance","message":"observe","color":"lightgrey"}' > "$VS_BADGE"
+            fi
+          else
+            echo "[variance][WARN] script missing (dot-config/zsh/tools/generate-variance-state-badge.zsh); creating placeholder."
+            echo '{"schema":"variance-state.v1","mode":"observe","rsd":{"pre":{"rsd":null},"post":{"rsd":null}},"stable_run_count":0,"promotion_notes":"missing-script"}' > "$VS_OUT"
+            echo '{"label":"variance","message":"observe","color":"lightgrey"}' > "$VS_BADGE"
+          fi
+          echo "[variance] Badge: $(cat "$VS_BADGE" || true)"
+
+      - name: Governance Badge (Extended + Simple)
+        shell: bash
+        run: |
+          set -euo pipefail
+          EXT_OUT="docs/redesignv2/artifacts/badges/governance.json"
+            BADGE_OUT="docs/badges/governance.json"
+          mkdir -p "docs/redesignv2/artifacts/badges" "docs/badges"
+          if [[ -x dot-config/zsh/tools/generate-governance-badge.zsh ]]; then
+            echo "[governance] Generating extended governance artifact..."
+            if dot-config/zsh/tools/generate-governance-badge.zsh --extended --output "$EXT_OUT"; then
+              echo "[governance] Extended JSON written: $EXT_OUT"
+              # Derive simple badge JSON from extended (.badge object) if jq available
+              if command -v jq >/dev/null 2>&1; then
+                jq -c '.badge' "$EXT_OUT" > "$BADGE_OUT" || {
+                  echo "[governance][WARN] jq extraction failed; writing fallback badge."
+                  echo '{"label":"governance","message":"parse-fallback","color":"lightgrey"}' > "$BADGE_OUT"
+                }
+              else
+                # Fallback: naive grep for message/color
+                msg=$(grep -o '"message":"[^"]*"' "$EXT_OUT" | head -1 | sed 's/"message":"//;s/"$//')
+                color=$(grep -o '"color":"[^"]*"' "$EXT_OUT" | head -1 | sed 's/"color":"//;s/"$//')
+                : "${msg:=unknown}" ; : "${color:=lightgrey}"
+                printf '{"label":"governance","message":"%s","color":"%s"}\n' "$msg" "$color" > "$BADGE_OUT"
+              fi
+            else
+              echo "[governance][WARN] Extended generation failed; creating placeholder."
+              echo '{"schema":"governance-badge.v1","badge":{"label":"governance","message":"error","color":"red"}}' > "$EXT_OUT"
+              echo '{"label":"governance","message":"error","color":"red"}' > "$BADGE_OUT"
+            fi
+          else
+            echo "[governance][WARN] Script missing (dot-config/zsh/tools/generate-governance-badge.zsh); creating placeholder."
+            echo '{"schema":"governance-badge.v1","badge":{"label":"governance","message":"missing","color":"lightgrey"}}' > "$EXT_OUT"
+            echo '{"label":"governance","message":"missing","color":"lightgrey"}' > "$BADGE_OUT"
+          fi
+          echo "[governance] Badge: $(cat "$BADGE_OUT" || true)"
 
       - name: Upload Artifacts
         if: always()
@@ -183,10 +318,19 @@ jobs:
             perf-diff.txt
             perf-diff.json
             perf-budget.json
+            perf-ledger-drift.out
+            docs/redesignv2/artifacts/metrics/perf-gating-recommendation.json
+            docs/redesignv2/artifacts/metrics/perf-gating.env
+            docs/redesignv2/artifacts/metrics/perf-gate-state.json
             docs/redesignv2/artifacts/metrics/perf-current-segments.txt
             docs/redesignv2/artifacts/metrics/perf-baseline-segments.txt
             docs/redesignv2/artifacts/metrics/perf-multi-current.json
             docs/redesignv2/artifacts/metrics/perf-current.json
+            docs/redesignv2/artifacts/metrics/perf-ledger.json
+            docs/badges/perf-ledger.json
+            docs/badges/perf-drift.json
+            docs/redesignv2/artifacts/badges/governance.json
+            docs/badges/governance.json
 
       - name: Fail if Guard Block Missing (Structural G5a Safety)
         if: always()

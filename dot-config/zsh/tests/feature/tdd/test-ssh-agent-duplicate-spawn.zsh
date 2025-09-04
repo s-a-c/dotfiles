@@ -53,7 +53,11 @@ if [[ "${TDD_ALLOW_FAIL_SSH_AGENT_DUP:-0}" == 1 ]]; then
     exit 2
 fi
 
-REPO_ROOT="$(cd "${0:A:h}/../../../../" && pwd -P)"
+if typeset -f zf::script_dir >/dev/null 2>&1; then
+REPO_ROOT="$(cd "$(zf::script_dir "${(%):-%N}")/../../../../" && pwd -P)"
+else
+REPO_ROOT="$(cd "${(%):-%N:h}/../../../../" && pwd -P)"
+fi
 
 cd "$REPO_ROOT"
 

@@ -17,4 +17,10 @@
 # - We intentionally default ZGEN_AUTOLOAD_COMPINIT=0 to avoid compinit races during
 #   debugging. Change to 1 when your completion environment is stable.
 
+# ------------------------------------------------------------------------------
+# Doom Emacs
+# ------------------------------------------------------------------------------
+[[ -z "${DOOMDIR}" ]]  && export DOOMDIR="${DOOMDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/doom}"
+[[ -d "${XDG_CONFIG_HOME:-$HOME/.config}/emacs/bin" ]] && PATH="${XDG_CONFIG_HOME:-$HOME/.config}/emacs/bin:${PATH}"
+
 # End of file

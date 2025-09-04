@@ -146,6 +146,20 @@ All MUST be true:
 
 ---
 
+### 6.1 Readiness Checklist & Micro-Benchmark Note
+
+A living Stage 3 readiness checklist is derived directly from Section 6 exit criteria:
+- Use Section 6 as the authoritative checklist (C1–C10).
+- When implementing supporting artifacts, reference them explicitly in commit messages (e.g., "stage3: C3 prompt_ready_ms capture").
+
+Micro-Benchmark Harness (Informational – Stage 3 Adjacent):
+- Placeholder directory added: tests/performance/core-functions/
+- README defines forthcoming script: bench-core-functions.zsh (observe mode).
+- Intent: measure per-call µs for zf::* helpers (log/warn/ensure_cmd/require/list_functions/with_timing).
+- Not a gate in Stage 3; first baseline capture will be stored after harness lands, then considered for warn-only drift reporting in later stages.
+
+(End 6.1)
+
 ## 7. Risk Register (Condensed)
 
 | Risk | Impact | Mitigation |
@@ -191,6 +205,8 @@ All MUST be true:
 | tests/security/test-preplugin-integrity-hash.zsh | Integrity validation |
 | tests/security/test-plugin-source-allowlist.zsh | Enforce controlled sourcing |
 | tests/performance/test-prompt-timeline-consistency.zsh | Marker ordering |
+| tests/performance/core-functions/README.txt | Micro-benchmark harness scaffold (Stage 3 placeholder; documents upcoming bench-core-functions.zsh) |
+| tests/performance/core-functions/bench-core-functions.zsh (planned) | Micro benchmark loop for zf::* helpers (observe mode, non-gating; will emit BENCH lines + optional JSON) |
 
 ---
 

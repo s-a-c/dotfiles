@@ -5,7 +5,7 @@
 # PURPOSE:
 #   Guard against regressions in the pre-plugin phase cost after the Stage 2 baseline
 #   (`preplugin-baseline.json`) is captured. Ensures `pre_plugin_total` does not exceed
-#   the recorded baseline mean by more than an allowed regression percentage (default 10%).
+#   the recorded baseline mean by more than an allowed regression percentage (default 7%).
 #
 # SCOPE:
 #   - Reads baseline metrics JSON (multi-sample recommended) for mean_ms
@@ -20,7 +20,7 @@
 #
 # CONFIG (env overrides):
 #   PREPLUGIN_BASELINE_PATH   Path to baseline JSON
-#   PREPLUGIN_ALLOWED_REGRESSION_PCT  Allowed regression percentage (default 10)
+#   PREPLUGIN_ALLOWED_REGRESSION_PCT  Allowed regression percentage (default 7)
 #   PREPLUGIN_SEGMENTS_FILE   Override path to generated segments file (optional)
 #
 # EXIT CODES:
@@ -42,7 +42,7 @@ set -u
 
 : ${ZDOTDIR:=${XDG_CONFIG_HOME:-$HOME/.config}/zsh}
 : ${PREPLUGIN_BASELINE_PATH:="${ZDOTDIR}/docs/redesignv2/artifacts/metrics/preplugin-baseline.json"}
-: ${PREPLUGIN_ALLOWED_REGRESSION_PCT:=10}
+: ${PREPLUGIN_ALLOWED_REGRESSION_PCT:=7}
 
 TOOLS_DIR="${ZDOTDIR}/tools"
 CAPTURE="${TOOLS_DIR}/perf-capture.zsh"

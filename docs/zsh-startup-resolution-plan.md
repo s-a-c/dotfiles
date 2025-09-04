@@ -43,9 +43,9 @@
 no such file or directory: /Users/s-a-c/dotfiles/dot-config/zsh/.zgenom/so-fancy/diff-so-fancy/___/zsh-abbr.zsh
 ```
 
-**Root Cause**: `${0:A:h}` resolving in wrong context during zgenom compilation
+**Root Cause**: Legacy `${0:A:h}` expansion resolves in the *compilation* context (zgenom) rather than the runtime script location (now DEPRECATED in favor of `zf::script_dir` / `resolve_script_dir`)
 **Status**: Non-fatal (plugins work despite errors)
-**Solution**: Document as known limitation, plugins function correctly
+**Solution**: Migrate all new/modified code to `zf::script_dir` (or `resolve_script_dir`) helpers; treat direct `${0:A:h}` usage as a lint violation (legacy occurrences are being phased out)
 
 ---
 
@@ -110,7 +110,7 @@ no such file or directory: /Users/s-a-c/dotfiles/dot-config/zsh/.zgenom/so-fancy
 1. **📝 Plugin Source Path Resolution Errors** - EXPECTED
    - Compilation-time path resolution warnings during zgenom save
    - Non-fatal: plugins function correctly despite warnings
-   - Root cause: `${0:A:h}` resolving in wrong context during compilation
+   - Root cause: Deprecated `${0:A:h}` pattern resolves in compilation context (replaced by `zf::script_dir` / `resolve_script_dir`)
    - **Status**: Documented behavior, no functional impact
 
 2. **📝 fast-syntax-highlighting Detection** - COSMETIC
@@ -137,7 +137,7 @@ no such file or directory: /Users/s-a-c/dotfiles/dot-config/zsh/.zgenom/so-fancy
   - Improved plugin health checking
 
 **📚 Documentation Created:**
-- `/Users/s-a-c/docs/zsh-path-resolution-analysis.md` - Comprehensive analysis of `${0:A:h}` behavior
+- `/Users/s-a-c/docs/zsh-path-resolution-analysis.md` - Analysis updated: `${0:A:h}` marked DEPRECATED; recommends `zf::script_dir` / `resolve_script_dir`
 - `/Users/s-a-c/docs/zsh-startup-resolution-plan.md` - This resolution plan and status
 
 ### **Performance Impact**
@@ -173,7 +173,7 @@ no such file or directory: /Users/s-a-c/dotfiles/dot-config/zsh/.zgenom/so-fancy
 ### **⚠️ Known Issues (Non-Critical)**
 1. **Plugin compilation warnings** - Path resolution errors during `zgenom save`
    - **Impact**: Cosmetic only, plugins function correctly at runtime
-   - **Root cause**: `${0:A:h}` resolving incorrectly during compilation phase
+   - **Root cause**: Deprecated `${0:A:h}` expansion resolves to compilation context; superseded by resilient helpers (`zf::script_dir`, `resolve_script_dir`)
    - **Status**: Documented, workarounds implemented
 
 2. **zsh-abbr lazy loading** - Manual loading required in some shells

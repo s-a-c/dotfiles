@@ -16,6 +16,7 @@
 #
 # Inputs (badge sources - optional, missing files lower confidence):
 #   docs/badges/perf.json
+#   docs/badges/perf-ledger.json   # performance ledger (budgets / over-budget status)
 #   docs/badges/structure.json
 #   docs/badges/hooks.json
 #   docs/badges/security.json   # (future) produced by security workflow (e.g., secret scan / vuln scan status)
@@ -142,15 +143,17 @@ score_color() {
 # ---- Collect component badges ------------------------------------------------
 
 perf_line=$(extract_color_msg docs/badges/perf.json perf)
+perf_ledger_line=$(extract_color_msg docs/badges/perf-ledger.json perf_ledger)
 struct_line=$(extract_color_msg docs/badges/structure.json structure)
 hooks_line=$(extract_color_msg docs/badges/hooks.json hooks)
 security_line=$(extract_color_msg docs/badges/security.json security)
 
 vlog "perf_line=$perf_line"
+vlog "perf_ledger_line=$perf_ledger_line"
 vlog "structure_line=$struct_line"
 vlog "hooks_line=$hooks_line"
 
-components=($perf_line $struct_line $hooks_line $security_line)
+components=($perf_line $perf_ledger_line $struct_line $hooks_line $security_line)
 
 present=()
 any_red=0

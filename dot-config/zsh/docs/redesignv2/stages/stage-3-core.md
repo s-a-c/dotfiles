@@ -1,15 +1,15 @@
 # Stage 3 – Post‑Plugin Core Modules (00 / 05 / 10)
-Version: 1.0  
-Status: ⏳ Pending (Will flip to 🎯 Ready once Stage 2 is tagged)  
+Version: 1.1  
+Status: 🚧 In Progress (Stage 2 complete & tagged; core trio bootstrap underway)  
 Planned Tag on Completion: `refactor-stage3-core`  
-Last Updated: 2025-01-03
+Last Updated: 2025-09-03
 
 > Stage 3 implements the **first functional layer** of the post‑plugin redesign tree:
-> - 00-security-integrity.zsh (light security baseline & scheduling hooks)
+> - 00-security-integrity.zsh (path hygiene, integrity scheduler stub, NO hashing yet)
 > - 05-interactive-options.zsh (centralized shell behavior: setopt / unsetopt / zstyles / history policy)
-> - 10-core-functions.zsh (user-facing helpers, wrappers, internal utilities)
+> - 10-core-functions.zsh (namespaced `zf::` helpers, diagnostics, safe wrappers)
 >
-> No heavy performance instrumentation, async scanning, completion, or UI logic should be added here—those are deferred to later stages (50/60/70/80).
+> No heavy performance instrumentation, async scanning, completion, UI theming, or deep hashing logic belongs here—those are deferred to later stages (50/60/70/80).
 
 ---
 
@@ -47,11 +47,11 @@ Provide a **clean, deterministic functional substrate** immediately after plugin
 
 | Criterion | Source | Status (Expected) |
 |----------|--------|-------------------|
-| Stage 2 tag present | `git tag | grep refactor-stage2-preplugin` | Pending |
-| Pre-plugin path logic stabilized | Stage 2 exit checklist | Pending |
-| Lazy framework functional (tests PASS) | Stage 2 unit tests | Pending |
-| Pre-plugin performance delta recorded | `preplugin-baseline.json` | Pending |
-| No unresolved Stage 2 regression issues | Issue tracker / test suite | Pending |
+| Stage 2 tag present | `git tag | grep refactor-stage2-preplugin` | ✅ |
+| Pre-plugin path logic stabilized | Stage 2 exit checklist | ✅ |
+| Lazy framework functional (tests PASS) | Stage 2 unit tests | ✅ |
+| Pre-plugin performance delta recorded | `preplugin-baseline.json` | ✅ |
+| No unresolved Stage 2 regression issues | Issue tracker / test suite | ✅ |
 
 ---
 
@@ -63,7 +63,7 @@ Provide a **clean, deterministic functional substrate** immediately after plugin
 | Option centralization | All option mutations originate in module 05 | Zero option diffs outside 05 on audit |
 | History consolidation | Only module 05 sets history vars | Verified via grep / tests |
 | Core functions reliability | Unit coverage for critical helpers | ≥90% of added functions simple path PASS |
-| No performance regression | `post_plugin_cost_ms` minimal increase | Δ ≤ +1% vs previous |
+| No performance regression | `post_plugin_cost_ms` minimal increase | Δ ≤ +1% vs previous (observe) |
 | Deterministic load order | structure audit unchanged (19 total) | PASS |
 | No compinit interference | `_COMPINIT_DONE` untouched | PASS |
 
@@ -74,8 +74,8 @@ Provide a **clean, deterministic functional substrate** immediately after plugin
 ### 5.1 00-security-integrity.zsh
 - Sentinel + early scheduling function: `zsh_security_queue_integrity_scan` (NO hash operations yet).
 - Record a baseline timestamp/log stub: `SECURITY_ASYNC_QUEUE`.
-- Provide lightweight fingerprint placeholder (e.g., plugin dir count) for future diff (commented or stub).
-- Export `_ASYNC_PLUGIN_HASH_STATE=IDLE` if unset.
+- Provide lightweight fingerprint placeholder (e.g., plugin dir count) for future diff (stub only).
+- Export `_ASYNC_PLUGIN_HASH_STATE=IDLE` if unset (assert not RUNNING pre-prompt).
 
 ### 5.2 05-interactive-options.zsh
 - Grouped `setopt / unsetopt` (e.g., `extendedglob`, `hist_ignore_all_dups`, etc.)
@@ -114,9 +114,9 @@ Rules:
 | S3.7 | Implement core functions batch 1 | Basic helpers + tests | Unit tests PASS |
 | S3.8 | Add diagnostics / lazy registry viewer | Introspection helper | Manual invocation OK |
 | S3.9 | Add stub `plugin_security_status` | Placeholder returns explanatory message | CLI call returns 0 |
-| S3.10 | Performance sanity capture | perf-current.json update | Segment regression test PASS |
-| S3.11 | Update IMPLEMENTATION.md | Stage 3 progress markers | Git diff |
-| S3.12 | Tag & document completion | `refactor-stage3-core` | Tag exists |
+| S3.10 | Performance sanity capture | perf-current.json update | Segment regression & variance tests PASS |
+| S3.11 | Update IMPLEMENTATION.md / README | Stage 3 progress markers | Git diff |
+| S3.12 | Helper verification integration | CI step (observe → enforce) | verify-path-helpers JSON PASS |
 
 ---
 
@@ -139,7 +139,7 @@ Rules:
 | Options conflict with legacy un-migrated modules | Medium | Medium | Audit grep for duplicate setopt lines | Option test failure |
 | Security stub accidentally triggers hashing early | Low | High | Keep only scheduling + markers (no hash functions) | RUNNING state before prompt |
 | Function name collisions | Medium | Medium | Prefix internal helpers or audit `function-collisions.json` | Structure audit violation or collision JSON |
-| Added latency from verbose logging | Low | Low | Gate debug output on `ZSH_DEBUG` | Perf delta >1% |
+| Added latency from verbose logging | Low | Low | Gate debug output on `ZSH_DEBUG` | Perf delta >1% (observe) |
 | Overreach in history config (user overrides) | Medium | Low | Respect existing exported env values | User config diff complaint |
 
 ---
@@ -152,7 +152,7 @@ Rules:
 | G3B No early async execution | Async tests | No RUNNING pre-prompt |
 | G3C Option centralization | Grep audit | Only 05 sets core options |
 | G3D Core functions callable | Manual & unit tests | No errors invoking helpers |
-| G3E Perf delta acceptable | Segment regression test | Δ ≤1% (soft), ≤5% (hard) |
+| G3E Perf delta acceptable | Segment regression + variance tests | Δ ≤1% (soft observe), ≤5% (hard) |
 | G3F Documentation sync | IMPLEMENTATION.md | Stage 3 updated |
 | G3G Tag created | Git | `refactor-stage3-core` exists |
 
@@ -167,8 +167,8 @@ Rules:
 | 10 core functions (initial set) | ⬜ |
 | Stub `plugin_security_status` implemented | ⬜ |
 | All tests PASS (no new failures) | ⬜ |
-| Performance delta documented | ⬜ |
-| IMPLEMENTATION.md updated (Stage 3 complete) | ⬜ |
+| Performance delta documented (with variance) | ⬜ |
+| IMPLEMENTATION.md / README updated (Stage 3 complete) | ⬜ |
 | Tag pushed & verified | ⬜ |
 
 ---
@@ -213,10 +213,11 @@ Rules:
 | Date | Version | Change |
 |------|---------|--------|
 | 2025-01-03 | 1.0 | Initial Stage 3 skeleton plan (pre-execution) |
+| 2025-09-03 | 1.1 | Updated for Stage 2 completion, active execution, added helper verification & path enforcement context |
 
 ---
 
-**Status:** Pending Stage 2 completion.  
-Prepare branch: `git checkout -b stage-3-core`.
+**Status:** Active (Stage 2 complete).  
+Active branch suggestion: `git checkout -b stage-3-core`.
 
 [Back to Overview](../README.md) | [Implementation Guide](../IMPLEMENTATION.md) | [Stage 2](stage-2-preplugin.md) | Stage 4 (will follow)  

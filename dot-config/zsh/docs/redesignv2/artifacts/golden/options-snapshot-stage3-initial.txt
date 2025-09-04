@@ -1,0 +1,30 @@
+# options-snapshot-stage3-initial.txt
+# Golden snapshot for Stage 3 initial interactive option baseline.
+# Purpose:
+#   Serves as the canonical reference for idempotency / drift tests once
+#   golden comparison is wired. Lines formatted: option=on|off
+# Scope (monitored set – matches test-option-snapshot-stability list):
+#   append_history, autocd, extendedglob, hist_ignore_all_dups,
+#   hist_ignore_space, hist_reduce_blanks, interactive_comments,
+#   promptsubst, share_history
+# Assumptions:
+#   - Module 05 sets: hist_ignore_all_dups, hist_reduce_blanks, share_history,
+#     interactive_comments, autocd (as auto_cd), append_history remains off
+#     (inc_append_history is used instead), others default off.
+#   - This snapshot reflects the desired INITIAL state after first load.
+# Update Policy:
+#   - If an intentional option state change is introduced, update this file
+#     in the same commit and note the rationale in IMPLEMENTATION.md.
+#   - Avoid toggling options here without corresponding module logic change.
+#
+# Generated: Stage 3 (initial) – edit manually with justification.
+
+append_history=off
+autocd=on
+extendedglob=off
+hist_ignore_all_dups=on
+hist_ignore_space=off
+hist_reduce_blanks=on
+interactive_comments=on
+promptsubst=off
+share_history=on
