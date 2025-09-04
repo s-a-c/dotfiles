@@ -9,3 +9,9 @@ run=1 state=start ts=1756851948 ppid=59316
 run=1 state=start ts=1756852730 ppid=74384
 run=1 state=start ts=1756853096 ppid=77565 fast=1
 run=1 state=start ts=1756853349 ppid=79842 fast=1
+run=1 state=start ts=1756984383 ppid=35193 fast=0
+run=1 state=invoke_complete rc=0 approx_ms=11928 fast=0
+run=1 state=start ts=1756984710 ppid=51062 fast=1
+run=1 state=invoke_complete rc=0 approx_ms=332 fast=1
+run=1 state=start ts=1757000389 ppid=91381 fast=0
+run=1 state=invoke_complete rc=0 approx_ms=13692 fast=0

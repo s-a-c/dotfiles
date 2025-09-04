@@ -15,6 +15,7 @@
 # 9  Async state validation failed
 # 10 TDD gate (G10) violations detected (enforce-tdd.sh)
 # 11 Segment/prompt threshold violation (pre/post plugin or prompt readiness exceeds configured max)
+# 12 Monotonic lifecycle ordering violation (pre<=post<=prompt) or future micro bench critical violation
 set -euo pipefail
 # Safe PATH bootstrap to ensure core utilities remain available even if earlier
 # path normalization removed standard system directories.
@@ -226,5 +227,33 @@ else
   stage2_meta="pass"
 fi
 
-print "[promotion-guard] OK (modules=$total_modules mean=${cur_mean}ms baseline=${base_mean}ms delta=${perc_delta}% preseg=${seg_pre_display}ms postseg=${seg_post_display}ms prompt=${prompt_ready_display}ms violations=${violations_ct} checksum=verified tdd=pass stage2tests=${stage2_meta})"
+# ---------------- Monotonic Lifecycle Ordering (pre <= post <= prompt) ----------------
+monotonic_note="monotonic=deferred"
+if [[ -n ${seg_pre:-} && -n ${seg_post:-} && -n ${prompt_ready:-} ]] && \
+   [[ ${seg_pre:-0} -gt 0 && ${seg_post:-0} -gt 0 && ${prompt_ready:-0} -gt 0 ]]; then
+  if (( seg_pre > seg_post || seg_post > prompt_ready )); then
+    if [[ "${PROMOTION_GUARD_MONOTONIC_STRICT:-1}" == "1" ]]; then
+      print -u2 "[promotion-guard] Monotonic lifecycle violation pre=${seg_pre} post=${seg_post} prompt=${prompt_ready}"
+      exit 12
+    else
+      monotonic_note="monotonic=warn(pre=${seg_pre} post=${seg_post} prompt=${prompt_ready})"
+    fi
+  else
+    monotonic_note="monotonic=ok"
+  fi
+fi
+
+# ---------------- Micro Benchmark Summary (observational) ----------------
+micro_note="microbench=skip"
+if [[ "${PROMOTION_GUARD_MICRO_BENCH:-1}" == "1" ]]; then
+  BMB="$METRICS/bench-core-baseline.json"
+  if [[ -f "$BMB" ]]; then
+    b_shim=$(grep -E '"shimmed_count"' "$BMB" 2>/dev/null | sed -E 's/.*"shimmed_count"[[:space:]]*:[[:space:]]*([0-9]+).*/\1/' | head -1)
+    b_fn=$(grep -c '"name"' "$BMB" 2>/dev/null || echo 0)
+    [[ -z "$b_shim" ]] && b_shim=0
+    micro_note="microbench=baseline(funcs=${b_fn} shimmed=${b_shim})"
+  fi
+fi
+
+print "[promotion-guard] OK (modules=$total_modules mean=${cur_mean}ms baseline=${base_mean}ms delta=${perc_delta}% preseg=${seg_pre_display}ms postseg=${seg_post_display}ms prompt=${prompt_ready_display}ms violations=${violations_ct} checksum=verified tdd=pass stage2tests=${stage2_meta} ${monotonic_note} ${micro_note})"
 exit 0

@@ -92,24 +92,24 @@ unset PERF_HARNESS_TIMEOUT_SEC PERF_HARNESS_DISABLE_WATCHDOG HARNESS_PARENT_PID
 SCRIPT_NAME="${0##*/}"
 
 usage() {
-  cat <<EOF
+    cat <<EOF
 $SCRIPT_NAME - Multi-sample ZSH startup performance aggregator
 
 Usage: $SCRIPT_NAME [options]
 
 Options:
-  -n, --samples <N>        Number of capture runs (default: 3)
-  -s, --sleep <SECONDS>    Sleep between runs (default: 0)
-      --quiet              Suppress single-run perf-capture output
-      --no-segments        Skip per-segment aggregation (faster)
-      --help               Show this help
+    -n, --samples <N>        Number of capture runs (default: 3)
+    -s, --sleep <SECONDS>    Sleep between runs (default: 0)
+        --quiet              Suppress single-run perf-capture output
+        --no-segments        Skip per-segment aggregation (faster)
+        --help               Show this help
 
 Artifacts:
-  Writes per-run perf-sample-<i>.json and aggregate perf-multi-current.json
-  into redesignv2 metrics directory (or legacy redesign fallback).
+    Writes per-run perf-sample-<i>.json and aggregate perf-multi-current.json
+    into redesignv2 metrics directory (or legacy redesign fallback).
 
 Example:
-  $SCRIPT_NAME -n 5 -s 0.5
+    $SCRIPT_NAME -n 5 -s 0.5
 EOF
 }
 
@@ -358,6 +358,88 @@ add_segment_value() {
   seg_values[$label]="${seg_values[$label]} $value"
 }
 
+# ---------------- Fingerprint / Caching (Stage 3 enhancement) ----------------
+# Optional multi-sample skip logic to avoid redundant captures when environment
+# and inputs are unchanged. Controlled via:
+#   PERF_CAPTURE_ENABLE_CACHE=1   (enable caching logic; default 1)
+#   PERF_CAPTURE_FORCE=1          (bypass cache even if fingerprint matches)
+#   PERF_CAPTURE_FINGERPRINT_FILE (override path; default: $METRICS_DIR/perf-multi-fingerprint.txt)
+#
+# Fingerprint components (lightweight, no jq dependency):
+#   - git HEAD (if repository)
+#   - script sha256 (or md5 fallback) of perf-capture-multi.zsh
+#   - sample parameters (SAMPLES, SLEEP_INTERVAL, DO_SEGMENTS, PERF_CAPTURE_FAST)
+#   - list + mtime hash of redesign core modules (*.zsh under .zshrc.*.REDESIGN)
+#   - pre-plugin baseline file mtime (if present)
+#
+# If prior fingerprint matches AND perf-multi-current.json exists and is non-empty,
+# the capture loop is skipped (speeds up CI when nothing changed).
+: ${PERF_CAPTURE_ENABLE_CACHE:=1}
+: ${PERF_CAPTURE_FINGERPRINT_FILE:="$METRICS_DIR/perf-multi-fingerprint.txt"}
+
+_compute_hash() {
+  local algo data
+  data="$1"
+  if command -v shasum >/dev/null 2>&1; then
+    printf '%s' "$data" | shasum -a 256 2>/dev/null | awk '{print $1}'
+  elif command -v sha256sum >/dev/null 2>&1; then
+    printf '%s' "$data" | sha256sum 2>/dev/null | awk '{print $1}'
+  elif command -v md5 >/dev/null 2>&1; then
+    printf '%s' "$data" | md5 2>/dev/null | awk '{print $NF}'
+  elif command -v md5sum >/dev/null 2>&1; then
+    printf '%s' "$data" | md5sum 2>/dev/null | awk '{print $1}'
+  else
+    # Fallback: truncation of base64 of data (non-cryptographic)
+    printf '%s' "$data" | base64 2>/dev/null | tr -d '\n' | cut -c1-32
+  fi
+}
+
+if (( PERF_CAPTURE_ENABLE_CACHE )) && [[ "${PERF_CAPTURE_FORCE:-0}" != "1" ]]; then
+  git_head=""
+  if command -v git >/dev/null 2>&1 && git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    git_head=$(git rev-parse HEAD 2>/dev/null || echo "nogit")
+  else
+    git_head="nogit"
+  fi
+
+  script_path="${(%):-%N}"
+  script_hash=$(_compute_hash "$(cat "$script_path" 2>/dev/null)")
+
+  # Collect module mtimes (limit breadth for performance)
+  module_listing=""
+  if [[ -n "${ZDOTDIR:-}" ]]; then
+    for d in .zshrc.d.REDESIGN .zshrc.pre-plugins.d.REDESIGN; do
+      if [[ -d "$ZDOTDIR/$d" ]]; then
+        module_listing+=$(find "$ZDOTDIR/$d" -maxdepth 1 -type f -name '*.zsh' -exec ls -l {} + 2>/dev/null)
+      fi
+    done
+  fi
+  module_hash=$(_compute_hash "$module_listing")
+
+  preplugin_mtime=""
+  if [[ -f "$METRICS_DIR/preplugin-baseline.json" ]]; then
+    preplugin_mtime=$(stat -f '%m' "$METRICS_DIR/preplugin-baseline.json" 2>/dev/null || stat -c '%Y' "$METRICS_DIR/preplugin-baseline.json" 2>/dev/null || echo 0)
+  else
+    preplugin_mtime=0
+  fi
+
+  fp_string="git=${git_head};script=${script_hash};mods=${module_hash};samples=${SAMPLES};sleep=${SLEEP_INTERVAL};segments=${DO_SEGMENTS};fast=${PERF_CAPTURE_FAST:-0};preplugin_mtime=${preplugin_mtime}"
+  new_fp=$(_compute_hash "$fp_string")
+
+  old_fp=""
+  if [[ -f "$PERF_CAPTURE_FINGERPRINT_FILE" ]]; then
+    old_fp=$(<"$PERF_CAPTURE_FINGERPRINT_FILE")
+  fi
+
+  if [[ -n "$old_fp" && "$old_fp" == "$new_fp" && -s "$METRICS_DIR/perf-multi-current.json" ]]; then
+    echo "[perf-capture-multi] cache hit (fingerprint unchanged) – skipping multi-sample capture (PERF_CAPTURE_FORCE=1 to override)"
+    echo "[perf-capture-multi] fingerprint=$new_fp"
+    exit 0
+  else
+    echo "[perf-capture-multi] cache miss (running capture) fingerprint_old=${old_fp:-none} new=$new_fp"
+    printf '%s\n' "$new_fp" >| "$PERF_CAPTURE_FINGERPRINT_FILE" 2>/dev/null || true
+  fi
+fi
 # ---------------- Capture Loop ----------------
 echo "[perf-capture-multi] Starting multi-sample capture: samples=$SAMPLES sleep=$SLEEP_INTERVAL segments=$((DO_SEGMENTS)) timeout=${PERF_CAPTURE_RUN_TIMEOUT_SEC}s debug=${PERF_CAPTURE_MULTI_DEBUG}"
 
@@ -496,7 +578,7 @@ EOF
     "synthetic_timeout":true,
     "post_plugin_segments":[]
   }
-  EOF
+EOF
       sample_flag_seen[synthetic_timeout]=1
       run_rc=0
   fi
@@ -566,7 +648,7 @@ EOF
     "direct_fallback":true,
     "post_plugin_segments":[]
   }
-  EOF
+EOF
       sample_flag_seen[direct_fallback]=1
     fi
 

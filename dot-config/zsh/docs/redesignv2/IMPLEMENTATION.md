@@ -1,13 +1,13 @@
 # ZSH Configuration Redesign – Consolidated Implementation Guide
-Version: 2.1  
-Status: Stage 2 Implementation Complete – Pre-Plugin 00–30 content landed (baseline metrics + tag pending)  
-Last Updated: 2025-09-02 (Single Source of Truth; early instrumentation + perf-diff observe integrated)  
+Version: 2.3  
+Status: Stage 2 Complete – Stage 3 In Progress (core hardening, trust anchors, micro-benchmark harness, drift tooling)  
+Last Updated: 2025-09-04 (Added micro-benchmark harness stabilization, variance log integration, perf drift badge script, trust anchor read APIs)
 Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
 
 NOTE (Early Instrumentation Pull-Forward):
 Two helper modules (`01-segment-lib-bootstrap.zsh`, `02-guidelines-checksum.zsh`) reside in the pre-plugin directory to enable early segmentation & policy checksum export. They are NOT counted toward the stable “8 pre-plugin + 11 post-plugin” architectural budget and may be merged or repositioned during Stage 5.
 
-This document *replaces and consolidates* the prior `master-plan.md`, `implementation-plan.md`, `final-report.md`, and `IMPLEMENTATION_PROGRESS.md`. It is the authoritative reference for execution, progress tracking, and promotion readiness of the redesign effort.
+This document *replaces and consolidates* the prior `master-plan.md`, `implementation-plan.md`, `final-report.md`, and `IMPLEMENTATION_PROGRESS.md`. It is the authoritative reference for execution, progress tracking, and promotion readiness of the redesign effort. New in v2.2: path resolution enforcement (badge + fail-fast), strict mode (--strict) for advanced audits, helper verification tool, and proactive future plugin path guard test.
 
 Related indexes:
 - Navigation & overview: `README.md`
@@ -43,12 +43,12 @@ Primary measurable targets:
 |----------|-------|-------|
 | Structural Skeleton | ✅ Complete | 8 + 11 redesign directories present with guards |
 | Test Infrastructure | ✅ Complete | 6 categories (design/unit/feature/integration/security/performance) |
-| Tooling Enhancements | ✅ Complete | Promotion guard, perf segment capture, verification script |
+| Tooling Enhancements | ✅ Complete | Promotion guard, perf segments, path rules badge, helper verifier, strict mode, future plugin guard |
 | CI Workflow (structure) | ✅ Active | Structure badge workflow operational |
 | Async Engine | 🟡 Shadow (Phase A) Active | Dispatcher + manifest + shadow tasks & tests landed; async runs in shadow (no sync deferrals yet) |
-| Pre-Plugin Content Migration | ⏳ In Progress | Skeleton modules populated; migrating legacy logic |
-| Performance Baseline | ✅ Captured | Baseline metrics available |
-| Documentation Consolidation | ✅ v2 Structure | `redesignv2/` new canonical hub |
+| Pre-Plugin Content Migration | ✅ Complete | Baseline tagged (refactor-stage2-preplugin); path rules enforced repository-wide |
+| Stage 3 Core Modules | 🚧 In Progress | Implementing security (00), options (05), core functions (10) + PATH append fix |
+| Performance Baseline | ✅ Captured | pre_plugin_total mean=35ms (N=5); optimization pending |
 | Promotion Readiness | ⏳ Far | Requires completion through Stage 6 |
 | Risk Posture | Controlled | Rollback + checksum freeze in place |
 
@@ -77,6 +77,107 @@ This snapshot will be updated when new hotspot segments are added or when observ
 
 ---
 
+### 1.2 Next Implementation Tasks (Rolling 7-Day Plan)
+
+(Time horizon: next 7 calendar days; reassess / slide window forward after completion or blockage. Priorities: P1 = must land to unblock downstream stages; P2 = should land (stability / signal quality); P3 = opportunistic / hardening.)
+
+P0 Immediate Perf & Bench (New)
+- Capture first micro-benchmark baseline (`bench-core-functions.zsh --json --iterations 5000 --repeat 3 > docs/redesignv2/artifacts/metrics/bench-core-baseline.json`) and commit artifact (observational; shimmed_count noted).
+- Integrate `perf-drift-badge.sh` in CI (publish `docs/redesignv2/artifacts/badges/perf-drift.json`) + add drift badge presence test (warn mode initial).
+- Force a fresh multi-sample perf run: `PERF_CAPTURE_FORCE=1 tools/perf-capture-multi.zsh --samples 5 --sleep 0.3` once instrumentation is expected to emit non‑zero `post_plugin_total` & `prompt_ready_ms`.
+- Monotonic validation: immediately run `tools/promotion-guard.zsh 11 --allow-mismatch` (or inspect CI promotion guard log) and confirm `monotonic=ok`. If `monotonic=warn(...)` appears, investigate ordering (check segment emission timing / late prompt hook) before proceeding.
+- Cache bypass fallback: if run skips due to fingerprint cache, delete `docs/redesignv2/artifacts/metrics/perf-multi-fingerprint.txt` (if present) or re‑invoke with `PERF_CAPTURE_FORCE=1` again, then re-run capture.
+- Variance Stability Log: append a new row with non‑zero trio (pre/post/prompt) including mean, stddev, RSD. If this is the 2nd consecutive low‑RSD (<5%) run for pre & post segments, set decision for pre_plugin_cost_ms to `enable_warn` candidate (do not flip gating env yet if post/prompt just stabilized).
+- If `post_plugin_total` or `prompt_ready_ms` still zero: enable debug (`PERF_CAPTURE_DEBUG=1`) and defer log decision (note “hold – missing segment”).
+- Record monotonic status + sample count context in governance follow-up notes (will surface once variance-state & governance weighting tasks (F28/F27) proceed).
+
+P1 Core Module Hardening
+- 00-security-integrity.zsh: Add minimal PATH hygiene verification helper (zf::path_append_secure self-test) and expose trust anchor read API (read-only) for future hashing.
+- 05-interactive-options.zsh: Lock golden snapshot hash (capture & log in test output) and prepare diff formatter for intentional changes.
+- 10-core-functions.zsh: Add lightweight micro-benchmark harness (optional) for timing helpers (<1ms target) and begin draft of future fingerprint drift test (informational only).
+- Sentinel & idempotency design test: Extend to assert no growth in deferred tasks map beyond security_integrity_check (prevents silent accumulation).
+
+P1 Performance & Gating
+- Variance streak: Achieve REQUIRED_STABLE threshold (≥2 consecutive stable runs) — if already met, flip PERF_DIFF_FAIL_ON_REGRESSION=1 (main only) via recommender output adoption.
+- Perf ledger: Capture at least 2 nightly history snapshots with non-zero post_plugin_total prior to tightening budgets.
+- Drift badge: Add threshold annotation (message suffix “(+X% max)” when any WARN) for faster PR scanning.
+
+P1 Testing & Quality
+- Add failure classification mapping for perf-ledger-drift (regression tiers: >5% warn, >10% fail) coordinated with budget script messaging (align color taxonomy).
+- Introduce manifest test WARN mode in CI for first 48h (allow stabilization), then flip to strict (set CORE_FN_MANIFEST_WARN_ONLY=0 on main).
+
+P2 Documentation & Governance
+- IMPLEMENTATION.md: Introduce “Variance Stability Log” subsection (append entries: date, sample count, variance %, decision).
+- Add README badge row: perf drift, perf ledger, variance decision (observe/warn/gate).
+- Prepare Stage 3 readiness checklist file (stages/stage-3-core.md) mirroring exit criteria for quicker PR references.
+
+P2 CI & Automation
+- Integrate auto-enable-perf-warn-gate.zsh into nightly ledger workflow (optional dry-run mode) for cross-validation of daytime variance vs nightly variance.
+- Add perf-drift.json & perf-ledger.json ingestion into infra-health generator once stability proven (currently perf-ledger is integrated; drift waits for one stabilized week to avoid noise).
+
+### 1.3 Variance Stability Log (Rolling)
+
+Purpose: Trace empirical variance characteristics (multi‑sample runs) that drive observe → warn → gate transitions for performance regression enforcement. Updated only when a new qualifying multi-sample capture (or gating decision) occurs.
+
+Schema (columns):
+| Date (UTC) | Samples (N) | Metric | Mean (ms) | Stddev (ms) | RSD (stddev/mean) | Decision | Notes |
+|------------|-------------|--------|-----------|-------------|-------------------|----------|-------|
+
+Decision values: observe (collect only), candidate (meets stability thresholds but awaiting confirmation run), enable_warn (flip warn mode), enable_fail (flip hard gating), hold (variance too high), pending (insufficient data).
+
+Initial Entries:
+
+| Date (UTC) | Samples (N) | Metric | Mean (ms) | Stddev (ms) | RSD | Decision | Notes |
+|------------|-------------|--------|-----------|-------------|-----|----------|-------|
+| 2025-09-04 | 5 | pre_plugin_cost_ms | 80–85 (aggregate mean artifact reports 85) | ~2–3 (raw value spread 79–85) | ~0.03 | candidate | Low variance; artifact aggregation rounding needs sanity check (mean vs listed values). |
+| 2025-09-04 | 5 | post_plugin_cost_ms | 0 (placeholder) | 0 | 0 | hold | Segment not yet captured in multi-sample (instrumentation / capture path pending). |
+| 2025-09-04 | 5 | prompt_ready_ms | 0 (placeholder) | 0 | 0 | hold | Prompt readiness marker not yet emitted in multi-sample capture. |
+| 2025-09-04 | n/a | governance_integration | n/a | n/a | n/a | observe | Governance badge integrated (extended + simple); schedule forced multi-sample run (PERF_CAPTURE_FORCE=1) to refresh non-zero post_plugin_total & prompt_ready_ms and qualify pre_plugin_cost_ms for enable_warn transition once monotonic=ok confirmed. |
+
+Next Actions (related to stability):
+- Re-run multi-sample after ensuring post_plugin_total and prompt_ready markers are emitted (expect non-zero values).
+- If a second consecutive low-RSD (<5%) run with valid post_plugin_total occurs, promote decision for pre_plugin_cost_ms to enable_warn (gating env PERF_DIFF_FAIL_ON_REGRESSION still off until post_plugin_total also stable).
+- Add automated extraction of max positive regression to drift badge once non-zero segments stabilized (ties into P1 drift badge enhancement).
+
+Trigger to Update This Log:
+- Any multi-sample capture producing non-zero post_plugin_total + prompt_ready_ms.
+- Variance recommender output transitions (candidate → enable_warn / enable_fail).
+- Introduction of additional metrics (e.g., interactive_ready_ms) once captured.
+
+(End 1.3)
+- Add caching for multi-sample captures (store last multi-current fingerprint to skip redundant run if unchanged environment).
+
+P2 Risk / Watchlist
+- Risk: Function namespace expansion without manifest update → Mitigation: enforce manifest test strict after warm-up.
+- Risk: Over-aggressive gating causing false negatives on macOS variance spikes → Mitigation: collect at least 2 weekend samples before enabling fail mode.
+- Risk: PATH hygiene regression via external contributions → Mitigation: extend path append invariant test to detect mid-PATH insertions (not just deletions/order changes).
+
+P3 Enhancements / Optional
+- Prototype structured JSON emission for test-perf-ledger-drift (machine-readable for promotion guard).
+- Add rolling median & MAD calculation to variance recommender (foundation for adaptive gating).
+- Add SVG gradient variant for perf drift badge (visual emphasis for WARN vs FAIL).
+
+Blocked / External Dependencies
+- None currently blocking P1 items; gating enablement depends on natural variance stabilization (monitor over next 2 multi-sample runs).
+- Awaiting first non-zero post_plugin_total snapshots in perf ledger (ensure plugin path conditions satisfied in capture harness).
+
+Exit Signals to Reassess Plan
+- PERF_DIFF_FAIL_ON_REGRESSION flipped to 1 on main.
+- Two consecutive nightly perf-ledger snapshots with identical overBudgetCount=0.
+- Core functions manifest stabilized (no additions for 3 days).
+
+Ownership / Action Cues
+- Core module refinements: same PR can batch 00/05/10 minor internal additions if tests updated atomically.
+- Performance gating toggle: separate PR (small, easily revertible) once recommender JSON decision == enable_fail.
+
+Metrics to Track This Week
+- Variance % (post_plugin_total, prompt_ready)
+- Drift counts (warn / fail) per PR
+- OverBudgetCount trend (expect stable zero at current soft budgets)
+- Core function count & manifest diff frequency (target: no unintentional changes)
+
+(End Section 1.2)
+
 ## 2. Architecture & Stage Roadmap
 
 ### 2.1 Stage Overview (End-to-End)
@@ -84,7 +185,7 @@ This snapshot will be updated when new hotspot segments are added or when observ
 | Stage | Label Tag | Scope | Exit Conditions | Status |
 |-------|-----------|-------|-----------------|--------|
 | 1 | `refactor-stage1-complete` | Skeletons, tests, tooling, CI, verification | All infra tests PASS & tag created | ✅ Done |
-| 2 | `refactor-stage2-preplugin` | Implement pre-plugin 00–30 content | Path safety, lazy framework, node stubs, integrations, ssh-agent; capture preplugin baseline & tag | ✅ Code Complete (baseline & tag pending) |
+| 2 | `refactor-stage2-preplugin` | Implement pre-plugin 00–30 content | Path safety, lazy framework, node stubs, integrations, ssh-agent; baseline captured & tag pushed | ✅ Complete |
 | 3 | `refactor-stage3-core` | Post 00/05/10 core modules | Security skeleton, interactive options, core functions implemented | ⏳ Pending |
 | 4 | `refactor-stage4-features` | Post 20/30/40 feature layers | Plugin config, dev env exports, aliases/keybindings stable | ⏳ Pending |
 | 5 | `refactor-stage5-ui-perf` | Post 50/60/70/80/90 (completion, UI, perf, async, splash) | Single compinit PASS, async queued & non-blocking | ⏳ Pending |
@@ -120,7 +221,7 @@ Artifacts:
 - Metrics: `artifacts/metrics/perf-baseline.json`
 - Structure: `artifacts/metrics/structure-audit.json`
 
-### 3.2 Stage 2 – Pre-Plugin Content Migration (Implementation Complete – baseline & tag pending)
+### 3.2 Stage 2 (Completed) – Pre-Plugin Content Migration
 > Note: `lazy_register` now supports a `--force` flag (added in Stage 2 enhancement) allowing forced lazy wrapping of already-present binaries (e.g. `direnv`, `gh`) to ensure consistent first-call instrumentation and loader state tracking. This capability is exercised in `25-lazy-integrations.zsh` to unify behavior and simplify future performance / correctness tests.
 
 Scope Achieved (00–30):
@@ -144,13 +245,22 @@ Task Status:
 | Lazy integrations enhanced | ✅ | lazy_register + fallback wrappers (direnv/gh) landed |
 | SSH agent consolidation | ✅ | Single spawn/reuse invariant |
 | Early instrumentation bootstrap | ✅ | Observe mode only |
-| Preplugin baseline capture (`preplugin-baseline.json`) | ⏳ | Pending multi-sample run |
-| Stage tag creation (`refactor-stage2-preplugin`) | ⏳ | Pending baseline artifact commit |
+| Preplugin baseline capture (`preplugin-baseline.json`) | ✅ | Captured (mean=35ms N=5 tag=refactor-stage2-preplugin) |
+| Stage tag creation (`refactor-stage2-preplugin`) | ✅ | Tag pushed & baseline locked |
 
-Exit (Final) Requirements To Close Stage 2:
-1. Capture and commit `preplugin-baseline.json` (recommend multi-sample; derive mean & stdev).
-2. (Optional) Refresh perf / structure badges if they consume pre-plugin metrics.
-3. Create and push tag `refactor-stage2-preplugin`.
+Stage 2 Completion Summary:
+- All pre-plugin modules (00–30) implemented with enhanced invariants, lazy integration wrappers, and ssh-agent idempotency.
+- Baseline captured: mean=35ms, stdev=11ms, N=5 (artifact: `preplugin-baseline.json`).
+- Tag `refactor-stage2-preplugin` pushed; baseline locked for regression guards.
+- Instrumentation helpers (01/02) functioning in observe mode; excluded from canonical module count.
+- Documentation and task ledger synchronized; Stage 2 exit criteria fully satisfied.
+
+Post-Completion Notes (Deferred / Follow-ups):
+- Regression guard tightened: pre-plugin allowed threshold reduced from +10% to +7%; target +5% after at least one additional low-variance (stdev/mean <5%) multi-sample set.
+- Deferred async macOS defaults scheduling (will activate in Stage 5 with post-prompt hook refinement).
+- Expand `lazy_register` richer integration behaviors (Stage 4/5).
+- Integrate pre-plugin cost assertion directly into perf guard once guard tightening decision made.
+- PATH append fix for test harness: ensure `.zshenv` appends (never overwrites) PATH in subshell contexts to guarantee availability of `awk`, `date`, `mkdir` during segment emission (schedule early Stage 3 if not already applied).
 
 Deferred to Later Stages:
 - Attach post-first-prompt async scheduling for macOS defaults (Stage 5).
@@ -165,13 +275,127 @@ Success Metrics (when baseline captured):
 | Path normalization | No duplicate logical dirs; tests green |
 | Agent duplication | 0 spurious spawns with existing valid socket |
 
-### 3.3 Stage 3 – Post-Plugin Core
-Focus modules: `00-security-integrity`, `05-interactive-options`, `10-core-functions`.
+### Stage 3 Immediate Task List (Core Modules Bootstrap)
 
-Key Deliverables:
-- Security baseline stub: schedule (not run) deep plugin integrity scan task.
-- Centralized `setopt` / `unsetopt` & zstyles (no path/environment contamination).
-- Core utility functions with namespace-safe patterns.
+Execution Order (initial pass):
+1. PATH append fix validation  
+   - Confirm `.zshenv` only appends (never overwrites) PATH and preserves required core tool availability (`awk`, `date`, `mkdir`) in subshells.  
+   - Add explicit test if not already covered.
+2. Implement `00-security-integrity.zsh` (skeleton)  
+   - Path hygiene enforcement (append semantics, no destructive rewrites)  
+   - Export minimal trust anchor / checksum map reference (no hashing yet)  
+   - Register integrity scheduler stub (deferred execution only)  
+   - Idempotent sentinel + re-source test.
+3. Implement `05-interactive-options.zsh`  
+   - Consolidate `setopt` / `unsetopt`, history settings, base completion zstyles  
+   - Ensure re-source produces zero diff snapshot (option snapshot test)  
+   - Add sentinel guard + option snapshot golden file.
+4. Implement `10-core-functions.zsh`  
+   - Namespace: `zf::ensure_cmd`, `zf::log` (lightweight), `zf::warn`, minimal timing helper wrappers or adapters to segment-lib (no duplication)  
+   - Add assertion utility (e.g. `zf::require`) for internal guards.  
+   - Function namespace uniqueness + checksum/hash test.
+5. Tests to Add / Finalize  
+   - Path append invariant test (pre/post load diff)  
+   - Option snapshot diff test (zero unintended changes)  
+   - Function namespace uniqueness & idempotency test  
+   - Core function count threshold test (CORE_FN_MIN_EXPECT; optional CORE_FN_GOLDEN_COUNT with CORE_FN_ALLOW_GROWTH)  
+   - Golden option snapshot enforcement test (compare against `docs/redesignv2/artifacts/golden/options-snapshot-stage3-initial.txt`)  
+   - Integrity scheduler single-registration test (no duplicate queue)  
+   - Sentinel & idempotency design test (00 / 05 / 10 trio: sentinels, PATH non‑shrink, stable snapshots)  
+   - Perf ledger drift comparison test (current vs latest history snapshot)  
+   - Core functions manifest name-level drift test (golden manifest)  
+   - Perf variance gating recommender (auto-enable-perf-warn-gate.zsh) stability streak logic & state file + integrated env handoff to perf-diff (conditional fail)  
+   - Perf drift badge generation (perf-drift.json → SVG) surfaced in perf segments workflow & badges summary  
+   - Helper availability test may call `tools/verify-path-helpers.zsh --assert both`.  
+   - (Future) Enhanced perf ledger budget regression gate + infra-health badge aggregation verification (activate once variance <5% over ≥2 runs).
+6. CI Enhancements  
+   - Add non-fatal (observe) job step invoking `verify-path-helpers.zsh --assert any --json`; escalate to `--assert both` once both helpers guaranteed by Stage 3 mid-point.  
+   - Introduce experimental perf module ledger capture (observe mode, nightly + PR):  
+     `tools/experimental/perf-module-ledger.zsh --segments docs/redesignv2/artifacts/metrics/perf-current-segments.txt --output docs/redesignv2/artifacts/metrics/perf-ledger.json --budget post_plugin_total:3000,pre_plugin_total:120 --badge docs/badges/perf-ledger.json || true`  
+   - Include `perf-ledger.json` + `perf-ledger` badge in existing badge summary aggregation (non-fatal).  
+   - Gate escalation plan: once variance stable (<5%) and budgets tuned, enable `--fail-on-over` on main only.  
+   - (Optional) Dry-run provisional post-plugin early cost ledger JSON (no gating yet).
+7. Performance Guard Adjustments  
+   - Collect two additional multi-sample runs (variance <5%) → tighten regression guard from +7% to +5%.  
+   - Begin capturing early post-plugin partial cost ledger for impending budget planning (ledger artifact becomes historical comparator).  
+   - Track over-budget counts trend (ledger `overall.overBudgetCount`) in badge summary for future automated gating signal.
+8. Documentation / Reporting  
+   - Update README Stage Progress (Post-Plugin Core % as each of 00 / 05 / 10 lands).  
+   - Create / refine `stages/stage-3-core.md` with a live checklist mirroring this task list.  
+   - Add ledger integration status row to Section 1 snapshot once first successful CI artifact exists (State: "Perf Ledger Prototype ✅ / Observe").  
+   - Append Stage 3 readiness checklist to CONTRIBUTOR or implementation artifacts if not already enumerated.
+9. Exit Criteria Preparation (Stage 3)  
+   - [ ] PATH append invariant PASS  
+   - [ ] Security skeleton idempotent  
+   - [ ] Option snapshot stable (no drift)  
+   - [ ] Core function namespace stable (checksum or count)  
+   - [ ] Integrity scheduler registered exactly once  
+   - [ ] Pre-plugin + early post-plugin perf within provisional budget (+≤5–8ms allowance)  
+   - [ ] Tests added & green
+10. Deferral Log (to Stage 4/5)  
+   - Deep integrity hashing (Stage 5/6)  
+   - Prompt / UI theming (Stage 5)  
+   - Async execution activation beyond shadow mode (Stage 5+)  
+   - Full segment budget hard gating (Stage 5/6)
+
+Definitions of Done (Stage 3):
+- Each new core module loads idempotently (re-source test passes, no side-effects on second load).
+- Option snapshot diff returns empty (or only approved stable whitelist lines).
+- All new functions reside in `zf::` namespace with no collisions or leakage into global space.
+- Integrity scheduler stub presence verified; no execution prior to designated asynchronous activation stage.
+- Path enforcement + helper verification both green in CI.
+
+---
+
+### 3.3 Stage 3 – Post-Plugin Core
+
+Scope (Initial Focus Modules):
+- `00-security-integrity.zsh`
+  - Responsibilities: environment/path hygiene (enforce append-not-overwrite rule), shell option hardening, integrity scan scheduler stub (registration only), trust anchor / checksum map reference.
+  - Success Metrics: sanitized PATH preserved post-load; integrity scheduler registered exactly once; zero duplicate hardening operations on re-source.
+- `05-interactive-options.zsh`
+  - Consolidate `setopt` / `unsetopt`, `zstyle`, history & completion base semantics.
+  - Idempotent re-sourcing (sentinel var + diff test).
+  - Success Metrics: option snapshot diff = empty; history settings canonical; no unintended env mutations.
+- `10-core-functions.zsh`
+  - Namespaced helpers (prefix `zf::`) for: safe command presence (`zf::ensure_cmd`), lightweight logging, timing primitive (potential future unification with segment timing), small assertion utilities.
+  - Success Metrics: function namespace uniqueness test passes; per-helper overhead ≤1ms (microbench harness).
+
+Non-Goals (Explicit Deferrals):
+- Plugin load / feature plugins (Stage 4).
+- Async completion / prompt finalization (Stage 5).
+- Deep integrity scan execution & promotion gating (Stage 6).
+- UI/prompt theming (Stage 5).
+
+Planned Tests & Gates:
+- PATH hygiene test (append semantics preserved; no destructive overwrite) – includes verification supporting the PATH append fix task.
+- Re-source idempotency tests for each Stage 3 module.
+- Option state snapshot: pre vs post module load; golden diff must be approved & stable.
+- Function namespace collision & checksum stability test.
+- Integrity scheduler single-registration assertion.
+
+Performance Strategy (Stage 3):
+- Provisional allowance: +5–8ms over locked pre-plugin baseline before plugins introduced.
+- Maintain current +7% regression guard; plan tightening to +5% after 1–2 additional low-variance sample sets (stdev/mean <5%).  
+- Dashboard Note (Stage 3): Pre-plugin guard now 7% (yellow band); next tightening gate = additional stable capture set.
+- (Deferred) Module cost ledger JSON (target activation early Stage 4 when plugin costs begin).
+
+Documentation / Ledger Updates:
+- Add Stage 3 readiness checklist mirroring Stage 2 pattern:
+  - [ ] PATH append fix confirmed (or implemented)
+  - [ ] Security hardening applied & idempotent
+  - [ ] Option snapshot test green
+  - [ ] Function namespace tests green
+  - [ ] Integrity scheduler registered once
+  - [ ] Perf delta within provisional budget
+  - [ ] Re-source idempotency verified
+
+Open Decision (Resolved by Defaults):
+- Namespace prefix: `zf::` adopted.
+- Module cost ledger deferred to Stage 4.
+- PATH append fix tracked as first Stage 3 task if still pending.
+
+Upon completion, Stage 3 will establish a stable, secure, option-governed core onto which feature and plugin layers (Stage 4+) can attach without reintroducing baseline or integrity drift.
 
 ### 3.4 Stage 4 – Feature Layer
 Focus modules: `20-essential-plugins`, `30-development-env`, `40-aliases-keybindings`.
@@ -462,7 +686,7 @@ Commit Style Examples:
 | 6 | Announce completion | Communicate stability |
 
 ---
-
+| 2025-09-03 | Stage 2 baseline captured (pre_plugin_total mean=35ms N=5) | Established performance baseline; ready for Stage 3 entry criteria evaluation |
 ## 13. Appendices
 
 ### 13.1 Abbreviation Legend
@@ -498,6 +722,109 @@ Post-plugin: `00,05,10,20,30,40,50,60,70,80,90`
 | 2025-09-02 | Async Phase A (shadow) activation | Added dispatcher + manifest + shadow task registration, async integrity & shadow mode tests, placeholder sync segment probes, async metrics export & promotion guard async placeholders (no sync deferrals yet) |
 | 2025-09-02 | Stage 2 implementation code complete (00–30 modules) | Pre-plugin modules implemented; baseline metrics & tag pending (`preplugin-baseline.json`) |
 | 2025-09-02 | Stage 2 enhancements (modules 20 & 25 + preplugin threshold test) | Added deferred macOS defaults hook, lazy_register integration for direnv/gh, and test-preplugin-baseline-threshold.zsh |
+| 2025-09-03 | Perf ledger prototype integration (experimental) | Added experimental perf-module-ledger script, CI perf-segments ledger step, nightly perf-ledger workflow (historical snapshots + optional fail-on-over), badge & summary integration (observe mode; soft budgets); added Stage 3 core tests (option snapshot stability, golden option snapshot, core fn namespace, core fn count, integrity scheduler single-registration, sentinels/idempotency design test, perf ledger drift comparison, core functions golden manifest), variance-based auto gating recommender script (`auto-enable-perf-warn-gate.zsh`) integrated into perf workflow (conditional perf-diff fail enablement), perf drift badge generation (JSON+SVG), infra-health badge integration of perf-ledger badge weighting, golden option snapshot & core function manifest baselines, updated gating plan (variance <5% ⇒ enable warn/gate; env toggles: PERF_DIFF_FAIL_ON_REGRESSION / PERF_LEDGER_FAIL_ON_OVER), and SVG rendering for perf-ledger & perf drift badges. |
+| 2025-09-04 | Stage 3 core hardening additions (trust anchors + micro benchmark + variance log + drift badge enhancement + caching) | Added trust anchor read helper APIs (zf::trust_anchor_has/get/keys/dump) + unit test; introduced Section 1.3 Variance Stability Log; added micro-benchmark harness (bench-core-functions.zsh) and smoke test; implemented fingerprint caching in perf-capture-multi (skip redundant multi-sample runs); added perf-drift-badge.sh producing enhanced badge message with max positive regression suffix; documented readiness & harness in stage-3-core.md. |
+| 2025-09-04 | Stage 3 segment & gating enablement groundwork (markers test, drift badge presence test, exit report scaffold) | Added test-required-stage3-segments.zsh (segment presence + non-zero checks), test-perf-drift-badge-presence.zsh (warn-mode drift badge validation), stage3-exit-report.sh (mini exit report generator), future task backlog section, and planned gating transition steps (observe → warn → gate) appended to Section 1.2. |
+| 2025-09-04 | Core micro-benchmark baseline (shim stabilization) | Stabilized bench harness (enumeration + shim fallback, safe error handling), captured initial bench-core-baseline.json (500x2 observe mode), added enumeration_mode + shimmed_count meta, planned true-function enumeration + drift guard tasks. |
+| 2025-09-04 | CI drift badge integration & auto bench baseline capture | Integrated perf-drift badge generation (observe) + conditional micro benchmark baseline capture in publish workflow; established automation path for README badge activation; items 1–3 (segment emission prep, drift badge workflow scaffolding, micro bench baseline path) partially completed (awaiting non-zero post/prompt for full closure). |
+| 2025-09-04 | Monotonic lifecycle & micro bench regression tests (warn-only) | Added test-perf-monotonic-lifecycle.zsh (ordering pre≤post≤prompt, non-strict by default) and test-bench-core-regression.zsh (warn-only ratio checks; skips when shims present); marked partial fulfillment of F4 (strict enforcement still pending) and introduced new future tasks F23 (strict monotonic gate after stable non-zero metrics) & F24 (integrate micro bench regression summary into governance badge / gating). |
+| 2025-09-04 | Governance badge & guard integration (draft) | Added generate-governance-badge.zsh (aggregates drift, ledger, variance, micro bench signals) and integrated monotonic lifecycle ordering + micro bench summary (observational) into promotion-guard.zsh (new exit code 12); future tasks F25 (governance badge CI & extended schema adoption) and F26 (micro bench severity escalation in guard) logged. |
+| 2025-09-04 | Governance badge CI integration (extended artifacts & workflow wiring) | Integrated governance badge generation into ci-perf-segments (PR + nightly multi-sample) and ci-perf-ledger-nightly workflows producing extended artifact (docs/redesignv2/artifacts/badges/governance.json) and simple shield (docs/badges/governance.json); README badge legend scaffolded; F25 marked complete; follow-up: infra-health aggregation & variance-state source integration. |
+| 2025-09-04 | Variance-state explicit mode artifact (observe baseline) | Added generate-variance-state-badge.zsh producing variance-state.v1 (mode, rsd, streak); integrated steps into perf segments & nightly ledger workflows (pre-governance). Governance badge scheduled to switch from derived variance_mode to explicit source (F40). |
+
+
+### 1.4 Future / Logged Tasks (Discovered & Deferred)
+(These items were identified during implementation of Tasks 1–9; not yet in active 7‑day window. Move into Section 1.2 when promoted.)
+
+Future / Deferred (F):
+- F1: Integrate perf-drift-badge.sh into CI workflow (generate docs/redesignv2/artifacts/badges/perf-drift.json each perf run).
+- F2: Add max_positive_regression_pct field directly into perf-module-ledger JSON (replace re-parse of perf-diff output).
+- F3: Add JSON schema + version tag to perf-drift badge and ledger artifacts (enforce via test).
+- F4: Enforce monotonic ordering test: pre_plugin_total <= post_plugin_total <= prompt_ready (strict once markers stable).
+- F5: Add trust anchor golden manifest & hash once anchors >2 and hashing phase begins (Stage 5/6).
+- F6: Extend micro-benchmark harness JSON test to validate schema bench-core.v1 and per_call_us drift (warn if >100% over baseline).
+- F7: Create combined performance governance badge summarizing (variance state + max regression + over_budget_count).
+- F8: Automate variance stability log append via workflow step (avoid manual edits).
+- F9: Add stage3-exit-report.json machine-readable companion for promotion guard ingestion.
+- F10: Add prompt/post-plugin threshold enforcement test (fail if prompt_ready_ms > interim soft target once real values appear).
+- F11: Add ledger history diff to stage3-exit-report (if 2+ ledger history snapshots exist).
+- F12: Build perf multi-sample cache invalidation test (ensures fingerprint change triggers capture).
+- F13: Add optional MAD / median variance computation to perf-capture-multi.zsh (adaptive gating prototype).
+- F14: Warn-on-missing drift badge suffix once max_positive_regression_pct embedding lands (test upgrade).
+- F15: Add README badges row updates (perf drift, variance decision, micro bench) once artifacts stabilized.
+- F16: Replace shim fallback with real Stage 3 function sourcing (ensure all zf:: functions loaded without shims before gating).
+- F17: Add guard test that warns/fails if shimmed_count > 0 after Stage 3 (enforces real function benchmarking).
+- F18: Automate micro benchmark re-baseline when core function manifest or function body checksums change (skip if no semantic diff).
+- F19: Integrate micro benchmark median per-call regression summary into combined governance badge (add micro_regress_max_pct field).
+- F20: Add noise filtering to micro benchmark harness (trim/winsorize top 5% outliers; record raw vs adjusted medians).
+- F21: Drift badge gating escalation workflow (auto transition observe → warn → fail after variance RSD <5% for 2 consecutive runs & non-zero lifecycle trio).
+- F22: Micro benchmark gating phase (warn on median_per_call_us > baseline * 2, fail on > baseline * 3 once shimmed_count == 0 and baseline stabilized).
+- F23: Enforce monotonic lifecycle ordering strictly (pre ≤ post ≤ prompt) after two consecutive multi-sample runs with all three non-zero (upgrade test-perf-monotonic-lifecycle.zsh to strict).
+- F24: Micro benchmark governance integration (add bench regression summary fields & badge; promote test-bench-core-regression.zsh from warn-only to gated after shimmed_count == 0).
+- F25: (COMPLETED 2025-09-04) Governance badge CI integration delivered: generation wired into ci-perf-segments (PR + nightly multi-sample) and ci-perf-ledger-nightly workflows producing extended artifact (docs/redesignv2/artifacts/badges/governance.json) and simple shield (docs/badges/governance.json); README badge row scaffold added.
+- F26: Promotion guard micro bench escalation (fail when microbench_worst_ratio >= MICRO_FAIL_FACTOR & shimmed_count == 0; warn when >= MICRO_WARN_FACTOR) once baseline finalized.
+- F27: Governance badge infra-health & summary integration (weight governance severity in infra-health badge, include governance.json in badges summary aggregation, add variance-state source once artifact available, document weighting rationale).
+- F28: Variance-state artifact & badge generation (produce variance-state.json with mode=observe|warn|gate & integrate as explicit governance source; add generation step to perf segments workflow).
+- F29: Shim elimination audit script (enumerate currently shimmed helpers, diff vs manifest, emit actionable list prior to executing F16; add summary to governance extended JSON once shims=0).
+- F30: Micro bench threshold codification (centralize BENCH_WARN_FACTOR=2.0 & BENCH_FAIL_FACTOR=3.0; update test-bench-core-regression.zsh + governance badge to consume unified factors).
+- F31: README governance publishing cleanup (switch governance badge example to Pages endpoint, add embedding snippet & explanation of extended vs simple JSON).
+- F32: Stage 3 exit report enhancement (include governance badge stats snapshot + last N variance log rows + monotonic status).
+- F33: PR description template generator script (emit performance + governance summary block for maintainers; integrate optional GitHub Actions step).
+- F34: Pages badge integrity manifest (generate badges-integrity.json with sha256 for governance / perf / structure; optional future signing step).
+- F35: Micro benchmark drift detection (compare new run vs baseline medians; emit microbench_drift_count & microbench_worst_ratio into governance extended JSON).
+- F36: Automated micro gating escalation (script watches for shimmed_count==0 + two stable drift-free runs to auto-suggest enabling micro bench gating env toggles).
+- F37: Governance weighting matrix doc (document severity aggregation logic and planned infra-health weighting integration for governance badge).
+- F38: (Implemented) post_plugin_total fallback aggregator (sum post_plugin_segments when post_plugin_cost_ms==0 & segments_available=true) to unblock monotonic validation path; verify first synthesized non-zero total before marking monotonic=ok path complete.
+- F39: prompt_ready_ms reliability enhancement (inject explicit PROMPT_READY marker in harness after >2 consecutive approximations; add fallback counter + governance surface).
+- F40: Governance badge explicit variance-state integration (consume variance-state.json instead of derived placeholder; remove “derived” label & add stable_run_count passthrough).
+- F41: Perf ledger embed max_positive_regression_pct (add field to perf-ledger JSON to eliminate drift badge re-parse inside governance aggregation).
+
+Promotion Pre-Requisites (will move to active window when nearing Stage 3 exit):
+- PP1: Two consecutive stable multi-sample runs (RSD <5%) with non-zero post_plugin_total and prompt_ready_ms.
+
+### Stage 3 Exit Readiness Checklist
+
+| Check | Status (Target) | Evidence / Source | Notes / Action if Failing |
+|-------|-----------------|-------------------|---------------------------|
+| PATH append invariant test passing | Required | tests/unit/... path normalization tests | Must be green; investigate helper if failing |
+| Security skeleton idempotent | Required | security skeleton test + integrity scheduler log | Duplicate registration or reordered hooks → fix module load |
+| Option snapshot stability | Required | option snapshot golden diff test | Re-capture only with intentional change + documented rationale |
+| Core function namespace stable | Required | core fn manifest + namespace tests | Regenerate manifest only after reviewed additions/removals |
+| Integrity scheduler single registration | Required | integrity scheduler single-registration test | Ensure no duplicate deferred task insertion |
+| Lifecycle segments non-zero (pre, post, prompt) | Required | perf-current.json multi-sample run | If post/prompt zero: inspect harness prompt hook emission |
+| Monotonic lifecycle = ok (pre ≤ post ≤ prompt) | Required | promotion-guard output monotonic=ok | If warn: trace late segment or prompt timestamp race |
+| Variance stability (≥2 low-RSD runs) | Target | Variance Stability Log (RSD <5%) | Needed before enabling warn/fail gating |
+| Drift badge present & not fail | Required | docs/badges/perf-drift.json | If missing: ensure perf-diff & drift script step executed |
+| Governance badge active (ok or warn only) | Required | docs/badges/governance.json | Fail severity blockers: high regression, over_budget in gate, micro fail |
+| Perf ledger snapshots (≥2) with non-zero post | Target | ledger-history directory | Needed for early trend & budget tuning confidence |
+| Micro benchmark baseline captured | Required | bench-core-baseline.json | If absent: run bench harness; ensure enumeration_mode != exports_fallback |
+| shimmed_count == 0 (or plan F16 scheduled) | Target | bench-core-baseline.json shimmed_count | Blocker for micro gating escalation (F22/F26) |
+| Promotion guard all checks pass (exit 0) | Required | CI promotion guard logs | Non-zero codes map to gating docs; resolve before exit |
+| TDD gate (G10) pass | Required | enforce-tdd.sh log / guard output | Address failing new/changed test debt before promotion |
+| Structure audit green (no violations) | Required | structure-audit.json / badge | Any violation blocks exit; fix ordering / duplicates |
+| Path rules badge green | Required | path-rules badge JSON | Violations must be remediated (enforced fail-fast) |
+| Infra health badge not red | Required | infra-health.json | Red indicates upstream gating failure or critical signal |
+| Governance weighting integration planned (F27) | Informational | Future task list | Not blocking Stage 3 but note schedule |
+| Stage 3 exit report generated | Required | stage3-exit-report.sh output | Include governance, variance, monotonic note, ledger snapshot summary |
+| Gating readiness decision documented | Required | IMPLEMENTATION.md gating notes | Document enable_warn / enable_fail rationale & streak counts |
+| Async shadow mode stable (no premature RUNNING) | Required | async-state.log & guard checks | Fail indicates async mis-sequencing |
+| No red badges (perf / structure / governance) | Required | docs/badges/*.json | Red perf requires regression remediation |
+
+Checklist Usage:
+1. Run forced multi-sample capture (PERF_CAPTURE_FORCE=1) until lifecycle trio non-zero & monotonic=ok.
+2. Update Variance Stability Log and confirm at least two low-RSD entries.
+3. Ensure governance badge transitions from missing → ok/warn (not fail).
+4. Eliminate (or plan elimination of) shims prior to enabling micro gating tasks (F22/F26).
+5. Generate stage3-exit-report.sh and attach to PR marking Stage 3 completion.
+
+Exit Authorization Condition:
+All Required items must be satisfied; Target items should be satisfied or explicitly deferred with documented rationale. Promotion should not proceed if any Required line shows failing status without an approved exception note recorded in IMPLEMENTATION.md.
+
+- PP2: Gating toggle commit (PERF_DIFF_FAIL_ON_REGRESSION=1) after PP1.
+- PP3: Stage 3 exit mini-report generated & committed (stage3-exit-report.sh output).
+- PP4: Optional micro baseline drift smoke (warn-only) enabled.
+
+(End Section 1.4)
 
 ---
 
