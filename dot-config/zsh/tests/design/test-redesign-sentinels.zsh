@@ -3,7 +3,12 @@
 # Test to ensure all *.REDESIGN files have a sentinel guard.
 
 # Source the test runner
-. "${0:A:h}/../run-all-tests.zsh"
+# Use resilient path resolution (avoids brittle ${0:A:h})
+if typeset -f zf::script_dir >/dev/null 2>&1; then
+  . "$(zf::script_dir "${(%):-%N}")/../run-all-tests.zsh"
+else
+  . "${(%):-%N:h}/../run-all-tests.zsh"
+fi
 
 # --- Test Setup ---
 
@@ -54,10 +59,10 @@ run_sentinel_test() {
     local dir_to_scan=$1
     local expected_failures=$2
     local test_name=$3
-    
+
     ((test_count++))
     print -n "Running test: $test_name... "
-    
+
     local missing_sentinels
     missing_sentinels=$(
         find "$dir_to_scan" -name '*.zsh' -print0 | while IFS= read -r -d '' file; do
@@ -65,16 +70,16 @@ run_sentinel_test() {
             filename=$(basename "$file" .zsh)
             local sentinel_var
             sentinel_var="_LOADED_$(echo "$filename" | tr '[:lower:]-' '[:upper:]_')"
-            
+
             if ! grep -q "$sentinel_var=1" "$file"; then
                 echo "$file"
             fi
         done
     )
-    
+
     local failure_count
     failure_count=$(echo "$missing_sentinels" | wc -l | tr -d ' ')
-    
+
     if [[ $failure_count -eq $expected_failures ]]; then
         print_success "PASS"
     else

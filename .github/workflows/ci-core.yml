@@ -6,7 +6,56 @@ on:
     branches: [ main ]
 
 jobs:
+  path-enforcement:
+    name: Path Resolution Enforcement
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./dot-config/zsh
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install jq (for badge generation)
+        run: sudo apt-get update && sudo apt-get install -y jq >/dev/null 2>&1 || true
+      - name: Ensure enforce script executable
+        run: chmod +x tools/enforce-path-resolution.zsh || true
+      - name: Run path enforcement (fail on violation)
+        run: |
+          mkdir -p docs/badges
+          tools/enforce-path-resolution.zsh --json --fail-on-violation > docs/badges/path-enforce-raw.json
+          echo "Raw path enforcement JSON (truncated):"
+          head -c 600 docs/badges/path-enforce-raw.json || true
+      - name: Generate path rule badge
+        run: |
+          mkdir -p docs/badges
+          if command -v jq >/dev/null 2>&1 && [[ -f docs/badges/path-enforce-raw.json ]]; then
+            viol=$(jq -r '.violations // empty' docs/badges/path-enforce-raw.json 2>/dev/null || echo "")
+            color="brightgreen"
+            msg="clean"
+            if [[ -z "$viol" ]]; then
+              viol="?"
+              color="lightgrey"
+              msg="no-data"
+            elif [[ "$viol" != "0" ]]; then
+              msg="${viol} viol"
+              color="red"
+            fi
+            printf '{"schemaVersion":1,"label":"path rules","message":"%s","color":"%s"}\n' "$msg" "$color" > docs/badges/path-rules.json
+          else
+            echo '{"schemaVersion":1,"label":"path rules","message":"unavailable","color":"lightgrey"}' > docs/badges/path-rules.json
+          fi
+          echo "Path rules badge:"
+          cat docs/badges/path-rules.json || true
+      - name: Upload Path Enforcement Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: path-enforcement
+          path: |
+            docs/badges/path-enforce-raw.json
+            docs/badges/path-rules.json
+
   tests:
+    needs: path-enforcement
     name: Core Test Matrix
     runs-on: ${{ matrix.os }}
     strategy:
@@ -108,6 +157,18 @@ jobs:
       - name: Install jq (for badge parsing)
         run: |
           if [[ "$RUNNER_OS" == "Linux" ]]; then sudo apt-get update && sudo apt-get install -y jq >/dev/null 2>&1 || true; else brew install jq || true; fi
+      - name: Verify Path Helpers (observe, non-fatal)
+        shell: zsh {0}
+        run: |
+          mkdir -p docs/badges
+          if [[ -x dot-config/zsh/tools/verify-path-helpers.zsh ]]; then
+            echo "[verify-path-helpers] Observing helper presence (non-fatal)..."
+            dot-config/zsh/tools/verify-path-helpers.zsh --assert any --json > docs/badges/verify-path-helpers.json || true
+            echo "[verify-path-helpers] Output (truncated):"
+            head -c 600 docs/badges/verify-path-helpers.json || true
+          else
+            echo "[verify-path-helpers][WARN] Tool not found at dot-config/zsh/tools/verify-path-helpers.zsh (skipping)."
+          fi
       - name: Cache zgenom
         uses: actions/cache@v4
         with:
@@ -193,6 +254,10 @@ jobs:
             # Proactively render infra-trend.svg if trend JSON exists
             if [[ -f docs/badges/infra-trend.json ]]; then
               tools/render-badge-svg.zsh --json docs/badges/infra-trend.json --force || true
+            fi
+            # Proactively render perf-drift.svg if drift JSON exists
+            if [[ -f docs/badges/perf-drift.json ]]; then
+              tools/render-badge-svg.zsh --json docs/badges/perf-drift.json --force || true
             fi
             echo "[svg] Rendered SVG badges:"
             ls -1 docs/badges/*.svg || true
@@ -282,3 +347,45 @@ jobs:
         with:
           name: badges-summary-${{ matrix.os }}
           path: docs/badges/summary.json
+      - name: Run Shell Style Audit
+        shell: bash
+        run: |
+          echo "[style-audit] Running shell style audit (non-fatal)..."
+          chmod +x dot-config/zsh/tools/style-audit-shell.sh || true
+          # Produce raw JSON (non-fatal even if violations), store in badges dir for convenience
+          dot-config/zsh/tools/style-audit-shell.sh --json --output docs/badges/style-audit-raw.json --no-fail || true
+          echo "Raw style audit JSON:"
+          cat docs/badges/style-audit-raw.json || true
+
+      - name: Generate Style Badge
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p docs/badges
+          if command -v jq >/dev/null 2>&1 && [[ -f docs/badges/style-audit-raw.json ]]; then
+            viol=$(jq -r '.violations_total // empty' docs/badges/style-audit-raw.json 2>/dev/null || echo "")
+            scanned=$(jq -r '.scanned_files // empty' docs/badges/style-audit-raw.json 2>/dev/null || echo "")
+            color="brightgreen"
+            msg="clean"
+            if [[ -z "$viol" ]]; then
+              viol="?"
+              color="lightgrey"
+              msg="no-data"
+            elif [[ "$viol" != "0" ]]; then
+              msg="${viol} viol"
+              color="red"
+            fi
+            printf '{"schemaVersion":1,"label":"shell style","message":"%s","color":"%s","scanned":"%s"}\n' "$msg" "$color" "${scanned:-?}" > docs/badges/style.json
+          else
+            echo '{"schemaVersion":1,"label":"shell style","message":"unavailable","color":"lightgrey"}' > docs/badges/style.json
+            echo "[style-audit] jq not available or raw JSON missing; produced placeholder badge."
+          fi
+          echo "Style badge JSON:"
+          cat docs/badges/style.json || true
+
+      - name: Upload Style Badge
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: style-badge-${{ matrix.os }}
+          path: docs/badges/style.json
