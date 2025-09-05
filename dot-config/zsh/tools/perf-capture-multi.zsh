@@ -184,7 +184,7 @@ _pcm_validate_json() {
 }
 # Arrays of numeric values (as strings) for computation
 # Track only valid (non-zero) samples; skipped zero-runs are not counted toward aggregate.
-# Sample flag tracking (distinct synthetic / fallback variants encountered).
+# Sample flag tracking (distinct provenance variants encountered).
 typeset -A sample_flag_seen
 cold_values=()
 warm_values=()
@@ -695,39 +695,7 @@ _rsd_calc() {
 RSD_PRE=$(_rsd_calc "${pre_values[@]:-0}")
 RSD_POST=$(_rsd_calc "${post_values[@]:-0}")
 RSD_PROMPT=$(_rsd_calc "${prompt_values[@]:-0}")
-# Retrofit lifecycle-based post/prompt synthesis if arrays absent or zeroed (fast-track T1)
-if (( ${#post_values[@]} == 0 )); then
-  for sf in "$METRICS_DIR"/perf-sample-*.json; do
-    [[ -f "$sf" ]] || continue
-    lp=$(grep -E '"post_plugin_total_ms"[[:space:]]*:' "$sf" 2>/dev/null | sed -E 's/.*"post_plugin_total_ms"[[:space:]]*:[[:space:]]*([0-9]+).*/\1/' | head -1)
-    [[ -z $lp ]] && lp=$(grep -E '"post_plugin_cost_ms"[[:space:]]*:' "$sf" 2>/dev/null | sed -E 's/.*"post_plugin_cost_ms"[[:space:]]*:[[:space:]]*([0-9]+).*/\1/' | head -1)
-    [[ $lp =~ ^[0-9]+$ ]] || lp=0
-    post_values+=("$lp")
-    pr=$(grep -E '"prompt_ready_ms"[[:space:]]*:' "$sf" 2>/dev/null | sed -E 's/.*"prompt_ready_ms"[[:space:]]*:[[:space:]]*([0-9]+).*/\1/' | head -1)
-    [[ $pr =~ ^[0-9]+$ ]] || pr=$lp
-    prompt_values+=("$pr")
-  done
-elif (( ${#post_values[@]} > 0 )); then
-  all_zero=1
-  for v in "${post_values[@]}"; do
-    (( v > 0 )) && all_zero=0
-  done
-  if (( all_zero )); then
-    post_values=()
-    prompt_values=()
-    for sf in "$METRICS_DIR"/perf-sample-*.json; do
-      [[ -f "$sf" ]] || continue
-      lp=$(grep -E '"post_plugin_total_ms"[[:space:]]*:' "$sf" 2>/dev/null | sed -E 's/.*"post_plugin_total_ms"[[:space:]]*:[[:space:]]*([0-9]+).*/\1/' | head -1)
-      [[ -z $lp ]] && lp=$(grep -E '"post_plugin_cost_ms"[[:space:]]*:' "$sf" 2>/dev/null | sed -E 's/.*"post_plugin_cost_ms"[[:space:]]*:[[:space:]]*([0-9]+).*/\1/' | head -1)
-      [[ $lp =~ ^[0-9]+$ ]] || lp=0
-      post_values+=("$lp")
-      pr=$(grep -E '"prompt_ready_ms"[[:space:]]*:' "$sf" 2>/dev/null | sed -E 's/.*"prompt_ready_ms"[[:space:]]*:[[:space:]]*([0-9]+).*/\1/' | head -1)
-      [[ $pr =~ ^[0-9]+$ ]] || pr=$lp
-      prompt_values+=("$pr")
-    done
-  fi
-fi
-(( PERF_CAPTURE_MULTI_DEBUG )) && echo "[perf-capture-multi][debug] retrofit post_values=${post_values[*]:-} prompt_values=${prompt_values[*]:-}" >&2
+# F48: Removed synthetic retrofit synthesis logic - rely only on authentic samples from loop
 cold_csv=$(join_csv "${cold_values[@]}")
 warm_csv=$(join_csv "${warm_values[@]}")
 pre_csv=$(join_csv "${pre_values[@]}")
