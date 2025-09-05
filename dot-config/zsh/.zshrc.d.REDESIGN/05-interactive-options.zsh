@@ -1,3 +1,4 @@
+#!/opt/homebrew/bin/zsh
 # 05-interactive-options.zsh
 # Stage 3 – Interactive Shell Options & History Baseline
 #

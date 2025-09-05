@@ -1,3 +1,4 @@
+#!/opt/homebrew/bin/zsh
 # ============================================================================
 # 10-core-functions.zsh  (Stage 3 – Post-Plugin Core Scaffold)
 #

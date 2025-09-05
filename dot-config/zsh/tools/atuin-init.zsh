@@ -1,3 +1,4 @@
+#!/opt/homebrew/bin/zsh
 # shellcheck disable=SC2034,SC2153,SC2086,SC2155
 
 # Above line is because shellcheck doesn't support zsh, per

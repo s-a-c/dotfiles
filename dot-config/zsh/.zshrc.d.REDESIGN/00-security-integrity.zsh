@@ -1,3 +1,4 @@
+#!/opt/homebrew/bin/zsh
 # 00-security-integrity.zsh
 # Stage 3 – Security & Integrity (early skeleton)
 # PURPOSE:
