@@ -1,3 +1,4 @@
+#!/opt/homebrew/bin/zsh
 # 05-fzf-init.zsh (Pre-Plugin Redesign Enhanced)
 [[ -n ${_LOADED_PRE_FZF_INIT:-} ]] && return
 _LOADED_PRE_FZF_INIT=1
