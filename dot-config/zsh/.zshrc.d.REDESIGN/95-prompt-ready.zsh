@@ -133,6 +133,10 @@ if [[ ${__pr__install_method} == "add-zsh-hook" ]]; then
         # Fallback to adhoc if hook registration fails
         __pr__install_method="adhoc"
     }
+    # ZSHEXIT fallback: ensure a final capture attempt if precmd never fired
+    if [[ ${__pr__install_method} == "add-zsh-hook" ]]; then
+        add-zsh-hook zshexit __pr__capture_prompt_ready 2>/dev/null || true
+    fi
 fi
 
 # Fallback adhoc precmd definition if hook system unavailable

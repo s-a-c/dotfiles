@@ -21,9 +21,35 @@ if ! echo "$CHANGED" | grep -vq '^docs/'; then
     exit 0
 fi
 ROOT_DIR=$(git rev-parse --show-toplevel)
-TEST_RUNNER=$ROOT_DIR/tests/run-all-tests.zsh
-PERF=$ROOT_DIR/bin/test-performance.zsh
-BASE=$ROOT_DIR/docs/redesign/metrics/perf-baseline.json
+# Resolve test runner (new layout first, legacy fallback)
+TEST_RUNNER=""
+if [[ -x $ROOT_DIR/dot-config/zsh/tests/run-all-tests.zsh ]]; then
+    TEST_RUNNER=$ROOT_DIR/dot-config/zsh/tests/run-all-tests.zsh
+elif [[ -x $ROOT_DIR/tests/run-all-tests.zsh ]]; then
+    TEST_RUNNER=$ROOT_DIR/tests/run-all-tests.zsh
+fi
+
+# Resolve perf test script (new layout first, legacy fallback)
+PERF=""
+if [[ -x $ROOT_DIR/dot-config/zsh/bin/test-performance.zsh ]]; then
+    PERF=$ROOT_DIR/dot-config/zsh/bin/test-performance.zsh
+elif [[ -x $ROOT_DIR/bin/test-performance.zsh ]]; then
+    PERF=$ROOT_DIR/bin/test-performance.zsh
+fi
+
+# Resolve performance baseline (prefer redesignv2, fallback to legacy)
+BASE=""
+NEW_BASE=$ROOT_DIR/dot-config/zsh/docs/redesignv2/artifacts/metrics/perf-baseline.json
+LEGACY_BASE=$ROOT_DIR/dot-config/zsh/docs/redesign/metrics/perf-baseline.json
+if [[ -f $NEW_BASE ]]; then
+    BASE=$NEW_BASE
+elif [[ -f $LEGACY_BASE ]]; then
+    BASE=$LEGACY_BASE
+fi
+if [[ -z $BASE ]]; then
+    echo '[pre-commit] INFO: no performance baseline found (skipping delta comparison)'
+fi
+
 mkdir -p $ROOT_DIR/.git/tmp
 
 if [[ -x $TEST_RUNNER ]]; then
