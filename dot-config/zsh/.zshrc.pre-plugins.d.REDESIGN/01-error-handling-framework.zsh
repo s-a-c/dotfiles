@@ -174,10 +174,10 @@ zf_module_health() {
   health_file=$(get_module_health_file "$module")
   
   if [[ -f "$health_file" ]]; then
-    local status load_time
-    status=$(grep '^status=' "$health_file" | cut -d= -f2)
+    local module_status load_time
+    module_status=$(grep '^status=' "$health_file" | cut -d= -f2)
     load_time=$(grep '^load_time_ms=' "$health_file" | cut -d= -f2)
-    print "module=$module health=${status:-unknown} load_time=${load_time:-unknown}ms"
+    print "module=$module health=${module_status:-unknown} load_time=${load_time:-unknown}ms"
   else
     print "module=$module health=unknown load_time=unknown"
   fi
@@ -339,10 +339,10 @@ zf_health_check() {
         zf_module_health "$module_name"
       fi
       
-      local status
-      status=$(grep '^status=' "$health_file" | tail -1 | cut -d= -f2)
+      local module_status
+      module_status=$(grep '^status=' "$health_file" | tail -1 | cut -d= -f2)
       
-      case "$status" in
+      case "$module_status" in
         "success"|"recovered") (( healthy_modules++ )) ;;
         *) (( issues++ )) ;;
       esac
