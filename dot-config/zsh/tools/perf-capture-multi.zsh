@@ -346,6 +346,11 @@ add_segment_value() {
 # Progress = size/mtime change of perf-current.json OR child exit.
 : ${PERF_CAPTURE_PROGRESS_STALL_MS:=5000}
 : ${PERF_CAPTURE_PROGRESS_CHECK_MIN_MS:=500}
+# F49: Per-sample retry and watchdog parameters
+: ${PERF_CAPTURE_SAMPLE_RETRIES:=2}      # Max retry attempts per sample
+: ${PERF_CAPTURE_RETRY_SLEEP_MS:=200}    # Sleep between retry attempts (ms)
+: ${PERF_CAPTURE_ITER_WATCHDOG_MS:=4000} # Max time for a single sample+retries (ms)
+: ${PERF_CAPTURE_DEBUG:=0}               # Debug logging flag
 : ${PERF_OUTLIER_FACTOR:=2}   # Configurable (default 2). Outlier if value > median * PERF_OUTLIER_FACTOR
 
 _compute_hash() {
@@ -437,87 +442,176 @@ out_index=0
 set +e
 
 _force_sync_run() {
-  local i run_rc cold warm pre post prompt start_epoch_ms end_epoch_ms approx_total_ms SAMPLE_FILE CURRENT_FILE
+  local i attempt sample_ok iter_start_ms iter_elapsed_ms run_rc cold warm pre post prompt start_epoch_ms end_epoch_ms approx_total_ms SAMPLE_FILE CURRENT_FILE
+  local debug_log="$METRICS_DIR/perf-multi-debug.log"
+  
+  # Initialize debug log if debug enabled
+  if (( PERF_CAPTURE_DEBUG )); then
+    echo "[$(date -Iseconds)] F49 debug session started: samples=$MULTI_SAMPLES retries=$PERF_CAPTURE_SAMPLE_RETRIES watchdog=${PERF_CAPTURE_ITER_WATCHDOG_MS}ms" > "$debug_log"
+  fi
+  
   for (( i=1; i<=MULTI_SAMPLES; i++ )); do
-    echo "[perf-capture-multi] Run $i/$MULTI_SAMPLES (force-sync)"
-    # Per-sample isolated output path to avoid contention with concurrent readers
-    SAMPLE_CURRENT_OUT="$METRICS_DIR/perf-current-run-${i}.json"
-    rm -f "$SAMPLE_CURRENT_OUT" 2>/dev/null || true
-    start_epoch_ms=$(($(date +%s%N 2>/dev/null)/1000000))
-    if [[ $QUIET -eq 1 ]]; then
-      PERF_SINGLE_CURRENT_PATH="$SAMPLE_CURRENT_OUT" zsh "$PERF_CAPTURE_BIN" >/dev/null 2>&1
-      run_rc=$?
-    else
-      PERF_SINGLE_CURRENT_PATH="$SAMPLE_CURRENT_OUT" zsh "$PERF_CAPTURE_BIN"
-      run_rc=$?
-    fi
-    end_epoch_ms=$(($(date +%s%N 2>/dev/null)/1000000))
-    approx_total_ms=$(( end_epoch_ms - start_epoch_ms ))
-    (( approx_total_ms < 0 )) && approx_total_ms=0
-    print "run=$i state=invoke_complete rc=$run_rc approx_ms=$approx_total_ms force_sync=1" >>"$METRICS_DIR/perf-multi-progress.log" 2>/dev/null || true
-    if (( run_rc != 0 )); then
-      echo "[perf-capture-multi] WARN: perf-capture rc=$run_rc (force-sync) – skipping sample $i" >&2
-      (( skipped_sample_count++ ))
-      continue
-    fi
-    # Use the isolated per-sample file instead of the shared perf-current.json
-    CURRENT_FILE="$SAMPLE_CURRENT_OUT"
-    if [[ ! -f "$CURRENT_FILE" ]]; then
-      echo "[perf-capture-multi] WARN: missing perf-current.json after run $i (force-sync)" >&2
-      (( skipped_sample_count++ ))
-      continue
-    fi
-    SAMPLE_FILE="$METRICS_DIR/perf-sample-${i}.json"
-    if _pcm_validate_json "$CURRENT_FILE"; then
-      cp "$CURRENT_FILE" "$SAMPLE_FILE" 2>/dev/null || {
-        echo "[perf-capture-multi] WARN: copy failed for sample $i" >&2
-        (( skipped_sample_count++ ))
+    echo "[perf-capture-multi] Sample $i/$MULTI_SAMPLES (force-sync with retries)"
+    
+    attempt=0
+    sample_ok=0
+    iter_start_ms=$(($(date +%s%N 2>/dev/null)/1000000))
+    
+    while (( attempt <= PERF_CAPTURE_SAMPLE_RETRIES )); do
+      (( attempt++ ))
+      
+      if (( PERF_CAPTURE_DEBUG )); then
+        echo "[$(date -Iseconds)] sample=$i attempt=$attempt" >> "$debug_log"
+      fi
+      
+      # Per-sample isolated output path to avoid contention with concurrent readers
+      SAMPLE_CURRENT_OUT="$METRICS_DIR/perf-current-run-${i}-${attempt}.json"
+      rm -f "$SAMPLE_CURRENT_OUT" 2>/dev/null || true
+      
+      start_epoch_ms=$(($(date +%s%N 2>/dev/null)/1000000))
+      if [[ $QUIET -eq 1 ]]; then
+        PERF_SINGLE_CURRENT_PATH="$SAMPLE_CURRENT_OUT" zsh "$PERF_CAPTURE_BIN" >/dev/null 2>&1
+        run_rc=$?
+      else
+        PERF_SINGLE_CURRENT_PATH="$SAMPLE_CURRENT_OUT" zsh "$PERF_CAPTURE_BIN"
+        run_rc=$?
+      fi
+      end_epoch_ms=$(($(date +%s%N 2>/dev/null)/1000000))
+      approx_total_ms=$(( end_epoch_ms - start_epoch_ms ))
+      (( approx_total_ms < 0 )) && approx_total_ms=0
+      
+      print "run=$i attempt=$attempt state=invoke_complete rc=$run_rc approx_ms=$approx_total_ms force_sync=1" >>"$METRICS_DIR/perf-multi-progress.log" 2>/dev/null || true
+      
+      if (( run_rc != 0 )); then
+        if (( PERF_CAPTURE_DEBUG )); then
+          echo "[$(date -Iseconds)] sample=$i attempt=$attempt run_rc=$run_rc" >> "$debug_log"
+        fi
+        # Check watchdog before continuing retry
+        iter_elapsed_ms=$(( $(($(date +%s%N 2>/dev/null)/1000000)) - iter_start_ms ))
+        if (( iter_elapsed_ms >= PERF_CAPTURE_ITER_WATCHDOG_MS )); then
+          if (( PERF_CAPTURE_DEBUG )); then
+            echo "[$(date -Iseconds)] sample=$i watchdog_tripped elapsed=${iter_elapsed_ms}ms" >> "$debug_log"
+          fi
+          break
+        fi
         continue
-      }
-    else
-      echo "[perf-capture-multi] WARN: invalid or corrupted perf-current.json after run $i (skipping sample)" >&2
+      fi
+      
+      # Use the isolated per-sample file
+      CURRENT_FILE="$SAMPLE_CURRENT_OUT"
+      if [[ ! -f "$CURRENT_FILE" ]]; then
+        if (( PERF_CAPTURE_DEBUG )); then
+          echo "[$(date -Iseconds)] sample=$i attempt=$attempt missing_file=$CURRENT_FILE" >> "$debug_log"
+        fi
+        continue
+      fi
+      
+      if ! _pcm_validate_json "$CURRENT_FILE"; then
+        if (( PERF_CAPTURE_DEBUG )); then
+          echo "[$(date -Iseconds)] sample=$i attempt=$attempt invalid_json=$CURRENT_FILE" >> "$debug_log"
+        fi
+        continue
+      fi
+      
+      # Extract metrics and check for non-zero values (F49 requirement)
+      cold=$(extract_json_number "$CURRENT_FILE" cold_ms)
+      warm=$(extract_json_number "$CURRENT_FILE" warm_ms)
+      pre=$(extract_json_number "$CURRENT_FILE" pre_plugin_cost_ms)
+      post=$(extract_json_number "$CURRENT_FILE" post_plugin_total_ms)
+      (( post == 0 )) && post=$(extract_json_number "$CURRENT_FILE" post_plugin_cost_ms)
+      prompt=$(extract_json_number "$CURRENT_FILE" prompt_ready_ms)
+      if (( prompt == 0 && post > 0 && "${PERF_MULTI_STRICT_PROMPT:-0}" != "1" )); then
+        prompt=$post
+      fi
+      
+      if (( PERF_CAPTURE_DEBUG )); then
+        echo "[$(date -Iseconds)] sample=$i attempt=$attempt pre=$pre post=$post prompt=$prompt cold=$cold warm=$warm" >> "$debug_log"
+      fi
+      
+      # F49: Enforce non-zero requirement for pre, post, and prompt
+      if (( pre > 0 && post > 0 && prompt > 0 && (cold > 0 || warm > 0) )); then
+        # Valid sample - copy to final location
+        SAMPLE_FILE="$METRICS_DIR/perf-sample-${i}.json"
+        if cp "$CURRENT_FILE" "$SAMPLE_FILE" 2>/dev/null; then
+          # Process segment data
+          if [[ $DO_SEGMENTS -eq 1 ]]; then
+            while read -r lab mm; do
+              add_segment_value "$lab" "$mm"
+            done < <(segment_iterate_file "$SAMPLE_FILE")
+          fi
+          
+          # Prompt provenance tracking
+          approx_prompt_flag=0
+          if grep -q '"approx_prompt_ready"[[:space:]]*:[[:space:]]*1' "$SAMPLE_FILE" 2>/dev/null; then
+            approx_prompt_flag=1
+          fi
+          if (( approx_prompt_flag )); then
+            prompt_prov_values+=("approx")
+            sample_flag_seen[approx_prompt_ready]=1
+          else
+            prompt_prov_values+=("native")
+            sample_flag_seen[native_prompt_ready]=1
+          fi
+          
+          # Add to value arrays
+          cold_values+=("$cold")
+          warm_values+=("$warm")
+          pre_values+=("$pre")
+          post_values+=("$post")
+          prompt_values+=("$prompt")
+          
+          (( valid_sample_count++ ))
+          sample_ok=1
+          
+          if (( PERF_CAPTURE_DEBUG )); then
+            echo "[$(date -Iseconds)] sample=$i attempt=$attempt SUCCESS valid_count=$valid_sample_count" >> "$debug_log"
+          fi
+          break
+        else
+          if (( PERF_CAPTURE_DEBUG )); then
+            echo "[$(date -Iseconds)] sample=$i attempt=$attempt copy_failed" >> "$debug_log"
+          fi
+        fi
+      fi
+      
+      # Check watchdog before retry
+      iter_elapsed_ms=$(( $(($(date +%s%N 2>/dev/null)/1000000)) - iter_start_ms ))
+      if (( iter_elapsed_ms >= PERF_CAPTURE_ITER_WATCHDOG_MS )); then
+        if (( PERF_CAPTURE_DEBUG )); then
+          echo "[$(date -Iseconds)] sample=$i watchdog_tripped elapsed=${iter_elapsed_ms}ms after_validation" >> "$debug_log"
+        fi
+        break
+      fi
+      
+      # Sleep before retry (unless this was the last attempt)
+      if (( attempt <= PERF_CAPTURE_SAMPLE_RETRIES )); then
+        if (( PERF_CAPTURE_RETRY_SLEEP_MS > 0 )); then
+          if command -v usleep >/dev/null 2>&1; then
+            usleep $(( PERF_CAPTURE_RETRY_SLEEP_MS * 1000 ))
+          else
+            sleep $(awk -v ms="$PERF_CAPTURE_RETRY_SLEEP_MS" 'BEGIN{printf "%.3f", ms/1000}')
+          fi
+        fi
+      fi
+    done
+    
+    # Track failed samples
+    if (( ! sample_ok )); then
       (( skipped_sample_count++ ))
-      continue
+      if (( PERF_CAPTURE_DEBUG )); then
+        echo "[$(date -Iseconds)] sample=$i FAILED after $attempt attempts" >> "$debug_log"
+      fi
     fi
-    cold=$(extract_json_number "$SAMPLE_FILE" cold_ms)
-    warm=$(extract_json_number "$SAMPLE_FILE" warm_ms)
-    pre=$(extract_json_number "$SAMPLE_FILE" pre_plugin_cost_ms)
-    post=$(extract_json_number "$SAMPLE_FILE" post_plugin_total_ms)
-    (( post == 0 )) && post=$(extract_json_number "$SAMPLE_FILE" post_plugin_cost_ms)
-    prompt=$(extract_json_number "$SAMPLE_FILE" prompt_ready_ms)
-    if (( prompt == 0 && post > 0 && "${PERF_MULTI_STRICT_PROMPT:-0}" != "1" )); then
-      prompt=$post
-    fi
-    if (( cold == 0 && warm == 0 )); then
-      (( skipped_sample_count++ ))
-      continue
-    fi
-    # Prompt provenance (approx vs native) from single-run lifecycle block
-    approx_prompt_flag=0
-    if grep -q '"approx_prompt_ready"[[:space:]]*:[[:space:]]*1' "$SAMPLE_FILE" 2>/dev/null; then
-      approx_prompt_flag=1
-    fi
-    if (( approx_prompt_flag )); then
-      prompt_prov_values+=("approx")
-      sample_flag_seen[approx_prompt_ready]=1
-    else
-      prompt_prov_values+=("native")
-      sample_flag_seen[native_prompt_ready]=1
-    fi
-    cold_values+=("$cold")
-    warm_values+=("$warm")
-    pre_values+=("$pre")
-    post_values+=("$post")
-    prompt_values+=("$prompt")
-    if [[ $DO_SEGMENTS -eq 1 ]]; then
-      while read -r lab mm; do
-        add_segment_value "$lab" "$mm"
-      done < <(segment_iterate_file "$SAMPLE_FILE")
-    fi
-    (( valid_sample_count++ ))
+    
+    # Sleep between samples if configured
     (( i < MULTI_SAMPLES )) && [[ "$SLEEP_INTERVAL" != "0" ]] && sleep "$SLEEP_INTERVAL"
   done
+  
   echo "[perf-capture-multi][debug] force-sync collection complete valid=$valid_sample_count skipped=$skipped_sample_count requested=$MULTI_SAMPLES"
+  
+  if (( PERF_CAPTURE_DEBUG )); then
+    echo "[$(date -Iseconds)] F49 debug session completed: valid=$valid_sample_count skipped=$skipped_sample_count" >> "$debug_log"
+  fi
 }
 
 if [[ "${PERF_CAPTURE_MULTI_FORCE_SYNC:-0}" == "1" ]]; then
@@ -527,6 +621,15 @@ else
   # Minimal async path temporarily disabled for stability; fallback to force-sync logic.
   (( PERF_CAPTURE_MULTI_DEBUG )) && echo "[perf-capture-multi][debug] async path temporarily bypassed; using force-sync fallback"
   _force_sync_run
+fi
+
+# F49: Post-loop authentic shortfall check - exit 2 if insufficient samples
+if (( valid_sample_count < MULTI_SAMPLES )); then
+  echo "[perf-capture-multi] ERROR: Authentic shortfall - collected $valid_sample_count/$MULTI_SAMPLES valid samples after retries" >&2
+  if (( PERF_CAPTURE_DEBUG )); then
+    echo "[perf-capture-multi] DEBUG: Set PERF_CAPTURE_SAMPLE_RETRIES higher or check PERF_CAPTURE_DEBUG logs in $METRICS_DIR/perf-multi-debug.log" >&2
+  fi
+  exit 2
 fi
 
 # (Async-specific retry mechanics removed in simplified force-sync refactor)
