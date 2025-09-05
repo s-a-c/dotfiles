@@ -1,0 +1,14 @@
+{
+  "schema": "perf-module-fire-selftest.v1",
+  "timestamp": "20250905T211854",
+  "pre_native": 0,
+  "post_native": 0,
+  "prompt_native": 0,
+  "lifecycle_post_ms": 0,
+  "lifecycle_prompt_ms": 0,
+  "post_segment_count": 1,
+  "post_segment_sum_ms": 22,
+  "post_segment_labels": ["zgenom-init"],
+  "diagnostics": { "emits_granular_segments": 1, "emits_native_prompt": 0 },
+  "recommendations": ["Native PROMPT_READY_COMPLETE was not observed. Increase prompt grace (PERF_PROMPT_NATIVE_GRACE_MS) or verify prompt-ready hook order.", "If approximation is used later, annotate provenance to distinguish native vs approx."]
+}
