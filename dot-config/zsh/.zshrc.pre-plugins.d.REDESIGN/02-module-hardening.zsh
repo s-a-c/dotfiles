@@ -1,9 +1,12 @@
+#!/opt/homebrew/bin/zsh
 # 02-module-hardening.zsh
 # P1.1 Core Module Hardening - Module Wrapper and Validation
 #
 # PURPOSE:
 #   Applies robust error handling and validation to existing core modules
 #   without modifying their original implementations.
+#
+# COMPATIBILITY: zsh 5.9+ (/opt/homebrew/bin/zsh)
 
 if [[ -n "${_LOADED_02_MODULE_HARDENING:-}" ]]; then
   return 0
@@ -20,10 +23,10 @@ fi
 # Module Hardening Registry
 # ------------------------
 
-declare -A ZF_HARDENED_MODULES
-declare -A ZF_MODULE_DEPENDENCIES
-declare -A ZF_ORIGINAL_FUNCTIONS
-declare -a ZF_CRITICAL_FUNCTIONS
+typeset -gA ZF_HARDENED_MODULES
+typeset -gA ZF_MODULE_DEPENDENCIES  
+typeset -gA ZF_ORIGINAL_FUNCTIONS
+typeset -ga ZF_CRITICAL_FUNCTIONS
 
 # Define critical functions that must be hardened
 ZF_CRITICAL_FUNCTIONS=(

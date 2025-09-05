@@ -1,3 +1,4 @@
+#!/opt/homebrew/bin/zsh
 # 40-pre-plugin-reserved.zsh (Pre-Plugin Redesign Placeholder / Perf Marker Enhancements)
 [[ -n ${_LOADED_PRE_RESERVED_SLOT:-} ]] && return
 _LOADED_PRE_RESERVED_SLOT=1

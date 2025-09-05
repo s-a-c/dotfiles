@@ -1,3 +1,4 @@
+#!/opt/homebrew/bin/zsh
 # 70-performance-monitoring.zsh
 # Added placeholder sync segment probes (Phase A – attribution scaffolding)
 # These placeholders create zero/near-zero duration segments so downstream tests

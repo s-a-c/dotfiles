@@ -1,3 +1,4 @@
+#!/opt/homebrew/bin/zsh
 # 00-path-safety.zsh (Pre-Plugin Redesign Enhanced)
 [[ -n ${_LOADED_PRE_PATH_SAFETY:-} ]] && return
 _LOADED_PRE_PATH_SAFETY=1
