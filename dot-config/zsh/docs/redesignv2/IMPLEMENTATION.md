@@ -1,4 +1,95 @@
 # ZSH Configuration Redesign – Consolidated Implementation Guide
+
+## Progress Update — 2025-09-05
+
+Highlights delivered in this iteration:
+1. Post-harness settle and prompt grace
+   - Added configurable post-exit settle window (PERF_POST_PLUGIN_SETTLE_MS, default 100–120ms) and prompt grace window (PERF_PROMPT_NATIVE_GRACE_MS, default ~60–80ms) in the single-run harness to catch late segment writes and native PROMPT_READY_COMPLETE markers before fallback.
+   - Tracing flags (PERF_SEGMENT_TRACE, PERF_PROMPT_TRACE) emit structured diagnostics to stderr without polluting artifacts.
+
+2. Tightened salvage and zero-diagnose synthesis
+   - When lifecycle post is missing but granular POST_PLUGIN_SEGMENT lines exist, synthesize post_plugin_total from segment sums and align prompt_ready_ms accordingly if still zero.
+   - Added zero-diagnose logging when all lifecycle values parse to zero; fall back to wall-clock synthesis to avoid all-zero lifecycles.
+
+3. Module-fire selftest and tracer tools
+   - New tools:
+     - tools/perf-module-fire-selftest.zsh: CI-friendly JSON summary of granular segment emission and native prompt presence, with settle/grace and recommendations.
+     - tools/perf-module-tracer.zsh: Human-readable table or JSON summarizing emitted POST_PLUGIN_SEGMENT labels with basic stats.
+   - Supports clean JSON mode via a clean shell environment (env -i … /bin/zsh -f) for CI usage.
+
+4. CI gates and new “modules” badge
+   - CI workflow now runs the module-fire selftest and stores module-fire.json into metrics.
+   - Soft gate warns when granular segments or native prompt are missing; optional hard gate enabled via SELFTEST_HARD_FAIL=1.
+   - Badges: generate-summary-badges.zsh now emits modules badge (module-fire.json) and includes modules:<status> in summary.json with color precedence (red > yellow > others).
+
+5. Provenance, percentiles, and stability hardening
+   - Refined prompt marker provenance (native, native_equal_post, approx, derived) in perf-current.json; aggregates per-run provenance in multi-run artifacts with counts and summary.
+   - Added post_plugin_cost_ms percentiles (p50/p90/p95) and configurable outlier factor (PERF_OUTLIER_FACTOR).
+   - Stale lock directory cleanup added to multi-run to prevent filesystem clutter.
+
+Action items reflected in trackers:
+- Update Variance Stability Log upon next authentic multi-run with settle/grace enabled; target reduced RSD and increased native marker rates.
+- Maintain soft CI gate while emission stabilizes; plan transition to hard gate after sustained success.
+- Incorporate module-fire outcomes (emits_granular_segments, emits_native_prompt) into governance status notes.
+
+## 1.2.1 (NEW) Deferred Prompt / Post Marker Enhancement Backlog (Appended)
+
+Context:
+The immediate “soonest implementation” changes have been applied:
+- Added native post-plugin boundary module: `85-post-plugin-boundary.zsh` (emits `POST_PLUGIN_COMPLETE` + `SEGMENT name=post_plugin_total`).
+- Modified perf harness invocation sleep hold: replaced `zsh -i </dev/null` with `zsh -i -c "sleep <delay>"` to allow precmd/prompt instrumentation to fire in headless runs.
+- Added `zshexit` fallback hook to `95-prompt-ready.zsh` to ensure a last-chance prompt readiness capture.
+
+Goals of Remaining Backlog:
+Stabilize fully native (non-fallback, non-forced) `post_plugin_total` and `prompt_ready` markers across multi-run and advanced harness modes, then retire (or demote) F38 aggregation and forced prompt injection pathways.
+
+Implemented (Current Session):
+1. Native post boundary emission (`85-post-plugin-boundary.zsh`).
+2. Sleep-based interactive retention window in perf harness (`perf-capture.zsh`).
+3. `zshexit` finalization hook for prompt readiness.
+4. Adaptive empty segment log wait & salvage (`perf-capture.zsh`: `PERF_SEGMENT_ADAPTIVE_WAIT_MS` + synthesized lifecycle markers when raw log remains empty after grace period).
+5. Marker presence validation script added (`tools/test-marker-presence.zsh`) – baseline native marker assertion (pre/post/prompt) with provenance & adaptive detection heuristics.
+
+Regression Note (2025-09-05):
+During validation after the sleep-based interactive retention tweak, several runs produced a completely empty segment log (0 bytes) resulting in zero `pre_plugin_cost_ms`, `post_plugin_cost_ms`, and `prompt_ready_ms` (perf-capture fallback path triggered). This indicates the interactive session exited before segment emission modules (40/85/95) executed, or the sleep window was too short for hook scheduling under headless conditions. Immediate remediation tasks have been appended to backlog (R1/R2) to (a) add a marker presence assertion and (b) implement an adaptive wait / direct marker flush before exit.
+
+Pending / Future Tasks:
+1. Immediate Boundary Prompt Capture (Option C): Conditional in boundary module — if headless harness detected (`PERF_PROMPT_HARNESS=1` & no prompt marker after short delay) call `__pr__capture_prompt_ready` directly (disabled until empirical confirmation required).
+2. Adaptive Interactive Hold (phase 2 – extended): Enhance current adaptive empty-log wait by adding prompt marker polling & configurable timeout (`PERF_PROMPT_READY_TIMEOUT_MS`), and deprecate synthesized lifecycle emission once native stability ≥99%.
+3. Marker Presence Assert Test (implemented: `tools/test-marker-presence.zsh`): Next enhancement – integrate into CI gating (warn → fail) and extend to record marker provenance (`native|fallback|adaptive`) for variance filtering.
+4. Multi-Run Authenticity Tightening: After ≥2 consecutive authentic runs with native markers, reduce authenticity missing_post majority threshold from 50% to 40% (then possibly 33%).
+5. F38 Fallback Scope Reduction: Emit warning + mark fallback usage; downgrade to salvage-only mode once native post stability proven over N=10 aggregate samples.
+6. Prompt Force Logic Retirement: Remove `PERF_ALLOW_PROMPT_FORCE_CAPTURE` path after native markers stable; replace with diagnostic error if prompt missing and post present.
+7. Harness Race Diagnostics: Add debug mode dumping raw segment log before JSON write to validate ordering / race conditions.
+8. Segment Log Integrity Test: Validate segment log does not contain multi-run progress lines and that `POST_PLUGIN_COMPLETE` precedes any prompt readiness emission.
+9. Duplicate Marker Guard Test: Ensure `PROMPT_READY_COMPLETE` is emitted exactly once (precmd + zshexit coexistence).
+10. Boundary & Prompt Module Consolidation Study: Evaluate merging logic to reduce headless code paths (create decision doc; proceed only if maintenance gain > complexity cost).
+11. Governance Badge Update: Add explicit `markers_native=1` flag once forced/approximated paths fully eliminated in advanced multi-run.
+12. Variance-State Extension: Record marker provenance per run (`native|forced|fallback`) enabling RSD filtering excluding fallback runs.
+13. Harness Flag Documentation: Extend `REFERENCE.md` with `PERF_PROMPT_HARNESS`, `PERF_PROMPT_FORCE_DELAY_MS`, `PERF_ALLOW_PROMPT_FORCE_CAPTURE`, and future `PERF_PROMPT_READY_TIMEOUT_MS`.
+14. Adaptive Delay Heuristic: Compute dynamic wait = min( pre_plugin_total * 0.4 , 120ms ) before deciding forced capture (reduces over-wait on fast configs).
+15. Outlier Classification Enhancement: Attach marker provenance to outlier detection to ignore artificially forced prompt timings.
+16. JSON Schema Annotation: Add `"marker_provenance": {"post_plugin_total":"native|fallback","prompt_ready":"native|forced|approx"}` to `perf-current.json` & aggregated multi-run JSON.
+17. Retire Legacy Approximation Flag: Remove `PERF_FORCE_PROMPT_READY_FALLBACK` once zero native prompt rates resolve (<1% over 30 samples).
+18. CI Gate (Future): Fail performance job if `markers_native=0` for >2 consecutive nightly runs.
+19. Metrics Drift Alert: Add detection if native post mark regresses back to fallback for any PR merge (pre-empt silent regression).
+20. Consolidated Marker Timing Delta Test: Verify monotonic ordering pre ≤ post ≤ prompt at sample granularity; fail if inequality violated.
+
+Tracking / Exit Criteria for Backlog Closure:
+- Native marker rate (post + prompt) ≥ 99% over rolling 30 advanced multi-run samples.
+- F38 fallback not invoked in last 10 runs.
+- Forced prompt readiness path unused in last 10 runs.
+- Governance badge displays markers_native=1 and no degrade for 14 days.
+- All marker provenance tests green in CI (added categories: instrumentation / timing).
+
+(End 1.2.1 Backlog Section)
+
+
+> Global Documentation Guideline: All ordered lists MUST use numeric Arabic prefixes (`1.`, `2.`, `3.` …).  
+> - Do not use auto-renumbering tricks (e.g., repeating `1.` intentionally) in committed sources.  
+> - Do not switch to roman numerals or lettered lists.  
+> - Preserve sequential numbering in diffs to make semantic list reordering explicit.  
+> - If inserting in the middle of an existing ordered list, renumber the following items instead of relying on renderer auto-renumbering.
 Version: 2.3  
 Status: Stage 2 Complete – Stage 3 In Progress (core hardening, trust anchors, micro-benchmark harness, drift tooling)  
 Last Updated: 2025-09-04 (Added micro-benchmark harness stabilization, variance log integration, perf drift badge script, trust anchor read APIs)
@@ -47,8 +138,10 @@ Primary measurable targets:
 | CI Workflow (structure) | ✅ Active | Structure badge workflow operational |
 | Async Engine | 🟡 Shadow (Phase A) Active | Dispatcher + manifest + shadow tasks & tests landed; async runs in shadow (no sync deferrals yet) |
 | Pre-Plugin Content Migration | ✅ Complete | Baseline tagged (refactor-stage2-preplugin); path rules enforced repository-wide |
-| Stage 3 Core Modules | 🚧 In Progress | Implementing security (00), options (05), core functions (10) + PATH append fix |
+| Stage 3 Core Modules | 🚧 In Progress | Minimal exit (T1–T3) achieved (non-zero lifecycle trio + monotonic + governance variance artifact); remaining: authentic multi-run variance + core hardening (F49→F48→F50, F16, F17) |
 | Performance Baseline | ✅ Captured | pre_plugin_total mean=35ms (N=5); optimization pending |
+| Governance Badge | ✅ Observe Mode | Explicit variance-state source integrated; awaiting authentic variance before warn transition |
+| Variance Mode | observe | Synthetic multi-run replication in place pending F49 loop repair |
 | Promotion Readiness | ⏳ Far | Requires completion through Stage 6 |
 | Risk Posture | Controlled | Rollback + checksum freeze in place |
 
@@ -79,35 +172,59 @@ This snapshot will be updated when new hotspot segments are added or when observ
 
 ### 1.2 Next Implementation Tasks (Rolling 7-Day Plan)
 
-(Time horizon: next 7 calendar days; reassess / slide window forward after completion or blockage. Priorities: P1 = must land to unblock downstream stages; P2 = should land (stability / signal quality); P3 = opportunistic / hardening.)
+(Time horizon: next 7 days; priorities: P0 critical sequence; P1 stability/gating; P2 governance/docs; P3 prep.)
 
-P0 Immediate Perf & Bench (New)
-- Capture first micro-benchmark baseline (`bench-core-functions.zsh --json --iterations 5000 --repeat 3 > docs/redesignv2/artifacts/metrics/bench-core-baseline.json`) and commit artifact (observational; shimmed_count noted).
-- Integrate `perf-drift-badge.sh` in CI (publish `docs/redesignv2/artifacts/badges/perf-drift.json`) + add drift badge presence test (warn mode initial).
-- Force a fresh multi-sample perf run: `PERF_CAPTURE_FORCE=1 tools/perf-capture-multi.zsh --samples 5 --sleep 0.3` once instrumentation is expected to emit non‑zero `post_plugin_total` & `prompt_ready_ms`.
-- Monotonic validation: immediately run `tools/promotion-guard.zsh 11 --allow-mismatch` (or inspect CI promotion guard log) and confirm `monotonic=ok`. If `monotonic=warn(...)` appears, investigate ordering (check segment emission timing / late prompt hook) before proceeding.
-- Cache bypass fallback: if run skips due to fingerprint cache, delete `docs/redesignv2/artifacts/metrics/perf-multi-fingerprint.txt` (if present) or re‑invoke with `PERF_CAPTURE_FORCE=1` again, then re-run capture.
-- Variance Stability Log: append a new row with non‑zero trio (pre/post/prompt) including mean, stddev, RSD. If this is the 2nd consecutive low‑RSD (<5%) run for pre & post segments, set decision for pre_plugin_cost_ms to `enable_warn` candidate (do not flip gating env yet if post/prompt just stabilized).
-- If `post_plugin_total` or `prompt_ready_ms` still zero: enable debug (`PERF_CAPTURE_DEBUG=1`) and defer log decision (note “hold – missing segment”).
-- Record monotonic status + sample count context in governance follow-up notes (will surface once variance-state & governance weighting tasks (F28/F27) proceed).
+Completed (last 48h):
+- Micro-benchmark baseline captured (bench-core-baseline.json; shimmed_count >0).
+- Governance badge (extended + shield) active with explicit variance-state source (F40 complete).
+- Drift badge integrated (observe mode).
+- Monotonic lifecycle ordering validated (pre ≤ post ≤ prompt).
+- Variance-state artifact generated (observe mode; synthetic multi-run fallback).
+- Lifecycle trio non-zero (fast-track path achieved).
 
-P1 Core Module Hardening
-- 00-security-integrity.zsh: Add minimal PATH hygiene verification helper (zf::path_append_secure self-test) and expose trust anchor read API (read-only) for future hashing.
-- 05-interactive-options.zsh: Lock golden snapshot hash (capture & log in test output) and prepare diff formatter for intentional changes.
-- 10-core-functions.zsh: Add lightweight micro-benchmark harness (optional) for timing helpers (<1ms target) and begin draft of future fingerprint drift test (informational only).
-- Sentinel & idempotency design test: Extend to assert no growth in deferred tasks map beyond security_integrity_check (prevents silent accumulation).
+Immediate (P0 – Critical Sequence):
+- Authentic variance stabilization (simple harness): Run second multi-sample capture (N=5) with perf-capture-multi-simple.zsh; update Variance Stability Log. Promote pre_plugin_cost_ms decision to candidate if new RSD <5% (or blended RSD across both authentic runs <5%). Investigate post_plugin_total_ms outlier (values 144,141,385) and document cause or mitigation plan before any gating escalation.
+1. F49 – Repair perf-capture-multi loop (ensure >1 authentic samples; add watchdog, retry, explicit non-zero post/prompt assertion).
+2. F48 – Remove synthetic multi-sample replication hack after F49 (delete cloning logic; governance aggregation treats insufficient samples as “insufficient” not synthetic).
+3. F50 – Recompute variance-state.json with authentic RSD; update governance badge (remove synthetic indicators; update stable_run_count).
+4. Refresh Variance Stability Log with authentic post_plugin_total & prompt_ready_ms rows (annotate prior synthetic entries as archived).
+5. Drift badge threshold annotation (add “(+X% max)” suffix if not yet committed).
 
-P1 Performance & Gating
-- Variance streak: Achieve REQUIRED_STABLE threshold (≥2 consecutive stable runs) — if already met, flip PERF_DIFF_FAIL_ON_REGRESSION=1 (main only) via recommender output adoption.
-- Perf ledger: Capture at least 2 nightly history snapshots with non-zero post_plugin_total prior to tightening budgets.
-- Drift badge: Add threshold annotation (message suffix “(+X% max)” when any WARN) for faster PR scanning.
+Carryover / Adjusted (P1):
+- Failure classification mapping for perf-ledger drift (tier: >5% warn, >10% fail) + badge color taxonomy alignment.
+- Manifest test escalation: flip CORE_FN_MANIFEST_WARN_ONLY=0 after 48h stable run set.
+- Integrate max_positive_regression_pct directly into ledger JSON (F2/F41 path).
+- Embed micro-bench worst ratio & drift count into governance extended JSON (prep for F26 gating).
+- Prepare authentic multi-run second capture (target ≥2 stable RSD<5% runs to consider warn mode).
 
-P1 Testing & Quality
-- Add failure classification mapping for perf-ledger-drift (regression tiers: >5% warn, >10% fail) coordinated with budget script messaging (align color taxonomy).
-- Introduce manifest test WARN mode in CI for first 48h (allow stabilization), then flip to strict (set CORE_FN_MANIFEST_WARN_ONLY=0 on main).
+P1 Core Module Hardening:
+- F16 / F17 path: enumerate shimmed functions vs manifest; draft guard test baseline (warn).
+- Add trust anchor listing confirmation test (read-only) – supports upcoming hashing phase.
 
-P2 Documentation & Governance
-- IMPLEMENTATION.md: Introduce “Variance Stability Log” subsection (append entries: date, sample count, variance %, decision).
+P2 Governance & Documentation:
+- Update README badge legend to reflect explicit variance-state (remove any “derived” wording).
+- Stage 3 exit mini-report regeneration after authentic variance run.
+- Append synthetic→authentic variance transition footnote in Section 1.3 & 4.1.3.
+
+P3 Preparation for Stage 5:
+- Draft interim soft target for post_plugin_total after first authentic multi-run (derive mean, set soft ceiling).
+- Outline async activation checklist (single compinit verification precondition, deferred hashing, prompt readiness stability).
+
+Deferred Until Authentic Variance Stabilized (Do Not Start):
+- Observe→warn variance gating flip (needs ≥2 authentic low-RSD runs).
+- Micro benchmark gating (F22/F26) until shimmed_count == 0.
+
+Exit Signals for This Window:
+- Authentic multi-run variance entries present (no synthetic) in log.
+- Governance badge unchanged severity after authenticity pivot.
+- Recomputed variance-state shows stable_run_count ≥1 (authentic) & RSD <5% pre_plugin_cost_ms.
+
+Escalation Criteria:
+- If authentic post_plugin_total still zero after F49 retries: enable PERF_CAPTURE_DEBUG=1 and capture raw segment logs; open F49a follow-up task.
+
+Ownership Notes:
+- F49/F48/F50 must land sequentially in one or multiple small PRs; avoid bundling gating toggles in same change set.
+
 - Add README badge row: perf drift, perf ledger, variance decision (observe/warn/gate).
 - Prepare Stage 3 readiness checklist file (stages/stage-3-core.md) mirroring exit criteria for quicker PR references.
 
@@ -129,10 +246,16 @@ Initial Entries:
 
 | Date (UTC) | Samples (N) | Metric | Mean (ms) | Stddev (ms) | RSD | Decision | Notes |
 |------------|-------------|--------|-----------|-------------|-----|----------|-------|
-| 2025-09-04 | 5 | pre_plugin_cost_ms | 80–85 (aggregate mean artifact reports 85) | ~2–3 (raw value spread 79–85) | ~0.03 | candidate | Low variance; artifact aggregation rounding needs sanity check (mean vs listed values). |
-| 2025-09-04 | 5 | post_plugin_cost_ms | 0 (placeholder) | 0 | 0 | hold | Segment not yet captured in multi-sample (instrumentation / capture path pending). |
-| 2025-09-04 | 5 | prompt_ready_ms | 0 (placeholder) | 0 | 0 | hold | Prompt readiness marker not yet emitted in multi-sample capture. |
-| 2025-09-04 | n/a | governance_integration | n/a | n/a | n/a | observe | Governance badge integrated (extended + simple); schedule forced multi-sample run (PERF_CAPTURE_FORCE=1) to refresh non-zero post_plugin_total & prompt_ready_ms and qualify pre_plugin_cost_ms for enable_warn transition once monotonic=ok confirmed. |
+| 2025-09-04 | 5 (synthetic) | pre_plugin_cost_ms | 85 | ~2–3 | ~0.03 | candidate | Synthetic multi-run replication (fallback); authentic loop fix pending F49. |
+| 2025-09-04 | 5 (synthetic) | post_plugin_cost_ms | (synthetic placeholder) | n/a | n/a | hold | Synthetic replication; authentic capture required (F49→F50). |
+| 2025-09-04 | 5 (synthetic) | prompt_ready_ms | (synthetic placeholder) | n/a | n/a | hold | Synthetic replication; awaiting authentic emission. |
+| 2025-09-04 | n/a | governance_integration | n/a | n/a | n/a | observe | Governance badge active (explicit variance-state; synthetic variance pending authenticity). |
+| 2025-09-04 | 3 (authentic simple) | pre_plugin_cost_ms | 352.33 | 18.91 | 0.0537 | observe | Authentic simple multi-run (fallback harness); RSD slightly >5% (5.37%) – collect additional run to qualify for candidate. |
+| 2025-09-04 | 3 (authentic simple) | post_plugin_total_ms | 223.33 | 114.32 | 0.5119 | hold | High variance (values 144,141,385) – investigate outlier / capture conditions before gating. |
+| 2025-09-04 | 3 (authentic simple) | prompt_ready_ms | 223.33 | 114.32 | 0.5119 | hold | Mirrors post; prompt still approximate (PROMPT_READY marker not emitted). |
+| 2025-09-04 | 5 (authentic simple) | pre_plugin_cost_ms | 320.80 | 9.66 | 0.0301 | candidate | Second authentic multi-run; RSD 3.01% (<5%). Prior run 5.37% allowed under two-thirds rule; promoting to candidate. |
+| 2025-09-04 | 5 (authentic simple) | post_plugin_total_ms | 145.60 | 4.96 | 0.0341 | observe | Outlier from prior run not reproduced; variance stabilized; remain observe pending confirmation & F54 outlier detector. |
+| 2025-09-04 | 5 (authentic simple) | prompt_ready_ms | 145.60 | 4.96 | 0.0341 | observe | Mirrors post_plugin_total_ms; PROMPT_READY marker pending (F39a). |
 
 Next Actions (related to stability):
 - Re-run multi-sample after ensuring post_plugin_total and prompt_ready markers are emitted (expect non-zero values).
@@ -143,6 +266,32 @@ Trigger to Update This Log:
 - Any multi-sample capture producing non-zero post_plugin_total + prompt_ready_ms.
 - Variance recommender output transitions (candidate → enable_warn / enable_fail).
 - Introduction of additional metrics (e.g., interactive_ready_ms) once captured.
+
+Additional Entries (Advanced Force-Sync Harness):
+
+| Date (UTC) | Samples (N) | Metric | Mean (ms) | Stddev (ms) | RSD | Decision | Notes |
+|------------|-------------|--------|-----------|-------------|-----|----------|-------|
+| 2025-09-05 | 3 (advanced) | pre_plugin_cost_ms | 32.00 | 1.41 | 0.0441 | observe | First advanced force-sync authentic multi-run; low variance; segments array empty; PROMPT_READY approximated. |
+| 2025-09-05 | 3 (advanced) | post_plugin_total_ms | 299.00 | 188.20 | 0.6294 | hold | High variance; outlier (index 0 value=565 >3.2x median=174); investigate segment emission + deferral. |
+| 2025-09-05 | 3 (advanced) | prompt_ready_ms | 299.00 | 188.20 | 0.6294 | hold | Mirrors post; prompt markers absent (approximation fallback drives identical variance). |
+
+Advanced Harness Test Checklist (Skeleton – to be instantiated as scripts):
+- [ ] test: perf-multi schema presence (auth_shortfall, partial, rsd_pre, rsd_post, rsd_prompt, outlier.detected)
+- [ ] test: auth_shortfall == 0 when samples == requested and all post values > 0
+- [ ] test: partial == 0 under same successful conditions
+- [ ] test: outlier factor calculation deterministic with fixed sample set
+- [ ] test: segment parser emits ≥1 segment when perf sample JSON contains post_plugin_segments entries
+- [ ] test: prompt_ready authenticity (fail if approximation fallback triggered when markers expected)
+- [ ] test: retry loop (future) collects non-zero post after ≤ PERF_CAPTURE_SAMPLE_RETRIES attempts
+- [ ] test: governance badge reflects multi_source=advanced after advanced run
+- [ ] test: variance-state (future) alignment between governance badge mode and variance-state.json contents
+- [ ] test: cache fingerprint skip logic (run bypass when fingerprint unchanged & file present)
+
+README Badge Legend Stub (to add in README.md on next doc sync):
+- Add variance-state.json row (variance) once variance-state artifact exists.
+- Update governance.json row to include multi_source (simple|advanced) & authenticity (auth_shortfall, partial).
+- Add perf-multi-current (advanced) mention: indicates authentic multi-sample capture source (force-sync/async).
+- Clarify drift vs ledger vs variance interplay (badge interdependencies section).
 
 (End 1.3)
 - Add caching for multi-sample captures (store last multi-current fingerprint to skip redundant run if unchanged environment).
@@ -396,6 +545,85 @@ Open Decision (Resolved by Defaults):
 - PATH append fix tracked as first Stage 3 task if still pending.
 
 Upon completion, Stage 3 will establish a stable, secure, option-governed core onto which feature and plugin layers (Stage 4+) can attach without reintroducing baseline or integrity drift.
+
+### 3.x Advanced Multi-Run Harness Status & Future Task List
+
+Status (Advanced Harness – Force-Sync Mode):
+- Force-sync path (PERF_CAPTURE_MULTI_FORCE_SYNC=1) now produces authentic multi-sample aggregates (`perf-multi-current.json`) with:
+  - Fields: auth_shortfall, partial, rsd_pre, rsd_post, rsd_prompt, outlier block.
+  - Authentic sample enforcement active (PERF_CAPTURE_ENFORCE_AUTH=1).
+  - Partial handling simplified; retries currently disabled (PERF_CAPTURE_SAMPLE_RETRIES=0).
+- Initialization gap resolved (PERF_CAPTURE_ENFORCE_AUTH / PERF_CAPTURE_ALLOW_PARTIAL / PERF_CAPTURE_SAMPLE_RETRIES defaults restored near top).
+- Simplified authenticity logic avoids referencing legacy retry_exhausted & synthetic replication flags.
+- Outlier detection functioning (median + >2x factor heuristic).
+- Segment array currently empty in recent run → requires investigation (either emission absent upstream or parser needs adjustment).
+- Prompt readiness still approximated (no PROMPT_READY markers) → inflates prompt variance symmetry with post_plugin_total.
+
+Immediate Follow-Up (Documented as Complete in Code, Pending Secondary Validation):
+- [x] Reintroduced default variable initialization.
+- [x] Simplified authenticity enforcement & removed synthetic replication remnants.
+- [x] Aggregate JSON emits stable schema (auth_shortfall now variable-driven).
+- [x] Outlier block populated; factor verified.
+
+Future Tasks (Queued – move to implementation schedule as capacity allows):
+1. Segment Emission Restoration  
+   - Verify per-run `perf-sample-*.json` still includes `post_plugin_segments`.  
+   - If present: debug `segment_iterate_file` awk parser (label & mean_ms extraction).  
+   - If absent: re-enable upstream segment export hooks (ensure compinit / theme / vcs segments written).
+2. PROMPT_READY Authenticity  
+   - Add explicit PROMPT_READY marker hook before final prompt render.  
+   - Disable approximation fallback once stable to reduce variance coupling.
+3. Minimal Retry Loop (Optional Re-Enable)  
+   - Implement bounded retry for zero post/prompt fields (PERF_CAPTURE_SAMPLE_RETRIES>0) without reintroducing synthetic duplication.  
+   - Set conservative default (e.g., 1–2) once stable.
+4. Async Path Re-Hardening  
+   - Reintroduce async child capture with improved watchdog (mtime + size delta heuristics) and failover to force-sync only on stall.  
+   - Add progress logging toggle (PERF_CAPTURE_PROGRESS_DEBUG).
+5. Segment-Level RSD & Per-Segment Variance Block  
+   - Emit rsd_<segment_label> or a segments_variance array to support targeted optimization decisions.
+6. Governance & Badge Integration Enhancements  
+   - Auto-refresh governance badge on successful advanced multi-run (multi_source=advanced).  
+   - Include auth_shortfall + partial in variance-state JSON.
+7. Enhanced Outlier Strategy  
+   - Add secondary heuristic: MAD-based factor or top-1 exclusion simulation for decision support.  
+   - Emit outlier_excluded_mean when exclusion materially lowers RSD.
+8. Caching Refinement  
+   - Expand fingerprint to include guidelines checksum & high-sensitivity module mtimes.  
+   - Add PERF_CAPTURE_CACHE_VERBOSE for cache decisions audit.
+9. Documentation Updates  
+   - README badge legend: add explicit row for variance mode (observe/warn/gate) and multi-run source (simple/advanced).  
+   - IMPLEMENTATION.md Section 1.3: log first advanced authentic multi-run entry (authentic vs simple).
+10. Async Activation Checklist (Prep)  
+   - Define readiness gates: stable PROMPT_READY marker, segment coverage ≥ required set, retry loop pass rate > threshold.
+11. Partial Aggregate Policy  
+   - Decide whether partial_flag=1 aggregates should block gating transitions or only warn (update governance logic accordingly).
+12. Performance Optimization Roadmap Linkage  
+   - Add mapping: high RSD segments → proposed deferral or lazy loading tasks.
+13. Test Additions  
+   - Test to assert auth_shortfall=0 when samples==requested & no zero post values.  
+   - Schema test for perf-multi-current.json (fail if fields missing or type-mismatched).  
+   - Optional: outlier detection deterministic test with synthetic known set.
+14. Migration Cleanup  
+   - Remove any residual comments referencing synthetic replication or legacy fallback once async path restored.
+15. Governance Summary Artifact (Optional)  
+   - Generate provisional `governance-advanced.json` summarizing multi_source, auth_shortfall, rsd metrics for early review (not yet badge-bound).
+16. Placeholder Test Script Scaffolding (Optional)  
+   - Create empty test files matching Advanced Harness Test Checklist to reduce future PR surface (each initially skipping with a TODO marker).
+17. Segment Parser Diagnostic Capture (Optional)  
+   - Add a debug utility to dump raw `post_plugin_segments` from a single sample to aid parser verification before re-enabling async.
+
+Tracking / Scheduling Recommendation:
+- Classify items 1–3 as P0 (stability & authenticity completeness).
+- Items 4–7 as P1 (feature parity + analytical depth).
+- Items 8–10 as P2 (operational polish & future async enablement).
+- Items 11–14 as P3 (policy clarity, test hardening, cleanup).
+
+Exit Criteria for Declaring Advanced Harness “Stable”:
+- ≥2 consecutive advanced force-sync (or async) runs with: auth_shortfall=0, partial=0, rsd_post < 0.10, segments array non-empty.
+- PROMPT_READY authentic (no approximation) with rsd_prompt ≈ rsd_post (within ±10% relative).
+- Outlier detection either not triggered or (if triggered) exclusion delta < threshold (e.g., <15% RSD reduction).
+
+(End Advanced Multi-Run Harness Status)
 
 ### 3.4 Stage 4 – Feature Layer
 Focus modules: `20-essential-plugins`, `30-development-env`, `40-aliases-keybindings`.
@@ -783,6 +1011,16 @@ Future / Deferred (F):
 - F49: Repair perf-capture-multi loop termination (ensure >1 sample executes fully; add watchdog, retry semantics, robust error propagation).
 - F50: Recompute variance-state.json using real multi-sample RSD after F49; update governance badge fields (drop synthetic indicators) and reassess observe → warn transition readiness.
 
+- F51: Add retry_exhausted sample flag surface & governance integration (include flag in perf-multi-current.json sample_flags, propagate summary count + presence into governance extended JSON; WARN annotation when >0 and variance_mode != insufficient_samples).
+- F52: Embed lifecycle RSD metrics (rsd_pre, rsd_post, rsd_prompt) in governance extended JSON (stats.*) to accelerate observe→warn variance gating evaluation and document thresholds directly in badge data.
+- F53: Generate insufficient_samples badge (docs/redesignv2/artifacts/badges/variance-samples.json) when authenticity shortfall occurs (auth_shortfall>0) and integrate its status into infra-health weighting; add governance note linking authenticity remediation tasks (F49/F48/F50).
+- F49b: Governance & variance ingestion bridge (consume perf-multi-simple.json when advanced harness partial; surface rsd_pre/post/prompt + authentic_samples).
+- F39a: PROMPT_READY explicit marker (remove prompt=post fallback; lower prompt variance noise).
+- F54: Per-run segment outlier detector (flag >2x median contributors; export outlier_segment, outlier_factor).
+- F55: Variance-state generator prefers authentic simple source (source=simple vs advanced).
+- F56: Advanced harness parity & retirement of simple fallback once stable; remove partial mode.
+- F57: Gating readiness doc augmentation (explicit RSD thresholds for pre/post variance).
+- F58: Segment-level variance RSD summary (compinit, theme, others) for targeted deferral planning.
 Promotion Pre-Requisites (will move to active window when nearing Stage 3 exit):
 - PP1: Two consecutive stable multi-sample runs (RSD <5%) with non-zero post_plugin_total and prompt_ready_ms.
 

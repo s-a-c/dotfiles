@@ -1,0 +1,17 @@
+{
+  "schema": "perf-multi-simple.v1",
+  "timestamp": "2025-09-04T21:55:18Z",
+  "requested_samples": 5,
+  "samples": 5,
+  "authentic_samples": 5,
+  "partial": false,
+  "strict_prompt": 1,
+  "outlier": {"detected": false, "metric": "", "index": -1, "value": 0, "median": 148, "factor": "0"},
+  "metrics": {
+    "cold_ms": {"values":[6378,5799,5726,6125,6128],"mean":6031.20,"stddev":238.96,"rsd":0.0396},
+    "warm_ms": {"values":[6317,6227,5681,5917,5753],"mean":5979.00,"stddev":252.77,"rsd":0.0423},
+    "pre_plugin_cost_ms": {"values":[332,323,337,345,317],"mean":330.80,"stddev":9.93,"rsd":0.0300},
+    "post_plugin_total_ms": {"values":[144,275,141,148,182],"mean":178.00,"stddev":50.70,"rsd":0.2848},
+    "prompt_ready_ms": {"values":[144,275,141,148,182],"mean":178.00,"stddev":50.70,"rsd":0.2848}
+  }
+}

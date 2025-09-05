@@ -284,6 +284,54 @@ variance_raw=$(extract_variance_mode "$GOV_VARIANCE_FILE")
 variance_ok=${variance_raw%%;*}
 variance_mode=${variance_raw#*;}
 
+# --- Authenticity / Insufficient Samples Inspection (F49/F48 integration) ---
+# If multi-run authenticity metadata indicates a shortfall AND variance mode
+# has not progressed beyond observe/unknown, surface as 'insufficient_samples'
+# so downstream governance consumers and badges can distinguish between
+# absence of variance data and deliberate observe mode.
+: "${GOV_MULTI_FILE:=${default_root}/metrics/perf-multi-current.json}"
+: "${GOV_MULTI_SIMPLE_FILE:=${default_root}/metrics/perf-multi-simple.json}"
+
+auth_shortfall=0
+auth_requested=0
+auth_authentic=0
+multi_source="none"
+rsd_pre=0
+rsd_post=0
+rsd_prompt=0
+
+# Prefer advanced multi-run file; fall back to simple when advanced missing or empty
+if [[ -f "$GOV_MULTI_FILE" ]]; then
+  if (( have_jq )); then
+    auth_shortfall=$(jq -r '.auth_shortfall // 0' "$GOV_MULTI_FILE" 2>/dev/null || echo 0)
+    auth_requested=$(jq -r '.requested_samples // 0' "$GOV_MULTI_FILE" 2>/dev/null || echo 0)
+    auth_authentic=$(jq -r '.authentic_samples // 0' "$GOV_MULTI_FILE" 2>/dev/null || echo 0)
+    rsd_pre=$(jq -r '.metrics.pre_plugin_cost_ms.rsd // .metrics.pre_plugin_cost_ms.rsd // 0' "$GOV_MULTI_FILE" 2>/dev/null || echo 0)
+    rsd_post=$(jq -r '.metrics.post_plugin_total_ms.rsd // .metrics.post_plugin_cost_ms.rsd // 0' "$GOV_MULTI_FILE" 2>/dev/null || echo 0)
+    rsd_prompt=$(jq -r '.metrics.prompt_ready_ms.rsd // 0' "$GOV_MULTI_FILE" 2>/dev/null || echo 0)
+  fi
+  multi_source="advanced"
+fi
+
+# Simple fallback ingestion (perf-multi-simple.v1) when advanced absent or has zero authentic samples
+if [[ "$multi_source" == "none" || "$auth_authentic" == "0" ]]; then
+  if [[ -f "$GOV_MULTI_SIMPLE_FILE" ]]; then
+    if (( have_jq )); then
+      auth_requested=$(jq -r '.requested_samples // 0' "$GOV_MULTI_SIMPLE_FILE" 2>/dev/null || echo 0)
+      auth_authentic=$(jq -r '.authentic_samples // .samples // 0' "$GOV_MULTI_SIMPLE_FILE" 2>/dev/null || echo 0)
+      rsd_pre=$(jq -r '.metrics.pre_plugin_cost_ms.rsd // 0' "$GOV_MULTI_SIMPLE_FILE" 2>/dev/null || echo 0)
+      rsd_post=$(jq -r '.metrics.post_plugin_total_ms.rsd // .metrics.post_plugin_cost_ms.rsd // 0' "$GOV_MULTI_SIMPLE_FILE" 2>/dev/null || echo 0)
+      rsd_prompt=$(jq -r '.metrics.prompt_ready_ms.rsd // 0' "$GOV_MULTI_SIMPLE_FILE" 2>/dev/null || echo 0)
+      auth_shortfall=0   # simple harness does not encode shortfall
+      multi_source="simple"
+    fi
+  fi
+fi
+
+if (( auth_shortfall > 0 )) && [[ "$variance_mode" == "observe" || "$variance_mode" == "unknown" ]]; then
+  variance_mode="insufficient_samples"
+fi
+
 # Placeholder micro bench regression stats (future drift compare)
 micro_regress_count=0
 micro_worst_ratio=1.0
@@ -348,11 +396,25 @@ message="$severity"
 if (( ${#details[@]} )); then
   message="$message ${details[*]}"
 fi
+# Variance quick-glance suffix (simple or advanced multi-run source)
+# Shows pre RSD percentage when available (rsd_pre > 0) while still in
+# observe/warn to help spot readiness for escalation.
+if [[ "$multi_source" != "none" ]] && [[ "$variance_mode" == "observe" || "$variance_mode" == "warn" ]]; then
+  if awk -v v="$rsd_pre" 'BEGIN{exit !(v>0)}'; then
+    pre_pct=$(awk -v v="$rsd_pre" 'BEGIN{printf "%.2f", v*100}')
+    message="$message var-pre=${pre_pct}%"
+  fi
+fi
 
 # If nothing available at all, degrade message
 if (( ! drift_ok && ! ledger_ok && ! micro_ok )); then
   message="no-data"
   color="$GOV_COLOR_UNKNOWN"
+fi
+
+# If insufficient samples flagged, append hint (do not worsen severity automatically)
+if [[ "$variance_mode" == "insufficient_samples" ]]; then
+  message="${message} insufficient_samples"
 fi
 
 # ---------------- Emit JSON ----------------
@@ -381,6 +443,13 @@ emit_extended() {
     "max_regression_pct": $(num_or_zero "$max_reg_pct_num"),
     "over_budget_count": $(num_or_zero "$over_budget_num"),
     "variance_mode": "$(printf '%s' "$variance_mode")",
+    "auth_shortfall": $(num_or_zero "$auth_shortfall"),
+    "auth_requested": $(num_or_zero "$auth_requested"),
+    "authentic_samples": $(num_or_zero "$auth_authentic"),
+    "multi_source": "$(printf '%s' "$multi_source")",
+    "rsd_pre": $(num_or_zero "$rsd_pre"),
+    "rsd_post": $(num_or_zero "$rsd_post"),
+    "rsd_prompt": $(num_or_zero "$rsd_prompt"),
     "microbench_regress_count": $(num_or_zero "$micro_regress_count"),
     "microbench_worst_ratio": $(num_or_zero "$micro_worst_ratio"),
     "shimmed": $(num_or_zero "$shimmed_num")

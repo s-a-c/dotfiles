@@ -1,7 +1,54 @@
 # ZSH Configuration Redesign Documentation
+
+## New: Module-Fire Selftest & Tracer
+
+Granular segment and native prompt readiness verification are now available as dedicated tools. Use these to confirm that post‑plugin modules emit `POST_PLUGIN_SEGMENT` lines and that native `PROMPT_READY_COMPLETE` markers are present before fallback approximation.
+
+Quick commands:
+
+```bash
+# Module-fire selftest (JSON-only, CI-friendly)
+env -i ZDOTDIR=$PWD /bin/zsh -f tools/perf-module-fire-selftest.zsh \
+  --json --settle-ms 150 --grace-ms 100 \
+  > docs/redesignv2/artifacts/metrics/module-fire.json
+
+# Module-fire selftest (human diagnostics to stderr)
+ZDOTDIR=$PWD tools/perf-module-fire-selftest.zsh --trace --ci-guidance
+
+# Module tracer (human-readable table)
+ZDOTDIR=$PWD tools/perf-module-tracer.zsh --trace --format table
+
+# Module tracer (JSON)
+env -i ZDOTDIR=$PWD /bin/zsh -f tools/perf-module-tracer.zsh --format json \
+  > docs/redesignv2/artifacts/metrics/module-tracer.json
+```
+
+Notes:
+- Settle/grace windows help catch late writes:
+  - `--settle-ms` defaults to 120ms (post‑exit segment growth).
+  - `--grace-ms` defaults to 60ms (await native `PROMPT_READY_COMPLETE` after `POST_PLUGIN_COMPLETE`).
+- For clean JSON in CI, prefer a clean shell: `env -i ... /bin/zsh -f`.
+
+## New Badge: modules (module-fire)
+
+A new badge summarizes module emission health:
+- File: `docs/redesignv2/artifacts/badges/module-fire.json`
+- Shield label: `modules`
+- Message values:
+  - `ok` → granular segments and native prompt observed
+  - `segments_only` → only granular segments observed
+  - `prompt_only` → only native prompt observed
+  - `missing` → neither observed
+- This badge is included in `summary.json` as `modules:<status>`.
+
+Badge Legend Addendum (until the main legend table is revised):
+- modules.json | modules | Module emission health | Granular segments + native prompt present | Either missing | Generated via `generate-summary-badges.zsh` from `module-fire.json`
+
 **Version 2.4** – Core Hardening, Perf/Bench & Governance Badge Integration Updates  
 **Status**: Stage 2 Complete (baseline & tag created) – Stage 3 (Core Modules) In Progress  
-**Last Updated**: 2025-09-04
+**Last Updated**: 2025-09-05
+
+> NOTE: A “Badge Legend Update Stub” section will be inserted in the Badge Legend area once exact line numbers for that section are provided (required for minimal diff compliance). Please provide the numbered snippet around the existing “## Badge Legend (Expanded – New Pending Rows)” heading so the planned stub (variance-state, multi_source, authenticity fields, perf-multi source note) can be appended precisely.
 
 ## 🔜 Recommended Next Steps (Updated Summary)
 
@@ -54,6 +101,7 @@ Focused execution priorities for the remainder of Stage 3 (after recent addition
 | Perf provisional budget (pre-plugin) | [~] | Pre stable; post/prompt metrics pending non-zero |
 | Perf regression gating (observe→gate) | [ ] | Await stable multi-sample + drift readiness |
 | Drift badge integration | [~] | Script ready; CI publication pending (governance badge generation now wired into perf & nightly workflows; waiting on stable non-zero post/prompt segments for full activation) |
+| Module-fire selftest & modules badge | [~] | Tools integrated; CI selftest and “modules” badge wired. Emission stabilization in progress (settle/grace enabled), soft gate active; optional hard gate available |
 | Micro benchmark baseline captured | [ ] | Harness stabilized; baseline not yet committed |
 | All new tests green | [~] | Current scope green; new marker/drift tests queued |
 
@@ -126,6 +174,8 @@ Notes:
 - **Performance Tooling**: Multi-sample capture, variance log, drift badge script, ledger prototype
 - **Benchmark Harness**: Micro-benchmark harness stabilized with transparent shim fallback & JSON artifact design
 - **Governance**: Trust anchor read APIs & future hashing path documented
+- **Segment & Prompt Stability**: Added post-harness settle window and prompt grace; tightened salvage (granular segment sum) and zero-diagnose synthesis to eliminate all‑zero lifecycles
+- **Module Emission & Badges**: Introduced module-fire selftest and module tracer; integrated “modules” badge and included it in summary badge aggregation
 
 ---
 

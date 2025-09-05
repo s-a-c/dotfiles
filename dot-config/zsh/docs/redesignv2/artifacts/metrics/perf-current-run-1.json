@@ -1,0 +1,25 @@
+{
+  "timestamp":"20250905T214059",
+  "mean_ms":13917,
+  "cold_ms":13574,
+  "warm_ms":14260,
+  "pre_plugin_cost_ms":4173,
+  "post_plugin_cost_ms":13913,
+  "prompt_ready_ms":13913,
+  "segments_available":true,
+  "marker_provenance":"approx",
+  "lifecycle": {
+    "pre_plugin_total_ms": 4173,
+    "post_plugin_total_ms": 13913,
+    "prompt_ready_ms": 13913,
+    "approx_prompt_ready": 1,
+    "marker_provenance":"approx"
+  },
+  "markers_observed": {
+    "pre_native_any": 0,
+    "post_native_any": 0,
+    "prompt_native_any": 0,
+    "prompt_native_all": 0
+  },
+  "post_plugin_segments": []
+}

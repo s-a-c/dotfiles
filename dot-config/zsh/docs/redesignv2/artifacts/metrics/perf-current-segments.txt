@@ -1,22 +1,4 @@
-SEGMENT name=pre_plugin_total ms=38 phase=pre_plugin sample=mean
-SEGMENT name=post_plugin_total ms=160 phase=post_plugin sample=mean
-SEGMENT name=prompt_ready ms=160 phase=prompt sample=mean
-SEGMENT name=p10k_theme ms=8 phase=post_plugin sample=mean
-SEGMENT name=20-essential/completion/core-reserve ms=4 phase=post_plugin sample=mean
-SEGMENT name=compinit ms=18 phase=post_plugin sample=mean
-SEGMENT name=zgenom-init ms=6 phase=post_plugin sample=mean
-SEGMENT name=syntax_highlight_init ms=4 phase=post_plugin sample=mean
-SEGMENT name=30-dev-env ms=4 phase=post_plugin sample=mean
-SEGMENT name=20-essential/navigation/cd ms=5 phase=post_plugin sample=mean
-SEGMENT name=vcs_helpers_init ms=4 phase=post_plugin sample=mean
-SEGMENT name=completion_cache_scan ms=4 phase=post_plugin sample=mean
-SEGMENT name=20-essential ms=67 phase=post_plugin sample=mean
-SEGMENT name=20-essential/git/prompt ms=4 phase=post_plugin sample=mean
-SEGMENT name=theme_extras_init ms=5 phase=post_plugin sample=mean
-SEGMENT name=fzf_tools_init ms=5 phase=post_plugin sample=mean
-SEGMENT name=20-essential/safety/aliases ms=5 phase=post_plugin sample=mean
-SEGMENT name=20-essential/history/baseline ms=5 phase=post_plugin sample=mean
-SEGMENT name=history_backend_init ms=4 phase=post_plugin sample=mean
-SEGMENT name=50-completion-history ms=4 phase=post_plugin sample=mean
-SEGMENT name=20-essential/perf/segment-inject ms=4 phase=post_plugin sample=mean
+SEGMENT name=pre_plugin_total ms=2734 phase=pre_plugin sample=mean
+SEGMENT name=post_plugin_total ms=9116 phase=post_plugin sample=mean
+SEGMENT name=prompt_ready ms=9116 phase=prompt sample=mean
 SEGMENT name=policy_guidelines_checksum ms=0 phase=other sample=meta checksum=50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
