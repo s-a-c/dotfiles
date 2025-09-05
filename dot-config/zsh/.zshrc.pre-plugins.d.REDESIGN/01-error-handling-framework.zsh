@@ -317,7 +317,18 @@ zf_health_check() {
   local healthy_modules=0
   local issues=0
   
-  for health_file in /tmp/zf_module_*_health; do
+  # Use nullglob to handle case where no files match
+  setopt local_options nullglob
+  local health_files=(/tmp/zf_module_*_health)
+  
+  if (( ${#health_files[@]} == 0 )); then
+    if [[ "$verbose" == "true" ]]; then
+      print "[Health Check] No modules currently tracked"
+    fi
+    return 0
+  fi
+  
+  for health_file in "${health_files[@]}"; do
     if [[ -f "$health_file" ]]; then
       (( total_modules++ ))
       
@@ -350,5 +361,17 @@ zf_health_check() {
   fi
 }
 
+# Test module registration for demonstration
+zf_test_module_registration() {
+  echo "Registering test module for demonstration..."
+  zf_module_load_start "test-module"
+  # Simulate some work
+  sleep 0.1
+  zf_module_load_complete "test-module" "success"
+  echo "Test module registered successfully"
+}
+
 # Initialize error handling framework
+zf_module_load_start "error-framework"
 zf_info "error-framework" "error handling framework initialized"
+zf_module_load_complete "error-framework" "success"
