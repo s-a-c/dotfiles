@@ -81,6 +81,29 @@ jobs:
             tools/perf-capture-multi.zsh --samples "${PERF_MULTI_SAMPLES}" --sleep "${PERF_MULTI_SLEEP}" || {
               echo "::error::Multi-sample capture failed" ; exit 1; }
 
+      - name: Marker Presence (Single Run Native Markers)
+        shell: zsh {0}
+        run: |
+          # Validate lifecycle markers from the most recent single-run capture.
+          # Observe mode: allow adaptive & fallback paths; only warn on issues.
+          METRICS="docs/redesignv2/artifacts/metrics/perf-current.json"
+          if [[ -x dot-config/zsh/tools/test-marker-presence.zsh ]]; then
+            if dot-config/zsh/tools/test-marker-presence.zsh \
+                --metrics "$METRICS" \
+                --allow-adaptive \
+                --allow-approx-prompt \
+                --allow-fallback-post \
+                --json-report docs/redesignv2/artifacts/metrics/marker-presence.json; then
+              echo "[marker] lifecycle markers validated (allowing adaptive/approx in observe mode)"
+            else
+              echo "::warning::marker presence check reported issues (observe mode tolerant)"
+              [[ -f docs/redesignv2/artifacts/metrics/marker-presence.json ]] && \
+                cat docs/redesignv2/artifacts/metrics/marker-presence.json || true
+            fi
+          else
+            echo "::warning::marker presence script missing (dot-config/zsh/tools/test-marker-presence.zsh)"
+          fi
+
       - name: Variance Stability Test (Observe→Warn Gate)
         shell: zsh {0}
         run: |
