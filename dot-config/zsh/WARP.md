@@ -315,6 +315,76 @@ The project uses variance-state.json to track performance stability and determin
 
 ---
 
+## 7. Dedicated Warp Tab Requirements
+
+### 7.1. Policy
+- All tests and any ad-hoc executions related to the zsh redesign MUST be run in a separate, dedicated Warp tab.
+- Use a single, reusable tab titled "zsh-redesign" to preserve isolation, logs, and focus.
+- This requirement integrates with our terminal session management standards.
+
+### 7.2. Naming and Setup
+- Create a new tab and set its title to "zsh-redesign".
+- Keep this tab persistent and reuse it for all zsh redesign runs.
+- Optional: Apply a distinct tab color/label if your Warp setup supports it.
+- Reference: Warp documentation [https://www.warp.dev/docs](https://www.warp.dev/docs)
+
+### 7.3. Session Management Mapping (Compliance with Terminal Session Rules)
+- **Single Session**: Work within a single terminal window when possible. Use the "zsh-redesign" tab as the single dedicated session for redesign tasks; avoid extra windows.
+- **New Terminal Condition**: Only create the "zsh-redesign" tab if it does not already exist and creation will not disrupt active processes. Document the reason for creating the tab (e.g., "Initialize dedicated zsh-redesign tab").
+- **Persistence**: Keep the "zsh-redesign" tab persistent across runs to minimize clutter and context switching.
+- **Reuse Verification**: Before creating a new tab, check for an existing "zsh-redesign" tab and reuse it.
+- **Redundancy Check**: Close unused tabs. Confirm no active processes before closing the "zsh-redesign" tab.
+- **Process Tracking**: Monitor active processes in the "zsh-redesign" tab. Document session purpose in the tab title if needed (e.g., "zsh-redesign: tests").
+
+### 7.4. Usage Examples (Run ONLY in the "zsh-redesign" tab)
+
+```bash
+# Comprehensive test runner
+tests/run-all-tests.zsh
+
+# Specific test categories
+tests/run-all-tests.zsh --design-only      # Structure and sentinel validation
+tests/run-all-tests.zsh --unit-only        # Unit tests
+tests/run-all-tests.zsh --performance-only # Performance regression tests
+tests/run-all-tests.zsh --security-only    # Async state and integrity tests
+
+# Performance testing and benchmarking
+tools/perf-capture.zsh
+tools/perf-capture-multi-simple.zsh -n 5
+tools/perf-module-fire-selftest.zsh --json
+
+# Structure validation and governance
+tools/generate-structure-audit.zsh
+tools/promotion-guard.zsh
+tools/enforce-path-resolution.zsh
+
+# Development utilities
+tools/clear-zsh-cache.zsh
+tools/health-check.zsh
+tools/preplugin-variance-eval.zsh
+
+# Plugin management (zgenom)
+ZDOTDIR=$PWD zsh -i  # Run in isolated shell with repo config
+
+# ZSH profiling with zprof
+echo '.zqs-zprof-enabled' > .zqs-zprof-enabled
+ZDOTDIR=$PWD zsh -i -c 'zprof'
+rm .zqs-zprof-enabled
+
+# Built-in timing (baseline fallback)
+TIMEFMT=$'%U user %S sys %P cpu %*E total'
+ZDOTDIR=$PWD time zsh -i -c exit
+```
+
+### 7.5. Operational Checklist
+- Verify the "zsh-redesign" tab exists; create it if absent and safe to do so.
+- Ensure no other tabs are performing redesign tests; keep a single dedicated tab.
+- Reuse the tab for all redesign test runs.
+- Before closing, ensure no active processes and capture logs as needed.
+- Run `tools/clear-zsh-cache.zsh` between test runs to ensure clean state.
+
+---
+
 ## Appendices
 
 ### Appendix A: Session Rules and Safe-Run Conventions
