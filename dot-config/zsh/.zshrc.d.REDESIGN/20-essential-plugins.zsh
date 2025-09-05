@@ -1,3 +1,4 @@
+#!/opt/homebrew/bin/zsh
 # 20-essential-plugins.zsh
 # ============================================================================
 # Stage 3+ – Essential Plugin Skeleton & Timing Segment

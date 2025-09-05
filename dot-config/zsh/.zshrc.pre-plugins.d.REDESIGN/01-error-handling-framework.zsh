@@ -1,9 +1,12 @@
+#!/opt/homebrew/bin/zsh
 # 01-error-handling-framework.zsh
 # P1.1 Core Module Hardening - Error Handling Framework
 #
 # PURPOSE:
 #   Provides robust error handling, validation, and fault tolerance
-#   for all core zsh modules. Simple, compatible implementation.
+#   for all core zsh modules. Optimized for zsh 5.9+.
+#
+# COMPATIBILITY: zsh 5.9+ (/opt/homebrew/bin/zsh)
 
 if [[ -n "${_LOADED_01_ERROR_HANDLING:-}" ]]; then
   return 0
@@ -20,7 +23,8 @@ ZF_MIN_LOG_LEVEL=${ZF_MIN_LOG_LEVEL:-2}  # WARN and above
 ZF_PERF_MONITOR_ERRORS=${ZF_PERF_MONITOR_ERRORS:-1}
 ZF_ERROR_RECOVERY_ENABLED=${ZF_ERROR_RECOVERY_ENABLED:-1}
 
-# Initialize arrays
+# Initialize arrays using zsh 5.9+ syntax
+typeset -ga ZF_ERROR_LOG
 ZF_ERROR_LOG=()
 
 # ------------------------
@@ -129,7 +133,7 @@ zf_module_load_start() {
 # Register module load completion
 zf_module_load_complete() {
   local module="$1"
-  local status="${2:-success}"
+  local load_status="${2:-success}"
   [[ -z "$module" ]] && return 1
   
   local health_file
@@ -151,15 +155,15 @@ zf_module_load_complete() {
   local load_time_ms
   load_time_ms=$(awk -v s="$start_time" -v e="$end_time" 'BEGIN{printf "%.0f", (e-s)*1000}' 2>/dev/null || echo "0")
   
-  echo "status=$status load_time_ms=$load_time_ms end_time=$end_time" > "$health_file"
+  echo "status=$load_status load_time_ms=$load_time_ms end_time=$end_time" > "$health_file"
   
   # Log if slow or failed
   if (( load_time_ms > 100 )); then
     zf_warn "$module" "slow load time: ${load_time_ms}ms"
   fi
   
-  if [[ "$status" != "success" ]]; then
-    zf_err "$module" "load failed with status: $status"
+  if [[ "$load_status" != "success" ]]; then
+    zf_err "$module" "load failed with status: $load_status"
   fi
   
   return 0

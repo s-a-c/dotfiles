@@ -1,3 +1,4 @@
+#!/opt/homebrew/bin/zsh
 # Safe Minimal Completion Initialization
 # Replaces problematic completion systems
 # UPDATED: Consistent with .zshenv configuration

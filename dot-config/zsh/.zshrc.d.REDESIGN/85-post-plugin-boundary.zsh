@@ -1,3 +1,4 @@
+#!/opt/homebrew/bin/zsh
 # 85-post-plugin-boundary.zsh
 # Post-Plugin Boundary / Marker Consolidation
 # Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md] ${GUIDELINES_CHECKSUM:-vUNKNOWN}

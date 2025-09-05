@@ -1,3 +1,4 @@
+#!/opt/homebrew/bin/zsh
 # 15-node-runtime-env.zsh (Pre-Plugin Redesign Skeleton)
 [[ -n ${_LOADED_PRE_NODE_RUNTIME_ENV:-} ]] && return
 _LOADED_PRE_NODE_RUNTIME_ENV=1
