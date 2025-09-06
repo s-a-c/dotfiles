@@ -1,0 +1,18 @@
+[DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+Test 1: Function registration... [32mPASS[0m
+Test 2: First call loading... [32mPASS[0m
+Test 3: Subsequent calls efficiency... [32mPASS[0m
+Test 4: Missing loader error handling... [32mPASS[0m
+Test 5: Failing loader error handling... [32mPASS[0m
+Test 6: Argument passing through dispatcher... [32mPASS[0m
+Test 7: Registry state persistence... [32mPASS[0m
+Test 8: Load state tracking... [31mFAIL[0m
