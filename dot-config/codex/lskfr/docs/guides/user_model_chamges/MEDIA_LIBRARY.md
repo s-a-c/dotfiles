@@ -93,7 +93,7 @@ public function registerMediaCollections(): void
                 ->width(100)
                 ->height(100)
                 ->nonQueued();
-                
+
             $this->addMediaConversion('medium')
                 ->width(300)
                 ->height(300)

@@ -61,7 +61,7 @@ character.
 - *Pros:* the content of the buffers are always visible.
 - *Cons:* The display characters are small and difficult to see (see below for a
   way to enlarge them).
- 
+
 *** Custom font-face example
 This changes the ace-window display to show a white letter with a red
 background. The box attribute adds some padding:
@@ -70,7 +70,7 @@ background. The box attribute adds some padding:
   '(aw-leading-char-face
     :foreground "white" :background "red"
     :weight bold :height 2.5 :box (:line-width 10 :color "red")))
-#+end_src 
+#+end_src
 
 ** switch-window
 Replaces the entire buffer with large letters.

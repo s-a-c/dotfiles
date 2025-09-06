@@ -1,6 +1,6 @@
 # ZSH Redesign Architecture (Consolidated)
-Version: 2.0  
-Status: Authoritative Design Reference  
+Version: 2.0
+Status: Authoritative Design Reference
 Last Updated: 2025-01-03
 
 This document defines the architectural intent, structural rules, performance strategies, and extensibility model for the ZSH configuration redesign. It supersedes scattered legacy rationale fragments and is the **single design source** unless superseded by a future version entry in the Change Log.

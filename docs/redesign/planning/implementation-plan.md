@@ -232,13 +232,13 @@ Tests are authored BEFORE implementing or migrating logic.
 | Security | Registry tamper detection, hash mismatch handling | `tests/security/` | `test_sec_registry_integrity.zsh` | Category=security |
 
 ### 10.1 TDD Cycle (Per Change)
-1. Identify requirement (e.g., consolidate options).  
-2. Write failing unit/design tests (structure & behavior).  
-3. Run test suite: verify new failures only relate to targeted change.  
-4. Implement minimal code to satisfy tests.  
-5. Re-run full relevant categories.  
-6. Refactor (no new features) — ensure tests still green.  
-7. Commit change referencing task ID.  
+1. Identify requirement (e.g., consolidate options).
+2. Write failing unit/design tests (structure & behavior).
+3. Run test suite: verify new failures only relate to targeted change.
+4. Implement minimal code to satisfy tests.
+5. Re-run full relevant categories.
+6. Refactor (no new features) — ensure tests still green.
+7. Commit change referencing task ID.
 8. Update metrics or docs if performance/security related.
 
 ### 10.2 Performance Test Design
@@ -256,7 +256,7 @@ Tests are authored BEFORE implementing or migrating logic.
 - Guards: each file contains `_LOADED_` sentinel to prevent double load.
 
 ### 10.5 Naming & File Conventions Tests
-- No duplicate numeric prefixes pre-promotion (except intentional reserved gaps).  
+- No duplicate numeric prefixes pre-promotion (except intentional reserved gaps).
 - Post-promotion: prefixes unique and ascending.
 
 ### 10.6 Test Runner Enhancements (Planned)

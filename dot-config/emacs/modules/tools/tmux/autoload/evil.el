@@ -14,4 +14,3 @@
   (if bang
       (+tmux/cd-to-here)
     (+tmux/cd-to-project)))
-

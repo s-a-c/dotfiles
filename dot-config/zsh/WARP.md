@@ -103,7 +103,7 @@ tools/preplugin-variance-eval.zsh
 The project is transforming a fragmented 40+ file ZSH configuration into a deterministic **modular system**:
 
 - **Current Reality**: 10 pre-plugin + 16 post-plugin modules (evolving)
-- **Target Architecture**: 8 pre-plugin + 11 post-plugin modules 
+- **Target Architecture**: 8 pre-plugin + 11 post-plugin modules
 - **Performance Target**: ≥20% startup improvement (from 4772ms baseline to ≤3817ms)
 - **Project Stage**: Stage 2 complete, Stage 3 in progress
 
@@ -267,13 +267,13 @@ export PERF_OUTLIER_FACTOR=1.5         # Outlier detection sensitivity
 ### 5.1. Core Documentation
 
 - **[IMPLEMENTATION.md](docs/redesignv2/IMPLEMENTATION.md)** - Current progress and rolling 7-day plan
-- **[ARCHITECTURE.md](docs/redesignv2/ARCHITECTURE.md)** - Design principles and module taxonomy  
+- **[ARCHITECTURE.md](docs/redesignv2/ARCHITECTURE.md)** - Design principles and module taxonomy
 - **[REFERENCE.md](docs/redesignv2/REFERENCE.md)** - Operational commands and troubleshooting
 
 ### 5.2. Stage Documentation
 
 - **[Stage 1: Foundation](docs/redesignv2/stages/stage-1-foundation.md)** - ✅ Complete
-- **[Stage 2: Pre-Plugin](docs/redesignv2/stages/stage-2-preplugin.md)** - ✅ Complete  
+- **[Stage 2: Pre-Plugin](docs/redesignv2/stages/stage-2-preplugin.md)** - ✅ Complete
 - **[Stage 3: Core](docs/redesignv2/stages/stage-3-core.md)** - 🚧 In Progress
 
 ### 5.3. Specialized Documentation
@@ -292,7 +292,7 @@ export PERF_OUTLIER_FACTOR=1.5         # Outlier detection sensitivity
 
 ### 6.1. Current Module Discrepancy
 
-**Expected**: 8 pre-plugin + 11 post-plugin = 19 modules  
+**Expected**: 8 pre-plugin + 11 post-plugin = 19 modules
 **Actual**: 10 pre-plugin + 16 post-plugin = 26 modules
 
 This variance is tracked in the ongoing redesign process. The additional modules include:
@@ -305,7 +305,7 @@ This variance is tracked in the ongoing redesign process. The additional modules
 
 Monitor project health via generated badges:
 - **Performance**: Startup time vs baseline
-- **Structure**: Module organization and drift  
+- **Structure**: Module organization and drift
 - **Governance**: Aggregated health signals
 - **Modules**: Segment emission and prompt markers
 
@@ -418,7 +418,7 @@ When following this guide, adhere to terminal session rules:
 The project integrates with CI workflows for:
 
 - **Performance regression testing** via `ci-perf-segments.yml`
-- **Structure validation** via `perf-structure-ci.yml` 
+- **Structure validation** via `perf-structure-ci.yml`
 - **Badge generation** for performance, governance, and module health
 - **Nightly governance reports** with variance tracking
 
@@ -431,7 +431,7 @@ Badge artifacts are stored in `docs/redesignv2/artifacts/badges/` and consumed b
 
 ---
 
-**Repository**: /Users/s-a-c/dotfiles/dot-config/zsh  
-**Last Updated**: 2025-09-05  
-**Stage Status**: Stage 2 Complete, Stage 3 In Progress  
+**Repository**: /Users/s-a-c/dotfiles/dot-config/zsh
+**Last Updated**: 2025-09-05
+**Stage Status**: Stage 2 Complete, Stage 3 In Progress
 **Performance Target**: ≥20% improvement (4772ms → ≤3817ms)

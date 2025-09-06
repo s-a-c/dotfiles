@@ -80,4 +80,3 @@
         "i" #'fuel-stack-mode
         "h" #'fuel-help
         "s" #'fuel-scaffold-vocab))
-

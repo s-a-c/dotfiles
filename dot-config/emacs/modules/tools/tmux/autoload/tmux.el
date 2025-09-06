@@ -143,4 +143,3 @@ command."
                                :active (equal (nth 3 pane) "1")
                                :pwd (nth 5 pane))))
     (error "There are no panes")))
-

@@ -331,3 +331,89 @@ performance-check:
 - Plugin system for custom validation rules
 
 This completes the P1 - Stability/Gating implementation providing comprehensive stability, testing, and monitoring infrastructure for the ZSH configuration system.
+
+## 11. Async Activation Checklist (Stage 3)
+
+The following checklist governs enabling asynchronous facilities (e.g., prompt readiness capture, background initialization) with strict preconditions and staged rollout. The single most important invariant is that compinit is executed exactly once.
+
+### 11.1 Preconditions
+
+- Single compinit precondition (required)
+  - Ensure exactly one compinit invocation across the entire startup lifecycle (pre-plugin and post-plugin).
+  - Configuration expectations:
+    - Plugin manager auto-compinit disabled: `ZGEN_AUTOLOAD_COMPINIT=0`
+    - Compinit is invoked from the redesigned completion module only (e.g., `.zshrc.d.REDESIGN/50-completion-history.zsh`), or a single designated module if naming differs.
+  - Runtime guard:
+    - Track a guard variable around compinit (e.g., `_REDESIGN_COMPINIT_DONE=1`) and early-return on subsequent attempts.
+    - Emit a diagnostic once if a duplicate attempt is detected (suppressed in normal interactive sessions).
+  - Test coverage:
+    - Maintain and run `tests/integration/test-postplugin-compinit-single-run.zsh` to assert a single compinit occurrence.
+
+- Prompt readiness markers (required)
+  - PROMPT_READY_COMPLETE must be emitted at most once per shell startup.
+  - If an opportunistic post-plugin boundary capture exists, it must be suppressed when a native prompt marker is detected (avoid double emission).
+  - Monotonic lifecycle constraint must hold for all captures: `pre_plugin_total_ms ≤ post_plugin_total_ms ≤ prompt_ready_ms`, and all strictly non-zero.
+
+- Segment logging (required)
+  - `$PERF_SEGMENT_LOG` must be writable during harness runs.
+  - Ensure `SEGMENT` lines are produced for pre, post, and prompt phases, even in headless harness scenarios (adaptive synthesis is allowed for harness-only paths).
+
+- Integrity & security invariants (required)
+  - Pre-plugin integrity manifest must pass (generator/test bytes aligned).
+  - Async initial-state test suite must be green in the target environment.
+
+### 11.2 Staged Enablement Plan
+
+- Stage A: Observe (non-invasive)
+  - Async hooks enabled only for performance harness sessions.
+  - Production shells capture markers opportunistically but avoid behavior-altering background work.
+  - Gating inputs:
+    - Variance mode = observe.
+    - N=5 capture per batch, outlier policy active (drop >2× median).
+    - Trimmed RSD targets: `pre, post ≤ 0.25` (warn), `≤ 0.40` (gate).
+
+- Stage B: Guard (limited rollout)
+  - Enable async for an opt-in cohort (developers or CI-only).
+  - Enforce compinit single-run guard; abort or fall back to serial on violation.
+  - Gating inputs:
+    - Variance mode = guard with 3/3 consecutive stable batches (N=5) at `trimmed RSD ≤ 0.15` for both pre and post.
+    - No duplicate PROMPT_READY markers observed.
+  - Rollback triggers:
+    - RSD exceeds `0.40` for any metric.
+    - Compinit duplication or prompt-marker duplication detected.
+    - Integrity or security tests regress.
+
+- Stage C: Promote (general availability)
+  - Enable async globally once Stage B remains stable for a defined soak period (e.g., 7 days).
+  - Keep guards in place; continue collecting variance and integrity signals.
+
+### 11.3 Verification & Tooling
+
+- Variance state and governance badges
+  - `docs/redesignv2/artifacts/badges/variance-state.json` must reflect current mode, streak, and RSD metrics (trimmed and raw).
+  - `docs/redesignv2/artifacts/badges/governance.json` must show `observe: stable` or `guard: stable` prior to promotion.
+
+- Micro-benchmark signal (non-gating)
+  - Maintain `docs/redesignv2/artifacts/metrics/microbench-core.json` for core helper function medians (µs per call).
+  - Display a concise range (min–max µs) alongside startup badge to detect drift.
+
+- Tests to run before promotion
+  - Integrity: `tests/security/test-preplugin-integrity-hash.zsh`
+  - Async initial state: `tests/security/test-async-initial-state.zsh`
+  - Compinit single-run: `tests/integration/test-postplugin-compinit-single-run.zsh`
+  - Optional: micro-bench smoke test(s) to ensure helper surfaces are loaded.
+
+### 11.4 Operational Guidance
+
+- Logging
+  - Use a single progress log for perf sessions (e.g., `perf-single-progress.log`) to track lifecycle and provenance (`markers_observed.prompt_native_any`).
+  - Ensure logs are rotated or size-capped to prevent interactive slowdown.
+
+- Configuration toggles (recommended defaults)
+  - Production shells: async safe-by-default; background work bounded and idempotent.
+  - Harness sessions: explicit env toggles allowed (e.g., `PERF_PROMPT_HARNESS=1`) to force deterministic capture.
+  - Prompt approximation fallback disabled for promotion gating; approximation may be used in harness-only paths when native markers are unavailable.
+
+- Rollback
+  - Keep a one-line switch to disable async activation and return to serial behavior.
+  - Document the switch in the top of the primary async module and in the operations runbook.

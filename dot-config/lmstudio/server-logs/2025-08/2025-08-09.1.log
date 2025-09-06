@@ -9240,13 +9240,13 @@
 }
 [2025-08-09 07:25:14][INFO][LM STUDIO SERVER] Success! HTTP server listening on port 1234
 [2025-08-09 07:25:14][WARN][LM STUDIO SERVER] Server accepting connections from the local network. Only use this if you know what you are doing!
-[2025-08-09 07:25:14][INFO] 
+[2025-08-09 07:25:14][INFO]
 [2025-08-09 07:25:14][INFO][LM STUDIO SERVER] Supported endpoints:
 [2025-08-09 07:25:14][INFO][LM STUDIO SERVER] ->	GET  http://169.254.235.83:1234/v1/models
 [2025-08-09 07:25:14][INFO][LM STUDIO SERVER] ->	POST http://169.254.235.83:1234/v1/chat/completions
 [2025-08-09 07:25:14][INFO][LM STUDIO SERVER] ->	POST http://169.254.235.83:1234/v1/completions
 [2025-08-09 07:25:14][INFO][LM STUDIO SERVER] ->	POST http://169.254.235.83:1234/v1/embeddings
-[2025-08-09 07:25:14][INFO] 
+[2025-08-09 07:25:14][INFO]
 [2025-08-09 07:25:14][INFO][LM STUDIO SERVER] Logs are saved into /Users/s-a-c/.lmstudio/server-logs
 [2025-08-09 07:25:14][INFO] Server started.
 [2025-08-09 07:25:14][INFO] Just-in-time model loading active.
@@ -9395,13 +9395,13 @@
 [2025-08-09 07:25:59][INFO] Server stopped.
 [2025-08-09 07:26:38][INFO][LM STUDIO SERVER] Success! HTTP server listening on port 1234
 [2025-08-09 07:26:38][WARN][LM STUDIO SERVER] Server accepting connections from the local network. Only use this if you know what you are doing!
-[2025-08-09 07:26:38][INFO] 
+[2025-08-09 07:26:38][INFO]
 [2025-08-09 07:26:38][INFO][LM STUDIO SERVER] Supported endpoints:
 [2025-08-09 07:26:38][INFO][LM STUDIO SERVER] ->	GET  http://169.254.235.83:1234/v1/models
 [2025-08-09 07:26:38][INFO][LM STUDIO SERVER] ->	POST http://169.254.235.83:1234/v1/chat/completions
 [2025-08-09 07:26:38][INFO][LM STUDIO SERVER] ->	POST http://169.254.235.83:1234/v1/completions
 [2025-08-09 07:26:38][INFO][LM STUDIO SERVER] ->	POST http://169.254.235.83:1234/v1/embeddings
-[2025-08-09 07:26:38][INFO] 
+[2025-08-09 07:26:38][INFO]
 [2025-08-09 07:26:38][INFO][LM STUDIO SERVER] Logs are saved into /Users/s-a-c/.lmstudio/server-logs
 [2025-08-09 07:26:38][INFO] Server started.
 [2025-08-09 07:26:38][INFO] Just-in-time model loading active.

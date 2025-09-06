@@ -7,9 +7,9 @@ web:
   links:
    - mysql
    - memcache
-   
+
 mysql:
   image: mysql
-  
+
 redis:
   image: redis

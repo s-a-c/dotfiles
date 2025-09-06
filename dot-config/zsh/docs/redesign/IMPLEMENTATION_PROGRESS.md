@@ -1,6 +1,6 @@
 # ZSH Redesign Implementation Progress Report
-> **DEPRECATED**: This legacy progress report has been superseded by the consolidated implementation guide at `docs/redesignv2/IMPLEMENTATION.md`.  
-> This file is retained only for historical reference and will not receive further updates.  
+> **DEPRECATED**: This legacy progress report has been superseded by the consolidated implementation guide at `docs/redesignv2/IMPLEMENTATION.md`.
+> This file is retained only for historical reference and will not receive further updates.
 > For current status, stages, gates, and metrics, use the redesignv2 documentation set.
 
 Date: 2025-01-03

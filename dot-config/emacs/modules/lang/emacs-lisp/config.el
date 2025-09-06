@@ -116,7 +116,7 @@ See `+emacs-lisp-non-package-mode' for details.")
                   ;; highlight defined, special variables & functions
                   (when +emacs-lisp-enable-extra-fontification
                     `((+emacs-lisp-highlight-vars-and-faces . +emacs-lisp--face))))))
- 
+
   (defadvice! +emacs-lisp-append-value-to-eldoc-a (fn sym)
     "Display variable value next to documentation in eldoc."
     :around #'elisp-get-var-docstring

@@ -29,7 +29,7 @@ LSP).
 - [[doom-package:shader-mode]] if [[doom-module:+unity]]
 - [[doom-package:sharper]] if [[doom-module:+dotnet]]
 - [[doom-package:sln-mode]]
-  
+
 ** Hacks
 /No hacks documented for this module./
 

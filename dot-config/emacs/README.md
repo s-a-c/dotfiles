@@ -59,7 +59,7 @@ Its design is guided by these mantras:
   break and they break often. Disaster recovery should be a priority! Doom's
   package management should be declarative and your private config reproducible,
   and comes with a means to roll back releases and updates (still a WIP).
-  
+
 Check out [the FAQ][FAQ] for answers to common questions about the project.
 
 
@@ -109,7 +109,7 @@ Check out [the FAQ][FAQ] for answers to common questions about the project.
 > `.9X` (e.g. `28.1.91`) -- **are not officially supported**. There *is* some
 > effort to support Emacs HEAD, however. [Follow this Discourse
 > post](https://discourse.doomemacs.org/t/3241) for details.
- 
+
 > [!IMPORTANT]
 > Doom is comprised of [~150 optional modules][Modules], some of which may have
 > additional dependencies. [Visit their documentation][Modules] or run `bin/doom
@@ -154,7 +154,7 @@ project boards and a newsletter:
   workarounds or temporary fixes for them.
 + ~~Doom's newsletter~~ (not finished) will contain changelogs in between
   releases.
-  
+
 
 # Getting help
 Emacs is no journey of a mere thousand miles. You _will_ run into problems and
@@ -189,7 +189,7 @@ mysterious errors. When you do, here are some places you can look for help:
 
 
 # Contribute
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) 
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![Elisp styleguide](https://img.shields.io/badge/elisp-style%20guide-purple?style=flat-square)](https://github.com/bbatsov/emacs-lisp-style-guide)
 [![Donate on liberapay](https://img.shields.io/badge/liberapay-donate-1.svg?style=flat-square&logo=liberapay&color=blue)][liberapay]
 [![Donate on paypal](https://img.shields.io/badge/paypal-donate-1?style=flat-square&logo=paypal&color=blue)][paypal]

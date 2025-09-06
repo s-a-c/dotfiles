@@ -37,7 +37,7 @@
         ;; Open in "other window" is less predictable, and can replace a window
         ;; we wanted to keep visible.
         org-journal-find-file #'find-file)
-  
+
   ;; Setup carryover to include all configured TODO states. We cannot carry over
   ;; [ ] keywords because `org-journal-carryover-items's syntax cannot correctly
   ;; interpret it as anything other than a date.
