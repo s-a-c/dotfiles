@@ -52,35 +52,43 @@ fi
 
 mkdir -p $ROOT_DIR/.git/tmp
 
-if [[ -x $TEST_RUNNER ]]; then
-    echo '[pre-commit] Running unit+integration+security tests'
-    if ! $TEST_RUNNER --category=unit,integration,security --fail-fast; then
-        echo '[pre-commit] Test failure.' >&2
-        exit 1
-    fi
-else
-    echo '[pre-commit] WARN: test runner missing.' >&2
-fi
-
-if [[ -x $PERF ]]; then
-    echo '[pre-commit] Quick performance check (3 runs)'
-    QUICK=$ROOT_DIR/.git/tmp/perf-quick.json
-    if $PERF --runs 3 --json-out "$QUICK" 2>/dev/null; then
-        if [[ -f $BASE ]]; then
-            base=$(grep -E 'startup_mean_ms' "$BASE" | tr -dc '0-9.')
-            cur=$(grep -E 'startup_mean_ms' "$QUICK" | tr -dc '0-9.')
-            if [[ -n $base && -n $cur && $base != 0 ]]; then
-                delta=$(awk -v b="$base" -v c="$cur" 'BEGIN{ printf "%.2f", (c-b)/b*100 }')
-                echo "[pre-commit] Perf delta: ${delta}%"
-                if awk -v d="$delta" 'BEGIN{exit (d>5?0:1)}'; then
-                    echo '[pre-commit] Perf regression >5%' >&2
-                    exit 1
-                fi
-            fi
+if [[ "${ZSH_KIT_RUN_FULL_TESTS:-0}" = "1" || "${CI:-}" = "true" ]]; then
+    if [[ -x $TEST_RUNNER ]]; then
+        echo '[pre-commit] Running unit+integration+security tests'
+        if ! $TEST_RUNNER --category=unit,integration,security --fail-fast; then
+            echo '[pre-commit] Test failure.' >&2
+            exit 1
         fi
     else
-        echo '[pre-commit] WARN: quick perf run failed.' >&2
+        echo '[pre-commit] WARN: test runner missing.' >&2
     fi
+else
+    echo '[pre-commit] Skipping heavy tests (set ZSH_KIT_RUN_FULL_TESTS=1 to enable).'
+fi
+
+if [[ "${ZSH_KIT_RUN_FULL_TESTS:-0}" = "1" || "${CI:-}" = "true" ]]; then
+    if [[ -x $PERF ]]; then
+        echo '[pre-commit] Quick performance check (3 runs)'
+        QUICK=$ROOT_DIR/.git/tmp/perf-quick.json
+        if $PERF --runs 3 --json-out "$QUICK" 2>/dev/null; then
+            if [[ -f $BASE ]]; then
+                base=$(grep -E 'startup_mean_ms' "$BASE" | tr -dc '0-9.')
+                cur=$(grep -E 'startup_mean_ms' "$QUICK" | tr -dc '0-9.')
+                if [[ -n $base && -n $cur && $base != 0 ]]; then
+                    delta=$(awk -v b="$base" -v c="$cur" 'BEGIN{ printf "%.2f", (c-b)/b*100 }')
+                    echo "[pre-commit] Perf delta: ${delta}%"
+                    if awk -v d="$delta" 'BEGIN{exit (d>5?0:1)}'; then
+                        echo '[pre-commit] Perf regression >5%' >&2
+                        exit 1
+                    fi
+                fi
+            fi
+        else
+            echo '[pre-commit] WARN: quick perf run failed.' >&2
+        fi
+    fi
+else
+    echo '[pre-commit] Skipping perf check (set ZSH_KIT_RUN_FULL_TESTS=1 to enable).'
 fi
 
 exit 0
