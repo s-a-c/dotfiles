@@ -65,9 +65,10 @@ is_being_sourced() {
             ;;
     esac
 
-    # Method 3: BASH_SOURCE comparison (cross-shell compatibility)
-    if [[ -n "${BASH_SOURCE:-}" ]]; then
-        if [[ "${BASH_SOURCE[0]}" != "$0" ]]; then
+    # Method 3: Script path comparison using ${(%):-%N} (zsh preferred)
+    local current_script="${(%):-%N}"
+    if [[ -n "$current_script" ]]; then
+        if [[ "$current_script" != "$0" ]]; then
             return 0  # Different values = sourced
         fi
     fi
@@ -370,7 +371,7 @@ detection_info() {
     zsh_debug_echo "Execution Context: $(get_execution_context)"
     zsh_debug_echo "Script Name (\$0): $0"
     zsh_debug_echo "Function Stack Depth: ${#funcstack[@]}"
-    zsh_debug_echo "BASH_SOURCE: ${BASH_SOURCE[0]:-not set}"
+    zsh_debug_echo "Script Path (%N): ${(%):-%N}"
     zsh_debug_echo "Current PID: $$"
     zsh_debug_echo "Parent PID: $PPID"
     zsh_debug_echo "Debug Mode: $ZSH_SOURCE_EXECUTE_DEBUG"
