@@ -1,5 +1,42 @@
 # dotfiles
 
+## Developer maintenance
+
+This repository includes a scoped pre-commit workflow and helper scripts to keep things tidy and fast.
+
+- Scoped pre-commit config: `dot-config/zsh/zsh-quickstart-kit/.pre-commit-config.yaml`
+  - Scope: only checks files under `dot-config/zsh`, `tools`, and `tests`.
+- Heavy tests gating:
+  - Local commits skip the zsh kit’s heavy unit/integration/security tests and quick perf run by default.
+  - Set `ZSH_KIT_RUN_FULL_TESTS=1` (or run in CI) to enable them during pre-commit.
+
+### Makefile targets
+
+Use these convenience targets from the repo root:
+
+- `make precommit-install` — Install pre-commit hooks locally.
+- `make precommit-run` — Run scoped pre-commit checks over all files.
+- `make precommit-normalize` — Normalize executable bits to match shebangs, ensure newline at EOF, then run the scoped checks.
+- `make broken-symlinks-list` — List all broken symlinks in the repository.
+- `make broken-symlinks-remove` — Remove all broken symlinks that are tracked by git.
+- `make fmt` — Alias for `precommit-normalize`.
+- `make check` — Alias for `precommit-run`.
+
+### Maintenance script
+
+- `tools/maintenance/normalize-exec-bits.sh`
+  - Adds `+x` to files that begin with `#!` (shebang) and removes `+x` from files that don’t.
+  - Updates both the working tree and the git index so pre-commit shebang checks pass consistently.
+  - Example:
+    - `tools/maintenance/normalize-exec-bits.sh` (default scope: `dot-config/zsh`, `tools`, `tests`)
+    - `tools/maintenance/normalize-exec-bits.sh --dry-run` (preview only)
+
+### Notes
+
+- CLI plugin directories (e.g., Docker) are ignored via `.gitignore` pattern: `**/cli-plugins/`
+- To run pre-commit manually with the scoped config:
+  - `pre-commit run --all-files -c dot-config/zsh/zsh-quickstart-kit/.pre-commit-config.yaml`
+
 Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
 
 Personal dotfiles managed (or migrating toward) GNU Stow for symlink-based configuration management.
