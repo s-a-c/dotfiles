@@ -208,7 +208,7 @@ secure_ssh_restart() {
 ## 3. Initialization
 
 # 3.1. Set up secure SSH agent on shell startup
-if [[ "${BASH_SOURCE[0]}" == "${0}" ]] || [[ "${(%):-%N}" == *"ssh-agent-core"* ]]; then
+if [[ "${(%):-%N}" == "$0" ]] || [[ "${(%):-%N}" == *"ssh-agent-core"* ]]; then
     # Script being executed directly or sourced for testing
     :
 else

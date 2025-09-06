@@ -711,6 +711,6 @@ check_system_health() {
 }
 
 # Run main function if script is executed directly
-if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+if [[ "${(%):-%N}" == "${0}" ]]; then
   main "$@"
 fi

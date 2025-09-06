@@ -475,7 +475,7 @@ if declare -f is_being_executed >/dev/null 2>&1; then
     if is_being_executed; then
         _standard_helpers_main "$@"
     fi
-elif [[ "${BASH_SOURCE[0]}" == "${0}" ]] || [[ "${(%):-%N}" == *"standard-helpers"* ]]; then
+elif [[ "${(%):-%N}" == "$0" ]] || [[ "${(%):-%N}" == *"standard-helpers"* ]]; then
     # Fallback detection for direct execution
     _standard_helpers_main "$@"
 fi

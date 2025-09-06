@@ -32,6 +32,6 @@ rebuild_completions() {
 }
 
 # Auto-run if script is executed directly
-if [[ "${BASH_SOURCE[0]}" == "${0}" ]] || [[ "${(%):-%N}" == "${0:t}" ]]; then
+if [[ "${(%):-%N}" == "${0}" ]] || [[ "${(%):-%N}" == "${0:t}" ]]; then
     rebuild_completions
 fi

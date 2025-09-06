@@ -368,7 +368,7 @@ if declare -f is_being_executed >/dev/null 2>&1; then
     if is_being_executed; then
         completion_management_main "$@"
     fi
-elif [[ "${BASH_SOURCE[0]}" == "${0}" ]] || [[ "${(%):-%N}" == *"completion-management"* ]]; then
+elif [[ "${(%):-%N}" == "$0" ]] || [[ "${(%):-%N}" == *"completion-management"* ]]; then
     # Fallback detection for direct execution
     completion_management_main "$@"
 fi
