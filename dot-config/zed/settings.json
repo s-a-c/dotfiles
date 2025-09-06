@@ -10,7 +10,7 @@
     // The name of a font to use for rendering text in the UI
     // You can set this to ".SystemUIFont" to use the system font
     // "ui_font_family": "Zed Plex Sans",
-    "icon_theme": "Icons modern material (Dark)",
+    "icon_theme": "Catppuccin Mocha",
     "agent": {
         "default_model": {
             "provider": "copilot_chat",
@@ -22,6 +22,13 @@
         "play_sound_when_agent_done": true,
     },
     "context_servers": {
+        "mcp-server-tavily": {
+            "source": "extension",
+            "enabled": true,
+            "settings": {
+                "tavily_api_key": "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"
+            }
+        },
         "mcp-server-byterover": {
             "source": "extension",
             "settings": {
@@ -65,6 +72,6 @@
     "theme": {
         "mode": "dark",
         "light": "Ayu Light",
-        "dark": "Catppuccin Espresso (Blur) [Heavy]"
+        "dark": "Catppuccin Espresso (Blur) [Light]"
     }
 }

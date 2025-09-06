@@ -570,7 +570,7 @@ if declare -f is_being_executed >/dev/null 2>&1; then
     if is_being_executed; then
         performance_monitoring_main "$@"
     fi
-elif [[ "${BASH_SOURCE[0]}" == "${0}" ]] || [[ "${(%):-%N}" == *"performance-monitoring"* ]]; then
+elif [[ "${(%):-%N}" == "${0}" ]] || [[ "${(%):-%N}" == *"performance-monitoring"* ]]; then
     # Fallback detection for direct execution
     performance_monitoring_main "$@"
 fi

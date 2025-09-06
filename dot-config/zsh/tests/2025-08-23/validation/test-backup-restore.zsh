@@ -273,4 +273,4 @@ main() {
 }
 
 # Only run if called directly
-[[ "${BASH_SOURCE[0]}" == "${0}" ]] && main "$@"
+[[ "${(%):-%N}" == "$0" ]] && main "$@"

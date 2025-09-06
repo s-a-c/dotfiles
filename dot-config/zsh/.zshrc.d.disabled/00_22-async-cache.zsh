@@ -492,7 +492,7 @@ if declare -f is_being_executed >/dev/null 2>&1; then
     if is_being_executed; then
         async_main "$@"
     fi
-elif [[ "${BASH_SOURCE[0]}" == "${0}" ]] || [[ "${(%):-%N}" == *"async-cache"* ]]; then
+elif [[ "${(%):-%N}" == "${0}" ]] || [[ "${(%):-%N}" == *"async-cache"* ]]; then
     # Fallback detection for direct execution
     async_main "$@"
 fi

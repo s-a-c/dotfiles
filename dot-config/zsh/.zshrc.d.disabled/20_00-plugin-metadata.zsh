@@ -519,7 +519,7 @@ if declare -f is_being_executed >/dev/null 2>&1; then
     if is_being_executed; then
         main "$@"
     fi
-elif [[ "${BASH_SOURCE[0]}" == "${0}" ]] || [[ "${(%):-%N}" == *"plugin-metadata"* ]]; then
+elif [[ "${(%):-%N}" == "$0" ]] || [[ "${(%):-%N}" == *"plugin-metadata"* ]]; then
     # Fallback detection for direct execution
     main "$@"
 fi

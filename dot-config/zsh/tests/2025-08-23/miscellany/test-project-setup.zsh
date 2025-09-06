@@ -152,4 +152,4 @@ main() {
     _test_cleanup
 }
 
-[[ "${BASH_SOURCE[0]}" == "${0}" ]] && main "$@"
+[[ "${(%):-%N}" == "$0" ]] && main "$@"

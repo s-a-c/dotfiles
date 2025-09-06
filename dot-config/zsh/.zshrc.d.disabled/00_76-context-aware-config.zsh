@@ -505,7 +505,7 @@ if declare -f is_being_executed >/dev/null 2>&1; then
     if is_being_executed; then
         context_main "$@"
     fi
-elif [[ "${BASH_SOURCE[0]}" == "${0}" ]] || [[ "${(%):-%N}" == *"context-aware-config"* ]]; then
+elif [[ "${(%):-%N}" == "$0" ]] || [[ "${(%):-%N}" == *"context-aware-config"* ]]; then
     # Fallback detection for direct execution
     context_main "$@"
 fi

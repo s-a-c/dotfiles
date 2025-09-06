@@ -348,7 +348,7 @@ cleanup_test_environment() {
 }
 
 # Main execution
-if [[ "${BASH_SOURCE[0]:-${(%):-%x}}" == "${0}" ]] || [[ "$1" == "test" ]]; then
+if [[ "${(%):-%N}" == "$0" ]] || [[ "$1" == "test" ]]; then
     test_secure_ssh_implementation
     test_result=$?
         zsh_debug_echo "# [test-secure-ssh] Test suite completed at $(date -u +'%Y-%m-%d %H:%M:%S UTC')"

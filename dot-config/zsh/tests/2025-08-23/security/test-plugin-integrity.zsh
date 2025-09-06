@@ -526,6 +526,6 @@ main() {
 }
 
 # Execute main function only if script is run directly
-if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+if [[ "${(%):-%N}" == "$0" ]]; then
     main "$@"
 fi
