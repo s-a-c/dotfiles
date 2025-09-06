@@ -25,6 +25,7 @@ COMPDUMP_PATH="${ZGEN_CUSTOM_COMPDUMP:-${ZSH_COMPDUMP:-${ZDOTDIR}/.zcompdump}}"
 rm -f "$COMPDUMP_PATH" 2>/dev/null || true
 
 # First run
+autoload -Uz compinit 2>/dev/null || true
 source "$INIT_SCRIPT"
 if [[ -z ${_COMPINIT_DONE:-} ]]; then
     echo "FAIL: _COMPINIT_DONE not set after first init" >&2
