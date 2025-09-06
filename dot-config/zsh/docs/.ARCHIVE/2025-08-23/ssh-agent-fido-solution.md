@@ -4,7 +4,7 @@
 
 The ssh-agent issue was caused by:
 
-1. **Conflicting SSH Agent Executables**: 
+1. **Conflicting SSH Agent Executables**:
    - Homebrew version: `/opt/homebrew/bin/ssh-agent` (newer OpenSSH 9.9p2)
    - macOS System version: `/usr/bin/ssh-agent` (system version)
    - The Homebrew version was taking precedence in PATH

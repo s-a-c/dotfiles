@@ -44,8 +44,8 @@ A new badge summarizes module emission health:
 Badge Legend Addendum (until the main legend table is revised):
 - modules.json | modules | Module emission health | Granular segments + native prompt present | Either missing | Generated via `generate-summary-badges.zsh` from `module-fire.json`
 
-**Version 2.5** – Core Hardening, Perf/Bench & Governance Badge Integration Updates  
-**Status**: Stage 2 Complete (baseline & tag created) – Stage 3 (Core Modules) In Progress  
+**Version 2.5** – Core Hardening, Perf/Bench & Governance Badge Integration Updates
+**Status**: Stage 2 Complete (baseline & tag created) – Stage 3 (Core Modules) In Progress
 **Last Updated**: 2025-09-06
 
 > NOTE: A “Badge Legend Update Stub” section will be inserted in the Badge Legend area once exact line numbers for that section are provided (required for minimal diff compliance). Please provide the numbered snippet around the existing “## Badge Legend (Expanded – New Pending Rows)” heading so the planned stub (variance-state, multi_source, authenticity fields, perf-multi source note) can be appended precisely.
@@ -54,37 +54,37 @@ Badge Legend Addendum (until the main legend table is revised):
 
 Focused execution priorities for the remainder of Stage 3 (after recent additions: trust anchor read APIs, micro-benchmark harness with shim fallback, variance stability log, perf drift badge script, multi-sample fingerprint caching):
 
-1. Multi-Sample Segment Refresh & Monotonic Validation  
-   - Force a fresh multi-sample run: `PERF_CAPTURE_FORCE=1 tools/perf-capture-multi.zsh` to obtain non‑zero `post_plugin_total` & `prompt_ready_ms`.  
-   - Confirm monotonic lifecycle (`pre ≤ post ≤ prompt`) shows `monotonic=ok` (promotion-guard note).  
-   - Append new Variance Stability Log row (IMPLEMENTATION.md §1.3) with refreshed metrics.
+1. Multi-Sample Segment Refresh & Monotonic Validation
+   - Run N=5 captures with `tools/perf-capture-multi-simple.zsh` (fast harness as needed), then execute `tools/update-variance-and-badges.zsh` to refresh variance/governance/perf badges.
+   - Ensure lifecycle monotonicity holds (`pre ≤ post ≤ prompt`); this is currently satisfied with a non‑zero trio.
+   - Maintain guard streak (3/3 achieved); continue periodic batches to monitor drift and confirm stability.
 
-2. Governance & Drift Integration (Governance badge now active)  
-   - Governance badge generation integrated in perf + nightly workflows (extended artifact + simple shield). Monitor first artifact; once stable, reference it via Pages endpoint.  
+2. Governance & Drift Integration (Governance badge now active)
+   - Governance badge generation integrated in perf + nightly workflows (extended artifact + simple shield). Monitor first artifact; once stable, reference it via Pages endpoint.
    - Continue stabilizing perf drift badge; after two consecutive low-RSD (<5%) runs with non‑zero trio, prepare enabling `PERF_DIFF_FAIL_ON_REGRESSION=1` (warn→gate).
 
-3. Micro-Benchmark Baseline & Shim Removal Plan  
-   - If not yet committed: `bench-core-functions.zsh --json --iterations 5000 --repeat 3 > docs/redesignv2/artifacts/metrics/bench-core-baseline.json`.  
-   - Draft F16 shim removal plan (enumerate currently shimmed helpers) to unlock micro bench gating path (F22/F26).  
+3. Micro-Benchmark Baseline & Shim Removal Plan
+   - If not yet committed: `bench-core-functions.zsh --json --iterations 5000 --repeat 3 > docs/redesignv2/artifacts/metrics/bench-core-baseline.json`.
+   - Draft F16 shim removal plan (enumerate currently shimmed helpers) to unlock micro bench gating path (F22/F26).
    - Track `shimmed_count` reduction in future governance badge stats.
 
-4. Test / Enforcement Enhancements  
-   - Promote monotonic lifecycle test to strict after two passes with non‑zero trio + monotonic=ok.  
-   - Define micro bench thresholds (warn ≥2x, fail ≥3x median) aligned with governance script factors.  
+4. Test / Enforcement Enhancements
+   - Promote monotonic lifecycle test to strict after two passes with non‑zero trio + monotonic=ok.
+   - Define micro bench thresholds (warn ≥2x, fail ≥3x median) aligned with governance script factors.
    - Elevate drift badge presence test from warn to enforce after first stable governance cycle.
 
-5. Documentation & Badges  
-   - Governance badge row scaffold present; remove "(pending)" tag once first published artifact verified.  
-   - Update Stage 3 readiness checklist when governance badge appears green (no FAIL conditions).  
+5. Documentation & Badges
+   - Governance badge row scaffold present; remove "(pending)" tag once first published artifact verified.
+   - Update Stage 3 readiness checklist when governance badge appears green (no FAIL conditions).
    - Add variance decision badge once variance-state artifact implemented.
 
-6. Stage 3 Exit Preparation  
-   - Collect evidence set: PATH invariant, security skeleton idempotency, option snapshot, core namespace stability, single scheduler registration, provisional perf budget adherence, micro baseline + governance badge green.  
+6. Stage 3 Exit Preparation
+   - Collect evidence set: PATH invariant, security skeleton idempotency, option snapshot, core namespace stability, single scheduler registration, provisional perf budget adherence, micro baseline + governance badge green.
    - Run `stage3-exit-report.sh` after governance + drift + non‑zero segment validation.
 
-7. Future Promotion Hooks (Logged)  
-   - Execute F16 (remove shims) → enables F17 (shim guard) & micro gating (F22/F26).  
-   - Integrate ledger max regression embedding (F2) & future variance-state source into governance badge.  
+7. Future Promotion Hooks (Logged)
+   - Execute F16 (remove shims) → enables F17 (shim guard) & micro gating (F22/F26).
+   - Integrate ledger max regression embedding (F2) & future variance-state source into governance badge.
    - Prepare combined infra-health weighting once governance badge stable across ≥3 nightly runs.
 
 ---
@@ -99,11 +99,11 @@ Focused execution priorities for the remainder of Stage 3 (after recent addition
 | Core functions namespace stable | [x] | Manifest & namespace tests green |
 | Integrity scheduler single registration | [x] | No duplicate key on re-source |
 | Pre-plugin integrity aggregate alignment | [x] | Generator/test use identical bytes; deterministic enumeration and newline; baseline refreshed |
-| Perf provisional budget (pre-plugin) | [~] | Pre stable; post/prompt metrics pending non-zero |
-| Perf regression gating (observe→gate) | [ ] | Await stable multi-sample + drift readiness |
-| Drift badge integration | [~] | Script ready; CI publication pending (governance badge generation now wired into perf & nightly workflows; waiting on stable non-zero post/prompt segments for full activation) |
+| Perf provisional budget (pre-plugin) | [x] | Pre stable; post/prompt trio non‑zero & monotonic |
+| Perf regression gating (observe→gate) | [~] | Variance mode=guard; perf-drift gating remains observe (await drift readiness) |
+| Drift badge integration | [~] | Script integrated; CI publication pending; variance/governance badges stable; drift remains observe |
 | Module-fire selftest & modules badge | [~] | Tools integrated; CI selftest and “modules” badge wired. Emission stabilization in progress (settle/grace enabled), soft gate active; optional hard gate available |
-| Micro benchmark baseline captured | [ ] | Harness stabilized; baseline not yet committed |
+| Micro benchmark baseline captured | [x] | Baseline captured (metrics/microbench-core.json); summarized in perf badge |
 | All new tests green | [~] | Current scope green; new marker/drift tests queued |
 
 Legend: [x]=complete, [~]=in progress/partial, [ ]=not started.
@@ -125,7 +125,7 @@ The redesign transforms a fragmented 40+ file setup into a deterministic **8 pre
 | Performance Gates | Observe mode | Automated regression gating | 🔄 Observe (diff + variance) active |
 | Path Rules Compliance | (legacy untracked) | 0 violations | ![Path Rules](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/<OWNER>/<REPO>/gh-pages/badges/path-rules.json) |
 
-> Path Rules badge enforces zero direct raw path extraction outside helpers; failure is immediate (CI fail-fast).  
+> Path Rules badge enforces zero direct raw path extraction outside helpers; failure is immediate (CI fail-fast).
 > Helper standard: `zf::script_dir` / `resolve_script_dir`.
 
 ---
@@ -194,13 +194,13 @@ Notes:
 - Stage documents: `stages/stage-1-foundation.md` (✅), `stage-2-preplugin.md` (✅), `stage-3-core.md` (⏳ live checklist), others pending.
 
 ### **📁 Implementation Artifacts**
-- `artifacts/inventories/` – Inventories & baselines  
-- `artifacts/metrics/` – Performance + (pending) micro bench artifacts  
-- `artifacts/badges/` – Badge JSON endpoints  
+- `artifacts/inventories/` – Inventories & baselines
+- `artifacts/metrics/` – Performance + (pending) micro bench artifacts
+- `artifacts/badges/` – Badge JSON endpoints
 - `artifacts/checksums/` – Integrity baselines (generator/test aggregate aligned; baseline refreshed)
 
 ### **📚 Archive & Historical**
-- `archive/planning-complete/` – Completed planning docs  
+- `archive/planning-complete/` – Completed planning docs
 - `archive/deprecated/` – Superseded or retired materials
 
 ---
@@ -327,10 +327,10 @@ tools/experimental/perf-module-ledger.zsh \
 
 ## 📊 **Project Statistics**
 
-- **Total Modules**: 19 (8 + 11)  
-- **Tests**: 67+ (design / unit / feature / integration / security / performance)  
-- **Perf Tooling**: Segment capture, diff, ledger prototype, drift badge script  
-- **Benchmarking**: Core function harness (shim-aware, JSON artifact)  
+- **Total Modules**: 19 (8 + 11)
+- **Tests**: 67+ (design / unit / feature / integration / security / performance)
+- **Perf Tooling**: Segment capture, diff, ledger prototype, drift badge script
+- **Benchmarking**: Core function harness (shim-aware, JSON artifact)
 - **Governance**: Variance log, trust anchor APIs, path rules badge, helper verifier
 
 ---

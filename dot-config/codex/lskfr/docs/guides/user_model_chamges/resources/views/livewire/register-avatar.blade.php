@@ -3,25 +3,25 @@
         <label class="block text-sm font-medium text-gray-700">
             Profile Picture (optional)
         </label>
-        
+
         <div class="flex space-x-4 mb-4">
-            <button 
-                type="button" 
+            <button
+                type="button"
                 class="px-3 py-1 text-xs font-medium rounded-md {{ $uploadType === 'file' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700' }}"
                 wire:click="$set('uploadType', 'file')"
             >
                 Upload File
             </button>
-            <button 
-                type="button" 
+            <button
+                type="button"
                 class="px-3 py-1 text-xs font-medium rounded-md {{ $uploadType === 'url' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700' }}"
                 wire:click="$set('uploadType', 'url')"
             >
                 Use URL
             </button>
             @if($uploadType !== 'none')
-                <button 
-                    type="button" 
+                <button
+                    type="button"
                     class="px-3 py-1 text-xs font-medium rounded-md bg-red-100 text-red-700"
                     wire:click="removeAvatar"
                 >
@@ -29,9 +29,9 @@
                 </button>
             @endif
         </div>
-        
+
         @if($uploadType === 'file')
-            <div 
+            <div
                 x-data="{ isUploading: false, progress: 0 }"
                 x-on:livewire-upload-start="isUploading = true"
                 x-on:livewire-upload-finish="isUploading = false"
@@ -55,16 +55,16 @@
                         </p>
                     </div>
                 </div>
-                
+
                 <!-- Progress Bar -->
                 <div x-show="isUploading" class="mt-2">
                     <div class="h-2 bg-gray-200 rounded-full">
                         <div class="h-2 bg-primary rounded-full" :style="`width: ${progress}%`"></div>
                     </div>
                 </div>
-                
+
                 @error('avatar') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                
+
                 @if($avatar)
                     <div class="mt-4 flex items-center">
                         <img src="{{ $avatar->temporaryUrl() }}" alt="Avatar preview" class="h-16 w-16 rounded-full object-cover">
@@ -75,20 +75,20 @@
         @elseif($uploadType === 'url')
             <div>
                 <div class="mt-1">
-                    <input 
-                        type="text" 
-                        wire:model.debounce.500ms="avatarUrl" 
+                    <input
+                        type="text"
+                        wire:model.debounce.500ms="avatarUrl"
                         class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md"
                         placeholder="https://example.com/avatar.jpg"
                     >
                 </div>
                 @error('avatarUrl') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                
+
                 @if($avatarUrl)
                     <div class="mt-4 flex items-center">
-                        <img 
-                            src="{{ $avatarUrl }}" 
-                            alt="Avatar preview" 
+                        <img
+                            src="{{ $avatarUrl }}"
+                            alt="Avatar preview"
                             class="h-16 w-16 rounded-full object-cover"
                             onerror="this.src='https://ui-avatars.com/api/?name=Preview&size=256&background=random'; this.onerror=null;"
                         >
@@ -97,7 +97,7 @@
                 @endif
             </div>
         @endif
-        
+
         <input type="hidden" name="avatar_data" value="{{ json_encode($this->avatarData) }}">
     </div>
 </div>

@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: Doom module readme                                             
+# name: Doom module readme
 # --
 :PROPERTIES:
 :ID:       `(doom-docs-generate-id)`
@@ -153,7 +153,7 @@ This module requires:
 #+end_quote
 
 * Troubleshooting
-# List common issues and any workarounds/solutions, or link to external resources. 
+# List common issues and any workarounds/solutions, or link to external resources.
 [[doom-report:][Report an issue?]]
 
 ** Common issue

@@ -24,7 +24,7 @@ fi
 # ------------------------
 
 typeset -gA ZF_HARDENED_MODULES
-typeset -gA ZF_MODULE_DEPENDENCIES  
+typeset -gA ZF_MODULE_DEPENDENCIES
 typeset -gA ZF_ORIGINAL_FUNCTIONS
 typeset -ga ZF_CRITICAL_FUNCTIONS
 
@@ -53,24 +53,24 @@ zf_harden_function() {
   local func_name="$1"
   local module="${2:-unknown}"
   local timeout="${3:-5}"
-  
+
   # Skip if already hardened
   if [[ -n "${ZF_ORIGINAL_FUNCTIONS[$func_name]:-}" ]]; then
     zf_debug "module-hardening" "function '$func_name' already hardened"
     return 0
   fi
-  
+
   # Validate function exists
   if ! typeset -f "$func_name" >/dev/null 2>&1; then
     zf_warn "module-hardening" "cannot harden non-existent function: $func_name"
     return 1
   fi
-  
+
   # Store original function
   local original_def
   original_def=$(typeset -f "$func_name")
   ZF_ORIGINAL_FUNCTIONS[$func_name]="$original_def"
-  
+
   # Create hardened wrapper
   eval "
 ${func_name}_original() {
@@ -81,7 +81,7 @@ $func_name() {
   zf_execute_hardened '$func_name' '$module' $timeout \"\$@\"
 }
 "
-  
+
   zf_info "module-hardening" "hardened function: $func_name"
   return 0
 }
@@ -92,7 +92,7 @@ zf_execute_hardened() {
   local module="$2"
   local timeout="$3"
   shift 3
-  
+
   # Execute with error handling
   local start_time result rc
   if [[ -n "${EPOCHREALTIME:-}" ]]; then
@@ -100,11 +100,11 @@ zf_execute_hardened() {
   else
     start_time="$(date +%s.%N 2>/dev/null || date +%s)"
   fi
-  
+
   # Execute the function
   result=$("${func_name}_original" "$@" 2>&1)
   rc=$?
-  
+
   local end_time elapsed_ms
   if [[ -n "${EPOCHREALTIME:-}" ]]; then
     end_time="$EPOCHREALTIME"
@@ -112,7 +112,7 @@ zf_execute_hardened() {
     end_time="$(date +%s.%N 2>/dev/null || date +%s)"
   fi
   elapsed_ms=$(awk -v s="$start_time" -v e="$end_time" 'BEGIN{printf "%.0f", (e-s)*1000}')
-  
+
   # Handle results
   if (( rc != 0 )); then
     zf_err "$module" "function '$func_name' failed" "exit_code=$rc elapsed=${elapsed_ms}ms"
@@ -125,12 +125,12 @@ zf_execute_hardened() {
   elif (( elapsed_ms > 100 )); then
     zf_warn "$module" "function '$func_name' slow execution" "elapsed=${elapsed_ms}ms"
   fi
-  
+
   # Output result if successful
   if (( rc == 0 )) && [[ -n "$result" ]]; then
     print -r -- "$result"
   fi
-  
+
   return $rc
 }
 
@@ -142,27 +142,27 @@ zf_execute_hardened() {
 zf_validate_module_dependencies() {
   local module="$1"
   local deps="${ZF_MODULE_DEPENDENCIES[$module]:-}"
-  
+
   if [[ -z "$deps" ]]; then
     zf_debug "module-hardening" "no dependencies defined for module: $module"
     return 0
   fi
-  
+
   local dep missing_deps=()
   for dep in ${=deps}; do
     local sentinel_var="_LOADED_${dep//-/_}"
     sentinel_var="${sentinel_var:u}"  # uppercase
-    
+
     if [[ -z "${(P)sentinel_var:-}" ]]; then
       missing_deps+=("$dep")
     fi
   done
-  
+
   if (( ${#missing_deps[@]} > 0 )); then
     zf_err "module-hardening" "missing dependencies for module '$module': ${missing_deps[*]}"
     return 1
   fi
-  
+
   zf_debug "module-hardening" "all dependencies satisfied for module: $module"
   return 0
 }
@@ -175,21 +175,21 @@ zf_validate_module_dependencies() {
 zf_monitor_module() {
   local module="$1"
   local operation="${2:-load}"
-  
+
   # Record monitoring data
   local timestamp=$(date +%s)
   local health_key="${module}_${operation}_${timestamp}"
-  
+
   # Collect metrics
   local error_count="${ZF_MODULE_ERROR_COUNT[$module]:-0}"
   local load_time="${ZF_MODULE_LOAD_TIME[$module]:-unknown}"
   local health_status="${ZF_MODULE_HEALTH[$module]:-unknown}"
-  
+
   # Export to performance monitoring if enabled
   if [[ -n "${PERF_SEGMENT_LOG:-}" ]]; then
     print "MODULE_MONITOR module=$module operation=$operation errors=$error_count load_time=$load_time status=$health_status" >> "$PERF_SEGMENT_LOG" 2>/dev/null || true
   fi
-  
+
   zf_debug "module-hardening" "monitored module '$module': errors=$error_count load_time=$load_time status=$health_status"
   return 0
 }
@@ -204,12 +204,12 @@ zf_register_fallbacks() {
   zf_log_fallback() {
     print "[zf-fallback] $*" >&2
   }
-  
+
   # Fallback for zf_warn
   zf_warn_fallback() {
     print "[zf-warn-fallback] $*" >&2
   }
-  
+
   # Fallback for zf_ensure_cmd
   zf_ensure_cmd_fallback() {
     local missing=0 c
@@ -218,20 +218,20 @@ zf_register_fallbacks() {
     done
     return $missing
   }
-  
+
   # Fallback for zf_require
   zf_require_fallback() {
     local c="$1"
     command -v -- "$c" >/dev/null 2>&1
   }
-  
+
   # Fallback for zf_with_timing
   zf_with_timing_fallback() {
     local seg="$1"; shift
     # Just execute without timing
     "$@"
   }
-  
+
   zf_info "module-hardening" "fallback functions registered"
 }
 
@@ -242,12 +242,12 @@ zf_register_fallbacks() {
 # Apply hardening to critical functions
 zf_apply_hardening() {
   local module="${1:-auto}"
-  
+
   zf_info "module-hardening" "applying hardening (module: $module)"
-  
+
   # Register fallbacks first
   zf_register_fallbacks
-  
+
   # Harden critical functions
   local func
   for func in "${ZF_CRITICAL_FUNCTIONS[@]}"; do
@@ -257,7 +257,7 @@ zf_apply_hardening() {
       zf_warn "module-hardening" "critical function not found: $func"
     fi
   done
-  
+
   zf_info "module-hardening" "hardening applied to ${#ZF_CRITICAL_FUNCTIONS[@]} functions"
   return 0
 }
@@ -272,7 +272,7 @@ zf_remove_hardening() {
       zf_debug "module-hardening" "restored original function: $func"
     fi
   done
-  
+
   zf_info "module-hardening" "hardening removed from ${#ZF_ORIGINAL_FUNCTIONS[@]} functions"
   ZF_ORIGINAL_FUNCTIONS=()
 }
@@ -284,7 +284,7 @@ zf_remove_hardening() {
 # Check hardening system health
 zf_hardening_health_check() {
   local issues=0
-  
+
   # Check critical functions are available
   local func
   for func in "${ZF_CRITICAL_FUNCTIONS[@]}"; do
@@ -293,7 +293,7 @@ zf_hardening_health_check() {
       (( issues++ ))
     fi
   done
-  
+
   # Check fallbacks are available
   for func in "${ZF_CRITICAL_FUNCTIONS[@]}"; do
     if ! typeset -f "${func}_fallback" >/dev/null 2>&1; then
@@ -301,7 +301,7 @@ zf_hardening_health_check() {
       (( issues++ ))
     fi
   done
-  
+
   # Check hardened functions
   local hardened_count=0
   for func in ${(k)ZF_ORIGINAL_FUNCTIONS}; do
@@ -312,7 +312,7 @@ zf_hardening_health_check() {
       (( issues++ ))
     fi
   done
-  
+
   if (( issues == 0 )); then
     zf_info "hardening-health" "hardening system healthy (${hardened_count} functions hardened)"
     return 0

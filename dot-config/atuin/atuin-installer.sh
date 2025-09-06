@@ -132,7 +132,7 @@ download_binary_and_run_installer() {
     local _artifact_name
 
     # Lookup what to download/unpack based on platform
-    case "$_arch" in 
+    case "$_arch" in
         "aarch64-apple-darwin")
             _artifact_name="atuin-aarch64-apple-darwin.tar.gz"
             _zip_ext=".tar.gz"
@@ -296,7 +296,7 @@ replace_home() {
 json_binary_aliases() {
     local _arch="$1"
 
-    case "$_arch" in 
+    case "$_arch" in
     "aarch64-apple-darwin")
         echo '{}'
         ;;
@@ -328,7 +328,7 @@ aliases_for_binary() {
     local _bin="$1"
     local _arch="$2"
 
-    case "$_arch" in 
+    case "$_arch" in
     "aarch64-apple-darwin")
         case "$_bin" in
         *)

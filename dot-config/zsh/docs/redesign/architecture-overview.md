@@ -1,6 +1,6 @@
 # Architecture Overview (Consolidated Copy)
-> **DEPRECATED**: This legacy architecture overview has been superseded by the consolidated documentation in `docs/redesignv2/ARCHITECTURE.md`.  
-> Refer to the new file for authoritative design principles, module taxonomy, and decision log.  
+> **DEPRECATED**: This legacy architecture overview has been superseded by the consolidated documentation in `docs/redesignv2/ARCHITECTURE.md`.
+> Refer to the new file for authoritative design principles, module taxonomy, and decision log.
 > This legacy copy is retained only for historical context and will not be updated.
 Date: 2025-08-30
 Status: Planning (Pre-Migration)

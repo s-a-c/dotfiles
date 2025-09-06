@@ -50,46 +50,46 @@ zf_error() {
   local module="${2:-unknown}"
   local message="$3"
   local context="${4:-}"
-  
+
   # Get numeric level
   local level_num
   level_num=$(get_error_level "$level")
-  
+
   # Check if we should log this level
   if (( level_num < ZF_MIN_LOG_LEVEL )); then
     return 0
   fi
-  
+
   # Create log entry
   local timestamp
   timestamp=$(date -Iseconds 2>/dev/null || date)
   local entry="$timestamp [$level] [$module] $message"
   [[ -n "$context" ]] && entry="$entry (context: $context)"
-  
+
   # Add to log buffer
   ZF_ERROR_LOG+=("$entry")
-  
+
   # Rotate log if too large
   if (( ${#ZF_ERROR_LOG[@]} > ZF_ERROR_LOG_MAX )); then
     local half=$((ZF_ERROR_LOG_MAX/2))
     ZF_ERROR_LOG=("${ZF_ERROR_LOG[@]: -$half}")
   fi
-  
+
   # Output to stderr if appropriate
   if (( level_num >= 2 )); then  # WARN and above
     print "[zf-error] $entry" >&2
   fi
-  
+
   # Performance monitoring integration
   if [[ "$ZF_PERF_MONITOR_ERRORS" == "1" && -n "${PERF_SEGMENT_LOG:-}" ]]; then
     print "ERROR level=$level module=$module" >> "$PERF_SEGMENT_LOG" 2>/dev/null || true
   fi
-  
+
   # Trigger recovery if critical
   if [[ "$level" == "CRITICAL" || "$level" == "FATAL" ]]; then
     zf_trigger_recovery "$module" "$level" "$message"
   fi
-  
+
   return $((level_num >= 3 ? 1 : 0))
 }
 
@@ -115,14 +115,14 @@ get_module_health_file() {
 zf_module_load_start() {
   local module="$1"
   [[ -z "$module" ]] && return 1
-  
+
   local health_file
   health_file=$(get_module_health_file "$module")
-  
+
   local start_time
   # Use simpler epoch time in milliseconds
   start_time="$(date +%s)000"  # Seconds to milliseconds
-  
+
   echo "status=loading start_time=$start_time" > "$health_file"
   return 0
 }
@@ -132,42 +132,42 @@ zf_module_load_complete() {
   local module="$1"
   local load_status="${2:-success}"
   [[ -z "$module" ]] && return 1
-  
+
   local health_file
   health_file=$(get_module_health_file "$module")
-  
+
   local end_time
-  # Use simpler epoch time in milliseconds  
+  # Use simpler epoch time in milliseconds
   end_time="$(date +%s)000"  # Seconds to milliseconds
-  
+
   # Read start time if available
   local start_time="$end_time"
   if [[ -f "$health_file" ]]; then
     start_time=$(grep '^start_time=' "$health_file" | cut -d= -f2 | head -1)
   fi
-  
+
   # Handle empty or invalid start_time
   if [[ -z "$start_time" ]] || ! [[ "$start_time" =~ ^[0-9]+$ ]]; then
     start_time="$end_time"
   fi
-  
+
   local load_time_ms
   # Simple millisecond subtraction since both are in milliseconds already
   load_time_ms=$((end_time - start_time))
   # Ensure non-negative
   (( load_time_ms < 0 )) && load_time_ms=0
-  
+
   echo "status=$load_status load_time_ms=$load_time_ms end_time=$end_time" > "$health_file"
-  
+
   # Log if slow or failed
   if (( load_time_ms > 100 )); then
     zf_warn "$module" "slow load time: ${load_time_ms}ms"
   fi
-  
+
   if [[ "$load_status" != "success" ]]; then
     zf_err "$module" "load failed with status: $load_status"
   fi
-  
+
   return 0
 }
 
@@ -175,26 +175,26 @@ zf_module_load_complete() {
 zf_module_health() {
   local module="$1"
   [[ -z "$module" ]] && return 1
-  
+
   local health_file
   health_file=$(get_module_health_file "$module")
-  
+
   if [[ -f "$health_file" ]]; then
     local module_status load_time
     # Parse the last status line and extract just the status value
     module_status=$(grep '^status=' "$health_file" | tail -1 | cut -d= -f2 | cut -d' ' -f1)
     # Parse load_time_ms specifically
     load_time=$(grep 'load_time_ms=' "$health_file" | tail -1 | sed 's/.*load_time_ms=\([0-9]*\).*/\1/')
-    
+
     # Default values if parsing failed
     module_status=${module_status:-unknown}
     load_time=${load_time:-unknown}
-    
+
     print "module=$module health=$module_status load_time=${load_time}ms"
   else
     print "module=$module health=unknown load_time=unknown"
   fi
-  
+
   return 0
 }
 
@@ -206,12 +206,12 @@ zf_module_health() {
 zf_validate_function() {
   local func="$1"
   local module="${2:-validation}"
-  
+
   if ! typeset -f "$func" >/dev/null 2>&1; then
     zf_err "$module" "required function '$func' not found"
     return 1
   fi
-  
+
   return 0
 }
 
@@ -220,7 +220,7 @@ zf_validate_command() {
   local cmd="$1"
   local module="${2:-validation}"
   local required="${3:-true}"
-  
+
   if ! command -v "$cmd" >/dev/null 2>&1; then
     if [[ "$required" == "true" ]]; then
       zf_err "$module" "required command '$cmd' not found"
@@ -230,7 +230,7 @@ zf_validate_command() {
       return 2
     fi
   fi
-  
+
   return 0
 }
 
@@ -239,7 +239,7 @@ zf_validate_env() {
   local var="$1"
   local module="${2:-validation}"
   local required="${3:-true}"
-  
+
   if [[ -z "${(P)var:-}" ]]; then
     if [[ "$required" == "true" ]]; then
       zf_err "$module" "required environment variable '$var' not set"
@@ -249,7 +249,7 @@ zf_validate_env() {
       return 2
     fi
   fi
-  
+
   return 0
 }
 
@@ -258,7 +258,7 @@ zf_validate_directory() {
   local dir="$1"
   local module="${2:-validation}"
   local create="${3:-false}"
-  
+
   if [[ ! -d "$dir" ]]; then
     if [[ "$create" == "true" ]]; then
       if ! mkdir -p "$dir" 2>/dev/null; then
@@ -271,12 +271,12 @@ zf_validate_directory() {
       return 1
     fi
   fi
-  
+
   if [[ ! -r "$dir" ]]; then
     zf_err "$module" "directory '$dir' not readable"
     return 1
   fi
-  
+
   return 0
 }
 
@@ -289,23 +289,23 @@ zf_trigger_recovery() {
   local module="$1"
   local severity="$2"
   local message="$3"
-  
+
   if [[ "$ZF_ERROR_RECOVERY_ENABLED" != "1" ]]; then
     return 0
   fi
-  
+
   zf_info "recovery" "triggering recovery for module '$module' (severity: $severity)"
-  
+
   # Generic recovery: mark module as degraded or failed
   local health_file
   health_file=$(get_module_health_file "$module")
-  
+
   if [[ "$severity" == "FATAL" ]]; then
     echo "status=failed recovery_time=$(date +%s)" >> "$health_file"
   else
     echo "status=degraded recovery_time=$(date +%s)" >> "$health_file"
   fi
-  
+
   zf_warn "recovery" "recovery applied to module '$module' (marked as degraded/failed)"
   return 0
 }
@@ -318,54 +318,54 @@ zf_trigger_recovery() {
 zf_health_check() {
   local module="${1:-all}"
   local verbose="${2:-false}"
-  
+
   if [[ "$module" != "all" ]]; then
     # Single module check
     zf_module_health "$module"
     return 0
   fi
-  
+
   # Check all modules with health files
   local total_modules=0
   local healthy_modules=0
   local issues=0
-  
+
   # Use nullglob to handle case where no files match
   setopt local_options nullglob
   local health_files=(/tmp/zf_module_*_health)
-  
+
   if (( ${#health_files[@]} == 0 )); then
     if [[ "$verbose" == "true" ]]; then
       print "[Health Check] No modules currently tracked"
     fi
     return 0
   fi
-  
+
   for health_file in "${health_files[@]}"; do
     if [[ -f "$health_file" ]]; then
       (( total_modules++ ))
-      
+
       local module_name
       module_name=$(basename "$health_file" | sed 's/zf_module_//;s/_health//')
-      
+
       if [[ "$verbose" == "true" ]]; then
         zf_module_health "$module_name"
       fi
-      
+
       local module_status
       module_status=$(grep '^status=' "$health_file" | tail -1 | cut -d= -f2 | cut -d' ' -f1)
-      
+
       case "$module_status" in
         "success"|"recovered") (( healthy_modules++ )) ;;
         *) (( issues++ )) ;;
       esac
     fi
   done
-  
+
   if [[ "$verbose" == "true" ]]; then
     print "\n[Health Summary] Total: $total_modules | Healthy: $healthy_modules | Issues: $issues"
   fi
-  
+
   # Return status based on health
   if (( issues > 0 )); then
     return 1  # Some issues found

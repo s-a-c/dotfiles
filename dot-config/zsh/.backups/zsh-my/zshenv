@@ -99,4 +99,3 @@ function _path_prepend() {
 ## [history]
 alias disablehistory="function zshaddhistory() {  return 1 }"
 alias enablehistory="unset -f zshaddhistory"
-

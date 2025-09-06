@@ -18,4 +18,3 @@ export PATH="$PATH:/usr/local/bin"
 # Prevent duplicate entries in PATH and FPATH
 typeset -U PATH path FPATH fpath
 export PATH path FPATH fpath
-

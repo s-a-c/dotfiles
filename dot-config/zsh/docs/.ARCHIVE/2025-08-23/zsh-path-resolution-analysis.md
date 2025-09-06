@@ -137,7 +137,7 @@ The `ZERO` variable is zgenom's attempt to preserve the original `$0` context, b
 
 **Problem observed:**
 ```
-/Users/user/.zgenom/olets/zsh-abbr/v6/zsh-abbr.plugin.zsh:source:2: 
+/Users/user/.zgenom/olets/zsh-abbr/v6/zsh-abbr.plugin.zsh:source:2:
 no such file or directory: /Users/user/.zgenom/so-fancy/diff-so-fancy/___/zsh-abbr.zsh
 ```
 
@@ -205,7 +205,7 @@ source "${PLUGIN_DIR}/functions.zsh"
 # Function to reliably get script directory
 get_script_dir() {
     local script_path
-    
+
     # Try multiple methods
     if [[ -n "${ZERO:-}" ]]; then
         # zgenom sets ZERO variable
@@ -217,7 +217,7 @@ get_script_dir() {
         # Fallback to $0
         script_path="${0:A:h}"
     fi
-    
+
         zsh_debug_echo "$script_path"
 }
 
@@ -240,7 +240,7 @@ PLUGIN_DIR="${0:A:h}"
    ```bash
    # Instead of:
    source "${0:A:h}/functions.zsh"
-   
+
    # Use:
    source "${${(%):-%N}:A:h}/functions.zsh"
    ```
@@ -250,23 +250,23 @@ PLUGIN_DIR="${0:A:h}"
    # Robust plugin directory detection
    plugin_dir_detect() {
        local dir
-       
+
        # Method 1: zgenom ZERO variable
        [[ -n "${ZERO:-}" ]] && dir="${ZERO:A:h}"
-       
+
        # Method 2: Prompt expansion
        [[ -z "$dir" ]] && dir="${(%):-%N:A:h}"
-       
+
        # Method 3: Traditional $0
        [[ -z "$dir" ]] && dir="${0:A:h}"
-       
+
        # Method 4: Fallback search
        if [[ -z "$dir" || ! -d "$dir" ]]; then
            for search_dir in "${fpath[@]}"; do
                [[ -f "$search_dir/plugin.zsh" ]] && dir="$search_dir" && break
            done
        fi
-       
+
            zsh_debug_echo "$dir"
    }
    ```
@@ -275,7 +275,7 @@ PLUGIN_DIR="${0:A:h}"
    ```bash
    # Test direct sourcing
    source /path/to/plugin.zsh
-   
+
    # Test through plugin managers
    # - oh-my-zsh
    # - zgenom/zgen
@@ -294,10 +294,10 @@ PLUGIN_DIR="${0:A:h}"
    ```bash
    # Enable debug mode
    export ZSH_DEBUG=1
-   
+
    # Check compiled output
    less ~/.zgenom/init.zsh
-   
+
    # Test individual plugins
    source ~/.zgenom/author/plugin/___/plugin.zsh
    ```
@@ -359,11 +359,11 @@ get_plugin_dir() {
         "${0:A:h}"              # traditional
         "${BASH_SOURCE[0]:h}"   # bash compatibility
     )
-    
+
     for dir in "${candidates[@]}"; do
         [[ -n "$dir" && -d "$dir" ]] &&     zsh_debug_echo "$dir" && return
     done
-    
+
     # Ultimate fallback
     pwd
 }
@@ -489,7 +489,7 @@ test_resolution "/path/to/plugin.zsh"
 The `${0:A:h}` parameter expansion is a powerful tool for path resolution in Zsh, but its behavior varies significantly between direct execution and plugin manager compilation contexts. Understanding these differences is crucial for:
 
 1. **Plugin Authors**: Write robust, portable plugins
-2. **Plugin Users**: Debug issues effectively  
+2. **Plugin Users**: Debug issues effectively
 3. **Plugin Manager Developers**: Design compatible systems
 
 ### Key Takeaways
@@ -518,7 +518,7 @@ fi
 if [[ -d "$PLUGIN_DIR" && -f "$PLUGIN_DIR/functions.zsh" ]]; then
     source "$PLUGIN_DIR/functions.zsh"
 else
-        zsh_debug_echo "Warning: Could not locate plugin files" 
+        zsh_debug_echo "Warning: Could not locate plugin files"
 fi
 ```
 
@@ -526,6 +526,6 @@ This approach provides maximum compatibility across different plugin managers an
 
 ---
 
-*Last updated: 2025-08-19*  
-*Author: AI Assistant*  
+*Last updated: 2025-08-19*
+*Author: AI Assistant*
 *Context: Zsh Configuration Troubleshooting*

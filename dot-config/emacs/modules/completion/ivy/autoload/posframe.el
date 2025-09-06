@@ -13,4 +13,3 @@
         (pos (posframe-poshandler-frame-center info)))
     (cons (car pos)
           (truncate (/ (frame-pixel-height parent-frame) 2)))))
-

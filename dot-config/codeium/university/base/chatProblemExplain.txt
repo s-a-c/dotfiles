@@ -96,7 +96,7 @@ class PetHotel {
             console.log(`Room ${index + 1} - Type: ${room.type}, Dimensions: ${room.length}x${room.width}`);
         });
     }
-    
+
     /**
      * Books out the hotel by reserving all available rooms.
      *

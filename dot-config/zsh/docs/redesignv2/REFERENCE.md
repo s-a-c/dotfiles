@@ -1,7 +1,7 @@
 # ZSH Redesign Reference Guide
-Version: 2.0  
-Status: Living Operational Reference (authoritative for day‑to‑day use)  
-Last Updated: 2025-01-03  
+Version: 2.0
+Status: Living Operational Reference (authoritative for day‑to‑day use)
+Last Updated: 2025-01-03
 
 This document is the quick‑use companion to:
 - IMPLEMENTATION.md – Stage plan, execution gates, promotion criteria
@@ -315,24 +315,24 @@ Return Code Expectations:
 
 ## 11. FAQ (Targeted)
 
-**Q: Why not auto-run deep security scan immediately?**  
+**Q: Why not auto-run deep security scan immediately?**
 A: It would inflate TTFP. Architectural principle mandates deferral of non-essential CPU & IO.
 
-**Q: Why numeric prefixes instead of dependency detection?**  
+**Q: Why numeric prefixes instead of dependency detection?**
 A: Determinism & auditability > implicit ordering logic.
 
-**Q: Can I add a 35‑something module?**  
+**Q: Can I add a 35‑something module?**
 A: Only if justified; update structure audit expectations & keep total file count static unless ADR filed.
 
-**Q: How do I test only redesigned pre-plugin path?**  
+**Q: How do I test only redesigned pre-plugin path?**
 ```bash
 ZSH_ENABLE_PREPLUGIN_REDESIGN=1 ZSH_ENABLE_POSTPLUGIN_REDESIGN=0 zsh -ic exit
 ```
 
-**Q: Why one compinit?**  
+**Q: Why one compinit?**
 A: Re-running compinit wastes time & can corrupt completion state caching.
 
-**Q: How do I revert safely mid-stage?**  
+**Q: How do I revert safely mid-stage?**
 A: `git reset --hard refactor-stage$(N-1)-*` then re-apply granular patches.
 
 ---
@@ -370,6 +370,6 @@ A: `git reset --hard refactor-stage$(N-1)-*` then re-apply granular patches.
 ---
 
 ## 15. Navigation
-[Implementation](IMPLEMENTATION.md) | [Architecture](ARCHITECTURE.md) | [Stages](stages/) | [Artifacts](artifacts/)  
+[Implementation](IMPLEMENTATION.md) | [Architecture](ARCHITECTURE.md) | [Stages](stages/) | [Artifacts](artifacts/)
 
 *End of Reference Guide*

@@ -20,7 +20,7 @@ debuggers.
 ** Packages
 - [[doom-package:dape]]
 - if [[doom-module:+lsp]]
-  - [[doom-package:dap-mode]] 
+  - [[doom-package:dap-mode]]
   - [[doom-package:posframe]]
 
 ** Hacks

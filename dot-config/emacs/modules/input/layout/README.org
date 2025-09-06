@@ -113,7 +113,7 @@ Therefore, in ~org-mode~:
   =bépo-h= key (~'ergodis~), or
 - =qwerty-c= functions are mapped on =bépo-h= key, and =qwerty-r= functions on
   =bépo-l= key (~'strict~)
- 
+
 ~'strict~ would be the logical choice but the [[kbd:][c]] functions are used more often
 than the [[kbd:][r]] ones so [[https://bepo.fr/wiki/Vim#Principe][Ergodis]] advises to actually put all the [[kbd:][c]] functions on the
 key that does not need a curl.
@@ -125,7 +125,7 @@ key that does not need a curl.
 *** Bépo
 - In [[doom-package:eshell]], the key [[kbd:][c]] is still bound to ~evil-collection-eshell-evil-change~ in
   normal mode.
-  
+
 ** How to investigate an issue ?
 If a key is misbehaving, use ~M-x describe-key~ ([[kbd:][C-h k]] or [[kbd:][SPC h k]] or [[kbd:][F1 k]]) to
 see the command bound to the key, and more importantly in which keymap it is

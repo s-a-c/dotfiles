@@ -5,7 +5,7 @@
   "source": "perf-capture-multi F49/F48 authentic sampling with retry enforcement",
   "authentic_only": true,
   "synthetic_removed": true,
-  
+
   "sample_metadata": {
     "total_requested": 3,
     "authentic_collected": 3,
@@ -13,7 +13,7 @@
     "shortfall_count": 0,
     "retry_enforcement_enabled": true
   },
-  
+
   "rsd_metrics": {
     "target_threshold": 0.05,
     "current_max_rsd": 0.0089,
@@ -42,7 +42,7 @@
       }
     }
   },
-  
+
   "variance_assessment": {
     "overall_stability": "high",
     "measurement_quality": "authentic",
@@ -50,7 +50,7 @@
     "recommended_sample_count": 3,
     "confidence_level": "high"
   },
-  
+
   "governance_status": {
     "authentic_enforcement_active": 1,
     "synthetic_padding_disabled": true,
@@ -58,7 +58,7 @@
     "watchdog_protection_enabled": true,
     "shortfall_detection_active": true
   },
-  
+
   "quality_gates": {
     "rsd_under_5_percent": 1,
     "no_synthetic_samples": true,
@@ -66,7 +66,7 @@
     "variance_within_bounds": 1,
     "measurement_integrity": "verified"
   },
-  
+
   "technical_details": {
     "measurement_approach": "authentic_multi_sample_with_retries",
     "outlier_detection": "enabled",

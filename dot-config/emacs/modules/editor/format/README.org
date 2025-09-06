@@ -104,7 +104,7 @@ Doom exposes a couple variables and functions to help you configure this module'
   the ~+format/buffer~ or ~+format/region~ commands, manually.
 - [[fn:set-formatter!]] :: A helper function for configuring registered formatters
   (or adding some of your own) and assigning them to major modes.
- 
+
 Here are some ways to use them:
 
 1. In a project's =.dir-locals.el= file:

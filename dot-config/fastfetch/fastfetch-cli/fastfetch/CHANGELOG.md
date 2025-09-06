@@ -509,7 +509,7 @@ Features:
     * See `fastfetch --help format` for detail
 * Improve Qt theme detection (#1047, Theme, Linux)
 * Add new JSON config option `general.preRun`, which is executed before fastfetch prints output.
-    * It can be used to generate a temp logo file. For example  
+    * It can be used to generate a temp logo file. For example
 ```jsonc
 {
     "general": {
@@ -536,7 +536,7 @@ Logo:
 This release added basic support for SunOS (Solaris, illumos). The binaries provided in the release lack a few useful features (such as Display detection). People who use SunOS should consider building fastfetch themselves.
 
 Changes:
-* Fastfetch now prefers `/etc/os-release` over `/etc/lsb-release` when detecting distro info. 
+* Fastfetch now prefers `/etc/os-release` over `/etc/lsb-release` when detecting distro info.
     * This may break some distros (notably some debian based distros). File a bug with the content of `os-release` and `lsb-release` if it breaks your distro.
 
 Features:
@@ -735,7 +735,7 @@ Bugfixes:
 * Fix Apple Terminal detection (#878, macOS, Terminal)
 * Fix deprecation warning for macOS 14.0 hopefully (#860, macOS, Camera)
 * Fix memory leaks when passing informative options (#888)
-* Fix JSON config `size.ndigits` doesn't work 
+* Fix JSON config `size.ndigits` doesn't work
 
 Features:
 * Enable `--pipe` mode if environment variable `$NO_COLOR` is set
@@ -1146,7 +1146,7 @@ Bugfixes:
 * Fix memory usage counting algorithm (Memory, macOS)
 * Fix the behavior of `--no-buffer` in Windows
 * Fix possible segfault in some devices (Display, Linux)
-* Fix segfaults on first use of new images with Sixel flag (Image) 
+* Fix segfaults on first use of new images with Sixel flag (Image)
 
 Logo:
 * Remove unnecessary escaping for Adelie logo

@@ -1,8 +1,8 @@
 # Comprehensive Alias to Abbreviation Migration Plan
 
-**Document Created:** August 17, 2025  
-**Current Status:** Planning Phase  
-**Target Completion:** Phased implementation over 4 weeks  
+**Document Created:** August 17, 2025
+**Current Status:** Planning Phase
+**Target Completion:** Phased implementation over 4 weeks
 
 ## Executive Summary
 
@@ -137,7 +137,7 @@ This document outlines a detailed, comprehensive plan to migrate all 344 existin
 # Example:
 # # Added 2025-08-17 23:50:00
 # l="eza"
-# # Added 2025-08-18 09:15:00  
+# # Added 2025-08-18 09:15:00
 # newcmd="some new command"
 ```
 
@@ -168,7 +168,7 @@ backup-add-alias() {
     local alias_name="$1"
     local alias_command="$2"
     local backup_file="${ZDOTDIR:-$HOME}/.zsh-alias2abbr/backups/aliases-master.backup"
-    
+
     # Check if alias already exists
     if ! grep -q "^${alias_name}=" "$backup_file" 2>/dev/null; then
             zsh_debug_echo "# Added $(date '+%Y-%m-%d %H:%M:%S')" >> "$backup_file"
@@ -176,12 +176,12 @@ backup-add-alias() {
     fi
 }
 
-# Add new abbreviation to master backup (no duplicates) 
+# Add new abbreviation to master backup (no duplicates)
 backup-add-abbr() {
     local abbr_name="$1"
     local abbr_expansion="$2"
     local backup_file="${ZDOTDIR:-$HOME}/.zsh-alias2abbr/backups/abbreviations-master.backup"
-    
+
     # Check if abbreviation already exists
     if ! grep -q "^\"${abbr_name}\"=" "$backup_file" 2>/dev/null; then
             zsh_debug_echo "# Added $(date '+%Y-%m-%d %H:%M:%S')" >> "$backup_file"
@@ -193,14 +193,14 @@ backup-add-abbr() {
 init-master-backups() {
     local backup_dir="${ZDOTDIR:-$HOME}/.zsh-alias2abbr/backups"
     mkdir -p "$backup_dir"
-    
+
     # Create initial alias backup if it doesn't exist
     if [[ ! -f "$backup_dir/aliases-master.backup" ]]; then
             zsh_debug_echo "# Alias Master Backup - Created $(date '+%Y-%m-%d %H:%M:%S')" > "$backup_dir/aliases-master.backup"
             zsh_debug_echo "# Format: alias_name=\"command\"" >> "$backup_dir/aliases-master.backup"
             zsh_debug_echo "" >> "$backup_dir/aliases-master.backup"
     fi
-    
+
     # Create initial abbreviation backup if it doesn't exist
     if [[ ! -f "$backup_dir/abbreviations-master.backup" ]]; then
             zsh_debug_echo "# Abbreviation Master Backup - Created $(date '+%Y-%m-%d %H:%M:%S')" > "$backup_dir/abbreviations-master.backup"
@@ -212,13 +212,13 @@ init-master-backups() {
 # Sync current state to master backups
 sync-to-master-backups() {
     local backup_dir="${ZDOTDIR:-$HOME}/.zsh-alias2abbr/backups"
-    
+
     # Backup all current aliases
     alias | while IFS='=' read -r name command; do
         backup-add-alias "$name" "$command"
     done
-    
-    # Backup all current abbreviations  
+
+    # Backup all current abbreviations
     abbr list | while IFS='=' read -r name expansion; do
         # Remove quotes from abbr list output
         name=${name//\"/}
@@ -237,7 +237,7 @@ migrate-alias-to-abbr() {
     local alias_name="$1"
     local alias_command="$2"
     local force="${3:-false}"
-    
+
     # Validation, conflict detection, backup, migration
 }
 
@@ -245,7 +245,7 @@ migrate-alias-to-abbr() {
 migrate-aliases-batch() {
     local batch_file="$1"
     local dry_run="${2:-true}"
-    
+
     # Process multiple aliases from file
 }
 
@@ -253,7 +253,7 @@ migrate-aliases-batch() {
 rollback-migration() {
     local backup_timestamp="$1"
     local target="${2:-both}"  # aliases, abbr, both
-    
+
     # Restore from specific backup
 }
 ```
@@ -276,7 +276,7 @@ auto-migrate-new-aliases() {
 ```bash
 # Current aliases → Proposed abbreviations
 ".." → ".."           # Keep existing
-"..." → "..."         # Keep existing  
+"..." → "..."         # Keep existing
 "...." → "...."       # New abbreviation
 "....." → "....."     # New abbreviation
 "${ZDOTDIR:-$HOME}" → "${ZDOTDIR:-$HOME}"             # New abbreviation
@@ -453,7 +453,7 @@ ${ZDOTDIR:-$HOME}/.zsh-alias2abbr/
 # Immediate restoration to pre-migration state
 emergency-rollback() {
     local backup_timestamp="${1:-latest}"
-    
+
     # Disable all abbreviations
     # Restore all original aliases
     # Reload shell configuration
@@ -467,7 +467,7 @@ emergency-rollback() {
 selective-rollback() {
     local category="$1"        # A, B, C, or specific aliases
     local backup_timestamp="$2"
-    
+
     # Restore specified aliases only
     # Maintain other abbreviations
     # Update configuration
@@ -479,7 +479,7 @@ selective-rollback() {
 # Step-by-step rollback to find issues
 progressive-rollback() {
     local steps="${1:-5}"      # Number of migration steps to rollback
-    
+
     # Rollback in reverse migration order
     # Test at each step
     # Identify problematic migration point
@@ -574,17 +574,17 @@ The estimated timeline of 4 weeks allows for thorough testing and gradual adapta
 ## 📋 Comprehensive Task List and Progress Tracker
 
 ### Priority Legend
-🔥 **CRITICAL** - Must complete before proceeding (Blocking)  
-⚡ **HIGH** - Important for migration success (Urgent)  
-🔧 **MEDIUM** - Enhances migration quality (Standard)  
-💡 **LOW** - Nice-to-have improvements (Optional)  
+🔥 **CRITICAL** - Must complete before proceeding (Blocking)
+⚡ **HIGH** - Important for migration success (Urgent)
+🔧 **MEDIUM** - Enhances migration quality (Standard)
+💡 **LOW** - Nice-to-have improvements (Optional)
 
 ### Status Legend
-✅ **COMPLETE** - Task finished and verified  
-🟨 **IN PROGRESS** - Currently working on task  
-📋 **PENDING** - Ready to start  
-⏸️ **BLOCKED** - Waiting on dependency  
-❌ **FAILED** - Task failed, needs attention  
+✅ **COMPLETE** - Task finished and verified
+🟨 **IN PROGRESS** - Currently working on task
+📋 **PENDING** - Ready to start
+⏸️ **BLOCKED** - Waiting on dependency
+❌ **FAILED** - Task failed, needs attention
 
 ---
 
@@ -739,7 +739,7 @@ The estimated timeline of 4 weeks allows for thorough testing and gradual adapta
 1. Tasks 3.1-3.6: Category A migration (180 aliases)
 2. Task 2.4: Category A migration list finalization
 
-### Week 3 CRITICAL Tasks (🔥 Must Complete)  
+### Week 3 CRITICAL Tasks (🔥 Must Complete)
 1. Tasks 3.7-3.10: Category B migration (80 aliases)
 2. Tasks 3.11-3.14: Category C migration (60 aliases)
 3. Task 3.15-3.16: Configuration cleanup
@@ -784,6 +784,6 @@ The estimated timeline of 4 weeks allows for thorough testing and gradual adapta
 
 ---
 
-*Last Updated: August 18, 2025*  
-*Total Estimated Time: ~42 hours across 4 weeks*  
+*Last Updated: August 18, 2025*
+*Total Estimated Time: ~42 hours across 4 weeks*
 *Critical Path Duration: 21 working days*

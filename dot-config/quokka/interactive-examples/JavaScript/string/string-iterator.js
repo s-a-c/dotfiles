@@ -9,4 +9,4 @@ while(!theChar.done && theChar.value !== ' ') {
   // expected output: "T"
   //                  "h"
   //                  "e"
-}  
+}

@@ -16,42 +16,42 @@ echo "Testing core module loading..."
 test_module_load() {
   local module_path="$1"
   local module_name="$(basename "$module_path" .zsh)"
-  
+
   if [[ ! -f "$module_path" ]]; then
     echo "ERROR: Module file not found: $module_path"
     return 1
   fi
-  
+
   echo "Testing module: $module_name"
-  
+
   # Capture current variable state
   local sentinel_var="_LOADED_${module_name//-/_}"
   sentinel_var="${sentinel_var:u}"
   local original_value="${(P)sentinel_var:-unset}"
-  
+
   # Reset the sentinel if needed
   if [[ "$original_value" != "unset" ]]; then
     unset "$sentinel_var"
   fi
-  
+
   # Source the module
   if ! source "$module_path"; then
     echo "ERROR: Failed to source module: $module_path"
     return 1
   fi
-  
+
   # Check sentinel is set
   if [[ -z "${(P)sentinel_var:-}" ]]; then
     echo "ERROR: Module sentinel not set after loading: $sentinel_var"
     return 1
   fi
-  
+
   # Source again to test idempotency
   if ! source "$module_path"; then
     echo "ERROR: Failed to source module idempotently: $module_path"
     return 1
   fi
-  
+
   echo "Module $module_name loaded successfully"
   return 0
 }

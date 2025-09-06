@@ -1,7 +1,7 @@
 # Stage 3 – Post‑Plugin Core Modules (00 / 05 / 10)
-Version: 1.1  
-Status: 🚧 In Progress (Stage 2 complete & tagged; core trio bootstrap underway)  
-Planned Tag on Completion: `refactor-stage3-core`  
+Version: 1.1
+Status: 🚧 In Progress (Stage 2 complete & tagged; core trio bootstrap underway)
+Planned Tag on Completion: `refactor-stage3-core`
 Last Updated: 2025-09-03
 
 > Stage 3 implements the **first functional layer** of the post‑plugin redesign tree:
@@ -217,7 +217,7 @@ Rules:
 
 ---
 
-**Status:** Active (Stage 2 complete).  
+**Status:** Active (Stage 2 complete).
 Active branch suggestion: `git checkout -b stage-3-core`.
 
-[Back to Overview](../README.md) | [Implementation Guide](../IMPLEMENTATION.md) | [Stage 2](stage-2-preplugin.md) | Stage 4 (will follow)  
+[Back to Overview](../README.md) | [Implementation Guide](../IMPLEMENTATION.md) | [Stage 2](stage-2-preplugin.md) | Stage 4 (will follow)

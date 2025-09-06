@@ -444,30 +444,30 @@ set +e
 _force_sync_run() {
   local i attempt sample_ok iter_start_ms iter_elapsed_ms run_rc cold warm pre post prompt start_epoch_ms end_epoch_ms approx_total_ms SAMPLE_FILE CURRENT_FILE
   local debug_log="$METRICS_DIR/perf-multi-debug.log"
-  
+
   # Initialize debug log if debug enabled
   if (( PERF_CAPTURE_DEBUG )); then
     echo "[$(date -Iseconds)] F49 debug session started: samples=$MULTI_SAMPLES retries=$PERF_CAPTURE_SAMPLE_RETRIES watchdog=${PERF_CAPTURE_ITER_WATCHDOG_MS}ms" > "$debug_log"
   fi
-  
+
   for (( i=1; i<=MULTI_SAMPLES; i++ )); do
     echo "[perf-capture-multi] Sample $i/$MULTI_SAMPLES (force-sync with retries)"
-    
+
     attempt=0
     sample_ok=0
     iter_start_ms=$(($(date +%s%N 2>/dev/null)/1000000))
-    
+
     while (( attempt <= PERF_CAPTURE_SAMPLE_RETRIES )); do
       (( attempt++ ))
-      
+
       if (( PERF_CAPTURE_DEBUG )); then
         echo "[$(date -Iseconds)] sample=$i attempt=$attempt" >> "$debug_log"
       fi
-      
+
       # Per-sample isolated output path to avoid contention with concurrent readers
       SAMPLE_CURRENT_OUT="$METRICS_DIR/perf-current-run-${i}-${attempt}.json"
       rm -f "$SAMPLE_CURRENT_OUT" 2>/dev/null || true
-      
+
       start_epoch_ms=$(($(date +%s%N 2>/dev/null)/1000000))
       if [[ $QUIET -eq 1 ]]; then
         PERF_SINGLE_CURRENT_PATH="$SAMPLE_CURRENT_OUT" zsh "$PERF_CAPTURE_BIN" >/dev/null 2>&1
@@ -479,9 +479,9 @@ _force_sync_run() {
       end_epoch_ms=$(($(date +%s%N 2>/dev/null)/1000000))
       approx_total_ms=$(( end_epoch_ms - start_epoch_ms ))
       (( approx_total_ms < 0 )) && approx_total_ms=0
-      
+
       print "run=$i attempt=$attempt state=invoke_complete rc=$run_rc approx_ms=$approx_total_ms force_sync=1" >>"$METRICS_DIR/perf-multi-progress.log" 2>/dev/null || true
-      
+
       if (( run_rc != 0 )); then
         if (( PERF_CAPTURE_DEBUG )); then
           echo "[$(date -Iseconds)] sample=$i attempt=$attempt run_rc=$run_rc" >> "$debug_log"
@@ -496,7 +496,7 @@ _force_sync_run() {
         fi
         continue
       fi
-      
+
       # Use the isolated per-sample file
       CURRENT_FILE="$SAMPLE_CURRENT_OUT"
       if [[ ! -f "$CURRENT_FILE" ]]; then
@@ -505,14 +505,14 @@ _force_sync_run() {
         fi
         continue
       fi
-      
+
       if ! _pcm_validate_json "$CURRENT_FILE"; then
         if (( PERF_CAPTURE_DEBUG )); then
           echo "[$(date -Iseconds)] sample=$i attempt=$attempt invalid_json=$CURRENT_FILE" >> "$debug_log"
         fi
         continue
       fi
-      
+
       # Extract metrics and check for non-zero values (F49 requirement)
       cold=$(extract_json_number "$CURRENT_FILE" cold_ms)
       warm=$(extract_json_number "$CURRENT_FILE" warm_ms)
@@ -523,11 +523,11 @@ _force_sync_run() {
       if (( prompt == 0 && post > 0 && "${PERF_MULTI_STRICT_PROMPT:-0}" != "1" )); then
         prompt=$post
       fi
-      
+
       if (( PERF_CAPTURE_DEBUG )); then
         echo "[$(date -Iseconds)] sample=$i attempt=$attempt pre=$pre post=$post prompt=$prompt cold=$cold warm=$warm" >> "$debug_log"
       fi
-      
+
       # F49: Enforce non-zero requirement for pre, post, and prompt
       if (( pre > 0 && post > 0 && prompt > 0 && (cold > 0 || warm > 0) )); then
         # Valid sample - copy to final location
@@ -539,7 +539,7 @@ _force_sync_run() {
               add_segment_value "$lab" "$mm"
             done < <(segment_iterate_file "$SAMPLE_FILE")
           fi
-          
+
           # Prompt provenance tracking
           approx_prompt_flag=0
           if grep -q '"approx_prompt_ready"[[:space:]]*:[[:space:]]*1' "$SAMPLE_FILE" 2>/dev/null; then
@@ -552,17 +552,17 @@ _force_sync_run() {
             prompt_prov_values+=("native")
             sample_flag_seen[native_prompt_ready]=1
           fi
-          
+
           # Add to value arrays
           cold_values+=("$cold")
           warm_values+=("$warm")
           pre_values+=("$pre")
           post_values+=("$post")
           prompt_values+=("$prompt")
-          
+
           (( valid_sample_count++ ))
           sample_ok=1
-          
+
           if (( PERF_CAPTURE_DEBUG )); then
             echo "[$(date -Iseconds)] sample=$i attempt=$attempt SUCCESS valid_count=$valid_sample_count" >> "$debug_log"
           fi
@@ -573,7 +573,7 @@ _force_sync_run() {
           fi
         fi
       fi
-      
+
       # Check watchdog before retry
       iter_elapsed_ms=$(( $(($(date +%s%N 2>/dev/null)/1000000)) - iter_start_ms ))
       if (( iter_elapsed_ms >= PERF_CAPTURE_ITER_WATCHDOG_MS )); then
@@ -582,7 +582,7 @@ _force_sync_run() {
         fi
         break
       fi
-      
+
       # Sleep before retry (unless this was the last attempt)
       if (( attempt <= PERF_CAPTURE_SAMPLE_RETRIES )); then
         if (( PERF_CAPTURE_RETRY_SLEEP_MS > 0 )); then
@@ -594,7 +594,7 @@ _force_sync_run() {
         fi
       fi
     done
-    
+
     # Track failed samples
     if (( ! sample_ok )); then
       (( skipped_sample_count++ ))
@@ -602,13 +602,13 @@ _force_sync_run() {
         echo "[$(date -Iseconds)] sample=$i FAILED after $attempt attempts" >> "$debug_log"
       fi
     fi
-    
+
     # Sleep between samples if configured
     (( i < MULTI_SAMPLES )) && [[ "$SLEEP_INTERVAL" != "0" ]] && sleep "$SLEEP_INTERVAL"
   done
-  
+
   echo "[perf-capture-multi][debug] force-sync collection complete valid=$valid_sample_count skipped=$skipped_sample_count requested=$MULTI_SAMPLES"
-  
+
   if (( PERF_CAPTURE_DEBUG )); then
     echo "[$(date -Iseconds)] F49 debug session completed: valid=$valid_sample_count skipped=$skipped_sample_count" >> "$debug_log"
   fi
@@ -969,14 +969,14 @@ _generate_variance_state() {
   local rsd_status="excellent"
   (( $(awk -v m="$max_rsd" 'BEGIN{print (m > 0.05)}') )) && rsd_status="needs_attention"
   (( $(awk -v m="$max_rsd" 'BEGIN{print (m > 0.10)}') )) && rsd_status="poor"
-  
+
   local pre_mean=$(stats_mean "${pre_values[*]:-0}")
   local post_mean=$(stats_mean "${post_values[*]:-0}")
   local prompt_mean=$(stats_mean "${prompt_values[*]:-0}")
   local pre_stddev=$(stats_stddev "${pre_values[*]:-0}")
   local post_stddev=$(stats_stddev "${post_values[*]:-0}")
   local prompt_stddev=$(stats_stddev "${prompt_values[*]:-0}")
-  
+
   cat <<EOF >"$VARIANCE_STATE_FILE"
 {
   "schema": "variance-state.v1",
@@ -985,7 +985,7 @@ _generate_variance_state() {
   "source": "perf-capture-multi F49/F48 authentic sampling with retry enforcement",
   "authentic_only": true,
   "synthetic_removed": true,
-  
+
   "sample_metadata": {
     "total_requested": $MULTI_SAMPLES,
     "authentic_collected": $valid_sample_count,
@@ -993,7 +993,7 @@ _generate_variance_state() {
     "shortfall_count": $((MULTI_SAMPLES - valid_sample_count)),
     "retry_enforcement_enabled": true
   },
-  
+
   "rsd_metrics": {
     "target_threshold": 0.05,
     "current_max_rsd": $max_rsd,
@@ -1022,7 +1022,7 @@ _generate_variance_state() {
       }
     }
   },
-  
+
   "variance_assessment": {
     "overall_stability": "$(awk -v m="$max_rsd" 'BEGIN{print (m <= 0.03) ? "high" : (m <= 0.07) ? "medium" : "low"}')",
     "measurement_quality": "authentic",
@@ -1030,7 +1030,7 @@ _generate_variance_state() {
     "recommended_sample_count": $MULTI_SAMPLES,
     "confidence_level": "$(awk -v v="$valid_sample_count" -v r="$MULTI_SAMPLES" 'BEGIN{print (v >= r && v >= 3) ? "high" : "medium"}')"
   },
-  
+
   "governance_status": {
     "authentic_enforcement_active": $((PERF_CAPTURE_ENFORCE_AUTH)),
     "synthetic_padding_disabled": true,
@@ -1038,7 +1038,7 @@ _generate_variance_state() {
     "watchdog_protection_enabled": true,
     "shortfall_detection_active": true
   },
-  
+
   "quality_gates": {
     "rsd_under_5_percent": $(($(awk -v m="$max_rsd" 'BEGIN{print (m <= 0.05)}'))),
     "no_synthetic_samples": true,
@@ -1046,7 +1046,7 @@ _generate_variance_state() {
     "variance_within_bounds": $(($(awk -v m="$max_rsd" 'BEGIN{print (m <= 0.10)}'))),
     "measurement_integrity": "verified"
   },
-  
+
   "technical_details": {
     "measurement_approach": "authentic_multi_sample_with_retries",
     "outlier_detection": "enabled",

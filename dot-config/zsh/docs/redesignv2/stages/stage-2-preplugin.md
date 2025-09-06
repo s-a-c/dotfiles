@@ -1,11 +1,11 @@
 # Stage 2 – Pre‑Plugin Content Migration
-Version: 1.0  
-Status: 🎯 Ready (Execution Not Yet Begun)  
-Planned Tag on Completion: `refactor-stage2-preplugin`  
+Version: 1.0
+Status: 🎯 Ready (Execution Not Yet Begun)
+Planned Tag on Completion: `refactor-stage2-preplugin`
 Last Updated: 2025-01-03
 
-> Stage 2 migrates **legacy early-path & preparation logic** into the redesigned pre‑plugin module set (00–30).  
-> No user‑visible behavior (besides performance & cleanliness) should change.  
+> Stage 2 migrates **legacy early-path & preparation logic** into the redesigned pre‑plugin module set (00–30).
+> No user‑visible behavior (besides performance & cleanliness) should change.
 > Architecture rules & cross‑stage roadmap live in `../IMPLEMENTATION.md` and `../ARCHITECTURE.md`.
 
 ---
@@ -219,7 +219,7 @@ Upon successful tagging:
 
 ---
 
-**Status:** Stage 2 awaiting execution start.  
+**Status:** Stage 2 awaiting execution start.
 Proceed with caution: migrate iteratively (one file per commit where feasible) to preserve bisectability.
 
 [Back to Overview](../README.md) | [Implementation Guide](../IMPLEMENTATION.md) | [Stage 1 (Complete)](stage-1-foundation.md)

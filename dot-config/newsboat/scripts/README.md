@@ -14,4 +14,3 @@ Important things to note about `contrib/`:
   script, send a pull request on GitHub or a patch on the [mailing
   list](https://groups.google.com/group/newsboat) (newsboat@googlegroups.com).
 * Old and obsolete scripts may be removed from time to time.
-

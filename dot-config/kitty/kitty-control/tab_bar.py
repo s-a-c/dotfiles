@@ -150,4 +150,3 @@ def draw_tab(
     )
 
     return screen.cursor.x
-

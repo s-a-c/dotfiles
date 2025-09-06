@@ -9,7 +9,7 @@ lines in the buffer without modifying the buffer content.
 
 ** Maintainers
 - [[doom-user:][@flatwhatson]]
-  
+
 [[doom-contrib-maintainer:][Become a maintainer?]]
 
 ** Module flags

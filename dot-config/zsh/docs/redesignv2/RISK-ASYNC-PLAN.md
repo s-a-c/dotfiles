@@ -1,7 +1,7 @@
 # Async Enablement & Risk Mitigation Plan
 Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
 
-Status: Stage 2 (pre‑plugin); Performance Phase 0 (Observe)  
+Status: Stage 2 (pre‑plugin); Performance Phase 0 (Observe)
 Scope: Introduces structured risk register, async subsystem design, rollout phases, manifest governance, testing strategy, and immediate actionable tasks.
 
 ---
@@ -365,8 +365,8 @@ Add JSON (or key=value lines) in PERF_GUARD block:
 - `sync_path_total_ms=<ms>`
 - `sync_reduction_pct=<pct>`
 
-Observe Mode: purely informational.  
-Warn Mode: highlight large overhead ratio.  
+Observe Mode: purely informational.
+Warn Mode: highlight large overhead ratio.
 Gate Mode: enforce overhead ratio and missing terminal states.
 
 ---

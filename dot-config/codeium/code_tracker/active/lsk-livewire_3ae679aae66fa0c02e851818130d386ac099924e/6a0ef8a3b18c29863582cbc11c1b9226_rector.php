@@ -89,7 +89,9 @@ return static function (RectorConfig $rectorConfig): void {
         App\Rules\Rector\UseEnumInsteadOfConstantsRector::class,
     ]);
 };
-¶ ¶ã
+¶
+ ¶
+ã
 ãè 
 èî 
 îÔ Ô

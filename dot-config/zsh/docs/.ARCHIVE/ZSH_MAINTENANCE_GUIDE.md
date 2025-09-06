@@ -218,7 +218,7 @@ echo "
 - Check for new plugin updates
 - Review error logs
 
-#### Monthly  
+#### Monthly
 - Run health check script
 - Clean plugin cache: `zgenom reset`
 - Update core plugins: `zgenom update`

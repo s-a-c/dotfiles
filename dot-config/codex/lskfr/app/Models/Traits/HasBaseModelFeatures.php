@@ -80,7 +80,7 @@ trait HasBaseModelFeatures
         // Fallback: ULID or primary key
         return (string) ($this->ulid ?? $this->getKey());
     }
-    
+
     /**
      * Provide a friendly name for comments (alias for commentName).
      * Implementing abstract method required by HasComments trait.

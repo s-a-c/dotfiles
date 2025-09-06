@@ -57,7 +57,7 @@ This module optionally requires:
 
 * Usage
 
-Below is a listing of the various keybinds provided by the module. 
+Below is a listing of the various keybinds provided by the module.
 
 ** REPL management
 For the most part, general usage should fall into:

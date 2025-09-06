@@ -1,17 +1,25 @@
 {
-  "timestamp":"20250904T225442",
-  "mean_ms":5703,
-  "cold_ms":5726,
-  "warm_ms":5681,
-  "pre_plugin_cost_ms":337,
-  "post_plugin_cost_ms":141,
-  "prompt_ready_ms":141,
+  "timestamp":"20250906T205750",
+  "mean_ms":338,
+  "cold_ms":335,
+  "warm_ms":341,
+  "pre_plugin_cost_ms":99,
+  "post_plugin_cost_ms":332,
+  "prompt_ready_ms":332,
   "segments_available":true,
+  "marker_provenance":"approx",
   "lifecycle": {
-    "pre_plugin_total_ms": 337,
-    "post_plugin_total_ms": 141,
-    "prompt_ready_ms": 141,
-    "approx_prompt_ready": 1
+    "pre_plugin_total_ms": 99,
+    "post_plugin_total_ms": 332,
+    "prompt_ready_ms": 332,
+    "approx_prompt_ready": 1,
+    "marker_provenance":"approx"
   },
-  "post_plugin_segments": [{"label":"p10k_theme","cold_ms":8,"warm_ms":8,"mean_ms":8},{"label":"20-essential/completion/core-reserve","cold_ms":4,"warm_ms":5,"mean_ms":4},{"label":"compinit","cold_ms":17,"warm_ms":17,"mean_ms":17},{"label":"zgenom-init","cold_ms":6,"warm_ms":5,"mean_ms":5},{"label":"syntax_highlight_init","cold_ms":4,"warm_ms":4,"mean_ms":4},{"label":"30-dev-env","cold_ms":4,"warm_ms":3,"mean_ms":3},{"label":"20-essential/navigation/cd","cold_ms":4,"warm_ms":4,"mean_ms":4},{"label":"vcs_helpers_init","cold_ms":3,"warm_ms":5,"mean_ms":4},{"label":"completion_cache_scan","cold_ms":3,"warm_ms":5,"mean_ms":4},{"label":"20-essential","cold_ms":56,"warm_ms":58,"mean_ms":57},{"label":"20-essential/git/prompt","cold_ms":5,"warm_ms":4,"mean_ms":4},{"label":"theme_extras_init","cold_ms":4,"warm_ms":4,"mean_ms":4},{"label":"fzf_tools_init","cold_ms":4,"warm_ms":4,"mean_ms":4},{"label":"20-essential/safety/aliases","cold_ms":4,"warm_ms":4,"mean_ms":4},{"label":"20-essential/history/baseline","cold_ms":4,"warm_ms":4,"mean_ms":4},{"label":"history_backend_init","cold_ms":3,"warm_ms":4,"mean_ms":3},{"label":"50-completion-history","cold_ms":4,"warm_ms":4,"mean_ms":4},{"label":"20-essential/perf/segment-inject","cold_ms":4,"warm_ms":5,"mean_ms":4}]
+  "markers_observed": {
+    "pre_native_any": 0,
+    "post_native_any": 0,
+    "prompt_native_any": 0,
+    "prompt_native_all": 0
+  },
+  "post_plugin_segments": []
 }

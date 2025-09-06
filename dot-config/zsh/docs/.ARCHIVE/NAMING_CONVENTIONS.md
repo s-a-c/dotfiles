@@ -1,7 +1,7 @@
 # ZSH Configuration Naming Conventions
 
-**Date:** 2025-08-25  
-**Status:** Standardized across all directories  
+**Date:** 2025-08-25
+**Status:** Standardized across all directories
 **Version:** 2.0
 
 ## Overview
@@ -32,7 +32,7 @@ All zsh configuration files now follow a consistent double-underscore naming con
 
 Within each major category, use increments of 10:
 - `10` = First item in category
-- `20` = Second item in category  
+- `20` = Second item in category
 - `30` = Third item in category
 - etc.
 
@@ -76,7 +76,7 @@ This allows for easy insertion of new files between existing ones.
 **Current Structure:** Already follows `XX_YY-name.zsh` pattern
 ```
 00_XX-* = Core configuration
-10_XX-* = Tool integrations  
+10_XX-* = Tool integrations
 20_XX-* = Plugin configurations
 30_XX-* = UI customizations
 90_XX-* = Final setup
@@ -157,5 +157,5 @@ After:  00_10-, 00_20-, 10_10-, 10_20-, 10_30-, 10_40-, 10_50-, 20_10-, 20_11-, 
 
 ---
 
-**Last Updated:** 2025-08-25  
+**Last Updated:** 2025-08-25
 **Next Review:** When adding 5+ new files or major restructuring

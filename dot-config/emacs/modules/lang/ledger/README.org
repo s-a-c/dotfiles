@@ -21,7 +21,7 @@ This modules enables the following features:
 - Sort transactions
 - Display statistics about transactions
 - Display balance up to a point
- 
+
 ** Maintainers
 /This module has no dedicated maintainers./ [[doom-contrib-maintainer:][Become a maintainer?]]
 

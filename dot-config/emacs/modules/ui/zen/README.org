@@ -23,7 +23,7 @@ These modes are:
   4. Scale up the buffer's text slightly (see ~+zen-text-scale~).
   5. And make the window's borders slightly thicker (see
      ~+zen-window-divider-size~).
-     
+
 ** Maintainers
 - [[doom-user:][@hlissner]]
 
