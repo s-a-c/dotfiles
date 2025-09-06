@@ -52,11 +52,11 @@
 # DESIGN CHOICES:
 #   - Avoid jq requirement; pure shell + awk + sed.
 #   - Aggregate hash = sha256 over newline-joined "<path>\t<sha256>" list.
-+#
-+# PATCH NOTE:
-+#   Added SAFE_PATH bootstrap to ensure core utilities (shasum / openssl) are discoverable
-+#   even if pre-plugin PATH normalization removed system dirs. Also made hashing routine
-+#   resilient with absolute fallbacks.
+#
+# PATCH NOTE:
+#   Added SAFE_PATH bootstrap to ensure core utilities (shasum / openssl) are discoverable
+#   even if pre-plugin PATH normalization removed system dirs. Also made hashing routine
+#   resilient with absolute fallbacks.
  set -euo pipefail
 
 quiet=0
@@ -118,10 +118,10 @@ else
         [[ -n "$_ih_link" ]] && _ih_src="$_ih_link"
         unset _ih_link
     fi
-    SCRIPT_DIR="${_ih_src:h}"
+    SCRIPT_DIR="$(cd "$(dirname -- "$_ih_src")" >/dev/null 2>&1 && pwd -P)"
     unset _ih_src
 fi
-ROOT="${SCRIPT_DIR:h}"
+ROOT="$(cd "$SCRIPT_DIR/.." >/dev/null 2>&1 && pwd -P)"
 cd "$ROOT"
 
 ZDOTDIR_DEFAULT="${ROOT}"
@@ -252,12 +252,34 @@ for rel in "${ordered[@]}"; do
     mtime=$(date -u -r "$epoch" +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u +%Y-%m-%dT%H:%M:%SZ)
 
     json_files+=("{\"path\":\"$rel\",\"sha256\":\"$sha\",\"size\":$size,\"mtime\":\"$mtime\"}")
-    aggregate_lines+=("${rel}\t${sha}")
+    aggregate_lines+=("${rel}"$'\t'"${sha}")
 done
 
 # Aggregate hash (ordered)
-aggregate_input=$(printf '%s\n' "${aggregate_lines[@]}")
-aggregate_sha=$(printf '%s\n' "$aggregate_input" | {
+# Build aggregate_input without a trailing newline to ensure exact byte match
+aggregate_input=""
+n=${#aggregate_lines[@]}
+if (( n > 0 )); then
+    for (( i=1; i<=n; i++ )); do
+        if (( i < n )); then
+            aggregate_input+="${aggregate_lines[i]}"$'\n'
+        else
+            aggregate_input+="${aggregate_lines[i]}"
+        fi
+    done
+fi
+
+# Debug: emit raw aggregate_input bytes when ZSH_DEBUG is set
+if [[ -n "${ZSH_DEBUG:-}" ]]; then
+    log_dir="${ZSH_LOG_DIR:-${METRICS_DIR}/logs}"
+    mkdir -p "$log_dir"
+    agg_log_path="${log_dir}/preplugin-aggregate-input"
+    printf '%s' "$aggregate_input" > "$agg_log_path"
+    print_err "[integrity] Debug: wrote aggregate_input (${#aggregate_input} bytes) to $agg_log_path"
+fi
+
+# Compute aggregate_sha over exact bytes (no extra newline)
+aggregate_sha=$(printf '%s' "$aggregate_input" | {
     if command -v shasum >/dev/null 2>&1; then shasum -a 256 | awk '{print $1}'; \
     elif command -v gshasum >/dev/null 2>&1; then gshasum -a 256 | awk '{print $1}'; \
     else openssl dgst -sha256 | awk '{print $2}'; fi

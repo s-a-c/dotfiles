@@ -1,5 +1,6 @@
 #!/opt/homebrew/bin/zsh
 # 50-completion-history.zsh
+: ${_LOADED_POST_PLUGIN_50_COMPLETION_HISTORY:=1}
 : ${_LOADED_50_COMPLETION_HISTORY:=1}
 # Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v900f08def0e6f7959ffd283aebb73b625b3473f5e49c57e861c6461b50a62ef2
 #
@@ -24,9 +25,17 @@ if [[ -n ${PERF_SEGMENT_LOG:-} && -z ${POST_SEG_50_COMPLETION_HISTORY_START_MS:-
   export POST_SEG_50_COMPLETION_HISTORY_START_MS
 fi
 
-# === Completion & history initialization placeholder START ===
-# (Future: compinit guarded invocation, history extended settings, cache warming, etc.)
-# === Completion & history initialization placeholder END ===
+# Completion & history initialization (guarded, single-run)
+if [[ -z ${_COMPINIT_DONE:-} ]]; then
+  autoload -Uz compinit 2>/dev/null || true
+  if command -v compinit >/dev/null 2>&1; then
+    local compdump_file="${ZGEN_CUSTOM_COMPDUMP:-${ZSH_COMPDUMP:-${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}/.zcompdump}}"
+    compinit -d "$compdump_file" 2>/dev/null || true
+    _COMPINIT_DONE=1
+    export _COMPINIT_DONE
+    typeset -f zsh_debug_echo >/dev/null 2>&1 && zsh_debug_echo "# [post-plugin][completion] compinit initialized at ${compdump_file} (single-run)"
+  fi
+fi
 
 # Emit end marker & delta once
 if [[ -n ${PERF_SEGMENT_LOG:-} && -n ${POST_SEG_50_COMPLETION_HISTORY_START_MS:-} && -z ${POST_SEG_50_COMPLETION_HISTORY_MS:-} ]]; then

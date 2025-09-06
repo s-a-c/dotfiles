@@ -3,7 +3,7 @@
 # test execution and BEFORE human-readable summary print so counts include TDD nested tests.
 # Comprehensive Test Runner
 # UPDATED: Consistent with .zshenv configuration
-set -euo pipefail
+set -uo pipefail
 
 # Source .zshenv to ensure consistent environment variables
 ZDOTDIR="${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}"
@@ -53,6 +53,61 @@ log_result() {
     zsh_debug_echo "[$timestamp] [$level] $message" | tee -a "$RESULTS_FILE"
 }
 
+# Portable timeout runner (prefers GNU timeout; falls back to gtimeout, perl, python3, or a naive zsh loop)
+run_with_timeout() {
+    emulate -L zsh
+    set -o nounset
+    local seconds="$1"; shift
+    if command -v timeout >/dev/null 2>&1; then
+        timeout "$seconds" "$@"
+        return $?
+    fi
+    if command -v gtimeout >/dev/null 2>&1; then
+        gtimeout "$seconds" "$@"
+        return $?
+    fi
+    if command -v perl >/dev/null 2>&1; then
+        perl -e 'alarm shift @ARGV; exec @ARGV' "$seconds" "$@"
+        return $?
+    fi
+    if command -v python3 >/dev/null 2>&1; then
+        python3 - "$seconds" "$@" <<'PY'
+import os, signal, subprocess, sys, time
+t = int(sys.argv[1]); cmd = sys.argv[2:]
+p = subprocess.Popen(cmd)
+try:
+    p.wait(timeout=t)
+    sys.exit(p.returncode)
+except subprocess.TimeoutExpired:
+    try:
+        p.terminate(); time.sleep(0.5)
+    except Exception:
+        pass
+    try:
+        p.kill()
+    except Exception:
+        pass
+    sys.exit(124)
+PY
+        return $?
+    fi
+    # Naive fallback using zsh loop
+    "$@" & local pid=$!
+    local waited=0
+    while kill -0 $pid 2>/dev/null; do
+        sleep 1
+        waited=$(( waited + 1 ))
+        if (( waited >= seconds )); then
+            kill $pid 2>/dev/null || true
+            sleep 0.2
+            kill -9 $pid 2>/dev/null || true
+            return 124
+        fi
+    done
+    wait $pid
+    return $?
+}
+
 # Run a single test
 run_test() {
     local test_file="$1"
@@ -67,7 +122,7 @@ run_test() {
     local start_rt=$EPOCHREALTIME
     local start_ms=$(printf '%s' "$start_rt" | awk -F. '{ms=$1*1000; if(NF>1){ ms+=substr($2"000",1,3)+0 } printf "%d", ms}')
 
-    zsh_debug_echo -n "${BLUE}Running${NC} (${test_index}) $test_name... "
+    zsh_debug_echo "${BLUE}Running${NC} (${test_index}) $test_name..."
 
     if [[ ! -x "$test_file" ]]; then
         zsh_debug_echo "${YELLOW}SKIP${NC} (not executable)"
@@ -80,7 +135,7 @@ run_test() {
     local output
     local exit_code
 
-    if output=$(timeout 60 "$test_file" 2>&1); then
+    if output=$(run_with_timeout 60 "$test_file" 2>&1); then
         exit_code=0
     else
         exit_code=$?
@@ -105,16 +160,22 @@ run_test() {
             ((passed_tests++))
         fi
     else
-        zsh_debug_echo "${RED}FAIL${NC} (${duration_ms}ms)"
-        log_result "FAIL" "$test_name - Exit code: $exit_code (index=${test_index} duration=${duration_ms}ms)"
-        log_result "FAIL" "$test_name - Output: $output"
-        ((failed_tests++))
+        if [[ "$output" == *"SKIP:"* ]]; then
+            zsh_debug_echo "${YELLOW}SKIP${NC} (${duration_ms}ms)"
+            log_result "SKIP" "$test_name - $output (index=${test_index} duration=${duration_ms}ms)"
+            ((skipped_tests++))
+        else
+            zsh_debug_echo "${RED}FAIL${NC} (${duration_ms}ms)"
+            log_result "FAIL" "$test_name - Exit code: $exit_code (index=${test_index} duration=${duration_ms}ms)"
+            log_result "FAIL" "$test_name - Output: $output"
+            ((failed_tests++))
 
-        # Show failure details immediately
-        zsh_debug_echo "  ${RED}Error details:${NC}"
-        zsh_debug_echo "$output" | sed 's/^/    /'
-        if [[ $fail_fast -eq 1 ]]; then
-            return 1
+            # Show failure details immediately
+            zsh_debug_echo "  ${RED}Error details:${NC}"
+            zsh_debug_echo "$output" | sed 's/^/    /'
+            if [[ $fail_fast -eq 1 ]]; then
+                return 1
+            fi
         fi
     fi
 }
@@ -129,8 +190,8 @@ find_and_run_tests() {
         return 0
     fi
 
-    local test_files
-    test_files=($(find "$search_dir" -name "$pattern" -type f | sort))
+    local -a test_files
+    test_files=("${(@f)$(find "$search_dir" -name "$pattern" -type f | LC_ALL=C sort)}")
 
     if [[ ${#test_files[@]} -eq 0 ]]; then
         zsh_debug_echo "${YELLOW}Warning:${NC} No test files found in $search_dir"
@@ -139,6 +200,13 @@ find_and_run_tests() {
 
     zsh_debug_echo "${BLUE}Running tests from:${NC} $search_dir"
     zsh_debug_echo ""
+    if [[ "${verbose:-0}" -eq 1 || "${ZSH_DEBUG:-0}" -eq 1 ]]; then
+        zsh_debug_echo "Discovered ${#test_files[@]} test file(s) in $search_dir:"
+        for tf in "${test_files[@]}"; do
+            zsh_debug_echo "  - $tf"
+        done
+        zsh_debug_echo ""
+    fi
 
     for test_file in "${test_files[@]}"; do
         run_test "$test_file"

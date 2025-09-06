@@ -44,9 +44,9 @@ A new badge summarizes module emission health:
 Badge Legend Addendum (until the main legend table is revised):
 - modules.json | modules | Module emission health | Granular segments + native prompt present | Either missing | Generated via `generate-summary-badges.zsh` from `module-fire.json`
 
-**Version 2.4** – Core Hardening, Perf/Bench & Governance Badge Integration Updates  
+**Version 2.5** – Core Hardening, Perf/Bench & Governance Badge Integration Updates  
 **Status**: Stage 2 Complete (baseline & tag created) – Stage 3 (Core Modules) In Progress  
-**Last Updated**: 2025-09-05
+**Last Updated**: 2025-09-06
 
 > NOTE: A “Badge Legend Update Stub” section will be inserted in the Badge Legend area once exact line numbers for that section are provided (required for minimal diff compliance). Please provide the numbered snippet around the existing “## Badge Legend (Expanded – New Pending Rows)” heading so the planned stub (variance-state, multi_source, authenticity fields, perf-multi source note) can be appended precisely.
 
@@ -98,6 +98,7 @@ Focused execution priorities for the remainder of Stage 3 (after recent addition
 | Option snapshot stability | [x] | Golden snapshot path & diff test green |
 | Core functions namespace stable | [x] | Manifest & namespace tests green |
 | Integrity scheduler single registration | [x] | No duplicate key on re-source |
+| Pre-plugin integrity aggregate alignment | [x] | Generator/test use identical bytes; deterministic enumeration and newline; baseline refreshed |
 | Perf provisional budget (pre-plugin) | [~] | Pre stable; post/prompt metrics pending non-zero |
 | Perf regression gating (observe→gate) | [ ] | Await stable multi-sample + drift readiness |
 | Drift badge integration | [~] | Script ready; CI publication pending (governance badge generation now wired into perf & nightly workflows; waiting on stable non-zero post/prompt segments for full activation) |
@@ -176,6 +177,8 @@ Notes:
 - **Governance**: Trust anchor read APIs & future hashing path documented
 - **Segment & Prompt Stability**: Added post-harness settle window and prompt grace; tightened salvage (granular segment sum) and zero-diagnose synthesis to eliminate all‑zero lifecycles
 - **Module Emission & Badges**: Introduced module-fire selftest and module tracer; integrated “modules” badge and included it in summary badge aggregation
+- **Integrity Manifest**: Generator/test aggregate aligned byte-for-byte; deterministic order + newline handling; baseline refreshed
+- **Async Initial-State Test**: Converted last assertion to behavioral-only; PASS on this system
 
 ---
 
@@ -194,7 +197,7 @@ Notes:
 - `artifacts/inventories/` – Inventories & baselines  
 - `artifacts/metrics/` – Performance + (pending) micro bench artifacts  
 - `artifacts/badges/` – Badge JSON endpoints  
-- `artifacts/checksums/` – Integrity baselines
+- `artifacts/checksums/` – Integrity baselines (generator/test aggregate aligned; baseline refreshed)
 
 ### **📚 Archive & Historical**
 - `archive/planning-complete/` – Completed planning docs  
@@ -340,6 +343,8 @@ tools/experimental/perf-module-ledger.zsh \
 | Option snapshot stable | ✅ |
 | Core function namespace stable | ✅ |
 | Integrity scheduler registered exactly once | ✅ |
+| Pre-plugin integrity aggregate aligned (generator=test; baseline refreshed) | ✅ |
+| Async initial-state test: behavioral-only assertion (no warning-text dependency) | ✅ |
 | Lifecycle segments non-zero (post/prompt) | ⏳ Pending instrumentation confirmation |
 | Micro benchmark baseline committed | ⏳ Pending |
 | Drift badge integrated in CI | ⏳ Pending |
@@ -353,6 +358,10 @@ tools/experimental/perf-module-ledger.zsh \
 | ID | Focus | Mode |
 |----|-------|------|
 | T1 | Non-zero post/prompt segments capture | Blocking |
+| T2 | Authentic variance stabilization (N=5); remove synthetic replication (F49→F48) | Blocking |
+| T3 | Recompute variance-state and update governance badge (F50) | Active |
+| T4 | Commit micro-benchmark baseline and surface in docs/badges | Active |
+| T5 | Prepare async activation checklist (single compinit precondition) | Active |
 | T2 | Drift badge CI integration | Blocking |
 | T3 | Micro bench baseline commit | Blocking |
 | T4 | Marker presence & monotonic tests | Near-term |

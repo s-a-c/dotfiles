@@ -1,4 +1,3 @@
-dotfiles/dot-config/zsh/tests/security/test-preplugin-integrity-hash.zsh#L1-200
 #!/usr/bin/env zsh
 # test-preplugin-integrity-hash.zsh
 # Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v900f08def0e6f7959ffd283aebb73b625b3473f5e49c57e861c6461b50a62ef2
@@ -36,12 +35,18 @@ set -euo pipefail
 typeset -f zsh_debug_echo >/dev/null 2>&1 || zsh_debug_echo() { :; }
 
 # Determine ZDOTDIR / repo root (assumes test resides under .../dot-config/zsh/tests/security/)
-if typeset -f zf::script_dir >/dev/null 2>&1; then
-    TEST_DIR="$(zf::script_dir "${(%):-%N}")"
+# Use absolute paths and avoid fragile parameter expansion fallbacks
+if [[ -n "${ZSH_VERSION:-}" ]]; then
+    TEST_FILE="${(%):-%N}"
+    TEST_DIR="${TEST_FILE:A:h}"
+elif typeset -f zf::script_dir >/dev/null 2>&1; then
+    TEST_DIR="$(zf::script_dir "$0")"
 else
-    TEST_DIR="${(%):-%N:h}"
+    # Fallback for non-zsh shells
+    TEST_DIR="$(cd "$(dirname -- "${BASH_SOURCE[0]:-$0}")" >/dev/null 2>&1 && pwd -P)"
 fi
-ZSH_ROOT="$(cd "${TEST_DIR}/../../.." && pwd -P)"
+# Two directories up from tests/security -> zsh root
+ZSH_ROOT="${TEST_DIR:h:h}"
 
 # Metrics directory resolution (prefer redesignv2)
 if [[ -d "${ZSH_ROOT}/docs/redesignv2/artifacts/metrics" ]]; then
@@ -96,31 +101,15 @@ elif ! [[ "$reported_aggregate" =~ ^[0-9a-f]{64}$ ]]; then
 fi
 
 # Parse file objects (paths & hashes) preserving order
-# Strategy: collect lines containing "path": and "sha256": between "files": [ and closing ]
-in_files=0
+# Strategy: extract with grep -o across full file (handles minified JSON)
 paths=()
 hashes=()
-
-while IFS= read -r line; do
-  # Detect start / end of files array
-  if [[ $line == *'"files"'*'['* ]]; then
-    in_files=1
-    continue
-  fi
-  if (( in_files )); then
-    [[ $line == *']'* ]] && in_files=0
-    # path
-    if [[ $line == *'"path"'* ]]; then
-      p=$(echo "$line" | sed 's/.*"path"[[:space:]]*:[[:space:]]*"//; s/".*//')
-      paths+=("$p")
-    fi
-    # sha256
-    if [[ $line == *'"sha256"'* ]]; then
-      h=$(echo "$line" | sed 's/.*"sha256"[[:space:]]*:[[:space:]]*"//; s/".*//')
-      hashes+=("$h")
-    fi
-  fi
-done <"$CURR"
+while IFS= read -r p; do
+  [[ -n "$p" ]] && paths+=("$p")
+done < <(grep -o '"path"[[:space:]]*:[[:space:]]*"[^"]*"' "$CURR" | sed 's/.*"path"[[:space:]]*:[[:space:]]*"//; s/"$//')
+while IFS= read -r h; do
+  [[ -n "$h" ]] && hashes+=("$h")
+done < <(grep -o '"sha256"[[:space:]]*:[[:space:]]*"[^"]*"' "$CURR" | sed 's/.*"sha256"[[:space:]]*:[[:space:]]*"//; s/"$//')
 
 if (( ${#paths[@]} == 0 )); then
   failures+=("No file entries parsed from integrity-current.json")
@@ -131,7 +120,7 @@ if (( ${#paths[@]} != ${#hashes[@]} )); then
 fi
 
 # Validate each entry
-for i in {1..${#paths[@]}}; do
+for (( i=1; i<=${#paths[@]}; i++ )); do
   p="${paths[i]}"
   h="${hashes[i]}"
   # Path must exist
@@ -145,9 +134,10 @@ for i in {1..${#paths[@]}}; do
   # Recompute individual hash (optional deep check)
   if [[ -f "${ZSH_ROOT}/${p}" ]]; then
     if [[ $hash_cmd == openssl* ]]; then
-      recomputed=$($hash_cmd "${ZSH_ROOT}/${p}" 2>/dev/null | awk -F'= ' '{print $2}')
+      recomputed=$(openssl dgst -sha256 "${ZSH_ROOT}/${p}" 2>/dev/null | awk -F'= ' '{print $2}')
     else
-      recomputed=$($hash_cmd "${ZSH_ROOT}/${p}" 2>/dev/null | awk '{print $1}')
+      recomputed=$(shasum -a 256 "${ZSH_ROOT}/${p}" 2>/dev/null | awk '{print $1}')
+      [[ -z "$recomputed" ]] && recomputed=$(gshasum -a 256 "${ZSH_ROOT}/${p}" 2>/dev/null | awk '{print $1}')
     fi
     if [[ -n "$recomputed" && "$recomputed" != "$h" ]]; then
       failures+=("Hash mismatch for ${p} (manifest=$h recomputed=$recomputed)")
@@ -157,24 +147,34 @@ done
 
 # Recompute aggregate hash (ordered)
 aggregate_input=""
-for i in {1..${#paths[@]}}; do
+for (( i=1; i<=${#paths[@]}; i++ )); do
   aggregate_input+="${paths[i]}"$'\t'"${hashes[i]}"$'\n'
 done
 
-# Trim trailing newline before hashing
-aggregate_input="${aggregate_input%$'\n'}"
+# Debug: write test aggregate_input bytes if ZSH_DEBUG is set
+if [[ -n "${ZSH_DEBUG:-}" ]]; then
+  log_dir="${ZSH_LOG_DIR:-${METRICS_DIR}/logs}"
+  mkdir -p "$log_dir"
+  test_agg_log="${log_dir}/test-preplugin-aggregate-input"
+  printf '%s' "$aggregate_input" > "$test_agg_log"
+  zsh_debug_echo "# [integrity-test] Wrote aggregate_input (${#aggregate_input} bytes) to $test_agg_log"
+fi
 
-recomputed_aggregate=$(
+# Recompute aggregate hash (ordered) using no trailing newline to match generator
+n=${#paths[@]}
+recomputed_aggregate=""
+if (( n > 0 )); then
   if [[ $hash_cmd == openssl* ]]; then
-    printf '%s' "$aggregate_input" | openssl dgst -sha256 2>/dev/null | awk -F'= ' '{print $2}'
+    recomputed_aggregate=$(printf '%s' "${aggregate_input%$'\n'}" | openssl dgst -sha256 2>/dev/null | awk -F'= ' '{print $2}')
   else
-    printf '%s' "$aggregate_input" | $hash_cmd 2>/dev/null | awk '{print $1}'
+    recomputed_aggregate=$(printf '%s' "${aggregate_input%$'\n'}" | shasum -a 256 2>/dev/null | awk '{print $1}')
+    [[ -z "$recomputed_aggregate" ]] && recomputed_aggregate=$(printf '%s' "${aggregate_input%$'\n'}" | gshasum -a 256 2>/dev/null | awk '{print $1}')
   fi
-)
+fi
 
 if [[ -z "$recomputed_aggregate" ]]; then
   failures+=("Failed to recompute aggregate hash")
-elif [[ "$recomputed_aggregate" != "$reported_aggregate" ]]; then
+elif [[ "$reported_aggregate" != "$recomputed_aggregate" ]]; then
   failures+=("Aggregate mismatch (reported=$reported_aggregate recomputed=$recomputed_aggregate)")
 fi
 
