@@ -1,6 +1,6 @@
 # ZSH Configuration Redesign – Consolidated Implementation Guide
 
-## Progress Update — 2025-09-05
+## Progress Update — 2025-09-06
 
 Highlights delivered in this iteration:
 1. Post-harness settle and prompt grace
@@ -181,6 +181,8 @@ Completed (last 48h):
 - Monotonic lifecycle ordering validated (pre ≤ post ≤ prompt).
 - Variance-state artifact generated (observe mode; synthetic multi-run fallback).
 - Lifecycle trio non-zero (fast-track path achieved).
+- Pre-plugin integrity manifest aligned: deterministic order, no trailing newline aggregate; generator/test bytes match; baseline refreshed (integrity-current.json == integrity-baseline.json).
+- Async initial-state test adjusted: last assertion behavioral-only; passes consistently under strict modes.
 
 Immediate (P0 – Critical Sequence):
 - Authentic variance stabilization (simple harness): Run second multi-sample capture (N=5) with perf-capture-multi-simple.zsh; update Variance Stability Log. Promote pre_plugin_cost_ms decision to candidate if new RSD <5% (or blended RSD across both authentic runs <5%). Investigate post_plugin_total_ms outlier (values 144,141,385) and document cause or mitigation plan before any gating escalation.
@@ -218,6 +220,36 @@ Exit Signals for This Window:
 - Authentic multi-run variance entries present (no synthetic) in log.
 - Governance badge unchanged severity after authenticity pivot.
 - Recomputed variance-state shows stable_run_count ≥1 (authentic) & RSD <5% pre_plugin_cost_ms.
+
+---
+
+### Handoff Prompt for Next Conversation
+
+Copy-paste the following prompt in a new chat to continue:
+
+```text
+Context: ZSH Redesign Stage 3 ongoing. Recent changes:
+- Pre-plugin integrity manifest aligned (generator/test bytes match). Baseline refreshed.
+- Async initial-state test adjusted to behavioral-only; all tests pass locally.
+
+Current tasks:
+- T1: Non-zero post/prompt segment capture; verify monotonic lifecycle pre ≤ post ≤ prompt.
+- T2: Authentic variance stabilization (N=5); remove synthetic replication (F49→F48).
+- T3: Recompute variance-state and update governance badge (F50).
+
+Next tasks:
+- T4: Commit micro-benchmark baseline and surface in docs/badges.
+- T5: Prepare async activation checklist (single compinit precondition) and plan staged enablement.
+
+What I want: Help me execute T1–T3 first, then T4–T5 if time permits. Begin by running perf-capture-multi-simple.zsh (N=5), inspect variance, and suggest gating thresholds.
+
+Artifacts:
+- docs/redesignv2/artifacts/metrics/integrity-current.json & integrity-baseline.json (aligned)
+- logs: preplugin-aggregate-input, test-preplugin-aggregate-input
+- tests: security/test-preplugin-integrity-hash.zsh, security/test-async-initial-state.zsh
+```
+
+---
 
 Escalation Criteria:
 - If authentic post_plugin_total still zero after F49 retries: enable PERF_CAPTURE_DEBUG=1 and capture raw segment logs; open F49a follow-up task.
