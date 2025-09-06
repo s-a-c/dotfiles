@@ -44,7 +44,8 @@
 *.woff2  binary
 *.ttf    binary
 *.otf    binary
-*.svg    text eol=lf   # SVG is XML text; keep normalized but allow diffs.
+# SVG is XML text; keep normalized but allow diffs.
+*.svg    text eol=lf
 
 # ------------------------------------------------------------------------------
 # 2) Editor-managed / environment-provisioned symlinks and plugin folders
