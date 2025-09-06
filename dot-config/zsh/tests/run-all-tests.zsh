@@ -113,6 +113,9 @@ run_test() {
         # Show failure details immediately
         zsh_debug_echo "  ${RED}Error details:${NC}"
         zsh_debug_echo "$output" | sed 's/^/    /'
+        if [[ $fail_fast -eq 1 ]]; then
+            return 1
+        fi
     fi
 }
 
@@ -297,6 +300,8 @@ OPTIONS:
     --security-only Run only security and async tests
     --unit-only     Run only unit tests
     --integration-only Run only integration tests
+    --category <list>   Run only specified categories (comma-separated)
+    --fail-fast     Exit immediately on first test failure
 
 EXAMPLES:
     $0                  # Run all tests
@@ -322,6 +327,8 @@ security_only=0
 unit_only=0
 integration_only=0
 json_output=0
+category_list=""
+fail_fast=0
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -362,6 +369,18 @@ while [[ $# -gt 0 ]]; do
         integration_only=1
         shift
         ;;
+    --category=*)
+        category_list="${1#*=}"
+        shift
+        ;;
+    --category)
+        category_list="$2"
+        shift 2
+        ;;
+    --fail-fast)
+        fail_fast=1
+        shift
+        ;;
     --json)
         json_output=1
         shift
@@ -375,7 +394,57 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Override main for filtered execution
-if [[ $path_only -eq 1 ]]; then
+if [[ -n "$category_list" ]]; then
+    main() {
+        zsh_debug_echo "🧪 ZSH Configuration Test Suite (Selected Categories: $category_list)"
+        zsh_debug_echo "================================================================"
+        log_result "INFO" "Running selected categories: $category_list"
+        local IFS=","
+        local -a categories
+        categories=(${=category_list})
+        for cat in "${categories[@]}"; do
+            case "$cat" in
+            design)
+                find_and_run_tests "$TEST_BASE_DIR/design" "test-*.zsh"
+                ;;
+            unit)
+                find_and_run_tests "$TEST_BASE_DIR/unit" "test-*.zsh"
+                ;;
+            feature)
+                find_and_run_tests "$TEST_BASE_DIR/feature" "test-*.zsh"
+                ;;
+            integration)
+                find_and_run_tests "$TEST_BASE_DIR/integration" "test-*.zsh"
+                ;;
+            security)
+                find_and_run_tests "$TEST_BASE_DIR/security" "test-*.zsh"
+                ;;
+            performance|perf)
+                find_and_run_tests "$TEST_BASE_DIR/perf/phase06" "test-*.zsh"
+                find_and_run_tests "$TEST_BASE_DIR/performance" "test-*.zsh"
+                ;;
+            path)
+                find_and_run_tests "$TEST_BASE_DIR/path/phase05" "test-*.zsh"
+                ;;
+            style)
+                find_and_run_tests "$TEST_BASE_DIR/style" "test-*.zsh"
+                ;;
+            *)
+                zsh_debug_echo "${YELLOW}Warning:${NC} Unknown category: $cat"
+                ;;
+            esac
+        done
+        zsh_debug_echo "================================"
+        zsh_debug_echo "📊 Test Results Summary"
+        zsh_debug_echo "================================"
+        zsh_debug_echo "Total tests:  $total_tests"
+        zsh_debug_echo "${GREEN}Passed:${NC}       $passed_tests"
+        zsh_debug_echo "${RED}Failed:${NC}       $failed_tests"
+        zsh_debug_echo "${YELLOW}Skipped:${NC}      $skipped_tests"
+        log_result "SUMMARY" "Selected Categories - Total: $total_tests, Passed: $passed_tests, Failed: $failed_tests"
+        return $([[ $failed_tests -eq 0 ]] && echo 0 || echo 1)
+    }
+elif [[ $path_only -eq 1 ]]; then
     main() {
         zsh_debug_echo "🧪 ZSH Configuration Test Suite (PATH Tests Only)"
         zsh_debug_echo "================================================"
