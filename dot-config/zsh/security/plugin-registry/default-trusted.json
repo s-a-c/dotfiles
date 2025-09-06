@@ -2,7 +2,7 @@
     "description": "Default trusted plugins for zsh-quickstart-kit",
     "plugins": [
         "zdharma-continuum/fast-syntax-highlighting",
-        "zsh-users/zsh-history-substring-search", 
+        "zsh-users/zsh-history-substring-search",
         "zsh-users/zsh-autosuggestions",
         "supercrabtree/k",
         "romkatv/powerlevel10k"

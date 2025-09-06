@@ -19,7 +19,7 @@
 
  ### 2.1 Backend (`app/`)
  - `Console/`: Custom Artisan commands.
- - `Http/Controllers/`: 
+ - `Http/Controllers/`:
    - `Auth/`: Authentication flows.
    - `Settings/`: Profile and password screens.
    - `Controller.php`: Base controller.
@@ -33,7 +33,7 @@
  - `api.php`: API endpoints.
 
  ### 2.3 Frontend
- - `resources/js/`: 
+ - `resources/js/`:
    - `pages/`: `auth/`, `settings/` React pages (Inertia & Livewire).
    - `components/`: Shared UI bits (TypeScript).
  - `resources/views/`: Blade templates and Livewire views.
@@ -82,7 +82,7 @@
  2. Peek at `resources/js/pages/` if React is more your style.
  3. Run `php artisan migrate --seed` then `npm run dev` and marvel.
 
- 
+
  ## 7. Dependency Summary 🧩
 
  ### 7.1 Composer Dependencies (Backend) 🐘

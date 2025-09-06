@@ -85,13 +85,13 @@ Tracking / Exit Criteria for Backlog Closure:
 (End 1.2.1 Backlog Section)
 
 
-> Global Documentation Guideline: All ordered lists MUST use numeric Arabic prefixes (`1.`, `2.`, `3.` …).  
-> - Do not use auto-renumbering tricks (e.g., repeating `1.` intentionally) in committed sources.  
-> - Do not switch to roman numerals or lettered lists.  
-> - Preserve sequential numbering in diffs to make semantic list reordering explicit.  
+> Global Documentation Guideline: All ordered lists MUST use numeric Arabic prefixes (`1.`, `2.`, `3.` …).
+> - Do not use auto-renumbering tricks (e.g., repeating `1.` intentionally) in committed sources.
+> - Do not switch to roman numerals or lettered lists.
+> - Preserve sequential numbering in diffs to make semantic list reordering explicit.
 > - If inserting in the middle of an existing ordered list, renumber the following items instead of relying on renderer auto-renumbering.
-Version: 2.3  
-Status: Stage 2 Complete – Stage 3 In Progress (core hardening, trust anchors, micro-benchmark harness, drift tooling)  
+Version: 2.3
+Status: Stage 2 Complete – Stage 3 In Progress (core hardening, trust anchors, micro-benchmark harness, drift tooling)
 Last Updated: 2025-09-04 (Added micro-benchmark harness stabilization, variance log integration, perf drift badge script, trust anchor read APIs)
 Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
 
@@ -177,15 +177,15 @@ This snapshot will be updated when new hotspot segments are added or when observ
 Completed (last 48h):
 - Micro-benchmark baseline captured (bench-core-baseline.json; shimmed_count >0).
 - Governance badge (extended + shield) active with explicit variance-state source (F40 complete).
-- Drift badge integrated (observe mode).
+- Drift badge integrated (observe mode); micro-benchmark baseline captured (metrics/microbench-core.json) and summarized in perf badge.
 - Monotonic lifecycle ordering validated (pre ≤ post ≤ prompt).
-- Variance-state artifact generated (observe mode; synthetic multi-run fallback).
-- Lifecycle trio non-zero (fast-track path achieved).
+- Variance-state artifact updated: mode=guard, streak=3/3; automated refresh via tools/update-variance-and-badges.zsh.
+- Lifecycle trio non-zero and monotonic across all N=5 batches (pre ≤ post ≤ prompt).
 - Pre-plugin integrity manifest aligned: deterministic order, no trailing newline aggregate; generator/test bytes match; baseline refreshed (integrity-current.json == integrity-baseline.json).
 - Async initial-state test adjusted: last assertion behavioral-only; passes consistently under strict modes.
 
 Immediate (P0 – Critical Sequence):
-- Authentic variance stabilization (simple harness): Run second multi-sample capture (N=5) with perf-capture-multi-simple.zsh; update Variance Stability Log. Promote pre_plugin_cost_ms decision to candidate if new RSD <5% (or blended RSD across both authentic runs <5%). Investigate post_plugin_total_ms outlier (values 144,141,385) and document cause or mitigation plan before any gating escalation.
+- Variance guard established: N=5 × 3 stabilized (no outliers). Next: integrate updater into CI, prepare perf-drift gating thresholds, and port variance thresholds to advanced harness.
 1. F49 – Repair perf-capture-multi loop (ensure >1 authentic samples; add watchdog, retry, explicit non-zero post/prompt assertion).
 2. F48 – Remove synthetic multi-sample replication hack after F49 (delete cloning logic; governance aggregation treats insufficient samples as “insufficient” not synthetic).
 3. F50 – Recompute variance-state.json with authentic RSD; update governance badge (remove synthetic indicators; update stable_run_count).
@@ -459,64 +459,64 @@ Success Metrics (when baseline captured):
 ### Stage 3 Immediate Task List (Core Modules Bootstrap)
 
 Execution Order (initial pass):
-1. PATH append fix validation  
-   - Confirm `.zshenv` only appends (never overwrites) PATH and preserves required core tool availability (`awk`, `date`, `mkdir`) in subshells.  
+1. PATH append fix validation
+   - Confirm `.zshenv` only appends (never overwrites) PATH and preserves required core tool availability (`awk`, `date`, `mkdir`) in subshells.
    - Add explicit test if not already covered.
-2. Implement `00-security-integrity.zsh` (skeleton)  
-   - Path hygiene enforcement (append semantics, no destructive rewrites)  
-   - Export minimal trust anchor / checksum map reference (no hashing yet)  
-   - Register integrity scheduler stub (deferred execution only)  
+2. Implement `00-security-integrity.zsh` (skeleton)
+   - Path hygiene enforcement (append semantics, no destructive rewrites)
+   - Export minimal trust anchor / checksum map reference (no hashing yet)
+   - Register integrity scheduler stub (deferred execution only)
    - Idempotent sentinel + re-source test.
-3. Implement `05-interactive-options.zsh`  
-   - Consolidate `setopt` / `unsetopt`, history settings, base completion zstyles  
-   - Ensure re-source produces zero diff snapshot (option snapshot test)  
+3. Implement `05-interactive-options.zsh`
+   - Consolidate `setopt` / `unsetopt`, history settings, base completion zstyles
+   - Ensure re-source produces zero diff snapshot (option snapshot test)
    - Add sentinel guard + option snapshot golden file.
-4. Implement `10-core-functions.zsh`  
-   - Namespace: `zf::ensure_cmd`, `zf::log` (lightweight), `zf::warn`, minimal timing helper wrappers or adapters to segment-lib (no duplication)  
-   - Add assertion utility (e.g. `zf::require`) for internal guards.  
+4. Implement `10-core-functions.zsh`
+   - Namespace: `zf::ensure_cmd`, `zf::log` (lightweight), `zf::warn`, minimal timing helper wrappers or adapters to segment-lib (no duplication)
+   - Add assertion utility (e.g. `zf::require`) for internal guards.
    - Function namespace uniqueness + checksum/hash test.
-5. Tests to Add / Finalize  
-   - Path append invariant test (pre/post load diff)  
-   - Option snapshot diff test (zero unintended changes)  
-   - Function namespace uniqueness & idempotency test  
-   - Core function count threshold test (CORE_FN_MIN_EXPECT; optional CORE_FN_GOLDEN_COUNT with CORE_FN_ALLOW_GROWTH)  
-   - Golden option snapshot enforcement test (compare against `docs/redesignv2/artifacts/golden/options-snapshot-stage3-initial.txt`)  
-   - Integrity scheduler single-registration test (no duplicate queue)  
-   - Sentinel & idempotency design test (00 / 05 / 10 trio: sentinels, PATH non‑shrink, stable snapshots)  
-   - Perf ledger drift comparison test (current vs latest history snapshot)  
-   - Core functions manifest name-level drift test (golden manifest)  
-   - Perf variance gating recommender (auto-enable-perf-warn-gate.zsh) stability streak logic & state file + integrated env handoff to perf-diff (conditional fail)  
-   - Perf drift badge generation (perf-drift.json → SVG) surfaced in perf segments workflow & badges summary  
-   - Helper availability test may call `tools/verify-path-helpers.zsh --assert both`.  
+5. Tests to Add / Finalize
+   - Path append invariant test (pre/post load diff)
+   - Option snapshot diff test (zero unintended changes)
+   - Function namespace uniqueness & idempotency test
+   - Core function count threshold test (CORE_FN_MIN_EXPECT; optional CORE_FN_GOLDEN_COUNT with CORE_FN_ALLOW_GROWTH)
+   - Golden option snapshot enforcement test (compare against `docs/redesignv2/artifacts/golden/options-snapshot-stage3-initial.txt`)
+   - Integrity scheduler single-registration test (no duplicate queue)
+   - Sentinel & idempotency design test (00 / 05 / 10 trio: sentinels, PATH non‑shrink, stable snapshots)
+   - Perf ledger drift comparison test (current vs latest history snapshot)
+   - Core functions manifest name-level drift test (golden manifest)
+   - Perf variance gating recommender (auto-enable-perf-warn-gate.zsh) stability streak logic & state file + integrated env handoff to perf-diff (conditional fail)
+   - Perf drift badge generation (perf-drift.json → SVG) surfaced in perf segments workflow & badges summary
+   - Helper availability test may call `tools/verify-path-helpers.zsh --assert both`.
    - (Future) Enhanced perf ledger budget regression gate + infra-health badge aggregation verification (activate once variance <5% over ≥2 runs).
-6. CI Enhancements  
-   - Add non-fatal (observe) job step invoking `verify-path-helpers.zsh --assert any --json`; escalate to `--assert both` once both helpers guaranteed by Stage 3 mid-point.  
-   - Introduce experimental perf module ledger capture (observe mode, nightly + PR):  
-     `tools/experimental/perf-module-ledger.zsh --segments docs/redesignv2/artifacts/metrics/perf-current-segments.txt --output docs/redesignv2/artifacts/metrics/perf-ledger.json --budget post_plugin_total:3000,pre_plugin_total:120 --badge docs/badges/perf-ledger.json || true`  
-   - Include `perf-ledger.json` + `perf-ledger` badge in existing badge summary aggregation (non-fatal).  
-   - Gate escalation plan: once variance stable (<5%) and budgets tuned, enable `--fail-on-over` on main only.  
+6. CI Enhancements
+   - Add non-fatal (observe) job step invoking `verify-path-helpers.zsh --assert any --json`; escalate to `--assert both` once both helpers guaranteed by Stage 3 mid-point.
+   - Introduce experimental perf module ledger capture (observe mode, nightly + PR):
+     `tools/experimental/perf-module-ledger.zsh --segments docs/redesignv2/artifacts/metrics/perf-current-segments.txt --output docs/redesignv2/artifacts/metrics/perf-ledger.json --budget post_plugin_total:3000,pre_plugin_total:120 --badge docs/badges/perf-ledger.json || true`
+   - Include `perf-ledger.json` + `perf-ledger` badge in existing badge summary aggregation (non-fatal).
+   - Gate escalation plan: once variance stable (<5%) and budgets tuned, enable `--fail-on-over` on main only.
    - (Optional) Dry-run provisional post-plugin early cost ledger JSON (no gating yet).
-7. Performance Guard Adjustments  
-   - Collect two additional multi-sample runs (variance <5%) → tighten regression guard from +7% to +5%.  
-   - Begin capturing early post-plugin partial cost ledger for impending budget planning (ledger artifact becomes historical comparator).  
+7. Performance Guard Adjustments
+   - Collect two additional multi-sample runs (variance <5%) → tighten regression guard from +7% to +5%.
+   - Begin capturing early post-plugin partial cost ledger for impending budget planning (ledger artifact becomes historical comparator).
    - Track over-budget counts trend (ledger `overall.overBudgetCount`) in badge summary for future automated gating signal.
-8. Documentation / Reporting  
-   - Update README Stage Progress (Post-Plugin Core % as each of 00 / 05 / 10 lands).  
-   - Create / refine `stages/stage-3-core.md` with a live checklist mirroring this task list.  
-   - Add ledger integration status row to Section 1 snapshot once first successful CI artifact exists (State: "Perf Ledger Prototype ✅ / Observe").  
+8. Documentation / Reporting
+   - Update README Stage Progress (Post-Plugin Core % as each of 00 / 05 / 10 lands).
+   - Create / refine `stages/stage-3-core.md` with a live checklist mirroring this task list.
+   - Add ledger integration status row to Section 1 snapshot once first successful CI artifact exists (State: "Perf Ledger Prototype ✅ / Observe").
    - Append Stage 3 readiness checklist to CONTRIBUTOR or implementation artifacts if not already enumerated.
-9. Exit Criteria Preparation (Stage 3)  
-   - [ ] PATH append invariant PASS  
-   - [ ] Security skeleton idempotent  
-   - [ ] Option snapshot stable (no drift)  
-   - [ ] Core function namespace stable (checksum or count)  
-   - [ ] Integrity scheduler registered exactly once  
-   - [ ] Pre-plugin + early post-plugin perf within provisional budget (+≤5–8ms allowance)  
+9. Exit Criteria Preparation (Stage 3)
+   - [ ] PATH append invariant PASS
+   - [ ] Security skeleton idempotent
+   - [ ] Option snapshot stable (no drift)
+   - [ ] Core function namespace stable (checksum or count)
+   - [ ] Integrity scheduler registered exactly once
+   - [ ] Pre-plugin + early post-plugin perf within provisional budget (+≤5–8ms allowance)
    - [ ] Tests added & green
-10. Deferral Log (to Stage 4/5)  
-   - Deep integrity hashing (Stage 5/6)  
-   - Prompt / UI theming (Stage 5)  
-   - Async execution activation beyond shadow mode (Stage 5+)  
+10. Deferral Log (to Stage 4/5)
+   - Deep integrity hashing (Stage 5/6)
+   - Prompt / UI theming (Stage 5)
+   - Async execution activation beyond shadow mode (Stage 5+)
    - Full segment budget hard gating (Stage 5/6)
 
 Definitions of Done (Stage 3):
@@ -557,7 +557,7 @@ Planned Tests & Gates:
 
 Performance Strategy (Stage 3):
 - Provisional allowance: +5–8ms over locked pre-plugin baseline before plugins introduced.
-- Maintain current +7% regression guard; plan tightening to +5% after 1–2 additional low-variance sample sets (stdev/mean <5%).  
+- Maintain current +7% regression guard; plan tightening to +5% after 1–2 additional low-variance sample sets (stdev/mean <5%).
 - Dashboard Note (Stage 3): Pre-plugin guard now 7% (yellow band); next tightening gate = additional stable capture set.
 - (Deferred) Module cost ledger JSON (target activation early Stage 4 when plugin costs begin).
 
@@ -598,50 +598,50 @@ Immediate Follow-Up (Documented as Complete in Code, Pending Secondary Validatio
 - [x] Outlier block populated; factor verified.
 
 Future Tasks (Queued – move to implementation schedule as capacity allows):
-1. Segment Emission Restoration  
-   - Verify per-run `perf-sample-*.json` still includes `post_plugin_segments`.  
-   - If present: debug `segment_iterate_file` awk parser (label & mean_ms extraction).  
+1. Segment Emission Restoration
+   - Verify per-run `perf-sample-*.json` still includes `post_plugin_segments`.
+   - If present: debug `segment_iterate_file` awk parser (label & mean_ms extraction).
    - If absent: re-enable upstream segment export hooks (ensure compinit / theme / vcs segments written).
-2. PROMPT_READY Authenticity  
-   - Add explicit PROMPT_READY marker hook before final prompt render.  
+2. PROMPT_READY Authenticity
+   - Add explicit PROMPT_READY marker hook before final prompt render.
    - Disable approximation fallback once stable to reduce variance coupling.
-3. Minimal Retry Loop (Optional Re-Enable)  
-   - Implement bounded retry for zero post/prompt fields (PERF_CAPTURE_SAMPLE_RETRIES>0) without reintroducing synthetic duplication.  
+3. Minimal Retry Loop (Optional Re-Enable)
+   - Implement bounded retry for zero post/prompt fields (PERF_CAPTURE_SAMPLE_RETRIES>0) without reintroducing synthetic duplication.
    - Set conservative default (e.g., 1–2) once stable.
-4. Async Path Re-Hardening  
-   - Reintroduce async child capture with improved watchdog (mtime + size delta heuristics) and failover to force-sync only on stall.  
+4. Async Path Re-Hardening
+   - Reintroduce async child capture with improved watchdog (mtime + size delta heuristics) and failover to force-sync only on stall.
    - Add progress logging toggle (PERF_CAPTURE_PROGRESS_DEBUG).
-5. Segment-Level RSD & Per-Segment Variance Block  
+5. Segment-Level RSD & Per-Segment Variance Block
    - Emit rsd_<segment_label> or a segments_variance array to support targeted optimization decisions.
-6. Governance & Badge Integration Enhancements  
-   - Auto-refresh governance badge on successful advanced multi-run (multi_source=advanced).  
+6. Governance & Badge Integration Enhancements
+   - Auto-refresh governance badge on successful advanced multi-run (multi_source=advanced).
    - Include auth_shortfall + partial in variance-state JSON.
-7. Enhanced Outlier Strategy  
-   - Add secondary heuristic: MAD-based factor or top-1 exclusion simulation for decision support.  
+7. Enhanced Outlier Strategy
+   - Add secondary heuristic: MAD-based factor or top-1 exclusion simulation for decision support.
    - Emit outlier_excluded_mean when exclusion materially lowers RSD.
-8. Caching Refinement  
-   - Expand fingerprint to include guidelines checksum & high-sensitivity module mtimes.  
+8. Caching Refinement
+   - Expand fingerprint to include guidelines checksum & high-sensitivity module mtimes.
    - Add PERF_CAPTURE_CACHE_VERBOSE for cache decisions audit.
-9. Documentation Updates  
-   - README badge legend: add explicit row for variance mode (observe/warn/gate) and multi-run source (simple/advanced).  
+9. Documentation Updates
+   - README badge legend: add explicit row for variance mode (observe/warn/gate) and multi-run source (simple/advanced).
    - IMPLEMENTATION.md Section 1.3: log first advanced authentic multi-run entry (authentic vs simple).
-10. Async Activation Checklist (Prep)  
+10. Async Activation Checklist (Prep)
    - Define readiness gates: stable PROMPT_READY marker, segment coverage ≥ required set, retry loop pass rate > threshold.
-11. Partial Aggregate Policy  
+11. Partial Aggregate Policy
    - Decide whether partial_flag=1 aggregates should block gating transitions or only warn (update governance logic accordingly).
-12. Performance Optimization Roadmap Linkage  
+12. Performance Optimization Roadmap Linkage
    - Add mapping: high RSD segments → proposed deferral or lazy loading tasks.
-13. Test Additions  
-   - Test to assert auth_shortfall=0 when samples==requested & no zero post values.  
-   - Schema test for perf-multi-current.json (fail if fields missing or type-mismatched).  
+13. Test Additions
+   - Test to assert auth_shortfall=0 when samples==requested & no zero post values.
+   - Schema test for perf-multi-current.json (fail if fields missing or type-mismatched).
    - Optional: outlier detection deterministic test with synthetic known set.
-14. Migration Cleanup  
+14. Migration Cleanup
    - Remove any residual comments referencing synthetic replication or legacy fallback once async path restored.
-15. Governance Summary Artifact (Optional)  
+15. Governance Summary Artifact (Optional)
    - Generate provisional `governance-advanced.json` summarizing multi_source, auth_shortfall, rsd metrics for early review (not yet badge-bound).
-16. Placeholder Test Script Scaffolding (Optional)  
+16. Placeholder Test Script Scaffolding (Optional)
    - Create empty test files matching Advanced Harness Test Checklist to reduce future PR surface (each initially skipping with a TODO marker).
-17. Segment Parser Diagnostic Capture (Optional)  
+17. Segment Parser Diagnostic Capture (Optional)
    - Add a debug utility to dump raw `post_plugin_segments` from a single sample to aid parser verification before re-enabling async.
 
 Tracking / Scheduling Recommendation:
@@ -959,7 +959,7 @@ Commit Style Examples:
 | Pending | Awaiting implementation or measurement |
 
 ### 13.2 Primary File Map (Redesign)
-Pre-plugin: `00,05,10,15,20,25,30,40`  
+Pre-plugin: `00,05,10,15,20,25,30,40`
 Post-plugin: `00,05,10,20,30,40,50,60,70,80,90`
 
 ### 13.3 Not Tracked Here
@@ -1057,6 +1057,15 @@ Promotion Pre-Requisites (will move to active window when nearing Stage 3 exit):
 - PP1: Two consecutive stable multi-sample runs (RSD <5%) with non-zero post_plugin_total and prompt_ready_ms.
 
 ### Stage 3 Exit Readiness Checklist
+
+## Next Steps (Short)
+- Automate badge refresh: integrate `tools/update-variance-and-badges.zsh` into CI (nightly) to recompute variance/governance/perf badges after an N=5 capture.
+- Maintain variance guard streak: schedule 2× weekly fast-harness N=5 runs and 1× full-harness N=5 run; monitor outliers and monotonic lifecycle (pre ≤ post ≤ prompt).
+- Prepare perf-drift gating: set warn/fail thresholds, keep drift in observe mode now; plan guard flip after a 7-day stable window without regressions.
+- Add a convenience target (e.g., `make perf-update`): runs N=5 capture and the updater in one step.
+- Enforce single compinit in CI: ensure the integration test asserts a single `compinit` and no duplicate `PROMPT_READY_COMPLETE`.
+- Document async rollback switch in the ops runbook and surface it in the README for quick mitigation.
+
 
 | Check | Status (Target) | Evidence / Source | Notes / Action if Failing |
 |-------|-----------------|-------------------|---------------------------|

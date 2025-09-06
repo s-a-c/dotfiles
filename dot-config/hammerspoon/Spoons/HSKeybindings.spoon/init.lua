@@ -1,7 +1,7 @@
 --- === HSKeybindings ===
 ---
---- Display Keybindings registered with bindHotkeys() and Spoons 
---- 
+--- Display Keybindings registered with bindHotkeys() and Spoons
+---
 --- Spoons need to set the mapping in obj
 ---
 --- Originally based on KSheet.spoon by ashfinal <ashfinal@gmail.com>
@@ -38,7 +38,7 @@ function obj:init()
 end
 
 
---[[ 
+--[[
   local CmdModifiers = ''
   for key, value in pairs(val.AXMenuItemCmdModifiers) do
       CmdModifiers = CmdModifiers .. obj.commandEnum[value]
@@ -48,7 +48,7 @@ end
   local CmdKeys = CmdChar .. CmdGlyph
   menu = menu .. "<li><div class='cmdModifiers'>" .. CmdModifiers .. " " .. CmdKeys .. "</div><div class='cmdtext'>" .. " " .. val.AXTitle .. "</div></li>"
 
---]] 
+--]]
 
 local function getModifiers(modslist)
   --print("getModifiers:" .. inspect(mods))
@@ -79,7 +79,7 @@ local function processHotkeys()
     if ((ix - 1) % 15) == 0 then
       if ix > 1 then
         menu = menu .. "</ul>"
-      end  
+      end
       col = col + 1
       menu = menu .. "<ul class='col col" .. col .. "'>"
     end

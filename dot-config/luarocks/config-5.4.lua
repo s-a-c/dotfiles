@@ -186,4 +186,3 @@ variables = {
 }
 web_browser = "open"
 wrapper_suffix = ""
-

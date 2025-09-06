@@ -53,7 +53,7 @@ These should be available through your OS package manager.
 - [[kbd:][<]] Opposite five back
 - [[kbd:][RET]] In browser adds the artist's songs to the playlist, in the playlist starts
   playlist.
-  
+
 * TODO Configuration
 #+begin_quote
  󱌣 This module has no configuration documentation yet. [[doom-contrib-module:][Write some?]]

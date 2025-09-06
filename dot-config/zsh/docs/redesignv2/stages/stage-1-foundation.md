@@ -1,11 +1,11 @@
 # Stage 1 – Foundation & Testing Infrastructure
-Version: 1.0  
-Status: ✅ Complete  
-Tag: `refactor-stage1-complete`  
+Version: 1.0
+Status: ✅ Complete
+Tag: `refactor-stage1-complete`
 Last Updated: 2025-01-03
 
-> This document captures the authoritative record of what Stage 1 delivered, how it was validated, and the exact criteria satisfied to allow controlled entry into Stage 2.  
-> For consolidated roadmap & cross‑stage logic see: `../IMPLEMENTATION.md`.  
+> This document captures the authoritative record of what Stage 1 delivered, how it was validated, and the exact criteria satisfied to allow controlled entry into Stage 2.
+> For consolidated roadmap & cross‑stage logic see: `../IMPLEMENTATION.md`.
 > For architecture principles see: `../ARCHITECTURE.md`.
 
 ---
@@ -204,17 +204,17 @@ jq '.mean_ms? // .cold_ms' docs/redesign/metrics/perf-baseline.json
 
 ## 14. Handoff Summary (To Stage 2 Owner)
 
-**You now have**:  
-- Immutable baseline + structure guardrails  
-- Performance baseline to protect improvements  
-- Async & perf instrumentation scaffolds  
-- A test harness ready to validate each migrated module incrementally  
+**You now have**:
+- Immutable baseline + structure guardrails
+- Performance baseline to protect improvements
+- Async & perf instrumentation scaffolds
+- A test harness ready to validate each migrated module incrementally
 
-**You must**:  
-- Migrate pre-plugin logic incrementally (00 → 30)  
-- Preserve baseline toggles until redesign path parity confirmed  
-- Keep PATH & lazy loader changes isolated per commit for traceability  
-- Re-capture pre-plugin delta metrics before exiting Stage 2  
+**You must**:
+- Migrate pre-plugin logic incrementally (00 → 30)
+- Preserve baseline toggles until redesign path parity confirmed
+- Keep PATH & lazy loader changes isolated per commit for traceability
+- Re-capture pre-plugin delta metrics before exiting Stage 2
 
 ---
 

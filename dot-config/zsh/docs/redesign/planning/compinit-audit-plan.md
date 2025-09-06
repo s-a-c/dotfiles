@@ -17,7 +17,7 @@ if [[ -z ${_COMPINIT_DONE:-} ]]; then
   _COMPINIT_DONE=1
 fi
 ```
-- `-C` skips security rehash (weekly full run planned separately).  
+- `-C` skips security rehash (weekly full run planned separately).
 - Weekly secure refresh (Phase 12): run `compinit -D` or full `compinit` in isolated subshell to rebuild compdump.
 
 ## 4. Evidence Collection
@@ -58,7 +58,7 @@ Quick timing harness (3 runs) before & after enabling completion module; assert 
 | >3% latency increase | Heavy zstyle logic or extra I/O | Defer complex zstyles until after first prompt or lazy-load subset |
 
 ## 7. Weekly Secure Refresh Procedure (Optional)
-1. Subshell: `(autoload -U compinit; compinit; exit)` capturing any warnings.  
+1. Subshell: `(autoload -U compinit; compinit; exit)` capturing any warnings.
 2. If warnings appear → log & email alert (Phase 12 maintenance).
 3. Replace existing compdump atomically: `mv newdump olddump` only if successful.
 

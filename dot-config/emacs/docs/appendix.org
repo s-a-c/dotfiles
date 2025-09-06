@@ -171,7 +171,7 @@
 
   The goal of the universal/prefix argument is to get a slightly different
   behaviour for known commands.
-  
+
   #+begin_quote
    󰐃 Doom users with evil enabled will find the universal argument on [[kbd:][SPC u]]
       instead than [[kbd:][C-u]].
