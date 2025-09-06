@@ -18,7 +18,7 @@ specification]]).
 
 ** Packages
 - [[doom-package:editorconfig-emacs]]
- 
+
 ** Hacks
 - Added logic to guess an extension-less file's type from its shebang line. For
   example, editorconfig rules for =*.py= files will apply to =bin/myscript=

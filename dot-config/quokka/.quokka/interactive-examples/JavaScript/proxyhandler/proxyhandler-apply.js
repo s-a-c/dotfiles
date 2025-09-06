@@ -13,7 +13,7 @@ const handler = {
 
 var proxy1 = new Proxy(sum, handler);
 
-console.log(sum(1, 2)); 
+console.log(sum(1, 2));
 // expected output: 3
 console.log(proxy1(1, 2));
 // expected output: 30

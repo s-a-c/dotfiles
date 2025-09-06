@@ -28,7 +28,7 @@ namespace {
          * Binds a value to a named parameter in the prepared statement.
          *
          * @param array<string, mixed> $parameters The parameters to bind.
-         * 
+         *
          * @return void
          */
         public function bindNamed(array $parameters) {}
@@ -37,7 +37,7 @@ namespace {
          * Binds a value to a positionalparameter in the prepared statement.
          *
          * @param array<mixed> $parameters The value to bind.
-         * 
+         *
          * @return void
          */
         public function bindPositional(array $parameters) {}
@@ -46,7 +46,7 @@ namespace {
          * Executes the prepared statement with given parameters.
          *
          * @param array $parameters The parameters for the statement.
-         * 
+         *
          * @return int The number of affected rows.
          */
         public function execute(array $parameters = []) {}
@@ -55,7 +55,7 @@ namespace {
          * Executes the prepared statement and retrieves the result set.
          *
          * @param array $parameters The parameters for the statement.
-         * 
+         *
          * @return LibSQLResult The result set.
          */
         public function query(array $parameters = []) {}
@@ -78,7 +78,7 @@ namespace {
          * Gets the name of a parameter by index.
          *
          * @param int $idx The index of the parameter.
-         * 
+         *
          * @return string The name of the parameter.
          */
         public function parameterName(int $idx) {}
@@ -265,7 +265,7 @@ namespace {
          * Return a result sets
          */
         const LIBSQL_ALL = 4;
-        
+
         /**
          * Return a result Generator
          */
@@ -279,45 +279,45 @@ namespace {
 
         /**
          * Creates a new LibSQL instance.
-         * 
+         *
          * ## Example Usage
          * 1. **Local Connection:**
-         * 
+         *
          *    Establishing a connection to a local database is straightforward with LibSQL. You have three options:
-         * 
+         *
          *    a. **Standard DSN Connection:** If you're using a DSN string, use the following format:
          *       ```
          *       $db = new LibSQL("libsql:dbname=database.db", LibSQL::OPEN_READWRITE | LibSQL::OPEN_CREATE, "");
          *       ```
-         *       
+         *
          *    b. **Standard SQLite Connection:** For direct SQLite connections, simply provide the database file name:
          *       ```
          *       $db = new LibSQL("database.db", LibSQL::OPEN_READWRITE | LibSQL::OPEN_CREATE, "");
          *       ```
-         *       
+         *
          *    c. **Standard LibSQL Connection:** Alternatively, you can specify the file protocol explicitly:
          *       ```
          *       $db = new LibSQL("file:database.db", LibSQL::OPEN_READWRITE | LibSQL::OPEN_CREATE, "");
          *       ```
-         * 
+         *
          * 2. **Remote Connection:**
-         * 
+         *
          *    Connecting to a remote database is equally effortless. Choose between two options:
-         * 
+         *
          *    a. **Standard DSN Connection with 'libsql://':**
          *       ```
          *       $db = new LibSQL("libsql:dbname=libsql://database-org.turso.io;authToken=random-token");
          *       ```
-         *       
+         *
          *    b. **Standard DSN Connection with 'https://':**
          *       ```
          *       $db = new LibSQL("libsql:dbname=https://database-org.turso.io;authToken=random-token");
          *       ```
-         * 
+         *
          * 3. **Remote Replica Connection:**
-         * 
+         *
          *    To set up a replica connection for distributed systems, follow these steps:
-         * 
+         *
          *    a. Define the configuration array with the required parameters:
          *       ```
          *       $config = [
@@ -329,13 +329,13 @@ namespace {
          *          "encryptionKey" => "",
          *       ];
          *       ```
-         * 
+         *
          *    b. Instantiate a new LibSQL object with the configuration array:
          *       ```
          *       $db = new LibSQL($config);
          *       ```
-         * 
-         * With this Quick Start guide, you're ready to seamlessly integrate LibSQL PHP Extension into your projects, whether for local, remote, or distributed database connections. 
+         *
+         * With this Quick Start guide, you're ready to seamlessly integrate LibSQL PHP Extension into your projects, whether for local, remote, or distributed database connections.
          *
          * @param string|array $config
          * @param integer|null $flags
@@ -345,13 +345,13 @@ namespace {
 
         /**
          * Retrieves the version of the LibSQL library.
-         * 
+         *
          * ## Example Usage
          * ```
          * // Retrieve the version of the LibSQL
          * $version = LibSQL::version();
          * echo $version;
-         * 
+         *
          * // Output
          * // LibSQL Core Version : 3.44.0-3044000 - LibSQL PHP Extension Version: 1.0.0
          * ```
@@ -364,18 +364,18 @@ namespace {
          * Retrieves the number of rows changed by the last SQL statement.
          *
          * ## Example Usage
-         * 
+         *
          * ```
          * // Create a new LibSQL instance
          * $db = new LibSQL("libsql:dbname=database.db");
-         * 
+         *
          * $stmt = "UPDATE users SET age = 28 WHERE id = 1";
          * $db->execute($stmt);
-         * 
+         *
          * // Retrieve the number of rows changed
          * $changes = $db->changes();
          * echo "Number of Rows Changed: " . $changes;
-         * 
+         *
          * $db->close();
          * ```
          * @return int The number of rows changed.
@@ -384,13 +384,13 @@ namespace {
 
         /**
          * Checks if autocommit mode is enabled for the connection.
-         * 
+         *
          * ## Example Usage
-         * 
+         *
          * ```
          * // Create a new LibSQL instance
          * $db = new LibSQL("libsql:dbname=database.db");
-         * 
+         *
          * // Check if autocommit mode is enabled
          * if ($db->isAutocommit()) {
          *     echo "Autocommit mode is ENABLED." . PHP_EOL;
@@ -406,62 +406,62 @@ namespace {
 
         /**
          * Retrieves the number of rows changed by the last SQL statement.
-         * 
+         *
          * ## Example Usage
-         * 
+         *
          * ```
          * // Create a new LibSQL instance
          * $db = new LibSQL("libsql:dbname=database.db");
-         * 
+         *
          * $stmt = "UPDATE users SET age = 28 WHERE id = 1";
          * $db->execute($stmt);
-         * 
+         *
          * // Retrieve the number of rows changed
          * $changes = $db->totalChanges();
          * echo "Number of Rows Changed: " . $changes;
-         * 
+         *
          * $db->close();
          * ```
-         * 
+         *
          * @return int The total number of rows changed.
          */
         public function totalChanges() {}
-        
+
         /**
          * Retrieves the ID of the last inserted row.
-         * 
+         *
          * ## Example Usage
-         * 
+         *
          * ```
          * // Create a new LibSQL instance
          * $db = new LibSQL("libsql:dbname=database.db");
-         * 
+         *
          * $stmt = "INSERT INTO users (name, age) VALUES ('John Doe', 30)";
          * $db->execute($stmt);
-         * 
+         *
          * // Retrieve the ID of the last inserted row
          * $id = $db->lastInsertedId();
          * echo "Last inserted row ID: " . $id;
-         * 
+         *
          * $db->close();
          * ```
-         * 
+         *
          * @return int The ID of the last inserted row.
          */
         public function lastInsertedId() {}
 
         /**
          * Executes an SQL statement on the database.
-         * 
+         *
          * ## Example Usage
-         * 
+         *
          * ```
          * // SQL statement with positional parameters
          * $stmt = "INSERT INTO users (name, age) VALUES (?, ?)";
          * $parameters = ["John Doe", 30];
          * $rowsAffected = $db->execute($stmt, $parameters);
          * echo "Inserted $rowsAffected rows." . PHP_EOL;
-         * 
+         *
          * // SQL statement with named parameters
          * $stmt = "UPDATE users SET name = :name WHERE id = :id";
          * $parameters = [":name" => "Jane Doe", ":id" => 6];
@@ -478,27 +478,27 @@ namespace {
 
         /**
          * Executes a batch of SQL statements on the database.
-         * 
+         *
          * ## Example Usage
-         * 
+         *
          * ```
          * // Create a new LibSQL instance
          * $db = new LibSQL("libsql:dbname=database.db");
-         * 
+         *
          * // SQL statements to execute as a batch
          * $stmt = "
          *     INSERT INTO users (name, age) VALUES ('Jane Jenifer', 30);
          *     INSERT INTO users (name, age) VALUES ('Jane Smith', 25);
          *     INSERT INTO users (name, age) VALUES ('Michael Johnson', 40);
          * ";
-         * 
+         *
          * // Execute the batch of SQL statements
          * if ($db->executeBatch($stmt)) {
          *     echo "Batch execution successful.";
          * } else {
          *     echo "Batch execution failed.";
          * }
-         * 
+         *
          * $db->close();
          * ```
          *
@@ -510,18 +510,18 @@ namespace {
 
         /**
          * Executes an SQL query on the database.
-         * 
+         *
          * ## Example Usage
-         * 
+         *
          * ```
          * $db = new LibSQL("libsql:dbname=database.db");
-         * 
+         *
          * $results = $db->query("SELECT * FROM users");
-         * 
+         *
          * foreach ($results['rows'] as $row) {
          *     echo "ID: " . $row['id'] . ", Name: " . $row['name'] . ", Age: " . $row['age'] . "\n";
          * }
-         * 
+         *
          * $db->close();
          * ```
          *
@@ -534,20 +534,20 @@ namespace {
 
         /**
          * Initiates a new database transaction.
-         * 
+         *
          * ## Example Usage
-         * 
+         *
          * ```
          * // Create a new LibSQL instance
          * $db = new LibSQL("libsql:dbname=database.db");
-         * 
+         *
          * // Start a new transaction with default behavior
          * $transaction = $db->transaction();
-         * 
+         *
          * $transaction->execute("UPDATE users SET name = 'Glauber Costa' WHERE id = 6");
-         * 
+         *
          * $another_transaction = true;
-         * 
+         *
          * if ($another_transaction) {
          *     $transaction->commit();
          *     echo "Transaction commited!" . PHP_EOL;
@@ -555,7 +555,7 @@ namespace {
          *     $transaction->rollback();
          *     echo "Transaction rollback!" . PHP_EOL;
          * }
-         * 
+         *
          * $db->close();
          * ```
          *
@@ -569,15 +569,15 @@ namespace {
          * Prepares an SQL statement for execution.
          *
          * ## Example Usage
-         * 
+         *
          * ```
          * // Create a new LibSQL instance
          * $db = new LibSQL("libsql:dbname=database.db");
-         * 
+         *
          * // Prepare an SQL statement for execution
          * $sql = "SELECT * FROM users WHERE id = ?";
          * $statement = $db->prepare($sql);
-         * 
+         *
          * if ($statement) {
          *     // Execute the prepared statement with parameters
          *     $result = $statement->query([1]);
@@ -586,10 +586,10 @@ namespace {
          *     // Handle error
          *     echo "Failed to prepare statement.";
          * }
-         * 
+         *
          * $db->close();
          * ```
-         * 
+         *
          * @param string $sql The SQL statement to prepare.
          *
          * @return \LibSQLStatement The prepared statement object.
@@ -598,9 +598,9 @@ namespace {
 
         /**
          * Closes the database connection.
-         * 
+         *
          * # Example Usage
-         * 
+         *
          * ```
          * $db->close();
          * ```
@@ -611,9 +611,9 @@ namespace {
 
         /**
          * Sync the database.
-         * 
+         *
          * # Example Usage
-         * 
+         *
          * ```
          * $db->sync();
          * ```
@@ -624,12 +624,12 @@ namespace {
 
         /**
          * Enable or disable the loading of extensions.
-         * 
+         *
          * # Example Usage
          * ```
          * $db->enableLoadExtension(true);
          * ```
-         * 
+         *
          * @param bool $onoff Enable or disable the loading of extensions.
          * @return void
          */
@@ -637,12 +637,12 @@ namespace {
 
         /**
          * Load extensions.
-         * 
+         *
          * # Example Usage
          * ```
          * $db->loadExtensions(["extension1", "extension2"]);
          * ```
-         * 
+         *
          * @param array|string $extension_paths The paths to the extensions to load.
          * @return void
          */

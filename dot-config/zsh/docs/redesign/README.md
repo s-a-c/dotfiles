@@ -1,6 +1,6 @@
 # ZSH Redesign Documentation Index (Consolidated)
-> **DEPRECATED**: This legacy documentation tree has been superseded by the consolidated structure in `docs/redesignv2/`.  
-> Please refer to `docs/redesignv2/README.md` for the authoritative navigation, implementation status, architecture, and reference materials.  
+> **DEPRECATED**: This legacy documentation tree has been superseded by the consolidated structure in `docs/redesignv2/`.
+> Please refer to `docs/redesignv2/README.md` for the authoritative navigation, implementation status, architecture, and reference materials.
 > This file is retained solely for historical context and will no longer be updated.
 
 Date: 2025-08-31

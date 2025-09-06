@@ -18,13 +18,13 @@ spoon.Hammerflow.loadFirstValidTomlFile({
 
 -- optionally register custom functions.
 -- registerFunctions takes 1 or more tables.
--- each table contains functions that can be 
+-- each table contains functions that can be
 -- called from your toml config using the
 -- function: prefix, e.g.
 --   h = "function:hi"
 local fileFuncs = require("files.lua")
 spoon.Hammerflow.registerFunctions(
-    fileFuncs, 
+    fileFuncs,
     { ["hi"] = function() hs.alert("hi") end }
 )
 

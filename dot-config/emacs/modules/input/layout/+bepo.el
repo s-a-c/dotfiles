@@ -211,7 +211,7 @@ In all cases, 'h' functions go to 'c' and 'l' ones go to 'r' so the navigation k
           "s" nil
           "t" nil))
 
-  
+
   ;; Start of the Magit zone
   ;;
   ;; The magit zone needs to be special because evil-collection and magit and
@@ -276,7 +276,7 @@ In all cases, 'h' functions go to 'c' and 'l' ones go to 'r' so the navigation k
     (+layout-bepo-rotate-keymaps
      '(magit-mode-map)))
   ;; End of the Magit zone
-  
+
 
   (after! evil-easymotion
     ;; Use "gé" instead of default "gs" to avoid conflicts w/org-mode later

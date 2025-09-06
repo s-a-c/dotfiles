@@ -32,7 +32,7 @@
             <dict>
                 <key>foreground</key>
                 <string>#00E000</string>
-                
+
             </dict>
         </dict>
         <dict>
@@ -44,7 +44,7 @@
             <dict>
                 <key>foreground</key>
                 <string>#FF7CC9</string>
-                
+
             </dict>
         </dict>
         <dict>
@@ -67,7 +67,7 @@
             <dict>
                 <key>foreground</key>
                 <string>#00D0D0</string>
-                
+
             </dict>
         </dict>
         <dict>
@@ -88,7 +88,7 @@
             <string>variable</string>
             <key>settings</key>
             <dict>
-                
+
                 <key>foreground</key>
                 <string>#F8F8F2</string>
             </dict>
@@ -155,7 +155,7 @@
             <string>entity.other.inherited-class</string>
             <key>settings</key>
             <dict>
-                
+
                 <key>foreground</key>
                 <string>#A6E22E</string>
             </dict>
@@ -169,7 +169,7 @@
             <dict>
                 <key>foreground</key>
                 <string>#FFAE65</string>
-                
+
             </dict>
         </dict>
         <dict>
@@ -292,7 +292,7 @@
                 <string>#79ABFF</string>
             </dict>
         </dict>
-        
+
 
     </array>
     <key>uuid</key>

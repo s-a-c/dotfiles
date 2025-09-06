@@ -17,7 +17,7 @@ or Kakoune and tries to align them with regular Emacs conventions.
 - +manual ::
   Don't activate [[doom-package:objed]] at startup, automatically, leaving it to the user to call
   [[fn:objed-activate]] (bound to [[kbd:][M-SPC]] if using [[doom-module::config default +bindings]]).
-  
+
 ** Packages
 - [[doom-package:objed]]
 

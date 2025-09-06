@@ -1,4 +1,3 @@
 
 # Don't suggest [read without -r will mangle backslashes].
 disable=SC2162
-

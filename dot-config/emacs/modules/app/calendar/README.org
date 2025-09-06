@@ -17,7 +17,7 @@ support.
 - [[doom-package:calfw]]
 - [[doom-package:calfw-org]]
 - [[doom-package:org-gcal]]
-  
+
 ** Hacks
 /No hacks documented for this module./
 

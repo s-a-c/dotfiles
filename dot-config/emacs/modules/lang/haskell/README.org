@@ -18,7 +18,7 @@ This module adds Haskell support to Doom Emacs.
 - +tree-sitter ::
   Leverages tree-sitter for better syntax highlighting and structural text
   editing. Requires [[doom-module::tools tree-sitter]].
-  
+
 ** Packages
 - [[doom-package:haskell-mode]]
 - [[doom-package:haskell-ts-mode]] if [[doom-module:+tree-sitter]]

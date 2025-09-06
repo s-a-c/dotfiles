@@ -54,7 +54,7 @@ bgextviewer 1
 # Network settings
 #
 # Modify user-agent string and languages accepted
-user_agent 
+user_agent
 accept_language en;q=1.0
 # auto-populate with current URL in URL open command
 default_url 1
@@ -67,5 +67,5 @@ use_cookie 1
 show_cookie 0
 accept_cookie 1
 accept_bad_cookie 0
-cookie_reject_domains 
+cookie_reject_domains
 cookie_accept_domains

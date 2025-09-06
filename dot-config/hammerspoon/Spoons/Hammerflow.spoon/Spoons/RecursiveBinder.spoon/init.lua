@@ -68,38 +68,38 @@ obj.helperModifierMapping = {
 -- used by next model to close previous helper
 local previousHelperID = nil
 
--- this function is used by helper to display 
+-- this function is used by helper to display
 -- appropriate 'shift + key' bindings
 -- it turns a lower key to the corresponding
 -- upper key on keyboard
 local function keyboardUpper(key)
    local upperTable = {
-    a='A', 
-    b='B', 
-    c='C', 
-    d='D', 
-    e='E', 
-    f='F', 
-    g='G', 
-    h='H', 
-    i='I', 
-    j='J', 
-    k='K', 
-    l='L', 
-    m='M', 
-    n='N', 
-    o='O', 
-    p='P', 
-    q='Q', 
-    r='R', 
-    s='S', 
-    t='T', 
-    u='U', 
-    v='V', 
-    w='W', 
-    x='X', 
-    y='Y', 
-    z='Z', 
+    a='A',
+    b='B',
+    c='C',
+    d='D',
+    e='E',
+    f='F',
+    g='G',
+    h='H',
+    i='I',
+    j='J',
+    k='K',
+    l='L',
+    m='M',
+    n='N',
+    o='O',
+    p='P',
+    q='Q',
+    r='R',
+    s='S',
+    t='T',
+    u='U',
+    v='V',
+    w='W',
+    x='X',
+    y='Y',
+    z='Z',
     ['`']='~',
     ['1']='!',
     ['2']='@',
@@ -178,7 +178,7 @@ local function createKeyName(key)
             local modifier = modifierTable[count]
             if count == 1 then
                keyName = obj.helperModifierMapping[modifier]..' + '
-            else 
+            else
                keyName = keyName..obj.helperModifierMapping[modifier]..' + '
             end
          end
@@ -208,7 +208,7 @@ end
 local function showHelper(keyFuncNameTable)
    -- keyFuncNameTable is a table that key is key name and value is description
    local helper = ''
-   local separator = '' -- first loop doesn't need to add a separator, because it is in the very front. 
+   local separator = '' -- first loop doesn't need to add a separator, because it is in the very front.
    local lastLine = ''
    local count = 0
 
@@ -261,7 +261,7 @@ end
 --- Spec of keymap:
 --- Every key is of format {{modifers}, key, (optional) description}
 --- The first two element is what you usually pass into a hs.hotkey.bind() function.
---- 
+---
 --- Each value of key can be in two form:
 --- 1. A function. Then pressing the key invokes the function
 --- 2. A table. Then pressing the key bring to another layer of keybindings.
@@ -279,7 +279,7 @@ function obj.recursiveBind(keymap, modals)
    local keyFuncNameTable = {}
    for key, map in pairs(keymap) do
       local func = obj.recursiveBind(map, modals)
-      -- key[1] is modifiers, i.e. {'shift'}, key[2] is key, i.e. 'f' 
+      -- key[1] is modifiers, i.e. {'shift'}, key[2] is key, i.e. 'f'
       modal:bind(key[1], key[2], function() modal:exit() killHelper() func() end)
       modal:bind(obj.escapeKey[1], obj.escapeKey[2], function() modal:exit() killHelper() end)
       if #key >= 3 then

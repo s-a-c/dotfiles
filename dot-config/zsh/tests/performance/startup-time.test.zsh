@@ -21,34 +21,34 @@ echo "Testing startup performance..."
 # Function to measure startup time
 measure_startup() {
   local samples="${1:-3}"
-  
+
   if [[ ! -x "$PERF_MULTI_BIN" ]]; then
     echo "ERROR: Performance capture tool not found: $PERF_MULTI_BIN"
     return 1
   fi
-  
+
   echo "Running $samples performance samples..."
-  
+
   # Run performance capture
   if ! MULTI_SAMPLES="$samples" zsh "$PERF_MULTI_BIN" --quiet; then
     echo "ERROR: Performance capture failed"
     return 1
   fi
-  
+
   # Check results
   local results_file="$METRICS_DIR/perf-multi-current.json"
   if [[ ! -f "$results_file" ]]; then
     echo "ERROR: Performance results not found: $results_file"
     return 1
   fi
-  
+
   return 0
 }
 
 # Function to validate performance results
 validate_performance() {
   local results_file="$METRICS_DIR/perf-multi-current.json"
-  
+
   if ! command -v jq >/dev/null 2>&1; then
     echo "WARNING: jq not available, using basic validation"
     # Basic validation without jq
@@ -60,22 +60,22 @@ validate_performance() {
       return 1
     fi
   fi
-  
+
   echo "Validating performance metrics..."
-  
+
   # Extract key metrics
   local post_mean rsd_post samples
   post_mean=$(jq -r '.aggregate.post_plugin_cost_ms.mean // 0' "$results_file")
   rsd_post=$(jq -r '.rsd_post // 0' "$results_file")
   samples=$(jq -r '.samples // 0' "$results_file")
-  
+
   echo "Performance Results:"
   echo "  Startup time: ${post_mean}ms"
   echo "  RSD: $rsd_post"
   echo "  Samples: $samples"
-  
+
   local failures=0
-  
+
   # Check startup time threshold
   if (( $(echo "$post_mean > $MAX_STARTUP_TIME_MS" | bc -l 2>/dev/null || echo 0) )); then
     echo "ERROR: Startup time exceeds threshold: ${post_mean}ms > ${MAX_STARTUP_TIME_MS}ms"
@@ -83,7 +83,7 @@ validate_performance() {
   else
     echo "PASS: Startup time within threshold"
   fi
-  
+
   # Check RSD threshold
   if (( $(echo "$rsd_post > $MAX_RSD_THRESHOLD" | bc -l 2>/dev/null || echo 0) )); then
     echo "ERROR: RSD exceeds threshold: $rsd_post > $MAX_RSD_THRESHOLD"
@@ -91,7 +91,7 @@ validate_performance() {
   else
     echo "PASS: RSD within threshold"
   fi
-  
+
   # Check sample count
   if (( samples < MIN_SAMPLES )); then
     echo "ERROR: Insufficient samples: $samples < $MIN_SAMPLES"
@@ -99,7 +99,7 @@ validate_performance() {
   else
     echo "PASS: Sufficient samples collected"
   fi
-  
+
   return $failures
 }
 

@@ -1,11 +1,11 @@
 [2025-06-03 08:25:10][INFO][LM STUDIO SERVER] Success! HTTP server listening on port 1234
-[2025-06-03 08:25:10][INFO] 
+[2025-06-03 08:25:10][INFO]
 [2025-06-03 08:25:10][INFO][LM STUDIO SERVER] Supported endpoints:
 [2025-06-03 08:25:10][INFO][LM STUDIO SERVER] ->	GET  http://localhost:1234/v1/models
 [2025-06-03 08:25:10][INFO][LM STUDIO SERVER] ->	POST http://localhost:1234/v1/chat/completions
 [2025-06-03 08:25:10][INFO][LM STUDIO SERVER] ->	POST http://localhost:1234/v1/completions
 [2025-06-03 08:25:10][INFO][LM STUDIO SERVER] ->	POST http://localhost:1234/v1/embeddings
-[2025-06-03 08:25:10][INFO] 
+[2025-06-03 08:25:10][INFO]
 [2025-06-03 08:25:10][INFO][LM STUDIO SERVER] Logs are saved into /Users/s-a-c/.lmstudio/server-logs
 [2025-06-03 08:25:10][INFO] Server started.
 [2025-06-03 08:25:10][INFO] Just-in-time model loading active.
