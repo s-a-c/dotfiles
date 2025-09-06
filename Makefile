@@ -41,6 +41,7 @@ help:
 	@echo "  precommit-normalize        - Normalize executable bits in scope and ensure EOF newlines, then run scoped hooks"
 	@echo "  broken-symlinks-list       - List all broken symlinks in the repository"
 	@echo "  broken-symlinks-remove     - Remove all broken symlinks from the repository (git rm)"
+	@echo "  perf-update                - Run N=5 fast-harness capture and update variance/governance/perf badges"
 	@echo
 	@echo -e "$(C_BLUE)Variables$(C_RESET)"
 	@echo "  PRECOMMIT_CONFIG=$(PRECOMMIT_CONFIG)"
@@ -127,3 +128,25 @@ fmt:
 .PHONY: check
 check:
 	@$(MAKE) precommit-run
+
+# ---------------------------------------------------------------------
+# Performance & variance targets
+# ---------------------------------------------------------------------
+.PHONY: perf-update
+perf-update:
+	@echo -e "$(C_BLUE)Running N=5 fast-harness capture and updating badges...$(C_RESET)"
+	@set -euo pipefail; \
+	cd dot-config/zsh; \
+	if [ ! -x "tools/perf-capture-multi-simple.zsh" ]; then \
+	  echo -e "$(C_RED)ERROR$(C_RESET): tools/perf-capture-multi-simple.zsh not found or not executable"; \
+	  exit 1; \
+	fi; \
+	if [ ! -x "tools/update-variance-and-badges.zsh" ]; then \
+	  echo -e "$(C_RED)ERROR$(C_RESET): tools/update-variance-and-badges.zsh not found or not executable"; \
+	  exit 1; \
+	fi; \
+	echo -e "$(C_BLUE)[1/2]$(C_RESET) Capturing N=5 samples with fast harness..."; \
+	ZDOTDIR="$(pwd)" tools/perf-capture-multi-simple.zsh --samples 5 --use-fast-harness; \
+	echo -e "$(C_BLUE)[2/2]$(C_RESET) Updating variance and badges..."; \
+	ZDOTDIR="$(pwd)" tools/update-variance-and-badges.zsh; \
+	echo -e "$(C_GREEN)Performance update complete.$(C_RESET)"
