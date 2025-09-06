@@ -120,11 +120,8 @@ zf_module_load_start() {
   health_file=$(get_module_health_file "$module")
   
   local start_time
-  if [[ -n "${EPOCHREALTIME:-}" ]]; then
-    start_time="$EPOCHREALTIME"
-  else
-    start_time="$(date +%s.%N 2>/dev/null || date +%s)"
-  fi
+  # Use simpler epoch time in milliseconds
+  start_time="$(date +%s)000"  # Seconds to milliseconds
   
   echo "status=loading start_time=$start_time" > "$health_file"
   return 0
@@ -140,20 +137,25 @@ zf_module_load_complete() {
   health_file=$(get_module_health_file "$module")
   
   local end_time
-  if [[ -n "${EPOCHREALTIME:-}" ]]; then
-    end_time="$EPOCHREALTIME"
-  else
-    end_time="$(date +%s.%N 2>/dev/null || date +%s)"
-  fi
+  # Use simpler epoch time in milliseconds  
+  end_time="$(date +%s)000"  # Seconds to milliseconds
   
   # Read start time if available
   local start_time="$end_time"
   if [[ -f "$health_file" ]]; then
-    start_time=$(grep '^start_time=' "$health_file" | cut -d= -f2)
+    start_time=$(grep '^start_time=' "$health_file" | cut -d= -f2 | head -1)
+  fi
+  
+  # Handle empty or invalid start_time
+  if [[ -z "$start_time" ]] || ! [[ "$start_time" =~ ^[0-9]+$ ]]; then
+    start_time="$end_time"
   fi
   
   local load_time_ms
-  load_time_ms=$(awk -v s="$start_time" -v e="$end_time" 'BEGIN{printf "%.0f", (e-s)*1000}' 2>/dev/null || echo "0")
+  # Simple millisecond subtraction since both are in milliseconds already
+  load_time_ms=$((end_time - start_time))
+  # Ensure non-negative
+  (( load_time_ms < 0 )) && load_time_ms=0
   
   echo "status=$load_status load_time_ms=$load_time_ms end_time=$end_time" > "$health_file"
   
@@ -179,9 +181,16 @@ zf_module_health() {
   
   if [[ -f "$health_file" ]]; then
     local module_status load_time
-    module_status=$(grep '^status=' "$health_file" | cut -d= -f2)
-    load_time=$(grep '^load_time_ms=' "$health_file" | cut -d= -f2)
-    print "module=$module health=${module_status:-unknown} load_time=${load_time:-unknown}ms"
+    # Parse the last status line and extract just the status value
+    module_status=$(grep '^status=' "$health_file" | tail -1 | cut -d= -f2 | cut -d' ' -f1)
+    # Parse load_time_ms specifically
+    load_time=$(grep 'load_time_ms=' "$health_file" | tail -1 | sed 's/.*load_time_ms=\([0-9]*\).*/\1/')
+    
+    # Default values if parsing failed
+    module_status=${module_status:-unknown}
+    load_time=${load_time:-unknown}
+    
+    print "module=$module health=$module_status load_time=${load_time}ms"
   else
     print "module=$module health=unknown load_time=unknown"
   fi
@@ -344,7 +353,7 @@ zf_health_check() {
       fi
       
       local module_status
-      module_status=$(grep '^status=' "$health_file" | tail -1 | cut -d= -f2)
+      module_status=$(grep '^status=' "$health_file" | tail -1 | cut -d= -f2 | cut -d' ' -f1)
       
       case "$module_status" in
         "success"|"recovered") (( healthy_modules++ )) ;;
