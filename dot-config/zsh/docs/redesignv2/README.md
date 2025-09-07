@@ -29,6 +29,11 @@ Notes:
   - `--grace-ms` defaults to 60ms (await native `PROMPT_READY_COMPLETE` after `POST_PLUGIN_COMPLETE`).
 - For clean JSON in CI, prefer a clean shell: `env -i ... /bin/zsh -f`.
 
+## Notes on perf ledger files
+- Daily `perf-ledger-YYYYMMDD.json` files are produced by the nightly CI workflow (`ci-variance-nightly.yml`) and are treated as CI artifacts.
+- Do not commit CI-generated daily ledger snapshots to the repo. Keep only small seed/example ledgers for onboarding under `docs/redesignv2/artifacts/metrics/ledger-history/seeded/` and clearly label them as seeds.
+- To reproduce a local smoke capture: `./dot-config/zsh/tools/perf-capture-multi.zsh -n 1 --no-segments --quiet` or run the integration checks: `./dot-config/zsh/tests/run-integration-tests.sh`.
+
 ## New Badge: modules (module-fire)
 
 A new badge summarizes module emission health:
