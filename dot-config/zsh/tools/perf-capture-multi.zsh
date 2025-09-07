@@ -29,6 +29,7 @@ Options:
   -s, --sleep SECS      Sleep between runs (default: 0)
       --quiet           Suppress single-run tool stdout
       --no-segments     Skip post_plugin_segments parsing
+      --dry-run, --dry   Do not perform captures; print planned actions and exit (no-op)
       --help            Show this help
 EOF
 }
@@ -38,6 +39,7 @@ MULTI_SAMPLES=3
 SLEEP_INTERVAL=0
 QUIET=0
 DO_SEGMENTS=1
+DRY_RUN=0
 
 # Arg parse (simple)
 while (( $# > 0 )); do
@@ -46,6 +48,7 @@ while (( $# > 0 )); do
     -s|--sleep) shift; SLEEP_INTERVAL="$1";;
     --quiet) QUIET=1;;
     --no-segments) DO_SEGMENTS=0;;
+    --dry-run|--dry) DRY_RUN=1;;
     --help|-h) usage; exit 0;;
     *) echo "Unknown arg: $1" >&2; usage; exit 1;;
   esac
@@ -69,6 +72,17 @@ else
 fi
 
 PERF_CAPTURE_BIN="${PERF_CAPTURE_BIN:-$ZDOTDIR/tools/perf-capture.zsh}"
+# If user requested a dry-run, print planned actions and exit before requiring the
+# actual perf-capture binary to exist.
+if (( DRY_RUN )); then
+  echo "[perf-capture-multi] DRY-RUN: Would perform ${MULTI_SAMPLES} sample(s) with sleep=${SLEEP_INTERVAL}s"
+  echo "[perf-capture-multi] DRY-RUN: Metrics directory: $METRICS_DIR"
+  echo "[perf-capture-multi] DRY-RUN: Options: QUIET=${QUIET} DO_SEGMENTS=${DO_SEGMENTS}"
+  echo "[perf-capture-multi] DRY-RUN: Sample retries=${PERF_CAPTURE_SAMPLE_RETRIES} watchdog=${PERF_CAPTURE_ITER_WATCHDOG_MS}ms"
+  # No-op exit
+  exit 0
+fi
+
 if [[ ! -f "$PERF_CAPTURE_BIN" ]]; then
   echo "perf-capture tool not found at $PERF_CAPTURE_BIN" >&2
   exit 1

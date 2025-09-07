@@ -473,3 +473,19 @@ This implementation represents a foundation for long-term ZSH configuration exce
 ---
 
 *This document is maintained as the authoritative implementation reference. All changes require review and approval to maintain consistency with the overall redesign strategy.*
+## Stage 3 Exit: Implementation Updates
+
+Summary of actions completed for Stage 3 exit:
+- Added robust per-sample watchdog and retry logic to `tools/perf-capture-multi.zsh` (F49). This ensures authentic multi-sample captures and rejects synthetic cloning of results.
+- Automated badge refresh: `tools/update-variance-and-badges.zsh` now consumes `perf-multi-simple.json` and updates `variance-gating-state.json`, governance badge, and perf badge.
+- Drift readiness helper `tools/prepare-drift-guard-flip.zsh` updated to prefer the repo-level metrics path and fallback to the dot-config path; corrected repo-root resolution.
+- Seeded `docs/redesignv2/artifacts/metrics/ledger-history/` for readiness verification (CI should populate this directory nightly for real historical evaluation).
+- Added a robust local test framework at `dot-config/zsh/tests/lib/test-framework.zsh` to let integration tests run in minimal CI and dev environments; integration tests were run locally and the prompt single emission test now passes.
+
+Implications for Stage 4:
+- The monitoring, gating, and enforcement infrastructure is in place. After a successful 7-day CI-driven stability window and passing async activation checklist in CI, the team may flip the drift guard to enforcement (fail on >10% regressions).
+
+Operational notes:
+- Default enforcement remains disabled; do not enable `PERF_DIFF_FAIL_ON_REGRESSION=1` until a 7-day stable ledger history exists and CI tests pass consistently.
+- The `perf-capture-multi.zsh` default retry and watchdog parameters can be tuned for CI latency.
+
