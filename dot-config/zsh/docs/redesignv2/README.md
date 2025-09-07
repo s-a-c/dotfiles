@@ -55,49 +55,82 @@ Badge Legend Addendum (until the main legend table is revised):
 
 > NOTE: A “Badge Legend Update Stub” section will be inserted in the Badge Legend area once exact line numbers for that section are provided (required for minimal diff compliance). Please provide the numbered snippet around the existing “## Badge Legend (Expanded – New Pending Rows)” heading so the planned stub (variance-state, multi_source, authenticity fields, perf-multi source note) can be appended precisely.
 
-## 🔜 Recommended Next Steps (Updated Summary)
+### 🔜 Recommended Next Steps (Updated Summary)
 
-Focused execution priorities for the remainder of Stage 3 (after recent additions: trust anchor read APIs, micro-benchmark harness with shim fallback, variance stability log, perf drift badge script, multi-sample fingerprint caching):
+Focused execution priorities and updated checklist reflecting recent local improvements and CI hygiene additions. Statuses have been refreshed to reflect completed test tooling, CI safeguards, and documentation work. Enforcement (fail-on-regression) remains deferred until the 7-day CI ledger stability gate is satisfied.
 
 1. Multi-Sample Segment Refresh & Monotonic Validation ✓ COMPLETE
-   - ✓ N=5 captures with `tools/perf-capture-multi-simple.zsh` integrated with `tools/update-variance-and-badges.zsh` for badge refresh
-   - ✓ Make target added: `make perf-update` runs N=5 fast-harness capture and badge updater locally
-   - ✓ Nightly CI workflow `ci-variance-nightly.yml` automates N=5 capture + badge refresh at 04:15 UTC
-   - ✓ Lifecycle monotonicity satisfied with non-zero trio; variance guard active with streak 3/3
-   - ✓ Performance badge shows: `334ms 1.9% • core 37–44µs` with micro-benchmark baseline captured
+   - ✓ N=5 captures (fast-harness) integrated with `tools/update-variance-and-badges.zsh`.
+   - ✓ `make perf-update` target available to run fast-harness captures and refresh badges locally.
+   - ✓ Nightly CI workflow `ci-variance-nightly.yml` performs automated captures and badge refresh.
+   - ✓ Lifecycle monotonicity validated (pre ≤ post ≤ prompt) with non-zero trio in current captures.
+   - ✓ Performance badge populated with multi-sample baseline data (example: `334ms 1.9% • core 37–44µs`).
 
-2. Governance & Drift Integration ✓ COMPLETE
-   - ✓ Governance badge shows `guard: stable` status with full integration in nightly workflows
-   - ✓ Drift gating thresholds defined: warn >5%, fail >10% with drift detection in observe mode
-   - ✓ Drift badge generated in nightly workflow but enforcement deferred until 7-day stability window
-   - ✓ CI workflow `ci-async-guards.yml` enforces async activation checklist (single compinit, no duplicate PROMPT_READY)
+2. Governance & Drift Integration ✓ COMPLETE (observe → gate pending 7-day window)
+   - ✓ Governance badge and drift detection integrated into nightly pipeline.
+   - ✓ Drift thresholds defined (warn >5%, fail >10%); drift badge generated in observe mode.
+   - ✓ `tools/prepare-drift-guard-flip.zsh` updated to prefer repo-level metrics path.
+   - Note: Enforcement will only be flipped after the 7-day ledger stability gate completes.
 
 3. Micro-Benchmark Baseline & Automation ✓ COMPLETE
-   - ✓ Micro-benchmark baseline captured and surfaced in performance badge: `core 37–44µs`
-   - ✓ Badge refresh automation includes micro-benchmark data in `tools/update-variance-and-badges.zsh`
-   - ✓ Drift guard flip preparation script `tools/prepare-drift-guard-flip.zsh` created for 7-day stability assessment
-   - → Next: Enable drift enforcement after confirmed 7-day stability window
+   - ✓ Micro-benchmark baseline captured and surfaced in badge automation.
+   - ✓ Badge updater consumes microbench results during nightly runs.
+   - ✓ Micro-bench data is included in evidence bundles for enforcement decisions.
 
-4. CI Enforcement & Async Activation Guards ✓ COMPLETE
-   - ✓ Async activation checklist enforced in CI: single compinit + no duplicate PROMPT_READY_COMPLETE
-   - ✓ Test `test-prompt-ready-single-emission.zsh` created for PROMPT_READY duplication detection
-   - ✓ CI workflow enforcement levels: observe/guard/promote with configurable strictness
-   - ✓ Variance guard streak 3/3 maintained; ready for async activation subject to final stability confirmation
+4. CI Enforcement & Async Activation Guards ✓ COMPLETE (activation gated)
+   - ✓ Async activation checklist implemented in CI (single compinit, prompt emission checks, monotonic lifecycle).
+   - ✓ Integration tests and perf lifecycle checks added and runnable via local runner.
+   - Reminder: Do not enable `PERF_DIFF_FAIL_ON_REGRESSION=1` on `main` until 7-day stability is demonstrated.
 
 5. Badge Refresh & Maintenance ✓ COMPLETE
-   - ✓ Badge refresh instructions added to main README and available via `make perf-update`
-   - ✓ Nightly automation keeps variance/governance/perf badges fresh via CI
-   - ✓ Manual refresh: `ZDOTDIR=dot-config/zsh zsh dot-config/zsh/tools/update-variance-and-badges.zsh`
-   - ✓ Drift guard flip readiness assessable via `tools/prepare-drift-guard-flip.zsh`
+   - ✓ README instructions added for manual refresh and CI badge automation.
+   - ✓ CI uploads nightly badge artifacts and optionally auto-commits badge updates on `main`.
+   - ✓ Local smoke actions documented (integration runner, perf-capture dry-run).
 
-6. Stage 3 Exit Preparation
-   - Collect evidence set: PATH invariant, security skeleton idempotency, option snapshot, core namespace stability, single scheduler registration, provisional perf budget adherence, micro baseline + governance badge green.
-   - Run `stage3-exit-report.sh` after governance + drift + non‑zero segment validation.
+6. Tooling & CI Hygiene — NEWLY COMPLETED
+   - ✓ Added a focused local integration runner: `dot-config/zsh/tests/run-integration-tests.sh` (compinit, prompt emission, monotonic lifecycle).
+   - ✓ Added `--dry-run` support to `perf-capture-multi.zsh` for safe smoke validation.
+   - ✓ Added CI workflow to prevent committing `perf-ledger-YYYYMMDD.json` files: `.github/workflows/ci-prevent-ledger-commit.yml`.
+   - ✓ Added `.gitignore` entry to ignore CI-generated ledgers and allow a seeded examples folder.
+   - ✓ Created remediation PR template at `.github/PULL_REQUEST_TEMPLATE.md` for fast rollback when enforcement flips.
 
-7. Future Promotion Hooks (Logged)
-   - Execute F16 (remove shims) → enables F17 (shim guard) & micro gating (F22/F26).
-   - Integrate ledger max regression embedding (F2) & future variance-state source into governance badge.
-   - Prepare combined infra-health weighting once governance badge stable across ≥3 nightly runs.
+7. Stage 3 Exit Preparation — IN PROGRESS → READY WHEN EVIDENCE COLLECTED
+   - Actions completed:
+     - Test tooling and smoke-run support added locally.
+     - CI safeguard added to prevent accidental ledger commits.
+     - Documentation updated (README/IMPLEMENTATION) to clarify ledger policy and git-flow guidance.
+   - Remaining gating requirement:
+     - Collect 7 consecutive nightly ledger snapshots produced by CI (retain as artifacts for evidence).
+     - Ensure `develop` has consistently green integration and nightly runs for the 7-day window.
+   - Once 7-day gate satisfied, prepare a promotion PR to `main` that:
+     - Enables `PERF_DIFF_FAIL_ON_REGRESSION=1` (or equivalent enforcement),
+     - Attaches the evidence bundle (drift badge, stage3-exit-report.json, last 7 ledgers, microbench baseline),
+     - Includes a rollback plan and remediation checklist.
+
+8. Future Promotion Hooks (Logged)
+   - Continue planned work (shim elimination, micro-gating, ledger embedding).
+   - Keep governance badge and ledger policy as primary inputs to the promotion decision.
+
+Pre-PR Checklist (must pass before enabling enforcement on `main`)
+- [ ] `dot-config/zsh/tests/run-integration-tests.sh` passes locally and in CI.
+- [ ] Nightly CI produced 7 consecutive `perf-ledger-YYYYMMDD.json` artifacts (downloadable from CI).
+- [ ] Drift badge shows no fail condition for the window (observe → guard readiness confirmed).
+- [ ] Microbench baseline verified and included in evidence bundle.
+- [ ] Remediation PR template and rollback plan are reviewed and owners are notified.
+- [ ] CI artifact retention configured to preserve ledger artifacts for evidence (>=7 days, recommended 30 days).
+- [ ] No CI-generated ledger files are committed to repo (CI prevent-commit workflow passes).
+
+How to reproduce local checks
+- Run focused integration tests:
+  - `./dot-config/zsh/tests/run-integration-tests.sh --timeout-secs 30 --verbose`
+- Perform a perf-capture smoke dry-run:
+  - `./dot-config/zsh/tools/perf-capture-multi.zsh --dry-run`
+- Run a single-run capture if needed:
+  - `./dot-config/zsh/tools/perf-capture-multi.zsh -n 1 --no-segments --quiet`
+
+Notes
+- Keep seeded ledger examples under `docs/redesignv2/artifacts/metrics/ledger-history/seeded/` only for onboarding.
+- CI is the authoritative source of daily ledgers; prefer artifacts over committing files to the repo.
 
 ---
 
