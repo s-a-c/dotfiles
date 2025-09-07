@@ -33,9 +33,21 @@ ZDOTDIR="${ZDOTDIR:-${SCRIPT_DIR}/..}"
 
 # Configuration
 STABILITY_DAYS_DEFAULT=7
-VARIANCE_STATE_FILE="${ZDOTDIR}/docs/redesignv2/artifacts/metrics/variance-gating-state.json"
+# Prefer repository-level docs path for metrics; fall back to dot-config path when missing
+REPO_ROOT="$(cd "${SCRIPT_DIR}/../../.." 2>/dev/null && pwd -P || true)"
+REPO_DOCS_METRICS="${REPO_ROOT}/docs/redesignv2/artifacts/metrics"
+
+VARIANCE_STATE_FILE="${REPO_DOCS_METRICS}/variance-gating-state.json"
+if [[ ! -f "$VARIANCE_STATE_FILE" ]]; then
+  VARIANCE_STATE_FILE="${ZDOTDIR}/docs/redesignv2/artifacts/metrics/variance-gating-state.json"
+fi
+
 GOVERNANCE_BADGE="${ZDOTDIR}/docs/redesignv2/artifacts/badges/governance.json"
-HISTORY_DIR="${ZDOTDIR}/docs/redesignv2/artifacts/metrics/ledger-history"
+
+HISTORY_DIR="${REPO_DOCS_METRICS}/ledger-history"
+if [[ ! -d "$HISTORY_DIR" ]]; then
+  HISTORY_DIR="${ZDOTDIR}/docs/redesignv2/artifacts/metrics/ledger-history"
+fi
 DRIFT_CONFIG_FILE="${ZDOTDIR}/tools/config/drift-gating-config.json"
 
 # Parse arguments

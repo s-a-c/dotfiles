@@ -1,6 +1,6 @@
 {
   "schema": "variance-state.v1",
-  "generated_at": "2025-09-06T20:00:33Z",
+  "generated_at": "2025-09-07T14:32:44Z",
   "mode": "guard",
   "rsd": {
     "pre": { "mean": 99.40, "stddev": 2.06, "rsd": 0.0207 },
