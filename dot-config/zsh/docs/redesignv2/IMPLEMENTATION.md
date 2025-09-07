@@ -459,6 +459,143 @@ The ZSH configuration redesign has successfully completed Stage 3 with:
 4. **Plan Async Activation:** Prepare for async facility enablement
 5. **Document Progress:** Keep implementation tracking current and accurate
 
+### 10.2.1 Git-flow guidance and recommended branch workflow
+
+To remain consistent with the project's use of Git Flow, follow this lightweight, explicit workflow for feature development, CI validation, and promotion to main production enforcement:
+
+1. Work on a feature branch (naming convention: `feature/<short-desc>` or `hotfix/<short-desc>` for urgent fixes).
+   - Example: `feature/zsh-refactor-configuration`
+   - Keep commits focused and testable; run the integration runner and perf smoke locally before pushing.
+
+2. Push the completed feature branch to the remote and open a Pull Request targeting `develop`.
+   - PR base: `develop`
+   - PR head: `feature/<name>`
+   - Mark as Draft while still iterating; convert to Ready for review when stable.
+
+3. Let CI validate the feature branch and `develop`:
+   - Ensure the integration tests pass (compinit single-run, prompt single emission, monotonic lifecycle).
+   - Confirm nightly ledger capture runs and that `develop` accumulates ledger snapshots (CI will create the real `perf-ledger-YYYYMMDD.json` files).
+   - Use PR feedback loops to iterate until CI is consistently green.
+
+4. Merge feature -> develop when:
+   - Integration tests pass locally and in CI.
+   - The feature's behavior is validated (no regressions, no structural breakage).
+   - Any documentation changes (README / IMPLEMENTATION) are included.
+
+5. Validate stability on `develop` for the 7-day gate:
+   - Let CI produce daily ledger snapshots for seven consecutive nights in `docs/redesignv2/artifacts/metrics/ledger-history/` (or store them as retained CI artifacts).
+   - Ensure integration tests remain green across pushes to `develop`.
+   - Collect and attach evidence (drift badge, `stage3-exit-report.json`, the last 7 ledger snapshots, microbench baseline) when preparing to flip enforcement.
+
+6. Promote to main (separate PR):
+   - Once the 7-day stability gate and CI validation are satisfied on `develop`, open a targeted PR to `main` that *enables* enforcement flags such as `PERF_DIFF_FAIL_ON_REGRESSION=1`.
+   - This PR should include the evidence bundle and a clear rollback plan.
+
+7. Rollback & remediation:
+   - If a regression appears after enabling enforcement, open a remediation PR to revert the enforcement change and include instructions to temporarily set `PERF_DIFF_FAIL_ON_REGRESSION=0` (or revert the main PR).
+   - Add temporary observability toggles (increase `stable_run_count`, set `VARIANCE_LOG_LEVEL=debug`) while investigating.
+
+Rationale and benefits
+- Keeps feature development isolated and reviewable.
+- Ensures `develop` is the CI-validated staging area where the 7-day ledger history accumulates.
+- Keeps the `main` branch reserved for production enforcement changes that should only be made after provable stability.
+- Enables a clear, auditable roll-forward / roll-back plan for enforcement toggles.
+
+Notes on seeded ledger snapshots and CI-generated artifacts
+- Seeded snapshots in `docs/redesignv2/artifacts/metrics/ledger-history/` are acceptable for local testing and documentation, but CI should be the source of truth for the 7-day stability gate.
+- Recommendation:
+  - Keep only explicit, small "seed" snapshots committed (clearly labeled as seeds) for developer onboarding and quick validation.
+  - Do NOT commit CI-generated daily ledgers produced by the nightly job; instead:
+    - Either retain them as CI artifacts that can be downloaded for evidence, or
+    - Provide an automated process (script in CI) that, upon stable collection of 7 days, bundles evidence into a release branch or an artifacts location for PR attachment.
+- Update README and IMPLEMENTATION to clarify that:
+  - Seeds are for local validation only and are not the canonical ledger history.
+  - CI is responsible for writing the authoritative ledger snapshots used for the 7-day gate and enforcement decision.
+
+How this affects documentation
+- `dot-config/zsh/docs/redesignv2/IMPLEMENTATION.md`
+  - Add and maintain the Git-flow guidance and the ledger snapshot policy (this section).
+  - Clarify the roles of `develop` (staging/validation) vs `main` (production enforcement) in the promotion process.
+
+- `dot-config/zsh/docs/redesignv2/README.md`
+  - Add a short note explaining the ledger snapshot policy:
+    - Seed snapshots are included for examples/testing.
+    - The CI nightly job produces authoritative daily ledgers and should be used when preparing enforcement PRs.
+  - Point to the Git-flow guidance maintained in `IMPLEMENTATION.md` for the branch/PR process.
+
+Adopting this Git-flow guidance will keep promotion decisions auditable and minimize surprise enforcement flips on `main`. Follow the checklist above before enabling strict enforcement on `main`.
+
+---
+
+## Fast-track: In-branch activation & full redesign task list
+
+Goal: implement and activate the complete redesign in this feature branch (opt-in via feature flag), then iterate QA and testing until ready to merge to `develop`. Activation default: feature-flag protected (`ZSH_USE_REDESIGN=1`) and fail‑soft behavior for regressions.
+
+Activation summary
+- Activation mode: opt-in via environment variable `ZSH_USE_REDESIGN=1` (default off).
+- Target: run redesign locally (interactive) and in dedicated CI job(s) in this branch only.
+- Rollback: fail-soft by default; emergency toggle `ZSH_USE_REDESIGN=0` or CI env `PERF_DIFF_FAIL_ON_REGRESSION=0` for rapid disable.
+
+Fast-track task table (P0 = highest priority)
+
+| ID | Title | Description | Files to add / modify | Local test command(s) | CI step(s) | Tests | Acceptance criteria | Dependencies | Owner | ETA |
+|-----|-------|-------------|------------------------|-----------------------|------------|-------|---------------------|--------------|-------|-----|
+| FT-01 | Enable feature-flag gating | Add global opt-in flag and early switchpoints | `dot-config/zsh/.zshenv`, `dot-config/zsh/init.zsh` (feature toggle read) | `env ZSH_USE_REDESIGN=1 zsh -i -c 'echo $ZSH_USE_REDESIGN'` | Add `ZSH_USE_REDESIGN` option to CI job env | none | Redesign code paths conditional on `ZSH_USE_REDESIGN` – default unchanged | None | s-a-c | 1h |
+| FT-02 | Implement module 40 runtime optimization | Implement runtime optimizations and sentinel guards | `dot-config/zsh/.zshrc.d.REDESIGN/40-runtime-optimization.zsh` (+ test) | `./dot-config/zsh/tests/unit/test-40-runtime.zsh` | run unit tests in CI job | unit + integration | Module loads with sentinel; no errors; behavior behind flag | FT-01 | s-a-c | 4h |
+| FT-03 | Implement module 50 completion/history | Port completion/history logic from legacy design | `.../50-completion-history.zsh` (+ integration test) | `./dot-config/zsh/tests/integration/test-compinit-single-run.zsh` | CI integration job (flag=1) | integration | Single compinit runs; compdump stable | FT-01 | s-a-c | 6h |
+| FT-04 | Implement module 60 UI & prompt | Port prompt/UI features (p10k wiring) | `.../60-ui-enhancements.zsh` (+ prompt test) | `./dot-config/zsh/tests/integration/test-prompt-ready-single-emission.zsh` | CI runs prompt test (flag=1) | integration | Prompt emits expected single emission; no duplicate markers | FT-01, FT-03 | s-a-c | 6h |
+| FT-05 | Ensure sentinel guards & idempotency | Audit all modules, add sentinel guards | Modules dir files | run `run-all-tests` unit/integration | Run unit/integration in CI job | unit + integration | No module re-source or duplicate side-effects | FT-01 | s-a-c | 3h |
+| FT-06 | Remove/replace shims (microbench) | Replace shimbed helpers used by bench with real impls | `dot-config/zsh/bench/*` and module implementations | Run bench baseline (`bench-core-functions.zsh`) | Run bench job in CI branch job | bench | `shimmed_count == 0` and stable medians | FT-02, FT-04 | s-a-c | 1-2 days |
+| FT-07 | Micro-bench baseline commit | Capture bench baseline with no shims | `docs/.../bench-core-baseline.json` | Run bench harness locally | CI bench job stores baseline | bench | Baseline JSON committed as seed and verified locally | FT-06 | s-a-c | 2-4h |
+| FT-08 | Async: shadow-mode validation | Run async behavior in shadow mode and compare deltas | Add tests under `tests/performance/test-async-shadow-mode.zsh` | `ASYNc_MODE=shadow ./run-integration-tests...` | CI nightly shadow capture job (flag=1) | performance | Shadow delta <= threshold; no functional regressions | FT-02, FT-03, FT-04 | s-a-c | 1 day |
+| FT-09 | Async: controlled activation steps | Add CI switch and staged activation plan (canary) | CI workflow updates: `.github/workflows/*` | Trigger CI with `ZSH_USE_REDESIGN=1` for branch | Add optional job(s) that run redesign paths | integration + perf | Canary runs succeed; no critical regressions | FT-08 | s-a-c | 4-8h |
+| FT-10 | Migration helper script | Add convenience script to toggle redesign locally and back up existing config | `tools/migrate-to-redesign.sh` + README snippet | `tools/migrate-to-redesign.sh --enable` | optional run in CI (manual) | none | Script creates backup, sets ZDOTDIR override for local shell | FT-01 | s-a-c | 2h |
+| FT-11 | Artifact bundler for 7-day evidence | Workflow to bundle last 7 ledger artifacts for PR attachment | `.github/workflows/bundle-ledgers.yml` | N/A locally | `workflow_dispatch` & scheduled bundling | none | Creates zip with 7 ledgers for PR | CI artifact retention | s-a-c | 4h |
+| FT-12 | QA harness & extended tests | Add longer QA suite to run monotonic lifecycle and historical stability tests | `dot-config/zsh/tests/performance/*` | run `./dot-config/zsh/tests/run-all-tests.zsh --perf-only` | CI nightly job for branch-level QA | perf + integration | All QA tests pass; no monotonic violations | FT-06, FT-08 | s-a-c | 1-2 days |
+| FT-13 | Documentation & activation guide | Update IMPLEMENTATION.md + README with Activation & Rollback steps | `docs/redesignv2/*` (this file) + README | N/A | N/A | docs review | Clear activation & rollback steps present | FT-01 | s-a-c | 2h |
+| FT-14 | Performance regression guard flip plan | Prepare enforcement PR checklist and remediation PR template | `.github/PULL_REQUEST_TEMPLATE.md` | N/A | N/A | docs | PR checklist ready and template present | FT-11, FT-12 | s-a-c | 2h |
+
+Notes:
+- All tasks are owned by `s-a-c` by default (you can assign others later).
+- ETA times are conservative estimates; parallelization will reduce calendar time.
+- Priority labeling: all above are P0 for the fast-track (must complete before enabling redesign broadly).
+
+Activation checklist (quick)
+1. Enable redesign locally:
+   - Backup current config: `tools/migrate-to-redesign.sh --backup`
+   - Enable redesign: `export ZSH_USE_REDESIGN=1`
+   - Start a clean shell: `env -i ZDOTDIR=$PWD /bin/zsh -i -f`
+2. Run local smoke tests:
+   - `./dot-config/zsh/tests/run-integration-tests.sh --timeout-secs 30 --verbose`
+   - `./dot-config/zsh/tools/perf-capture-multi.zsh -n 1 --no-segments --quiet`
+3. If issues arise, disable: `export ZSH_USE_REDESIGN=0` and `tools/migrate-to-redesign.sh --restore`
+4. For CI, run the branch-only redesign job with `ZSH_USE_REDESIGN=1` and observe artifacts and logs.
+
+Emergency rollback commands
+- Disable redesign in your session: `export ZSH_USE_REDESIGN=0`
+- Restore previous dotfiles snapshot (created by migration script):
+  - `tools/migrate-to-redesign.sh --restore`
+- If enforcement flips accidentally in CI, create remediation PR using `.github/PULL_REQUEST_TEMPLATE.md` and set `PERF_DIFF_FAIL_ON_REGRESSION=0` until triage completes.
+
+QA plan in-branch (summary)
+- Use opt-in flag to exercise redesign locally and in branch CI.
+- Keep all enforcement disabled (fail-soft): `PERF_DIFF_FAIL_ON_REGRESSION` remains `0` in branch CI.
+- Run nightly branch CI that uploads ledger artifacts (retention >= 7 days) and use `bundle-ledgers.yml` to create an evidence zip.
+- Iterate on modules and tests until all QA and perf tests are green in branch CI for an observation window (recommended: 7 days).
+- After signoff, prepare the develop-targeted PR that migrates the code from being branch-only to the mainline (per Git-flow).
+
+Security & safety notes
+- The redesign will be behind `ZSH_USE_REDESIGN` by default. Only enable for your local shells or in branch CI runs for testing.
+- Keep `.gitignore` entries and commit-check workflows to avoid accidentally committing CI-generated ledger files.
+- Keep remediation PR template and owners informed for fast rollback.
+
+---
+
+If you want me to proceed now, I will:
+- Implement the feature-flag scaffolding (`FT-01`), migration helper (`FT-10`), and skeleton module files for 40/50/60 (`FT-02`, `FT-03`, `FT-04`) in this branch and push them.
+- After that I will run local integration & perf smoke checks and report results. (You asked for sprint/today timing; I will start immediately if you confirm.)
+
+
 ### 10.3 Long-term Vision
 
 The redesigned ZSH configuration will deliver:
