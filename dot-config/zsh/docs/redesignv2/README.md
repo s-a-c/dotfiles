@@ -398,3 +398,27 @@ Full future backlog & variance log: IMPLEMENTATION.md §1.3 & §1.4.
 ---
 
 *Authoritative reference: For any discrepancy, see `IMPLEMENTATION.md` (single source of execution truth).*
+
+---
+
+## Stage 3 Exit — Summary & Status
+
+Status: ready to proceed to Stage 4 (feature development) — with operational caveats.
+
+Evidence:
+- Variance guard: mode="guard", stable_run_count=3 (see docs/redesignv2/artifacts/metrics/variance-gating-state.json).
+- Recent authenticated multi-sample capture: `dot-config/zsh/docs/redesignv2/artifacts/metrics/perf-multi-simple.json` (N=5, post mean ≈ 334ms, RSD ≈ 1.9%).
+- Governance badge updated: `dot-config/zsh/docs/redesignv2/artifacts/badges/governance.json` (message: "guard: stable").
+- Microbench baseline present: `dot-config/zsh/docs/redesignv2/artifacts/metrics/microbench-core.json`.
+
+Caveats before enabling hard drift enforcement (FAIL on regression):
+- The drift-enforcement flip (observe → enforce/fail) must wait until a 7-day CI-driven stability window is observed in the _ledger-history_. We seeded ledger-history for local readiness checks; CI must populate `docs/redesignv2/artifacts/metrics/ledger-history/` nightly for a full evaluation.
+- Confirm CI workflows exist and are configured: `.github/workflows/ci-variance-nightly.yml` and `.github/workflows/ci-async-guards.yml`.
+- Verify async activation checklist in CI: ensure `tests/integration/*` execute successfully in CI environment (we added a robust local test framework shim to run the prompt single-emission check).
+
+Recommended immediate actions (short):
+- Let CI run nightly for 7 days to accumulate genuine ledger-history snapshots.
+- After 7-day stability without regressions, enable `PERF_DIFF_FAIL_ON_REGRESSION=1` on main and monitor for 48 hours.
+
+For details and machine-readable report, see `dot-config/zsh/docs/redesignv2/artifacts/metrics/stage3-exit-report.json`.
+

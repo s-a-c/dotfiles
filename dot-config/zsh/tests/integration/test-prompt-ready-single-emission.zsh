@@ -247,6 +247,6 @@ run_tests() {
 }
 
 # Run if executed directly
-if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+if [ "${0##*/}" = "test-prompt-ready-single-emission.zsh" ]; then
   run_tests
 fi
