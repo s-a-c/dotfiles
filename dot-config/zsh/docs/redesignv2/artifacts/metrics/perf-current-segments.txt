@@ -1,4 +1,4 @@
-SEGMENT name=pre_plugin_total ms=3947 phase=pre_plugin sample=mean
-SEGMENT name=post_plugin_total ms=13159 phase=post_plugin sample=mean
-SEGMENT name=prompt_ready ms=13159 phase=prompt sample=mean
+SEGMENT name=pre_plugin_total ms=3770 phase=pre_plugin sample=mean
+SEGMENT name=post_plugin_total ms=12569 phase=post_plugin sample=mean
+SEGMENT name=prompt_ready ms=12569 phase=prompt sample=mean
 SEGMENT name=policy_guidelines_checksum ms=0 phase=other sample=meta checksum=50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
