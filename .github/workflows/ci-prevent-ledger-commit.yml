@@ -1,0 +1,99 @@
+name: "Prevent committed perf-ledger JSON files"
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  prevent-ledger-commit:
+    name: Prevent perf-ledger commits
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository (full history)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine changed files and check for perf-ledger JSONs
+        # This step fails the job if any committed/changed file matches the perf-ledger pattern,
+        # excluding intentionally seeded examples under .../ledger-history/seeded/
+        run: |
+          set -euo pipefail
+
+          # Determine diff range for the event.
+          # For PRs use the PR base SHA; for pushes use the before..head range.
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE_SHA="${{ github.event.pull_request.base.sha }}"
+            RANGE="${BASE_SHA}...${{ github.sha }}"
+          else
+            RANGE="${{ github.event.before }}...${{ github.sha }}"
+          fi
+
+          echo "Using diff range: ${RANGE}"
+
+          # Get changed files in the range (works for multi-commit pushes and PRs)
+          CHANGED=$(git diff --name-only "${RANGE}" || true)
+          echo "Changed files:"
+          printf '%s\n' "${CHANGED}" | sed 's/^/  /'
+
+          # Find any changed files that look like perf-ledger JSONs and are NOT in a seeded/ directory
+          LEDGER_MATCHES=$(printf '%s\n' "${CHANGED}" | grep -E '(^|/)perf-ledger-[0-9]{8}\.json$' || true)
+          # Filter out seeded examples that may live in ledger-history/seeded/
+          LEDGER_MATCHES=$(printf '%s\n' "${LEDGER_MATCHES}" | grep -v '/ledger-history/seeded/' || true)
+
+          if [ -n "${LEDGER_MATCHES}" ]; then
+            echo "::error::Detected perf-ledger JSON files added/modified in this push/PR (these should not be committed)."
+            echo "Offending files:"
+            printf '%s\n' "${LEDGER_MATCHES}" | sed 's/^/  /'
+            echo ""
+            echo "Remediation steps:"
+            echo "  - Remove the file(s) from the commit (git rm --cached <file>), amend the commit, and force-push the branch,"
+            echo "    or create a follow-up commit that removes the files."
+            echo "  - If these are seed/example files, move them under"
+            echo "    docs/redesignv2/artifacts/metrics/ledger-history/seeded/ and ensure the path is clearly labeled as seed."
+            echo "  - Add an entry to .gitignore to exclude daily CI-generated ledger files (see IMPLEMENTATION.md for policy)."
+            exit 1
+          fi
+
+          echo "No perf-ledger JSON files detected in the changed files."
+
+      - name: Sanity scan - detect any tracked perf-ledger JSON files (non-seed)
+        # This additional check will detect any perf-ledger JSON files that are tracked in the repo at HEAD,
+        # excluding intentionally seeded snapshots under ledger-history/seeded.
+        run: |
+          set -euo pipefail
+
+          ALL_TRACKED=$(git ls-files | grep -E '(^|/)perf-ledger-[0-9]{8}\.json$' || true)
+          # Exclude allowed seeded examples
+          NON_SEEDED=$(printf '%s\n' "${ALL_TRACKED}" | grep -v '/ledger-history/seeded/' || true)
+
+          if [ -n "${NON_SEEDED}" ]; then
+            echo "::warning::Found perf-ledger JSON files tracked in repository (non-seed)."
+            echo "Tracked perf-ledger files (please ensure these are intentionally seeded and live under .../seeded/ or remove them):"
+            printf '%s\n' "${NON_SEEDED}" | sed 's/^/  /'
+            # Fail the workflow to prevent accidental promotion of commits that include ledger files.
+            echo ""
+            echo "To fix:"
+            echo "  - If these are accidental, remove them from the repository and push a fix."
+            echo "  - If these are intended seeds for onboarding, move them to "
+            echo "    docs/redesignv2/artifacts/metrics/ledger-history/seeded/ and re-commit."
+            exit 1
+          fi
+
+          echo "No tracked non-seed perf-ledger JSON files found."
+
+      - name: Helpful pointers (on success)
+        if: success()
+        run: |
+          echo "No perf-ledger JSON files were committed in this change (good)."
+          echo ""
+          echo "Policy reminders:"
+          echo "  - Daily perf ledger files are produced by CI and must NOT be committed to the repository."
+          echo "  - Keep only small, documented seed snapshots (clearly labeled) under"
+          echo "    docs/redesignv2/artifacts/metrics/ledger-history/seeded/"
+          echo "  - To reproduce locally: ./dot-config/zsh/tools/perf-capture-multi.zsh -n 1 --no-segments --quiet"

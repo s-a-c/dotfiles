@@ -228,5 +228,11 @@ filter-repo/
 **/cli-plugins/
 
 ###############################################################################
+# Ignore CI-generated perf ledger snapshots (daily artifacts)
+# Keep small seeded examples under ledger-history/seeded/ if needed for onboarding.
+docs/redesignv2/artifacts/metrics/ledger-history/perf-ledger-*.json
+!docs/redesignv2/artifacts/metrics/ledger-history/seeded/
+
+###############################################################################
 # END
 ###############################################################################
