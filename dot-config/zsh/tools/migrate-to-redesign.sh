@@ -23,6 +23,8 @@
 #   ./tools/migrate-to-redesign.sh --restore
 #   ./tools/migrate-to-redesign.sh --status
 #
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+
 set -euo pipefail
 
 # Defaults (can be overridden with flags)
