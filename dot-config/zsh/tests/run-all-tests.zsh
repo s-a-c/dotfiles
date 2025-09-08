@@ -632,5 +632,7 @@ elif [[ $integration_only -eq 1 ]]; then
     }
 fi
 
-# Execute main function
-main "$@"
+# Execute main function only when not sourced
+if ! (return 0 2>/dev/null); then
+  main "$@"
+fi
