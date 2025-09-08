@@ -1,6 +1,7 @@
 #!/opt/homebrew/bin/zsh
 # 05-interactive-options.zsh
 # Stage 3 – Interactive Shell Options & History Baseline
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
 #
 # PURPOSE:
 #   Centralizes interactive-oriented Zsh option state (setopt / unsetopt) plus
@@ -35,7 +36,7 @@
 if [[ -n "${_LOADED_05_INTERACTIVE_OPTIONS:-}" ]]; then
   return 0
 fi
-: ${_LOADED_05_INTERACTIVE_OPTIONS:=1}
+_LOADED_05_INTERACTIVE_OPTIONS=1
 
 # --------------------------------------------------
 # Detect interactive shell (best-effort)
