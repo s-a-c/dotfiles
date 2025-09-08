@@ -1,8 +1,8 @@
 #!/opt/homebrew/bin/zsh
 # 05-fzf-init.zsh (Pre-Plugin Redesign Enhanced)
-[[ -n ${_LOADED_PRE_FZF_INIT:-} ]] && return
-_LOADED_PRE_FZF_INIT=1
-# Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+[[ -n ${_LOADED_05_FZF_INIT:-} ]] && return
+_LOADED_05_FZF_INIT=1
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
 #
 # PURPOSE: Lightweight FZF environment + key bindings (NO compinit, NO heavy plugin sourcing).
 # GUARANTEE: This module MUST NOT invoke compinit, modify completion dump, or source large plugin frameworks.
