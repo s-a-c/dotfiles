@@ -1,0 +1,66 @@
+version: 1.0.0
+last_updated: 2025-03-26
+maintainers:
+  - name: Development Team
+    role: Primary maintainer
+description: >-
+  Standardized workflow and formatting rules for documentation, Git commits,
+  terminal usage, and Laravel development
+content_file: .clinerules.md
+changelog:
+  - version: 1.0.0
+    date: 2025-03-26
+    changes:
+      - Initial structured version
+      - Added metadata and rule categorization
+      - Improved organization and readability
+file_relationships:
+  content:
+    - path: .clinerules.md
+      type: markdown
+      description: Main rules and standards documentation
+  configuration:
+    - path: .editorconfig
+      type: editor
+      description: Editor standards and formatting rules
+    - path: .php-cs-fixer.php
+      type: style
+      description: PHP code style rules
+    - path: .prettierrc.js
+      type: style
+      description: JavaScript/JSON formatting rules
+    - path: phpstan.neon
+      type: analysis
+      description: Static analysis configuration
+    - path: psalm.xml
+      type: analysis
+      description: Type checking configuration
+    - path: phpmd.xml
+      type: analysis
+      description: Code quality metrics rules
+    - path: rector.php
+      type: refactoring
+      description: Automated refactoring rules
+    - path: phpunit.xml
+      type: testing
+      description: Unit testing configuration
+    - path: pest.config.php
+      type: testing
+      description: Test framework configuration
+    - path: .github/workflows/code-quality.yml
+      type: ci
+      description: Continuous integration workflow
+validation:
+  markdown:
+    required_sections:
+      - Workflow Standards
+      - Documentation Standards
+      - Git Workflow
+      - Terminal Management
+      - Laravel Development
+      - Code Quality
+      - Related Files
+  formatting:
+    heading_pattern: ^\d+\.\d*\s
+    code_blocks: true
+    link_validation: true

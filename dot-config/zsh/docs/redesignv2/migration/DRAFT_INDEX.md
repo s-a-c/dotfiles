@@ -1,10 +1,15 @@
 # Draft Index: ZSH Redesign Migration Artifacts
 
-_Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v<checksum>_
+_Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49_
 
 ## Overview
 
 This index catalogs all read-only drafts generated for the ZSH redesign migration. These drafts require explicit approval before any implementation begins.
+
+Canonicalization:
+- The canonical sources are the draft-* files in this directory.
+- Annotated duplicates under `drafts/*.md` are auxiliary references and should point back to the canonical drafts.
+- After approval, auxiliary annotated copies may be removed to avoid duplication.
 
 **Generated:** 2025-01-08  
 **Migration Phase:** Step 1 - Draft Generation (Read-Only)  
@@ -180,6 +185,10 @@ To proceed with implementation, reply with:
 
 All draft files are located in:
 `$ZDOTDIR/docs/redesignv2/migration/`
+
+Canonical source of truth:
+- Files named `draft-*` within this directory are canonical.
+- Annotated copies under `$ZDOTDIR/docs/redesignv2/migration/drafts/*.md` are auxiliary and may be removed after approval to deduplicate content.
 
 Target implementation locations:
 - Modules: `$ZDOTDIR/.zshrc.d.REDESIGN/`

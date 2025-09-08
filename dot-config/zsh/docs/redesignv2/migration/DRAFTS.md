@@ -1,4 +1,5 @@
 # Redesign Migration Drafts — module, tools, and CI workflow drafts
+_Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49_
 #
 # Location: dotfiles/dot-config/zsh/docs/redesignv2/migration/DRAFTS.md
 # Purpose: Drafts of module scripts, tools, and GitHub Actions workflow YAMLs
@@ -9,6 +10,14 @@
 #
 # NOTE: These are *drafts only*. No files will be modified until you approve
 # each draft and give explicit instruction to implement/push them.
+
+Consolidation note:
+- Canonical sources are the draft-* files in this directory.
+- Annotated duplicates under drafts/*.md are auxiliary references and should point back to the canonical drafts.
+- After approval, auxiliary annotated copies may be removed to avoid duplication.
+
+See DRAFT_INDEX.md for the canonical list and approval checklist:
+- docs/redesignv2/migration/DRAFT_INDEX.md
 #
 # ---------------------------------------------------------------------------
 # 1) Draft module: `.zshrc.d.REDESIGN/70-shim-removal.zsh`
