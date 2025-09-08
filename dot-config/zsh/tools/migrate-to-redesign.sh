@@ -1,8 +1,10 @@
 #!/usr/bin/env zsh
 # tools/migrate-to-redesign.sh
 #
-# Non-destructive migration helper to enable the ZSH redesign locally.
-# Default: dry-run (show planned changes).
+# Finalized migration helper to enable the ZSH redesign locally.
+# - Non-destructive by default (dry-run shows the patch).
+# - Safe apply mode creates timestamped backups and records a migration log.
+# - Designed for interactive use and CI automation (use --force or MIGRATE_FORCE=1).
 #
 # Capabilities:
 #  - --dry-run (default): preview the patch that would be applied.
@@ -16,23 +18,28 @@
 #  - Uses conservative, reversible injection (append-only snippet).
 #  - Does not delete or rename user files.
 #
-# Usage:
+# Usage examples:
 #   ./tools/migrate-to-redesign.sh --dry-run
-#   ./tools/migrate-to-redesign.sh --apply
-#   ./tools/migrate-to-redesign.sh --backup
-#   ./tools/migrate-to-redesign.sh --restore
-#   ./tools/migrate-to-redesign.sh --status
+#   ./tools/migrate-to-redesign.sh --apply --force
+#   ./tools/migrate-to-redesign.sh --backup --zshenv /tmp/test.zshenv
+#   MIGRATE_FORCE=1 ./tools/migrate-to-redesign.sh --apply
 #
+# Policy acknowledgement:
 # Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
-
+#
+# Notes:
+# - The snippet markers are intentionally the same as activate/deactivate helpers use so those tools
+#   can find and remove the managed block reliably.
+# - When used in CI, prefer: --backup + --apply + --force and point --zshenv at a disposable target.
+# - The script is conservative by default (dry-run). Use --force for non-interactive automation.
+#
 set -euo pipefail
 
-# Defaults (can be overridden with flags)
+# Defaults (can be overridden with flags or env)
 : "${ZSHENV_TARGET:=${ZDOTDIR:-$HOME}/.zshenv}"
 : "${BACKUP_DIR:=${HOME}/.local/share/zsh/redesign-migration}"
 : "${MIGRATION_LOG:=tools/migration.log}"
 
-# Use the same marker that activate-redesign.sh uses so deactivate helpers can find and remove it
 SNIPPET_START="# >>> REDESIGN-ENV (managed by activate-redesign.sh) >>>"
 SNIPPET_END="# <<< REDESIGN-ENV (managed by activate-redesign.sh) <<<"
 
@@ -53,6 +60,7 @@ DO_RESTORE=0
 DO_STATUS=0
 QUIET=0
 FORCE=0
+
 # Respect environment override for non-interactive automation
 : "${MIGRATE_FORCE:=${MIGRATE_FORCE:-0}}"
 if [[ "${MIGRATE_FORCE}" = "1" ]]; then
@@ -64,28 +72,26 @@ usage() {
 Usage: $(basename "$0") [options]
 
 Options:
-  --dry-run          Show planned changes (default).
-  --apply            Apply migration: backup and inject snippet.
-  --backup           Create a timestamped backup of the target file and exit.
-  --restore          Restore the most recent backup created by this tool for the target file.
-  --status           Show snippet presence and list backups.
-  --zshenv <path>    Target zshenv file to operate on (default: ${ZSHENV_TARGET}).
-  --backup-dir <dir> Backup directory (default: ${BACKUP_DIR}).
-  --log <file>       Migration log file (default: ${MIGRATION_LOG}).
-  --quiet            Suppress informational output.
-  --force            Skip interactive confirmation and apply immediately (useful for CI).
-  --help             Show this help and exit.
+  --dry-run            Show planned changes (default).
+  --apply              Apply migration: backup and inject snippet.
+  --backup             Create a timestamped backup of the target file and exit.
+  --restore            Restore the most recent backup created by this tool for the target file.
+  --status             Show snippet presence and list backups.
+  --zshenv <path>      Target zshenv file to operate on (default: ${ZSHENV_TARGET}).
+  --backup-dir <dir>   Backup directory (default: ${BACKUP_DIR}).
+  --log <file>         Migration log file (default: ${MIGRATION_LOG}).
+  --quiet              Suppress informational output.
+  --force              Skip interactive confirmation and apply immediately (useful for CI).
+  --help|-h            Show this help and exit.
 
 Examples:
-  $(basename "$0") --dry-run --apply
+  $(basename "$0") --dry-run
   $(basename "$0") --apply --force
-  $(basename "$0") --backup
-  $(basename "$0") --restore
+  MIGRATE_FORCE=1 $(basename "$0") --apply --zshenv /tmp/test.zshenv
 
 Notes:
-  - By default the tool requires an explicit interactive confirmation before making changes.
-    Use --force in automation environments or set MIGRATE_FORCE=1 in your environment
-    to bypass the interactive checklist.
+  - This tool is intentionally conservative. Always review the dry-run diff before applying.
+  - For CI: run with --zshenv pointing to a disposable file and use --force to skip prompts.
 USAGE
 }
 
@@ -120,6 +126,7 @@ _err() {
 }
 
 _timestamp() {
+  # Use ISO-like UTC timestamp
   date -u +%Y%m%dT%H%M%SZ 2>/dev/null || date +%s
 }
 
@@ -145,7 +152,7 @@ create_backup() {
       cp -p "$ZSHENV_TARGET" "$backupfile"
       _log "Backup created: $backupfile"
     else
-      # create placeholder backup to allow restore
+      # create placeholder backup to allow restore flow
       printf '%s\n' "# placeholder backup created by migrate-to-redesign at $ts" > "$backupfile"
       _log "Placeholder backup created (target missing): $backupfile"
     fi
@@ -170,8 +177,10 @@ snippet_present_in_file() {
 preview_patch() {
   # Show unified diff between current target and target+snippet (for dry-run)
   local tmp_before tmp_after
-  tmp_before="$(mktemp -t migrate_before.XXXX 2>/dev/null || mktemp)"
-  tmp_after="$(mktemp -t migrate_after.XXXX 2>/dev/null || mktemp)"
+  tmp_before="$(mktemp 2>/dev/null || mktemp -t migrate_before.XXXX)"
+  tmp_after="$(mktemp 2>/dev/null || mktemp -t migrate_after.XXXX)"
+  trap 'rm -f "$tmp_before" "$tmp_after" 2>/dev/null || true' RETURN
+
   if [[ -f "$ZSHENV_TARGET" ]]; then
     cat "$ZSHENV_TARGET" > "$tmp_before"
   else
@@ -194,8 +203,6 @@ preview_patch() {
     _log "---- DRY-RUN: target file (after) ----"
     cat "$tmp_after"
   fi
-
-  rm -f "$tmp_before" "$tmp_after" || true
 }
 
 apply_migration() {
@@ -213,7 +220,6 @@ apply_migration() {
     fi
     # Ensure target file exists (create if missing)
     if [[ ! -f "$ZSHENV_TARGET" ]]; then
-      # create parent dir if needed
       mkdir -p "$(dirname "$ZSHENV_TARGET")" 2>/dev/null || true
       touch "$ZSHENV_TARGET"
     fi
@@ -304,7 +310,6 @@ if (( DO_APPLY )); then
       _log "  3) You accept responsibility to restore from backups if needed."
       _log ""
       printf "Type 'I AGREE' to proceed (case sensitive): "
-      # read in shell-compatible way; this script runs under zsh
       read -r CONFIRMATION || true
       echo
       if [[ "${CONFIRMATION}" != "I AGREE" ]]; then
