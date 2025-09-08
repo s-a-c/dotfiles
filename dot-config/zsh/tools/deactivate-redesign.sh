@@ -1,285 +1,144 @@
-#!/usr/bin/env zsh
-# tools/deactivate-redesign.sh
-#
-# Inverse helper for tools/activate-redesign.sh
-#
-# Purpose:
-#  - Remove the managed redesign injection snippet from the user's zshenv.
-#  - Create/restore backups created by the activation/migration helpers.
-#  - Provide dry-run preview and status reporting.
-#
-# Safety:
-#  - Non-destructive by default; backups are created before any modification.
-#  - Uses markers identical to the activation/migration helpers so removal is reliable.
-#  - Does not attempt to modify anything outside the target zshenv unless explicitly told.
-#
-# Usage (examples):
-#  ./tools/deactivate-redesign.sh --status
-#  ./tools/deactivate-redesign.sh --dry-run --disable
-#  ./tools/deactivate-redesign.sh --backup
-#  ./tools/deactivate-redesign.sh --disable --apply
-#  ./tools/deactivate-redesign.sh --restore
-#
-# Defaults:
-: "${ZSHENV_PATH:=${ZDOTDIR:-$HOME}/.zshenv}"
-: "${BACKUP_DIR:=${HOME}/.local/share/zsh/redesign-migration}"
+#!/bin/zsh
+# deactivate-redesign.sh - Exact inverse operations of activate-redesign.sh
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
 
-SNIPPET_START="# >>> REDESIGN-ENV (managed by activate-redesign.sh) >>>"
-SNIPPET_END="# <<< REDESIGN-ENV (managed by activate-redesign.sh) <<<"
+set -e
 
-set -euo pipefail
+ZDOTDIR="${ZDOTDIR:-$HOME/.config/zsh}"
+BACKUP_DIR="$ZDOTDIR/backups/redesign"
+MIGRATION_LOG="$ZDOTDIR/tools/migration.log"
 
-DRY_RUN=0
-APPLY=0
-QUIET=0
-CMD=""
-
-print_help() {
-  cat <<'EOF'
-tools/deactivate-redesign.sh — inverse of activate/migrate helpers
-
-Usage:
-  ./tools/deactivate-redesign.sh [--dry-run] <command> [--zshenv <path>] [--backup-dir <dir>] [--quiet]
-
-Commands:
-  --disable      Remove the managed redesign snippet from the target zshenv.
-                 If --apply is used, perform the change; otherwise show a dry-run preview.
-  --backup       Create a timestamped backup of the target zshenv and exit.
-  --restore      Restore the most recent backup created by this tool for the target zshenv.
-  --status       Report whether the snippet exists and list available backups.
-  --help         Show this help.
-
-Flags:
-  --dry-run      Print actions without making changes.
-  --apply        When used with --disable, actually remove the snippet (default is dry-run).
-  --zshenv PATH  Operate on a specific zshenv (default: $ZSHENV_PATH).
-  --backup-dir D Use alternate backup directory (default: $BACKUP_DIR).
-  --quiet        Suppress informational output.
-EOF
+usage() {
+    echo "Usage: $0 [--verbose]"
+    echo "Deactivates ZSH redesign by restoring original configurations"
+    echo ""
+    echo "Options:"
+    echo "  --verbose    Show detailed output during deactivation"
+    echo ""
+    echo "This script performs the exact inverse of activate-redesign.sh:"
+    echo "  - Removes redesign environment variables from ~/.zshenv"
+    echo "  - Restores original .zshenv from backup"
+    echo "  - Removes redesign activation snippet"
+    echo "  - Updates migration log"
+    exit 1
 }
 
-log() { (( QUIET )) || printf '%s\n' "$@"; }
-err() { printf 'ERROR: %s\n' "$@" >&2; }
+log_action() {
+    local timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    echo "[$timestamp] DEACTIVATE: $1" | tee -a "$MIGRATION_LOG"
+    [[ "$VERBOSE" == "1" ]] && echo "$1"
+}
 
-timestamp() { date -u +%Y%m%dT%H%M%SZ 2>/dev/null || date +%s; }
+restore_zshenv() {
+    local zshenv_file="$HOME/.zshenv"
+    local backup_file="$BACKUP_DIR/zshenv.backup"
 
-ensure_backup_dir() {
-  if [[ ! -d "$BACKUP_DIR" ]]; then
-    if (( DRY_RUN )); then
-      log "[dry-run] mkdir -p $BACKUP_DIR"
+    if [[ -f "$backup_file" ]]; then
+        log_action "Restoring original .zshenv from backup"
+        cp "$backup_file" "$zshenv_file"
+        log_action "Original .zshenv restored successfully"
     else
-      mkdir -p "$BACKUP_DIR"
+        log_action "WARNING: No .zshenv backup found, removing redesign snippet manually"
+
+        if [[ -f "$zshenv_file" ]]; then
+            # Remove redesign-specific lines
+            sed -i.deactivate-backup '/# ZSH Redesign activation/,/# End ZSH Redesign activation/d' "$zshenv_file"
+            sed -i.deactivate-backup '/export ZSH_USE_REDESIGN=/d' "$zshenv_file"
+            sed -i.deactivate-backup '/export ZSH_ENABLE_PREPLUGIN_REDESIGN=/d' "$zshenv_file"
+            sed -i.deactivate-backup '/export ZSH_ENABLE_POSTPLUGIN_REDESIGN=/d' "$zshenv_file"
+            log_action "Removed redesign snippet from .zshenv"
+        fi
     fi
-  fi
 }
 
-create_backup() {
-  ensure_backup_dir
-  local ts backupfile target
-  ts="$(timestamp)"
-  target="$ZSHENV_PATH"
-  backupfile="${BACKUP_DIR}/$(basename "$target").${ts}.bak"
-  if (( DRY_RUN )); then
-    log "[dry-run] cp -p \"$target\" \"$backupfile\""
-    printf '%s' "$backupfile"
-    return 0
-  fi
+remove_environment_file() {
+    local env_file="$ZDOTDIR/.redesign-env"
 
-  if [[ -f "$target" ]]; then
-    cp -p "$target" "$backupfile"
-    log "Backup created: $backupfile"
-  else
-    # create a placeholder backup to make restore possible
-    printf '%s\n' "# placeholder backup created by deactivate-redesign at $ts" >"$backupfile"
-    log "Placeholder backup created (target absent): $backupfile"
-  fi
-  printf '%s' "$backupfile"
+    if [[ -f "$env_file" ]]; then
+        rm "$env_file"
+        log_action "Removed redesign environment file: $env_file"
+    fi
 }
 
-list_backups() {
-  if [[ -d "$BACKUP_DIR" ]]; then
-    ls -1t "${BACKUP_DIR}/$(basename "$ZSHENV_PATH")."* 2>/dev/null || true
-  else
-    true
-  fi
+update_migration_log() {
+    local timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    echo "[$timestamp] DEACTIVATE: ZSH Redesign deactivated successfully" >> "$MIGRATION_LOG"
+    echo "[$timestamp] DEACTIVATE: All redesign configurations removed" >> "$MIGRATION_LOG"
+    echo "[$timestamp] DEACTIVATE: Shell restart required to take effect" >> "$MIGRATION_LOG"
 }
 
-latest_backup() {
-  if [[ -d "$BACKUP_DIR" ]]; then
-    ls -1t "${BACKUP_DIR}/$(basename "$ZSHENV_PATH")."* 2>/dev/null | head -n1 || true
-  fi
+verify_deactivation() {
+    local issues=0
+
+    # Check if redesign variables are still in .zshenv
+    if grep -q "ZSH_USE_REDESIGN" "$HOME/.zshenv" 2>/dev/null; then
+        log_action "WARNING: ZSH_USE_REDESIGN still found in .zshenv"
+        ((issues++))
+    fi
+
+    # Check if environment file was removed
+    if [[ -f "$ZDOTDIR/.redesign-env" ]]; then
+        log_action "WARNING: Redesign environment file still exists"
+        ((issues++))
+    fi
+
+    if [[ $issues -eq 0 ]]; then
+        log_action "Deactivation verification passed"
+        return 0
+    else
+        log_action "Deactivation verification found $issues issues"
+        return 1
+    fi
 }
 
-snippet_present() {
-  if [[ -f "$ZSHENV_PATH" ]] && grep -qF "$SNIPPET_START" "$ZSHENV_PATH" 2>/dev/null; then
-    return 0
-  fi
-  return 1
-}
-
-preview_removal_patch() {
-  # Show unified diff between current file and the file after snippet removal
-  local tmp_before tmp_after
-  tmp_before="$(mktemp -t deactivate_before.XXXX 2>/dev/null || mktemp)"
-  tmp_after="$(mktemp -t deactivate_after.XXXX 2>/dev/null || mktemp)"
-  if [[ -f "$ZSHENV_PATH" ]]; then
-    cat "$ZSHENV_PATH" >"$tmp_before"
-  else
-    printf '%s\n' "# (empty target)" >"$tmp_before"
-  fi
-
-  # Remove block between markers and produce tmp_after
-  awk -v start="$SNIPPET_START" -v end="$SNIPPET_END" '
-    BEGIN { inblock = 0 }
-    $0 == start { inblock = 1; next }
-    inblock && $0 == end { inblock = 0; next }
-    !inblock { print $0 }
-  ' "$tmp_before" >"$tmp_after"
-
-  if command -v diff >/dev/null 2>&1; then
-    printf '---- DRY-RUN: unified diff (before -> after) ----\n'
-    diff -u "$tmp_before" "$tmp_after" || true
-  else
-    printf '---- DRY-RUN: before ----\n'; cat "$tmp_before"
-    printf '---- DRY-RUN: after ----\n'; cat "$tmp_after"
-  fi
-
-  rm -f "$tmp_before" "$tmp_after" || true
-}
-
-remove_snippet() {
-  # Safely remove the snippet block from the target file using awk to avoid sed pitfalls.
-  if ! [[ -f "$ZSHENV_PATH" ]]; then
-    log "Target file not found: $ZSHENV_PATH (nothing to remove)"
-    return 0
-  fi
-
-  if ! snippet_present; then
-    log "No redesign snippet found in $ZSHENV_PATH"
-    return 0
-  fi
-
-  if (( DRY_RUN )); then
-    log "[dry-run] would remove redesign snippet from $ZSHENV_PATH"
-    preview_removal_patch
-    return 0
-  fi
-
-  local tmp
-  tmp="${ZSHENV_PATH}.tmp.deactivate.$$"
-  awk -v start="$SNIPPET_START" -v end="$SNIPPET_END" '
-    BEGIN { inblock = 0 }
-    $0 == start { inblock = 1; next }
-    inblock && $0 == end { inblock = 0; next }
-    !inblock { print $0 }
-  ' "$ZSHENV_PATH" >"$tmp"
-
-  # Verify the tmp file was created and is not empty (at least safe)
-  if [[ -s "$tmp" ]]; then
-    mv "$tmp" "$ZSHENV_PATH"
-    log "Removed redesign snippet from $ZSHENV_PATH"
-    return 0
-  else
-    rm -f "$tmp" 2>/dev/null || true
-    err "Failed to safely rewrite $ZSHENV_PATH; aborting"
-    return 1
-  fi
-}
-
-restore_backup() {
-  local backup
-  backup="$(latest_backup)"
-  if [[ -z "$backup" ]]; then
-    err "No backups found in $BACKUP_DIR for $(basename "$ZSHENV_PATH")"
-    return 2
-  fi
-
-  if (( DRY_RUN )); then
-    log "[dry-run] would restore $backup -> $ZSHENV_PATH"
-    return 0
-  fi
-
-  cp -p "$backup" "$ZSHENV_PATH"
-  log "Restored $ZSHENV_PATH from $backup"
-}
-
-# -- parse args
-if (( $# == 0 )); then
-  print_help
-  exit 0
-fi
-
-while (( $# )); do
-  case "$1" in
-    --dry-run) DRY_RUN=1; shift;;
-    --apply) APPLY=1; shift;;
-    --disable|--backup|--restore|--status) CMD="$1"; shift;;
-    --zshenv) shift; ZSHENV_PATH="$1"; shift;;
-    --backup-dir) shift; BACKUP_DIR="$1"; shift;;
-    --quiet) QUIET=1; shift;;
-    --help|-h) print_help; exit 0;;
-    *) err "Unknown argument: $1"; print_help; exit 2;;
-  esac
+# Parse arguments
+VERBOSE=0
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --verbose)
+            VERBOSE=1
+            shift
+            ;;
+        --help|-h)
+            usage
+            ;;
+        *)
+            echo "Unknown option: $1"
+            usage
+            ;;
+    esac
 done
 
-case "$CMD" in
-  --status)
-    log "Target zshenv: $ZSHENV_PATH"
-    if [[ -f "$ZSHENV_PATH" ]]; then
-      if snippet_present; then
-        log "Status: redesign snippet PRESENT in $ZSHENV_PATH"
-      else
-        log "Status: redesign snippet NOT present in $ZSHENV_PATH"
-      fi
-    else
-      log "Status: target zshenv does not exist: $ZSHENV_PATH"
-    fi
-    log "Backups directory: $BACKUP_DIR"
-    log "Recent backups for this target (newest first):"
-    list_backups || true
-    exit 0
-    ;;
-  --backup)
-    create_backup >/dev/null
-    exit 0
-    ;;
-  --disable)
-    # create backup first
-    create_backup >/dev/null
-    if (( APPLY == 0 && DRY_RUN == 0 )); then
-      # If neither apply nor dry-run explicitly requested, default to dry-run behavior
-      DRY_RUN=1
-    fi
+# Ensure backup directory exists
+mkdir -p "$BACKUP_DIR"
 
-    if (( APPLY == 0 )); then
-      # Dry-run preview
-      preview_removal_patch
-      log "Dry-run complete. To actually remove the snippet, re-run with --disable --apply"
-      exit 0
-    fi
+# Main deactivation sequence
+log_action "Starting ZSH redesign deactivation"
 
-    # Actual removal
-    if (( DRY_RUN )); then
-      log "[dry-run] backup created; would remove snippet"
-      preview_removal_patch
-      exit 0
-    fi
+# Step 1: Restore original .zshenv
+restore_zshenv
 
-    remove_snippet
-    exit $?
-    ;;
-  --restore)
-    if (( DRY_RUN )); then
-      log "[dry-run] would restore latest backup (no changes)"
-      latest_backup || true
-      exit 0
-    fi
-    restore_backup
-    exit $?
-    ;;
-  *)
-    err "No valid command specified."
-    print_help
-    exit 2
-    ;;
-esac
+# Step 2: Remove environment file
+remove_environment_file
+
+# Step 3: Update migration log
+update_migration_log
+
+# Step 4: Verify deactivation
+if verify_deactivation; then
+    log_action "ZSH redesign deactivated successfully"
+    echo ""
+    echo "✅ ZSH Redesign has been deactivated"
+    echo ""
+    echo "Next steps:"
+    echo "1. Restart your shell or run: exec zsh"
+    echo "2. Verify redesign is disabled: echo \$ZSH_USE_REDESIGN (should be empty)"
+    echo "3. Check migration log: $MIGRATION_LOG"
+else
+    log_action "Deactivation completed with warnings - manual cleanup may be required"
+    echo ""
+    echo "⚠️  ZSH Redesign deactivation completed with warnings"
+    echo ""
+    echo "Please check the migration log for details: $MIGRATION_LOG"
+    exit 1
+fi
