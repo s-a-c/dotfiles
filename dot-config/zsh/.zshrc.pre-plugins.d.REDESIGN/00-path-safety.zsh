@@ -1,8 +1,8 @@
 #!/opt/homebrew/bin/zsh
 # 00-path-safety.zsh (Pre-Plugin Redesign Enhanced)
-[[ -n ${_LOADED_PRE_PATH_SAFETY:-} ]] && return
-_LOADED_PRE_PATH_SAFETY=1
-# Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+[[ -n ${_LOADED_00_PATH_SAFETY:-} ]] && return
+_LOADED_00_PATH_SAFETY=1
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
 #
 # PURPOSE:
 #   Deterministic early PATH normalization & hygiene before any heavyweight plugin / env logic.
