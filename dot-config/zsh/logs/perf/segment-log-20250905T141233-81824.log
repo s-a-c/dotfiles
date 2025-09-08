@@ -1,6 +1,0 @@
-PRE_PLUGIN_COMPLETE 2131
-SEGMENT name=pre_plugin_total ms=2131 phase=pre_plugin sample=mean
-POST_PLUGIN_COMPLETE 7104
-SEGMENT name=post_plugin_total ms=7104 phase=post_plugin sample=mean
-PROMPT_READY_COMPLETE 7104
-SEGMENT name=prompt_ready ms=7104 phase=prompt sample=mean
