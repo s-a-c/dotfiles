@@ -1,0 +1,13 @@
+Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+
+# Trigger file — harmless no-op to force CI run
+# Purpose: create a benign commit so branch workflows and the shim-audit gate run.
+# Generated_at: 2025-09-08T23:32:49Z
+# Target branch: feature/zsh-refactor-configuration
+# Notes:
+#  - This file contains no executable content and makes no functional changes.
+#  - Commit and push to trigger Actions; remove the file afterward if desired.
+#  - See dot-config/zsh/.github/workflows/ for related workflows and artifacts.
+
+trigger: zsh-redesign-gate
+reason: "force CI run for shim-audit and zsh-test-redesign visibility"
