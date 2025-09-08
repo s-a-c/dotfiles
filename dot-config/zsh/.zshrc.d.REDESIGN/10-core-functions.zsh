@@ -1,6 +1,7 @@
 #!/opt/homebrew/bin/zsh
 # 10-core-functions.zsh
 # Stage 3 – Core Function Namespace (zf::*)
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
 #
 # PURPOSE:
 #   Provides a minimal, consolidated set of foundational helper functions for
@@ -35,7 +36,7 @@
 if [[ -n "${_LOADED_10_CORE_FUNCTIONS:-}" ]]; then
   return 0
 fi
-: ${_LOADED_10_CORE_FUNCTIONS:=1}
+_LOADED_10_CORE_FUNCTIONS=1
 
 # ------------------------------
 # Internal State / Constants
