@@ -5,6 +5,8 @@
 # Guard: Only run if redesign is enabled
 [[ "${ZSH_USE_REDESIGN:-0}" != "1" ]] && return 0
 
+# Sentinel guard for redesign module
+_LOADED_70_SHIM_REMOVAL=1
 # Performance timing start
 local _shim_removal_start_time=$EPOCHREALTIME
 
