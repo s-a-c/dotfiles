@@ -1,6 +1,8 @@
 #!/usr/bin/env zsh
 # 01-segment-lib-bootstrap.zsh
-# Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+[[ -n ${_LOADED_01_SEGMENT_LIB_BOOTSTRAP:-} ]] && return
+_LOADED_01_SEGMENT_LIB_BOOTSTRAP=1
 #
 # PURPOSE:
 #   Ensure the unified performance instrumentation helper (tools/segment-lib.zsh)
