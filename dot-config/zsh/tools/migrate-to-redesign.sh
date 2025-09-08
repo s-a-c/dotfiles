@@ -52,6 +52,12 @@ DO_BACKUP=0
 DO_RESTORE=0
 DO_STATUS=0
 QUIET=0
+FORCE=0
+# Respect environment override for non-interactive automation
+: "${MIGRATE_FORCE:=${MIGRATE_FORCE:-0}}"
+if [[ "${MIGRATE_FORCE}" = "1" ]]; then
+  FORCE=1
+fi
 
 usage() {
   cat <<USAGE
@@ -67,12 +73,19 @@ Options:
   --backup-dir <dir> Backup directory (default: ${BACKUP_DIR}).
   --log <file>       Migration log file (default: ${MIGRATION_LOG}).
   --quiet            Suppress informational output.
+  --force            Skip interactive confirmation and apply immediately (useful for CI).
   --help             Show this help and exit.
 
 Examples:
   $(basename "$0") --dry-run --apply
+  $(basename "$0") --apply --force
   $(basename "$0") --backup
   $(basename "$0") --restore
+
+Notes:
+  - By default the tool requires an explicit interactive confirmation before making changes.
+    Use --force in automation environments or set MIGRATE_FORCE=1 in your environment
+    to bypass the interactive checklist.
 USAGE
 }
 
@@ -93,8 +106,9 @@ while (( $# )); do
     --backup-dir) shift; BACKUP_DIR="$1"; shift;;
     --log) shift; MIGRATION_LOG="$1"; shift;;
     --quiet) QUIET=1; shift;;
+    --force) FORCE=1; shift;;
     --help|-h) usage; exit 0;;
-    *) echo "Unknown arg: $1" >&2; usage; exit 2;;
+    *) echo "Unknown option: $1" >&2; usage; exit 2;;
   esac
 done
 
@@ -279,6 +293,27 @@ if (( DO_APPLY )); then
     _log "Dry-run complete. To perform the migration, re-run with --apply (and without --dry-run)."
     exit 0
   else
+    # Interactive checklist guard unless explicitly forced
+    if (( FORCE == 0 )); then
+      _log "WARNING: You are about to APPLY the redesign migration to: $ZSHENV_TARGET"
+      _log "This operation will create backups under: $BACKUP_DIR and modify the target file."
+      _log ""
+      _log "Checklist (please confirm):"
+      _log "  1) You have reviewed the dry-run preview and understand the changes."
+      _log "  2) You understand a backup will be created and retained in $BACKUP_DIR."
+      _log "  3) You accept responsibility to restore from backups if needed."
+      _log ""
+      printf "Type 'I AGREE' to proceed (case sensitive): "
+      # read in shell-compatible way; this script runs under zsh
+      read -r CONFIRMATION || true
+      echo
+      if [[ "${CONFIRMATION}" != "I AGREE" ]]; then
+        _err "Aborting migration: interactive confirmation not provided."
+        _err "To bypass this prompt in automation, re-run with --force or set MIGRATE_FORCE=1 in the environment."
+        exit 1
+      fi
+    fi
+
     apply_migration
     _log "Migration applied (target: $ZSHENV_TARGET)."
     exit 0
