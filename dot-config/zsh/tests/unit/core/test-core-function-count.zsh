@@ -18,6 +18,23 @@
 # Environment Controls:
 #   TDD_SKIP_CORE_FN_COUNT=1   -> Skip this test
 #   CORE_FN_MIN_EXPECT=<int>   -> Minimum acceptable count (default: 5)
+
+# ---------------------------------------
+# Debug Output: Environment, Variables, and Setopts
+# ---------------------------------------
+print "=== DEBUG ENVIRONMENT ==="
+print "PWD: $PWD"
+print "ZDOTDIR: ${ZDOTDIR:-<unset>}"
+print "REPO_ROOT: ${REPO_ROOT:-<unset>}"
+print "MODULE_PATH: ${MODULE_PATH:-<unset>}"
+print "ZSH_VERSION: $ZSH_VERSION"
+print "ZSH_PATCHLEVEL: ${ZSH_PATCHLEVEL:-<unset>}"
+print "ZSH_MODULE_PATH: ${ZSH_MODULE_PATH:-<unset>}"
+print "module_path: ${module_path:-<unset>}"
+print "parameter: ${parameter:-<unset>}"
+print "functions[parameter]: ${functions[parameter]:-<unset>}"
+print "setopts: $(setopt)"
+print "=== END DEBUG ENVIRONMENT ==="
 #   CORE_FN_GOLDEN_COUNT=<int> -> Exact expected count (drift tracked)
 #   CORE_FN_ALLOW_GROWTH=1     -> Allow new functions beyond golden (warn/pass)
 #
@@ -38,6 +55,8 @@
 
 set -euo pipefail
 
+trap 'zsh_debug_echo "DEBUG: Error at line $LINENO in function $funcstack"; typeset -f ${funcstack[1]} 2>/dev/null' ERR
+
 # ---------------------------------------
 # Skip Handling
 # ---------------------------------------
@@ -55,14 +74,10 @@ fail() { FAIL+=("$1"); }
 # Repo Root / Module Path
 # ---------------------------------------
 SCRIPT_SRC="${(%):-%N}"
-if typeset -f zf::script_dir >/dev/null 2>&1; then
-  THIS_DIR="$(zf::script_dir "$SCRIPT_SRC")"
-elif typeset -f resolve_script_dir >/dev/null 2>&1; then
-  THIS_DIR="$(resolve_script_dir "$SCRIPT_SRC")"
-else
-  THIS_DIR="${SCRIPT_SRC:h}"
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)"
+if [[ -z "$REPO_ROOT" ]]; then
+  REPO_ROOT="$ZDOTDIR"
 fi
-REPO_ROOT="$(cd "$THIS_DIR/../../../.." && pwd -P 2>/dev/null)"
 
 MODULE_REL=".zshrc.d.REDESIGN/10-core-functions.zsh"
 MODULE_PATH="${REPO_ROOT}/dot-config/zsh/${MODULE_REL}"
