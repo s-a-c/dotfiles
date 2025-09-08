@@ -1,0 +1,111 @@
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+name: Redesign Shim Audit Gate
+
+# Enforce shim-audit gating for the redesign branch and PRs that affect ZSH config.
+# This workflow produces a machine-readable shim-audit JSON artifact and FAILS the job
+# when any shims are detected (fail-fast gating).
+#
+# Notes:
+# - Defaults.run.working-directory is set to the repo-relative zsh project so steps
+#   run with repo-local paths by default.
+# - Artifacts are uploaded for reviewer inspection.
+# - This workflow is intentionally conservative: it installs only minimal deps
+#   required to run the audit script.
+on:
+  push:
+    branches:
+      - feature/zsh-refactor-configuration
+      - develop
+      - main
+  pull_request:
+    branches:
+      - develop
+      - main
+  workflow_dispatch:
+
+jobs:
+  shim-audit:
+    name: Shim audit (fail on shims)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: dot-config/zsh
+
+    env:
+      # Default env used by scripts; overridden in-step where necessary
+      ZSH_CACHE_DIR: ${{ runner.temp }}/zsh-cache
+      ZSH_LOG_DIR: ${{ runner.temp }}/zsh-logs
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Install minimal deps
+        run: |
+          sudo apt-get update -y
+          # install zsh and utilities used by audit script
+          sudo apt-get install -y zsh jq coreutils python3
+
+      - name: Ensure artifact directories exist
+        run: |
+          mkdir -p $ZSH_LOG_DIR
+          mkdir -p dot-config/zsh/docs/redesignv2/artifacts/metrics
+
+      - name: Export ZDOTDIR for script execution
+        run: |
+          echo "ZDOTDIR=${{ github.workspace }}/dot-config/zsh" >> $GITHUB_ENV
+          echo "ZSH_CACHE_DIR=${{ runner.temp }}/zsh-cache" >> $GITHUB_ENV
+          echo "ZSH_LOG_DIR=${{ runner.temp }}/zsh-logs" >> $GITHUB_ENV
+          echo "SHIM_AUDIT_FAIL_ON_SHIMS=1" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Run shim audit (fail-on-shims)
+        id: run_shim_audit
+        run: |
+          set -euo pipefail
+          # ensure we're running with the repo-local ZDOTDIR
+          export ZDOTDIR="${{ github.workspace }}/dot-config/zsh"
+          export ZSH_CACHE_DIR="${{ runner.temp }}/zsh-cache"
+          export ZSH_LOG_DIR="${{ runner.temp }}/zsh-logs"
+          export SHIM_AUDIT_FAIL_ON_SHIMS=1
+
+          AUDIT_OUT="$ZDOTDIR/docs/redesignv2/artifacts/metrics/shim-audit.json"
+          # Run the audit and let it set a non-zero exit code if shims present.
+          echo "Running shim audit; output -> $AUDIT_OUT"
+          $ZDOTDIR/tools/bench-shim-audit.zsh --output-json "$AUDIT_OUT" --fail-on-shims
+
+      - name: Upload shim audit artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: shim-audit-${{ github.ref_name }}-${{ github.sha::7 }}
+          path: dot-config/zsh/docs/redesignv2/artifacts/metrics/shim-audit.json
+          retention-days: 30
+
+      - name: Parse and summarize shim audit
+        if: always()
+        run: |
+          set -euo pipefail
+          JSON="dot-config/zsh/docs/redesignv2/artifacts/metrics/shim-audit.json"
+          if [[ -f "$JSON" ]]; then
+            echo "## Shim audit summary" >> $GITHUB_STEP_SUMMARY || true
+            jq -r '. | "generated_at: \(.generated_at)\n total: \(.total)\n shim_count: \(.shim_count)\n non_shim_count: \(.non_shim_count)\nfail_on_shims: \(.fail_on_shims)"' "$JSON" >> $GITHUB_STEP_SUMMARY || true
+            echo "" >> $GITHUB_STEP_SUMMARY || true
+
+            if jq -e '.shim_count > 0' "$JSON" >/dev/null 2>&1; then
+              echo "❌ Shim audit detected shims. See artifact 'shim-audit-*' for details." >> $GITHUB_STEP_SUMMARY || true
+              # Fail explicitly to ensure the job is marked failed when shims present.
+              exit 2
+            else
+              echo "✅ No shims detected." >> $GITHUB_STEP_SUMMARY || true
+            fi
+          else
+            echo "⚠️ Shim audit JSON not found; check audit step logs." >> $GITHUB_STEP_SUMMARY || true
+            exit 1
+          fi
+
+    # Make the job required for PRs by naming it clearly; branch protection should
+    # mark this job as required in repo settings if you want to enforce blocking merges.
+    # (No branch-protection config is altered here — do that in GitHub repo settings.)
