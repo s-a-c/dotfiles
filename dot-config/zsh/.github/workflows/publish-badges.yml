@@ -1,5 +1,6 @@
-# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v<checksum>
-name: Publish Badges & Metrics
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+name: zsh-publish-badges-and-metrics
+run-name: zsh badges & metrics • ${{ github.ref_name }}
 
 on:
   push:
@@ -150,7 +151,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+          publish_dir: ./dot-config/zsh/public
           publish_branch: gh-pages
           keep_files: true
 

@@ -1,5 +1,18 @@
-# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v<checksum>
-name: Nightly Metrics Refresh
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+name: zsh-Nightly Metrics Refresh
+run-name: zsh nightly metrics • ${{ github.ref_name }}
+# Scope (zsh project):
+#   - Runs with working-directory: dot-config/zsh and sets ZDOTDIR to the project path
+#   - Generates ZSH metrics and badges under docs/redesignv2/artifacts and bridges to legacy docs/redesign during migration
+#   - Publishes gh-pages content from dot-config/zsh/public
+# Ownership (RACI):
+#   - R: ZSH Maintainers
+#   - A: ZSH Lead
+#   - C: Infra/Perf CI
+#   - I: Repo Owners
+# Relationship:
+#   - Complements repo-* nightly workflows which consume these artifacts for governance and badge freshness
+#   - This job focuses on generating artifacts; repo-Variance Nightly and repo-Perf Ledger Nightly consume/aggregate them
 
 on:
   schedule:
@@ -100,7 +113,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+          publish_dir: ./dot-config/zsh/public
           publish_branch: gh-pages
           keep_files: true
 

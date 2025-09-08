@@ -1,0 +1,52 @@
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+# PR Template Chooser Configuration
+#
+# Purpose
+# - Provide an explicit mapping and default selection for multiple PR templates.
+# - Enable local tooling/CI to validate template selection and enforce conventions.
+#
+# Notes
+# - GitHub’s native PR template chooser primarily reads YAML front matter within
+#   the Markdown templates in `.github/PULL_REQUEST_TEMPLATE/*.md`.
+# - This config file is provided to document intent and support local validation
+#   and automation; if unsupported by your current GitHub tier, it remains a no-op
+#   for GitHub while still useful for repo tooling.
+
+schema_version: 1
+
+# Default template used when a chooser bypass occurs or when tooling enforces a fallback.
+default_template: 000-repo-default.md
+
+# Templates available for selection. File names must exist under:
+# .github/PULL_REQUEST_TEMPLATE/
+templates:
+  - name: "Repository default"
+    description: "Repo-wide changes (CI, security, shared tooling, documentation, multi-component updates)"
+    file: 000-repo-default.md
+    labels:
+      - repo
+    # Optional routing hints for local tooling (non-GitHub standard)
+    when:
+      paths:
+        - "*"
+      excludes:
+        - "dot-config/zsh/**"
+
+  - name: "ZSH project"
+    description: "Changes scoped to ZSH project (dot-config/zsh): structure, performance, variance, tests, modules"
+    file: 010-zsh-project.md
+    labels:
+      - zsh
+    # Optional routing hints for local tooling (non-GitHub standard)
+    when:
+      paths:
+        - "dot-config/zsh/**"
+
+# Options consumed by local tooling/CI (non-GitHub standard)
+options:
+  # Disallow creating PRs without an explicit template selection
+  enforce_selection: true
+  # Prevent submitting an empty PR description (requires some sections completed)
+  require_description: true
+  # If true, block use of a blank/implicit template path
+  allow_blank_template: false

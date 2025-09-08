@@ -1,5 +1,18 @@
-# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v<checksum>
-name: Structure Badge Generation
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+name: zsh-Structure Badge Generation
+run-name: zsh structure audit • ${{ github.ref_name }}
+# Scope (zsh project):
+#   - Runs with working-directory: dot-config/zsh and sets ZDOTDIR to the project path
+#   - Generates structure audit and badge under docs/redesignv2/artifacts and bridges to legacy docs/redesign during migration
+#   - Does not publish to gh-pages; uploads artifacts and optionally commits badge updates on main
+# Ownership (RACI):
+#   - R: ZSH Maintainers
+#   - A: ZSH Lead
+#   - C: Infra/Perf CI
+#   - I: Repo Owners
+# Relationship:
+#   - Complements repo-* nightly workflows which consume artifacts
+#   - Acts as CI gate for PRs and pushes that touch module structure
 on:
   push:
     branches: [main, master]
@@ -107,12 +120,12 @@ jobs:
         with:
           name: structure-audit-${{ github.sha }}
           path: |
-            zsh/docs/redesignv2/artifacts/metrics/structure-audit.json
-            zsh/docs/redesignv2/artifacts/badges/structure.json
-            zsh/docs/redesignv2/artifacts/metrics/structure-audit.md
-            zsh/docs/redesign/metrics/structure-audit.json
-            zsh/docs/redesign/badges/structure.json
-            zsh/docs/redesign/metrics/structure-audit.md
+            docs/redesignv2/artifacts/metrics/structure-audit.json
+            docs/redesignv2/artifacts/badges/structure.json
+            docs/redesignv2/artifacts/metrics/structure-audit.md
+            docs/redesign/metrics/structure-audit.json
+            docs/redesign/badges/structure.json
+            docs/redesign/metrics/structure-audit.md
           retention-days: 30
 
       - name: Comment PR with structure status
@@ -121,9 +134,9 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            let root = 'zsh/docs/redesign';
-            if (fs.existsSync('zsh/docs/redesignv2/artifacts/metrics/structure-audit.json')) {
-              root = 'zsh/docs/redesignv2/artifacts';
+            let root = 'docs/redesign';
+            if (fs.existsSync('docs/redesignv2/artifacts/metrics/structure-audit.json')) {
+              root = 'docs/redesignv2/artifacts';
             }
             const auditPath = `${root}/metrics/structure-audit.json`;
             if (fs.existsSync(auditPath)) {
