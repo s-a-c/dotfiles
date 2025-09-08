@@ -1,253 +1,236 @@
-# Redesign Migration: Plan and Checklist
+# Redesign Migration: Plan and Checklist (Updated)
 
-This document captures the migration plan for enabling and validating the ZSH redesign (opt-in) within the feature branch `feature/zsh-refactor-configuration`, plus the results of the read-only scan used to prepare a safe, non-destructive implementation. Save and review these items before any edits or pushes are made.
+Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+
+This document captures the migration plan for enabling and validating the ZSH redesign (opt-in) on branch `feature/zsh-refactor-configuration`. It provides explicit next steps and the exact commands you can run to preview, apply, verify, and revert changes safely. Follow each step in order and only progress after you confirm the prior step's outputs.
 
 Owner: `s-a-c`  
-Repo root: `~/dotfiles/`  
-Project root for ZSH: `$ZDOTDIR = ~/dotfiles/dot-config/zsh/`
+Repo root (work tree): `~/dotfiles/`  
+ZSH project root: `ZDOTDIR=~/dotfiles/dot-config/zsh/`
 
-**NOTE: All scripts and tests have been consolidated to project root (`$ZDOTDIR`) for consistency.**
+Principles
+- Safe-by-default: tools default to `--dry-run` until you explicitly `--apply`.
+- Backups: every `--apply` creates timestamped backups before mutating files.
+- Interactive guard: non-forced `--apply` prompts you to confirm.
+- CI behavior: prefer env-flagging (`ZSH_USE_REDESIGN=1`) in CI instead of mutating user homes. Use `--force` or `MIGRATE_FORCE=1` in non-interactive automation.
 
----
+Important paths
+- ZSH project: `dot-config/zsh`
+- Tools:
+  - `dot-config/zsh/tools/migrate-to-redesign.sh`
+  - `dot-config/zsh/tools/deactivate-redesign.sh`
+  - `dot-config/zsh/tools/activate-redesign.sh` (if present)
+  - `dot-config/zsh/tools/redesign-env.sh` (managed snippet source)
+- Tests: `dot-config/zsh/tests/run-all-tests.zsh`
+- Logs: `dot-config/zsh/logs` (test logs), `dot-config/zsh/tools/migration.log` (migration log)
+- Backups: default `~/.local/share/zsh/redesign-migration` unless `--backup-dir` set
 
-## Goals (short)
-- Implement and validate F-A3 / F-A4 / F-A5 (completion/history, UI/prompt, shim removal runtime guard) in-branch under `.zshrc.d.REDESIGN`.
-- Provide `$ZDOTDIR/tools/deactivate-redesign.sh` and `$ZDOTDIR/tools/migrate-to-redesign.sh` (non-destructive; `--dry-run` / `--apply`).
-- Add CI workflows to exercise the redesign in-branch (flagged runs) and nightly perf tests that upload artifacts.
-- Provide an artifact-bundling workflow to package 7-day ledgers for PR evidence.
-- Capture microbench baselines and run local tests first.
+Quick safety checklist (pre-flight)
+- [ ] Work on branch `feature/zsh-refactor-configuration`
+- [ ] Ensure the repo is clean or changes are intentionally staged
+- [ ] Compute and record guidelines checksum if you need to re-acknowledge policy (AGENT.md requirement)
+- [ ] Make a disposable test target before applying to your real `~/.zshenv`
 
-Constraints and safety rules:
-- All changes must be opt-in via `ZSH_USE_REDESIGN=1`.
-- No destructive file system removals without explicit approval.
-- Runtime-only shim disabling for evaluation; on-disk replacements only via `migrate-to-redesign.sh --apply` after review.
-- Local tests must run and pass before pushing incremental commits.
+Section A — Git & workspace setup (commands)
+1. Switch to working branch and confirm status:
+   ```
+   cd ~/dotfiles
+   git fetch origin
+   git switch feature/zsh-refactor-configuration
+   git status --porcelain
+   git log --oneline -n 5
+   ```
+2. Create a workspace snapshot (optional, for fast rollback):
+   ```
+   git stash push -m "pre-redesign-snapshot: $(date -u +%Y%m%dT%H%M%SZ)"
+   ```
 
----
+Section B — Local dry-run & discovery (commands)
+1. Prepare environment used by test runners and tools:
+   ```
+   cd ~/dotfiles
+   export ZDOTDIR="$PWD/dot-config/zsh"
+   export ZSH_CACHE_DIR="$HOME/.cache/zsh"
+   export ZSH_LOG_DIR="$ZDOTDIR/logs"
+   mkdir -p "$ZSH_CACHE_DIR" "$ZSH_LOG_DIR" "$ZDOTDIR/docs/redesignv2/artifacts/metrics"
+   ```
+2. Run design-only tests (non-destructive smoke):
+   ```
+   ZDOTDIR="$PWD/dot-config/zsh" "$ZDOTDIR/tests/run-all-tests.zsh" --design-only | tee "$ZSH_LOG_DIR/design-only.run.log"
+   ```
+   - Expected: exit code `0` and design tests pass.
+   - Inspect: `dot-config/zsh/logs/design-only.run.log`
+3. Run the migrate tool in dry-run mode, preview patch against a disposable target:
+   ```
+   TEST_ZSHENV="$HOME/.zshenv.migrate_test"
+   cp -p "$HOME/.zshenv" "$TEST_ZSHENV" 2>/dev/null || printf "# empty test\n" > "$TEST_ZSHENV"
+   dot-config/zsh/tools/migrate-to-redesign.sh --dry-run --zshenv "$TEST_ZSHENV" --backup-dir "$PWD/dot-config/zsh/.backups/redesign-test" --log "dot-config/zsh/tools/migration-test.log" | tee "$ZSH_LOG_DIR/migrate-dryrun.log"
+   ```
+   - Verify the preview shows only the managed `REDESIGN-ENV` snippet.
+   - Look for markers:
+     - `# >>> REDESIGN-ENV (managed by activate-redesign.sh) >>>`
+     - `# <<< REDESIGN-ENV (managed by activate-redesign.sh) <<<`
 
-## Read-only scan summary (key findings)
-The following items are the principal outputs of the read-only inspection (paths and highlights). These are included so you can verify the exact state that the plan targets.
+Section C — Backup-only & apply (interactive) (commands)
+1. Create a timestamped backup of the disposable test target:
+   ```
+   dot-config/zsh/tools/migrate-to-redesign.sh --backup --zshenv "$TEST_ZSHENV" --backup-dir "$PWD/dot-config/zsh/.backups/redesign-test" --log "dot-config/zsh/tools/migration-test.log"
+   ls -l "$PWD/dot-config/zsh/.backups/redesign-test"
+   ```
+2. Apply interactively (the script prompts you to type `I AGREE` or `I ACCEPT` depending on version):
+   ```
+   dot-config/zsh/tools/migrate-to-redesign.sh --apply --zshenv "$TEST_ZSHENV" --backup-dir "$PWD/dot-config/zsh/.backups/redesign-test" --log "dot-config/zsh/tools/migration-test.log"
+   ```
+   - When prompted, type the exact phrase requested to continue.
+   - After apply, inspect:
+     ```
+     tail -n 80 "$TEST_ZSHENV"
+     sed -n '1,200p' dot-config/zsh/tools/migration-test.log
+     ```
+3. Verify idempotency by re-running dry-run:
+   ```
+   dot-config/zsh/tools/migrate-to-redesign.sh --dry-run --zshenv "$TEST_ZSHENV" --backup-dir "$PWD/dot-config/zsh/.backups/redesign-test" | tee "$ZSH_LOG_DIR/migrate-dryrun2.log"
+   ```
+   - Expected: tool reports snippet already present and no changes.
 
-- Redesign module loader toggles:
-  - `$ZDOTDIR/.zshrc` — contains gating for `.zshrc.pre-plugins.d.REDESIGN` and `.zshrc.d.REDESIGN` and logic to auto-enable post-plugin redesign when pre-plugin redesign is active.
+Section D — Restore / Deactivate (commands)
+1. Restore the most recent backup for the disposable target:
+   ```
+   dot-config/zsh/tools/migrate-to-redesign.sh --restore --zshenv "$TEST_ZSHENV" --backup-dir "$PWD/dot-config/zsh/.backups/redesign-test" --log "dot-config/zsh/tools/migration-test.log"
+   tail -n 80 "$TEST_ZSHENV"
+   ```
+2. Use the deactivate helper (if you applied to your real `~/.zshenv`):
+   ```
+   dot-config/zsh/tools/deactivate-redesign.sh --disable --zshenv "$HOME/.zshenv" --log "dot-config/zsh/tools/migration.log"
+   ```
+   - Confirm the `REDESIGN-ENV` block is removed:
+     ```
+     grep -n "REDESIGN-ENV (managed by activate-redesign.sh)" "$HOME/.zshenv" || echo "Snippet removed or not present"
+     ```
 
-- Redesign modules present (post-plugin redesign directory):
-  - `$ZDOTDIR/.zshrc.d.REDESIGN/` (observed files)
-    - `00-security-integrity.zsh`
-    - `05-interactive-options.zsh`
-    - `10-core-functions.zsh`
-    - `20-essential-plugins.zsh`
-    - `30-development-env.zsh`
-    - `40-aliases-keybindings.zsh`
-    - `40-runtime-optimization.zsh` (skeleton exists and already guarded by `ZSH_USE_REDESIGN`)
-    - `50-completion-history.zsh` (exists)
-    - `55-compinit-instrument.zsh`
-    - `60-p10k-instrument.zsh`
-    - `60-ui-prompt.zsh` (already exists; accounted for)
-    - `65-vcs-gitstatus-instrument.zsh`
-    - `70-performance-monitoring.zsh`
-    - `80-security-validation.zsh`
-    - `85-post-plugin-boundary.zsh`
-    - `90-splash.zsh`
-    - `95-prompt-ready.zsh`
+Section E — Promote to account default (safer flow)
+Only after you have validated the disposable test and local tests pass:
+1. Dry-run against real `~/.zshenv`:
+   ```
+   dot-config/zsh/tools/migrate-to-redesign.sh --dry-run --zshenv "$HOME/.zshenv" --backup-dir "$PWD/dot-config/zsh/.backups/redesign" --log "dot-config/zsh/tools/migration.log" | tee "$ZSH_LOG_DIR/migrate-home-dryrun.log"
+   ```
+2. Interactive apply to your real `~/.zshenv` (recommended):
+   ```
+   dot-config/zsh/tools/migrate-to-redesign.sh --apply --zshenv "$HOME/.zshenv" --backup-dir "$PWD/dot-config/zsh/.backups/redesign" --log "dot-config/zsh/tools/migration.log"
+   ```
+3. Verify:
+   ```
+   dot-config/zsh/tools/migrate-to-redesign.sh --status --zshenv "$HOME/.zshenv" --backup-dir "$PWD/dot-config/zsh/.backups/redesign"
+   tail -n 80 "$HOME/.zshenv"
+   ```
 
-- Activation / migration helper:
-  - `$ZDOTDIR/tools/activate-redesign.sh` — present and implements snippet injection, environment file generation, and status/backup helpers. This is the existing activation script referenced in docs.
+Section F — CI / automation patterns & commands
+Preferred approach: enable redesign via env vars in CI without mutating user homes.
+1. Example GitHub Actions job snippet:
+   ```yaml
+   env:
+     ZSH_USE_REDESIGN: '1'
+     MIGRATE_FORCE: '1'         # optional; allow non-interactive tool usage if needed
+   jobs:
+     run-tests:
+       runs-on: ubuntu-latest
+       defaults:
+         run:
+           working-directory: dot-config/zsh
+       steps:
+         - uses: actions/checkout@v4
+         - name: Run design tests with redesign enabled
+           run: |
+             export ZDOTDIR="$PWD"
+             export ZSH_CACHE_DIR="$HOME/.cache/zsh"
+             export ZSH_USE_REDESIGN=1
+             ./tests/run-all-tests.zsh --design-only
+   ```
+2. If you must apply a workspace-local zshenv in CI (ephemeral):
+   ```
+   dot-config/zsh/tools/migrate-to-redesign.sh --apply --zshenv "$PWD/dot-config/zsh/.zshenv.ci" --backup-dir "$PWD/dot-config/zsh/.backups/ci-redesign" --log "dot-config/zsh/tools/migration-ci.log" --force
+   ZDOTDIR="$PWD/dot-config/zsh" ./tests/run-all-tests.zsh --design-only
+   ```
 
-- Bench / shim audit:
-  - `$ZDOTDIR/tools/bench-shim-audit.zsh` — present; performs shim detection and can emit JSON artifacts used by gating. Current audit result: 1 shim detected (`zf::script_dir`; minimal, 1-line). Migration readiness remains conditional pending review.
+Section G — Tests to run after enabling
+Run the full local execution plan in this order (from repo root):
+```
+cd ~/dotfiles
 
-- Tests and test harness:
-  - Test runner and suites exist under `$ZDOTDIR/tests/` (many test files and categories observed, including integration/performance/security tests).
-  - `$ZDOTDIR/tests/run-all-tests.zsh` and `$ZDOTDIR/tests/run-integration-tests.sh` (or similar runner entrypoints) are referenced in docs — local test commands provided in docs.
+# Design
+ZDOTDIR="$PWD/dot-config/zsh" "$ZDOTDIR/tests/run-all-tests.zsh" --design-only | tee "$ZSH_LOG_DIR/design-only.run.log"
 
----
+# Unit
+ZDOTDIR="$PWD/dot-config/zsh" "$ZDOTDIR/tests/run-all-tests.zsh" --unit-only | tee "$ZSH_LOG_DIR/unit-only.run.log"
 
-## Test Suite Catalogue & Path Resolution
+# Integration
+ZDOTDIR="$PWD/dot-config/zsh" "$ZDOTDIR/tests/run-all-tests.zsh" --integration-only | tee "$ZSH_LOG_DIR/integration-only.run.log"
 
-The test suite is organized into subfolders by category. When referencing or running tests, ensure you use the correct subfolder path. Some tests may be referenced in documentation or runner output as if they are directly under `unit/`, but they may actually reside in `unit/core/` or `unit/tdd/`.
+# Perf smoke (dry-run capture)
+ZDOTDIR="$PWD/dot-config/zsh" "$ZDOTDIR/tools/perf-capture.zsh" --dry-run --iterations 5 | tee "$ZSH_LOG_DIR/perf-smoke.dryrun.log"
 
-**Catalogue of key test files:**
+# Shim audit (produce artifact)
+ZDOTDIR="$PWD/dot-config/zsh" "$ZDOTDIR/tools/bench-shim-audit.zsh" --output-json "$ZDOTDIR/docs/redesignv2/artifacts/metrics/shim-audit.json" | tee "$ZSH_LOG_DIR/shim-audit.log"
+```
 
-- **Unit Tests**
-  - `$ZDOTDIR/tests/unit/core/test-path-append-invariant.zsh`
-  - `$ZDOTDIR/tests/unit/core/test-trust-anchors.zsh`
-  - `$ZDOTDIR/tests/unit/tdd/test-fzf-no-compinit.zsh`
-  - (plus others in `core/` and `tdd/`)
+Acceptance criteria before pushing
+- Design, unit, and integration tests pass locally (exit code `0`).
+- `migrate-to-redesign.sh --dry-run` preview looks correct for both test and home targets.
+- Backups were created and verify-able.
+- `--apply` and `--restore` behave as expected on disposable targets.
+- Shim audit output within acceptable threshold (document exceptions).
+- Policy acknowledgement header present in any AI-authored artifacts and commit messages (see commit templates below).
+- All CI workflows that will run are configured to use repo-relative paths and `defaults.run.working-directory: dot-config/zsh` where required.
 
-- **Integration Tests**
-  - `$ZDOTDIR/tests/integration/test-compinit-single-run.zsh`
-  - `$ZDOTDIR/tests/integration/test-postplugin-compinit-single-run.zsh`
-  - `$ZDOTDIR/tests/integration/test-prompt-ready-single-emission.zsh`
-
-- **Other Categories**
-  - `$ZDOTDIR/tests/path/phase05/` (path normalization, dedup, lock, etc.)
-  - `$ZDOTDIR/tests/design/` (sentinels, idempotency)
-  - `$ZDOTDIR/tests/feature/`, `$ZDOTDIR/tests/critical/`, `$ZDOTDIR/tests/essential/`
-
-**Test Runner Entrypoints**
-- `$ZDOTDIR/tests/run-all-tests.zsh`
-- `$ZDOTDIR/tests/run-integration-tests.sh`
-
----
-
-## Troubleshooting: Path Issues
-
-- If a test appears missing, check the relevant subfolder (e.g., `unit/core/`, `unit/tdd/`) rather than assuming it is directly under `unit/`.
-- If you encounter path duplication in logs (e.g., `dot-config/dot-config/...`), review the test runner's working directory (`cwd`) and the value of `ZDOTDIR`. Ensure that relative paths are constructed correctly and do not concatenate repo root with config root more than once.
-- When running tests manually, always set `ZDOTDIR` to the repo-local config directory for deterministic sourcing:
+Commit message guidance (include policy ack)
+- Each AI-authored commit message MUST include the policy acknowledgement header. Use this template for commits that add/modify AI-authored files:
   ```
-  ZDOTDIR=$PWD/dot-config/zsh $ZDOTDIR/tests/run-all-tests.zsh --unit-only
+  <scope>: <short summary>
+
+  Long description of change, verification steps, and test results.
+
+  Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
   ```
-- For integration tests, confirm that any required modules or scripts exist in the expected locations before running.
+- Example:
+  ```
+  tools: add interactive checklist to migrate-to-redesign.sh
 
----
+  - Add interactive confirmation to --apply
+  - Add --force and MIGRATE_FORCE env override for CI
+  - Make script executable
 
-- Docs and implementation plan:
-  - `$ZDOTDIR/docs/redesignv2/IMPLEMENTATION.md` and `README.md` include the fast-track table and details for FT-01..FT-12.
-  - `$ZDOTDIR/docs/redesignv2` contains artifacts, badges, and metrics directories (baseline metrics available).
+  Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+  ```
 
-- CI and workflows:
-  - Project-root ZSH workflows are in place and updated (zsh-Redesign — nightly perf, zsh-Nightly Metrics Refresh, zsh-Perf & Structure CI, zsh-Structure Badge Generation). Repository-wide governance workflows are also present (repo-Variance Nightly, repo-Perf Ledger Nightly). A read‑only bundling workflow draft (draft-bundle-ledgers.yml) is available under `$ZDOTDIR/docs/redesignv2/migration/`.
+Rollback plan
+- If you applied to `~/.zshenv` and encounter problems:
+  1. Restore from backup created by the tool:
+     ```
+     dot-config/zsh/tools/migrate-to-redesign.sh --restore --zshenv "$HOME/.zshenv" --backup-dir "<same-backup-dir>"
+     ```
+  2. If `--restore` fails, inspect backup directory and restore appropriate file manually:
+     ```
+     ls -1t <backup-dir> | head -n 5
+     cp -p "<backup-file>" "$HOME/.zshenv"
+     ```
+  3. Re-run tests and validate the environment.
 
-- Notable sentinels / guards in code:
-  - `ZSH_USE_REDESIGN` and `ZSH_ENABLE_PREPLUGIN_REDESIGN` / `ZSH_ENABLE_POSTPLUGIN_REDESIGN` are already used as gating variables in the codebase.
-  - `_COMPINIT_DONE` sentinel is expected in the design to ensure single compinit.
+Next steps (actionable items you can approve now)
+1. Review this updated plan and confirm: `Approve plan`.
+2. I will then:
+   - Generate any remaining draft artifacts (CI YAMLs and module drafts) as read-only files under `dot-config/zsh/docs/redesignv2/migration/` for review.
+   - Run the local test suite and collect logs for your review.
+3. After you review drafts and logs, approve a focused commit (one-topic-per-commit) and I will:
+   - Push the commit(s) to `feature/zsh-refactor-configuration`.
+   - Coordinate the first CI run for the flagged workflow.
 
----
+Notes & references
+- The migration tooling uses the markers:
+  - `SNIPPET_START: # >>> REDESIGN-ENV (managed by activate-redesign.sh) >>>`
+  - `SNIPPET_END:   # <<< REDESIGN-ENV (managed by activate-redesign.sh) <<<`
+  Keep these markers intact when inspecting or editing files to ensure `deactivate-redesign.sh` can reliably remove the injected block.
+- Keep all automation referencing repo paths relative to `dot-config/zsh/`. Use `defaults.run.working-directory: dot-config/zsh` for GitHub Actions jobs where possible.
 
-## Proposed update to the plan (incorporating your clarifications)
-You confirmed:
-- `$ZDOTDIR/.zshrc.d.REDESIGN/60-ui-prompt.zsh` already exists and should be accounted for.
-- `$ZDOTDIR/tools/migrate-to-redesign.sh` should update user config to enable redesign; it will be non-destructive with `--dry-run` and `--apply`.
-- CI artifacts (for ledger bundling) should not be duplicated inside the repo; use GitHub Actions artifacts and the ZSH cache on runners as needed.
-- Run local tests first before making commits/pushes.
-- You require explicit approval before any changes are made.
-
-With these confirmations, the plan below is updated to avoid duplicates and to be safe-by-default.
-
----
-
-## Detailed safe plan (one-step-per-approval)
-All *read-only* work will be performed first and presented for approval before any edits.
-
-Step 0 — Read-only scan (COMPLETE)
-- Produce this plan and the checklist (this file).
-- Produce a shim inventory (from `tools/bench-shim-audit.zsh`) and list modules that are already implemented.
-- List tests and test runner entry points.
-
-Step 1 — Drafts generated (read-only)
-- Draft content has been generated as read-only files under `$ZDOTDIR/docs/redesignv2/migration/` and is ready for review and approval.
-  - Proposed module files:
-    - `$ZDOTDIR/.zshrc.d.REDESIGN/50-completion-history.zsh` — (exists) will be audited and updated if required.
-    - `$ZDOTDIR/.zshrc.d.REDESIGN/60-ui-prompt.zsh` — (exists) will be audited and extended only if needed.
-    - `$ZDOTDIR/.zshrc.d.REDESIGN/70-shim-removal.zsh` — new runtime-only shim guard (non-destructive).
-  - Proposed tool scripts (in `$ZDOTDIR/tools/`):
-    - `$ZDOTDIR/tools/deactivate-redesign.sh` — exact inverse operations of `activate-redesign.sh` (restore backups, remove injected snippet).
-    - `$ZDOTDIR/tools/migrate-to-redesign.sh` — `--dry-run` / `--apply` modes; `--apply` will modify user config to enable redesign (e.g., inject managed snippet into `~/.zshenv` / backup original). Writes a migration log `$ZDOTDIR/tools/migration.log`.
-  - Proposed CI workflows (.github/workflows/ in-branch only):
-    - `redesign-flagged.yml` — run tests with `ZSH_USE_REDESIGN=1` when branch is `feature/zsh-refactor-configuration` or via manual dispatch with `use_redesign: true`.
-    - `perf-nightly.yml` — nightly job that runs perf harness with `ZSH_USE_REDESIGN=1` and uploads artifacts (GitHub Actions artifacts). Artifacts are not duplicated in repo; the job will collect ledgers from the runner workspace and upload them as workflow artifacts.
-    - `bundle-ledgers.yml` — workflow to gather last 7 ledger artifacts and package them into a single zip for PR attach (manual `workflow_dispatch`).
-
-Step 2 — Local tests & adjustments (after your approval)
-- Run the following locally (from repo root `~/dotfiles/`):
-  - Structure & design tests:
-    - `$ZDOTDIR/tests/run-all-tests.zsh --design-only`
-  - Unit tests:
-    - `$ZDOTDIR/tests/run-all-tests.zsh --unit-only`
-  - Integration tests:
-    - `$ZDOTDIR/tests/run-integration-tests.sh --timeout-secs 30 --verbose`
-  - Performance smoke & bench harness:
-    - Follow `$ZDOTDIR/docs/redesignv2/README.md` microbench commands (e.g., perf-capture dry-run).
-  - Shim audit:
-    - `$ZDOTDIR/tools/bench-shim-audit.zsh --output-json $ZDOTDIR/docs/redesignv2/artifacts/metrics/shim-audit.json`
-- Collect results and attach to the planned commit messages and CI job run notes.
-
-Step 3 — Implement small, incremental commits (post-approval)
-- One commit per independent change:
-  - Add `$ZDOTDIR/.zshrc.d.REDESIGN/70-shim-removal.zsh` (runtime guard).
-  - Add `$ZDOTDIR/tools/deactivate-redesign.sh`.
-  - Add `$ZDOTDIR/tools/migrate-to-redesign.sh` (dry-run only initially).
-  - Add CI workflow YAMLs (flagged & perf nightly & bundler).
-  - Add tests or adjust existing tests to exercise idempotency and sentinel guards.
-- Run local tests after each commit. Only push after local tests pass and you have approved the push.
-
-Step 4 — Perf baseline capture and ledger gating
-- Use existing bench harness to capture microbench baseline (non-shimmed version) and store as CI artifact and local baseline JSON in `$ZDOTDIR/docs/redesignv2/artifacts/metrics/bench-core-baseline.json`.
-- Ensure `$ZDOTDIR/tools/bench-shim-audit.zsh` reports `shim_count == 0` (or document exceptions and gated thresholds).
-- Run nightly perf on the branch for 7 days to produce the ledger history required for PR evidence.
-
-Step 5 — Bundle evidence and prepare PR
-- After 7-day stability gate and passing tests, use `bundle-ledgers.yml` to produce the evidence package (drift badge, stage3-exit-report, seven ledger snapshots, microbench baseline).
-- Prepare PR to `develop` with the evidence bundle attached and follow the remediation PR template if necessary.
-
----
-
-## Checklist: items to produce, confirm, and sign-off before any edits
-The following checklist must be completed and each item explicitly approved by you before edits are made and pushed to `origin/feature/zsh-refactor-configuration`.
-
-Repository inspection & drafts
-- [ ] Full list of files drafted and available under `$ZDOTDIR/docs/redesignv2/migration/DRAFT_INDEX.md`. (Generated; review pending)
-- [ ] Drafts of `$ZDOTDIR/tools/deactivate-redesign.sh` and `$ZDOTDIR/tools/migrate-to-redesign.sh` are available for review. (Generated; review pending)
-- [ ] Draft module contents (including `70-shim-removal.zsh`) are available for review. (Generated; review pending)
-
-Tests & local validation
-- [ ] Confirm local test commands to run (I will run and paste the outputs). (Pending)
-- [ ] Run `bench-shim-audit` and attach the JSON output and summary. (Pending)
-- [ ] Run unit & integration tests (all passing locally) before any push. (Pending)
-
-CI / workflows
-- [ ] Draft CI workflow YAMLs have been generated for approval (flagging rules and artifact policies). (Generated; review pending)
-- [ ] Confirm GitHub artifact retention / job permissions. (Pending)
-
-Migration behavior & safety
-- [ ] Confirm `$ZDOTDIR/tools/migrate-to-redesign.sh --apply` exact mechanism (what files to inject/modify and backup locations). (Pending)
-- [ ] Confirm `$ZDOTDIR/tools/deactivate-redesign.sh` restores original `~/.zshenv` snippet exactly. (Pending)
-
-Shim policy
-- [ ] Confirm that runtime-only shim disabling (via `70-shim-removal.zsh`) is acceptable as first step. (Pending)
-- [ ] Confirm that on-disk removal of shims is only allowed after a separate explicit approval. (Required; default: No on-disk removals.) (Confirmed by you earlier)
-
-Push & commit policy
-- [ ] For each planned commit, I will run local tests and paste the test output for your sign-off before pushing that commit. (Pending)
-- [ ] When you approve a push, I will push to `origin/feature/zsh-refactor-configuration` with one commit per topic and clear messages. (Pending)
-
----
-
-## Immediate next steps (read-only)
-The following artifacts have been prepared as read-only drafts; no repository changes have been made pending your explicit approval. Drafts are deduplicated for implementation (flat draft-* files are canonical; the annotated `drafts/*.md` renderings can be removed after approval):
-1. Exact file list and content drafts for:
-   - `$ZDOTDIR/.zshrc.d.REDESIGN/70-shim-removal.zsh`
-   - `$ZDOTDIR/tools/deactivate-redesign.sh`
-   - `$ZDOTDIR/tools/migrate-to-redesign.sh`
-   - `$ZDOTDIR/.github/workflows/redesign-flagged.yml`
-   - `$ZDOTDIR/.github/workflows/perf-nightly.yml`
-   - `$ZDOTDIR/.github/workflows/bundle-ledgers.yml`
-2. A plan for test execution and the commands I will run locally, with expected outputs.
-3. A shim inventory summary produced by `$ZDOTDIR/tools/bench-shim-audit.zsh` (JSON and short summary).
-
-I will post the drafts in this directory (`$ZDOTDIR/docs/redesignv2/migration/`) as separate files for your review before making any code changes.
-
----
-
-## Approve to proceed with the read-only draft generation
-Reply with one of the following explicit commands:
-
-- `Approve plan and produce drafts` — I will generate the drafts (module scripts, tool scripts, and CI YAMLs) and post them as read-only text files in `$ZDOTDIR/docs/redesignv2/migration/` for your review.
-- `Modify plan: <details>` — specify any changes you want in the plan before drafts are created.
-- `Abort` — cancel this operation.
-
-I will wait for your explicit instruction before generating the drafts or making any modifications.
-
---- 
-
-Appendix: quick references
-- Redesign gating variable: `ZSH_USE_REDESIGN`
-- Redesign directories:
-  - Pre-plugin redesign: `~/.zshrc.pre-plugins.d.REDESIGN` / repo: `$ZDOTDIR/.zshrc.pre-plugins.d.REDESIGN`
-  - Post-plugin redesign: `~/.zshrc.d.REDESIGN` / repo: `$ZDOTDIR/.zshrc.d.REDESIGN`
-- Activation helper: `$ZDOTDIR/tools/activate-redesign.sh`
-- Shim audit helper: `$ZDOTDIR/tools/bench-shim-audit.zsh`
-- Perf ledgers destination (CI artifacts): `$ZDOTDIR/tools/perf/ledgers/` (runner workspace path referenced in docs)
-- Test harness entrypoints: `$ZDOTDIR/tests/run-all-tests.zsh`, `$ZDOTDIR/tests/run-integration-tests.sh`
+If you approve this plan, reply with:
+- `Approve plan` — I will produce remaining drafts and run the local test suite as described.
+- Or specify modifications (e.g., different backup location, retention policy, or alternate CI behavior) and I will update the plan accordingly.
