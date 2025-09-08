@@ -1,0 +1,56 @@
+🧪 Testing Deferred macOS Defaults Execution System
+==================================================
+📅 Test Started: 2025-08-31T07:01:22Z
+📋 Log File: /Users/s-a-c/.config/zsh/logs/2025-08-31/test-macos-defaults_07-01-22.log
+
+1. Testing wrapper script existence and configuration...
+   ✅ Wrapper script exists: /Users/s-a-c/.config/zsh/.zshrc.pre-plugins.d/03-macos-defaults-deferred.zsh
+   ❌ Setup script missing or not executable: /Users/s-a-c/.config/zsh/bin/macos-defaults-setup.zsh
+2. Testing first run behavior (no marker file)...
+   🗑️  Removing existing marker file: /Users/s-a-c/.config/zsh/.macos-defaults-last-run
+   📥 Sourcing wrapper function...
+   ❌ Marker file not created on first run
+   ❌ Log does not show setup script execution
+
+3. Testing skip behavior (marker file exists and recent)...
+   ⚠️  Creating marker file for skip test
+   📥 Sourcing wrapper function (second time)...
+   ❌ Log does not show skip behavior
+
+4. Testing script modification detection...
+   📥 Sourcing wrapper after script modification...
+   ❌ Log does not show modification detection
+
+5. Testing startup time with deferred execution...
+   📊 Deferred execution time: 2ms
+   ✅ Deferred execution is fast (< 100ms)
+
+6. Testing log file organization...
+   ✅ Date-named log directory exists: /Users/s-a-c/dotfiles/dot-config/zsh/logs/2025-08-31
+   ✅ UTC-timestamped log files found: 17 files
+     📄 deferred-macos-defaults_2025-08-31T06-59-38Z.log
+     📄 deferred-macos-defaults_2025-08-31T06-59-39Z.log
+     📄 deferred-macos-defaults_2025-08-31T06-59-49Z.log
+     📄 deferred-macos-defaults_2025-08-31T06-59-55Z.log
+     📄 deferred-macos-defaults_2025-08-31T07-00-01Z.log
+     📄 deferred-macos-defaults_2025-08-31T07-00-07Z.log
+     📄 deferred-macos-defaults_2025-08-31T07-00-15Z.log
+     📄 deferred-macos-defaults_2025-08-31T07-00-21Z.log
+     📄 deferred-macos-defaults_2025-08-31T07-00-26Z.log
+     📄 deferred-macos-defaults_2025-08-31T07-00-41Z.log
+     📄 deferred-macos-defaults_2025-08-31T07-00-47Z.log
+     📄 deferred-macos-defaults_2025-08-31T07-00-52Z.log
+     📄 deferred-macos-defaults_2025-08-31T07-00-59Z.log
+     📄 deferred-macos-defaults_2025-08-31T07-01-06Z.log
+     📄 deferred-macos-defaults_2025-08-31T07-01-11Z.log
+     📄 deferred-macos-defaults_2025-08-31T07-01-16Z.log
+     📄 deferred-macos-defaults_2025-08-31T07-01-22Z.log
+
+🏁 Test Results Summary
+======================
+✅ Tests Passed: 4
+❌ Tests Failed: 5
+📊 Total Tests: 9
+
+⚠️  Some deferred macOS defaults tests failed
+❌ Task 2.1 needs attention

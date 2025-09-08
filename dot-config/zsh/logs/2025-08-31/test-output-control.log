@@ -1,0 +1,28 @@
+[2025-08-31 07:00:34 UTC] [TEST] [9129] Starting output control test suite
+[2025-08-31 07:00:34 UTC] [TEST] [9129] Starting test: Output Control Functions Exist
+[2025-08-31 07:00:34 UTC] [TEST] [9129] FAIL: Output Control Functions Exist
+[2025-08-31 07:00:34 UTC] [TEST] [9129] Starting test: Context     zsh_debug_echo INFO Level
+[2025-08-31 07:00:34 UTC] [TEST] [9129] FAIL: Context     zsh_debug_echo INFO Level
+[2025-08-31 07:00:34 UTC] [TEST] [9129] Starting test: Context     zsh_debug_echo WARN Level
+[2025-08-31 07:00:34 UTC] [TEST] [9129] FAIL: Context     zsh_debug_echo WARN Level
+[2025-08-31 07:00:34 UTC] [TEST] [9129] Starting test: Context     zsh_debug_echo ERROR Level
+[2025-08-31 07:00:34 UTC] [TEST] [9129] FAIL: Context     zsh_debug_echo ERROR Level
+[2025-08-31 07:00:34 UTC] [TEST] [9129] Starting test: Context     zsh_debug_echo Debug Mode
+[2025-08-31 07:00:34 UTC] [TEST] [9129] PASS: Context     zsh_debug_echo Debug Mode
+[2025-08-31 07:00:34 UTC] [TEST] [9129] Starting test: Conditional Output Both
+[2025-08-31 07:00:34 UTC] [TEST] [9129] FAIL: Conditional Output Both
+[2025-08-31 07:00:34 UTC] [TEST] [9129] Starting test: Conditional Output Sourced Filter
+[2025-08-31 07:00:34 UTC] [TEST] [9129] PASS: Conditional Output Sourced Filter
+[2025-08-31 07:00:34 UTC] [TEST] [9129] Starting test: Conditional Output Executed Filter
+[2025-08-31 07:00:34 UTC] [TEST] [9129] FAIL: Conditional Output Executed Filter
+[2025-08-31 07:00:34 UTC] [TEST] [9129] Starting test: Conditional Output Default Behavior
+[2025-08-31 07:00:34 UTC] [TEST] [9129] FAIL: Conditional Output Default Behavior
+[2025-08-31 07:00:34 UTC] [TEST] [9129] Starting test: Context     zsh_debug_echo Logging
+[2025-08-31 07:00:34 UTC] [TEST] [9129] PASS: Context     zsh_debug_echo Logging
+[2025-08-31 07:00:34 UTC] [TEST] [9129] Starting test: Output Stream Routing
+[2025-08-31 07:00:34 UTC] [TEST] [9129] FAIL: Output Stream Routing
+[2025-08-31 07:00:34 UTC] [TEST] [9129] Starting test: Output Context Awareness
+[2025-08-31 07:00:34 UTC] [TEST] [9129] PASS: Output Context Awareness
+[2025-08-31 07:00:34 UTC] [TEST] [9129] Starting test: Output Integration with Detection
+[2025-08-31 07:00:34 UTC] [TEST] [9129] FAIL: Output Integration with Detection
+[2025-08-31 07:00:34 UTC] [TEST] [9129] Output control test suite completed - 4/13 tests passed

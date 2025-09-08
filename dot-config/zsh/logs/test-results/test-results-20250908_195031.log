@@ -1,0 +1,865 @@
+[2025-09-08 19:50:31] [INFO] Starting test suite execution
+[2025-09-08 19:50:31] [INFO] ZDOTDIR: /Users/s-a-c/dotfiles/dot-config/zsh
+[2025-09-08 19:50:31] [INFO] ZSH_COMPDUMP: <not set>
+[2025-09-08 19:50:31] [INFO] ZSH_CACHE_DIR: /Users/s-a-c/.cache/zsh
+[2025-09-08 19:50:34] [PASS] test-histfile-single - [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+[DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+# [test-histfile-single] Testing HISTFILE configuration consistency
+# [test-histfile-single] HISTFILE configuration test passed
+# [test-histfile-single] HISTFILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zsh_history, HISTSIZE=2000000, SAVEHIST=2000200
+PASS: HISTFILE configuration working correctly (index=1 duration=59ms)
+[2025-09-08 19:50:34] [FAIL] test-locale-conditional - Exit code: 1 (index=2 duration=83ms)
+[2025-09-08 19:50:34] [FAIL] test-locale-conditional - Output: [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+[DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+# [test-locale-conditional] Testing locale configuration consistency
+FAIL: LANG not properly exported to subshells
+  Expected: en_GB.UTF-8
+  Actual: [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+en_GB.UTF-8
+[2025-09-08 19:50:34] [PASS] test-path-dedup - [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+[DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+# [test-path-dedup] Starting PATH deduplication test
+# [test-path-dedup] PATH deduplication test passed - no duplicates found
+PASS: PATH deduplication working correctly (index=3 duration=124ms)
+[2025-09-08 19:50:34] [FAIL] test-path-lock - Exit code: 1 (index=4 duration=50ms)
+[2025-09-08 19:50:34] [FAIL] test-path-lock - Output: [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+[DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+# [test-path-lock] Testing PATH deduplication function consistency
+FAIL: path_dedupe did not remove duplicates
+  Test PATH: /usr/bin:/bin:/usr/bin:/usr/local/bin:/bin:/usr/sbin
+  Result PATH: /usr/bin:/bin:/usr/bin:/usr/local/bin:/bin:/usr/sbin
+[2025-09-08 19:50:34] [FAIL] test-lock-contention - Exit code: 1 (index=5 duration=53ms)
+[2025-09-08 19:50:34] [FAIL] test-lock-contention - Output: [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+[DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+# [test-lock-contention] Testing completion rebuild lock contention
+/Users/s-a-c/dotfiles/dot-config/zsh/tests/perf/phase06/test-lock-contention.zsh:28: ZSH_COMPDUMP: parameter not set
+[2025-09-08 19:50:48] [FAIL] test-single-compinit - Exit code: 141 (index=6 duration=13967ms)
+[2025-09-08 19:50:48] [FAIL] test-single-compinit - Output: [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+[DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+# [test-single-compinit] Testing single compinit execution
+FAIL: Multiple compinit calls found (38877)
+This indicates redundant completion initialization
+Compinit calls found:
++TRACE+ /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/oh-my-zsh.sh:79 autoload -U compaudit compinit zrecompile
++TRACE+ /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/oh-my-zsh.sh:127 compinit -i -d /Users/s-a-c/dotfiles/dot-config/zsh/.zcompdump-StandAloneComplexs-MacBook-Pro-5.9
++TRACE+ compinit:74 emulate -L zsh
++TRACE+ compinit:75 setopt extendedglob
++TRACE+ compinit:77 typeset _i_dumpfile _i_files _i_line _i_done _i_dir _i_autodump=1
+[2025-09-08 19:50:49] [FAIL] test-redesign-sentinels - Exit code: 1 (index=7 duration=775ms)
+[2025-09-08 19:50:49] [FAIL] test-redesign-sentinels - Output: [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+[DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+# [run-all-tests] Starting comprehensive test suite
+Running test: Pre-plugin directory scan... run_sentinel_test:28: command not found: print_failure
+    Expected 1 files missing sentinels, but found 4.
+    Files missing sentinels:
+        /var/folders/f0/2m6r6db57bxglzky2b_f49n00000gn/T/tmp.tIKfDxLfu2/.zshrc.pre-plugins.d.REDESIGN/10-invalid.zsh
+        filename=10-invalid
+        sentinel_var=_LOADED_10_INVALID
+        /var/folders/f0/2m6r6db57bxglzky2b_f49n00000gn/T/tmp.tIKfDxLfu2/.zshrc.pre-plugins.d.REDESIGN/00-valid.zsh
+Running test: Post-plugin directory scan... run_sentinel_test:28: command not found: print_failure
+    Expected 1 files missing sentinels, but found 4.
+    Files missing sentinels:
+        /var/folders/f0/2m6r6db57bxglzky2b_f49n00000gn/T/tmp.tIKfDxLfu2/.zshrc.d.REDESIGN/30-invalid-post.zsh
+        filename=30-invalid-post
+        sentinel_var=_LOADED_30_INVALID_POST
+        /var/folders/f0/2m6r6db57bxglzky2b_f49n00000gn/T/tmp.tIKfDxLfu2/.zshrc.d.REDESIGN/20-valid-post.zsh
+Running test: Actual pre-plugin directory... run_sentinel_test:28: command not found: print_failure
+    Expected 0 files missing sentinels, but found 32.
+    Files missing sentinels:
+        /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.pre-plugins.d.REDESIGN/20-macos-defaults-deferred.zsh
+        filename=20-macos-defaults-deferred
+        sentinel_var=_LOADED_20_MACOS_DEFAULTS_DEFERRED
+        /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.pre-plugins.d.REDESIGN/01-segment-lib-bootstrap.zsh
+        filename=01-segment-lib-bootstrap
+        sentinel_var=_LOADED_01_SEGMENT_LIB_BOOTSTRAP
+        /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.pre-plugins.d.REDESIGN/00-path-safety.zsh
+        filename=00-path-safety
+        sentinel_var=_LOADED_00_PATH_SAFETY
+        filename=02-guidelines-checksum
+        sentinel_var=_LOADED_02_GUIDELINES_CHECKSUM
+        /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.pre-plugins.d.REDESIGN/05-fzf-init.zsh
+        filename=05-fzf-init
+        sentinel_var=_LOADED_05_FZF_INIT
+        /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.pre-plugins.d.REDESIGN/15-node-runtime-env.zsh
+        filename=15-node-runtime-env
+        sentinel_var=_LOADED_15_NODE_RUNTIME_ENV
+        filename=02-module-hardening
+        sentinel_var=_LOADED_02_MODULE_HARDENING
+        /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.pre-plugins.d.REDESIGN/01-error-handling-framework.zsh
+        filename=01-error-handling-framework
+        sentinel_var=_LOADED_01_ERROR_HANDLING_FRAMEWORK
+        /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.pre-plugins.d.REDESIGN/30-ssh-agent.zsh
+        filename=30-ssh-agent
+        sentinel_var=_LOADED_30_SSH_AGENT
+        /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.pre-plugins.d.REDESIGN/25-lazy-integrations.zsh
+        filename=25-lazy-integrations
+        sentinel_var=_LOADED_25_LAZY_INTEGRATIONS
+        /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.pre-plugins.d.REDESIGN/40-pre-plugin-reserved.zsh
+        filename=40-pre-plugin-reserved
+        sentinel_var=_LOADED_40_PRE_PLUGIN_RESERVED
+        /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.pre-plugins.d.REDESIGN/10-lazy-framework.zsh
+Running test: Actual post-plugin directory... run_sentinel_test:28: command not found: print_failure
+    Expected 0 files missing sentinels, but found 56.
+    Files missing sentinels:
+        filename=60-p10k-instrument
+        sentinel_var=_LOADED_60_P10K_INSTRUMENT
+        /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.d.REDESIGN/10-core-functions.zsh
+        filename=10-core-functions
+        sentinel_var=_LOADED_10_CORE_FUNCTIONS
+        /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.d.REDESIGN/40-aliases-keybindings.zsh
+        filename=40-aliases-keybindings
+        sentinel_var=_LOADED_40_ALIASES_KEYBINDINGS
+        /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.d.REDESIGN/05-interactive-options.zsh
+        filename=05-interactive-options
+        sentinel_var=_LOADED_05_INTERACTIVE_OPTIONS
+        /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.d.REDESIGN/30-development-env.zsh
+        filename=30-development-env
+        sentinel_var=_LOADED_30_DEVELOPMENT_ENV
+        filename=55-compinit-instrument
+        sentinel_var=_LOADED_55_COMPINIT_INSTRUMENT
+        /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.d.REDESIGN/70-performance-monitoring.zsh
+        filename=70-performance-monitoring
+        sentinel_var=_LOADED_70_PERFORMANCE_MONITORING
+        /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.d.REDESIGN/90-splash.zsh
+        filename=90-splash
+        sentinel_var=_LOADED_90_SPLASH
+        filename=70-shim-removal
+        sentinel_var=_LOADED_70_SHIM_REMOVAL
+        /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.d.REDESIGN/POSTPLUGIN/10-core-functions.zsh
+        filename=10-core-functions
+        sentinel_var=_LOADED_10_CORE_FUNCTIONS
+        /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.d.REDESIGN/POSTPLUGIN/05-interactive-options.zsh
+        filename=05-interactive-options
+        sentinel_var=_LOADED_05_INTERACTIVE_OPTIONS
+        /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.d.REDESIGN/POSTPLUGIN/00-security-integrity.zsh
+        filename=00-security-integrity
+        sentinel_var=_LOADED_00_SECURITY_INTEGRITY
+        /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.d.REDESIGN/85-post-plugin-boundary.zsh
+        filename=85-post-plugin-boundary
+        sentinel_var=_LOADED_85_POST_PLUGIN_BOUNDARY
+        /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.d.REDESIGN/95-prompt-ready.zsh
+        filename=95-prompt-ready
+        sentinel_var=_LOADED_95_PROMPT_READY
+        filename=20-essential-plugins
+        sentinel_var=_LOADED_20_ESSENTIAL_PLUGINS
+        /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.d.REDESIGN/50-completion-history.zsh
+        filename=50-completion-history
+        sentinel_var=_LOADED_50_COMPLETION_HISTORY
+        /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.d.REDESIGN/80-security-validation.zsh
+        filename=80-security-validation
+        sentinel_var=_LOADED_80_SECURITY_VALIDATION
+        /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.d.REDESIGN/60-ui-prompt.zsh
+        filename=60-ui-prompt
+        sentinel_var=_LOADED_60_UI_PROMPT
+        /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.d.REDESIGN/00-security-integrity.zsh
+        filename=00-security-integrity
+        sentinel_var=_LOADED_00_SECURITY_INTEGRITY
+        /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.d.REDESIGN/40-runtime-optimization.zsh
+        filename=40-runtime-optimization
+        sentinel_var=_LOADED_40_RUNTIME_OPTIMIZATION
+
+Sentinel Guard Test Summary:
+/Users/s-a-c/dotfiles/dot-config/zsh/tests/design/test-redesign-sentinels.zsh:114: command not found: print_failure
+[2025-09-08 19:50:49] [FAIL] test-sentinels-idempotency-stage3-core - Exit code: 1 (index=8 duration=95ms)
+[2025-09-08 19:50:49] [FAIL] test-sentinels-idempotency-stage3-core - Output: [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+/Users/s-a-c/dotfiles/dot-config/zsh/tests/design/test-sentinels-idempotency-stage3-core.zsh:141: command not found: grep
+/Users/s-a-c/dotfiles/dot-config/zsh/tests/design/test-sentinels-idempotency-stage3-core.zsh:218: command not found: grep
+PASS: S1 all-modules-present
+PASS: S2 source-ok-security
+PASS: S2 source-ok-corefunc
+PASS: S2 source-ok-options
+PASS: S2 sentinel-set-security
+PASS: S2 sentinel-set-corefunc
+PASS: S2 sentinel-set-options
+PASS: S4a captured-initial-option-snapshot
+PASS: S3 resource-ok-security
+PASS: S3 resource-ok-corefunc
+PASS: S3 resource-ok-options
+PASS: S3 path-length-nonshrinking before= after=
+PASS: S6 deferred-task-stable (registered)
+FAIL: S5a empty-initial-core-func-list
+FAIL: S3 original-path-segment-loss
+FAIL: S4b option-snapshot-drift
+
+SUMMARY: passes=13 fails=3 skips=0
+TEST RESULT: FAIL
+[2025-09-08 19:50:49] [PASS] test-core-function-count - [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+=== DEBUG ENVIRONMENT ===
+PWD: /Users/s-a-c/dotfiles/dot-config/zsh
+ZDOTDIR: /Users/s-a-c/dotfiles/dot-config/zsh
+REPO_ROOT: <unset>
+MODULE_PATH: /opt/homebrew/Cellar/zsh/5.9/lib
+ZSH_VERSION: 5.9
+ZSH_PATCHLEVEL: zsh-5.9-0-g73d3173
+ZSH_MODULE_PATH: <unset>
+module_path: /opt/homebrew/Cellar/zsh/5.9/lib
+parameter: <unset>
+functions[parameter]: <unset>
+setopts: nohashdirs
+=== END DEBUG ENVIRONMENT ===
+PASS: FC1 module-present
+PASS: FC2 module-sourced
+PASS: FC3 meets-minimum count=9 min=5
+PASS: FC4 golden-unset (skipped)
+PASS: FC5 fingerprint=917947cfdff47b897bd78d03aefc9d418f2d1321
+
+SUMMARY: passes=5 fails=0 count=9 min=5 golden=<unset> growth_allowed=0
+TEST RESULT: PASS (index=9 duration=79ms)
+[2025-09-08 19:50:49] [FAIL] test-core-functions-manifest - Exit code: 1 (index=10 duration=87ms)
+[2025-09-08 19:50:49] [FAIL] test-core-functions-manifest - Output: [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+DEBUG: PWD=/Users/s-a-c/dotfiles/dot-config/zsh
+DEBUG: ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+DEBUG: SCRIPT_SRC=/Users/s-a-c/dotfiles/dot-config/zsh/tests/unit/core/test-core-functions-manifest.zsh
+DEBUG: THIS_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/tests/unit/core
+DEBUG: REPO_ROOT=/Users/s-a-c/dotfiles
+DEBUG: CORE_FN_MANIFEST_PATH=/Users/s-a-c/dotfiles/dot-config/zsh/docs/redesignv2/artifacts/golden/core-functions-manifest-stage3.txt
+PASS: M1 manifest-present
+PASS: M2 manifest-function-count=8
+PASS: M4 order-check-skipped
+PASS: M5 golden-fingerprint=a44fd77ed39dca8b1aad4cbb113dbe02fb49a45e
+PASS: M5 current-fingerprint=393291fb1c6790796b9664ade3b5a58dd177df82
+FAIL: M3 unexpected-additions (10): _lazy_gitwrapper command_exists fail has_command pass path_dedupe resolve_script_dir safe_git warn zsh_debug_echo
+FAIL: M3 unexpected-removals (8): zf::debug zf::ensure_cmd zf::list_functions zf::log zf::require zf::timed zf::warn zf::with_timing
+
+SUMMARY: passes=5 warns=0 fails=2 golden_count=8 current_count=10 added=10 removed=8 strict_order=0
+TEST RESULT: FAIL
+[2025-09-08 19:50:49] [SKIP] test-core-functions-namespace - [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+SKIP: core functions module not present (.zshrc.d.REDESIGN/10-core-functions.zsh) (index=11 duration=44ms)
+[2025-09-08 19:50:49] [PASS] test-integrity-scheduler-single-registration - [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+PASS: S1 module-present
+PASS: S2 module-sourced-first
+PASS: S2a no-new-hook-names (acceptable if using on-demand scheduler)
+PASS: S2b scheduler-function-missing (may appear later)
+PASS: S4 non-running-state=<unset>
+PASS: S3 module-sourced-second
+PASS: S3a hook-count-stable=0
+PASS: S3b no-hooks-present (acceptable)
+
+SUMMARY: passes=8 fails=0 sched_fn=0 state_initial=<unset>
+TEST RESULT: PASS (index=12 duration=80ms)
+[2025-09-08 19:50:50] [FAIL] test-option-snapshot-golden - Exit code: 1 (index=13 duration=91ms)
+[2025-09-08 19:50:50] [FAIL] test-option-snapshot-golden - Output: [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+DEBUG: PWD=/Users/s-a-c/dotfiles/dot-config/zsh
+DEBUG: ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+DEBUG: SCRIPT_SRC=/Users/s-a-c/dotfiles/dot-config/zsh/tests/unit/core/test-option-snapshot-golden.zsh
+DEBUG: REPO_ROOT=/Users/s-a-c/dotfiles
+/Users/s-a-c/dotfiles/dot-config/zsh/tests/unit/core/test-option-snapshot-golden.zsh:print:139: bad option: - 
+[2025-09-08 19:50:50] [FAIL] test-option-snapshot-stability - Exit code: 1 (index=14 duration=73ms)
+[2025-09-08 19:50:50] [FAIL] test-option-snapshot-stability - Output: [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+[2025-09-08 19:50:50] [FAIL] test-path-append-invariant - Exit code: 1 (index=15 duration=66ms)
+[2025-09-08 19:50:50] [FAIL] test-path-append-invariant - Output: [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+[2025-09-08 19:50:50] [FAIL] test-trust-anchors - Exit code: 1 (index=16 duration=51ms)
+[2025-09-08 19:50:50] [FAIL] test-trust-anchors - Output: [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+SUMMARY: Missing security module – aborting remaining checks.
+FAIL: I1 security-module-missing (/Users/s-a-c/dotfiles/dot-config/dot-config/zsh/.zshrc.d.REDESIGN/00-security-integrity.zsh)
+[2025-09-08 19:50:50] [FAIL] test-fzf-no-compinit - Exit code: 1 (index=17 duration=116ms)
+[2025-09-08 19:50:50] [FAIL] test-fzf-no-compinit - Output: [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+[2025-09-08 19:50:50] [FAIL] test-integrations-idempotence - Exit code: 1 (index=18 duration=45ms)
+[2025-09-08 19:50:50] [FAIL] test-integrations-idempotence - Output: [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+FAIL: integration module missing: ./.zshrc.pre-plugins.d.REDESIGN/25-lazy-integrations.zsh
+[2025-09-08 19:50:50] [FAIL] test-lazy-dispatcher-negative - Exit code: 99 (index=19 duration=98ms)
+[2025-09-08 19:50:50] [FAIL] test-lazy-dispatcher-negative - Output: [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+[2025-09-08 19:50:50] [FAIL] test-path-normalization-edges - Exit code: 1 (index=20 duration=205ms)
+[2025-09-08 19:50:50] [FAIL] test-path-normalization-edges - Output: [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+FAIL: Path normalization edge invariants not satisfied:
+  + Duplicate logical directory after normalization: 
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]
+  + Duplicate logical directory after normalization:  localized zgenom configuration
+  + Ordering drift at position 1: expected '/usr/local/bin' got '[DEBUG] early .zshenv'
+[2025-09-08 19:50:51] [FAIL] test-path-normalization-whitelist - Exit code: 127 (index=21 duration=79ms)
+[2025-09-08 19:50:51] [FAIL] test-path-normalization-whitelist - Output: [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+[2025-09-08 19:50:51] [PASS] test-40-runtime - [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+[DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+PASS: 40-runtime module basic unit checks (sentinel, function, apply, idempotency) (index=22 duration=62ms)
+[2025-09-08 19:50:51] [PASS] test-lazy-framework - [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+Test 1: Function registration... [32mPASS[0m
+Test 2: First call loading... [32mPASS[0m
+Test 3: Subsequent calls efficiency... [32mPASS[0m
+Test 4: Missing loader error handling... [32mPASS[0m
+Test 5: Failing loader error handling... [32mPASS[0m
+Test 6: Argument passing through dispatcher... [32mPASS[0m
+Test 7: Registry state persistence... [32mPASS[0m
+Test 8: Load state tracking... [32mPASS[0m
+Test 9: Function replacement verification... [32mPASS[0m
+Test 10: Memory efficiency (registry cleanup)... [32mPASS[0m
+
+=== Lazy Framework Test Summary ===
+[32mAll 10 tests passed![0m
+Lazy framework implementation verified:
+  ✓ Function registration and replacement
+  ✓ First-call loading behavior
+  ✓ Dispatcher mechanics
+  ✓ Error handling and fallbacks
+  ✓ Argument passing
+  ✓ State tracking (index=23 duration=83ms)
+[2025-09-08 19:50:51] [PASS] test-compinit-single-run - [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+[DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+[DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+# [minimal-completion-init] Initialized with /Users/s-a-c/.cache/zsh/zcompdump_5.9 (single-run)
+PASS: single compinit run; compdump stable at /Users/s-a-c/.cache/zsh/zcompdump_5.9 (index=24 duration=474ms)
+[2025-09-08 19:50:51] [FAIL] test-git-hooks - Exit code: 1 (index=25 duration=58ms)
+[2025-09-08 19:50:51] [FAIL] test-git-hooks - Output: [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+PASS: pre-commit hook present (.githooks/pre-commit)
+PASS: secret-scan pre-commit hook module present (.githooks/pre-commit.d/secret-scan)
+PASS: pre-commit hook executable (.githooks/pre-commit)
+PASS: secret-scan hook executable (.githooks/pre-commit.d/secret-scan)
+require_shebang:2: command not found: grep
+FAIL: pre-commit hook missing shebang
+[2025-09-08 19:50:52] [PASS] test-postplugin-compinit-single-run - [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+[DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+# [post-plugin][completion] compinit initialized at /Users/s-a-c/.cache/zsh/zcompdump_5.9 (single-run)
+PASS: single compinit run via post-plugin redesign; compdump stable at /Users/s-a-c/.cache/zsh/zcompdump_5.9 (index=26 duration=385ms)
+[2025-09-08 19:50:52] [PASS] test-prompt-ready-single-emission - [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+
+===== TEST SUITE START: prompt-ready-single-emission (2025-09-08T18:50:52Z) =====
+
+===== TEST SUITE SUMMARY: prompt-ready-single-emission =====
+Total: 0, Passed: 0, Failed: 0, Skipped: 0
+Elapsed: 0s
+All tests passed ✓
+======================================== (index=27 duration=54ms)
+[2025-09-08 19:50:52] [FAIL] test-node-lazy-activation - Exit code: 1 (index=28 duration=42ms)
+[2025-09-08 19:50:52] [FAIL] test-node-lazy-activation - Output: [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+FAIL: node runtime module missing: ./.zshrc.pre-plugins.d.REDESIGN/15-node-runtime-env.zsh
+[2025-09-08 19:50:52] [FAIL] test-ssh-agent-duplicate-spawn - Exit code: 1 (index=29 duration=71ms)
+[2025-09-08 19:50:52] [FAIL] test-ssh-agent-duplicate-spawn - Output: [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+[2025-09-08 19:50:52] [FAIL] test-preplugin-ssh-agent-skeleton - Exit code: 1 (index=30 duration=68ms)
+[2025-09-08 19:50:52] [FAIL] test-preplugin-ssh-agent-skeleton - Output: [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+Test 1: Module loads without errors... [31mFAIL[0m
+[2025-09-08 19:50:53] [PASS] test-async-initial-state - [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+Test 1: Initial async state is not RUNNING... [32mPASS[0m
+Test 2: Async queue marker present on init... [32mPASS[0m
+Test 3: No RUNNING state before prompt completion... [32mPASS[0m
+Test 4: Proper state progression after prompt... [32mPASS[0m
+Test 5: RUNNING state occurs after prompt completion... [32mPASS[0m
+Test 6: State consistency maintained... [32mPASS[0m
+Test 7: Premature async start detection... # [async-test] Detected premature RUNNING; permissive mode (not failing)
+[32mPASS[0m
+Test 8: Log file structure validation... [32mPASS[0m
+Test 9: State machine reset capability... [32mPASS[0m
+Test 10: Concurrent state protection... [32mPASS[0m
+
+=== Async Initial State Test Summary ===
+[32mAll 10 tests passed![0m
+Async initial state validation verified:
+  ✓ Initial state is IDLE/QUEUED (not RUNNING)
+  ✓ RUNNING state only after prompt completion
+  ✓ Proper state transitions and timing
+  ✓ Queue markers and logging structure
+  ✓ Premature start detection
+  ✓ State consistency and reset capability (index=31 duration=658ms)
+[2025-09-08 19:50:53] [PASS] test-async-state-machine - [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+Test 1: Initial async state not RUNNING... [32mPASS[0m
+Test 2: Deferred start marker present... [32mPASS[0m
+Test 3: Valid state transition after prompt... [32mPASS[0m
+Test 4: State transitions are monotonic... [32mPASS[0m
+Test 5: No duplicate states at same timestamp... [32mPASS[0m
+Test 6: Log file permissions valid... [32mPASS[0m
+Test 7: State machine cleanup... [32mPASS[0m
+
+=== Async State Machine Test Summary ===
+[32mAll 7 tests passed![0m (index=32 duration=473ms)
+[2025-09-08 19:50:54] [FAIL] test-preplugin-integrity-hash - Exit code: 1 (index=33 duration=446ms)
+[2025-09-08 19:50:54] [FAIL] test-preplugin-integrity-hash - Output: [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+# [integrity-test] Wrote aggregate_input (1506 bytes) to /Users/s-a-c/dotfiles/dot-config/zsh/logs/test-preplugin-aggregate-input
+FAIL: pre-plugin integrity issues:
+  - Hash mismatch for .zshrc.pre-plugins.d.REDESIGN/01-error-handling-framework.zsh (manifest=523875435cb197325b3546ef388955b525f1878d96cf03b9d566f4c6b8a86b0a recomputed=678ad673104a63ec42e2126137fbde1e2d1725b0f45dfdd0b25e9100b5c4c28f)
+  - Hash mismatch for .zshrc.pre-plugins.d.REDESIGN/02-module-hardening.zsh (manifest=dd45c61e3546f894262b2af63ec6dc8c275be8a5999253e19309a4313838dbf0 recomputed=c61b14b211171734a8d0ce331ed96230931fe50ff325073310be2fadaf62d8e0)
+
+---- integrity-current.json (first 40 lines) ----
+    {
+    "schema": "preplugin-integrity.v1",
+    "timestamp": "20250906T105145Z",
+    "guidelines_checksum": "unknown",
+    "aggregate_sha256": "ee819a5a815b7e5034e79fc3a711d7ad4a8ac14cef6633984a8bc5f9f077c2fd",
+    "file_count": 13,
+    "files": [
+    {"path":".zshenv","sha256":"c4a915cfe9e2c3a230c74f90139f72ea8d864d266a5b34183c1c290bcdb71156","size":   18284,"mtime":"2025-09-03T20:39:00Z"},{"path":".zshrc.pre-plugins.d.REDESIGN/00-path-safety.zsh","sha256":"68dd61c3b57fb5ffcec5226ac5f2d6823e9b8424cfb3c9440ccfd2c83c3b6abe","size":    5790,"mtime":"2025-09-05T23:54:42Z"},{"path":".zshrc.pre-plugins.d.REDESIGN/01-error-handling-framework.zsh","sha256":"523875435cb197325b3546ef388955b525f1878d96cf03b9d566f4c6b8a86b0a","size":   10144,"mtime":"2025-09-06T00:03:57Z"},{"path":".zshrc.pre-plugins.d.REDESIGN/01-segment-lib-bootstrap.zsh","sha256":"53ec749d9bf8df8173e781c5de6f07d978a51e37ac809ef4ac6f31f03fedad3e","size":    2559,"mtime":"2025-09-02T23:30:35Z"},{"path":".zshrc.pre-plugins.d.REDESIGN/02-guidelines-checksum.zsh","sha256":"cb41855edeef1a7da5600f94d7be76fe4c7b8adbb82ed68732bcd158cbbcf485","size":    4718,"mtime":"2025-09-05T23:54:42Z"},{"path":".zshrc.pre-plugins.d.REDESIGN/02-module-hardening.zsh","sha256":"dd45c61e3546f894262b2af63ec6dc8c275be8a5999253e19309a4313838dbf0","size":    9248,"mtime":"2025-09-05T23:45:45Z"},{"path":".zshrc.pre-plugins.d.REDESIGN/05-fzf-init.zsh","sha256":"aee6b513605fcb9445df4044e92150012e1108857d268e6669b7810953bbb1ff","size":    1627,"mtime":"2025-09-05T23:54:42Z"},{"path":".zshrc.pre-plugins.d.REDESIGN/10-lazy-framework.zsh","sha256":"35e203adeddce268aab350a23792627639a09273494063b8d30fae20fa041ea8","size":    6971,"mtime":"2025-09-05T23:54:42Z"},{"path":".zshrc.pre-plugins.d.REDESIGN/15-node-runtime-env.zsh","sha256":"883290e674c27e09abbdc33161ef004f836246b0381be24393ee4412d177553c","size":    2008,"mtime":"2025-09-05T23:54:42Z"},{"path":".zshrc.pre-plugins.d.REDESIGN/20-macos-defaults-deferred.zsh","sha256":"155b1381f2c68f3c64a46eb86db780b54988235c43e1ecd1d534c85463eccf35","size":    3054,"mtime":"2025-09-05T23:54:42Z"},{"path":".zshrc.pre-plugins.d.REDESIGN/25-lazy-integrations.zsh","sha256":"9b065a953409c3e8c5eac7c6be855ae5be07d7502d57feefc709f85bcd1c1b97","size":    2838,"mtime":"2025-09-05T23:54:42Z"},{"path":".zshrc.pre-plugins.d.REDESIGN/30-ssh-agent.zsh","sha256":"de0fafcfe02abb934df59834ea9bac8fc037fb8d48e3602977787727d1ff6009","size":    4534,"mtime":"2025-09-05T23:54:42Z"},{"path":".zshrc.pre-plugins.d.REDESIGN/40-pre-plugin-reserved.zsh","sha256":"8672f208365251a02ec950c675d78d86db4f632c312d6be68bb21cd2286a4bb0","size":    3763,"mtime":"2025-09-05T23:54:42Z"}
+    ]
+    }
+------------------------------------------------
+[2025-09-08 19:50:54] [SKIP] test-core-micro-bench-smoke - [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+SKIP: harness missing (/Users/s-a-c/dotfiles/dot-config/dot-config/zsh/tests/performance/core-functions/bench-core-functions.zsh) (index=34 duration=58ms)
+[2025-09-08 19:50:54] [SKIP] test-async-manifest-integrity - [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+PASS: I1 manifest present
+PASS: I2 jq available
+PASS: I7 no duplicate task IDs
+PASS: I5 expected_active_shadow_tasks matches enabled set
+PASS: I6 planned future tasks remain disabled
+PASS: I8 required fields present for all enabled tasks
+/Users/s-a-c/dotfiles/dot-config/zsh/tools/async-dispatcher.zsh:415: parse error near `else'
+[asyncd][debug] Initializing async dispatcher (mode=shadow zpty=0)
+[asyncd][debug] Parsing async manifest: /Users/s-a-c/dotfiles/dot-config/zsh/docs/redesignv2/async/manifest.json
+[asyncd][debug] Registered task id=theme_extras priority=cosmetic timeout_ms=800 label=theme_extras_init_async
+cmd=': ${ASYNC_TEST_FAKE_LATENCY_MS:=0}; [[ $ASYNC_TEST_FAKE_LATENCY_MS -gt 0 ]] && sleep $((${ASYNC_TEST_FAKE_LATENCY_MS}/1000.0)) || true'
+[asyncd][debug] Registered task id=completion_cache_scan priority=cosmetic timeout_ms=1500 label=completion_cache_scan_async
+[async-tasks][debug] Shadow default tasks already registered
+async_tasks_phaseA_shadow_bootstrap:13: command not found: async_launch_shadow_tasks
+[async-tasks][debug] Async shadow bootstrap complete (precmd hook active)
+[asyncd][debug] Initializing async dispatcher (mode=shadow zpty=0)
+[asyncd][debug] Parsing async manifest: /Users/s-a-c/dotfiles/dot-config/zsh/docs/redesignv2/async/manifest.json
+[asyncd][warn] Task 'theme_extras' already registered – replacing
+[asyncd][debug] Registered task id=theme_extras priority=cosmetic timeout_ms=800 label=theme_extras_init_async
+cmd=': ${ASYNC_TEST_FAKE_LATENCY_MS:=0}; [[ $ASYNC_TEST_FAKE_LATENCY_MS -gt 0 ]] && sleep $((${ASYNC_TEST_FAKE_LATENCY_MS}/1000.0)) || true'
+[asyncd][warn] Task 'completion_cache_scan' already registered – replacing
+[asyncd][debug] Registered task id=completion_cache_scan priority=cosmetic timeout_ms=1500 label=completion_cache_scan_async
+[async-tasks][debug] Shadow default tasks already registered
+async_tasks_phaseA_shadow_bootstrap:13: command not found: async_launch_shadow_tasks
+[async-tasks][debug] Async shadow bootstrap complete (precmd hook active)
+PASS: I3 all enabled manifest tasks registered
+PASS: I4 no unexpected runtime tasks registered
+
+Summary: PASS=8 FAIL=0 WARN=0 SKIP=0 (index=35 duration=328ms)
+[2025-09-08 19:50:54] [FAIL] test-async-shadow-mode - Exit code: 1 (index=36 duration=229ms)
+[2025-09-08 19:50:55] [FAIL] test-async-shadow-mode - Output: [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+PASS: I1 baseline capture succeeded
+PASS: I2 shadow capture succeeded
+FAIL: I3 baseline missing required segments: pre_plugin_total post_plugin_total prompt_ready compinit p10k_theme
+FAIL: I3 shadow missing required segments: pre_plugin_total post_plugin_total prompt_ready compinit p10k_theme
+FAIL: I4 unable to parse prompt_ready ms values (base='' shadow='')
+FAIL: I5 missing start segment for task 'theme_extras' in shadow capture
+FAIL: I5 missing start segment for task 'completion_cache_scan' in shadow capture
+PASS: I7 no required segments removed in shadow mode
+
+Summary: PASS=3 FAIL=5 WARN=0 SKIP=0
+Failure Details:
+ - I3 baseline missing required segments: pre_plugin_total post_plugin_total prompt_ready compinit p10k_theme
+ - I3 shadow missing required segments: pre_plugin_total post_plugin_total prompt_ready compinit p10k_theme
+ - I4 unable to parse prompt_ready ms values (base='' shadow='')
+ - I5 missing start segment for task 'theme_extras' in shadow capture
+ - I5 missing start segment for task 'completion_cache_scan' in shadow capture

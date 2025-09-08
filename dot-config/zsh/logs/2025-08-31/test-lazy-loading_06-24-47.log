@@ -1,0 +1,160 @@
+🧪 Testing Lazy Loading System for Heavy Tools
+==============================================
+📅 Test Started: 2025-08-31T06:24:47Z
+📋 Log File: /Users/s-a-c/.config/zsh/logs/2025-08-31/test-lazy-loading_06-24-47.log
+
+ 1. Testing lazy direnv wrapper exists...
+   ❌ Testing lazy direnv wrapper exists
+ 2. Testing lazy git config wrapper exists...
+   ❌ Testing lazy git config wrapper exists
+ 3. Testing lazy GitHub Copilot wrapper exists...
+   ❌ Testing lazy GitHub Copilot wrapper exists
+
+🚀 Testing startup time with lazy loading enabled...
+   Run 1: zsh -i -c 'exit' 2>&1  2.45s user 1.79s system 90% cpu 4.694 total
+tail -1  0.00s user 0.00s system 0% cpu 4.694 total
+grep -o '[0-9.]*s'  0.00s user 0.00s system 0% cpu 4.694 total
+head -1  0.00s user 0.00s system 0% cpu 4.694 total
+sed 's/s//'  0.00s user 0.00s system 0% cpu 4.694 total
+Failed to measure
+   Run 2: zsh -i -c 'exit' 2>&1  2.45s user 1.78s system 90% cpu 4.656 total
+tail -1  0.00s user 0.00s system 0% cpu 4.656 total
+grep -o '[0-9.]*s'  0.00s user 0.00s system 0% cpu 4.656 total
+head -1  0.00s user 0.00s system 0% cpu 4.655 total
+sed 's/s//'  0.00s user 0.00s system 0% cpu 4.655 total
+Failed to measure
+   Run 3: zsh -i -c 'exit' 2>&1  2.44s user 1.78s system 89% cpu 4.720 total
+tail -1  0.00s user 0.00s system 0% cpu 4.720 total
+grep -o '[0-9.]*s'  0.00s user 0.00s system 0% cpu 4.720 total
+head -1  0.00s user 0.00s system 0% cpu 4.720 total
+sed 's/s//'  0.00s user 0.00s system 0% cpu 4.720 total
+Failed to measure
+   ❌ Could not measure startup times
+
+🔍 Testing lazy loading initialization in clean shell...
+ 5. Testing direnv lazy state initialized...
+   ✅ Testing direnv lazy state initialized
+ 6. Testing git lazy state initialized...
+   ❌ Testing git lazy state initialized
+ 7. Testing GitHub Copilot lazy state initialized...
+   ✅ Testing GitHub Copilot lazy state initialized
+ 8. Testing direnv wrapper function available...
+   ✅ Testing direnv wrapper function available
+ 9. Testing git wrapper function available...
+   ✅ Testing git wrapper function available
+
+⏱️  Testing deferred execution behavior...
+[DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+[PATH-GUARANTEE] Safe command wrappers initialized
+# ++++++ /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.pre-plugins.d/00_10-fzf-setup.zsh ++++++++++++++++++++++++++++++++++++
+# FZF integration loaded from /opt/homebrew, config path: /Users/s-a-c/.fzf
+# ++++++ /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.pre-plugins.d/00_30-lazy-loading-framework.zsh ++++++++++++++++++++++++++++++++++++
+# [performance] Loading lazy loading framework
+# [performance] Lazy loading framework loaded
+# ------ /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.pre-plugins.d/00_30-lazy-loading-framework.zsh --------------------------------
+# ++++++ /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.pre-plugins.d/10_10-nvm-npm-fix.zsh ++++++++++++++++++++++++++++++++++++
+# Added Bun to PATH for zsh-abbr dependencies
+# NVM detected - NPM_CONFIG_PREFIX kept unset for compatibility
+# ++++++ /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.pre-plugins.d/10_20-macos-defaults-deferred.zsh ++++++++++++++++++++++++++++++++++++
+# ++++++ /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.pre-plugins.d/10_30-lazy-direnv.zsh ++++++++++++++++++++++++++++++++++++
+# Lazy loading direnv due to .envrc presence
+==============================================================================
+Lazy Direnv Hook Initialization
+Started: 2025-08-31T06:25:06Z
+Triggered by: _lazy_direnv_chpwd
+==============================================================================
+
+✅ direnv hook initialized successfully
+
+==============================================================================
+Lazy direnv hook initialization completed at 2025-08-31T06:25:06Z
+==============================================================================
+# [lazy-direnv] Lazy direnv wrapper initialized
+# ++++++ /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.pre-plugins.d/10_40-lazy-git-config.zsh ++++++++++++++++++++++++++++++++++++
+# [lazy-git-config] git not found, skipping
+# ++++++ /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.pre-plugins.d/10_50-lazy-gh-copilot.zsh ++++++++++++++++++++++++++++++++++++
+# [lazy-gh-copilot] Lazy GitHub Copilot wrapper initialized
+# ++++++ /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.pre-plugins.d/20_10-ssh-agent-core.zsh ++++++++++++++++++++++++++++++++++++
+# [security] Loading core SSH agent management
+# [security] Core SSH agent management loaded
+# ------ /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.pre-plugins.d/20_10-ssh-agent-core.zsh --------------------------------
+# ++++++ /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.pre-plugins.d/20_11-ssh-agent-security.zsh ++++++++++++++++++++++++++++++++++++
+# [security] Loading advanced SSH agent security
+# [security] Advanced SSH agent security loaded
+# ------ /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.pre-plugins.d/20_11-ssh-agent-security.zsh --------------------------------
+Some files in ~/.zshrc.add-plugins.d updated; creating a new init.zsh from plugin list in .config/zsh/.zgen-setup and plugins dir
+Creating a zgenom save
+# ++++++ /Users/s-a-c/.zshrc.add-plugins.d/010-add-plugins.zsh ++++++++++++++++++++++++++++++++++++
+# [add-plugins] Optimal plugin loading sequence complete (14 entries)
+# [security] Core plugin integrity verification loaded
+# ------ /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.d/00_20-plugin-integrity-core.zsh --------------------------------
+# [security] Advanced plugin integrity verification loaded
+# ------ /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.d/00_21-plugin-integrity-advanced.zsh --------------------------------
+# ++++++ /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.d/30_30-prompt.zsh ++++++++++++++++++++++++++++++++++++
+# [prompt-ui] Setting up prompt and UI configurations
+# [ui.bullet-train]
+# [ui.powerlevel10k]
+# [ui.starship]
+# [ui.colorize]
+# [ui.vi-mode]
+# [ui.carapace]
+# [ui.thefuck]
+# [ui.completion-styles]
+# [ui.nvm-omz]
+# [prompt] Starship prompt initialized
+# ++++++ /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.Darwin.d/025-iterm2-shell-integration.zsh ++++++++++++++++++++++++++++++++++++
+# [iterm2-shell-integration] Starting iTerm2 shell integration (macOS)
+]1337;RemoteHost=s-a-c@StandAloneComplexs-MacBook-Pro.local]1337;CurrentDir=/tmp/lazy-loading-test-69927]1337;ShellIntegrationVersion=14;shell=zsh# [iterm2-shell-integration] iTerm2 integration initialized (macOS)
+# [iterm2-shell-integration] iTerm2 shell integration complete (macOS)
+# ++++++ /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.Darwin.d/100-macos-defaults.zsh ++++++++++++++++++++++++++++++++++++
+Warning: Numbered files detected - check for redirection typos
+# ++++++ /Users/s-a-c/dotfiles/dot-config/zsh/.p10k.zsh ++++++++++++++++++++++++++++++++++++
+
+Current SSH Keys:
+256 SHA256:2925ZCutAr6zy/xpYt1IZch74+sSBiTcrgzkr+bXBhY embrace.s0ul+s-a-c@gmail.com (ED25519)
+
+10. Testing direnv not loaded on startup in directory with .envrc...
+   ❌ Testing direnv not loaded on startup in directory with .envrc
+
+🎯 Testing on-demand loading behavior...
+11. Testing direnv loads when command is used...
+   ✅ Testing direnv loads when command is used
+12. Testing git config loads when git command is used...
+   ❌ Testing git config loads when git command is used
+
+📈 Testing performance improvements...
+13. Testing direnv immediate execution removed...
+grep: /Users/s-a-c/.config/zsh/.zshrc.d/10_10-development-tools.zsh: No such file or directory
+   ✅ Testing direnv immediate execution removed
+14. Testing git config immediate execution removed...
+grep: /Users/s-a-c/.config/zsh/.zshrc.d/10_10-development-tools.zsh: No such file or directory
+   ✅ Testing git config immediate execution removed
+15. Testing GitHub Copilot immediate execution removed...
+grep: /Users/s-a-c/.config/zsh/.zshrc.d/30_32-aliases.zsh: No such file or directory
+   ✅ Testing GitHub Copilot immediate execution removed
+
+📊 Testing logging and caching systems...
+16. Testing date-named log directory exists...
+   ✅ Testing date-named log directory exists
+find: $log_dir: No such file or directory
+17. Testing UTC-timestamped log files...
+   ❌ Testing UTC-timestamped log files
+   ⏭️  Skipping git cache tests - cache not yet created
+
+🏁 Test Results Summary
+======================
+✅ Tests Passed: 9
+❌ Tests Failed: 8
+📊 Total Tests: 17
+
+⚠️  Some lazy loading tests failed
+❌ Task 2.2 needs attention

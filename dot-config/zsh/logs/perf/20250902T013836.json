@@ -1,0 +1,9 @@
+{
+  "timestamp":"20250902T013836",
+  "cold_ms":6069,
+  "warm_ms":4796,
+  "cold_pre_plugin_ms":35,
+  "cold_post_plugin_ms":0,
+  "warm_pre_plugin_ms":25,
+  "warm_post_plugin_ms":0
+}

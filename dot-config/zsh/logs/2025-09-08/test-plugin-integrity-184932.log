@@ -1,0 +1,47 @@
+[2025-09-08 18:49:32 UTC] [INFO] Starting Plugin Integrity Verification test suite
+[2025-09-08 18:49:32 UTC] [INFO] Setting up test environment in /tmp/zsh-plugin-integrity-test-43967
+[2025-09-08 18:49:32 UTC] [INFO] Test environment setup complete
+[2025-09-08 18:49:32 UTC] [INFO] Running test 1: Registry Creation and Structure
+[2025-09-08 18:49:32 UTC] [INFO] Testing trusted plugin registry creation
+[2025-09-08 18:49:32 UTC] [ERROR] Registry file not created: /tmp/zsh-plugin-integrity-test-43967/security/plugin-registry/trusted-plugins.json
+[2025-09-08 18:49:32 UTC] [FAIL] Test 1: Registry Creation and Structure - FAILED
+[2025-09-08 18:49:32 UTC] [INFO] Running test 2: Trusted Plugin Verification
+[2025-09-08 18:49:32 UTC] [INFO] Testing trusted plugin verification
+[2025-09-08 18:49:32 UTC] [ERROR] Trusted plugin verification failed
+[2025-09-08 18:49:32 UTC] [FAIL] Test 2: Trusted Plugin Verification - FAILED
+[2025-09-08 18:49:32 UTC] [INFO] Running test 3: Untrusted Plugin Detection
+[2025-09-08 18:49:32 UTC] [INFO] Testing untrusted plugin detection
+[2025-09-08 18:49:32 UTC] [ERROR] Untrusted plugin should be allowed in WARN mode
+[2025-09-08 18:49:32 UTC] [FAIL] Test 3: Untrusted Plugin Detection - FAILED
+[2025-09-08 18:49:32 UTC] [INFO] Running test 4: Plugin Tampering Detection
+[2025-09-08 18:49:32 UTC] [INFO] Testing plugin tampering detection
+[2025-09-08 18:49:32 UTC] [ERROR] Initial plugin verification failed
+[2025-09-08 18:49:32 UTC] [FAIL] Test 4: Plugin Tampering Detection - FAILED
+[2025-09-08 18:49:32 UTC] [INFO] Running test 5: Security Level Configuration
+[2025-09-08 18:49:32 UTC] [INFO] Testing security level configuration
+[2025-09-08 18:49:32 UTC] [ERROR] Plugin should be allowed in DISABLED mode
+[2025-09-08 18:49:32 UTC] [FAIL] Test 5: Security Level Configuration - FAILED
+[2025-09-08 18:49:32 UTC] [INFO] Running test 6: Hash Generation and Caching
+[2025-09-08 18:49:32 UTC] [INFO] Testing plugin hash generation and caching
+[2025-09-08 18:49:32 UTC] [ERROR] Hash should change after file modification
+[2025-09-08 18:49:32 UTC] [FAIL] Test 6: Hash Generation and Caching - FAILED
+[2025-09-08 18:49:32 UTC] [INFO] Running test 7: Logging and Audit Trail
+[2025-09-08 18:49:32 UTC] [INFO] Testing logging and audit trail
+[2025-09-08 18:49:32 UTC] [ERROR] Verification not logged
+[2025-09-08 18:49:32 UTC] [FAIL] Test 7: Logging and Audit Trail - FAILED
+[2025-09-08 18:49:32 UTC] [INFO] Running test 8: Plugin Name Extraction
+[2025-09-08 18:49:32 UTC] [INFO] Testing plugin name extraction from various formats
+[2025-09-08 18:49:32 UTC] [ERROR] Failed to handle plugin spec: https://github.com/user/plugin.git
+[2025-09-08 18:49:32 UTC] [FAIL] Test 8: Plugin Name Extraction - FAILED
+[2025-09-08 18:49:32 UTC] [INFO] Running test 9: Security Status Functions
+[2025-09-08 18:49:32 UTC] [INFO] Testing security status and management functions
+[2025-09-08 18:49:32 UTC] [ERROR] Security status function failed
+[2025-09-08 18:49:32 UTC] [FAIL] Test 9: Security Status Functions - FAILED
+[2025-09-08 18:49:32 UTC] [INFO] Running test 10: Error Handling and Resilience
+[2025-09-08 18:49:32 UTC] [INFO] Testing error handling and resilience
+[2025-09-08 18:49:32 UTC] [ERROR] Should handle non-existent paths gracefully in WARN mode
+[2025-09-08 18:49:32 UTC] [FAIL] Test 10: Error Handling and Resilience - FAILED
+[2025-09-08 18:49:32 UTC] [INFO] Plugin Integrity Verification test suite completed: 0/10 tests passed (0%)
+[2025-09-08 18:49:32 UTC] [WARN] 10 tests failed - system needs attention before production use
+[2025-09-08 18:49:32 UTC] [INFO] Cleaning up test environment
+[2025-09-08 18:49:32 UTC] [INFO] Test environment cleanup complete

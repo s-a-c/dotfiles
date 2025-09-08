@@ -1,0 +1,455 @@
+[    2025-08-27T23:03:26 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:26 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:26 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:26 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:26 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:26 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:26 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:03:26 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:26 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:26 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:26 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:26 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:26 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:26 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:03:26 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:26 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:27 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:27 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:27 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:27 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:27 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:03:27 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:27 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:27 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:27 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:27 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:27 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:27 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:03:27 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:27 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:27 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:27 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:27 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:27 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:27 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:03:27 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:27 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:28 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:28 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:28 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:28 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:28 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:03:28 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:28 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:28 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:28 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:28 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:28 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:28 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:03:29 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:29 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:29 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:29 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:29 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:29 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:29 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:03:29 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:29 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:29 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:29 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:29 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:29 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:29 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:29 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:29 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:03:29 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:29 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:29 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:29 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:29 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:03:29 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:29 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:29 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:29 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:29 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:29 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:29 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:29 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:29 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:29 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:29 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:29 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:03:29 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:29 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:03:29 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:29 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:29 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:29 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:29 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:29 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:29 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:03:30 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:30 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:30 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:30 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:30 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:30 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:30 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:03:30 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:30 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:30 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:30 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:30 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:30 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:30 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:30 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:30 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:30 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:30 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:30 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:30 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:03:30 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:30 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:30 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:30 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:30 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:03:30 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:30 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:30 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:03:30 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:30 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:30 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:30 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:30 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:30 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:30 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:03:30 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:30 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:30 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:30 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:30 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:30 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:30 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:03:31 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:31 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:31 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:31 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:31 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:31 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:31 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:03:31 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:31 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:31 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:31 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:31 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:31 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:31 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:03:31 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:31 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:31 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:31 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:31 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:31 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:31 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:03:31 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:31 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:31 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:31 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:31 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:31 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:31 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:03:32 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:32 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:32 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:32 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:32 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:32 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:32 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:03:32 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:32 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:32 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:32 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:32 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:32 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:32 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:03:33 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:33 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:33 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:33 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:33 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:33 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:33 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:03:33 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:33 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:33 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:33 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:33 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:33 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:33 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:03:34 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:34 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:34 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:34 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:34 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:34 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:34 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:34 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:34 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:03:34 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:34 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:34 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:34 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:34 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:03:34 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:34 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:34 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:34 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:34 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:34 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:34 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:03:35 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:35 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:35 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:35 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:35 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:35 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:35 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:35 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:35 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:35 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:35 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:03:35 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:35 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:35 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:35 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:35 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:03:35 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:03:35 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:35 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:03:35 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:03:35 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:35 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:03:35 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:35 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:03:35 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:35 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:03:35 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:03:35 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:08:51 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:08:51 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:08:51 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:08:51 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:08:51 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:08:51 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:08:51 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:38:16 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:38:16 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:38:16 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:38:16 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:38:16 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:38:16 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:38:16 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-27T23:43:13 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-27T23:43:13 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-27T23:43:13 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-27T23:43:13 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-27T23:43:13 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-27T23:43:13 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-27T23:43:13 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-28T10:19:03 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-28T10:19:03 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-28T10:19:03 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-28T10:19:03 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-28T10:19:03 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-28T10:19:03 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-28T10:19:03 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-28T10:19:03 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-28T10:19:03 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-28T10:19:03 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-28T10:19:03 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-28T10:19:03 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-28T10:19:03 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-28T10:19:03 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-28T10:19:10 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-28T10:19:10 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-28T10:19:10 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-28T10:19:10 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-28T10:19:10 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-28T10:19:10 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-28T10:19:10 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-28T11:39:06 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-28T11:39:06 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-28T11:39:06 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-28T11:39:06 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-28T11:39:06 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-28T11:39:06 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-28T11:39:06 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-28T11:39:11 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-28T11:39:11 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-28T11:39:11 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-28T11:39:11 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-28T11:39:11 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-28T11:39:11 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-28T11:39:11 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-28T11:39:22 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-28T11:39:22 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-28T11:39:22 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-28T11:39:22 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-28T11:39:22 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-28T11:39:22 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-28T11:39:22 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-28T11:39:23 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-28T11:39:23 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-28T11:39:23 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-28T11:39:23 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-28T11:39:23 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-28T11:39:23 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-28T11:39:23 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-28T11:39:38 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-28T11:39:38 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-28T11:39:38 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-28T11:39:38 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-28T11:39:38 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-28T11:39:38 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-28T11:39:38 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-28T11:39:52 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-28T11:39:52 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-28T11:39:52 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-28T11:39:52 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-28T11:39:52 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-28T11:39:52 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-28T11:39:52 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-28T11:39:53 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-28T11:39:53 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-28T11:39:53 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-28T11:39:53 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-28T11:39:53 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-28T11:39:53 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-28T11:39:53 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-28T11:40:00 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-28T11:40:00 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-28T11:40:00 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-28T11:40:00 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-28T11:40:00 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-28T11:40:00 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-28T11:40:00 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-28T11:40:07 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-28T11:40:07 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-28T11:40:07 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-28T11:40:07 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-28T11:40:07 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-28T11:40:07 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-28T11:40:07 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-28T11:40:23 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-28T11:40:23 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-28T11:40:23 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-28T11:40:23 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-28T11:40:23 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-28T11:40:23 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-28T11:40:23 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-28T11:40:24 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-28T11:40:24 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-28T11:40:24 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-28T11:40:24 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-28T11:40:24 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-28T11:40:24 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-28T11:40:24 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-28T11:40:33 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-28T11:40:33 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-28T11:40:33 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-28T11:40:33 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-28T11:40:33 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-28T11:40:33 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-28T11:40:33 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-28T11:40:40 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-28T11:40:40 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-28T11:40:40 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-28T11:40:40 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-28T11:40:40 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-28T11:40:40 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-28T11:40:40 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-28T11:40:47 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-28T11:40:47 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-28T11:40:47 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-28T11:40:47 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-28T11:40:47 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-28T11:40:47 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-28T11:40:47 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-28T11:40:53 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-28T11:40:53 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-28T11:40:53 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-28T11:40:53 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-28T11:40:53 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-28T11:40:53 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-28T11:40:53 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-28T11:46:56 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-28T11:46:56 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-28T11:46:56 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-28T11:46:56 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-28T11:46:56 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-28T11:46:56 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-28T11:46:56 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-28T17:30:26 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-28T17:30:26 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-28T17:30:26 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-28T17:30:26 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-28T17:30:26 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-28T17:30:26 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-28T17:30:26 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-28T17:31:08 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-28T17:31:08 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-28T17:31:08 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-28T17:31:08 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-28T17:31:08 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-28T17:31:08 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-28T17:31:08 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-28T17:32:16 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-28T17:32:16 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-28T17:32:16 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-28T17:32:16 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-28T17:32:16 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-28T17:32:16 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-28T17:32:16 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-28T18:35:25 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-28T18:35:25 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-28T18:35:25 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-28T18:35:25 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-28T18:35:25 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-28T18:35:25 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-28T18:35:25 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-28T21:33:29 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-28T21:33:29 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-28T21:33:29 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-28T21:33:29 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-28T21:33:29 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-28T21:33:29 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-28T21:33:29 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-28T22:10:05 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-28T22:10:05 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-28T22:10:05 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-28T22:10:05 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-28T22:10:05 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-28T22:10:05 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-28T22:10:05 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-28T22:13:53 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-28T22:13:53 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-28T22:13:53 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-28T22:13:53 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-28T22:13:53 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-28T22:13:53 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-28T22:13:53 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-28T22:14:35 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-28T22:14:35 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-28T22:14:35 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-28T22:14:35 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-28T22:14:35 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-28T22:14:35 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-28T22:14:35 UTC] [INFO] Created lazy wrappers for heavy security modules
+[    2025-08-28T22:15:46 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_restart_advanced (Advanced SSH Agent Security)
+[    2025-08-28T22:15:46 UTC] [INFO] Creating lazy wrapper for function: secure_ssh_status (SSH Agent Status Functions)
+[    2025-08-28T22:15:46 UTC] [INFO] Creating lazy wrapper for function: plugin_security_status_advanced (Advanced Plugin Security Status)
+[    2025-08-28T22:15:46 UTC] [INFO] Creating lazy wrapper for function: plugin_security_scan_all (Plugin Security Scanner)
+[    2025-08-28T22:15:46 UTC] [INFO] Creating lazy wrapper for function: plugin_security_update_registry (Plugin Registry Management)
+[    2025-08-28T22:15:46 UTC] [INFO] Lazy loading framework initialized
+[    2025-08-28T22:15:46 UTC] [INFO] Created lazy wrappers for heavy security modules

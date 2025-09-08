@@ -1,0 +1,19 @@
+[2025-08-31 07:01:28 UTC] [INFO] Starting Environment Sanitization test suite
+[2025-08-31 07:01:28 UTC] [INFO] Setting up environment sanitization test environment in /tmp/zsh-env-sanitization-test-23509
+[2025-08-31 07:01:28 UTC] [INFO] Test environment setup complete
+[2025-08-31 07:01:28 UTC] [INFO] Running test 1: PATH Security Validation
+[2025-08-31 07:01:28 UTC] [INFO] Testing PATH security validation
+[2025-08-31 07:01:28 UTC] [INFO] PATH security validation test successful
+[2025-08-31 07:01:28 UTC] [PASS] Test 1: PATH Security Validation - PASSED
+[2025-08-31 07:01:28 UTC] [INFO] Running test 2: PATH Sanitization
+[2025-08-31 07:01:28 UTC] [INFO] Testing PATH sanitization
+[2025-08-31 07:01:28 UTC] [ERROR] Secure test directory was removed
+[2025-08-31 07:01:28 UTC] [FAIL] Test 2: PATH Sanitization - FAILED
+[2025-08-31 07:01:28 UTC] [INFO] Running test 3: Sensitive Variable Detection
+[2025-08-31 07:01:28 UTC] [INFO] Testing sensitive variable detection
+[2025-08-31 07:01:28 UTC] [INFO] Sensitive variable detection test successful
+[2025-08-31 07:01:28 UTC] [PASS] Test 3: Sensitive Variable Detection - PASSED
+[2025-08-31 07:01:28 UTC] [INFO] Running test 4: Sensitive Variable Removal
+[2025-08-31 07:01:28 UTC] [INFO] Testing sensitive variable removal
+[2025-08-31 07:01:28 UTC] [INFO] Cleaning up test environment
+[2025-08-31 07:01:28 UTC] [INFO] Test environment cleanup complete

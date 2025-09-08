@@ -1,0 +1,68 @@
+[2025-08-31 08:01:22] === Simplified Plugin Loading Test Suite Started ===
+[2025-08-31 08:01:22] Test timestamp: 20250831_080122
+[2025-08-31 08:01:22] Original PWD: /Users/s-a-c/dotfiles/dot-config/zsh
+[2025-08-31 08:01:22] 
+[2025-08-31 08:01:22] === Configuration Files ===
+[2025-08-31 08:01:22] ✅ PASS: Deferred loading script exists
+[2025-08-31 08:01:22] ❌ FAIL: Deferred loading script is executable
+[2025-08-31 08:01:22]    Details: No execute permission
+[2025-08-31 08:01:22] 
+[2025-08-31 08:01:22] === Backup Safety ===
+[2025-08-31 08:01:22] ❌ FAIL: Configuration backup exists
+[2025-08-31 08:01:22]    Details: No backup files found
+[2025-08-31 08:01:22] 
+[2025-08-31 08:01:22] === Plugin Loading Analysis ===
+[2025-08-31 08:01:22] ❌ FAIL: Plugin analysis possible
+[2025-08-31 08:01:22]    Details: No backup file found for comparison
+[2025-08-31 08:01:22] 
+[2025-08-31 08:01:22] === Deferred Configuration Content ===
+[2025-08-31 08:01:22] ✅ PASS: Utility plugins scheduled with delay
+[2025-08-31 08:01:22]    Details: 1-second delay configured
+[2025-08-31 08:01:22] ✅ PASS: OMZ plugins scheduled with delay
+[2025-08-31 08:01:22]    Details: 2-second delay configured
+[2025-08-31 08:01:22] ❌ FAIL: Git lazy wrapper function defined
+[2025-08-31 08:01:22]    Details: Missing git wrapper
+[2025-08-31 08:01:22] ❌ FAIL: Docker lazy wrapper function defined
+[2025-08-31 08:01:22]    Details: Missing docker wrapper
+[2025-08-31 08:01:22] 
+[2025-08-31 08:01:22] === Main Configuration Cleanup ===
+[2025-08-31 08:01:22] ⚠️  Plugin git-extra-commands not found as deferred (may have different pattern)
+[2025-08-31 08:01:22] ⚠️  Plugin jpb.zshplugin not found as deferred (may have different pattern)
+[2025-08-31 08:01:22] ⚠️  Plugin warhol.plugin.zsh not found as deferred (may have different pattern)
+[2025-08-31 08:01:22] ⚠️  Plugin tumult.plugin.zsh not found as deferred (may have different pattern)
+[2025-08-31 08:01:22] ⚠️  Plugin docker-zsh not found as deferred (may have different pattern)
+[2025-08-31 08:01:22] ⚠️  Plugin 1password-op not found as deferred (may have different pattern)
+[2025-08-31 08:01:22] 
+[2025-08-31 08:01:22] === Essential Plugins Preserved ===
+[2025-08-31 08:01:22] ✅ PASS: Essential plugin fast-syntax-highlighting preserved
+[2025-08-31 08:01:22]    Details: Still loads immediately
+[2025-08-31 08:01:22] ✅ PASS: Essential plugin zsh-history-substring-search preserved
+[2025-08-31 08:01:22]    Details: Still loads immediately
+[2025-08-31 08:01:22] ✅ PASS: Essential plugin zsh-autosuggestions preserved
+[2025-08-31 08:01:22]    Details: Still loads immediately
+[2025-08-31 08:01:22] ✅ PASS: Essential plugin powerlevel10k preserved
+[2025-08-31 08:01:22]    Details: Still loads immediately
+[2025-08-31 08:01:23] 
+[2025-08-31 08:01:23] === Syntax Validation ===
+[2025-08-31 08:01:23] ✅ PASS: Deferred loading script syntax is valid
+[2025-08-31 08:01:23] ✅ PASS: Main configuration syntax is valid
+[2025-08-31 08:01:23] 
+[2025-08-31 08:01:23] === Compliance Validation ===
+[2025-08-31 08:01:23] ✅ PASS: Working directory preserved
+[2025-08-31 08:01:23]    Details: Current: /Users/s-a-c/dotfiles/dot-config/zsh
+[2025-08-31 08:01:23] ✅ PASS: UTC timestamped log file created
+[2025-08-31 08:01:23]    Details: File: /Users/s-a-c/.config/zsh/logs/2025-08-31/test-plugin-loading-simple_20250831_080122.log
+[2025-08-31 08:01:23] 
+[2025-08-31 08:01:23] === Performance Expectations ===
+[2025-08-31 08:01:23] Active immediate plugins: 26
+[2025-08-31 08:01:23] Deferred plugins count: 0
+[2025-08-31 08:01:23] ❌ FAIL: Significant deferral achieved
+[2025-08-31 08:01:23]    Details: Only deferred 0 plugins
+[2025-08-31 08:01:23] 
+[2025-08-31 08:01:23] === TEST EXECUTION SUMMARY ===
+[2025-08-31 08:01:23] Tests passed: 11
+[2025-08-31 08:01:23] Tests failed: 6
+[2025-08-31 08:01:23] Total tests: 17
+[2025-08-31 08:01:23] ⚠️  SIGNIFICANT ISSUES - Multiple test failures detected
+[2025-08-31 08:01:23] Simplified performance report created: /Users/s-a-c/.config/zsh/logs/2025-08-31/plugin-loading-simple-report_20250831_080122.md
+[2025-08-31 08:01:23] === Simplified Plugin Loading Test Suite Completed ===

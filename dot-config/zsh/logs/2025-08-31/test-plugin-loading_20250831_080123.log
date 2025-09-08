@@ -1,0 +1,224 @@
+[2025-08-31 08:01:23] === Plugin Loading Test Suite Started ===
+[2025-08-31 08:01:23] Test timestamp: 20250831_080123
+[2025-08-31 08:01:23] Original PWD: /Users/s-a-c/dotfiles/dot-config/zsh
+[2025-08-31 08:01:23] Log file: /Users/s-a-c/.config/zsh/logs/2025-08-31/test-plugin-loading_20250831_080123.log
+[2025-08-31 08:01:23] 
+[2025-08-31 08:01:23] === Test Group 1: Configuration Validation ===
+[2025-08-31 08:01:23] ✅ PASS: Deferred loading configuration file exists
+[2025-08-31 08:01:23]    Details: Path: /Users/s-a-c/.config/zsh/.zshrc.pre-plugins.d/04-plugin-deferred-loading.zsh
+[2025-08-31 08:01:23] ❌ FAIL: Deferred loading configuration is executable
+[2025-08-31 08:01:23] 
+[2025-08-31 08:01:23] === Test Group 2: Dependencies Validation ===
+[2025-08-31 08:01:23] ❌ FAIL: zsh-defer command is available
+[2025-08-31 08:01:23]    Details: zsh-defer is required for deferred plugin loading
+[2025-08-31 08:01:23] ❌ FAIL: zgenom plugin manager is available
+[2025-08-31 08:01:23]    Details: zgenom is required for plugin loading
+[2025-08-31 08:01:23] 
+[2025-08-31 08:01:23] === Test Group 3: Main Configuration Updates ===
+[2025-08-31 08:01:23] ❌ FAIL: git-extra-commands removed from main loading
+[2025-08-31 08:01:23]    Details: Should be commented as deferred in .zgen-setup
+[2025-08-31 08:01:23] ❌ FAIL: jpb utilities removed from main loading
+[2025-08-31 08:01:23]    Details: Should be commented as deferred in .zgen-setup
+[2025-08-31 08:01:23] ❌ FAIL: warhol plugin removed from main loading
+[2025-08-31 08:01:23]    Details: Should be commented as deferred in .zgen-setup
+[2025-08-31 08:01:23] ❌ FAIL: docker completions removed from main loading
+[2025-08-31 08:01:23]    Details: Should be commented as deferred in .zgen-setup
+[2025-08-31 08:01:23] 
+[2025-08-31 08:01:23] === Test Group 4: Startup Performance Testing ===
+[2025-08-31 08:01:23] Measuring shell startup time with deferred loading...
+[2025-08-31 08:01:27] Startup time: 4.229514000s
+[2025-08-31 08:01:27] ❌ FAIL: Shell startup time is reasonable
+[2025-08-31 08:01:27]    Details: Startup time: 4.229514000s (should be < 3s)
+[2025-08-31 08:01:27] 
+[2025-08-31 08:01:27] === Test Group 5: Deferred Loading Functionality ===
+[2025-08-31 08:01:27] Deferred loading test output:
+[2025-08-31 08:01:27] [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+WRAPPER_TEST_git:YES
+WRAPPER_TEST_docker:YES
+WRAPPER_TEST_op:YES
+WRAPPER_TEST_rake:YES
+ENV_TEST_git:0
+ENV_TEST_docker:0
+ENV_TEST_op:0
+ENV_TEST_rake:0
+DEFER_TEST:AVAILABLE
+[2025-08-31 08:01:27] ✅ PASS: Git wrapper function is created
+[2025-08-31 08:01:27]    Details: git command should be wrapped for lazy loading
+[2025-08-31 08:01:27] ✅ PASS: Docker wrapper function is created
+[2025-08-31 08:01:27]    Details: docker command should be wrapped for lazy loading
+[2025-08-31 08:01:27] ✅ PASS: 1Password wrapper function is created
+[2025-08-31 08:01:27]    Details: op command should be wrapped for lazy loading
+[2025-08-31 08:01:27] ✅ PASS: Rake wrapper function is created
+[2025-08-31 08:01:27]    Details: rake command should be wrapped for lazy loading
+[2025-08-31 08:01:27] ❌ FAIL: Git plugin not loaded on startup
+[2025-08-31 08:01:27]    Details: Should only load when git is used
+[2025-08-31 08:01:27] ❌ FAIL: Docker plugin not loaded on startup
+[2025-08-31 08:01:27]    Details: Should only load when docker is used
+[2025-08-31 08:01:27] ❌ FAIL: 1Password plugin not loaded on startup
+[2025-08-31 08:01:27]    Details: Should only load when op is used
+[2025-08-31 08:01:27] ❌ FAIL: Rake plugin not loaded on startup
+[2025-08-31 08:01:27]    Details: Should only load when rake is used
+[2025-08-31 08:01:27] ✅ PASS: zsh-defer is available in clean shell
+[2025-08-31 08:01:27]    Details: Required for deferred loading functionality
+[2025-08-31 08:01:27] 
+[2025-08-31 08:01:27] === Test Group 6: Script Syntax Validation ===
+[2025-08-31 08:01:27] ✅ PASS: Deferred loading script has valid syntax
+[2025-08-31 08:01:27]    Details: Syntax check output: 
+[2025-08-31 08:01:27] 
+[2025-08-31 08:01:27] === Test Group 7: Logging Validation ===
+[2025-08-31 08:01:27] ✅ PASS: Log directory structure exists
+[2025-08-31 08:01:27]    Details: Required for comprehensive logging
+[2025-08-31 08:01:27] ✅ PASS: Test log file is being created
+[2025-08-31 08:01:27]    Details: This test should be logging to: /Users/s-a-c/.config/zsh/logs/2025-08-31/test-plugin-loading_20250831_080123.log
+[2025-08-31 08:01:27] 
+[2025-08-31 08:01:27] === Test Group 8: Configuration Integrity ===
+[2025-08-31 08:01:27] ✅ PASS: Essential syntax highlighting plugin still loads immediately
+[2025-08-31 08:01:27]    Details: Critical for real-time syntax highlighting
+[2025-08-31 08:01:27] ✅ PASS: Essential history search plugin still loads immediately
+[2025-08-31 08:01:27]    Details: Critical for UP/DOWN arrow functionality
+[2025-08-31 08:01:27] ✅ PASS: Essential autosuggestions plugin still loads immediately
+[2025-08-31 08:01:27]    Details: Critical for interactive shell experience
+[2025-08-31 08:01:27] ✅ PASS: Essential prompt system still loads immediately
+[2025-08-31 08:01:27]    Details: Critical for shell display
+[2025-08-31 08:01:27] 
+[2025-08-31 08:01:27] === Test Group 9: File System Validation ===
+[2025-08-31 08:01:27] ✅ PASS: Deferred loading script is readable
+[2025-08-31 08:01:27] ❌ FAIL: Plugin audit documentation exists
+[2025-08-31 08:01:27]    Details: Documentation should be available for reference
+[2025-08-31 08:01:27] 
+[2025-08-31 08:01:27] === Test Group 10: Backup and Safety ===
+[2025-08-31 08:01:27] ❌ FAIL: Main configuration backup was created
+[2025-08-31 08:01:27]    Details: Safety measure before modifications
+[2025-08-31 08:01:27] 
+[2025-08-31 08:01:27] === Test Group 11: Performance Comparison ===
+[2025-08-31 08:01:27] Original plugin count (immediate loading): 0
+[2025-08-31 08:01:27] Current plugin count (immediate loading): 27
+[2025-08-31 08:01:27] ❌ FAIL: Significant plugin count reduction achieved
+[2025-08-31 08:01:27]    Details: Reduced immediate loading from 0 to 27 plugins (--27)
+[2025-08-31 08:01:27] 
+[2025-08-31 08:01:27] === Test Group 12: Deferred Scheduling Validation ===
+[2025-08-31 08:01:27] ✅ PASS: Utility plugins scheduled with 1s delay
+[2025-08-31 08:01:27]    Details: Background loading timing is configured
+[2025-08-31 08:01:27] ✅ PASS: OMZ plugins scheduled with 2s delay
+[2025-08-31 08:01:27]    Details: Staged loading approach is configured
+[2025-08-31 08:01:27] ✅ PASS: Utility plugin jpb.zshplugin is in deferred loading
+[2025-08-31 08:01:27]    Details: Should be loaded in background
+[2025-08-31 08:01:27] ✅ PASS: Utility plugin warhol.plugin.zsh is in deferred loading
+[2025-08-31 08:01:27]    Details: Should be loaded in background
+[2025-08-31 08:01:27] ✅ PASS: Utility plugin tumult.plugin.zsh is in deferred loading
+[2025-08-31 08:01:27]    Details: Should be loaded in background
+[2025-08-31 08:01:27] ✅ PASS: Utility plugin eventi/noreallyjustfuckingstopalready is in deferred loading
+[2025-08-31 08:01:27]    Details: Should be loaded in background
+[2025-08-31 08:01:27] ✅ PASS: Utility plugin bitbucket-git-helpers is in deferred loading
+[2025-08-31 08:01:27]    Details: Should be loaded in background
+[2025-08-31 08:01:27] ✅ PASS: Utility plugin skx/sysadmin-util is in deferred loading
+[2025-08-31 08:01:27]    Details: Should be loaded in background
+[2025-08-31 08:01:27] ✅ PASS: Utility plugin StackExchange/blackbox is in deferred loading
+[2025-08-31 08:01:27]    Details: Should be loaded in background
+[2025-08-31 08:01:27] ✅ PASS: Utility plugin sharat87/pip-app is in deferred loading
+[2025-08-31 08:01:27]    Details: Should be loaded in background
+[2025-08-31 08:01:27] ✅ PASS: Utility plugin chrissicool/zsh-256color is in deferred loading
+[2025-08-31 08:01:27]    Details: Should be loaded in background
+[2025-08-31 08:01:27] ✅ PASS: Utility plugin supercrabtree/k is in deferred loading
+[2025-08-31 08:01:27]    Details: Should be loaded in background
+[2025-08-31 08:01:27] ✅ PASS: OMZ plugin plugins/aws is in deferred loading
+[2025-08-31 08:01:27]    Details: Should be loaded in background
+[2025-08-31 08:01:27] ✅ PASS: OMZ plugin plugins/chruby is in deferred loading
+[2025-08-31 08:01:27]    Details: Should be loaded in background
+[2025-08-31 08:01:27] ✅ PASS: OMZ plugin plugins/rsync is in deferred loading
+[2025-08-31 08:01:27]    Details: Should be loaded in background
+[2025-08-31 08:01:27] ✅ PASS: OMZ plugin plugins/screen is in deferred loading
+[2025-08-31 08:01:27]    Details: Should be loaded in background
+[2025-08-31 08:01:27] ✅ PASS: OMZ plugin plugins/vagrant is in deferred loading
+[2025-08-31 08:01:27]    Details: Should be loaded in background
+[2025-08-31 08:01:27] ✅ PASS: OMZ plugin plugins/macos is in deferred loading
+[2025-08-31 08:01:27]    Details: Should be loaded in background
+[2025-08-31 08:01:27] 
+[2025-08-31 08:01:27] === Test Group 13: Working Directory Management ===
+[2025-08-31 08:01:27] ✅ PASS: Working directory preserved during tests
+[2025-08-31 08:01:27]    Details: Current: /Users/s-a-c/dotfiles/dot-config/zsh, Original: /Users/s-a-c/dotfiles/dot-config/zsh
+[2025-08-31 08:01:27] 
+[2025-08-31 08:01:27] === Test Group 14: Log File Organization ===
+[2025-08-31 08:01:27] ✅ PASS: Date-based log directory structure exists
+[2025-08-31 08:01:27]    Details: Logs should be organized by UTC date
+[2025-08-31 08:01:27] ✅ PASS: Test log file follows UTC timestamp naming
+[2025-08-31 08:01:27]    Details: File: /Users/s-a-c/.config/zsh/logs/2025-08-31/test-plugin-loading_20250831_080123.log
+[2025-08-31 08:01:27] 
+[2025-08-31 08:01:27] === Test Group 15: Integration Testing ===
+[2025-08-31 08:01:28] ✅ PASS: Deferred loading configuration sources without errors
+[2025-08-31 08:01:28]    Details: Critical for shell startup success
+[2025-08-31 08:01:28] 
+[2025-08-31 08:01:28] === TEST EXECUTION SUMMARY ===
+[2025-08-31 08:01:28] Tests passed: 36
+[2025-08-31 08:01:28] Tests failed: 15
+[2025-08-31 08:01:28] Total tests: 51
+[2025-08-31 08:01:28] ⚠️  SOME TESTS FAILED - Review the failed tests above
+[2025-08-31 08:01:28] 
+[2025-08-31 08:01:28] === DETAILED TEST RESULTS ===
+[2025-08-31 08:01:28] PASS: Deferred loading configuration file exists
+[2025-08-31 08:01:28] FAIL: Deferred loading configuration is executable
+[2025-08-31 08:01:28] FAIL: zsh-defer command is available
+[2025-08-31 08:01:28] FAIL: zgenom plugin manager is available
+[2025-08-31 08:01:28] FAIL: git-extra-commands removed from main loading
+[2025-08-31 08:01:28] FAIL: jpb utilities removed from main loading
+[2025-08-31 08:01:28] FAIL: warhol plugin removed from main loading
+[2025-08-31 08:01:28] FAIL: docker completions removed from main loading
+[2025-08-31 08:01:28] FAIL: Shell startup time is reasonable
+[2025-08-31 08:01:28] PASS: Git wrapper function is created
+[2025-08-31 08:01:28] PASS: Docker wrapper function is created
+[2025-08-31 08:01:28] PASS: 1Password wrapper function is created
+[2025-08-31 08:01:28] PASS: Rake wrapper function is created
+[2025-08-31 08:01:28] FAIL: Git plugin not loaded on startup
+[2025-08-31 08:01:28] FAIL: Docker plugin not loaded on startup
+[2025-08-31 08:01:28] FAIL: 1Password plugin not loaded on startup
+[2025-08-31 08:01:28] FAIL: Rake plugin not loaded on startup
+[2025-08-31 08:01:28] PASS: zsh-defer is available in clean shell
+[2025-08-31 08:01:28] PASS: Deferred loading script has valid syntax
+[2025-08-31 08:01:28] PASS: Log directory structure exists
+[2025-08-31 08:01:28] PASS: Test log file is being created
+[2025-08-31 08:01:28] PASS: Essential syntax highlighting plugin still loads immediately
+[2025-08-31 08:01:28] PASS: Essential history search plugin still loads immediately
+[2025-08-31 08:01:28] PASS: Essential autosuggestions plugin still loads immediately
+[2025-08-31 08:01:28] PASS: Essential prompt system still loads immediately
+[2025-08-31 08:01:28] PASS: Deferred loading script is readable
+[2025-08-31 08:01:28] FAIL: Plugin audit documentation exists
+[2025-08-31 08:01:28] FAIL: Main configuration backup was created
+[2025-08-31 08:01:28] FAIL: Significant plugin count reduction achieved
+[2025-08-31 08:01:28] PASS: Utility plugins scheduled with 1s delay
+[2025-08-31 08:01:28] PASS: OMZ plugins scheduled with 2s delay
+[2025-08-31 08:01:28] PASS: Utility plugin jpb.zshplugin is in deferred loading
+[2025-08-31 08:01:28] PASS: Utility plugin warhol.plugin.zsh is in deferred loading
+[2025-08-31 08:01:28] PASS: Utility plugin tumult.plugin.zsh is in deferred loading
+[2025-08-31 08:01:28] PASS: Utility plugin eventi/noreallyjustfuckingstopalready is in deferred loading
+[2025-08-31 08:01:28] PASS: Utility plugin bitbucket-git-helpers is in deferred loading
+[2025-08-31 08:01:28] PASS: Utility plugin skx/sysadmin-util is in deferred loading
+[2025-08-31 08:01:28] PASS: Utility plugin StackExchange/blackbox is in deferred loading
+[2025-08-31 08:01:28] PASS: Utility plugin sharat87/pip-app is in deferred loading
+[2025-08-31 08:01:28] PASS: Utility plugin chrissicool/zsh-256color is in deferred loading
+[2025-08-31 08:01:28] PASS: Utility plugin supercrabtree/k is in deferred loading
+[2025-08-31 08:01:28] PASS: OMZ plugin plugins/aws is in deferred loading
+[2025-08-31 08:01:28] PASS: OMZ plugin plugins/chruby is in deferred loading
+[2025-08-31 08:01:28] PASS: OMZ plugin plugins/rsync is in deferred loading
+[2025-08-31 08:01:28] PASS: OMZ plugin plugins/screen is in deferred loading
+[2025-08-31 08:01:28] PASS: OMZ plugin plugins/vagrant is in deferred loading
+[2025-08-31 08:01:28] PASS: OMZ plugin plugins/macos is in deferred loading
+[2025-08-31 08:01:28] PASS: Working directory preserved during tests
+[2025-08-31 08:01:28] PASS: Date-based log directory structure exists
+[2025-08-31 08:01:28] PASS: Test log file follows UTC timestamp naming
+[2025-08-31 08:01:28] PASS: Deferred loading configuration sources without errors
+[2025-08-31 08:01:28] 
+[2025-08-31 08:01:28] === PERFORMANCE ANALYSIS ===
+[2025-08-31 08:01:28] Shell startup time: 4.229514000s
+[2025-08-31 08:01:28] Plugin reduction: -27 plugins moved to deferred loading
+[2025-08-31 08:01:28] Immediate loading plugins remaining: 27
+[2025-08-31 08:01:28] Performance report created: /Users/s-a-c/.config/zsh/logs/2025-08-31/plugin-loading-performance-report_20250831_080123.md
+[2025-08-31 08:01:28] === Plugin Loading Test Suite Completed ===

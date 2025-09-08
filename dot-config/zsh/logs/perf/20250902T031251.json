@@ -1,0 +1,12 @@
+{
+  "timestamp":"20250902T031251",
+  "cold_ms":6482,
+  "warm_ms":5363,
+  "cold_pre_plugin_ms":34,
+  "cold_post_plugin_ms":5329,
+  "cold_prompt_ready_ms":5333,
+  "warm_pre_plugin_ms":28,
+  "warm_post_plugin_ms":4775,
+  "warm_prompt_ready_ms":4778,
+  "post_plugin_segments": [{"label":"30-dev-env","cold_ms":4,"warm_ms":4,"mean_ms":4},{"label":"20-essential","cold_ms":4,"warm_ms":4,"mean_ms":4},{"label":"50-completion-history","cold_ms":4,"warm_ms":4,"mean_ms":4}]
+}

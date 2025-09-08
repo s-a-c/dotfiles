@@ -1,0 +1,68 @@
+[2025-09-06 11:14:03] [INFO] Running security tests only
+[2025-09-06 11:14:03] [FAIL] test-async-initial-state - Exit code: 1 (index=1 duration=338ms)
+[2025-09-06 11:14:03] [FAIL] test-async-initial-state - Output: [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+Test 1: Initial async state is not RUNNING... [32mPASS[0m
+Test 2: Async queue marker present on init... [32mPASS[0m
+Test 3: No RUNNING state before prompt completion... grep: /Users/s-a-c/dotfiles/dot-config/zsh/logs/perf-current.log: No such file or directory
+[32mPASS[0m
+Test 4: Proper state progression after prompt... [32mPASS[0m
+Test 5: RUNNING state occurs after prompt completion... [32mPASS[0m
+Test 6: State consistency maintained... [32mPASS[0m
+Test 7: Premature async start detection... 
+[2025-09-06 11:14:04] [PASS] test-async-state-machine - [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+Test 1: Initial async state not RUNNING... [32mPASS[0m
+Test 2: Deferred start marker present... [32mPASS[0m
+Test 3: Valid state transition after prompt... [32mPASS[0m
+Test 4: State transitions are monotonic... [32mPASS[0m
+Test 5: No duplicate states at same timestamp... [32mPASS[0m
+Test 6: Log file permissions valid... [32mPASS[0m
+Test 7: State machine cleanup... [32mPASS[0m
+
+=== Async State Machine Test Summary ===
+[32mAll 7 tests passed![0m (index=2 duration=424ms)
+[2025-09-06 11:14:04] [FAIL] test-preplugin-integrity-hash - Exit code: 1 (index=3 duration=87ms)
+[2025-09-06 11:14:04] [FAIL] test-preplugin-integrity-hash - Output: [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+# [integrity-test] Baseline aggregate differs (baseline=64b5b9565954faa5dff8f1f9f576ccbf3dd153659c2ff341602ff68f9560126f current=4669c1ec5d67630e675ff6058186ec2aedef9e19396128e07708c7eb39207688) – permissive mode
+FAIL: pre-plugin integrity issues:
+  - Aggregate mismatch (reported=4669c1ec5d67630e675ff6058186ec2aedef9e19396128e07708c7eb39207688 recomputed=d1438707b34f427c3c5e64fd8d33354112568477376ef9ac93d186067f6a8c38)
+
+---- integrity-current.json (first 40 lines) ----
+    {
+    "schema": "preplugin-integrity.v1",
+    "timestamp": "20250906T100937Z",
+    "guidelines_checksum": "unknown",
+    "aggregate_sha256": "4669c1ec5d67630e675ff6058186ec2aedef9e19396128e07708c7eb39207688",
+    "file_count": 13,
+    "files": [
+    {"path":".zshenv","sha256":"c4a915cfe9e2c3a230c74f90139f72ea8d864d266a5b34183c1c290bcdb71156","size":   18284,"mtime":"2025-09-03T20:39:00Z"},{"path":".zshrc.pre-plugins.d.REDESIGN/00-path-safety.zsh","sha256":"68dd61c3b57fb5ffcec5226ac5f2d6823e9b8424cfb3c9440ccfd2c83c3b6abe","size":    5790,"mtime":"2025-09-05T23:54:42Z"},{"path":".zshrc.pre-plugins.d.REDESIGN/01-error-handling-framework.zsh","sha256":"523875435cb197325b3546ef388955b525f1878d96cf03b9d566f4c6b8a86b0a","size":   10144,"mtime":"2025-09-06T00:03:57Z"},{"path":".zshrc.pre-plugins.d.REDESIGN/01-segment-lib-bootstrap.zsh","sha256":"53ec749d9bf8df8173e781c5de6f07d978a51e37ac809ef4ac6f31f03fedad3e","size":    2559,"mtime":"2025-09-02T23:30:35Z"},{"path":".zshrc.pre-plugins.d.REDESIGN/02-guidelines-checksum.zsh","sha256":"cb41855edeef1a7da5600f94d7be76fe4c7b8adbb82ed68732bcd158cbbcf485","size":    4718,"mtime":"2025-09-05T23:54:42Z"},{"path":".zshrc.pre-plugins.d.REDESIGN/02-module-hardening.zsh","sha256":"dd45c61e3546f894262b2af63ec6dc8c275be8a5999253e19309a4313838dbf0","size":    9248,"mtime":"2025-09-05T23:45:45Z"},{"path":".zshrc.pre-plugins.d.REDESIGN/05-fzf-init.zsh","sha256":"aee6b513605fcb9445df4044e92150012e1108857d268e6669b7810953bbb1ff","size":    1627,"mtime":"2025-09-05T23:54:42Z"},{"path":".zshrc.pre-plugins.d.REDESIGN/10-lazy-framework.zsh","sha256":"35e203adeddce268aab350a23792627639a09273494063b8d30fae20fa041ea8","size":    6971,"mtime":"2025-09-05T23:54:42Z"},{"path":".zshrc.pre-plugins.d.REDESIGN/15-node-runtime-env.zsh","sha256":"883290e674c27e09abbdc33161ef004f836246b0381be24393ee4412d177553c","size":    2008,"mtime":"2025-09-05T23:54:42Z"},{"path":".zshrc.pre-plugins.d.REDESIGN/20-macos-defaults-deferred.zsh","sha256":"155b1381f2c68f3c64a46eb86db780b54988235c43e1ecd1d534c85463eccf35","size":    3054,"mtime":"2025-09-05T23:54:42Z"},{"path":".zshrc.pre-plugins.d.REDESIGN/25-lazy-integrations.zsh","sha256":"9b065a953409c3e8c5eac7c6be855ae5be07d7502d57feefc709f85bcd1c1b97","size":    2838,"mtime":"2025-09-05T23:54:42Z"},{"path":".zshrc.pre-plugins.d.REDESIGN/30-ssh-agent.zsh","sha256":"de0fafcfe02abb934df59834ea9bac8fc037fb8d48e3602977787727d1ff6009","size":    4534,"mtime":"2025-09-05T23:54:42Z"},{"path":".zshrc.pre-plugins.d.REDESIGN/40-pre-plugin-reserved.zsh","sha256":"8672f208365251a02ec950c675d78d86db4f632c312d6be68bb21cd2286a4bb0","size":    3763,"mtime":"2025-09-05T23:54:42Z"}
+    ]
+    }
+------------------------------------------------
+[2025-09-06 11:14:04] [SUMMARY] Security Tests - Total: 3, Passed: 1, Failed: 2

@@ -1,0 +1,13 @@
+{
+  "timestamp":"20250907T044526",
+  "guidelines_checksum":"50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49",
+  "cold_ms":6858,
+  "warm_ms":6846,
+  "cold_pre_plugin_ms":2056,
+  "cold_post_plugin_ms":6856,
+  "cold_prompt_ready_ms":6856,
+  "warm_pre_plugin_ms":2053,
+  "warm_post_plugin_ms":6844,
+  "warm_prompt_ready_ms":6844,
+  "post_plugin_segments": []
+}

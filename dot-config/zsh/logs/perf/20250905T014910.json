@@ -1,0 +1,13 @@
+{
+  "timestamp":"20250905T014910",
+  "guidelines_checksum":"50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49",
+  "cold_ms":6227,
+  "warm_ms":6197,
+  "cold_pre_plugin_ms":25,
+  "cold_post_plugin_ms":0,
+  "cold_prompt_ready_ms":0,
+  "warm_pre_plugin_ms":27,
+  "warm_post_plugin_ms":0,
+  "warm_prompt_ready_ms":0,
+  "post_plugin_segments": [{"label":"p10k_theme","cold_ms":7,"warm_ms":7,"mean_ms":7},{"label":"20-essential/completion/core-reserve","cold_ms":4,"warm_ms":4,"mean_ms":4},{"label":"compinit","cold_ms":17,"warm_ms":20,"mean_ms":18},{"label":"zgenom-init","cold_ms":4,"warm_ms":18,"mean_ms":11},{"label":"syntax_highlight_init","cold_ms":4,"warm_ms":4,"mean_ms":4},{"label":"30-dev-env","cold_ms":4,"warm_ms":4,"mean_ms":4},{"label":"20-essential/navigation/cd","cold_ms":3,"warm_ms":4,"mean_ms":3},{"label":"vcs_helpers_init","cold_ms":43,"warm_ms":4,"mean_ms":23},{"label":"completion_cache_scan","cold_ms":4,"warm_ms":3,"mean_ms":3},{"label":"20-essential","cold_ms":49,"warm_ms":52,"mean_ms":50},{"label":"20-essential/git/prompt","cold_ms":4,"warm_ms":4,"mean_ms":4},{"label":"theme_extras_init","cold_ms":4,"warm_ms":4,"mean_ms":4},{"label":"fzf_tools_init","cold_ms":15,"warm_ms":3,"mean_ms":9},{"label":"20-essential/safety/aliases","cold_ms":3,"warm_ms":4,"mean_ms":3},{"label":"20-essential/history/baseline","cold_ms":4,"warm_ms":3,"mean_ms":3},{"label":"history_backend_init","cold_ms":4,"warm_ms":3,"mean_ms":3},{"label":"50-completion-history","cold_ms":3,"warm_ms":22,"mean_ms":12},{"label":"20-essential/perf/segment-inject","cold_ms":4,"warm_ms":4,"mean_ms":4}]
+}

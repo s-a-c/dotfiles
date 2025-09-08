@@ -1,0 +1,30 @@
+POLICY checksum=50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+POLICY checksum=50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+PRE_PLUGIN_COMPLETE 337
+SEGMENT name=pre_plugin_total ms=337 phase=pre_plugin sample=unknown
+POST_PLUGIN_SEGMENT zgenom-init 5
+POST_PLUGIN_SEGMENT 20-essential/git/prompt 5
+POST_PLUGIN_SEGMENT 20-essential/history/baseline 5
+POST_PLUGIN_SEGMENT 20-essential/safety/aliases 5
+POST_PLUGIN_SEGMENT 20-essential/navigation/cd 4
+POST_PLUGIN_SEGMENT 20-essential/completion/core-reserve 6
+POST_PLUGIN_SEGMENT 20-essential/perf/segment-inject 4
+POST_PLUGIN_SEGMENT 20-essential 65
+POST_PLUGIN_SEGMENT 30-dev-env 5
+POST_PLUGIN_SEGMENT 50-completion-history 5
+SEGMENT name=compinit ms=17 phase=post_plugin sample=unknown
+POST_PLUGIN_SEGMENT compinit 17
+SEGMENT name=p10k_theme ms=9 phase=post_plugin sample=unknown
+POST_PLUGIN_SEGMENT p10k_theme 9
+SEGMENT name=syntax_highlight_init ms=4 phase=post_plugin sample=unknown
+POST_PLUGIN_SEGMENT syntax_highlight_init 4
+SEGMENT name=history_backend_init ms=5 phase=post_plugin sample=unknown
+POST_PLUGIN_SEGMENT history_backend_init 5
+SEGMENT name=theme_extras_init ms=4 phase=post_plugin sample=unknown
+POST_PLUGIN_SEGMENT theme_extras_init 4
+SEGMENT name=completion_cache_scan ms=5 phase=post_plugin sample=unknown
+POST_PLUGIN_SEGMENT completion_cache_scan 5
+SEGMENT name=vcs_helpers_init ms=5 phase=post_plugin sample=unknown
+POST_PLUGIN_SEGMENT vcs_helpers_init 5
+SEGMENT name=fzf_tools_init ms=5 phase=post_plugin sample=unknown
+POST_PLUGIN_SEGMENT fzf_tools_init 5
