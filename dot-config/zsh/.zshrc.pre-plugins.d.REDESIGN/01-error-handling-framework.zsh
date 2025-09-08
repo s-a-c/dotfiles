@@ -1,6 +1,7 @@
 #!/opt/homebrew/bin/zsh
 # 01-error-handling-framework.zsh
 # P1.1 Core Module Hardening - Error Handling Framework
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
 #
 # PURPOSE:
 #   Provides robust error handling, validation, and fault tolerance
@@ -8,10 +9,10 @@
 #
 # COMPATIBILITY: zsh 5.9+ (/opt/homebrew/bin/zsh)
 
-if [[ -n "${_LOADED_01_ERROR_HANDLING:-}" ]]; then
+if [[ -n "${_LOADED_01_ERROR_HANDLING_FRAMEWORK:-}" ]]; then
   return 0
 fi
-_LOADED_01_ERROR_HANDLING=1
+_LOADED_01_ERROR_HANDLING_FRAMEWORK=1
 
 # ------------------------
 # Error Handling Framework
