@@ -1,0 +1,266 @@
+name: Bundle Performance Ledgers
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v<checksum>
+
+on:
+  workflow_dispatch:
+    inputs:
+      days_back:
+        description: 'Number of days back to collect ledgers'
+        required: false
+        default: '7'
+        type: string
+      include_regression_analysis:
+        description: 'Include regression analysis in bundle'
+        required: false
+        default: 'true'
+        type: boolean
+      bundle_name:
+        description: 'Custom name for the bundle'
+        required: false
+        default: ''
+        type: string
+
+jobs:
+  collect-ledgers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set bundle name
+      run: |
+        if [ -n "${{ inputs.bundle_name }}" ]; then
+          BUNDLE_NAME="${{ inputs.bundle_name }}"
+        else
+          BUNDLE_NAME="perf-ledgers-$(date +%Y%m%d)-${{ github.sha:0:7 }}"
+        fi
+        echo "BUNDLE_NAME=$BUNDLE_NAME" >> $GITHUB_ENV
+
+    - name: Create bundle directory
+      run: |
+        mkdir -p bundle-workspace/${{ env.BUNDLE_NAME }}
+        echo "Created bundle workspace: bundle-workspace/${{ env.BUNDLE_NAME }}"
+
+    - name: Download performance ledgers (last ${{ inputs.days_back }} days)
+      uses: actions/download-artifact@v4
+      with:
+        pattern: perf-ledgers-*
+        path: bundle-workspace/raw-ledgers
+        merge-multiple: true
+      continue-on-error: true
+
+    - name: Download regression analyses
+      if: inputs.include_regression_analysis == 'true'
+      uses: actions/download-artifact@v4
+      with:
+        pattern: regression-analysis-*
+        path: bundle-workspace/raw-regression
+        merge-multiple: true
+      continue-on-error: true
+
+    - name: Filter ledgers by date range
+      run: |
+        CUTOFF_DATE=$(date -d "${{ inputs.days_back }} days ago" +%Y%m%d)
+        echo "Filtering ledgers newer than: $CUTOFF_DATE"
+
+        if [ -d bundle-workspace/raw-ledgers ]; then
+          find bundle-workspace/raw-ledgers -name "*.json" -o -name "*.txt" | while read file; do
+            # Extract date from filename (assumes format: *-YYYYMMDD.json)
+            filename=$(basename "$file")
+            if [[ "$filename" =~ ([0-9]{8}) ]]; then
+              file_date=${BASH_REMATCH[1]}
+              if [[ "$file_date" -ge "$CUTOFF_DATE" ]]; then
+                cp "$file" "bundle-workspace/${{ env.BUNDLE_NAME }}/"
+                echo "Included: $filename (date: $file_date)"
+              else
+                echo "Excluded: $filename (date: $file_date, too old)"
+              fi
+            else
+              # If no date in filename, include it anyway
+              cp "$file" "bundle-workspace/${{ env.BUNDLE_NAME }}/"
+              echo "Included: $filename (no date pattern)"
+            fi
+          done
+        else
+          echo "No performance ledgers found to bundle"
+        fi
+
+    - name: Include regression analyses
+      if: inputs.include_regression_analysis == 'true'
+      run: |
+        if [ -d bundle-workspace/raw-regression ]; then
+          mkdir -p "bundle-workspace/${{ env.BUNDLE_NAME }}/regression-analysis"
+          find bundle-workspace/raw-regression -name "*.json" -exec cp {} "bundle-workspace/${{ env.BUNDLE_NAME }}/regression-analysis/" \;
+          echo "Included regression analysis files"
+        else
+          echo "No regression analysis files found"
+        fi
+
+    - name: Generate bundle manifest
+      run: |
+        cd bundle-workspace/${{ env.BUNDLE_NAME }}
+
+        cat > MANIFEST.md << EOF
+        # Performance Ledger Bundle
+
+        **Bundle Name:** ${{ env.BUNDLE_NAME }}
+        **Generated:** $(date -I)
+        **Commit:** ${{ github.sha }}
+        **Branch:** ${{ github.ref_name }}
+        **Days Back:** ${{ inputs.days_back }}
+        **Include Regression:** ${{ inputs.include_regression_analysis }}
+
+        ## Contents
+
+        ### Performance Ledgers
+        $(find . -name "*.json" -not -path "./regression-analysis/*" | sort | sed 's/^/- /')
+
+        ### Text Files
+        $(find . -name "*.txt" | sort | sed 's/^/- /')
+
+        ### Regression Analysis
+        $(find ./regression-analysis -name "*.json" 2>/dev/null | sort | sed 's/^/- /' || echo "- None included")
+
+        ## Usage
+
+        This bundle contains performance ledgers and analysis data for ZSH redesign validation.
+        Use these files as evidence in pull requests or for performance regression analysis.
+
+        ### Key Files:
+        - \`baseline-*.json\`: Performance baseline measurements
+        - \`microbench-*.json\`: Detailed microbenchmark results
+        - \`performance-summary-*.json\`: Daily performance summaries
+        - \`startup-times.txt\`: Raw startup time measurements
+        - \`shim-audit-*.json\`: Shim performance impact analysis
+
+        ## Validation
+
+        To validate this bundle:
+        1. Check that all expected files are present
+        2. Verify JSON files are valid: \`jq . *.json\`
+        3. Check date ranges match the requested period
+        4. Confirm regression analysis results (if included)
+        EOF
+
+        # Generate file count summary
+        echo "" >> MANIFEST.md
+        echo "## File Summary" >> MANIFEST.md
+        echo "- JSON files: $(find . -name "*.json" | wc -l)" >> MANIFEST.md
+        echo "- Text files: $(find . -name "*.txt" | wc -l)" >> MANIFEST.md
+        echo "- Total files: $(find . -type f | wc -l)" >> MANIFEST.md
+
+    - name: Generate validation checksums
+      run: |
+        cd bundle-workspace/${{ env.BUNDLE_NAME }}
+        find . -type f -name "*.json" -o -name "*.txt" | sort | xargs sha256sum > CHECKSUMS.sha256
+        echo "Generated checksums for $(wc -l < CHECKSUMS.sha256) files"
+
+    - name: Create bundle archive
+      run: |
+        cd bundle-workspace
+        tar -czf "${{ env.BUNDLE_NAME }}.tar.gz" "${{ env.BUNDLE_NAME }}"
+        echo "Bundle size: $(du -h "${{ env.BUNDLE_NAME }}.tar.gz" | cut -f1)"
+
+    - name: Upload bundle artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.BUNDLE_NAME }}
+        path: |
+          bundle-workspace/${{ env.BUNDLE_NAME }}.tar.gz
+          bundle-workspace/${{ env.BUNDLE_NAME }}/MANIFEST.md
+        retention-days: 90
+
+    - name: Generate bundle summary
+      run: |
+        cd bundle-workspace/${{ env.BUNDLE_NAME }}
+
+        echo "## Performance Ledger Bundle Created" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Bundle:** \`${{ env.BUNDLE_NAME }}\`" >> $GITHUB_STEP_SUMMARY
+        echo "**Size:** $(du -h ../${{ env.BUNDLE_NAME }}.tar.gz | cut -f1)" >> $GITHUB_STEP_SUMMARY
+        echo "**Files:** $(find . -type f | wc -l)" >> $GITHUB_STEP_SUMMARY
+        echo "**Period:** Last ${{ inputs.days_back }} days" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+
+        if [ $(find . -name "*.json" -not -path "./regression-analysis/*" | wc -l) -gt 0 ]; then
+          echo "✅ **Performance Ledgers:** $(find . -name "*.json" -not -path "./regression-analysis/*" | wc -l) files" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "⚠️  **Performance Ledgers:** No files found" >> $GITHUB_STEP_SUMMARY
+        fi
+
+        if [ -d regression-analysis ] && [ $(find regression-analysis -name "*.json" | wc -l) -gt 0 ]; then
+          echo "✅ **Regression Analysis:** $(find regression-analysis -name "*.json" | wc -l) files" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "ℹ️ **Regression Analysis:** Not included" >> $GITHUB_STEP_SUMMARY
+        fi
+
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Download Instructions" >> $GITHUB_STEP_SUMMARY
+        echo "1. Go to the Actions tab of this repository" >> $GITHUB_STEP_SUMMARY
+        echo "2. Find this workflow run" >> $GITHUB_STEP_SUMMARY
+        echo "3. Download the \`${{ env.BUNDLE_NAME }}\` artifact" >> $GITHUB_STEP_SUMMARY
+        echo "4. Extract and use for PR evidence or analysis" >> $GITHUB_STEP_SUMMARY
+
+  validate-bundle:
+    runs-on: ubuntu-latest
+    needs: collect-ledgers
+    timeout-minutes: 10
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set bundle name
+      run: |
+        if [ -n "${{ inputs.bundle_name }}" ]; then
+          BUNDLE_NAME="${{ inputs.bundle_name }}"
+        else
+          BUNDLE_NAME="perf-ledgers-$(date +%Y%m%d)-${{ github.sha:0:7 }}"
+        fi
+        echo "BUNDLE_NAME=$BUNDLE_NAME" >> $GITHUB_ENV
+
+    - name: Download bundle for validation
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ env.BUNDLE_NAME }}
+        path: validation-workspace
+
+    - name: Extract and validate bundle
+      run: |
+        cd validation-workspace
+        tar -xzf "${{ env.BUNDLE_NAME }}.tar.gz"
+        cd "${{ env.BUNDLE_NAME }}"
+
+        echo "Validating bundle contents..."
+
+        # Check manifest exists
+        if [ ! -f MANIFEST.md ]; then
+          echo "ERROR: MANIFEST.md missing"
+          exit 1
+        fi
+
+        # Check checksums
+        if [ -f CHECKSUMS.sha256 ]; then
+          if sha256sum -c CHECKSUMS.sha256 --quiet; then
+            echo "✅ All checksums valid"
+          else
+            echo "❌ Checksum validation failed"
+            exit 1
+          fi
+        else
+          echo "WARNING: No checksums file found"
+        fi
+
+        # Validate JSON files
+        find . -name "*.json" | while read json_file; do
+          if jq . "$json_file" >/dev/null 2>&1; then
+            echo "✅ Valid JSON: $json_file"
+          else
+            echo "❌ Invalid JSON: $json_file"
+            exit 1
+          fi
+        done
+
+        echo "Bundle validation completed successfully"
