@@ -5,6 +5,8 @@
 #
 # Compliance: guidelines.md (see repo root) – timing & idempotent load policy
 #
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+#
 # Responsibilities (current phase):
 #   - Provide a stable sentinel for the "20-essential" post‑plugin segment.
 #   - Skeleton loader + TODO map for core / minimal plugins planned in Stage 4–5.

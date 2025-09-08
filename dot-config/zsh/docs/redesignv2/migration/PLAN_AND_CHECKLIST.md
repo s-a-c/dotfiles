@@ -55,7 +55,7 @@ The following items are the principal outputs of the read-only inspection (paths
   - `$ZDOTDIR/tools/activate-redesign.sh` — present and implements snippet injection, environment file generation, and status/backup helpers. This is the existing activation script referenced in docs.
 
 - Bench / shim audit:
-  - `$ZDOTDIR/tools/bench-shim-audit.zsh` — present; performs shim detection and can emit JSON artifacts used by gating.
+  - `$ZDOTDIR/tools/bench-shim-audit.zsh` — present; performs shim detection and can emit JSON artifacts used by gating. Current audit result: 1 shim detected (`zf::script_dir`; minimal, 1-line). Migration readiness remains conditional pending review.
 
 - Tests and test harness:
   - Test runner and suites exist under `$ZDOTDIR/tests/` (many test files and categories observed, including integration/performance/security tests).
@@ -108,7 +108,7 @@ The test suite is organized into subfolders by category. When referencing or run
   - `$ZDOTDIR/docs/redesignv2` contains artifacts, badges, and metrics directories (baseline metrics available).
 
 - CI and workflows:
-  - Workflows reference `.zshrc.d.REDESIGN` paths in structure badge config. No new flagged workflows exist yet for nightly perf capturing or bundling; will be added in-branch as requested.
+  - Project-root ZSH workflows are in place and updated (zsh-Redesign — nightly perf, zsh-Nightly Metrics Refresh, zsh-Perf & Structure CI, zsh-Structure Badge Generation). Repository-wide governance workflows are also present (repo-Variance Nightly, repo-Perf Ledger Nightly). A read‑only bundling workflow draft (draft-bundle-ledgers.yml) is available under `$ZDOTDIR/docs/redesignv2/migration/`.
 
 - Notable sentinels / guards in code:
   - `ZSH_USE_REDESIGN` and `ZSH_ENABLE_PREPLUGIN_REDESIGN` / `ZSH_ENABLE_POSTPLUGIN_REDESIGN` are already used as gating variables in the codebase.
@@ -136,8 +136,8 @@ Step 0 — Read-only scan (COMPLETE)
 - Produce a shim inventory (from `tools/bench-shim-audit.zsh`) and list modules that are already implemented.
 - List tests and test runner entry points.
 
-Step 1 — Prepare drafts (read-only)
-- Draft content for the three modules (F-A3/F-A4/F-A5), scripts, and CI workflows and present them for approval.
+Step 1 — Drafts generated (read-only)
+- Draft content has been generated as read-only files under `$ZDOTDIR/docs/redesignv2/migration/` and is ready for review and approval.
   - Proposed module files:
     - `$ZDOTDIR/.zshrc.d.REDESIGN/50-completion-history.zsh` — (exists) will be audited and updated if required.
     - `$ZDOTDIR/.zshrc.d.REDESIGN/60-ui-prompt.zsh` — (exists) will be audited and extended only if needed.
@@ -188,9 +188,9 @@ Step 5 — Bundle evidence and prepare PR
 The following checklist must be completed and each item explicitly approved by you before edits are made and pushed to `origin/feature/zsh-refactor-configuration`.
 
 Repository inspection & drafts
-- [ ] I will present a full list of files I intend to create/modify (exact paths) as a draft. (Pending)
-- [ ] I will present the exact contents of `$ZDOTDIR/tools/deactivate-redesign.sh` and `$ZDOTDIR/tools/migrate-to-redesign.sh` for your approval. (Pending)
-- [ ] I will present the exact contents of each module (F-A3/F-A4/F-A5) draft for your approval. (Pending)
+- [ ] Full list of files drafted and available under `$ZDOTDIR/docs/redesignv2/migration/DRAFT_INDEX.md`. (Generated; review pending)
+- [ ] Drafts of `$ZDOTDIR/tools/deactivate-redesign.sh` and `$ZDOTDIR/tools/migrate-to-redesign.sh` are available for review. (Generated; review pending)
+- [ ] Draft module contents (including `70-shim-removal.zsh`) are available for review. (Generated; review pending)
 
 Tests & local validation
 - [ ] Confirm local test commands to run (I will run and paste the outputs). (Pending)
@@ -198,7 +198,7 @@ Tests & local validation
 - [ ] Run unit & integration tests (all passing locally) before any push. (Pending)
 
 CI / workflows
-- [ ] Draft CI workflow YAMLs will be presented for approval (flagging rules and artifact policies). (Pending)
+- [ ] Draft CI workflow YAMLs have been generated for approval (flagging rules and artifact policies). (Generated; review pending)
 - [ ] Confirm GitHub artifact retention / job permissions. (Pending)
 
 Migration behavior & safety
@@ -216,7 +216,7 @@ Push & commit policy
 ---
 
 ## Immediate next steps (read-only)
-I will prepare the following artifacts (read-only drafts) and not modify the repo until you explicitly approve:
+The following artifacts have been prepared as read-only drafts; no repository changes have been made pending your explicit approval. Drafts are deduplicated for implementation (flat draft-* files are canonical; the annotated `drafts/*.md` renderings can be removed after approval):
 1. Exact file list and content drafts for:
    - `$ZDOTDIR/.zshrc.d.REDESIGN/70-shim-removal.zsh`
    - `$ZDOTDIR/tools/deactivate-redesign.sh`

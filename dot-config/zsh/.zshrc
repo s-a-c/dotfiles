@@ -689,3 +689,8 @@ export HERD_PHP_84_INI_SCAN_DIR="/Users/s-a-c/Library/Application Support/Herd/c
 
 # Herd injected PHP 8.5 configuration.
 export HERD_PHP_85_INI_SCAN_DIR="/Users/s-a-c/Library/Application Support/Herd/config/php/85/"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/s-a-c/.lmstudio/bin"
+# End of LM Studio CLI section
+
