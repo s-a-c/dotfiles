@@ -10,6 +10,14 @@ else
   . "${(%):-%N:h}/../run-all-tests.zsh"
 fi
 
+# Fallback helpers if the runner didn't define them
+if ! typeset -f print_success >/dev/null 2>&1; then
+  print_success() { print "$@"; }
+fi
+if ! typeset -f print_failure >/dev/null 2>&1; then
+  print_failure() { print "$@"; }
+fi
+
 # --- Test Setup ---
 
 # Create a temporary directory for our test files
