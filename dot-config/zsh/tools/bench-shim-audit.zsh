@@ -70,6 +70,15 @@
 #
 set -euo pipefail
 
+# Try to source optional local helpers for improved portability.
+# This file is intentionally optional — sourcing is guarded so absence
+# won't cause failures on systems without helper files.
+script_dir="${0:A:h}"
+if [[ -f "${script_dir}/helpers/bench-shim-helpers.zsh" ]]; then
+  # shellcheck source=/dev/null
+  source "${script_dir}/helpers/bench-shim-helpers.zsh"
+fi
+
 # ---------------- Configuration & Args ----------------
 : "${SHIM_MAX_BODY_LINES:=3}"
 OUTPUT_JSON="${SHIM_AUDIT_OUTPUT_JSON:-}"
@@ -247,7 +256,15 @@ _now_iso() {
 }
 
 # ---------------- Enumeration ----------------
-autoload -Uz +X zmodload || true
+# Load zsh modules safely — guard against platforms where zmodload is
+# not available or the autoload flags behave differently.
+if command -v zmodload >/dev/null 2>&1 || [[ $(builtin) == *zmodload* ]] 2>/dev/null; then
+  # Attempt a safe autoload first; fall back silently if unsupported.
+  { autoload -Uz +X zmodload 2>/dev/null || autoload -Uz zmodload 2>/dev/null || true; }
+else
+  # zmodload unavailable on this shell/platform; continue without module loads.
+  true
+fi
 
 # List candidate zf:: functions
 local -a candidates
