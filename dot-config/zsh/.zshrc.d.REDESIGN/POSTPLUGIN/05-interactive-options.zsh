@@ -1,6 +1,7 @@
 #!/opt/homebrew/bin/zsh
 # ============================================================================
 # 05-interactive-options.zsh  (Stage 3 – Post-Plugin Core Scaffold)
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
 #
 # Responsibility:
 #   - Centralize interactive shell option (setopt/unsetopt) & zstyle baseline.
