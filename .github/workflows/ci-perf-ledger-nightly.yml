@@ -1,5 +1,18 @@
-name: CI Perf Ledger Nightly
+name: repo-Perf Ledger Nightly
+run-name: repo perf ledger nightly • ${{ github.ref_name }}
 # Dedicated nightly performance ledger workflow
+#
+# Scope (repo-wide):
+#   - Repository-wide orchestration consuming ZSH project artifacts under docs/redesignv2/artifacts
+#   - Runs from repository root; do not assume ZDOTDIR; pass it explicitly when invoking project tools
+#   - May publish badges to gh-pages and auto-commit on main
+#   - Complements zsh-* workflows that generate artifacts under dot-config/zsh
+#
+# Ownership (RACI):
+#   - R: Infra/Perf CI
+#   - A: Repo Owners
+#   - C: ZSH Maintainers
+#   - I: Contributors
 #
 # Purpose:
 #   Generates a lightweight performance "ledger" artifact summarizing key

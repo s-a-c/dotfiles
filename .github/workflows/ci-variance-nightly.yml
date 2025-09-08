@@ -1,5 +1,19 @@
-name: CI Variance Nightly
+name: repo-Variance Nightly
+run-name: repo variance nightly • ${{ github.ref_name }}
 # Dedicated nightly variance tracking and badge refresh workflow
+#
+# Scope (repo-wide):
+#   - Repository-wide orchestration consuming ZSH project artifacts under docs/redesignv2/artifacts
+#   - Runs from repository root; do not assume ZDOTDIR; pass it explicitly when invoking project tools
+#   - May publish badges to gh-pages and auto-commit on main
+#   - Complements zsh-* workflows that generate artifacts under dot-config/zsh
+#
+# Ownership (RACI):
+#   - R: Infra/Perf CI
+#   - A: Repo Owners
+#   - C: ZSH Maintainers
+#   - I: Contributors
+#
 #
 # Purpose:
 #   Performs N=5 fast-harness captures using perf-capture-multi-simple.zsh,
