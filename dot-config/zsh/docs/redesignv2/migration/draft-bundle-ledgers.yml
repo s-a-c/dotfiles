@@ -1,5 +1,5 @@
 name: Bundle Performance Ledgers
-# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v<checksum>
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
 
 on:
   workflow_dispatch:
@@ -10,7 +10,7 @@ on:
         default: '7'
         type: string
       include_regression_analysis:
-        description: 'Include regression analysis in bundle'
+        description: 'Include shim audit in bundle'
         required: false
         default: 'true'
         type: boolean
@@ -46,17 +46,17 @@ jobs:
     - name: Download performance ledgers (last ${{ inputs.days_back }} days)
       uses: actions/download-artifact@v4
       with:
-        pattern: perf-ledgers-*
+        pattern: perf-ledg*
         path: bundle-workspace/raw-ledgers
         merge-multiple: true
       continue-on-error: true
 
-    - name: Download regression analyses
+    - name: Download shim audit artifacts
       if: inputs.include_regression_analysis == 'true'
       uses: actions/download-artifact@v4
       with:
-        pattern: regression-analysis-*
-        path: bundle-workspace/raw-regression
+        pattern: shim-audit-*
+        path: bundle-workspace/raw-shim-audit
         merge-multiple: true
       continue-on-error: true
 
@@ -87,15 +87,15 @@ jobs:
           echo "No performance ledgers found to bundle"
         fi
 
-    - name: Include regression analyses
+    - name: Include shim audit
       if: inputs.include_regression_analysis == 'true'
       run: |
-        if [ -d bundle-workspace/raw-regression ]; then
-          mkdir -p "bundle-workspace/${{ env.BUNDLE_NAME }}/regression-analysis"
-          find bundle-workspace/raw-regression -name "*.json" -exec cp {} "bundle-workspace/${{ env.BUNDLE_NAME }}/regression-analysis/" \;
-          echo "Included regression analysis files"
+        if [ -d bundle-workspace/raw-shim-audit ]; then
+          mkdir -p "bundle-workspace/${{ env.BUNDLE_NAME }}/shim-audit"
+          find bundle-workspace/raw-shim-audit -name "*.json" -exec cp {} "bundle-workspace/${{ env.BUNDLE_NAME }}/shim-audit/" \;
+          echo "Included shim audit files"
         else
-          echo "No regression analysis files found"
+          echo "No shim audit files found"
         fi
 
     - name: Generate bundle manifest
@@ -110,7 +110,7 @@ jobs:
         **Commit:** ${{ github.sha }}
         **Branch:** ${{ github.ref_name }}
         **Days Back:** ${{ inputs.days_back }}
-        **Include Regression:** ${{ inputs.include_regression_analysis }}
+        **Include Shim Audit:** ${{ inputs.include_regression_analysis }}
 
         ## Contents
 
@@ -120,8 +120,8 @@ jobs:
         ### Text Files
         $(find . -name "*.txt" | sort | sed 's/^/- /')
 
-        ### Regression Analysis
-        $(find ./regression-analysis -name "*.json" 2>/dev/null | sort | sed 's/^/- /' || echo "- None included")
+        ### Shim Audit
+        $(find ./shim-audit -name "*.json" 2>/dev/null | sort | sed 's/^/- /' || echo "- None included")
 
         ## Usage
 
