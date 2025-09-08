@@ -1,6 +1,7 @@
 # Remediation / Rollback PR Template
-Use this template to create a remediation or rollback Pull Request if enabling performance enforcement
-(e.g. `PERF_DIFF_FAIL_ON_REGRESSION=1`) or other gating caused CI failures or regressions.
+Use this template exclusively for remediation or rollback Pull Requests when enabling performance enforcement (e.g. `PERF_DIFF_FAIL_ON_REGRESSION=1`) or other gating caused CI failures or regressions.
+
+Note: The repository uses a PR template chooser under `.github/PULL_REQUEST_TEMPLATE/`. For standard changes, select an appropriate template there (e.g., `000-repo-default.md` for repo‑wide changes or `010-zsh-project.md` for ZSH‑specific changes).
 
 ---
 

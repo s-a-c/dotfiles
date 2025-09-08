@@ -1,5 +1,17 @@
-# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v<checksum>
-name: Perf & Structure CI
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+name: zsh-Perf & Structure CI
+# Scope (zsh project):
+#   - Runs with working-directory: dot-config/zsh and sets ZDOTDIR to the project path
+#   - Validates structure and performance on push/PR; generates artifacts under docs/redesignv2/artifacts and bridges to legacy paths during migration
+#   - Does not publish to gh-pages; uploads artifacts for review and badges refresh
+# Ownership (RACI):
+#   - R: ZSH Maintainers
+#   - A: ZSH Lead
+#   - C: Infra/Perf CI
+#   - I: Repo Owners
+# Relationship:
+#   - Complements repo-* nightly workflows (repo-Variance Nightly, repo-Perf Ledger Nightly) which consume artifacts for governance/badges
+#   - Acts as CI gate and artifact generator for PRs and main pushes
 
 on:
   push:

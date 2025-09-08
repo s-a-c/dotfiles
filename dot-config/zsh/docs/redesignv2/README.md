@@ -296,6 +296,91 @@ tools/experimental/perf-module-ledger.zsh \
 
 ---
 
+## 🧭 CI Workflows — Scope and RACI
+
+This section defines clear scope boundaries and RACI for repository-wide (repo-*) and ZSH‑project (zsh-*) workflows to avoid overlap and to simplify ownership and troubleshooting.
+
+### Scope boundaries
+
+- Repository-wide (repo-*)
+  - Purpose: Cross-repo governance and nightly badge freshness; consumes artifacts produced by the ZSH project.
+  - Assumptions: Runs from repo root; must not assume ZDOTDIR; may publish to gh‑pages; may auto‑commit badges/state on main.
+  - Examples:
+    - repo-Variance Nightly
+    - repo-Perf Ledger Nightly
+
+- ZSH project (zsh-*)
+  - Purpose: Generate ZSH artifacts (metrics, badges, structure checks) under docs/redesignv2/artifacts and bridge to legacy paths during migration.
+  - Assumptions: Runs with working-directory: dot-config/zsh; sets ZDOTDIR="${{ github.workspace }}/dot-config/zsh"; owns structure and perf generation logic.
+  - Examples:
+    - zsh-Redesign — nightly perf
+    - zsh-Nightly Metrics Refresh
+    - zsh-Perf & Structure CI
+
+### RACI matrix (concise)
+
+- repo-Perf Ledger Nightly
+  - R: Infra/Perf CI
+  - A: Repo Owners
+  - C: ZSH Maintainers
+  - I: Contributors
+
+- repo-Variance Nightly
+  - R: Infra/Perf CI
+  - A: Repo Owners
+  - C: ZSH Maintainers
+  - I: Contributors
+
+- zsh-Redesign — nightly perf
+  - R: ZSH Maintainers
+  - A: ZSH Lead
+  - C: Infra/Perf CI
+  - I: Repo Owners
+
+- zsh-Nightly Metrics Refresh
+  - R: ZSH Maintainers
+  - A: ZSH Lead
+  - C: Infra/Perf CI
+  - I: Repo Owners
+
+- zsh-Perf & Structure CI
+  - R: ZSH Maintainers
+  - A: ZSH Lead
+  - C: Infra/Perf CI
+  - I: Repo Owners
+
+### Operational guardrails
+
+- Working directory
+  - zsh-* workflows: defaults.run.working-directory: dot-config/zsh
+  - repo-* workflows: run from repo root; pass ZDOTDIR explicitly when calling project tools
+
+- Artifact roots
+  - Prefer docs/redesignv2/artifacts/{metrics,badges}; soft-bridge to docs/redesign/* during migration windows
+
+- Naming and triggers
+  - Prefixes: repo-* for repository scope, zsh-* for project scope
+  - Schedules (UTC):
+    - zsh-Nightly Metrics Refresh: 03:15
+    - zsh-Redesign — nightly perf: 04:00
+    - repo-Variance Nightly: 04:15
+    - repo-Perf Ledger Nightly: 05:05
+
+- Drift and gating
+  - Default to observe mode; promotion to warn/gate governed by repo variables and stability streaks (see variance/ledger notes)
+  - Do not fail fast on missing inputs; produce placeholders to preserve nightly continuity
+
+- PR templates
+  - The repo uses a PR template chooser under .github/PULL_REQUEST_TEMPLATE/
+  - The ZSH project relies on those templates; the project-local template was removed to reduce confusion
+
+### Extending the workflows
+
+- Repository-wide tasks: create repo-* workflows; operate from repo root; document inputs/outputs and badge publishing behavior
+- ZSH project tasks: create zsh-* workflows; operate under dot-config/zsh; ensure all artifacts land in docs/redesignv2/artifacts and bridge to legacy as needed
+
+---
+
 ## 🏗️ **Architecture Summary**
 
 ### Pre-Plugin Modules (8 files)
