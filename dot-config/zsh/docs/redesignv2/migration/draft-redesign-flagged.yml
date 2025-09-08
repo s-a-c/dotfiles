@@ -1,0 +1,186 @@
+name: Redesign Flagged Tests
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v<checksum>
+
+on:
+  push:
+    branches:
+      - feature/zsh-refactor-configuration
+  pull_request:
+    branches:
+      - develop
+      - main
+  workflow_dispatch:
+    inputs:
+      use_redesign:
+        description: 'Force enable redesign for testing'
+        required: false
+        default: 'true'
+        type: boolean
+      test_categories:
+        description: 'Test categories to run (unit,integration,design,all)'
+        required: false
+        default: 'all'
+        type: string
+
+env:
+  ZSH_USE_REDESIGN: 1
+  ZSH_ENABLE_PREPLUGIN_REDESIGN: 1
+  ZSH_ENABLE_POSTPLUGIN_REDESIGN: 1
+
+jobs:
+  redesign-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    strategy:
+      matrix:
+        test-suite: [unit, integration, design]
+      fail-fast: false
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup ZSH
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y zsh
+
+    - name: Set environment variables
+      run: |
+        echo "ZDOTDIR=${{ github.workspace }}/dot-config/zsh" >> $GITHUB_ENV
+        echo "ZSH_CACHE_DIR=${{ runner.temp }}/zsh-cache" >> $GITHUB_ENV
+        echo "ZSH_LOG_DIR=${{ runner.temp }}/zsh-logs" >> $GITHUB_ENV
+
+    - name: Create required directories
+      run: |
+        mkdir -p ${{ env.ZSH_CACHE_DIR }}
+        mkdir -p ${{ env.ZSH_LOG_DIR }}
+        mkdir -p ${{ env.ZDOTDIR }}/logs
+
+    - name: Override redesign setting if manual dispatch
+      if: github.event_name == 'workflow_dispatch' && inputs.use_redesign == 'false'
+      run: |
+        echo "ZSH_USE_REDESIGN=0" >> $GITHUB_ENV
+        echo "ZSH_ENABLE_PREPLUGIN_REDESIGN=0" >> $GITHUB_ENV
+        echo "ZSH_ENABLE_POSTPLUGIN_REDESIGN=0" >> $GITHUB_ENV
+
+    - name: Validate redesign modules exist
+      run: |
+        if [ ! -d "${{ env.ZDOTDIR }}/.zshrc.d.REDESIGN" ]; then
+          echo "ERROR: Redesign modules directory not found"
+          exit 1
+        fi
+        echo "Found $(find ${{ env.ZDOTDIR }}/.zshrc.d.REDESIGN -name '*.zsh' | wc -l) redesign modules"
+
+    - name: Run unit tests
+      if: matrix.test-suite == 'unit' || (github.event_name == 'workflow_dispatch' && (inputs.test_categories == 'all' || contains(inputs.test_categories, 'unit')))
+      run: |
+        cd ${{ github.workspace }}
+        ZDOTDIR=${{ env.ZDOTDIR }} ${{ env.ZDOTDIR }}/tests/run-all-tests.zsh --unit-only --ci-mode
+
+    - name: Run integration tests
+      if: matrix.test-suite == 'integration' || (github.event_name == 'workflow_dispatch' && (inputs.test_categories == 'all' || contains(inputs.test_categories, 'integration')))
+      run: |
+        cd ${{ github.workspace }}
+        ZDOTDIR=${{ env.ZDOTDIR }} ${{ env.ZDOTDIR }}/tests/run-integration-tests.sh --timeout-secs 60 --ci-mode
+
+    - name: Run design tests
+      if: matrix.test-suite == 'design' || (github.event_name == 'workflow_dispatch' && (inputs.test_categories == 'all' || contains(inputs.test_categories, 'design')))
+      run: |
+        cd ${{ github.workspace }}
+        ZDOTDIR=${{ env.ZDOTDIR }} ${{ env.ZDOTDIR }}/tests/run-all-tests.zsh --design-only --ci-mode
+
+    - name: Run shim audit
+      if: matrix.test-suite == 'unit'
+      run: |
+        cd ${{ github.workspace }}
+        ZDOTDIR=${{ env.ZDOTDIR }} ${{ env.ZDOTDIR }}/tools/bench-shim-audit.zsh --output-json ${{ runner.temp }}/shim-audit.json
+
+    - name: Upload test artifacts
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: redesign-test-results-${{ matrix.test-suite }}
+        path: |
+          ${{ env.ZSH_LOG_DIR }}/**/*.log
+          ${{ runner.temp }}/shim-audit.json
+          ${{ env.ZDOTDIR }}/logs/**/*.log
+        retention-days: 7
+
+    - name: Upload performance metrics
+      if: matrix.test-suite == 'unit'
+      uses: actions/upload-artifact@v4
+      with:
+        name: redesign-performance-metrics
+        path: |
+          ${{ env.ZDOTDIR }}/docs/redesignv2/artifacts/metrics/*.json
+        retention-days: 30
+
+  security-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: redesign-tests
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup ZSH
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y zsh
+
+    - name: Set environment variables
+      run: |
+        echo "ZDOTDIR=${{ github.workspace }}/dot-config/zsh" >> $GITHUB_ENV
+
+    - name: Run security validation
+      run: |
+        cd ${{ github.workspace }}
+        ZDOTDIR=${{ env.ZDOTDIR }} ${{ env.ZDOTDIR }}/tests/run-all-tests.zsh --security-only --ci-mode
+
+    - name: Check for sensitive data
+      run: |
+        # Check for accidentally committed secrets or sensitive data
+        if grep -r -E "(password|secret|key|token)" ${{ env.ZDOTDIR }}/.zshrc.d.REDESIGN/ --exclude-dir=.git; then
+          echo "WARNING: Potentially sensitive data found in redesign modules"
+          exit 1
+        fi
+
+  summary:
+    runs-on: ubuntu-latest
+    if: always()
+    needs: [redesign-tests, security-validation]
+
+    steps:
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+
+    - name: Generate test summary
+      run: |
+        echo "## ZSH Redesign Test Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+        echo "**Redesign Mode:** ${{ env.ZSH_USE_REDESIGN == '1' && 'Enabled' || 'Disabled' }}" >> $GITHUB_STEP_SUMMARY
+        echo "**Triggered by:** ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+
+        # Check test results
+        if [ "${{ needs.redesign-tests.result }}" == "success" ]; then
+          echo "✅ **Redesign Tests:** PASSED" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "❌ **Redesign Tests:** FAILED" >> $GITHUB_STEP_SUMMARY
+        fi
+
+        if [ "${{ needs.security-validation.result }}" == "success" ]; then
+          echo "✅ **Security Validation:** PASSED" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "❌ **Security Validation:** FAILED" >> $GITHUB_STEP_SUMMARY
+        fi
+
+    - name: Fail workflow if tests failed
+      if: needs.redesign-tests.result != 'success' || needs.security-validation.result != 'success'
+      run: |
+        echo "One or more test suites failed"
+        exit 1

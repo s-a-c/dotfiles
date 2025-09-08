@@ -5,9 +5,18 @@
 # UPDATED: Consistent with .zshenv configuration
 set -uo pipefail
 
+# Save original working directory
+ORIGINAL_CWD="$PWD"
+
 # Source .zshenv to ensure consistent environment variables
 ZDOTDIR="${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}"
 [[ -f "${ZDOTDIR}/.zshenv" ]] && source "${ZDOTDIR}/.zshenv"
+
+# Change to ZDOTDIR for all test execution
+cd "$ZDOTDIR" || {
+    echo "ERROR: Failed to cd to ZDOTDIR ($ZDOTDIR)"
+    exit 2
+}
 
 # Use zsh_debug_echo from .zshenv if available
 if declare -f zsh_debug_echo >/dev/null 2>&1; then
@@ -340,6 +349,12 @@ main() {
         if declare -f zsh_debug_echo >/dev/null 2>&1; then
             zsh_debug_echo "# [run-all-tests] All tests completed successfully"
         fi
+
+# Restore original working directory before exit
+cd "$ORIGINAL_CWD" || {
+    echo "ERROR: Failed to restore original working directory ($ORIGINAL_CWD)"
+    exit 2
+}
 
         return 0
     else

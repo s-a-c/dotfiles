@@ -67,14 +67,10 @@ fail() { FAIL+=("$1"); }
 # Repo Root Resolution
 # -----------------------------------------------------------------------------
 SCRIPT_SRC="${(%):-%N}"
-if typeset -f zf::script_dir >/dev/null 2>&1; then
-  THIS_DIR="$(zf::script_dir "$SCRIPT_SRC")"
-elif typeset -f resolve_script_dir >/dev/null 2>&1; then
-  THIS_DIR="$(resolve_script_dir "$SCRIPT_SRC")"
-else
-  THIS_DIR="${SCRIPT_SRC:h}"
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)"
+if [[ -z "$REPO_ROOT" ]]; then
+  REPO_ROOT="$ZDOTDIR"
 fi
-REPO_ROOT="$(cd "$THIS_DIR/../../../.." && pwd -P 2>/dev/null)"
 
 MODULE_REL=".zshrc.d.REDESIGN/00-security-integrity.zsh"
 MODULE_PATH="${REPO_ROOT}/dot-config/zsh/${MODULE_REL}"

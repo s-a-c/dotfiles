@@ -1,0 +1,243 @@
+name: Performance Nightly (Redesign)
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v<checksum>
+
+on:
+  schedule:
+    # Run at 2 AM UTC daily
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      days_to_run:
+        description: 'Number of days to run performance tests'
+        required: false
+        default: '7'
+        type: string
+      upload_ledgers:
+        description: 'Upload performance ledgers as artifacts'
+        required: false
+        default: 'true'
+        type: boolean
+
+env:
+  ZSH_USE_REDESIGN: 1
+  ZSH_ENABLE_PREPLUGIN_REDESIGN: 1
+  ZSH_ENABLE_POSTPLUGIN_REDESIGN: 1
+
+jobs:
+  performance-baseline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup ZSH and dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y zsh time bc jq
+        zsh --version
+
+    - name: Set environment variables
+      run: |
+        echo "ZDOTDIR=${{ github.workspace }}/dot-config/zsh" >> $GITHUB_ENV
+        echo "ZSH_CACHE_DIR=${{ runner.temp }}/zsh-cache" >> $GITHUB_ENV
+        echo "ZSH_LOG_DIR=${{ runner.temp }}/zsh-logs" >> $GITHUB_ENV
+        echo "PERF_LEDGER_DIR=${{ runner.temp }}/perf-ledgers" >> $GITHUB_ENV
+
+    - name: Create required directories
+      run: |
+        mkdir -p ${{ env.ZSH_CACHE_DIR }}
+        mkdir -p ${{ env.ZSH_LOG_DIR }}
+        mkdir -p ${{ env.PERF_LEDGER_DIR }}
+        mkdir -p ${{ env.ZDOTDIR }}/logs
+
+    - name: Warm up system
+      run: |
+        # Warm up the system to get consistent performance measurements
+        for i in {1..5}; do
+          ZDOTDIR=${{ env.ZDOTDIR }} zsh -c "echo 'Warmup $i'"
+          sleep 1
+        done
+
+    - name: Run performance baseline capture
+      run: |
+        cd ${{ github.workspace }}
+        ZDOTDIR=${{ env.ZDOTDIR }} ${{ env.ZDOTDIR }}/tools/capture-baseline-10run.zsh \
+          --output-json ${{ env.PERF_LEDGER_DIR }}/baseline-$(date +%Y%m%d).json \
+          --redesign-mode
+
+    - name: Run microbench harness
+      run: |
+        cd ${{ github.workspace }}
+        ZDOTDIR=${{ env.ZDOTDIR }} ${{ env.ZDOTDIR }}/tools/perf-capture.zsh \
+          --iterations 10 \
+          --output-json ${{ env.PERF_LEDGER_DIR }}/microbench-$(date +%Y%m%d).json \
+          --include-redesign-modules
+
+    - name: Run startup time analysis
+      run: |
+        cd ${{ github.workspace }}
+        for i in {1..20}; do
+          ZDOTDIR=${{ env.ZDOTDIR }} /usr/bin/time -f "%e" zsh -i -c exit 2>&1 | \
+            grep -E '^[0-9]+\.[0-9]+$' >> ${{ env.PERF_LEDGER_DIR }}/startup-times.txt
+        done
+
+    - name: Capture memory usage
+      run: |
+        cd ${{ github.workspace }}
+        # Memory usage during shell startup
+        ZDOTDIR=${{ env.ZDOTDIR }} /usr/bin/time -v zsh -i -c 'sleep 1; exit' 2>&1 | \
+          grep -E "(Maximum resident set size|Average resident set size)" > \
+          ${{ env.PERF_LEDGER_DIR }}/memory-usage-$(date +%Y%m%d).txt
+
+    - name: Generate performance summary
+      run: |
+        cd ${{ env.PERF_LEDGER_DIR }}
+
+        # Calculate startup time statistics
+        if [ -f startup-times.txt ]; then
+          MEAN_TIME=$(awk '{sum+=$1; count++} END {print sum/count}' startup-times.txt)
+          MIN_TIME=$(sort -n startup-times.txt | head -1)
+          MAX_TIME=$(sort -n startup-times.txt | tail -1)
+
+          cat > performance-summary-$(date +%Y%m%d).json << EOF
+        {
+          "date": "$(date -I)",
+          "commit": "${{ github.sha }}",
+          "branch": "${{ github.ref_name }}",
+          "redesign_enabled": true,
+          "startup_time": {
+            "mean_seconds": $MEAN_TIME,
+            "min_seconds": $MIN_TIME,
+            "max_seconds": $MAX_TIME,
+            "samples": $(wc -l < startup-times.txt)
+          },
+          "test_environment": {
+            "runner": "ubuntu-latest",
+            "zsh_version": "$(zsh --version)",
+            "workflow": "perf-nightly"
+          }
+        }
+        EOF
+        fi
+
+    - name: Run shim audit for performance impact
+      run: |
+        cd ${{ github.workspace }}
+        ZDOTDIR=${{ env.ZDOTDIR }} ${{ env.ZDOTDIR }}/tools/bench-shim-audit.zsh \
+          --output-json ${{ env.PERF_LEDGER_DIR }}/shim-audit-$(date +%Y%m%d).json \
+          --performance-impact
+
+    - name: Upload performance ledgers
+      if: always() && (inputs.upload_ledgers == 'true' || github.event_name == 'schedule')
+      uses: actions/upload-artifact@v4
+      with:
+        name: perf-ledgers-$(date +%Y%m%d)
+        path: |
+          ${{ env.PERF_LEDGER_DIR }}/*.json
+          ${{ env.PERF_LEDGER_DIR }}/*.txt
+        retention-days: 30
+
+    - name: Upload debug logs
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: perf-debug-logs-$(date +%Y%m%d)
+        path: |
+          ${{ env.ZSH_LOG_DIR }}/**/*.log
+          ${{ env.ZDOTDIR }}/logs/**/*.log
+        retention-days: 7
+
+  performance-regression-check:
+    runs-on: ubuntu-latest
+    needs: performance-baseline
+    timeout-minutes: 15
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup environment
+      run: |
+        echo "ZDOTDIR=${{ github.workspace }}/dot-config/zsh" >> $GITHUB_ENV
+
+    - name: Download current performance data
+      uses: actions/download-artifact@v4
+      with:
+        name: perf-ledgers-$(date +%Y%m%d)
+        path: current-perf
+
+    - name: Download historical performance data
+      uses: actions/download-artifact@v4
+      with:
+        pattern: perf-ledgers-*
+        path: historical-perf
+        merge-multiple: true
+      continue-on-error: true
+
+    - name: Run performance regression analysis
+      run: |
+        cd ${{ github.workspace }}
+        if [ -d historical-perf ] && [ "$(find historical-perf -name '*.json' | wc -l)" -gt 1 ]; then
+          ZDOTDIR=${{ env.ZDOTDIR }} ${{ env.ZDOTDIR }}/tools/perf-regression-check.zsh \
+            --current current-perf \
+            --historical historical-perf \
+            --threshold 15 \
+            --output-json regression-analysis.json
+        else
+          echo "Insufficient historical data for regression analysis"
+          echo '{"status": "insufficient_data"}' > regression-analysis.json
+        fi
+
+    - name: Upload regression analysis
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: regression-analysis-$(date +%Y%m%d)
+        path: regression-analysis.json
+        retention-days: 30
+
+  performance-drift-detection:
+    runs-on: ubuntu-latest
+    needs: [performance-baseline, performance-regression-check]
+    if: github.event_name == 'schedule'
+    timeout-minutes: 10
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup environment
+      run: |
+        echo "ZDOTDIR=${{ github.workspace }}/dot-config/zsh" >> $GITHUB_ENV
+
+    - name: Download performance data
+      uses: actions/download-artifact@v4
+      with:
+        pattern: perf-ledgers-*
+        path: all-perf-data
+        merge-multiple: true
+
+    - name: Generate performance drift badge
+      run: |
+        cd ${{ github.workspace }}
+        ZDOTDIR=${{ env.ZDOTDIR }} ${{ env.ZDOTDIR }}/tools/perf-drift-badge.sh \
+          --data-dir all-perf-data \
+          --days 7 \
+          --output ${{ env.ZDOTDIR }}/docs/redesignv2/artifacts/badges/perf-drift.json
+
+    - name: Commit performance badge updates
+      if: github.ref == 'refs/heads/feature/zsh-refactor-configuration'
+      run: |
+        cd ${{ github.workspace }}
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+
+        if git diff --quiet ${{ env.ZDOTDIR }}/docs/redesignv2/artifacts/badges/perf-drift.json; then
+          echo "No performance drift badge changes"
+        else
+          git add ${{ env.ZDOTDIR }}/docs/redesignv2/artifacts/badges/perf-drift.json
+          git commit -m "Update performance drift badge [skip ci]"
+          git push origin ${{ github.ref_name }}
+        fi

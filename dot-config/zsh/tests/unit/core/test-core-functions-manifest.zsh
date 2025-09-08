@@ -58,16 +58,22 @@ fi
 # Config / Paths
 # ---------------------------
 SCRIPT_SRC="${(%):-%N}"
-if typeset -f zf::script_dir >/dev/null 2>&1; then
-  THIS_DIR="$(zf::script_dir "$SCRIPT_SRC")"
-elif typeset -f resolve_script_dir >/dev/null 2>&1; then
-  THIS_DIR="$(resolve_script_dir "$SCRIPT_SRC")"
-else
-  THIS_DIR="${SCRIPT_SRC:h}"
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)"
+if [[ -z "$REPO_ROOT" ]]; then
+  REPO_ROOT="$ZDOTDIR"
 fi
-REPO_ROOT="$(cd "$THIS_DIR/../../../.." && pwd -P 2>/dev/null)"
 
 : "${CORE_FN_MANIFEST_PATH:="${REPO_ROOT}/dot-config/zsh/docs/redesignv2/artifacts/golden/core-functions-manifest-stage3.txt"}"
+
+# --- DEBUG PATCH: Show all relevant paths ---
+zsh_debug_echo "DEBUG: PWD=$PWD"
+zsh_debug_echo "DEBUG: ZDOTDIR=$ZDOTDIR"
+zsh_debug_echo "DEBUG: SCRIPT_SRC=$SCRIPT_SRC"
+THIS_DIR="${SCRIPT_SRC:h}"
+zsh_debug_echo "DEBUG: THIS_DIR=$THIS_DIR"
+zsh_debug_echo "DEBUG: REPO_ROOT=$REPO_ROOT"
+zsh_debug_echo "DEBUG: CORE_FN_MANIFEST_PATH=$CORE_FN_MANIFEST_PATH"
+# --- END DEBUG PATCH ---
 
 ALLOW_SUPER=${CORE_FN_MANIFEST_ALLOW_SUPERSET:-0}
 ALLOW_SUB=${CORE_FN_MANIFEST_ALLOW_SUBSET:-0}
