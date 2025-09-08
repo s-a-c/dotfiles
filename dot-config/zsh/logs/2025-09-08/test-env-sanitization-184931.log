@@ -1,0 +1,6 @@
+[2025-09-08 18:49:31 UTC] [INFO] Starting Environment Sanitization test suite
+[2025-09-08 18:49:31 UTC] [INFO] Setting up environment sanitization test environment in /tmp/zsh-env-sanitization-test-43725
+[2025-09-08 18:49:31 UTC] [ERROR] Environment sanitization script not found at /Users/s-a-c/.config/zsh/.zshrc.pre-plugins.d/05-environment-sanitization.zsh
+[2025-09-08 18:49:31 UTC] [ERROR] Failed to setup test environment
+[2025-09-08 18:49:31 UTC] [INFO] Cleaning up test environment
+[2025-09-08 18:49:31 UTC] [INFO] Test environment cleanup complete

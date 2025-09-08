@@ -1,0 +1,41 @@
+🧪 Testing ZSH Configuration Backup/Restore System
+==================================================
+📅 Test Started: 2025-09-08T18:49:32Z
+📋 Log File: /Users/s-a-c/.config/zsh/logs/2025-09-08/test-backup-restore_18-49-32.log
+
+
+1. Testing backup system creation...
+   ✅ Backup creation function works
+   ✅ Backup directory created: /Users/s-a-c/.config/zsh/.zsh-backups/test-2025-09-08_19-49-32
+   ✅ Manifest file created
+   ✅ Manifest file has proper header
+
+2. Testing backup integrity verification...
+   ✅ Backup integrity verification works
+
+3. Testing backup archival...
+   ✅ Backup archive created: /Users/s-a-c/.config/zsh/.zsh-backups/test-2025-09-08_19-49-32.tar.gz
+   ✅ Archive integrity verified
+   ✅ Archive extraction works
+
+4. Testing restore simulation...
+   📋 Simulating restore from: /Users/s-a-c/.config/zsh/.zsh-backups/test-2025-09-08_19-49-32
+   📄 Files that would be restored:
+      - .zshrc
+      - .zshenv
+   📁 Directories that would be restored:
+      - .zshrc.d/
+      - .zshrc.add-plugins.d/
+      - .zshrc.pre-plugins.d/
+   ✅ Restore simulation completed successfully
+
+🧩 Cleaning up test artifacts...
+
+🏁 Test Results Summary
+======================
+✅ Tests Passed: 9
+❌ Tests Failed: 0
+📊 Total Tests: 9
+
+🎉 All backup/restore tests passed!
+✅ Task 5.4 (Backup and versioning automation) - READY

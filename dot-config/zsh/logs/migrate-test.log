@@ -1,0 +1,187 @@
+TEST_ZSHENV=/Users/s-a-c/.zshenv.migrate_test
+BACKUP_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.backups/redesign-migration-test
+
+---- DRY-RUN (preview) ----
+bash: line 1: dot-config/zsh/tools/migrate-to-redesign.sh: Permission denied
+
+---- BACKUP ONLY ----
+bash: line 1: dot-config/zsh/tools/migrate-to-redesign.sh: Permission denied
+
+---- APPLY (non-dry) ----
+bash: line 1: dot-config/zsh/tools/migrate-to-redesign.sh: Permission denied
+
+---- STATUS AFTER APPLY ----
+bash: line 1: dot-config/zsh/tools/migrate-to-redesign.sh: Permission denied
+
+---- SHOW TEST ZSHENV (tail) ----
+  _core_added=0
+  for __core_dir in /usr/local/bin /opt/homebrew/bin /usr/bin /bin /usr/sbin /sbin; do
+    [ -d "$__core_dir" ] || continue
+    case ":$PATH:" in
+      *:"$__core_dir":*) ;;
+      *)
+        PATH="${PATH:+$PATH:}$__core_dir"
+        _core_added=$(( _core_added + 1 ))
+        ;;
+    esac
+  done
+  export PATH
+  unset __core_dir _core_added
+}
+
+# Optional: custom compdump location and compinit flags (keeps compdump in cache)
+export ZGEN_CUSTOM_COMPDUMP="${ZGEN_CUSTOM_COMPDUMP:-${ZSH_CACHE_DIR}/zcompdump_${ZSH_VERSION:-unknown}}"
+export ZGEN_COMPINIT_FLAGS="${ZGEN_COMPINIT_FLAGS:-${ZGEN_COMPINIT_FLAGS:-}}"
+
+# Optional: oh-my-zsh repo/branch defaults used by some starter plugin lists
+export ZGEN_OH_MY_ZSH_REPO="${ZGEN_OH_MY_ZSH_REPO:-ohmyzsh/ohmyzsh}"
+export ZGEN_OH_MY_ZSH_BRANCH="${ZGEN_OH_MY_ZSH_BRANCH:-master}"
+
+# Add vendored zgenom functions to fpath early if present (try source then dir)
+if [[ -d "${ZGEN_SOURCE}/functions" ]]; then
+    fpath=("${ZGEN_SOURCE}/functions" $fpath)
+elif [[ -d "${ZGEN_DIR}/functions" ]]; then
+    fpath=("${ZGEN_DIR}/functions" $fpath)
+fi
+
+# ------------------------------------------------------------------------------
+# History defaults anchored in localized ZDOTDIR
+# ------------------------------------------------------------------------------
+export HISTFILE="${ZDOTDIR}/.zsh_history"
+export HISTSIZE="${HISTSIZE:-2000000}"
+export SAVEHIST="${SAVEHIST:-2000200}"
+export HISTTIMEFORMAT="${HISTTIMEFORMAT:-'%F %T %z %a %V '}"
+export HISTDUP="${HISTDUP:-erase}"
+
+# ------------------------------------------------------------------------------
+# Final early housekeeping
+# ------------------------------------------------------------------------------
+# Make sure .env files under ZDOTDIR/.env (if any) are loaded for both
+# interactive and non-interactive shells. These files are expected to contain
+# user-level environment variables and API keys the user wants available.
+if [[ -d "${ZDOTDIR}/.env" ]]; then
+    for env_file in "${ZDOTDIR}/.env"/*.env; do
+        [[ -r "$env_file" ]] && source "$env_file"
+    done
+    unset env_file
+fi
+
+# Export a stable EDITOR/VISUAL if not already set (best-effort)
+if [[ -z "${EDITOR:-}" ]]; then
+    for e in nvim vim nano; do
+        if command -v "$e" >/dev/null 2>&1; then
+            export EDITOR="$e"
+            break
+        fi
+    done
+fi
+if [[ -z "${VISUAL:-}" ]]; then
+    for v in "$EDITOR" code code-insiders; do
+        command -v "${v}" >/dev/null 2>&1 && { export VISUAL="$v"; break; } || true
+    done
+fi
+
+# Set a sane default LANG/LC if unset
+export LANG="${LANG:-en_GB.UTF-8}"
+export LC_ALL="${LC_ALL:-${LANG}}"
+
+# Ensure our path is exported (in case callers modified PATH after earlier changes)
+export PATH
+
+# Debug summary at end of .zshenv load when debugging is enabled
+if [[ "${ZSH_DEBUG}" == "1" ]]; then
+    zsh_debug_echo "[DEBUG] .zshenv completed: ZDOTDIR=${ZDOTDIR} ZSH_CACHE_DIR=${ZSH_CACHE_DIR} ZSH_LOG_DIR=${ZSH_LOG_DIR} PATH=${PATH}" >> "${ZSH_DEBUG_LOG}" 2>/dev/null || true
+fi
+
+# End of .zshenv
+
+---- LIST BACKUPS ----
+total 0
+
+---- RESTORE ----
+bash: line 1: dot-config/zsh/tools/migrate-to-redesign.sh: Permission denied
+
+---- SHOW TEST ZSHENV AFTER RESTORE (tail) ----
+  _core_added=0
+  for __core_dir in /usr/local/bin /opt/homebrew/bin /usr/bin /bin /usr/sbin /sbin; do
+    [ -d "$__core_dir" ] || continue
+    case ":$PATH:" in
+      *:"$__core_dir":*) ;;
+      *)
+        PATH="${PATH:+$PATH:}$__core_dir"
+        _core_added=$(( _core_added + 1 ))
+        ;;
+    esac
+  done
+  export PATH
+  unset __core_dir _core_added
+}
+
+# Optional: custom compdump location and compinit flags (keeps compdump in cache)
+export ZGEN_CUSTOM_COMPDUMP="${ZGEN_CUSTOM_COMPDUMP:-${ZSH_CACHE_DIR}/zcompdump_${ZSH_VERSION:-unknown}}"
+export ZGEN_COMPINIT_FLAGS="${ZGEN_COMPINIT_FLAGS:-${ZGEN_COMPINIT_FLAGS:-}}"
+
+# Optional: oh-my-zsh repo/branch defaults used by some starter plugin lists
+export ZGEN_OH_MY_ZSH_REPO="${ZGEN_OH_MY_ZSH_REPO:-ohmyzsh/ohmyzsh}"
+export ZGEN_OH_MY_ZSH_BRANCH="${ZGEN_OH_MY_ZSH_BRANCH:-master}"
+
+# Add vendored zgenom functions to fpath early if present (try source then dir)
+if [[ -d "${ZGEN_SOURCE}/functions" ]]; then
+    fpath=("${ZGEN_SOURCE}/functions" $fpath)
+elif [[ -d "${ZGEN_DIR}/functions" ]]; then
+    fpath=("${ZGEN_DIR}/functions" $fpath)
+fi
+
+# ------------------------------------------------------------------------------
+# History defaults anchored in localized ZDOTDIR
+# ------------------------------------------------------------------------------
+export HISTFILE="${ZDOTDIR}/.zsh_history"
+export HISTSIZE="${HISTSIZE:-2000000}"
+export SAVEHIST="${SAVEHIST:-2000200}"
+export HISTTIMEFORMAT="${HISTTIMEFORMAT:-'%F %T %z %a %V '}"
+export HISTDUP="${HISTDUP:-erase}"
+
+# ------------------------------------------------------------------------------
+# Final early housekeeping
+# ------------------------------------------------------------------------------
+# Make sure .env files under ZDOTDIR/.env (if any) are loaded for both
+# interactive and non-interactive shells. These files are expected to contain
+# user-level environment variables and API keys the user wants available.
+if [[ -d "${ZDOTDIR}/.env" ]]; then
+    for env_file in "${ZDOTDIR}/.env"/*.env; do
+        [[ -r "$env_file" ]] && source "$env_file"
+    done
+    unset env_file
+fi
+
+# Export a stable EDITOR/VISUAL if not already set (best-effort)
+if [[ -z "${EDITOR:-}" ]]; then
+    for e in nvim vim nano; do
+        if command -v "$e" >/dev/null 2>&1; then
+            export EDITOR="$e"
+            break
+        fi
+    done
+fi
+if [[ -z "${VISUAL:-}" ]]; then
+    for v in "$EDITOR" code code-insiders; do
+        command -v "${v}" >/dev/null 2>&1 && { export VISUAL="$v"; break; } || true
+    done
+fi
+
+# Set a sane default LANG/LC if unset
+export LANG="${LANG:-en_GB.UTF-8}"
+export LC_ALL="${LC_ALL:-${LANG}}"
+
+# Ensure our path is exported (in case callers modified PATH after earlier changes)
+export PATH
+
+# Debug summary at end of .zshenv load when debugging is enabled
+if [[ "${ZSH_DEBUG}" == "1" ]]; then
+    zsh_debug_echo "[DEBUG] .zshenv completed: ZDOTDIR=${ZDOTDIR} ZSH_CACHE_DIR=${ZSH_CACHE_DIR} ZSH_LOG_DIR=${ZSH_LOG_DIR} PATH=${PATH}" >> "${ZSH_DEBUG_LOG}" 2>/dev/null || true
+fi
+
+# End of .zshenv
+
+MIGRATE TEST LOGS WRITTEN TO: /Users/s-a-c/dotfiles/dot-config/zsh/logs/migrate-test.log
+DONE

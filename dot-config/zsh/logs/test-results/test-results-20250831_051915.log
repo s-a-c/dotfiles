@@ -1,0 +1,17 @@
+[2025-08-31 05:19:15] [INFO] Running style tests only
+[2025-08-31 05:19:16] [FAIL] test-docs-governance - Exit code: 1
+[2025-08-31 05:19:16] [FAIL] test-docs-governance - Output: [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+[docs-gov] Violations detected (4):
+  - glossary.mdross_link_table_unlinked_md
+  - README.mdross_link_table_unlinked_md
+  - review/completion-audit.mdross_link_table_unlinked_md
+  - review/issues.mdross_link_table_unlinked_md

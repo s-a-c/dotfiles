@@ -1,0 +1,56 @@
+[2025-08-31 06:48:10] [INFO] Running explicit test list (3 tests)
+[2025-08-31 06:48:10] [PASS] test-preplugin-timing-mode - [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+PASS preplugin timing mode guards
+[2025-08-31 06:48:10] [PASS] test-preplugin-delta-compare - [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+[DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+PASS preplugin delta compare (legacy=45.207ms redesign=15.235ms improvement=29.972ms 66.30%)
+[2025-08-31 06:48:10] [PASS] test-preplugin-segment-timing - [DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+[DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+PASS preplugin timing harness (files=8 total_ms=42.543)
+[2025-08-31 06:48:10] [SUMMARY] Total: 3, Passed: 3, Failed: 0, Skipped: 0
+[2025-08-31 06:48:10] [SUCCESS] All explicit tests passed
