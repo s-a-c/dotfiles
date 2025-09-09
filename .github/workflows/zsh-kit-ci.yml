@@ -1,3 +1,4 @@
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v900f08def0e6f7959ffd283aebb73b625b3473f5e49c57e861c6461b50a62ef2
 name: zsh-kit-ci
 
 on:
@@ -8,10 +9,16 @@ on:
       - feature/**
       - hotfix/**
       - release/**
+    paths:
+      - 'dot-config/zsh/**'
+      - '.github/workflows/zsh-kit-ci.yml'
   pull_request:
     branches:
       - '**'
     types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - 'dot-config/zsh/**'
+      - '.github/workflows/zsh-kit-ci.yml'
   workflow_dispatch:
   schedule:
     # Nightly CI at 02:00 UTC
