@@ -214,6 +214,7 @@ dot-_*
 # Zsh plugin state (ephemeral)
 dot-config/zsh/.zgenom
 dot-config/zsh/.zqs-zgenom
+dot-config/zsh/.macos-defaults-last-run
 
 # History rewrite helper directories (avoid committing rewrite artifacts)
 rewrite-backup/
@@ -226,6 +227,10 @@ filter-repo/
 
 # CLI plugin directories (e.g., Docker, Podman, etc.)
 **/cli-plugins/
+
+# Ignore files named '2' that might be created by mistaken stderr redirections
+# (e.g., when someone types 'command 2> /dev/null' incorrectly as 'command > 2')
+2
 
 ###############################################################################
 # Ignore CI-generated perf ledger snapshots (daily artifacts)
