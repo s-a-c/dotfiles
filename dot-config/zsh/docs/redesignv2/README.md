@@ -60,6 +60,10 @@ Badge Legend Addendum (until the main legend table is revised):
 
 **PERFORMANCE UPDATE (2025-01-13)**: The previously reported 40+ second startup times were due to incorrect metrics reporting. Actual shell startup performance is excellent at ~334ms with variance < 2%. Migration testing can now proceed safely.
 
+**TESTING STANDARDS UPDATE (2025-01-14)**: Comprehensive ZSH testing standards have been established and integrated into AI guidelines at `dot-config/ai/guidelines/070-testing/090-zsh-testing-standards.md`. Test suite enhancements are being tracked for future implementation.
+
+**CLEANUP UPDATE (2025-01-14 - Part 08.16.01)**: Resolved mistaken redirection issue creating files named `2`. Added `.gitignore` entries to prevent recurrence. Documentation at `docs/redesignv2/FIX_MISTAKEN_REDIRECTION.md`.
+
 Focused execution priorities and updated checklist reflecting recent local improvements and CI hygiene additions. Statuses have been refreshed to reflect completed test tooling, CI safeguards, and documentation work. Enforcement (fail-on-regression) remains deferred until the 7-day CI ledger stability gate is satisfied.
 
 1. Multi-Sample Segment Refresh & Monotonic Validation ✓ COMPLETE
@@ -103,10 +107,14 @@ Focused execution priorities and updated checklist reflecting recent local impro
      - CI safeguard added to prevent accidental ledger commits.
      - ✅ Shell startup performance verified (~334ms, variance < 2%)
      - ✅ Performance metrics corrected and validated
+     - ✅ ZSH Testing Standards documented (ZSH_TESTING_STANDARDS.md)
+     - ✅ Testing standards integrated into AI guidelines
+     - ✅ Mistaken redirection issue resolved (files named `2` cleanup)
    - Ready to proceed:
      - Comprehensive test suite execution (previously blocked)
      - Migration checklist execution (dot-config/zsh/docs/redesignv2/migration/PLAN_AND_CHECKLIST.md)
      - Documentation updated (README/IMPLEMENTATION) to clarify ledger policy and git-flow guidance.
+     - Test suite enhancement per new testing standards
    - Remaining gating requirement:
      - Collect 7 consecutive nightly ledger snapshots produced by CI (retain as artifacts for evidence).
      - Ensure `develop` has consistently green integration and nightly runs for the 7-day window.
@@ -242,6 +250,11 @@ Notes:
 - **[ARCHITECTURE.md](ARCHITECTURE.md)** – Design principles & layering
 - **[REFERENCE.md](REFERENCE.md)** – Operational commands & troubleshooting
 - **[RISK-ASYNC-PLAN.md](RISK-ASYNC-PLAN.md)** – Async enablement & mitigation strategy
+
+### **🧪 Testing Documentation**
+- **[ZSH_TESTING_STANDARDS.md](ZSH_TESTING_STANDARDS.md)** – Comprehensive testing standards for ZSH scripts
+- **[testing/TEST_IMPROVEMENT_PLAN.md](testing/TEST_IMPROVEMENT_PLAN.md)** – Phased plan to enhance test suite per standards
+- **[migration/PLAN_AND_CHECKLIST.md](migration/PLAN_AND_CHECKLIST.md)** – Migration testing checklist and procedures
 
 ### **📊 Implementation Tracking**
 - Stage documents: `stages/stage-1-foundation.md` (✅), `stage-2-preplugin.md` (✅), `stage-3-core.md` (⏳ live checklist), others pending.

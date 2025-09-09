@@ -12,19 +12,28 @@ This document captures the migration plan for enabling and validating the ZSH re
 - Security and core workflows maintained without path filters
 
 **CURRENT PHASE:** Migration tooling verified - ready for comprehensive testing
+**STATUS UPDATE (2025-01-14 - Part 08.16.01):** ✅ **TESTING IMPLEMENTATION READY** - Standards documented, test plan created, cleanup complete
+**STATUS UPDATE (2025-01-14):** ✅ **TESTING STANDARDS DOCUMENTED** - Comprehensive ZSH testing standards established
 **STATUS UPDATE (2025-01-13):** ✅ **PERFORMANCE ISSUE RESOLVED** - Shell startup performance was incorrectly reported; actual startup ~334ms
 **FINDINGS:**
 - ✅ Migration tools work correctly (use `/bin/bash` instead of zsh)
 - ✅ Shim audit successful (0 shims detected)
 - ✅ Shell startup performance excellent (~334ms, variance < 2%)
 - ✅ Performance metrics corrected and validated
+- ✅ ZSH Testing Standards documented (ZSH_TESTING_STANDARDS.md)
+- ✅ Testing standards integrated into AI guidelines
+- ✅ Test Improvement Plan created (8-week roadmap in testing/TEST_IMPROVEMENT_PLAN.md)
+- ✅ Mistaken redirection issue resolved (files named `2` cleanup complete)
 - ⚠️ Design tests may fail due to missing Stage 4 sentinel variables (expected)
 
 **NEXT IMMEDIATE STEPS:**
 1. ✅ Verify migration tools are functional and up-to-date (COMPLETE)
 2. 🔄 Run comprehensive local test suite with redesign enabled (READY TO PROCEED)
-3. 🔄 Update progress tracking in this document (IN PROGRESS)
-4. ✅ Shell startup performance verified - ready for production migration
+3. 🔄 Implement Week 1-2 of Test Improvement Plan (foundation work)
+4. 🔄 Complete 7-day CI ledger stability window monitoring
+5. 🔄 Execute migration with comprehensive testing
+6. ✅ Shell startup performance verified - ready for production migration
+7. ✅ Testing standards documented and integrated into AI guidelines
 
 Owner: `s-a-c`
 Repo root (work tree): `~/dotfiles/`
@@ -51,7 +60,11 @@ Quick safety checklist (pre-flight)
 - [x] Work on branch `feature/zsh-refactor-configuration` ✅ **CURRENT BRANCH**
 - [x] Ensure the repo is clean or changes are intentionally staged ✅ **WORKFLOW REORGANIZATION COMMITTED**
 - [x] Compute and record guidelines checksum ✅ **v900f08def0e6f7959ffd283aebb73b625b3473f5e49c57e861c6461b50a62ef2**
+- [x] Testing standards documented ✅ **ZSH_TESTING_STANDARDS.md created**
+- [x] Test improvement plan created ✅ **8-week roadmap in testing/TEST_IMPROVEMENT_PLAN.md**
+- [x] Repository cleanup complete ✅ **Mistaken redirection issue resolved**
 - [ ] Make a disposable test target before applying to your real `~/.zshenv`
+- [ ] Run enhanced test suite with new testing standards
 
 Section A — Git & workspace setup (commands)
 1. Switch to working branch and confirm status:
