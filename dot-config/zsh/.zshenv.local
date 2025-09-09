@@ -27,7 +27,7 @@
 # ------------------------------------------------------------------------------
 # Enable zsh REDESIGN
 # ------------------------------------------------------------------------------
-export ZSH_ENABLE_PREPLUGIN_REDESIGN=1
-export ZSH_ENABLE_POSTPLUGIN_REDESIGN=1
+#export ZSH_ENABLE_PREPLUGIN_REDESIGN=1
+#export ZSH_ENABLE_POSTPLUGIN_REDESIGN=1
 
 # End of file
