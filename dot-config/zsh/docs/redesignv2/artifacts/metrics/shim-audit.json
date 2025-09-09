@@ -1,12 +1,12 @@
 {
   "schema":"shim-audit.v1",
-  "generated_at":"2025-09-08T22:05:59Z",
+  "generated_at":"2025-09-09T14:55:04Z",
   "repo_root":"/Users/s-a-c/dotfiles",
   "total":1,
   "shim_count":0,
   "non_shim_count":1,
   "shim_max_body_lines":3,
-  "fail_on_shims":true,
+  "fail_on_shims":false,
   "shims":[
 
   ],
