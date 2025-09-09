@@ -19,6 +19,7 @@ on:
       - main
   pull_request:
     branches:
+      - feature/zsh-refactor-configuration
       - develop
       - main
   workflow_dispatch:
