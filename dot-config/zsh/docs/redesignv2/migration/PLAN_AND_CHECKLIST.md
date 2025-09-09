@@ -1,8 +1,22 @@
 # Redesign Migration: Plan and Checklist (Updated)
 
-Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v900f08def0e6f7959ffd283aebb73b625b3473f5e49c57e861c6461b50a62ef2
 
 This document captures the migration plan for enabling and validating the ZSH redesign (opt-in) on branch `feature/zsh-refactor-configuration`. It provides explicit next steps and the exact commands you can run to preview, apply, verify, and revert changes safely. Follow each step in order and only progress after you confirm the prior step's outputs.
+
+**PROGRESS STATUS UPDATE (2025-01-13):**
+✅ **Workflow Reorganization Complete (Part 08.13)** 
+- All ZSH workflows moved to main `.github/workflows/` directory
+- Path filters added to ZSH-specific workflows 
+- Workflow consolidation completed (badge generation unified)
+- Security and core workflows maintained without path filters
+
+**CURRENT PHASE:** Migration tooling verification and local testing execution
+**NEXT IMMEDIATE STEPS:**
+1. Verify migration tools are functional and up-to-date
+2. Run comprehensive local test suite with redesign enabled
+3. Update progress tracking in this document
+4. Prepare for production migration after testing validation
 
 Owner: `s-a-c`  
 Repo root (work tree): `~/dotfiles/`  
@@ -26,9 +40,9 @@ Important paths
 - Backups: default `~/.local/share/zsh/redesign-migration` unless `--backup-dir` set
 
 Quick safety checklist (pre-flight)
-- [ ] Work on branch `feature/zsh-refactor-configuration`
-- [ ] Ensure the repo is clean or changes are intentionally staged
-- [ ] Compute and record guidelines checksum if you need to re-acknowledge policy (AGENT.md requirement)
+- [x] Work on branch `feature/zsh-refactor-configuration` ✅ **CURRENT BRANCH**
+- [x] Ensure the repo is clean or changes are intentionally staged ✅ **WORKFLOW REORGANIZATION COMMITTED**
+- [x] Compute and record guidelines checksum ✅ **v900f08def0e6f7959ffd283aebb73b625b3473f5e49c57e861c6461b50a62ef2**
 - [ ] Make a disposable test target before applying to your real `~/.zshenv`
 
 Section A — Git & workspace setup (commands)
@@ -174,13 +188,13 @@ ZDOTDIR="$PWD/dot-config/zsh" "$ZDOTDIR/tools/bench-shim-audit.zsh" --output-jso
 ```
 
 Acceptance criteria before pushing
-- Design, unit, and integration tests pass locally (exit code `0`).
-- `migrate-to-redesign.sh --dry-run` preview looks correct for both test and home targets.
-- Backups were created and verify-able.
-- `--apply` and `--restore` behave as expected on disposable targets.
-- Shim audit output within acceptable threshold (document exceptions).
-- Policy acknowledgement header present in any AI-authored artifacts and commit messages (see commit templates below).
-- All CI workflows that will run are configured to use repo-relative paths and `defaults.run.working-directory: dot-config/zsh` where required.
+- [ ] Design, unit, and integration tests pass locally (exit code `0`).
+- [ ] `migrate-to-redesign.sh --dry-run` preview looks correct for both test and home targets.
+- [ ] Backups were created and verify-able.
+- [ ] `--apply` and `--restore` behave as expected on disposable targets.
+- [ ] Shim audit output within acceptable threshold (document exceptions).
+- [x] Policy acknowledgement header present in any AI-authored artifacts and commit messages ✅ **UPDATED TO v900f08def0e6f7959ffd283aebb73b625b3473f5e49c57e861c6461b50a62ef2**
+- [x] All CI workflows that will run are configured to use repo-relative paths and `defaults.run.working-directory: dot-config/zsh` where required ✅ **WORKFLOW REORGANIZATION COMPLETE**
 
 Commit message guidance (include policy ack)
 - Each AI-authored commit message MUST include the policy acknowledgement header. Use this template for commits that add/modify AI-authored files:
@@ -189,7 +203,7 @@ Commit message guidance (include policy ack)
 
   Long description of change, verification steps, and test results.
 
-  Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+  Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v900f08def0e6f7959ffd283aebb73b625b3473f5e49c57e861c6461b50a62ef2
   ```
 - Example:
   ```
@@ -199,7 +213,7 @@ Commit message guidance (include policy ack)
   - Add --force and MIGRATE_FORCE env override for CI
   - Make script executable
 
-  Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+  Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v900f08def0e6f7959ffd283aebb73b625b3473f5e49c57e861c6461b50a62ef2
   ```
 
 Rollback plan
@@ -215,14 +229,39 @@ Rollback plan
      ```
   3. Re-run tests and validate the environment.
 
-Next steps (actionable items you can approve now)
-1. Review this updated plan and confirm: `Approve plan`.
-2. I will then:
-   - Generate any remaining draft artifacts (CI YAMLs and module drafts) as read-only files under `dot-config/zsh/docs/redesignv2/migration/` for review.
-   - Run the local test suite and collect logs for your review.
-3. After you review drafts and logs, approve a focused commit (one-topic-per-commit) and I will:
-   - Push the commit(s) to `feature/zsh-refactor-configuration`.
-   - Coordinate the first CI run for the flagged workflow.
+## UPDATED: Immediate Next Steps (Post-Workflow Reorganization)
+
+**Phase 1: Migration Tool Verification ⏳ CURRENT**
+1. **STEP A**: Verify migration tools are current and functional
+   - [ ] Test `tools/migrate-to-redesign.sh` with `--dry-run` against disposable target
+   - [ ] Test `tools/deactivate-redesign.sh` rollback functionality
+   - [ ] Verify `tools/activate-redesign.sh` snippet generation
+
+2. **STEP B**: Execute comprehensive local testing
+   - [ ] Run design-only tests: `tests/run-all-tests.zsh --design-only`
+   - [ ] Run unit tests: `tests/run-all-tests.zsh --unit-only` 
+   - [ ] Run integration tests: `tests/run-all-tests.zsh --integration-only`
+   - [ ] Performance smoke test: `tools/perf-capture.zsh --dry-run`
+   - [ ] Shim audit: `tools/bench-shim-audit.zsh --output-json`
+
+3. **STEP C**: Update progress tracking and validation
+   - [ ] Document test results and any issues discovered
+   - [ ] Update this checklist with actual completion status
+   - [ ] Prepare evidence bundle for production migration approval
+
+**Phase 2: Production Migration Preparation ⏳ PENDING**
+4. After local testing validation, prepare for production migration:
+   - [ ] Create final migration commit with updated tools (if needed)
+   - [ ] Execute migration to personal `~/.zshenv` following Section E process
+   - [ ] Validate redesign works correctly in production environment
+   - [ ] Document any production-specific configurations or issues
+
+**Phase 3: CI Integration & Validation ⏳ PENDING**
+5. After successful personal migration:
+   - [ ] Push migration updates to `feature/zsh-refactor-configuration`
+   - [ ] Monitor CI workflows with new consolidated structure 
+   - [ ] Validate all ZSH-specific workflows trigger correctly with path filters
+   - [ ] Ensure security workflows continue to run on all changes
 
 Notes & references
 - The migration tooling uses the markers:
