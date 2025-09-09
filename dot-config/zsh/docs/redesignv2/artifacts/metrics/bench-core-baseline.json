@@ -1,0 +1,103 @@
+[DEBUG] early .zshenv:
+    ZDOTDIR=/Users/s-a-c/dotfiles/dot-config/zsh
+    ZSH_CACHE_DIR=/Users/s-a-c/.cache/zsh
+    ZSH_LOG_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/logs
+[DEBUG]: localized zgenom configuration:
+    ZGEN_SOURCE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGENOM_SOURCE_FILE=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zgenom.zsh
+    ZGEN_DIR=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom
+    ZGEN_INIT=/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+    ZGEN_AUTOLOAD_COMPINIT=0
+BENCH_INIT enumeration_count=9 mode=pre shimmed_count=0
+BENCH_START name=zf::debug iterations=500 repeat=2
+BENCH name=zf::debug iterations=500 total_ms=26.083 per_call_us=52.17 rc=0 shimmed=1 run=1 repeat=2
+BENCH name=zf::debug iterations=500 total_ms=24.721 per_call_us=49.44 rc=0 shimmed=1 run=2 repeat=2
+BENCH_START name=zf::ensure_cmd iterations=500 repeat=2
+r=3
+BENCH name=zf::ensure_cmd iterations=500 total_ms=28.433 per_call_us=56.87 rc=0 shimmed=1 run=1 repeat=2
+BENCH name=zf::ensure_cmd iterations=500 total_ms=28.085 per_call_us=56.17 rc=0 shimmed=1 run=2 repeat=2
+median_us=50.805
+median_total_ms=25.402
+median_rc=0
+BENCH_START name=zf::list_functions iterations=500 repeat=2
+r=3
+BENCH name=zf::list_functions iterations=500 total_ms=1923.147 per_call_us=3846.29 rc=0 shimmed=1 run=1 repeat=2
+BENCH name=zf::list_functions iterations=500 total_ms=1871.697 per_call_us=3743.39 rc=0 shimmed=1 run=2 repeat=2
+median_us=54.17
+median_total_ms=27.084
+median_rc=0
+BENCH_START name=zf::log iterations=500 repeat=2
+r=3
+BENCH name=zf::log iterations=500 total_ms=23.670 per_call_us=47.34 rc=0 shimmed=1 run=1 repeat=2
+BENCH name=zf::log iterations=500 total_ms=25.093 per_call_us=50.19 rc=0 shimmed=1 run=2 repeat=2
+median_us=56.52
+median_total_ms=28.259
+median_rc=0
+BENCH_START name=zf::require iterations=500 repeat=2
+r=3
+BENCH name=zf::require iterations=500 total_ms=32.575 per_call_us=65.15 rc=0 shimmed=1 run=1 repeat=2
+BENCH name=zf::require iterations=500 total_ms=32.532 per_call_us=65.06 rc=0 shimmed=1 run=2 repeat=2
+median_us=54.17
+median_total_ms=27.084
+median_rc=0
+BENCH_START name=zf::script_dir iterations=500 repeat=2
+r=3
+BENCH name=zf::script_dir iterations=500 total_ms=18.703 per_call_us=37.41 rc=0 shimmed=1 run=1 repeat=2
+BENCH name=zf::script_dir iterations=500 total_ms=19.520 per_call_us=39.04 rc=0 shimmed=1 run=2 repeat=2
+median_us=56.52
+median_total_ms=28.259
+median_rc=0
+BENCH_START name=zf::timed iterations=500 repeat=2
+r=3
+BENCH name=zf::timed iterations=500 total_ms=13254.406 per_call_us=26508.81 rc=0 shimmed=1 run=1 repeat=2
+BENCH name=zf::timed iterations=500 total_ms=13383.509 per_call_us=26767.02 rc=0 shimmed=1 run=2 repeat=2
+median_us=54.17
+median_total_ms=27.084
+median_rc=0
+BENCH_START name=zf::warn iterations=500 repeat=2
+r=3
+BENCH name=zf::warn iterations=500 total_ms=25.761 per_call_us=51.52 rc=0 shimmed=1 run=1 repeat=2
+BENCH name=zf::warn iterations=500 total_ms=25.941 per_call_us=51.88 rc=0 shimmed=1 run=2 repeat=2
+median_us=56.52
+median_total_ms=28.259
+median_rc=0
+BENCH_START name=zf::with_timing iterations=500 repeat=2
+r=3
+BENCH name=zf::with_timing iterations=500 total_ms=4280.086 per_call_us=8560.17 rc=0 shimmed=1 run=1 repeat=2
+BENCH name=zf::with_timing iterations=500 total_ms=4236.709 per_call_us=8473.42 rc=0 shimmed=1 run=2 repeat=2
+median_us=54.17
+median_total_ms=27.084
+median_rc=0
+
+Core Function Micro Benchmarks
+Iterations=500 Repeat=2 Timestamp=2025-09-04T12:35:23Z
+
+Function                           Iter   Repeat  Median µs/call Total ms (median run) RC(median)
+zf::debug                           500        2          50.805           25.402        0
+zf::ensure_cmd                      500        2           54.17           27.084        0
+zf::list_functions                  500        2           56.52           28.259        0
+zf::log                             500        2           54.17           27.084        0
+zf::require                         500        2           56.52           28.259        0
+zf::script_dir                      500        2           54.17           27.084        0
+zf::timed                           500        2           56.52           28.259        0
+zf::warn                            500        2           54.17           27.084        0
+zf::with_timing                     500        2           56.52           28.259        0
+{
+  "schema": "bench-core.v1",
+  "generated_at": "2025-09-04T12:35:23Z",
+  "iterations": 500,
+  "repeat": 2,
+  "shimmed_count": 0,
+  "enumeration_mode": "dynamic",
+  "functions": [
+    {"name":"zf::debug","iterations":500,"repeat":2,"median_per_call_us":50.805,"median_total_ms":25.402,"rc":0,"shimmed":1},
+    {"name":"zf::ensure_cmd","iterations":500,"repeat":2,"median_per_call_us":54.17,"median_total_ms":27.084,"rc":0,"shimmed":1},
+    {"name":"zf::list_functions","iterations":500,"repeat":2,"median_per_call_us":56.52,"median_total_ms":28.259,"rc":0,"shimmed":1},
+    {"name":"zf::log","iterations":500,"repeat":2,"median_per_call_us":54.17,"median_total_ms":27.084,"rc":0,"shimmed":1},
+    {"name":"zf::require","iterations":500,"repeat":2,"median_per_call_us":56.52,"median_total_ms":28.259,"rc":0,"shimmed":1},
+    {"name":"zf::script_dir","iterations":500,"repeat":2,"median_per_call_us":54.17,"median_total_ms":27.084,"rc":0,"shimmed":1},
+    {"name":"zf::timed","iterations":500,"repeat":2,"median_per_call_us":56.52,"median_total_ms":28.259,"rc":0,"shimmed":1},
+    {"name":"zf::warn","iterations":500,"repeat":2,"median_per_call_us":54.17,"median_total_ms":27.084,"rc":0,"shimmed":1},
+    {"name":"zf::with_timing","iterations":500,"repeat":2,"median_per_call_us":56.52,"median_total_ms":28.259,"rc":0,"shimmed":1}
+  ]
+}
