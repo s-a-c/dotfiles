@@ -1,5 +1,8 @@
-# Draft: tools/deactivate-redesign.sh
-#
+# tools/deactivate-redesign.sh
+
+Compliant with [dotfiles/dot-config/ai/guidelines.md](file:dotfiles/dot-config/ai/guidelines.md) v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+
+## Draft: tools/deactivate-redesign.sh
 # Purpose
 # -------
 # Inverse helper for `tools/activate-redesign.sh`.
@@ -32,6 +35,7 @@
 #
 # Implementation (draft script)
 # -----------------------------
+```zsh
 #!/usr/bin/env zsh
 set -euo pipefail
 
@@ -255,6 +259,8 @@ case "$CMD" in
 esac
 
 exit 0
+
+```
 
 # End of draft deactivate-redesign.sh
 # ---------------------------------------------------------------------------

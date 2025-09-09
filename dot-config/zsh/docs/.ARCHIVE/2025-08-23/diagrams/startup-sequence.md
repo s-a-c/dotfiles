@@ -1,3 +1,4 @@
+
 # ZSH Startup Sequence Diagram
 
 ## 🚀 Complete Startup Flow
