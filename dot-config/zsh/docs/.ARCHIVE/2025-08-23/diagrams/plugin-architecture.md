@@ -1,3 +1,4 @@
+
 # ZSH Plugin Architecture and Management
 
 ## Plugin Management Ecosystem Overview
@@ -78,6 +79,7 @@ flowchart TB
     classDef env fill:#e74c3c,stroke:#c0392b,stroke-width:2px,color:#fff
     classDef framework fill:#3498db,stroke:#2980b9,stroke-width:2px,color:#fff
     classDef manager fill:#2ecc71,stroke:#27ae60,stroke-width:2px,color:#fff
+
     classDef plugins fill:#f39c12,stroke:#e67e22,stroke-width:2px,color:#000
     classDef specific fill:#9b59b6,stroke:#8e44ad,stroke-width:1px,color:#fff
 
