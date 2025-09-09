@@ -1,9 +1,16 @@
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v900f08def0e6f7959ffd283aebb73b625b3473f5e49c57e861c6461b50a62ef2
 name: CI Core
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'dot-config/zsh/**'
+      - '.github/workflows/ci-core.yml'
   pull_request:
     branches: [ main ]
+    paths:
+      - 'dot-config/zsh/**'
+      - '.github/workflows/ci-core.yml'
 
 jobs:
   path-enforcement:

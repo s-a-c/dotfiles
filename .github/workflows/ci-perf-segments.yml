@@ -1,5 +1,5 @@
 name: CI Perf Segments
-# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v900f08def0e6f7959ffd283aebb73b625b3473f5e49c57e861c6461b50a62ef2
 #
 # PURPOSE:
 #   Multi‑sample ZSH startup performance capture + variance gate + observe guard + budget report.
@@ -35,6 +35,9 @@ on:
   workflow_dispatch: {}
   pull_request:
     branches: [ main ]
+    paths:
+      - 'dot-config/zsh/**'
+      - '.github/workflows/ci-perf-segments.yml'
   schedule:
     - cron: '15 4 * * *'   # Nightly run (UTC) – adjust as needed
 

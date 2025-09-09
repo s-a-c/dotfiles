@@ -1,0 +1,113 @@
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v900f08def0e6f7959ffd283aebb73b625b3473f5e49c57e861c6461b50a62ef2
+name: Redesign (flagged) — Branch CI
+
+on:
+  push:
+    branches:
+      - 'feature/zsh-refactor-configuration'
+    paths:
+      - 'dot-config/zsh/**'
+      - '.github/workflows/zsh-redesign-flagged.yml'
+  pull_request:
+    branches:
+      - 'feature/zsh-refactor-configuration'
+    paths:
+      - 'dot-config/zsh/**'
+      - '.github/workflows/zsh-redesign-flagged.yml'
+  workflow_dispatch:
+    inputs:
+      use_redesign:
+        description: 'Run with redesign enabled (true/false)'
+        required: true
+        default: 'true'
+
+jobs:
+  test-redesign:
+    name: Test (redesign enabled)
+    runs-on: ubuntu-latest
+    env:
+      # Ensure the redesign path is exercised
+      ZSH_USE_REDESIGN: '1'
+      # Point ZDOTDIR to the repo-local zsh configuration for deterministic sourcing
+      ZDOTDIR: '${{ github.workspace }}/dot-config/zsh'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup APT dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y jq bats zip || true
+
+      - name: Show environment info
+        run: |
+          echo "ZDOTDIR=${ZDOTDIR}"
+          echo "ZSH_USE_REDESIGN=${ZSH_USE_REDESIGN}"
+          pwd
+          ls -la dot-config/zsh || true
+
+      - name: Run unit tests
+        working-directory: ./dot-config/zsh
+        run: |
+          set -euo pipefail
+          ./tests/run-all-tests.zsh --unit-only
+
+      - name: Run design & integration tests (fast)
+        working-directory: ./dot-config/zsh
+        run: |
+          set -euo pipefail
+          ./tests/run-all-tests.zsh --design-only --timeout-secs 60
+
+      - name: Shim audit (emit JSON)
+        working-directory: ./dot-config/zsh
+        run: |
+          mkdir -p dot-config/zsh/docs/redesignv2/migration
+          if [[ -x ./tools/bench-shim-audit.zsh ]]; then
+            ./tools/bench-shim-audit.zsh --output-json dot-config/zsh/docs/redesignv2/migration/shim-audit.json || true
+          else
+            echo '{"note":"bench-shim-audit missing"}' > dot-config/zsh/docs/redesignv2/migration/shim-audit.json
+          fi
+
+      - name: Perf smoke (capture ledger - best-effort)
+        working-directory: ./dot-config/zsh
+        env:
+          PERF_LEDGER_DIR: ./tools/perf/ledgers
+        run: |
+          set -euo pipefail
+          mkdir -p ./tools/perf/ledgers
+          if [[ -x ./tools/perf-capture-dryrun.zsh ]]; then
+            ./tools/perf-capture-dryrun.zsh --output ./tools/perf/ledgers/perf-ledger-${{ github.run_id }}.json || true
+          elif [[ -x ./tools/perf-capture.sh ]]; then
+            ./tools/perf-capture.sh --output ./tools/perf/ledgers/perf-ledger-${{ github.run_id }}.json || true
+          else
+            echo '{"note":"perf-capture helper not present on runner"}' > ./tools/perf/ledgers/perf-ledger-${{ github.run_id }}.json
+          fi
+          ls -la ./tools/perf/ledgers || true
+
+      - name: Upload shim-audit.json artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: shim-audit-${{ github.run_id }}
+          path: dot-config/zsh/docs/redesignv2/migration/shim-audit.json
+
+      - name: Upload perf ledger artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: perf-ledgers-${{ github.run_id }}
+          path: dot-config/zsh/tools/perf/ledgers/
+
+      - name: Archive test logs (best-effort)
+        if: always()
+        run: |
+          mkdir -p .github/test-logs
+          cp -a dot-config/zsh/logs .github/test-logs 2>/dev/null || true
+        continue-on-error: true
+
+      - name: Upload test logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-logs-${{ github.run_id }}
+          path: .github/test-logs/
