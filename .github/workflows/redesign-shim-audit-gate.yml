@@ -1,4 +1,4 @@
-# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v900f08def0e6f7959ffd283aebb73b625b3473f5e49c57e861c6461b50a62ef2
 name: Redesign Shim Audit Gate
 
 # Enforce shim-audit gating for the redesign branch and PRs that affect ZSH config.
@@ -17,11 +17,19 @@ on:
       - feature/zsh-refactor-configuration
       - develop
       - main
+    paths:
+      - 'dot-config/zsh/**'
+      - '.github/workflows/*zsh*'
+      - '.github/workflows/redesign-shim-audit-gate.yml'
   pull_request:
     branches:
       - feature/zsh-refactor-configuration
       - develop
       - main
+    paths:
+      - 'dot-config/zsh/**'
+      - '.github/workflows/*zsh*'
+      - '.github/workflows/redesign-shim-audit-gate.yml'
   workflow_dispatch:
 
 jobs:

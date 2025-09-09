@@ -1,0 +1,200 @@
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v900f08def0e6f7959ffd283aebb73b625b3473f5e49c57e861c6461b50a62ef2
+name: zsh-Perf & Structure CI
+# Scope (zsh project):
+#   - Runs with working-directory: dot-config/zsh and sets ZDOTDIR to the project path
+#   - Validates structure and performance on push/PR; generates artifacts under docs/redesignv2/artifacts and bridges to legacy paths during migration
+#   - Does not publish to gh-pages; uploads artifacts for review and badges refresh
+# Ownership (RACI):
+#   - R: ZSH Maintainers
+#   - A: ZSH Lead
+#   - C: Infra/Perf CI
+#   - I: Repo Owners
+# Relationship:
+#   - Complements repo-* nightly workflows (repo-Variance Nightly, repo-Perf Ledger Nightly) which consume artifacts for governance/badges
+#   - Acts as CI gate and artifact generator for PRs and main pushes
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'dot-config/zsh/**'
+      - '.github/workflows/zsh-perf-structure-ci.yml'
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - 'dot-config/zsh/**'
+      - '.github/workflows/zsh-perf-structure-ci.yml'
+  workflow_dispatch: {}
+
+jobs:
+  perf-structure:
+    runs-on: macos-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: ./dot-config/zsh
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up shell
+        run: echo "SHELL=$(which zsh)" >> $GITHUB_ENV
+
+      - name: Make scripts executable
+        run: |
+          chmod +x tools/generate-perf-badge.zsh || true
+          chmod +x tools/generate-structure-audit.zsh || true
+          chmod +x tools/generate-summary-badges.zsh || true
+          chmod +x tools/perf-regression-check.zsh || true
+
+      - name: Generate Structure Audit
+        run: tools/generate-structure-audit.zsh
+
+      - name: Generate Performance Badge (fail on >5% regression)
+        run: tools/generate-perf-badge.zsh 5
+
+      - name: Perf Regression Check (informational)
+        id: perf_regression
+        run: |
+          set -e
+          # Decide output path preferring redesignv2
+          OUT="docs/redesign/metrics/perf-regression.json"
+          if [ -d docs/redesignv2/artifacts/metrics ]; then
+            OUT="docs/redesignv2/artifacts/metrics/perf-regression.json"
+          fi
+          tools/perf-regression-check.zsh 7 > "$OUT" || true
+          echo "file=$OUT" >> "$GITHUB_OUTPUT"
+          echo "Perf regression report:" >&2
+          cat "$OUT" >&2
+
+      - name: Determine artifact root
+        id: artifact_root
+        run: |
+          if [ -d docs/redesignv2/artifacts/badges ] && [ -d docs/redesignv2/artifacts/metrics ]; then
+            echo "root=docs/redesignv2/artifacts" >> "$GITHUB_OUTPUT"
+          else
+            echo "root=docs/redesign" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Enforce Regression Gate
+        run: |
+          JSON=""
+          if [ -f docs/redesignv2/artifacts/metrics/perf-regression.json ]; then
+            JSON=docs/redesignv2/artifacts/metrics/perf-regression.json
+          elif [ -f docs/redesign/metrics/perf-regression.json ]; then
+            JSON=docs/redesign/metrics/perf-regression.json
+          else
+            echo "No perf regression JSON found; skipping gate (treat as pass)." >&2
+            exit 0
+          fi
+          STATUS=$( (command -v jq >/dev/null 2>&1 && jq -r '.status' "$JSON") || grep -o '"status" *: *"[A-Za-z]*"' "$JSON" | sed 's/.*"status" *: *"//;s/".*//' )
+          echo "Detected perf status: $STATUS" >&2
+          if [ "$STATUS" = "regression" ]; then
+            echo "CI failing due to performance regression" >&2
+            exit 2
+          fi
+
+      - name: Module-fire Selftest
+        id: module_fire
+        run: |
+          set -e
+          OUT="docs/redesign/metrics/module-fire.json"
+          if [ -d docs/redesignv2/artifacts/metrics ]; then
+            OUT="docs/redesignv2/artifacts/metrics/module-fire.json"
+          fi
+          # Run with a clean zsh to avoid .zshenv output polluting JSON
+          env -i ZDOTDIR=$PWD /bin/zsh -f tools/perf-module-fire-selftest.zsh --json --settle-ms 150 --grace-ms 100 > "$OUT"
+          echo "file=$OUT" >> "$GITHUB_OUTPUT"
+          echo "module_fire_file=$OUT" >> "$GITHUB_ENV"
+
+      - name: Module-fire Soft Gate (warn only)
+        run: |
+          JSON="${module_fire_file:-}"
+          if [ -z "$JSON" ] || [ ! -s "$JSON" ]; then
+            echo "Selftest JSON missing; skipping module-fire gate." >&2
+            exit 0
+          fi
+          if command -v jq >/dev/null 2>&1; then
+            EMITS_SEG=$(jq -r '.diagnostics.emits_granular_segments' "$JSON")
+            EMITS_PR=$(jq -r '.diagnostics.emits_native_prompt' "$JSON")
+          else
+            EMITS_SEG=$(grep -o '"emits_granular_segments" *: *[01]' "$JSON" | sed 's/.*: *//')
+            EMITS_PR=$(grep -o '"emits_native_prompt" *: *[01]' "$JSON" | sed 's/.*: *//')
+          fi
+          echo "Module-fire emits: segments=${EMITS_SEG:-0} prompt=${EMITS_PR:-0}" >&2
+          if [ "${EMITS_SEG:-0}" = "0" ] || [ "${EMITS_PR:-0}" = "0" ]; then
+            echo "::warning::Module-fire selftest indicates missing granular segments or native prompt. See $JSON" >&2
+          fi
+
+      - name: Module-fire Hard Gate (optional)
+        if: ${{ env.SELFTEST_HARD_FAIL == '1' }}
+        run: |
+          JSON="${module_fire_file:-}"
+          if [ -z "$JSON" ] || [ ! -s "$JSON" ]; then
+            echo "Selftest JSON missing; skipping hard gate." >&2
+            exit 0
+          fi
+          if command -v jq >/dev/null 2>&1; then
+            EMITS_SEG=$(jq -r '.diagnostics.emits_granular_segments' "$JSON")
+            EMITS_PR=$(jq -r '.diagnostics.emits_native_prompt' "$JSON")
+          else
+            EMITS_SEG=$(grep -o '"emits_granular_segments" *: *[01]' "$JSON" | sed 's/.*: *//')
+            EMITS_PR=$(grep -o '"emits_native_prompt" *: *[01]' "$JSON" | sed 's/.*: *//')
+          fi
+          if [ "${EMITS_SEG:-0}" = "0" ] || [ "${EMITS_PR:-0}" = "0" ]; then
+            echo "CI failing due to module-fire hard gate (missing granular segments or native prompt)." >&2
+            exit 2
+          fi
+
+      - name: Generate Summary Badge
+        run: tools/generate-summary-badges.zsh
+
+      - name: Soft bridge (if using redesignv2 root)
+        if: steps.artifact_root.outputs.root == 'docs/redesignv2/artifacts'
+        run: |
+          mkdir -p docs/redesign/badges docs/redesign/metrics
+          rsync -a --delete docs/redesignv2/artifacts/badges/ docs/redesign/badges/
+          rsync -a --delete docs/redesignv2/artifacts/metrics/ docs/redesign/metrics/ || true
+          if [ -d docs/redesignv2/artifacts/checksums ]; then
+            mkdir -p docs/redesign/checksums
+            rsync -a --delete docs/redesignv2/artifacts/checksums/ docs/redesign/checksums/
+          fi
+          if [ -d docs/redesignv2/artifacts/inventories ]; then
+            mkdir -p docs/redesign/inventories
+            rsync -a --delete docs/redesignv2/artifacts/inventories/ docs/redesign/inventories/
+          fi
+
+      - name: Path audit (soft)
+        run: |
+          chmod +x tools/docs-path-audit.zsh || true
+          tools/docs-path-audit.zsh || true
+
+      - name: Legacy docs guard (soft)
+        env:
+          BASE_REF: origin/main
+        run: |
+          chmod +x tools/docs-legacy-guard.zsh || true
+          tools/docs-legacy-guard.zsh || true
+
+      - name: Upload Badge & Metrics Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: badges-and-metrics
+          path: |
+            docs/redesignv2/artifacts/badges/*.json
+            docs/redesignv2/artifacts/metrics/*.json
+            docs/redesignv2/artifacts/metrics/structure-audit.md
+            docs/redesign/badges/*.json
+            docs/redesign/metrics/*.json
+            docs/redesign/metrics/structure-audit.md
+
+      - name: Summary (human readable)
+        run: |
+          echo "Artifact root selected: ${{ steps.artifact_root.outputs.root }}"
+          if [ -f docs/redesignv2/artifacts/metrics/perf-regression.json ]; then
+            echo "Perf regression file: docs/redesignv2/artifacts/metrics/perf-regression.json"
+          elif [ -f docs/redesign/metrics/perf-regression.json ]; then
+            echo "Perf regression file: docs/redesign/metrics/perf-regression.json"
+          fi
+          echo "Migration mode: SOFT (dual-write / bridge enabled)"
