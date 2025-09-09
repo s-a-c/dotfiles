@@ -23,4 +23,11 @@
 [[ -z "${DOOMDIR}" ]]  && export DOOMDIR="${DOOMDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/doom}"
 [[ -d "${XDG_CONFIG_HOME:-$HOME/.config}/emacs/bin" ]] && PATH="${XDG_CONFIG_HOME:-$HOME/.config}/emacs/bin:${PATH}"
 
+
+# ------------------------------------------------------------------------------
+# Enable zsh REDESIGN
+# ------------------------------------------------------------------------------
+export ZSH_ENABLE_PREPLUGIN_REDESIGN=1
+export ZSH_ENABLE_POSTPLUGIN_REDESIGN=1
+
 # End of file
