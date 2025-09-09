@@ -1,2 +1,4 @@
 .crush//.env/
 .zgenom/
+# Ignore files named '2' that might be created by mistaken stderr redirections
+2
