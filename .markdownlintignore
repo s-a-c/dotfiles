@@ -1,0 +1,47 @@
+Compliant with [/Users/s-a-c/dot-config/ai/guidelines.md] v574e57646c7b5300d41ea780ed66768b1ee91eab4c7b2f968a33e20605de38f4
+
+# Purpose:
+# Mark task-tracker archive/backup files as non-blocking for markdownlint so that
+# PRs are not held up by large, historical backups. This follows the project's
+# backup & safety guidance: [Backup and Safety Procedures](/Users/s-a-c/dot-config/ai/guidelines/080-toc-heading-synchronization.md:406).
+#
+# If you need to run full link/format validation on these archives later, remove
+# or narrow these patterns and run the linter selectively on those files.
+#
+# NOTE: This file is intentionally conservative — it only suppresses linting for
+# files that are clearly archival/backup artifacts under the task-tracker area.
+#
+# Primary: task-tracker archive directories (explicit)
+dot-config/ai/200-l-s-f/010-task-tracker/archives/**
+dot-config/ai/200-l-s-f/010-task-tracker/**/archives/**
+
+# Common backup/archival filename patterns under task-tracker
+dot-config/ai/200-l-s-f/010-task-tracker/**/*backup*.md
+dot-config/ai/200-l-s-f/010-task-tracker/**/*bak*.md
+dot-config/ai/200-l-s-f/010-task-tracker/**/*CLEAN*.md
+dot-config/ai/200-l-s-f/010-task-tracker/**/*backup_*.md
+dot-config/ai/200-l-s-f/010-task-tracker/**/bak.*.md
+
+# General fallback: ignore any 'archives' subdirectories beneath any task-tracker path
+**/task-tracker/**/archives/**
+
+# Helpful: ignore common historical/automated backup naming conventions that appeared
+# in the repository (covers variants like 'bak.010-...', 'CLEAN.backup_...', etc.)
+**/task-tracker/**/*backup*.md
+**/task-tracker/**/*bak*.md
+**/task-tracker/**/*CLEAN*.md
+
+# Expanded ignores: zsh archives and other archive directories requested
+# ZSH documentation archives (explicit)
+dot-config/zsh/docs/.ARCHIVE/**
+dot-config/zsh/docs/.ARCHIVE/**
+
+# General archive patterns across dot-config (conservative)
+dot-config/**/.ARCHIVE/**
+dot-config/**/.archive/**
+dot-config/**/archives/**
+dot-config/**/.archives/**
+dot-config/**/backups/**
+dot-config/**/.backups/**
+
+# End of file

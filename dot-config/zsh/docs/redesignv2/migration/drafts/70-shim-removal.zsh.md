@@ -1,5 +1,8 @@
-# Draft: dotfiles/dot-config/zsh/.zshrc.d.REDESIGN/70-shim-removal.zsh
-#
+# dotfiles/dot-config/zsh/.zshrc.d.REDESIGN/70-shim-removal.zsh
+
+Compliant with [dotfiles/dot-config/ai/guidelines.md](file:dotfiles/dot-config/ai/guidelines.md) v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+
+## Draft: dotfiles/dot-config/zsh/.zshrc.d.REDESIGN/70-shim-removal.zsh
 # Purpose
 # =======
 # Runtime shim disable guard (F-A5) — draft for review.
@@ -31,6 +34,7 @@
 #
 # Draft Implementation (script)
 # -----------------------------
+```zsh
 #!/usr/bin/env zsh
 # .zshrc.d.REDESIGN/70-shim-removal.zsh — runtime shim guard (draft)
 #
@@ -184,6 +188,8 @@ EOF
 if [[ "${ZSH_REDESIGN_DISABLE_SHIMS_AT_RUNTIME:-0}" == "1" ]]; then
   zred::shim::disable || true
 fi
+
+```
 
 # End of draft shim-removal module
 # Notes for reviewers:
