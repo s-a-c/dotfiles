@@ -1,0 +1,5 @@
+20250909T220913Z s-a-c migrate apply target=/tmp/zsh-migration-test/test.zshenv backup=Backup created: /Users/s-a-c/.local/share/zsh/redesign-migration/test.zshenv.20250909T220913Z.bak
+/Users/s-a-c/.local/share/zsh/redesign-migration/test.zshenv.20250909T220913Z.bak cwd=/Users/s-a-c/dotfiles
+20250909T234135Z s-a-c migrate apply target=/tmp/test.zshenv backup=Backup created: /Users/s-a-c/.local/share/zsh/redesign-migration/test.zshenv.20250909T234135Z.bak
+/Users/s-a-c/.local/share/zsh/redesign-migration/test.zshenv.20250909T234135Z.bak cwd=/Users/s-a-c/dotfiles
+20250909T234154Z s-a-c migrate restore target=/tmp/test.zshenv backup=/Users/s-a-c/.local/share/zsh/redesign-migration/test.zshenv.20250909T234135Z.bak cwd=/Users/s-a-c/dotfiles

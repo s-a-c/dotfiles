@@ -1,6 +1,10 @@
 #!/opt/homebrew/bin/zsh
 # 25-lazy-integrations.zsh (Pre-Plugin Redesign Enhanced)
 # Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+
+# Prevent multiple loading
+[[ -n "${_LOADED_25_LAZY_INTEGRATIONS:-}" ]] && return 0
+
 [[ -n ${_LOADED_PRE_LAZY_INTEGRATIONS:-} ]] && return
 _LOADED_PRE_LAZY_INTEGRATIONS=1
 #
@@ -65,3 +69,6 @@ fi
 safe_git config --global user.name >/dev/null 2>&1 || true
 
 zsh_debug_echo "# [pre-plugin] 25-lazy-integrations enhanced (forced lazy wrapping active)"
+
+# Mark as loaded
+readonly _LOADED_25_LAZY_INTEGRATIONS=1

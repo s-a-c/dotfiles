@@ -12,6 +12,10 @@
 # PERF_CAPTURE_FAST short-circuit:
 # When enabled (used by perf-capture tooling) skip all core integrity
 # directory setup and hashing to minimize startup latency.
+
+# Prevent multiple loading
+[[ -n "${_LOADED_00_20_PLUGIN_INTEGRITY_CORE:-}" ]] && return 0
+
 if [[ "${PERF_CAPTURE_FAST:-0}" == "1" ]]; then
   typeset -f zsh_debug_echo >/dev/null 2>&1 || zsh_debug_echo() { :; }
   zsh_debug_echo "# [plugin-integrity-core][perf-capture-fast] Skipping core plugin integrity verification (PERF_CAPTURE_FAST=1)"
@@ -237,5 +241,9 @@ fi
 
 [[ "$ZSH_DEBUG" == "1" ]] && {
         zsh_debug_echo "# [security] Core plugin integrity verification loaded"
-    printf "# ------ %s --------------------------------\n" "$0"
+    printf "# ------ %s --------------------------------
+" "$0"
 }
+
+# Mark as loaded
+readonly _LOADED_00_20_PLUGIN_INTEGRITY_CORE=1
