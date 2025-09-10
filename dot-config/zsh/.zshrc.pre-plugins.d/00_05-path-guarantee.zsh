@@ -8,6 +8,10 @@
 #=============================================================================
 
 # Define minimal PATH if not already set or insufficient
+
+# Prevent multiple loading
+[[ -n "${_LOADED_00_05_PATH_GUARANTEE:-}" ]] && return 0
+
 if [[ -z "$PATH" ]] || ! command -v date >/dev/null 2>&1; then
     export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
 fi
@@ -91,3 +95,6 @@ debug_path_state() {
 
 # Log initialization
 zsh_debug_echo "[PATH-GUARANTEE] Safe command wrappers initialized"
+
+# Mark as loaded
+readonly _LOADED_00_05_PATH_GUARANTEE=1

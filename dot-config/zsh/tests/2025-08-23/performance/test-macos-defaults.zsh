@@ -294,7 +294,7 @@ main() {
 }
 
 # Execute main function if script is run directly (not sourced)
-# In zsh, use $0 instead of BASH_SOURCE
-if [[ "${0##*/}" == "test-macos-defaults.zsh" ]]; then
+# Use ZSH-specific method to detect if script is being executed vs sourced
+if [[ "${ZSH_EVAL_CONTEXT:-}" == toplevel || "${ZSH_EVAL_CONTEXT:-}" == cmdarg* ]]; then
     main "$@"
 fi

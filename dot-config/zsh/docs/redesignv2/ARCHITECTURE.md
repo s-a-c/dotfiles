@@ -1,7 +1,9 @@
 # ZSH Redesign Architecture (Consolidated)
-Version: 2.0
+Version: 2.1
 Status: Authoritative Design Reference
-Last Updated: 2025-01-03
+Last Updated: 2025-09-10
+
+Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v900f08def0e6f7959ffd283aebb73b625b3473f5e49c57e861c6461b50a62ef2
 
 This document defines the architectural intent, structural rules, performance strategies, and extensibility model for the ZSH configuration redesign. It supersedes scattered legacy rationale fragments and is the **single design source** unless superseded by a future version entry in the Change Log.
 
@@ -17,6 +19,7 @@ Establish a lean, deterministic, testable shell configuration with:
 - Deferred heavy work (IO, hashing, network) until *after* first prompt.
 - Observable integrity (fingerprints + async validation).
 - Easily auditable change surface (structured inventories, checksums).
+- **Test infrastructure upgraded:** All modules and tests validated for standards-compliant isolation (`zsh -f`), CI compatibility, and robust reporting.
 
 ---
 
@@ -34,6 +37,7 @@ Establish a lean, deterministic, testable shell configuration with:
 | Guard Discipline | Every module sets a unique sentinel variable | sentinel tests |
 | Test-Driven Hard Gates | Architecture rules codified as tests (structure, compinit, perf) | CI gating workflows |
 | Zero Hidden Coupling | Imports avoided; communication via environment or global state contract | Published variable contract |
+| **Standards-Compliant Test Infrastructure** | All tests run in isolated shells (`zsh -f`), explicit dependency declaration, robust reporting | Upgraded runner, CI enforcement, documentation migration |
 
 ---
 

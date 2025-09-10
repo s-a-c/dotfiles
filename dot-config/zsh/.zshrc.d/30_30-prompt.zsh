@@ -3,6 +3,10 @@
 # Comprehensive prompt and UI setup from refactored zsh configuration
 # This file consolidates theme and UI-related configurations
 
+
+# Prevent multiple loading
+[[ -n "${_LOADED_30_30_PROMPT:-}" ]] && return 0
+
 [[ "$ZSH_DEBUG" == "1" ]] && {
         zsh_debug_echo "# ++++++ $0 ++++++++++++++++++++++++++++++++++++"
     zsh_debug_echo "# [prompt-ui] Setting up prompt and UI configurations"
@@ -77,7 +81,7 @@
     zsh_debug_echo "# [ui.carapace]"
 
     export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense'
-    zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
+    zstyle ':completion:*' format $'[2;37mCompleting %d[m'
 }
 
 ## [ui.thefuck] - The Fuck command correction
@@ -171,3 +175,6 @@ else
 fi
 
 zsh_debug_echo "# [prompt-ui] ✅ Prompt and UI configurations applied"
+
+# Mark as loaded
+readonly _LOADED_30_30_PROMPT=1
