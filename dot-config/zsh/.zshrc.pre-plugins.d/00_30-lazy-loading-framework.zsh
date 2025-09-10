@@ -8,6 +8,10 @@
 # Category: 00 (Core) - Essential framework for performance optimization
 #=============================================================================
 
+
+# Prevent multiple loading
+[[ -n "${_LOADED_00_30_LAZY_LOADING_FRAMEWORK:-}" ]] && return 0
+
 zsh_debug_echo "# ++++++ $0 ++++++++++++++++++++++++++++++++++++"
 zsh_debug_echo "# [performance] Loading lazy loading framework"
 
@@ -261,3 +265,6 @@ fi
 
 zsh_debug_echo "# [performance] Lazy loading framework loaded"
 zsh_debug_echo "# ------ $0 --------------------------------"
+
+# Mark as loaded
+readonly _LOADED_00_30_LAZY_LOADING_FRAMEWORK=1

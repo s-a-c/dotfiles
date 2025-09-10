@@ -1,0 +1,12 @@
+# Coverage data files
+data/
+reports/
+*.info
+*.gcov
+*.gcda
+*.gcno
+
+# Keep configuration and tools
+!kcov.conf
+!run-with-coverage.zsh
+!.gitignore

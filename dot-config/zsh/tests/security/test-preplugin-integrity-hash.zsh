@@ -42,8 +42,8 @@ if [[ -n "${ZSH_VERSION:-}" ]]; then
 elif typeset -f zf::script_dir >/dev/null 2>&1; then
     TEST_DIR="$(zf::script_dir "$0")"
 else
-    # Fallback for non-zsh shells
-    TEST_DIR="$(cd "$(dirname -- "${BASH_SOURCE[0]:-$0}")" >/dev/null 2>&1 && pwd -P)"
+    # Fallback for other shells
+    TEST_DIR="$(cd "$(dirname -- "$0")" >/dev/null 2>&1 && pwd -P)"
 fi
 # Two directories up from tests/security -> zsh root
 ZSH_ROOT="${TEST_DIR:h:h}"

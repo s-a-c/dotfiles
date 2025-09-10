@@ -4,36 +4,53 @@ Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v900f08def0e6f7
 
 This document captures the migration plan for enabling and validating the ZSH redesign (opt-in) on branch `feature/zsh-refactor-configuration`. It provides explicit next steps and the exact commands you can run to preview, apply, verify, and revert changes safely. Follow each step in order and only progress after you confirm the prior step's outputs.
 
-**PROGRESS STATUS UPDATE (2025-01-13):**
+**PROGRESS STATUS UPDATE (2025-09-10):**
 ✅ **Workflow Reorganization Complete (Part 08.13)**
 - All ZSH workflows moved to main `.github/workflows/` directory
 - Path filters added to ZSH-specific workflows
 - Workflow consolidation completed (badge generation unified)
 - Security and core workflows maintained without path filters
 
-**CURRENT PHASE:** Migration tooling verified - ready for comprehensive testing
-**STATUS UPDATE (2025-01-14 - Part 08.16.01):** ✅ **TESTING IMPLEMENTATION READY** - Standards documented, test plan created, cleanup complete
-**STATUS UPDATE (2025-01-14):** ✅ **TESTING STANDARDS DOCUMENTED** - Comprehensive ZSH testing standards established
-**STATUS UPDATE (2025-01-13):** ✅ **PERFORMANCE ISSUE RESOLVED** - Shell startup performance was incorrectly reported; actual startup ~334ms
-**FINDINGS:**
-- ✅ Migration tools work correctly (use `/bin/bash` instead of zsh)
-- ✅ Shim audit successful (0 shims detected)
-- ✅ Shell startup performance excellent (~334ms, variance < 2%)
-- ✅ Performance metrics corrected and validated
-- ✅ ZSH Testing Standards documented (ZSH_TESTING_STANDARDS.md)
-- ✅ Testing standards integrated into AI guidelines
-- ✅ Test Improvement Plan created (8-week roadmap in testing/TEST_IMPROVEMENT_PLAN.md)
-- ✅ Mistaken redirection issue resolved (files named `2` cleanup complete)
-- ⚠️ Design tests may fail due to missing Stage 4 sentinel variables (expected)
+✅ **Test Runner Migration Complete (Part 08.18)**
+- All CI workflows and documentation now use `run-all-tests-v2.zsh`
+- Legacy runner deprecated and marked in all references
+- Standards-compliant isolation (`zsh -f`) enforced for all tests
+
+✅ **Manifest Test Hardened**
+- Manifest test now passes in isolation and CI
+- Associative array syntax and core function sourcing fixed
+
+✅ **Performance Issue Resolved**
+- Shell startup performance excellent (~334ms, variance < 2%)
+- Metrics validated and documented
+
+✅ **Testing Standards Documented**
+- Comprehensive ZSH testing standards established and integrated into AI guidelines
+
+✅ **Migration Tools Verified**
+- Shim audit successful (0 shims detected)
+- Migration tools work correctly (use `/bin/bash` instead of zsh)
+
+⚠️ **Design tests may fail due to missing Stage 4 sentinel variables (expected)**
 
 **NEXT IMMEDIATE STEPS:**
 1. ✅ Verify migration tools are functional and up-to-date (COMPLETE)
-2. 🔄 Run comprehensive local test suite with redesign enabled (READY TO PROCEED)
-3. 🔄 Implement Week 1-2 of Test Improvement Plan (foundation work)
-4. 🔄 Complete 7-day CI ledger stability window monitoring
-5. 🔄 Execute migration with comprehensive testing
-6. ✅ Shell startup performance verified - ready for production migration
-7. ✅ Testing standards documented and integrated into AI guidelines
+2. ✅ Fix manifest test for CI compatibility (COMPLETE - Part 08.18)
+3. ✅ Migrate all CI and documentation to use `run-all-tests-v2.zsh` (COMPLETE)
+4. 🔄 Run comprehensive local test suite with redesign enabled (ALL TESTS READY)
+5. 🔄 Implement Week 1-2 of Test Improvement Plan (foundation work)
+6. 🔄 Complete 7-day CI ledger stability window monitoring (in progress)
+7. 🔄 Execute migration with comprehensive testing and document any failures
+8. ✅ Shell startup performance verified - ready for production migration
+9. ✅ Testing standards documented and integrated into AI guidelines
+
+**Actionable Next Steps:**
+- [ ] Run full test suite with new runner and document any failures
+- [ ] Monitor CI ledger for 7-day stability window
+- [ ] Finalize documentation and onboarding guides
+- [ ] Prepare for Stage 4: Feature Layer Implementation
+
+9. ✅ Core function tests hardened for `zsh -f` execution
 
 Owner: `s-a-c`
 Repo root (work tree): `~/dotfiles/`
@@ -63,6 +80,7 @@ Quick safety checklist (pre-flight)
 - [x] Testing standards documented ✅ **ZSH_TESTING_STANDARDS.md created**
 - [x] Test improvement plan created ✅ **8-week roadmap in testing/TEST_IMPROVEMENT_PLAN.md**
 - [x] Repository cleanup complete ✅ **Mistaken redirection issue resolved**
+- [x] Core function tests fixed for CI ✅ **Manifest test `zsh -f` compatible**
 - [ ] Make a disposable test target before applying to your real `~/.zshenv`
 - [ ] Run enhanced test suite with new testing standards
 

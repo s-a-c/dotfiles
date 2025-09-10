@@ -38,13 +38,15 @@
 ---
 zf::debug
 zf::ensure_cmd
+zf::exports
 zf::list_functions
 zf::log
 zf::require
+zf::script_dir
 zf::timed
 zf::warn
 zf::with_timing
 #
 # End of manifest
 # Manifest Version: stage3-initial
-# Last Updated: 2025-09-03
+# Last Updated: 2025-09-10

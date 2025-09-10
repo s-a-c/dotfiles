@@ -5,6 +5,10 @@
 
 # === Interactive History Options ===
 # These options enhance interactive history behavior but may not apply to non-interactive shells
+
+# Prevent multiple loading
+[[ -n "${_LOADED_00_60_OPTIONS:-}" ]] && return 0
+
 setopt HIST_EXPIRE_DUPS_FIRST   # Remove duplicates first when trimming history
 setopt HIST_IGNORE_ALL_DUPS     # Don't record duplicates in history (supersedes hist_ignore_dups)
 setopt HIST_SAVE_NO_DUPS        # Don't save duplicates to history file
@@ -148,3 +152,6 @@ setopt INTERACTIVE_COMMENTS     # Allow comments in interactive shell
 
 # Note: Universal options (EXTENDED_GLOB, NULLGLOB, NOMATCH, CORRECT, CORRECTALL,
 # basic history options) are now in .zshenv and apply to all shell types
+
+# Mark as loaded
+readonly _LOADED_00_60_OPTIONS=1

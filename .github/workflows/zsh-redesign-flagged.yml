@@ -50,13 +50,13 @@ jobs:
         working-directory: ./dot-config/zsh
         run: |
           set -euo pipefail
-          ./tests/run-all-tests.zsh --unit-only
+          ./tests/run-all-tests-v2.zsh --unit-only
 
       - name: Run design & integration tests (fast)
         working-directory: ./dot-config/zsh
         run: |
           set -euo pipefail
-          ./tests/run-all-tests.zsh --design-only --timeout-secs 60
+          ./tests/run-all-tests-v2.zsh --design-only --timeout-secs 60
 
       - name: Shim audit (emit JSON)
         working-directory: ./dot-config/zsh

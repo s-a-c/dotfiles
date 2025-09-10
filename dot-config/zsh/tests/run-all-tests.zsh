@@ -1,4 +1,12 @@
 #!/usr/bin/env zsh
+# ==============================================================================
+# DEPRECATION NOTICE: This test runner is deprecated as of September 2025.
+# Please use 'run-all-tests-v2.zsh' for all comprehensive and isolated ZSH configuration testing.
+# The new runner enforces standards-compliant isolation (zsh -f), explicit dependency declaration, and robust reporting.
+# ==============================================================================
+if [[ -z "$SUPPRESS_RUN_ALL_TESTS_DEPRECATION" ]]; then
+  echo "WARNING: 'run-all-tests.zsh' is deprecated. Use 'run-all-tests-v2.zsh' instead." >&2
+fi
 # NOTE: JSON summary timing fix applied – JSON now emitted AFTER recursive fallback
 # test execution and BEFORE human-readable summary print so counts include TDD nested tests.
 # Comprehensive Test Runner

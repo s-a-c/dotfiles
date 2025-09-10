@@ -1,6 +1,10 @@
 #!/opt/homebrew/bin/zsh
 # 20-macos-defaults-deferred.zsh (Pre-Plugin Redesign Enhanced)
 # Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+
+# Prevent multiple loading
+[[ -n "${_LOADED_20_MACOS_DEFAULTS_DEFERRED:-}" ]] && return 0
+
 [[ -n ${_LOADED_PRE_MACOS_DEFAULTS_DEFERRED:-} ]] && return
 _LOADED_PRE_MACOS_DEFAULTS_DEFERRED=1
 
@@ -68,3 +72,6 @@ if [[ "${OSTYPE}" == darwin* ]]; then
 else
   zsh_debug_echo "# [pre-plugin] macOS defaults skipped (non-macos)"
 fi
+
+# Mark as loaded
+readonly _LOADED_20_MACOS_DEFAULTS_DEFERRED=1

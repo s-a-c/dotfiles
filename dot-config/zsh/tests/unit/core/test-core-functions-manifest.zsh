@@ -66,14 +66,37 @@ fi
 : "${CORE_FN_MANIFEST_PATH:="${REPO_ROOT}/dot-config/zsh/docs/redesignv2/artifacts/golden/core-functions-manifest-stage3.txt"}"
 
 # --- DEBUG PATCH: Show all relevant paths ---
-zsh_debug_echo "DEBUG: PWD=$PWD"
-zsh_debug_echo "DEBUG: ZDOTDIR=$ZDOTDIR"
-zsh_debug_echo "DEBUG: SCRIPT_SRC=$SCRIPT_SRC"
+# Use conditional echo for zsh -f compatibility
+if [[ "${DEBUG:-0}" == "1" ]] || [[ "${CORE_FN_MANIFEST_DEBUG:-0}" == "1" ]]; then
+  echo "DEBUG: PWD=$PWD" >&2
+  echo "DEBUG: ZDOTDIR=$ZDOTDIR" >&2
+  echo "DEBUG: SCRIPT_SRC=$SCRIPT_SRC" >&2
+fi
 THIS_DIR="${SCRIPT_SRC:h}"
-zsh_debug_echo "DEBUG: THIS_DIR=$THIS_DIR"
-zsh_debug_echo "DEBUG: REPO_ROOT=$REPO_ROOT"
-zsh_debug_echo "DEBUG: CORE_FN_MANIFEST_PATH=$CORE_FN_MANIFEST_PATH"
+if [[ "${DEBUG:-0}" == "1" ]] || [[ "${CORE_FN_MANIFEST_DEBUG:-0}" == "1" ]]; then
+  echo "DEBUG: THIS_DIR=$THIS_DIR" >&2
+  echo "DEBUG: REPO_ROOT=$REPO_ROOT" >&2
+  echo "DEBUG: CORE_FN_MANIFEST_PATH=$CORE_FN_MANIFEST_PATH" >&2
+fi
 # --- END DEBUG PATCH ---
+
+# ---------------------------
+# Load Core Functions Module
+# ---------------------------
+# When run with zsh -f or in isolation, we need to source the core functions
+MODULE_REL=".zshrc.d.REDESIGN/10-core-functions.zsh"
+MODULE_PATH="${REPO_ROOT}/dot-config/zsh/${MODULE_REL}"
+
+if [[ ! -f "$MODULE_PATH" ]]; then
+  print "SKIP: core functions module not present (${MODULE_REL})"
+  exit 0
+fi
+
+# Source the module to ensure functions are available
+if ! source "$MODULE_PATH" 2>/dev/null; then
+  print "FAIL: unable to source core functions module"
+  exit 1
+fi
 
 ALLOW_SUPER=${CORE_FN_MANIFEST_ALLOW_SUPERSET:-0}
 ALLOW_SUB=${CORE_FN_MANIFEST_ALLOW_SUBSET:-0}
@@ -123,7 +146,7 @@ fi
 # Build associative for membership
 typeset -A GOLDEN_HASH
 for f in "${GOLDEN_ORDER[@]}"; do
-  GOLDEN_HASH["$f"]=1
+  GOLDEN_HASH[$f]=1
 done
 
 # ---------------------------
@@ -137,7 +160,7 @@ if typeset -f zf::list_functions >/dev/null 2>&1; then
   done < <(zf::list_functions 2>/dev/null || true)
 else
   # Fallback to raw function table enumeration
-  CURRENT_FUNCS=(${(k)functions:#zf::*})
+  CURRENT_FUNCS=(${(k)functions[(I)zf::*]})
   CURRENT_FUNCS=("${(@on)CURRENT_FUNCS}")  # sort
 fi
 
@@ -147,7 +170,7 @@ fi
 
 typeset -A CURRENT_HASH
 for f in "${CURRENT_FUNCS[@]}"; do
-  CURRENT_HASH["$f"]=1
+  CURRENT_HASH[$f]=1
 done
 
 # ---------------------------

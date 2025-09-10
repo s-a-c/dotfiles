@@ -385,6 +385,9 @@ export ZGEN_COMPINIT_FLAGS="${ZGEN_COMPINIT_FLAGS:-${ZGEN_COMPINIT_FLAGS:-}}"
 export ZGEN_OH_MY_ZSH_REPO="${ZGEN_OH_MY_ZSH_REPO:-ohmyzsh/ohmyzsh}"
 export ZGEN_OH_MY_ZSH_BRANCH="${ZGEN_OH_MY_ZSH_BRANCH:-master}"
 
+# Initialize fpath if not already set (prevents unbound variable errors)
+: ${fpath:=()}
+
 # Add vendored zgenom functions to fpath early if present (try source then dir)
 if [[ -d "${ZGEN_SOURCE}/functions" ]]; then
     fpath=("${ZGEN_SOURCE}/functions" $fpath)

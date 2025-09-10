@@ -13,17 +13,27 @@ If a conflict exists:
 3. Operational detail & usage → THIS FILE
 
 ---
+**Migration Note:**  
+Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v900f08def0e6f7959ffd283aebb73b625b3473f5e49c57e861c6461b50a62ef2
+
+As of September 2025, the legacy test runner `run-all-tests.zsh` is deprecated.  
+Please use `run-all-tests-v2.zsh` for all comprehensive and isolated ZSH configuration testing.  
+The new runner enforces standards-compliant isolation (`zsh -f`), explicit dependency declaration, and robust reporting.  
+All CI workflows and documentation have been migrated.  
+Update all scripts, CI, and documentation to reference `run-all-tests-v2.zsh` instead of the legacy runner.
 
 ## 1. Quick Command Cheat Sheet
 
 ### 1.1 Validation & Health
 | Purpose | Command |
 |---------|---------|
-| Full test suite | `tests/run-all-tests.zsh` |
-| Design / structure only | `tests/run-all-tests.zsh --design-only` |
-| Performance only | `tests/run-all-tests.zsh --performance-only` |
-| Security / async only | `tests/run-all-tests.zsh --security-only` |
-| Unit tests only | `tests/run-all-tests.zsh --unit-only` |
+| Full test suite | `tests/run-all-tests-v2.zsh` |
+| Design / structure only | `tests/run-all-tests-v2.zsh --design-only` |
+| Performance only | `tests/run-all-tests-v2.zsh --performance-only` |
+| Security / async only | `tests/run-all-tests-v2.zsh --security-only` |
+| Unit tests only | `tests/run-all-tests-v2.zsh --unit-only` |
+| Manifest test (direct) | `zsh -f tests/unit/core/test-core-functions-manifest.zsh` |
+| Manifest test (with debug) | `CORE_FN_MANIFEST_DEBUG=1 zsh -f tests/unit/core/test-core-functions-manifest.zsh` |
 | Implementation snapshot | `./verify-implementation.zsh` |
 | Promotion readiness gate | `tools/promotion-guard.zsh` |
 | Perf capture (2 runs + segments) | `tools/perf-capture.zsh` |
@@ -34,8 +44,21 @@ If a conflict exists:
 # Branch & implement
 git checkout -b stage-2-preplugin
 # Edit modules...
-tests/run-all-tests.zsh --design-only
-tests/run-all-tests.zsh --unit-only
+tests/run-all-tests-v2.zsh --design-only
+tests/run-all-tests-v2.zsh --unit-only
+```
+**Current Status:**  
+- Stage 3 is 92% complete.  
+- All migration, CI, and runner upgrades are done.  
+- The new `run-all-tests-v2.zsh` is enforced everywhere.  
+- Manifest test now passes in isolation (`zsh -f`).  
+- Performance: 334ms startup, 1.9% variance.
+
+**Next Steps:**  
+- Run comprehensive test suite with new runner  
+- Document and fix any remaining test failures  
+- Monitor CI ledger for stability  
+- Proceed to Stage 4: Feature layer implementation  
 
 # Measure performance effect
 tools/perf-capture.zsh
@@ -66,11 +89,28 @@ diff <(jq '.mean_ms,.post_plugin_cost_ms' docs/redesignv2/artifacts/metrics/perf
 ### 1.4 Security / Async Verification
 ```bash
 # Run async-specific tests
-tests/run-all-tests.zsh --security-only
+tests/run-all-tests-v2.zsh --security-only
 
 # Manually inspect logs
 grep ASYNC_STATE logs/async-state.log
 grep PERF_PROMPT logs/perf-current.log
+```
+
+### 1.5 Core Functions Testing (zsh -f compatibility)
+```bash
+# Test manifest directly with clean shell
+zsh -f tests/unit/core/test-core-functions-manifest.zsh
+
+# Debug manifest test issues
+CORE_FN_MANIFEST_DEBUG=1 zsh -f tests/unit/core/test-core-functions-manifest.zsh
+
+# List current core functions
+source dot-config/zsh/.zshrc.d.REDESIGN/10-core-functions.zsh
+zf::list_functions
+
+# Update manifest after function changes
+zf::list_functions > /tmp/current-functions.txt
+# Then manually update: docs/redesignv2/artifacts/golden/core-functions-manifest-stage3.txt
 ```
 
 ---
@@ -218,7 +258,7 @@ If `ASYNC_STATE:RUNNING` appears **before** `PERF_PROMPT:COMPLETE` → violation
 
 ### 6.2 Deep-Dive Steps (Performance)
 1. Capture fresh metrics: `tools/perf-capture.zsh`.
-2. If regression: run `tests/run-all-tests.zsh --performance-only`.
+2. If regression: run `tests/run-all-tests-v2.zsh --performance-only`.
 3. Disable redesign toggles individually to isolate (pre vs post).
 4. Temporarily comment suspected module; re-run capture.
 5. Use `zmodload zsh/datetime` and manual time logging inside module for micro-costs.

@@ -149,7 +149,7 @@ zf::timed() {
 # ------------------------------
 # Emits a sorted list of exported zf:: function names
 zf::list_functions() {
-  typeset -f | awk '/^zf::[a-zA-Z0-9_]+\s*\(\)/{sub(/\(\)/,"",$1); print $1}' | sort
+  typeset -f | grep '^zf::[a-zA-Z0-9_]* ()' | sed 's/ ().*//' | sort
 }
 
 # ------------------------------

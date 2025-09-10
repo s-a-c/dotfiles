@@ -55,12 +55,12 @@ jobs:
         run: |
           set -euo pipefail
           # Run unit tests; allow failures but capture exit code for artifacts.
-          ./tests/run-all-tests.zsh --unit-only || true
+          ./tests/run-all-tests-v2.zsh --unit-only || true
 
       - name: Run design tests (redesign ON)
         run: |
           set -euo pipefail
-          ./tests/run-all-tests.zsh --design-only --timeout-secs 60 || true
+          ./tests/run-all-tests-v2.zsh --design-only --timeout-secs 60 || true
 
       - name: Ensure artifacts dir
         run: |
