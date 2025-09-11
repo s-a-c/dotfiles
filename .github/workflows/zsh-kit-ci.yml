@@ -1,0 +1,194 @@
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v900f08def0e6f7959ffd283aebb73b625b3473f5e49c57e861c6461b50a62ef2
+name: zsh-kit-ci
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - feature/**
+      - hotfix/**
+      - release/**
+    paths:
+      - 'dot-config/zsh/**'
+      - '.github/workflows/zsh-kit-ci.yml'
+  pull_request:
+    branches:
+      - '**'
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - 'dot-config/zsh/**'
+      - '.github/workflows/zsh-kit-ci.yml'
+  workflow_dispatch:
+  schedule:
+    # Nightly CI at 02:00 UTC
+    - cron: '0 2 * * *'
+
+concurrency:
+  group: zsh-kit-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  zsh-kit-tests-and-perf:
+    name: ZSH kit tests + perf (CI-only)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    env:
+      # Gate heavy tests/perf to CI only; local commits remain quiet unless opted-in.
+      ZSH_KIT_RUN_FULL_TESTS: '1'
+      # Make paths explicit and predictable
+      ROOT_DIR: ${{ github.workspace }}
+      QUICK_OUT: ${{ github.workspace }}/.git/tmp/perf-quick.json
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Setup system dependencies (zsh, jq, gawk)
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -y
+          sudo apt-get install -y zsh jq gawk coreutils
+
+      - name: Ensure tmp dir exists
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "${ROOT_DIR}/.git/tmp"
+
+      - name: Print context
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Runner OS     : $RUNNER_OS"
+          echo "Workspace     : ${ROOT_DIR}"
+          echo "CI            : ${CI:-}"
+          echo "Full tests    : ${ZSH_KIT_RUN_FULL_TESTS:-0}"
+
+      - name: Run ZSH kit full test suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          TEST_RUNNER=""
+          if [[ -x "${ROOT_DIR}/dot-config/zsh/tests/run-all-tests-v2.zsh" ]]; then
+            TEST_RUNNER="${ROOT_DIR}/dot-config/zsh/tests/run-all-tests-v2.zsh"
+          elif [[ -x "${ROOT_DIR}/tests/run-all-tests-v2.zsh" ]]; then
+            TEST_RUNNER="${ROOT_DIR}/tests/run-all-tests-v2.zsh"
+          fi
+
+          if [[ -z "${TEST_RUNNER}" ]]; then
+            echo "[zsh-kit-ci] WARN: test runner not found; skipping tests."
+            exit 0
+          fi
+
+          echo "[zsh-kit-ci] Running full test suite: unit,integration,security"
+          "${TEST_RUNNER}" --category=unit,integration,security --fail-fast
+
+      - name: Quick performance check (3 runs) with drift guard
+        shell: bash
+        run: |
+          set -euo pipefail
+          PERF=""
+          if [[ -x "${ROOT_DIR}/dot-config/zsh/bin/test-performance.zsh" ]]; then
+            PERF="${ROOT_DIR}/dot-config/zsh/bin/test-performance.zsh"
+          elif [[ -x "${ROOT_DIR}/bin/test-performance.zsh" ]]; then
+            PERF="${ROOT_DIR}/bin/test-performance.zsh"
+          fi
+
+          if [[ -z "${PERF}" ]]; then
+            echo "[zsh-kit-ci] WARN: perf script not found; skipping perf check."
+            exit 0
+          fi
+
+          BASE=""
+          NEW_BASE="${ROOT_DIR}/dot-config/zsh/docs/redesignv2/artifacts/metrics/perf-baseline.json"
+          LEGACY_BASE="${ROOT_DIR}/dot-config/zsh/docs/redesign/metrics/perf-baseline.json"
+          if [[ -f "${NEW_BASE}" ]]; then
+            BASE="${NEW_BASE}"
+          elif [[ -f "${LEGACY_BASE}" ]]; then
+            BASE="${LEGACY_BASE}"
+          fi
+
+          echo "[zsh-kit-ci] Perf script   : ${PERF}"
+          echo "[zsh-kit-ci] Baseline JSON : ${BASE:-<none>}"
+          echo "[zsh-kit-ci] Output JSON   : ${QUICK_OUT}"
+
+          # Run 3 quick perf cycles
+          if ! "${PERF}" --runs 3 --json-out "${QUICK_OUT}"; then
+            echo "[zsh-kit-ci] ERROR: perf script failed to run." >&2
+            exit 1
+          fi
+
+          if [[ ! -f "${QUICK_OUT}" ]]; then
+            echo "[zsh-kit-ci] ERROR: expected perf output JSON not found at ${QUICK_OUT}" >&2
+            exit 1
+          fi
+
+          # If no baseline is present, do not fail CI; just upload artifact and continue.
+          if [[ -z "${BASE}" || ! -f "${BASE}" ]]; then
+            echo "[zsh-kit-ci] INFO: no baseline found; skipping drift assertion."
+            exit 0
+          fi
+
+          # Try jq first; fall back to grep/tr in case schema is flat
+          readjson() {
+            local key="$1" file="$2"
+            # Try common shapes
+            jq -r \
+              '(.startup_mean_ms // .summary.startup_mean_ms // .metrics.startup_mean_ms // empty)' \
+              "${file}" 2>/dev/null | awk 'NF {print; exit}'
+          }
+
+          base_ms="$(readjson startup_mean_ms "${BASE}")"
+          cur_ms="$(readjson startup_mean_ms "${QUICK_OUT}")"
+
+          # Fallback to grep/tr (very permissive)
+          if [[ -z "${base_ms}" ]]; then
+            base_ms="$(grep -Eo '[0-9]+(\\.[0-9]+)?' "${BASE}" | head -n1 || true)"
+          fi
+          if [[ -z "${cur_ms}" ]]; then
+            cur_ms="$(grep -Eo '[0-9]+(\\.[0-9]+)?' "${QUICK_OUT}" | head -n1 || true)"
+          fi
+
+          if [[ -z "${base_ms}" || -z "${cur_ms}" ]]; then
+            echo "[zsh-kit-ci] WARN: could not extract startup_mean_ms; skipping drift assertion."
+            exit 0
+          fi
+
+          echo "[zsh-kit-ci] Baseline mean: ${base_ms} ms"
+          echo "[zsh-kit-ci] Current  mean: ${cur_ms} ms"
+
+          # Compute percentage drift: (cur - base) / base * 100
+          delta="$(awk -v b="${base_ms}" -v c="${cur_ms}" 'BEGIN{ if(b==0){print "0.00"} else {printf "%.2f", (c-b)/b*100} }')"
+          echo "[zsh-kit-ci] Perf delta   : ${delta}%"
+
+          # Fail if drift exceeds 5%
+          awk -v d="${delta}" 'BEGIN{ if (d > 5.0) { exit 0 } else { exit 1 } }' \
+            && { echo "[zsh-kit-ci] ERROR: Perf regression >5%"; exit 1; } \
+            || echo "[zsh-kit-ci] Perf check OK (<= 5%)"
+
+      - name: Upload quick perf artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: zsh-perf-quick
+          path: ${{ env.QUICK_OUT }}
+          if-no-files-found: ignore
+
+      - name: Upload logs (if present)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: zsh-kit-logs
+          path: |
+            ${{ env.ROOT_DIR }}/dot-config/zsh/logs/**
+            ${{ env.ROOT_DIR }}/dot-config/zsh/.zsh-evalcache/**
+          if-no-files-found: ignore
