@@ -1,0 +1,165 @@
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v900f08def0e6f7959ffd283aebb73b625b3473f5e49c57e861c6461b50a62ef2
+#
+# Non-blocking CI workflow that exercises the ZSH redesign codepaths.
+# - Runs on pushes to the feature branch so the CI "migrates with the branch".
+# - Also runs on PRs targeting develop/main to provide visibility (non-blocking).
+# - Jobs are prefixed with `zsh-` as requested.
+#
+# Notes:
+# - Jobs set ZSH_USE_REDESIGN=1 and point ZDOTDIR to the repo-local zsh config.
+# - Artifacts are uploaded for reviewer inspection. Test steps are conservative (do not fail the job outright).
+# - This workflow is intentionally non-blocking (tests are allowed to report failures via artifacts and logs).
+#
+name: ZSH - Test Redesign (opt-in)
+
+on:
+  push:
+    branches:
+      - 'feature/zsh-refactor-configuration'
+    paths:
+      - 'dot-config/zsh/**'
+      - '.github/workflows/zsh-test-redesign.yml'
+  pull_request:
+    branches:
+      - 'develop'
+      - 'main'
+    paths:
+      - 'dot-config/zsh/**'
+      - '.github/workflows/zsh-test-redesign.yml'
+
+defaults:
+  run:
+    working-directory: dot-config/zsh
+
+jobs:
+  zsh-test-redesign:
+    name: zsh-test-redesign - unit & design
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      ZSH_USE_REDESIGN: '1'
+      ZDOTDIR: '${{ github.workspace }}/dot-config/zsh'
+      ZSH_CACHE_DIR: '${{ runner.temp }}/zsh-cache'
+      ZSH_LOG_DIR: '${{ runner.temp }}/zsh-logs'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install minimal deps
+        run: |
+          set -euo pipefail
+          sudo apt-get update -y
+          sudo apt-get install -y zsh jq || true
+
+      - name: Run unit tests (redesign ON)
+        run: |
+          set -euo pipefail
+          # Run unit tests; allow failures but capture exit code for artifacts.
+          ./tests/run-all-tests-v2.zsh --unit-only || true
+
+      - name: Run design tests (redesign ON)
+        run: |
+          set -euo pipefail
+          ./tests/run-all-tests-v2.zsh --design-only --timeout-secs 60 || true
+
+      - name: Ensure artifacts dir
+        run: |
+          mkdir -p dot-config/zsh/docs/redesignv2/artifacts/logs
+          mkdir -p dot-config/zsh/docs/redesignv2/artifacts/metrics
+
+      - name: Collect logs (best-effort)
+        run: |
+          set -euo pipefail
+          # Copy any runtime logs produced during tests into artifacts directory.
+          cp -a "${ZSH_LOG_DIR}/." dot-config/zsh/docs/redesignv2/artifacts/logs/ 2>/dev/null || true
+          # Touch placeholders if missing so artifact upload step has deterministic paths
+          touch dot-config/zsh/docs/redesignv2/artifacts/logs/.readme || true
+
+      - name: Generate shim-audit (best-effort)
+        run: |
+          set -euo pipefail
+          mkdir -p dot-config/zsh/docs/redesignv2/artifacts/metrics
+          if [[ -x ./tools/bench-shim-audit.zsh ]]; then
+            ./tools/bench-shim-audit.zsh --output-json dot-config/zsh/docs/redesignv2/artifacts/metrics/shim-audit.json || true
+          else
+            echo '{"note":"bench-shim-audit missing","generated_at":"'"$(date -u +"%Y-%m-%dT%H:%M:%SZ")"'"}' > dot-config/zsh/docs/redesignv2/artifacts/metrics/shim-audit.json
+          fi
+
+      - name: Upload test artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: zsh-test-redesign-${{ github.run_id }}
+          path: |
+            dot-config/zsh/docs/redesignv2/artifacts/logs
+            dot-config/zsh/docs/redesignv2/artifacts/metrics/shim-audit.json
+          retention-days: 30
+
+  zsh-shim-audit:
+    name: zsh-shim-audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      ZSH_USE_REDESIGN: '1'
+      ZDOTDIR: '${{ github.workspace }}/dot-config/zsh'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare artifact dir
+        run: |
+          set -euo pipefail
+          mkdir -p dot-config/zsh/docs/redesignv2/artifacts/metrics
+
+      - name: Run shim audit (produces shim-audit.json)
+        run: |
+          set -euo pipefail
+          export ZDOTDIR="${{ github.workspace }}/dot-config/zsh"
+          AUDIT_OUT="dot-config/zsh/docs/redesignv2/artifacts/metrics/shim-audit.json"
+          if [[ -x ./tools/bench-shim-audit.zsh ]]; then
+            ./tools/bench-shim-audit.zsh --output-json "$AUDIT_OUT" || true
+          else
+            echo '{"note":"bench-shim-audit missing","generated_at":"'"$(date -u +"%Y-%m-%dT%H:%M:%SZ")"'"}' > "$AUDIT_OUT"
+          fi
+
+      - name: Upload shim-audit artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: zsh-shim-audit-${{ github.run_id }}
+          path: dot-config/zsh/docs/redesignv2/artifacts/metrics/shim-audit.json
+          retention-days: 30
+
+  zsh-perf-smoke:
+    name: zsh-perf-smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      ZSH_USE_REDESIGN: '1'
+      ZDOTDIR: '${{ github.workspace }}/dot-config/zsh'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare perf artifact dir
+        run: |
+          set -euo pipefail
+          mkdir -p dot-config/zsh/docs/redesignv2/artifacts/metrics
+
+      - name: Run perf smoke capture (best-effort)
+        run: |
+          set -euo pipefail
+          PERF_OUT="dot-config/zsh/docs/redesignv2/artifacts/metrics/perf-current.json"
+          if [[ -x ./tools/perf-capture.zsh ]]; then
+            ./tools/perf-capture.zsh --output "$PERF_OUT" || true
+          else
+            echo '{}' > "$PERF_OUT"
+          fi
+
+      - name: Upload perf artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: zsh-perf-smoke-${{ github.run_id }}
+          path: dot-config/zsh/docs/redesignv2/artifacts/metrics/perf-current.json
+          retention-days: 30

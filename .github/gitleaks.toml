@@ -1,0 +1,134 @@
+# Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+# Baseline Gitleaks configuration for the dotfiles repository.
+#
+# Security standards references (for automated secret scanning control implementation):
+# - Core security principle (clarity & verifiability) [/Users/s-a-c/dotfiles/dot-config/ai/guidelines/100-security-standards.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines/100-security-standards.md:1)
+# - Security event logging (aid for integrating scan outputs) [/Users/s-a-c/dotfiles/dot-config/ai/guidelines/100-security-standards.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines/100-security-standards.md:205)
+# - Incident response & remediation (prevent recurrence) [/Users/s-a-c/dotfiles/dot-config/ai/guidelines/100-security-standards.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines/100-security-standards.md:233)
+#
+# PURPOSE
+#   - Provide a tunable baseline for the secretScan workflow.
+#   - Reduce false positives from placeholders, docs, and intentionally redacted examples.
+#   - Add targeted supplemental rules where default Gitleaks coverage is weaker for generic .env style secrets.
+#
+# USAGE
+#   - Referenced by the secretScan workflow via env var (GITLEAKS_CONFIG_PATH).
+#   - Add specific secret values to `[[allowlist]]` only after rotation (do not encode active secrets).
+#
+# NOTE
+#   - This baseline favors fewer false negatives over minimal false positives; tighten or loosen as repository evolves.
+#   - Do not broadly allowlist entire directories containing mixed code and config—prefer narrow regex or file path rules.
+#
+title = "dotfiles gitleaks baseline"
+
+# Optionally extend the official default config.
+# If you wish to track upstream changes, uncomment and pin a commit for deterministic CI.
+# [extend]
+# path = "https://raw.githubusercontent.com/gitleaks/gitleaks/v8.18.4/config/gitleaks.toml"
+
+################################################################################
+# GLOBAL ALLOWLIST
+################################################################################
+[allowlist]
+description = "Global allowlist for known safe placeholders and documentation examples"
+# Regex patterns that match strings we explicitly consider non-sensitive.
+regexes = [
+    '''(?i)(REDACTED|PLACEHOLDER|DUMMY|EXAMPLE|YOUR-ACTUAL-KEY-HERE)''',
+    # Common test tokens (trim as needed)
+    '''(?i)^(test|dummy|example)[_-]?(token|key|secret)[_-]?[0-9a-f]{0,16}$''',
+    # Generic obviously fake hashes (all 'a' or all '0')
+    '''(?i)^(?:a{32}|a{40}|0{32}|0{40})$''',
+]
+# Specific files (documentation & plans) that may contain illustrative patterns
+files = [
+    "SECRET_HISTORY_REWRITE_PLAN.md",
+    "dot-config/zsh/docs/.ARCHIVE/ZSH_MAINTENANCE_GUIDE.md",
+]
+# Example: if a historic commit produced persistent benign findings, list commit SHAs here (none yet)
+commits = []
+
+################################################################################
+# CUSTOM RULES
+################################################################################
+
+# High-entropy style variable assignments inside .env or shell export lines
+[[rules]]
+id = "DOTFILES_GENERIC_ENV_ASSIGNMENT"
+description = "Potential secret in generic KEY=VALUE line (high-entropy token style)"
+# Matches KEY=longBase64LikeOrHexishString optionally quoted
+regex = '''(?i)(?:^|\\b)(?:export\\s+)?[A-Z0-9_]{8,40}=(?:['"]?[A-Za-z0-9+/=_-]{20,}['"]?)'''
+tags = ["env", "secret", "generic"]
+# Limit surface by requiring these keywords to reduce noise
+keywords = [
+    "KEY=",
+    "TOKEN=",
+    "SECRET=",
+    "API_",
+    "ACCESS_",
+    "PRIVATE_",
+    "CREDENTIAL",
+]
+[rules.allowlist]
+# Skip obviously non-sensitive placeholders or intentionally redacted content
+regexes = [
+    '''(?i)(REDACTED|PLACEHOLDER|DUMMY|EXAMPLE|YOUR-ACTUAL-KEY-HERE)''',
+    '''(?i)^(?:export\\s+)?(FAKE|DUMMY|EXAMPLE|SAMPLE)_[A-Z0-9_]+=.+$''',
+]
+
+# Catch accidental inclusion of SSH private key BEGIN blocks
+[[rules]]
+id = "DOTFILES_SSH_PRIVATE_KEY_BLOCK"
+description = "SSH private key header presence"
+regex = '''-----BEGIN (?:OPENSSH )?PRIVATE KEY-----'''
+tags = ["ssh", "private-key"]
+[rules.allowlist]
+regexes = [
+    # Allow sanitized key headers that have been replaced by a redaction marker
+    '''REDACTED-OPENSSH-KEY''',
+]
+
+# Match OpenAI style keys (sk-)
+[[rules]]
+id = "DOTFILES_OPENAI_KEY"
+description = "OpenAI-style secret key"
+regex = '''sk-[A-Za-z0-9]{20,48}'''
+tags = ["openai", "api", "secret"]
+[rules.allowlist]
+regexes = ['''sk-REDACTED''']
+
+# Generic JWT (header.payload.signature) heuristic with base64url segments
+[[rules]]
+id = "DOTFILES_JWT_TOKEN"
+description = "Likely JSON Web Token"
+regex = '''ey[A-Za-z0-9_-]{10,}\\.[A-Za-z0-9_-]{10,}\\.[A-Za-z0-9_-]{10,}'''
+tags = ["jwt", "token", "auth"]
+[rules.allowlist]
+regexes = ['''REDACTED\\.REDACTED\\.REDACTED''']
+
+# AWS Access Key (if not already covered by extended default)
+[[rules]]
+id = "DOTFILES_AWS_ACCESS_KEY_ID"
+description = "AWS Access Key ID (AKIA...)"
+regex = '''AKIA[0-9A-Z]{16}'''
+tags = ["aws", "cloud", "secret"]
+[rules.allowlist]
+regexes = ['''AKIAEXAMPLE12345678''']
+
+################################################################################
+# PATH SCOPING / EXCLUSIONS
+################################################################################
+# Additional repo-specific path prune examples (commented out):
+# [[pathAllowlist]]
+# description = "Allow tool snapshots"
+# regexes = ['''^tools/snapshots/''']
+
+################################################################################
+# GUIDANCE (non-enforced metadata)
+################################################################################
+[metadata]
+rotation_required = true
+false_positive_review_process = "Open PR with evidence of benign nature; add narrow allowlist entry; avoid broad wildcards."
+incident_documentation = "Log in security incident register per guidelines before applying allowlists that hide previously real leaks."
+local_precommit_hook_recommendation = "Use gitleaks protect or a lightweight grep+entropy script before commit for faster feedback."
+
+# END OF FILE

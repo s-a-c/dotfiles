@@ -1,0 +1,111 @@
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v900f08def0e6f7959ffd283aebb73b625b3473f5e49c57e861c6461b50a62ef2
+name: zsh-Redesign — nightly perf
+run-name: zsh nightly perf • ${{ github.ref_name }}
+# Scope (zsh project):
+#   - Runs with working-directory: dot-config/zsh and sets ZDOTDIR to the project path
+#   - Captures nightly perf ledgers (best-effort) and optional shim audit; uploads artifacts
+#   - Branch-scoped to feature/zsh-refactor-configuration (unless dispatched)
+# Ownership (RACI):
+#   - R: ZSH Maintainers
+#   - A: ZSH Lead
+#   - C: Infra/Perf CI
+#   - I: Repo Owners
+# Relationship:
+#   - Complements repo-* nightly workflows which consume finalized artifacts and update badges/governance
+#   - Focuses on capture and diagnostics specific to redesign runtime
+
+on:
+  schedule:
+    - cron: '0 4 * * *'    # daily at 04:00 UTC
+  push:
+    branches: [main, master]
+    paths:
+      - 'dot-config/zsh/**'
+      - '.github/workflows/zsh-perf-nightly.yml'
+  pull_request:
+    branches: [main, master]
+    paths:
+      - 'dot-config/zsh/**'
+      - '.github/workflows/zsh-perf-nightly.yml'
+  workflow_dispatch:
+
+jobs:
+  nightly-perf:
+    name: Nightly perf capture (redesign)
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/feature/zsh-refactor-configuration' || github.event_name == 'workflow_dispatch'
+    env:
+      ZSH_USE_REDESIGN: '1'
+      ZDOTDIR: '${{ github.workspace }}/dot-config/zsh'
+
+    defaults:
+      run:
+        working-directory: ./dot-config/zsh
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y jq zip || true
+
+      - name: Prepare perf ledger dir
+
+        run: |
+          set -euo pipefail
+          mkdir -p ./tools/perf/ledgers
+          ls -la ./tools/perf || true
+
+      - name: Run perf harness (capture)
+
+        env:
+          PERF_LEDGER_DIR: ./tools/perf/ledgers
+        run: |
+          set -euo pipefail
+          # Prefer the canonical perf-capture script if present; tolerate absence.
+          if [[ -x ./tools/perf-capture.sh ]]; then
+            ./tools/perf-capture.sh --output ./tools/perf/ledgers/perf-ledger-$(date -u +%Y%m%dT%H%M%SZ).json || true
+          elif [[ -x ./tools/perf-capture-dryrun.zsh ]]; then
+            ./tools/perf-capture-dryrun.zsh --output ./tools/perf/ledgers/perf-ledger-$(date -u +%Y%m%dT%H%M%SZ).json || true
+          else
+            # Emit a placeholder so artifact upload always has content
+            printf '{"note":"perf-capture helper missing on runner","timestamp":"%s"}\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > ./tools/perf/ledgers/perf-ledger-$(date -u +%Y%m%dT%H%M%SZ).json
+          fi
+          # List ledgers for visibility
+          ls -la ./tools/perf/ledgers || true
+
+      - name: Run shim audit (optional)
+
+        run: |
+          set -euo pipefail
+          if [[ -x ./tools/bench-shim-audit.zsh ]]; then
+            ./tools/bench-shim-audit.zsh --output-json ./docs/redesignv2/migration/shim-audit-$(date -u +%Y%m%d).json || true
+          else
+            echo '{"note":"shim-audit missing"}' > ./docs/redesignv2/migration/shim-audit-$(date -u +%Y%m%d).json
+          fi
+        continue-on-error: true
+
+      - name: Upload perf ledger artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: perf-ledgers-nightly-${{ github.run_id }}
+          path: dot-config/zsh/tools/perf/ledgers/
+
+      - name: Upload shim-audit artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: shim-audit-nightly-${{ github.run_id }}
+          path: dot-config/zsh/docs/redesignv2/migration/shim-audit-*.json
+
+      - name: Post-run housekeeping (trim local ledger store)
+
+        run: |
+          set -euo pipefail
+          # Keep the last 14 ledger files to avoid unbounded runner storage growth
+          if ls tools/perf/ledgers/* >/dev/null 2>&1; then
+            ls -1t tools/perf/ledgers/* 2>/dev/null | tail -n +15 | xargs -r rm -f || true
+          fi

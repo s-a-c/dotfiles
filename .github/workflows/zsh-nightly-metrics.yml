@@ -1,0 +1,158 @@
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v900f08def0e6f7959ffd283aebb73b625b3473f5e49c57e861c6461b50a62ef2
+name: zsh-Nightly Metrics Refresh
+run-name: zsh nightly metrics • ${{ github.ref_name }}
+# Scope (zsh project):
+#   - Runs with working-directory: dot-config/zsh and sets ZDOTDIR to the project path
+#   - Generates ZSH metrics and badges under docs/redesignv2/artifacts and bridges to legacy docs/redesign during migration
+#   - Publishes gh-pages content from dot-config/zsh/public
+# Ownership (RACI):
+#   - R: ZSH Maintainers
+#   - A: ZSH Lead
+#   - C: Infra/Perf CI
+#   - I: Repo Owners
+# Relationship:
+#   - Complements repo-* nightly workflows which consume these artifacts for governance and badge freshness
+#   - This job focuses on generating artifacts; repo-Variance Nightly and repo-Perf Ledger Nightly consume/aggregate them
+
+on:
+  schedule:
+    - cron: '15 3 * * *' # 03:15 UTC nightly
+  push:
+    branches: [main, master]
+    paths:
+      - 'dot-config/zsh/**'
+      - '.github/workflows/zsh-nightly-metrics.yml'
+  pull_request:
+    branches: [main, master]
+    paths:
+      - 'dot-config/zsh/**'
+      - '.github/workflows/zsh-nightly-metrics.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  nightly:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./dot-config/zsh
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Ensure scripts executable
+        run: |
+          chmod +x tools/*.zsh || true
+
+      - name: Capture Baseline (no overwrite if exists in either location)
+        run: |
+          # Only attempt if neither legacy nor new baseline exists
+          if [ ! -f docs/redesign/metrics/perf-baseline.json ] && [ ! -f docs/redesignv2/artifacts/metrics/perf-baseline.json ]; then
+            tools/capture-baseline-10run.zsh --runs 16 || true
+          fi
+
+      - name: Generate Current Performance Badge
+        run: tools/generate-perf-badge.zsh 7
+
+      - name: Generate Structure Audit & Badge
+        run: tools/generate-structure-audit.zsh || true
+
+      - name: Generate Summary Badge
+        run: tools/generate-summary-badges.zsh || true
+
+      - name: Determine artifact root
+        id: artifact_root
+        run: |
+          if [ -d docs/redesignv2/artifacts/badges ]; then
+            echo "root=docs/redesignv2/artifacts" >> "$GITHUB_OUTPUT"
+          else
+            echo "root=docs/redesign" >> "$GITHUB_OUTPUT"
+          fi
+          echo "Selected artifact root: $(grep root= $GITHUB_OUTPUT | cut -d= -f2)"
+
+      - name: Soft bridge (copy new artifacts to legacy paths if using redesignv2)
+        if: steps.artifact_root.outputs.root == 'docs/redesignv2/artifacts'
+        run: |
+          mkdir -p docs/redesign/badges docs/redesign/metrics
+          rsync -a --delete docs/redesignv2/artifacts/badges/ docs/redesign/badges/
+          rsync -a --delete docs/redesignv2/artifacts/metrics/ docs/redesign/metrics/ || true
+          if [ -d docs/redesignv2/artifacts/checksums ]; then
+            mkdir -p docs/redesign/checksums
+            rsync -a --delete docs/redesignv2/artifacts/checksums/ docs/redesign/checksums/
+          fi
+          if [ -d docs/redesignv2/artifacts/inventories ]; then
+            mkdir -p docs/redesign/inventories
+            rsync -a --delete docs/redesignv2/artifacts/inventories/ docs/redesign/inventories/
+          fi
+
+      - name: Prepare publish directory
+        run: |
+          mkdir -p public
+          # Prefer new root when publishing
+          if [ -d docs/redesignv2/artifacts/badges ]; then
+            cp -R docs/redesignv2/artifacts/badges public/
+          else
+            cp -R docs/redesign/badges public/
+          fi
+          if [ -d docs/redesignv2/artifacts/metrics ]; then
+            cp -R docs/redesignv2/artifacts/metrics public/
+          else
+            cp -R docs/redesign/metrics public/
+          fi
+          cat > public/index.html <<'HTML'
+          <html><head><title>ZSH Nightly Metrics</title></head><body>
+          <h1>ZSH Nightly Metrics</h1>
+          <ul>
+            <li><a href="badges/perf.json">perf.json</a></li>
+            <li><a href="badges/structure.json">structure.json</a></li>
+            <li><a href="badges/summary.json">summary.json</a></li>
+            <li><a href="metrics/perf-current.json">perf-current.json</a></li>
+            <li><a href="metrics/perf-baseline.json">perf-baseline.json</a></li>
+            <li><a href="metrics/structure-audit.md">structure-audit.md</a></li>
+          </ul>
+          <p>Source now prefers redesignv2 artifacts (legacy paths bridged temporarily during migration).</p>
+          <p>Updated nightly at 03:15 UTC.</p>
+          </body></html>
+          HTML
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dot-config/zsh/public
+          publish_branch: gh-pages
+          keep_files: true
+
+      - name: Capture Stage 3 Preplugin Baselines (multi-sample set)
+        run: |
+          # Generate several distinct Stage 3 baseline artifacts to enable variance computation.
+          # Each run writes to a timestamped file so the variance evaluator sees multiple samples.
+          for i in 1 2 3; do
+            ts="$(date +%Y%m%dT%H%M%S)"
+            out="docs/redesignv2/artifacts/metrics/preplugin-baseline-stage3-${ts}-${i}.json"
+            tools/stage3-capture-preplugin-baseline.zsh --samples 5 --output "$out" --quiet || true
+            sleep 2
+          done
+
+      - name: Generate Preplugin Variance Badge
+        run: |
+          chmod +x tools/generate-preplugin-variance-badge.zsh || true
+          tools/generate-preplugin-variance-badge.zsh || true
+          # If redesignv2 layout exists, a badge should now be at:
+          #   docs/redesignv2/artifacts/badges/preplugin-variance.json
+          # Bridge to legacy path if needed for gh-pages consumer consistency
+          if [ -f docs/redesignv2/artifacts/badges/preplugin-variance.json ]; then
+            mkdir -p docs/redesign/badges
+            cp docs/redesignv2/artifacts/badges/preplugin-variance.json docs/redesign/badges/ || true
+          fi
+
+      - name: Print Shield URLs
+        run: |
+          echo "Perf Badge: https://img.shields.io/endpoint?url=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/raw/gh-pages/badges/perf.json"
+          echo "Structure Badge: https://img.shields.io/endpoint?url=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/raw/gh-pages/badges/structure.json"
+          echo "Summary Badge: https://img.shields.io/endpoint?url=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/raw/gh-pages/badges/summary.json"
+          echo "Preplugin Variance Badge: https://img.shields.io/endpoint?url=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/raw/gh-pages/badges/preplugin-variance.json"

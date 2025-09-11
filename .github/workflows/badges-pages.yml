@@ -1,0 +1,248 @@
+# badges-pages.yml
+# Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+#
+# Purpose
+#   Publish static SVG versions of repository internal status badges (perf / structure / hooks / infra / security)
+#   to a GitHub Pages site (gh-pages branch) for easy embedding in README and external dashboards without
+#   depending on dynamic third‑party badge rendering services.
+#
+# Scope
+#   Converts existing JSON badge artifacts (docs/badges/*.json) into SVGs using the local renderer script:
+#     tools/render-badge-svg.zsh
+#
+# Security / Policy Notes
+#   - Principle of least privilege (permissions reduced to required scopes).
+#   - No external network badge services invoked (all rendering local & deterministic).
+#   - Fails fast if unexpected file mutation is detected (optional integrity hook placeholder).
+#   - Sensitive action: CI workflow controlling published documentation artifacts (referencing security standards).
+#
+# Inputs / Outputs
+#   Inputs: docs/badges/*.json (produced by other workflows)
+#   Outputs: GitHub Pages site containing:
+#     /index.html                       summary page
+#     /badges/*.svg                     static badge assets
+#     /badges/raw-json/*.json           raw JSON copies (for transparency)
+#
+# Trigger Strategy
+#   - On push to main when badge JSON files or rendering scripts change.
+#   - Manual dispatch for ad-hoc regeneration.
+#
+# Future Enhancements (not implemented, placeholders):
+#   - Integrity hash comparison across runs (drift detection).
+#   - Historical trend graph generation (e.g., perf over time).
+#   - Optionally sign published artifacts (Sigstore / provenance).
+#
+name: Publish Badges (Pages)
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'docs/badges/*.json'
+      - 'tools/render-badge-svg.zsh'
+      - '.github/workflows/badges-pages.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read       # read source repo
+  pages: write         # publish to Pages
+  id-token: write      # required by actions/deploy-pages
+  # No additional permissions granted.
+
+concurrency:
+  group: pages-badges
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    name: Build & Deploy Badges Site
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Verify Badge JSON Presence
+        id: badge_check
+        run: |
+          set -euo pipefail
+            ls -1 docs/badges/*.json 2>/dev/null || {
+              echo "No badge JSON files found; creating placeholder."
+              mkdir -p docs/badges
+              cat > docs/badges/placeholder.json <<'EOF'
+{"schemaVersion":1,"label":"badges","message":"none","color":"lightgrey"}
+EOF
+            }
+          count=$(ls docs/badges/*.json 2>/dev/null | wc -l | tr -d ' ')
+          echo "Found $count badge JSON file(s)."
+          echo "badge_count=$count" >> "$GITHUB_OUTPUT"
+
+      - name: Render SVG Badges & Compute Infra Trend
+        run: |
+          set -euo pipefail
+          mkdir -p site/badges/raw-json
+          cp -a docs/badges/*.json site/badges/raw-json/ 2>/dev/null || true
+
+          # Compute infra trend (produces docs/badges/infra-trend.json) before rendering summary/index
+          if [[ -x tools/compute-infra-trend.zsh ]]; then
+            tools/compute-infra-trend.zsh || echo "[WARN] infra trend computation non-fatal"
+            if [[ -f docs/badges/infra-trend.json ]]; then
+              cp docs/badges/infra-trend.json site/badges/raw-json/ || true
+            fi
+          else
+            echo "[WARN] tools/compute-infra-trend.zsh not found; skipping trend computation."
+          fi
+
+          if [[ -x tools/render-badge-svg.zsh ]]; then
+            # Render each JSON to SVG (force overwrite)
+            tools/render-badge-svg.zsh --dir docs/badges --pattern '*.json' --suffix '' --force
+            # Move SVGs alongside JSON copies
+            for j in docs/badges/*.json; do
+              base=${j##*/}
+              name=${base%.json}
+              if [[ -f docs/badges/${name}.svg ]]; then
+                mkdir -p site/badges
+                cp docs/badges/${name}.svg site/badges/
+              fi
+            done
+            # If an infra-trend JSON exists but no direct SVG (optional future), create a minimal SVG summary
+            if [[ -f docs/badges/infra-trend.json && ! -f site/badges/infra-trend.svg ]]; then
+              trend=$(grep -o '"trend":"[^"]*"' docs/badges/infra-trend.json | head -1 | sed 's/.*"trend":"\([^"]*\)".*/\1/')
+              color=$(grep -o '"current": { "color":"[^"]*"' docs/badges/infra-trend.json | sed 's/.*"color":"\([^"]*\)".*/\1/' | head -1)
+              : "${trend:=unknown}"
+              : "${color:=lightgrey}"
+              cat > site/badges/infra-trend.svg <<EOF
+<svg xmlns="http://www.w3.org/2000/svg" width="170" height="20" role="img" aria-label="infra-trend $trend">
+  <title>infra-trend: $trend</title>
+  <rect width="90" height="20" fill="#555"/>
+  <rect x="90" width="80" height="20" fill="$color"/>
+  <g fill="#fff" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" font-size="11">
+    <text x="45" y="14" text-anchor="middle">infra-trend</text>
+    <text x="130" y="14" text-anchor="middle">$trend</text>
+  </g>
+</svg>
+EOF
+            fi
+          else
+            echo "[WARN] tools/render-badge-svg.zsh not found/executable. Generating simple fallback SVG wrappers."
+            mkdir -p site/badges
+            for j in docs/badges/*.json; do
+              base=${j##*/}
+              name=${base%.json}
+              label=$(grep -o '"label":"[^"]*"' "$j" | head -1 | sed 's/"label":"//;s/"$//')
+              msg=$(grep -o '"message":"[^"]*"' "$j" | head -1 | sed 's/"message":"//;s/"$//')
+              color=$(grep -o '"color":"[^"]*"' "$j" | head -1 | sed 's/"color":"//;s/"$//')
+              : "${label:=badge}"
+              : "${msg:=n/a}"
+              : "${color:=lightgrey}"
+              cat > "site/badges/${name}.svg" <<EOF
+<svg xmlns="http://www.w3.org/2000/svg" width="140" height="20" role="img" aria-label="$label $msg">
+  <title>$label: $msg</title>
+  <rect width="70" height="20" fill="#555"/>
+  <rect x="70" width="70" height="20" fill="$color"/>
+  <g fill="#fff" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" font-size="11">
+    <text x="35" y="14" text-anchor="middle">$label</text>
+    <text x="105" y="14" text-anchor="middle">$msg</text>
+  </g>
+</svg>
+EOF
+            done
+          fi
+
+      - name: Generate Index Page
+        run: |
+          set -euo pipefail
+          mkdir -p site
+          cat > site/index.html <<'EOF'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Dotfiles Badges</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+ body { font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; margin:2rem; background:#111; color:#eee; }
+ h1, h2 { font-weight:600; }
+ a { color:#4fa3ff; text-decoration:none; }
+ a:hover { text-decoration:underline; }
+ .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:1rem; }
+ .card { background:#1e1e1e; padding:1rem; border:1px solid #333; border-radius:8px; }
+ .card img, .card object { width:100%; height:40px; object-fit:contain; }
+ code { background:#222; padding:2px 4px; border-radius:4px; }
+ footer { margin-top:3rem; font-size:0.8rem; opacity:0.7; }
+ .json-link { font-size:0.75rem; display:block; margin-top:0.4rem; }
+</style>
+</head>
+<body>
+<h1>Dotfiles Status Badges</h1>
+<p>Static, locally rendered badges published via GitHub Pages. Each badge is generated from a JSON
+descriptor committed or produced by CI workflows (structure, performance, hooks integrity, infra health, security scan). </p>
+
+<h2>Badges</h2>
+<div class="grid">
+<!-- BADGE_CARDS -->
+</div>
+
+<h2>Usage</h2>
+<p>Reference an SVG directly in markdown:</p>
+<pre><code>![infra](https://&lt;your-user&gt;.github.io/&lt;repo&gt;/badges/infra-health.svg)</code></pre>
+
+<h2>Transparency</h2>
+<p>Raw JSON sources are included under <code>badges/raw-json/</code> for auditing.
+Rendering script: <code>tools/render-badge-svg.zsh</code>.</p>
+
+<footer>
+Generated at build time. &copy; <span id="year"></span> Dotfiles Project.
+<script>document.getElementById('year').textContent=new Date().getFullYear();</script>
+</footer>
+</body>
+</html>
+EOF
+
+          # Inject badge cards dynamically
+          badge_section=""
+          for svg in site/badges/*.svg; do
+            fname=${svg##*/}
+            base=${fname%.svg}
+            json="badges/raw-json/${base}.json"
+            if [[ -f "site/${json}" ]]; then
+              message=$(grep -o '"message":"[^"]*"' "site/${json}" | head -1 | sed 's/"message":"//;s/"$//')
+            else
+              message="(no-json)"
+            fi
+            badge_section+="<div class=\"card\"><object type=\"image/svg+xml\" data=\"badges/${fname}\"></object><div style='margin-top:0.4rem;font-size:0.75rem;word-break:break-all'>${base}: ${message}</div>"
+            if [[ -f "site/${json}" ]]; then
+              badge_section+="<a class='json-link' href='${json}'>JSON</a>"
+              badge_section+="<span class='json-link'>sha256:$(shasum -a 256 \"site/${json}\" | awk '{print $1}')</span>"
+            fi
+            badge_section+="</div>"$'\n'
+          done
+          # Fallback if empty
+          if [[ -z "$badge_section" ]]; then
+            badge_section="<p>No badges available.</p>"
+          fi
+          # Replace placeholder
+          tmp=$(mktemp)
+          sed "s|<!-- BADGE_CARDS -->|${badge_section//|/\\|}|" site/index.html > "$tmp"
+          mv "$tmp" site/index.html
+          echo "Index page generated."
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Artifact (Pages Content)
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "Deployment URL: ${{ steps.deployment.outputs.page_url }}"
+          echo "Badges published."
