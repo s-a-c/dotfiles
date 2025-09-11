@@ -12,12 +12,107 @@ jobs:
       - name: Ensure jq
         run: sudo apt-get update && sudo apt-get install -y jq || true
       - name: Run Security Tests
+        id: security_tests
         shell: zsh {0}
         run: |
+          set -euo pipefail
+          status="unknown"
+          high=0
+          medium=0
+          low=0
+          severity="none"
+          report="docs/redesign/reports/latest-test.json"
           if [[ -x tests/run-all-tests.zsh ]]; then
-            tests/run-all-tests.zsh --category=security --json-report || exit 1
+            if tests/run-all-tests.zsh --category=security --json-report; then
+              status="pass"
+            else
+              status="fail"
+            fi
           else
-            echo 'Missing test runner'; exit 1
+            echo 'Missing test runner'
+            status="fail"
+          fi
+          # Derive severity counts if report exists
+          if [[ -f "$report" ]]; then
+            if command -v jq >/dev/null 2>&1; then
+              high=$(jq '[..|objects?|select(has("severity"))|select(.severity=="high")] | length' "$report" 2>/dev/null || echo 0)
+              medium=$(jq '[..|objects?|select(has("severity"))|select(.severity=="medium")] | length' "$report" 2>/dev/null || echo 0)
+              low=$(jq '[..|objects?|select(has("severity"))|select(.severity=="low")] | length' "$report" 2>/dev/null || echo 0)
+            else
+              high=$(grep -o '"severity":"high"' "$report" 2>/dev/null | wc -l | tr -d ' ')
+              medium=$(grep -o '"severity":"medium"' "$report" 2>/dev/null | wc -l | tr -d ' ')
+              low=$(grep -o '"severity":"low"' "$report" 2>/dev/null | wc -l | tr -d ' ')
+            fi
+          fi
+          # Map to aggregated severity (only meaningful if status fail)
+          if [[ "$status" == "fail" ]]; then
+            if (( high > 0 )); then
+              severity="critical"
+            elif (( medium > 0 )); then
+              severity="high"
+            elif (( low > 0 )); then
+              severity="moderate"
+            else
+              severity="unknown"
+            fi
+          else
+            if (( high + medium + low == 0 )); then
+              severity="none"
+            else
+              # Passed but findings counted (treated as info)
+              severity="informational"
+            fi
+          fi
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          echo "high=$high" >> "$GITHUB_OUTPUT"
+          echo "medium=$medium" >> "$GITHUB_OUTPUT"
+          echo "low=$low" >> "$GITHUB_OUTPUT"
+          echo "severity=$severity" >> "$GITHUB_OUTPUT"
+          # Always exit 0 here to allow badge + artifact generation; failure enforced later.
+          exit 0
+      - name: Generate Security Badge
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p docs/badges
+          status="${{ steps.security_tests.outputs.status }}"
+          high="${{ steps.security_tests.outputs.high }}"
+          medium="${{ steps.security_tests.outputs.medium }}"
+          low="${{ steps.security_tests.outputs.low }}"
+            severity="${{ steps.security_tests.outputs.severity }}"
+          : "${status:=unknown}"
+          : "${high:=0}"
+          : "${medium:=0}"
+          : "${low:=0}"
+          : "${severity:=unknown}"
+          # Determine color (severity-aware)
+          color="lightgrey"
+          if [[ "$status" == "pass" ]]; then
+            color="brightgreen"
+          else
+            case "$severity" in
+              critical) color="red" ;;
+              high) color="orange" ;;
+              moderate) color="yellow" ;;
+              informational|unknown) color="lightgrey" ;;
+              *) color="red" ;;
+            esac
+          fi
+          message="$status(h${high} m${medium} l${low})"
+          printf '{"schemaVersion":1,"label":"security","message":"%s","color":"%s","severity":"%s","high":%s,"medium":%s,"low":%s}\n' "$message" "$color" "$severity" "$high" "$medium" "$low" > docs/badges/security.json
+          echo "Security badge:"
+          cat docs/badges/security.json
+      - name: Render SVG Security Badge
+        if: always()
+        shell: bash
+        run: |
+          if [[ -x tools/render-badge-svg.zsh ]]; then
+            tools/render-badge-svg.zsh --json docs/badges/security.json --force || true
+            echo "[svg] Rendered: docs/badges/security.svg"
+            ls -l docs/badges/security.svg || true
+          else
+            echo "[svg][WARN] render script missing (tools/render-badge-svg.zsh)"
           fi
       - name: Upload Security Artifact
         if: always()
@@ -25,6 +120,24 @@ jobs:
         with:
           name: security-report
           path: docs/redesign/reports/latest-test.json
+      - name: Upload Security Badge
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-badge
+          path: docs/badges/security.json
+      - name: Upload Security Badge SVG
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-badge-svg
+          path: docs/badges/security.svg
+      - name: Fail on Security Test Fail
+        if: steps.security_tests.outputs.status == 'fail'
+        shell: bash
+        run: |
+          echo "::error::Security tests failed (enforced post-badge generation)."
+          exit 1
       - name: Install neomutt
         if: failure()
         run: sudo apt-get install -y neomutt || true
@@ -37,4 +150,23 @@ jobs:
             { echo 'Security scan failed.'; echo 'Review attached artifact in workflow run.'; } | neomutt -s '[zsh-refactor] Security Scan Failure' -- "$ALERT_EMAIL" || true
           else
             echo 'neomutt or ALERT_EMAIL not available; skipping email.'
+          fi
+
+      - name: Auto-commit Security Badge Artifacts (main only)
+        if: github.ref == 'refs/heads/main'
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -x tools/auto-commit-badges.zsh ]]; then
+            tools/auto-commit-badges.zsh --dir docs/badges --include 'security.svg' --include 'security.json' --skip-ci --hash-summary || {
+              code=$?
+              if [[ $code == 10 ]]; then
+                echo "Security badge auto-commit: nothing to do."
+                exit 0
+              fi
+              echo "Security badge auto-commit helper exited with $code (non-fatal)."
+              exit 0
+            }
+          else
+            echo "Helper script tools/auto-commit-badges.zsh missing; skipping security badge auto-commit."
           fi

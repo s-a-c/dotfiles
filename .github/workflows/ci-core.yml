@@ -1,12 +1,68 @@
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v900f08def0e6f7959ffd283aebb73b625b3473f5e49c57e861c6461b50a62ef2
 name: CI Core
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'dot-config/zsh/**'
+      - '.github/workflows/ci-core.yml'
   pull_request:
     branches: [ main ]
+    paths:
+      - 'dot-config/zsh/**'
+      - '.github/workflows/ci-core.yml'
 
 jobs:
+  path-enforcement:
+    name: Path Resolution Enforcement
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./dot-config/zsh
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install jq (for badge generation)
+        run: sudo apt-get update && sudo apt-get install -y jq >/dev/null 2>&1 || true
+      - name: Ensure enforce script executable
+        run: chmod +x tools/enforce-path-resolution.zsh || true
+      - name: Run path enforcement (fail on violation)
+        run: |
+          mkdir -p docs/badges
+          tools/enforce-path-resolution.zsh --json --fail-on-violation > docs/badges/path-enforce-raw.json
+          echo "Raw path enforcement JSON (truncated):"
+          head -c 600 docs/badges/path-enforce-raw.json || true
+      - name: Generate path rule badge
+        run: |
+          mkdir -p docs/badges
+          if command -v jq >/dev/null 2>&1 && [[ -f docs/badges/path-enforce-raw.json ]]; then
+            viol=$(jq -r '.violations // empty' docs/badges/path-enforce-raw.json 2>/dev/null || echo "")
+            color="brightgreen"
+            msg="clean"
+            if [[ -z "$viol" ]]; then
+              viol="?"
+              color="lightgrey"
+              msg="no-data"
+            elif [[ "$viol" != "0" ]]; then
+              msg="${viol} viol"
+              color="red"
+            fi
+            printf '{"schemaVersion":1,"label":"path rules","message":"%s","color":"%s"}\n' "$msg" "$color" > docs/badges/path-rules.json
+          else
+            echo '{"schemaVersion":1,"label":"path rules","message":"unavailable","color":"lightgrey"}' > docs/badges/path-rules.json
+          fi
+          echo "Path rules badge:"
+          cat docs/badges/path-rules.json || true
+      - name: Upload Path Enforcement Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: path-enforcement
+          path: |
+            docs/badges/path-enforce-raw.json
+            docs/badges/path-rules.json
+
   tests:
+    needs: path-enforcement
     name: Core Test Matrix
     runs-on: ${{ matrix.os }}
     strategy:
@@ -17,11 +73,109 @@ jobs:
       STRICT_DRIFT: ${{ github.ref == 'refs/heads/main' && '1' || '0' }}
     steps:
       - uses: actions/checkout@v4
+      - name: Verify Git Hooks Path (core.hooksPath)
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected=".githooks"
+          actual=$(git config --get core.hooksPath || echo "")
+          branch="${GITHUB_REF##*/}"
+          status="ok"
+          enforce_fail=0
+          if [[ "$actual" != "$expected" ]]; then
+            echo "[ci-core] core.hooksPath not set to '$expected' (was '${actual:-<unset>}'). Attempting remediation."
+            if [[ -x tools/install-git-hooks.zsh ]]; then
+              tools/install-git-hooks.zsh 2>/dev/null || tools/install-git-hooks.zsh || true
+            else
+              echo "[ci-core] install script missing; cannot symlink hooks."
+            fi
+            # Force-set for CI environment (safe in ephemeral runner)
+            git config core.hooksPath "$expected" || true
+            actual=$(git config --get core.hooksPath || echo "")
+            if [[ "$actual" == "$expected" ]]; then
+              status="fixed"
+              echo "[ci-core] Remediation succeeded (core.hooksPath now $actual)."
+            else
+              status="mismatch"
+              if [[ "$branch" == "main" ]]; then
+                echo "[ci-core][ERROR] core.hooksPath mismatch on main (expected '$expected', got '${actual:-<unset>}')"
+                enforce_fail=1
+              else
+                echo "[ci-core][WARN] core.hooksPath still not '$expected' (branch=$branch) - continuing (non-main)."
+              fi
+            fi
+          else
+            echo "[ci-core] core.hooksPath already set to '$expected'."
+            status="ok"
+          fi
+          echo "HOOKS_STATUS=$status" >> $GITHUB_ENV
+          echo "HOOKS_ENFORCE_FAIL=$enforce_fail" >> $GITHUB_ENV
+      - name: Check Critical Git Hooks (presence & basic content)
+        shell: bash
+        run: |
+          set -euo pipefail
+          req_pre_commit=".githooks/pre-commit"
+          req_secret_scan=".githooks/pre-commit.d/secret-scan"
+          optional_pre_push=".githooks/pre-push"
+          missing=0
+          [[ -f "$req_pre_commit" ]] || { echo "::error::Missing required hook $req_pre_commit"; missing=1; }
+          [[ -f "$req_secret_scan" ]] || { echo "::error::Missing required hook $req_secret_scan"; missing=1; }
+          if [[ $missing -eq 1 ]]; then
+            echo "HOOKS_STATUS=${HOOKS_STATUS:-fail-missing}" >> $GITHUB_ENV
+            echo "HOOKS_ENFORCE_FAIL=$(( ${HOOKS_ENFORCE_FAIL:-0} || (${GITHUB_REF##*/} == main ? 1 : 0) ))" >> $GITHUB_ENV
+            # Do not exit here; allow badge generation then enforce later
+          fi
+          if ! grep -q 'core.hooksPath' "$req_secret_scan" 2>/dev/null; then
+            echo "[ci-core][WARN] secret-scan hook missing usage doc line referencing core.hooksPath"
+          fi
+          if [[ -f "$optional_pre_push" ]]; then
+            echo "[ci-core] Optional pre-push hook present."
+          else
+            echo "[ci-core] Optional pre-push hook not present (no failure)."
+          fi
+      - name: Generate Hooks Status Badge
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p docs/badges
+          st="${HOOKS_STATUS:-unknown}"
+          if [[ "${HOOKS_ENFORCE_FAIL:-0}" == "1" ]]; then
+            st="enforced-fail"
+          fi
+          color="lightgrey"
+          case "$st" in
+            ok) color="brightgreen" ;;
+            fixed) color="green" ;;
+            mismatch) color="orange" ;;
+            enforced-fail|fail-missing) color="red" ;;
+            *) color="lightgrey" ;;
+          esac
+          echo "{\"schemaVersion\":1,\"label\":\"hooks\",\"message\":\"${st}\",\"color\":\"${color}\"}" > docs/badges/hooks.json
+          echo "Hooks badge:"
+          cat docs/badges/hooks.json
+      - name: Enforce Hooks Status (main branch)
+        if: env.HOOKS_ENFORCE_FAIL == '1'
+        shell: bash
+        run: |
+          echo "::error::core.hooksPath / hook integrity enforcement failure on main (badge generated)."
+          exit 1
       - name: Set up Shell (zsh default)
         run: echo "SHELL=$(which zsh)" >> $GITHUB_ENV
       - name: Install jq (for badge parsing)
         run: |
           if [[ "$RUNNER_OS" == "Linux" ]]; then sudo apt-get update && sudo apt-get install -y jq >/dev/null 2>&1 || true; else brew install jq || true; fi
+      - name: Verify Path Helpers (observe, non-fatal)
+        shell: zsh {0}
+        run: |
+          mkdir -p docs/badges
+          if [[ -x dot-config/zsh/tools/verify-path-helpers.zsh ]]; then
+            echo "[verify-path-helpers] Observing helper presence (non-fatal)..."
+            dot-config/zsh/tools/verify-path-helpers.zsh --assert any --json > docs/badges/verify-path-helpers.json || true
+            echo "[verify-path-helpers] Output (truncated):"
+            head -c 600 docs/badges/verify-path-helpers.json || true
+          else
+            echo "[verify-path-helpers][WARN] Tool not found at dot-config/zsh/tools/verify-path-helpers.zsh (skipping)."
+          fi
       - name: Cache zgenom
         uses: actions/cache@v4
         with:
@@ -49,6 +203,12 @@ jobs:
             zsh tests/style/phase06/test-structure-drift.zsh || true
           fi
       - name: Run Remaining Core Tests
+      - name: Telemetry Governance (Baselines + Schema)
+        shell: zsh {0}
+        run: |
+          echo "[telemetry] Enforcing performance classifier baselines & schema"
+          ENFORCE_BASELINES=1 zsh dot-config/zsh/tests/performance/telemetry/test-classifier-baselines.zsh
+          zsh dot-config/zsh/tests/performance/telemetry/test-structured-telemetry-schema.zsh
         shell: zsh {0}
         run: |
           tests/run-all-tests.zsh --category=unit,feature,integration,security --json-report || exit 1
@@ -62,12 +222,78 @@ jobs:
         run: |
           tools/generate-structure-badge.zsh --audit docs/redesign/metrics/structure-audit.json --output docs/badges/structure.json $([[ "$STRICT_DRIFT" == "1" ]] && echo --strict) || true
           echo "Structure badge:" && cat docs/badges/structure.json || true
+      - name: Compute Infra Trend
+        shell: zsh {0}
+        run: |
+          if [[ -x tools/compute-infra-trend.zsh ]]; then
+            tools/compute-infra-trend.zsh --fail-on-major || ec=$?
+            if [[ "${ec:-0}" == "3" ]]; then
+              echo "INFRA_TREND_MAJOR_REGRESSION=1" >> $GITHUB_ENV
+              echo "::warning::Infra major regression detected (will enforce on main)."
+            elif [[ "${ec:-0}" == "2" ]]; then
+              echo "INFRA_TREND_REGRESSION=1" >> $GITHUB_ENV
+              echo "::notice::Infra regression detected."
+            fi
+            echo "Infra trend:" && cat docs/badges/infra-trend.json 2>/dev/null || true
+          else
+            echo "Infra trend script missing (tools/compute-infra-trend.zsh)"
+          fi
       - name: Generate Badges Summary
         shell: zsh {0}
         run: |
           if [[ -x tools/generate-badges-summary.zsh ]]; then
             tools/generate-badges-summary.zsh --output docs/badges/summary.json || true
             echo "Badges summary:" && cat docs/badges/summary.json || true
+          fi
+      - name: Generate Infra Health Badge
+        shell: zsh {0}
+        run: |
+          if [[ -x tools/generate-infra-health-badge.zsh ]]; then
+            tools/generate-infra-health-badge.zsh --output docs/badges/infra-health.json --fail-on-red || ec=$?
+            if [[ "${ec:-0}" == "2" ]]; then
+              echo "INFRA_HEALTH_RED=1" >> $GITHUB_ENV
+              echo "::warning::Infra health badge red (captured; will enforce on main)."
+            fi
+            echo "Infra health badge:" && cat docs/badges/infra-health.json || true
+          else
+            echo "Infra health generator missing (tools/generate-infra-health-badge.zsh)"
+          fi
+      - name: Render SVG Badges
+        if: always()
+        shell: bash
+        run: |
+          if [[ -x tools/render-badge-svg.zsh ]]; then
+            tools/render-badge-svg.zsh --dir docs/badges --pattern '*.json' --force || true
+            # Proactively render infra-trend.svg if trend JSON exists
+            if [[ -f docs/badges/infra-trend.json ]]; then
+              tools/render-badge-svg.zsh --json docs/badges/infra-trend.json --force || true
+            fi
+            # Proactively render perf-drift.svg if drift JSON exists
+            if [[ -f docs/badges/perf-drift.json ]]; then
+              tools/render-badge-svg.zsh --json docs/badges/perf-drift.json --force || true
+            fi
+            echo "[svg] Rendered SVG badges:"
+            ls -1 docs/badges/*.svg || true
+          else
+            echo "[svg][WARN] render script missing (tools/render-badge-svg.zsh)"
+          fi
+      - name: Auto-commit Badge Artifacts (main only)
+        if: github.ref == 'refs/heads/main'
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -x tools/auto-commit-badges.zsh ]]; then
+            tools/auto-commit-badges.zsh --dir docs/badges --include '*.svg' --include '*.json' --skip-ci --hash-summary || {
+              code=$?
+              if [[ $code == 10 ]]; then
+                echo "Badge auto-commit: nothing to do."
+                exit 0
+              fi
+              echo "Badge auto-commit helper exited with $code (non-fatal)."
+              exit 0
+            }
+          else
+            echo "Helper script tools/auto-commit-badges.zsh missing; skipping badge auto-commit."
           fi
       - name: Fail on Red Structure Badge (Main Branch / Post-Promotion)
         if: always()
@@ -85,6 +311,24 @@ jobs:
           else
             echo "No structure badge found; skipping fail check"
           fi
+      - name: Fail on Red Infra Health Badge (Main Branch)
+        if: env.INFRA_HEALTH_RED == '1' && github.ref == 'refs/heads/main'
+        shell: zsh {0}
+        run: |
+          echo "❌ Infra health badge red on main branch"
+          exit 1
+      - name: Fail on Infra Trend Major Regression (Main Branch)
+        if: env.INFRA_TREND_MAJOR_REGRESSION == '1' && github.ref == 'refs/heads/main'
+        shell: bash
+        run: |
+          echo "::error::Infra trend major regression (delta severity) on main branch."
+          exit 1
+      - name: Upload Hooks Badge
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hooks-badge-${{ matrix.os }}
+          path: docs/badges/hooks.json
       - name: Upload Test Artifact
         if: always()
         uses: actions/upload-artifact@v4
@@ -103,9 +347,58 @@ jobs:
         with:
           name: structure-badge-${{ matrix.os }}
           path: docs/badges/structure.json
+      - name: Upload Infra Health Badge
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: infra-health-badge-${{ matrix.os }}
+          path: docs/badges/infra-health.json
+
       - name: Upload Badges Summary
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: badges-summary-${{ matrix.os }}
           path: docs/badges/summary.json
+      - name: Run Shell Style Audit
+        shell: bash
+        run: |
+          echo "[style-audit] Running shell style audit (non-fatal)..."
+          chmod +x dot-config/zsh/tools/style-audit-shell.sh || true
+          # Produce raw JSON (non-fatal even if violations), store in badges dir for convenience
+          dot-config/zsh/tools/style-audit-shell.sh --json --output docs/badges/style-audit-raw.json --no-fail || true
+          echo "Raw style audit JSON:"
+          cat docs/badges/style-audit-raw.json || true
+
+      - name: Generate Style Badge
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p docs/badges
+          if command -v jq >/dev/null 2>&1 && [[ -f docs/badges/style-audit-raw.json ]]; then
+            viol=$(jq -r '.violations_total // empty' docs/badges/style-audit-raw.json 2>/dev/null || echo "")
+            scanned=$(jq -r '.scanned_files // empty' docs/badges/style-audit-raw.json 2>/dev/null || echo "")
+            color="brightgreen"
+            msg="clean"
+            if [[ -z "$viol" ]]; then
+              viol="?"
+              color="lightgrey"
+              msg="no-data"
+            elif [[ "$viol" != "0" ]]; then
+              msg="${viol} viol"
+              color="red"
+            fi
+            printf '{"schemaVersion":1,"label":"shell style","message":"%s","color":"%s","scanned":"%s"}\n' "$msg" "$color" "${scanned:-?}" > docs/badges/style.json
+          else
+            echo '{"schemaVersion":1,"label":"shell style","message":"unavailable","color":"lightgrey"}' > docs/badges/style.json
+            echo "[style-audit] jq not available or raw JSON missing; produced placeholder badge."
+          fi
+          echo "Style badge JSON:"
+          cat docs/badges/style.json || true
+
+      - name: Upload Style Badge
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: style-badge-${{ matrix.os }}
+          path: docs/badges/style.json
