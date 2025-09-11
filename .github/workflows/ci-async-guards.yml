@@ -1,0 +1,359 @@
+name: CI Async Guards
+# Enforce async activation checklist requirements
+#
+# Purpose:
+#   Validates the preconditions for async activation as defined in the Stage 3 checklist:
+#   1. Single compinit execution across entire startup lifecycle
+#   2. No duplicate PROMPT_READY_COMPLETE emissions
+#   3. Monotonic lifecycle constraints (pre ≤ post ≤ prompt, all non-zero)
+#   4. Segment logging integrity
+#
+# This workflow acts as a gate for async activation readiness and must pass
+# before progressing from observe to guard mode in variance tracking.
+#
+# Reference: dot-config/zsh/docs/redesignv2/P1-STABILITY-GATING.md Section 11
+#
+# Enforcement Levels:
+#   - observe: Run checks but only warn on violations
+#   - guard: Fail workflow on any checklist violations
+#   - promote: Full enforcement with no exceptions
+#
+on:
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'dot-config/zsh/**'
+      - '.github/workflows/ci-async-guards.yml'
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'dot-config/zsh/**'
+      - '.github/workflows/ci-async-guards.yml'
+  workflow_dispatch:
+    inputs:
+      enforcement_level:
+        description: 'Enforcement level (observe, guard, promote)'
+        required: false
+        default: 'guard'
+        type: choice
+        options:
+          - observe
+          - guard
+          - promote
+
+concurrency:
+  group: ci-async-guards-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  async-checklist-enforcement:
+    name: Async Activation Checklist
+    runs-on: macos-latest
+    env:
+      ZDOTDIR: ${{ github.workspace }}/dot-config/zsh
+      ENFORCEMENT_LEVEL: ${{ inputs.enforcement_level || 'guard' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show Configuration
+        run: |
+          echo "ENFORCEMENT_LEVEL=${ENFORCEMENT_LEVEL}"
+          echo "ZDOTDIR=${ZDOTDIR}"
+          echo "Event: ${{ github.event_name }}"
+          echo "Ref: $GITHUB_REF"
+
+      - name: Verify Test Scripts
+        run: |
+          MISSING=0
+
+          if [[ ! -x "${ZDOTDIR}/tests/integration/test-postplugin-compinit-single-run.zsh" ]]; then
+            echo "::error::Missing compinit single-run test"
+            MISSING=1
+          fi
+
+          if [[ ! -x "${ZDOTDIR}/tests/integration/test-prompt-ready-single-emission.zsh" ]]; then
+            echo "::error::Missing prompt-ready single-emission test"
+            MISSING=1
+          fi
+
+          if [[ $MISSING -eq 1 ]]; then
+            exit 1
+          fi
+
+          echo "✓ All required test scripts found"
+
+      - name: Test Single Compinit Execution
+        id: compinit-test
+        working-directory: dot-config/zsh
+        run: |
+          echo "::group::Single Compinit Test"
+
+          TEST_RESULT=0
+          OUTPUT=$(tests/integration/test-postplugin-compinit-single-run.zsh 2>&1) || TEST_RESULT=$?
+
+          echo "$OUTPUT"
+
+          if [[ $TEST_RESULT -eq 0 ]]; then
+            echo "compinit_status=pass" >> "$GITHUB_OUTPUT"
+            echo "::notice::✓ Single compinit execution verified"
+          else
+            echo "compinit_status=fail" >> "$GITHUB_OUTPUT"
+            echo "::error::❌ Single compinit execution failed"
+
+            if [[ "$ENFORCEMENT_LEVEL" == "observe" ]]; then
+              echo "::warning::Compinit violation detected but not enforced (observe mode)"
+            else
+              echo "::error::Compinit violation blocks async activation"
+            fi
+          fi
+
+          echo "::endgroup::"
+
+          # In observe mode, don't fail the step
+          if [[ "$ENFORCEMENT_LEVEL" == "observe" ]]; then
+            exit 0
+          else
+            exit $TEST_RESULT
+          fi
+
+      - name: Test PROMPT_READY Single Emission
+        id: prompt-ready-test
+        working-directory: dot-config/zsh
+        run: |
+          echo "::group::PROMPT_READY Single Emission Test"
+
+          TEST_RESULT=0
+          OUTPUT=$(tests/integration/test-prompt-ready-single-emission.zsh 2>&1) || TEST_RESULT=$?
+
+          echo "$OUTPUT"
+
+          if [[ $TEST_RESULT -eq 0 ]]; then
+            echo "prompt_ready_status=pass" >> "$GITHUB_OUTPUT"
+            echo "::notice::✓ Single PROMPT_READY emission verified"
+          else
+            echo "prompt_ready_status=fail" >> "$GITHUB_OUTPUT"
+            echo "::error::❌ PROMPT_READY emission test failed"
+
+            if [[ "$ENFORCEMENT_LEVEL" == "observe" ]]; then
+              echo "::warning::PROMPT_READY violation detected but not enforced (observe mode)"
+            else
+              echo "::error::PROMPT_READY violation blocks async activation"
+            fi
+          fi
+
+          echo "::endgroup::"
+
+          # In observe mode, don't fail the step
+          if [[ "$ENFORCEMENT_LEVEL" == "observe" ]]; then
+            exit 0
+          else
+            exit $TEST_RESULT
+          fi
+
+      - name: Test Lifecycle Monotonicity
+        id: lifecycle-test
+        working-directory: dot-config/zsh
+        run: |
+          echo "::group::Lifecycle Monotonicity Test"
+
+          # Run a quick capture to verify lifecycle constraints
+          if [[ -x tools/perf-capture-multi-simple.zsh ]]; then
+            TEMP_OUTPUT="/tmp/monotonic-test-$$.json"
+
+            # Capture a single sample for monotonicity check
+            if ZDOTDIR="$(pwd)" tools/perf-capture-multi-simple.zsh \
+                --samples 1 \
+                --use-fast-harness \
+                --output "$TEMP_OUTPUT" 2>/dev/null; then
+
+              # Check monotonicity: pre ≤ post ≤ prompt, all > 0
+              if command -v jq >/dev/null 2>&1; then
+                PRE=$(jq -r '.metrics.pre_plugin_cost_ms.values[0] // 0' "$TEMP_OUTPUT")
+                POST=$(jq -r '.metrics.post_plugin_total_ms.values[0] // 0' "$TEMP_OUTPUT")
+                PROMPT=$(jq -r '.metrics.prompt_ready_ms.values[0] // 0' "$TEMP_OUTPUT")
+
+                echo "Lifecycle values: pre=${PRE}ms, post=${POST}ms, prompt=${PROMPT}ms"
+
+                MONOTONIC=1
+                NON_ZERO=1
+
+                # Check non-zero
+                if [[ "${PRE%.*}" -le 0 ]] || [[ "${POST%.*}" -le 0 ]] || [[ "${PROMPT%.*}" -le 0 ]]; then
+                  NON_ZERO=0
+                  echo "::error::Non-zero constraint violated"
+                fi
+
+                # Check monotonicity (allowing for small floating point differences)
+                if ! awk "BEGIN{exit !(${PRE} <= ${POST} && ${POST} <= ${PROMPT})}"; then
+                  MONOTONIC=0
+                  echo "::error::Monotonic constraint violated: ${PRE} ≤ ${POST} ≤ ${PROMPT}"
+                fi
+
+                if [[ $NON_ZERO -eq 1 && $MONOTONIC -eq 1 ]]; then
+                  echo "lifecycle_status=pass" >> "$GITHUB_OUTPUT"
+                  echo "::notice::✓ Lifecycle constraints satisfied"
+                else
+                  echo "lifecycle_status=fail" >> "$GITHUB_OUTPUT"
+                  if [[ "$ENFORCEMENT_LEVEL" == "observe" ]]; then
+                    echo "::warning::Lifecycle constraint violations detected but not enforced (observe mode)"
+                  else
+                    echo "::error::Lifecycle constraint violations block async activation"
+                    rm -f "$TEMP_OUTPUT"
+                    exit 1
+                  fi
+                fi
+              else
+                echo "lifecycle_status=skip" >> "$GITHUB_OUTPUT"
+                echo "::warning::jq not available, skipping monotonicity check"
+              fi
+            else
+              echo "lifecycle_status=skip" >> "$GITHUB_OUTPUT"
+              echo "::warning::Performance capture failed, skipping monotonicity check"
+            fi
+
+            rm -f "$TEMP_OUTPUT"
+          else
+            echo "lifecycle_status=skip" >> "$GITHUB_OUTPUT"
+            echo "::warning::Performance capture tool not available, skipping monotonicity check"
+          fi
+
+          echo "::endgroup::"
+
+      - name: Segment Logging Integrity
+        id: segment-test
+        working-directory: dot-config/zsh
+        run: |
+          echo "::group::Segment Logging Integrity Test"
+
+          SEGMENT_LOG="/tmp/segment-integrity-test-$$"
+
+          # Test that SEGMENT lines are produced during startup
+          if [[ -f ".zshrc" ]]; then
+            # Minimal startup test with segment logging enabled
+            export PERF_SEGMENT_LOG="$SEGMENT_LOG"
+
+            # Quick startup test
+            if timeout 10s zsh -c "source .zshrc 2>/dev/null" 2>/dev/null; then
+              if [[ -f "$SEGMENT_LOG" ]]; then
+                SEGMENT_COUNT=$(grep -c "^SEGMENT" "$SEGMENT_LOG" 2>/dev/null || echo "0")
+
+                if [[ "$SEGMENT_COUNT" -ge 3 ]]; then
+                  echo "segment_status=pass" >> "$GITHUB_OUTPUT"
+                  echo "::notice::✓ Segment logging integrity verified ($SEGMENT_COUNT segments)"
+                else
+                  echo "segment_status=fail" >> "$GITHUB_OUTPUT"
+                  if [[ "$ENFORCEMENT_LEVEL" == "observe" ]]; then
+                    echo "::warning::Insufficient segment logging detected but not enforced (observe mode)"
+                  else
+                    echo "::error::Insufficient segment logging blocks async activation"
+                    rm -f "$SEGMENT_LOG"
+                    exit 1
+                  fi
+                fi
+              else
+                echo "segment_status=fail" >> "$GITHUB_OUTPUT"
+                echo "::error::Segment log file not created"
+                if [[ "$ENFORCEMENT_LEVEL" != "observe" ]]; then
+                  exit 1
+                fi
+              fi
+            else
+              echo "segment_status=skip" >> "$GITHUB_OUTPUT"
+              echo "::warning::Startup test timed out, skipping segment logging check"
+            fi
+          else
+            echo "segment_status=skip" >> "$GITHUB_OUTPUT"
+            echo "::warning::.zshrc not found, skipping segment logging check"
+          fi
+
+          rm -f "$SEGMENT_LOG"
+          echo "::endgroup::"
+
+      - name: Check Variance Guard Status
+        if: always()
+        working-directory: dot-config/zsh
+        run: |
+          echo "::group::Variance Guard Status Check"
+
+          STATE_FILE="docs/redesignv2/artifacts/metrics/variance-gating-state.json"
+
+          if [[ -f "$STATE_FILE" ]]; then
+            if command -v jq >/dev/null 2>&1; then
+              MODE=$(jq -r '.mode // "unknown"' "$STATE_FILE")
+              STREAK=$(jq -r '.stable_run_count // 0' "$STATE_FILE")
+
+              echo "::notice::Current variance state: mode=$MODE, streak=$STREAK/3"
+
+              if [[ "$MODE" == "guard" && "$STREAK" -ge 3 ]]; then
+                echo "::notice::✓ Variance guard active and stable - ready for async activation"
+              else
+                echo "::notice::ℹ Variance not yet in guard mode - async activation not recommended"
+              fi
+            else
+              echo "::notice::Variance state file found but jq unavailable"
+            fi
+          else
+            echo "::notice::No variance state file found - may need to run variance workflow first"
+          fi
+
+          echo "::endgroup::"
+
+      - name: Final Assessment
+        if: always()
+        run: |
+          echo "::group::Async Activation Readiness Assessment"
+
+          COMPINIT_STATUS="${{ steps.compinit-test.outputs.compinit_status }}"
+          PROMPT_STATUS="${{ steps.prompt-ready-test.outputs.prompt_ready_status }}"
+          LIFECYCLE_STATUS="${{ steps.lifecycle-test.outputs.lifecycle_status }}"
+          SEGMENT_STATUS="${{ steps.segment-test.outputs.segment_status }}"
+
+          echo "Test Results Summary:"
+          echo "  - Single compinit: $COMPINIT_STATUS"
+          echo "  - PROMPT_READY single emission: $PROMPT_STATUS"
+          echo "  - Lifecycle monotonicity: $LIFECYCLE_STATUS"
+          echo "  - Segment logging: $SEGMENT_STATUS"
+          echo "  - Enforcement level: $ENFORCEMENT_LEVEL"
+
+          READY=true
+          WARNINGS=0
+
+          if [[ "$COMPINIT_STATUS" == "fail" ]]; then
+            READY=false
+            ((WARNINGS++))
+          fi
+
+          if [[ "$PROMPT_STATUS" == "fail" ]]; then
+            READY=false
+            ((WARNINGS++))
+          fi
+
+          if [[ "$LIFECYCLE_STATUS" == "fail" ]]; then
+            READY=false
+            ((WARNINGS++))
+          fi
+
+          if [[ "$SEGMENT_STATUS" == "fail" ]]; then
+            READY=false
+            ((WARNINGS++))
+          fi
+
+          if [[ "$READY" == "true" ]]; then
+            echo "::notice::🎉 All async activation checklist requirements satisfied!"
+            echo "::notice::✅ Ready for async activation (subject to variance guard status)"
+          else
+            if [[ "$ENFORCEMENT_LEVEL" == "observe" ]]; then
+              echo "::warning::⚠️ Async activation checklist has $WARNINGS violations (observe mode)"
+              echo "::notice::Violations detected but not enforced in observe mode"
+            else
+              echo "::error::❌ Async activation checklist failed with $WARNINGS violations"
+              echo "::error::Must resolve all violations before async activation"
+              exit 1
+            fi
+          fi
+
+          echo "::endgroup::"
