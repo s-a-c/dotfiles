@@ -130,6 +130,23 @@ Notes / interpretation:
 
 ---
 
+## Git Flow checklist (feature → develop)
+- [ ] PR targets develop (per Git Flow)
+- [ ] Workflow changes are scoped to .github/** when syncing CI
+- [ ] Workflows include triggers for main, master, develop (push and pull_request)
+- [ ] Auto-commit and README post-publish steps are gated to main/master (no repo writes on develop/PR runs)
+- [ ] Manual dispatch uses default-branch definitions and runs against your ref:
+  ```
+  gh workflow run zsh-badges-and-metrics.yml --ref <branch>
+  ```
+- [ ] Publisher guardrails:
+  - [ ] summary-goal.json exists if goal-state.json exists
+  - [ ] summary-goal color is not red and isError is not true
+- [ ] Badges present:
+  - [ ] badges/goal-state.json
+  - [ ] badges/summary-goal.json
+- [ ] On main merges, README endpoints auto-resolve after gh-pages publish
+
 ## Checklist (ZSH project)
 - [ ] Structure audit passes (no violations, ordering OK)
 - [ ] Perf regression within threshold (see perf-regression.json)

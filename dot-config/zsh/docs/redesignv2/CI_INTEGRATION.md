@@ -284,5 +284,66 @@ The enhanced classifier is backward compatible with v1 usage:
 ```
 
 ---
-
+ 
 For additional help, run: `./tools/perf-regression-classifier.zsh --help`
+
+## Git Flow + CI Sync Checklist
+
+This checklist aligns CI behavior with a Git Flow model (feature → develop) while keeping the repository default branch on `main` for predictable workflow dispatch and protections.
+
+- Branching model
+  - Feature branches are created from `develop` and PR’d back to `develop`.
+  - Keep the remote default branch as `main` (simplifies dispatch and repo UX).
+
+- Sync ALL workflow files to both `main` and `develop`
+  - Create two small PRs that only modify `.github/**`:
+    - “Sync workflows to main” (enables manual dispatch because default=main)
+    - “Sync workflows to develop” (ensures PRs to develop run updated workflows)
+  - Use a scoped restore so only workflow files change:
+    - `git restore --source feature/zsh-refactor-configuration --staged --worktree .github`
+
+- Expand triggers to include develop
+  - In key workflows (e.g., publisher and perf-classifier), include `develop`:
+    ```yaml
+    on:
+      push:
+        branches: [ main, master, develop ]
+      pull_request:
+        branches: [ main, master, develop ]
+      workflow_dispatch: {}
+    ```
+  - Keep auto-commit and README post-publish steps gated to `main/master`:
+    - Example: `if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'`
+
+- Manual dispatch usage
+  - Dispatch uses workflow definitions from the repository’s default branch (`main`), but runs against any ref:
+    ```bash
+    gh workflow run zsh-badges-and-metrics.yml --ref feature/zsh-refactor-configuration
+    gh run list --workflow zsh-badges-and-metrics.yml --limit 5
+    gh run watch --workflow zsh-badges-and-metrics.yml
+    ```
+
+- Publisher guardrails (already implemented)
+  - Integration check: `summary-goal.json` must exist whenever `goal-state.json` exists (fail if missing).
+  - Red severity guardrail: fail when `summary-goal.json` color is `red` or `isError: true`.
+
+- Validation steps after sync
+  - On PRs targeting `develop`:
+    - Verify both badges are produced:
+      - `badges/goal-state.json`
+      - `badges/summary-goal.json`
+    - Confirm the integration check passes and severity guardrail behaves correctly.
+    - Ensure logs are clean (capture-runner noise suppressed).
+    - Run the suffix test locally if needed:
+      - `zsh dot-config/zsh/tests/performance/badges/test-summary-goal-suffix.zsh`
+  - On merges to `main`:
+    - Confirm README endpoint placeholders auto-resolve.
+    - Confirm gh-pages publishes indexes and badges as expected.
+
+- Notes and safeguards
+  - Do not switch the repository default branch to `develop`; instead:
+    - Keep `main` as default for dispatch consistency.
+    - Maintain consistent workflows on both `main` and `develop` via `.github` sync.
+  - Consider concurrency keys to reduce duplicate runs from `push` and `pull_request` on the same commit.
+  - If you want to restrict gh-pages publishes to `main`, wrap publish steps in a branch guard.
+
