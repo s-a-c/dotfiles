@@ -1,0 +1,11 @@
+{
+  "timestamp":"20250911T170552",
+  "mean_ms":64202,
+  "cold_ms":68369,
+  "warm_ms":60035,
+  "pre_plugin_cost_ms":0,
+  "post_plugin_cost_ms":0,
+  "prompt_ready_ms":0,
+  "segments_available":true,
+  "early_snapshot":true
+}
