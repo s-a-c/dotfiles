@@ -56,6 +56,9 @@ export _LOADED_20_ESSENTIAL_PLUGINS
 # High‑resolution time support (EPOCHREALTIME preferred)
 zmodload zsh/datetime 2>/dev/null || true
 
+# Define zsh_debug_echo if not already defined
+typeset -f zsh_debug_echo >/dev/null 2>&1 || zsh_debug_echo() { :; }
+
 # ------------------ Utility: ms now (int) ------------------------------------
 _zf_ep_now_ms() {
     # Use EPOCHREALTIME (seconds.micro) -> ms integer
@@ -70,21 +73,24 @@ _zf_ep_now_ms() {
 # ------------------ Placeholder Loader Stubs ---------------------------------
 # Each stub MUST: run fast (<0.1ms), return 0, do nothing heavy.
 
-_zf_ep_load_git_prompt()        { :; }
+# Placeholder loaders - will be replaced with real implementations
+_zf_ep_load_syntax_highlighting() { :; }
+_zf_ep_load_autosuggestions() { :; }
+_zf_ep_load_completions() { :; }
+
+# Reserve future slots
 _zf_ep_load_history_baseline()  { :; }
 _zf_ep_load_safety_aliases()    { :; }
 _zf_ep_load_navigation_cd()     { :; }
-_zf_ep_load_completion_reserve(){ :; }
-_zf_ep_load_perf_segment_inject(){ :; }
 
-# Ordered list (id:loader_fn)
+# Ordered list (id:loader_fn) - Real essential plugins
 typeset -a _ZF_EP_ITEMS=(
-  "git:prompt:_zf_ep_load_git_prompt"
+  "essential:zsh-syntax-highlighting:_zf_ep_load_syntax_highlighting"
+  "essential:zsh-autosuggestions:_zf_ep_load_autosuggestions"
+  "essential:zsh-completions:_zf_ep_load_completions"
   "history:baseline:_zf_ep_load_history_baseline"
   "safety:aliases:_zf_ep_load_safety_aliases"
   "navigation:cd:_zf_ep_load_navigation_cd"
-  "completion:core-reserve:_zf_ep_load_completion_reserve"
-  "perf:segment-inject:_zf_ep_load_perf_segment_inject"
 )
 
 # ------------------ Start Aggregate Timing -----------------------------------
@@ -101,16 +107,26 @@ if [[ -z "${POST_SEG_20_ESSENTIAL_STUBS_DONE:-}" ]]; then
         # Parse record
         IFS=':' read -r __ep_cat __ep_name __ep_fn <<< "$__ep_rec"
         stub_label="${__ep_cat}/${__ep_name}"
-        start_ms="$(_zf_ep_now_ms)"
-        if typeset -f "${__ep_fn}" >/dev/null 2>&1; then
-            "${__ep_fn}" 2>/dev/null || true
-        fi
-        end_ms="$(_zf_ep_now_ms)"
-        (( delta = end_ms - start_ms ))
-        (( delta < 0 )) && delta=0
-        # Emit per-stub marker (only if logging enabled)
-        if [[ -n "${PERF_SEGMENT_LOG:-}" ]]; then
-            print "POST_PLUGIN_SEGMENT 20-essential/${stub_label// /_} $delta" >> "${PERF_SEGMENT_LOG}" 2>/dev/null || true
+        # Use segment-lib if available, fallback to inline timing
+        if typeset -f _zsh_perf_segment_start >/dev/null 2>&1; then
+            _zsh_perf_segment_start "${stub_label// /_}" post_plugin
+            if typeset -f "${__ep_fn}" >/dev/null 2>&1; then
+                "${__ep_fn}" 2>/dev/null || true
+            fi
+            _zsh_perf_segment_end "${stub_label// /_}" post_plugin
+        else
+            start_ms="$(_zf_ep_now_ms)"
+            if typeset -f "${__ep_fn}" >/dev/null 2>&1; then
+                "${__ep_fn}" 2>/dev/null || true
+            fi
+            end_ms="$(_zf_ep_now_ms)"
+            (( delta = end_ms - start_ms ))
+            (( delta < 0 )) && delta=0
+            # Emit SEGMENT line in segment-lib format
+            if [[ -n "${PERF_SEGMENT_LOG:-}" ]]; then
+                print "SEGMENT name=${stub_label// /_} ms=${delta} phase=post_plugin sample=${PERF_SAMPLE_CONTEXT:-unknown}" >> "${PERF_SEGMENT_LOG}" 2>/dev/null || true
+                print "POST_PLUGIN_SEGMENT 20-essential/${stub_label// /_} $delta" >> "${PERF_SEGMENT_LOG}" 2>/dev/null || true
+            fi
         fi
         zsh_debug_echo "# [20-essential][stub] ${stub_label} delta=${delta}ms"
     done

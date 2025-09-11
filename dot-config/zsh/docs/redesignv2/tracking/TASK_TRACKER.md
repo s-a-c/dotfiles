@@ -1,8 +1,67 @@
 # ZSH Redesign Task Tracker
+Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v3fb33a85972b794c3c0b2f992b1e5a7c19cfbd2ccb3bb519f8865ad8fdfc0316
 
-**Last Updated:** 2025-09-10 (Part 08.18)  
-**Current Stage:** Stage 3 (COMPLETE)  
-**Next Milestone:** Stage 4 Feature Layer Implementation
+**Last Updated:** 2025-09-10 (Part 08.19 – Instrumentation Status Refresh)  
+**Current Stage:** Stage 4 (Sprint 2 – Instrumentation & Telemetry)  
+**Next Milestone:** Segment Probes + Logging Homogeneity (INTEGRATED → shifting focus to governance & opt-in telemetry)
+
+### Sprint 2 Status Snapshot (Part 08.19.10)
+- Logging homogeneity COMPLETE (legacy underscore wrappers removed; no `ZF_LOG_LEGACY_USED`; gate test green)
+- Real segment probes ACTIVE (anchors: `pre_plugin_start`, `pre_plugin_total`, `post_plugin_total`, `prompt_ready`, `deferred_total` + granular feature/dev-env/history/security/ui attribution)
+- Deferred dispatcher skeleton OPERATIONAL (one-shot postprompt; stable `DEFERRED id=<id> ms=<int> rc=<rc>` telemetry)
+- Structured telemetry flags AVAILABLE & inert when unset: `ZSH_LOG_STRUCTURED`, `ZSH_PERF_JSON` (zero overhead disabled path)
+- Multi-metric performance classifier in OBSERVE mode (Warn 10% / Fail 25%); enforce flip (S4-33) pending 3× consecutive OK streak
+- Dependency export (`zf::deps::export`) JSON + DOT + basic tests COMPLETE
+- Privacy appendix PUBLISHED (redaction whitelist stabilized; referenced across docs)
+- Baseline unchanged: 334ms cold start (RSD 1.9%) after new instrumentation
+- Immediate focus: 
+  * S4-27 idle/background trigger design & stubs (ref: feature/IDLE_DEFERRED_TRIGGER_DESIGN.md)
+  * S4-18 telemetry opt-in plumbing (`ZSH_FEATURE_TELEMETRY`) (ref: IMPLEMENTATION.md Telemetry Opt-In Plumbing section)
+  * S4-29 homogeneity documentation finalization (namespace rules)
+  * S4-30 classifier legend + PERFORMANCE_LOG governance row template integration
+  * S4-33 enforce-mode activation procedure (track OK streak & readiness checklist)
+
+## Recently Completed (Part 08.19.10)
+
+### ✅ GOAL & CI — Latest Completions (08.19.10)
+- Classifier single-metric JSON ordering moved earlier to ensure “always-before-exit” parity with multi-metric (deterministic artifacts even on enforce failures).
+- Capture-runner stderr noise (“bad math expression”) suppressed without altering capture logic or metrics.
+- Dynamic badges:
+  - goal-state badge emitted at docs/redesignv2/artifacts/badges/goal-state.json
+  - summary-goal badge emitted at docs/redesignv2/artifacts/badges/summary-goal.json (folds in perf-drift and structure badges; color reflects worst severity)
+- CI wiring:
+  - Strict classifier workflow (GOAL=ci enforce) generates perf-current.json and goal-state badge; artifacts uploaded.
+  - Nightly publisher runs classifier, generates goal-state + summary-goal badges, ensures perf-drift & structure badges, and publishes to gh-pages with index.
+  - Post-publish step auto-replaces README placeholders with repo-specific Shields endpoints once badges land on gh-pages.
+- Test suite: remaining T-GOAL-02..06 executed and passing with gawk available; tests gracefully skip if gawk is missing; JSON parsing regexes hardened.
+
+### ✅ Deferred Dispatcher Skeleton
+- One-shot post-first prompt execution
+- Registration API: `zf::defer::register <id> <func> postprompt <desc>`
+- Telemetry line: `DEFERRED id=<id> ms=<int> rc=<rc>`
+- Dummy warm job: `dummy-warm` (ensures path exercised)
+
+### ✅ Dependency Cycle Edge-Case Test Suite
+- Unknown dependency handling
+- Disabled dependency suppression
+- Multi-level cycle detection
+- Cycle broken by disabled node (isolation)
+
+### ✅ Cycle Detector Enhancements
+- Disabled filtering toggle
+- Scope limiting via `ZF_CYCLE_SCOPE`
+- Include-disabled optional scan flag
+
+### ✅ Logging Namespace Migration (Phase 1)
+- Introduced `zf::log`, `zf::warn`, `zf::err`
+- Legacy underscore wrappers retained temporarily (compat marker `ZF_LOG_LEGACY_USED`)
+
+### ✅ Telemetry & Deferred Documentation Expansion
+- IMPLEMENTATION.md §2.2 enriched (DEFERRED / SEGMENT formats)
+- Performance Log scaffold updated (deferred placeholder row)
+
+### ✅ Baseline Performance Revalidated
+- 334ms startup, 1.9% variance (no regression after dispatcher integration)
 
 ## Recently Completed (Part 08.18)
 
@@ -34,6 +93,87 @@
 
 ## Active Tasks (In Progress)
 
+### 🚀 Stage 4 Sprint 2 (Instrumentation & Telemetry Expansion)
+
+#### Next Steps to progress & complete Sprint 2 (Part 08.19.10)
+- [x] Add CI assertion to fail when summary-goal severity collapses to red in publisher workflow
+- [x] Add tiny integration check to ensure summary-goal.json exists whenever goal-state.json exists
+- [x] Add minimal test validating summary-goal suffix composition (drift/struct) and keep it resilient
+- [x] Document badge legend and README notes for goal-state and summary-goal, including severity mapping and suffix rules
+- [ ] Monitor next gh-pages publish to confirm both badges (goal-state.json, summary-goal.json) are present
+- [ ] Verify README auto-resolves placeholder endpoints to <org>/<repo> after publish
+- [ ] Validate resilience: missing perf-drift.json/structure.json yields no suffix and does not raise severity
+- [ ] Confirm dependency coverage: gawk ensured on macOS runner; ubuntu-latest uses GNU awk; tests skip gracefully if absent
+- [ ] Decide on optional mapping refinements:
+  - Governance: treat BASELINE_CREATED as informational vs. clean
+  - Streak: consider nuanced “building” based on number/nature of missing metrics
+
+##### Exit Criteria (Sprint 2)
+- First gh-pages publish contains badges/goal-state.json and badges/summary-goal.json
+- README endpoints auto-resolved to the real repository
+- CI publisher fails runs on red summary-goal severity (guardrail active)
+- Summary-goal suffix test passes in CI; logs remain free of “bad math expression” noise
+- Resilience confirmed: absence of suffix sources does not inflate severity
+
+| Task | Description | Status | Notes |
+|------|-------------|--------|-------|
+| S4-20 | Real segment probes (replace placeholders) | ✅ Done | All planned granular probes added: safety/aliases, navigation/cd, ui/prompt-setup, security/validation plus existing anchors (pre_plugin_start, pre_plugin_total, post_plugin_total, prompt_ready, deferred_total) |
+| S4-21 | Logging homogeneity test | ✅ Done | Strict absence gate enforced (no underscore wrappers) |
+| S4-22 | Remove legacy underscore log wrappers | ✅ Done | Wrappers removed; homogeneity test green; ZF_LOG_LEGACY_USED retired |
+| S4-23 | Structured telemetry flag stubs (`ZSH_LOG_STRUCTURED`, `ZSH_PERF_JSON`) | ✅ Done | Flags integrated; segment & deferred JSON sidecar emitting when enabled |
+| S4-24 | Performance regression harness + classifier | ✅ Done | Multi-metric CI integrated (ci-performance.yml); baseline presence & telemetry schema validation tests added (`tests/performance/telemetry/test-classifier-baselines.zsh`, `tests/performance/telemetry/test-structured-telemetry-schema.zsh`), schema validator tool added (`tools/test-structured-telemetry-schema.zsh`); pending enforce-mode flip after 3 consecutive OK runs (to be logged in PERFORMANCE_LOG) |
+| S4-25 | Dependency export command (`zf::deps::export`) | ✅ Done | JSON + DOT export tool landed (modules + features) |
+| S4-26 | DOT generator tool & test | ✅ Done | Integrated in export tool; basic structural test coverage via structured telemetry suite |
+| S4-27 | Idle/background trigger design | ⏳ Pending | Design doc + stub (no heavy jobs) |
+| S4-28 | Privacy appendix & redaction hooks | ✅ Done | Appendix published (privacy/PRIVACY_APPENDIX.md); field whitelist + governance documented |
+| S4-29 | Homogeneity gate documentation update | ⏳ Pending | Update REFERENCE & IMPLEMENTATION with final namespace rules |
+| S4-30 | Performance Log classifier legend | ✅ Done | Added thresholds & aggregation logic to PERFORMANCE_LOG.md |
+| S4-31 | CI workflow upgrade (multi-metric integration) | ✅ Done | Consolidated legacy perf job; classifier now authoritative (observe → enforce gating) |
+| S4-18 | Telemetry opt-in flag stub (`ZSH_FEATURE_TELEMETRY=1`) | ⏳ Pending | Controlled activation switch |
+| S4-19 | Catalog status refresh pass | ⏳ Pending | Ensure no drift after wrapper + instrumentation changes |
+| S4-32 | README segment sync script (`tools/sync-readme-segments.zsh`) | ✅ Done | Automates mirroring of REFERENCE §5.3 into README (managed markers) |
+| S4-33 | Classifier enforce-mode activation (3× OK streak) | ⏳ Pending | Await 3 consecutive OK performance classifier runs; then add PERFORMANCE_LOG governance row & mark enforce mode active |
+
+Sprint 2 Exit Criteria (includes Privacy Appendix publication & reference):
+- Accurate SEGMENT lines (no placeholders)
+- Homogeneity test passes; wrappers removed; no `ZF_LOG_LEGACY_USED`
+- Structured telemetry stubs gated & zero overhead when off
+- Regression harness operational; baseline within ≤10% delta
+- Dependency export (JSON + DOT) validated by test
+- Privacy appendix published (privacy/PRIVACY_APPENDIX.md) & referenced in REFERENCE.md / IMPLEMENTATION.md
+- Privacy appendix published & referenced
+
+### 🚀 Stage 4 Sprint 1 (Feature Layer Scaffolding) (Archived)
+
+| Task | Description | Status | Notes |
+|------|-------------|--------|-------|
+| S4-01 | Stage 4 Kickoff document (`stage4/STAGE4_KICKOFF.md`) | ✅ Done | Scope, principles, guardrails defined |
+| S4-02 | Feature registry scaffold (`feature/registry/feature-registry.zsh`) | ✅ Done | Add/list/resolve with cycle detection |
+| S4-03 | Feature module template (`_TEMPLATE_FEATURE_MODULE.zsh`) | ✅ Done | Contract + policy header |
+| S4-04 | Self-check / status command (`feature/feature-status.zsh`) | ✅ Done | Table/raw/JSON output, summary + self-check |
+| S4-05 | Noop exemplar feature (`feature/noop.zsh`) | ✅ Done | Metadata, enable logic, init/teardown, tests |
+| S4-06 | Enable/disable semantics tests (noop) | ✅ Done | Precedence verified (global/all, overrides, lists) |
+| S4-07 | Failure containment test (noop) | ✅ Done | Boundary simulation & recovery validated |
+| S4-08 | Feature Catalog (`feature/CATALOG.md`) | ✅ Done | Inventory + phases + dependency mapping |
+| S4-09 | Developer Guide (`feature/DEVELOPER_GUIDE.md`) | ✅ Done | Authoritative authoring standards |
+| S4-10 | Performance Log scaffold (`tracking/PERFORMANCE_LOG.md`) | ✅ Done | Baseline + delta schema |
+| S4-11 | Integrate Feature Layer section into IMPLEMENTATION.md | ✅ Done | Architecture anchored |
+| S4-12 | Add remaining registry invocation wrapper (timing + containment) | ✅ Done | Invocation wrapper implemented (phase dispatch, containment, init-phase telemetry hook) |
+| S4-13 | Per-feature timing integration + perf delta test harness | ✅ Done | Timing extraction tool + gating test added (perf-extract-feature-sync.zsh, test-feature-sync-timings.zsh) |
+| S4-14 | Deferred / postprompt hook wiring + test skeleton | ⏳ Pending | After invocation wrapper |
+| S4-15 | Add enable/disable + dependency edge-case tests (global suite) | ⏳ Pending | Broader coverage beyond noop |
+| S4-16 | Update TASK_TRACKER & NEXT_STEPS with Sprint 2 plan | ⏳ Pending | After S4-12/S4-13 landed |
+| S4-17 | Introduce perf gating integration (warn only) | ⏳ Pending | Requires initial timing data |
+| S4-18 | Telemetry opt-in flag plumbing (no output by default) | ⏳ Pending | After timing arrays stable |
+| S4-19 | Documentation refresh (catalog statuses, guide amendments) | ⏳ Pending | Rolling as tasks complete |
+
+Sprint 1 Exit Criteria:
+- Invocation wrapper with timing + error containment implemented (S4-12)
+- Per-feature timing captured for noop (baseline <1ms)
+- Perf delta harness enforces no regression vs Stage 3 baseline (+15% ceiling)
+- Deferred hook framework scaffolded (even if no deferred features yet)
+- Catalog & Tracker synchronized; NEXT_STEPS updated
+
 ### 🔄 Stage 4 Preparation (0% → 100%)
 
 #### 1. Run Comprehensive Test Suite with New Runner
@@ -50,6 +190,34 @@
 **Priority:** HIGH  
 **Status:** In Progress (Day 3/7)  
 **Dependencies:** Nightly CI workflow operational  
+
+### New Tasks (GOAL System Integration)
+
+| ID | Task | Description | Status | Notes |
+|----|------|-------------|--------|-------|
+| S4-34 | Document GOAL paradigm | Add matrices + privacy + references + ADR | ✅ Done | README, IMPLEMENTATION, REFERENCE, PRIVACY, ADR-0007 |
+| S4-35 | Classifier scaffold | Implement `apply_goal_profile` + `--goal` parsing (no behavior change yet) | Pending | Emit `goal` only in status JSON |
+| S4-36 | Status JSON goal field | Add `goal` unconditionally to status JSON | Pending | Backward compat: absence ⇒ streak (legacy) |
+| S4-37 | Synthetic gating | Enforce per-profile synthetic policy (governance/ci fail) | Pending | Adds `synthetic_used` flag when true |
+| S4-38 | Missing metric handling | Implement partial vs hard-fail logic (`partial` flag) | Pending | Governance/ci hard fail; streak/explore tolerate |
+| S4-39 | Profile test matrix | Add T-GOAL-01..06 tests | Pending | Explore ephemeral, streak partial, governance synthetic fail |
+| S4-40 | CI integration | Update workflows to set `GOAL=ci` | Pending | Deterministic gating; disallow explore in CI |
+| S4-41 | Governance precondition A8 | Require 3 clean governance runs (no partial/synthetic) | Pending | Gate enforce-mode activation |
+| S4-42 | Goal-state badge (optional) | Generate `goal-state.json` summarizing profile/readiness | Planned | Post initial rollout |
+| S4-43 | Explore diagnostic verbosity | Add enhanced diagnostics (only in Explore) | Planned | Guarded behind profile |
+| S4-44 | Strictness layering verification | Measure phased vs hard strict overhead (<2ms) | Planned | Add micro timing note |
+| S4-45 | Synthetic fallback deprecation plan | Draft removal path once stable | Planned | New ADR if removal approved |
+
+Test IDs (planned):
+- T-GOAL-01: Explore → `ephemeral=true`, exit 0 with missing metric
+- T-GOAL-02: Streak → missing tolerated, `partial=true`
+- T-GOAL-03: Governance → synthetic usage causes non-zero exit
+- T-GOAL-04: CI → mirrors governance strictness
+- T-GOAL-05: Unset GOAL ⇒ streak semantics
+- T-GOAL-06: Flags absent when conditions not met
+
+Governance Precondition (A8):
+- 3 consecutive `GOAL=Governance` runs, no `synthetic_used`, no `partial`.
 **Actions:**
 - [ ] Monitor CI ledger for 7-day stability window
 - [ ] Document any drift or badge issues
@@ -83,6 +251,13 @@
 - [ ] Enhance error reporting
 
 ## Upcoming Tasks (Next Sprint)
+
+#### Follow-ups (08.19.10)
+- Add CI assertion to fail when summary-goal badge resolves to red (indicates failing governance/drift/structure).
+- Add tests validating summary-goal suffix composition (drift:<message>, struct:<message>) and severity blending.
+- Extend documentation: badge legend + suffix mapping details (how governance/ci/streak/explore, drift, and structure affect color/message).
+- Monitor first gh-pages publish to confirm endpoint availability; ensure README auto-update commit occurred.
+- Optional: refine governance state mapping for “BASELINE_CREATED” → informational (distinct from clean).
 
 ### 🔜 Stage 4: Feature Layer Implementation (0% → 100%)
 

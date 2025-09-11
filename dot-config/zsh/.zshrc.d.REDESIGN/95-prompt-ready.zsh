@@ -25,6 +25,45 @@ __pr__capture_prompt_ready() {
         export PROMPT_READY_MS
     fi
 
+    # Emit SEGMENT + legacy marker (idempotent) if log available
+    if [[ -n ${PERF_SEGMENT_LOG:-} && -w ${PERF_SEGMENT_LOG:-/dev/null} && -n ${PROMPT_READY_MS:-} && -z ${_PROMPT_READY_SEGMENT_EMITTED:-} ]]; then
+        # Attempt delta computation if start anchor available
+        if [[ -n ${ZSH_START_MS:-} ]]; then
+            (( PROMPT_READY_DELTA_MS = PROMPT_READY_MS - ZSH_START_MS ))
+        else
+            PROMPT_READY_DELTA_MS=0
+        fi
+        {
+            print "PROMPT_READY_COMPLETE ${PROMPT_READY_DELTA_MS}"
+            print "SEGMENT name=prompt_ready ms=${PROMPT_READY_DELTA_MS} phase=prompt sample=${PERF_SAMPLE_CONTEXT:-unknown}"
+        } >> "${PERF_SEGMENT_LOG}" 2>/dev/null || true
+        _PROMPT_READY_SEGMENT_EMITTED=1
+    fi
+
+    # Structured telemetry JSON (opt-in; zero overhead when ZSH_LOG_STRUCTURED!=1)
+    if [[ "${ZSH_LOG_STRUCTURED:-0}" == "1" && -n ${PROMPT_READY_MS:-} && -z ${_PROMPT_READY_JSON_EMITTED:-} ]]; then
+        # Ensure delta computed (reuse if already set)
+        if [[ -z ${PROMPT_READY_DELTA_MS:-} ]]; then
+            if [[ -n ${ZSH_START_MS:-} ]]; then
+                (( PROMPT_READY_DELTA_MS = PROMPT_READY_MS - ZSH_START_MS ))
+            else
+                PROMPT_READY_DELTA_MS=0
+            fi
+        fi
+        # Timestamp (epoch ms) from EPOCHREALTIME if available
+        local __pr_ts
+        if [[ -n ${EPOCHREALTIME:-} ]]; then
+            __pr_ts=$(awk -v t="${EPOCHREALTIME}" 'BEGIN{split(t,a,"."); printf "%s%03d", a[1], substr(a[2]"000",1,3)}')
+        else
+            __pr_ts="$(date +%s 2>/dev/null || printf 0)000"
+        fi
+        local __target="${PERF_SEGMENT_JSON_LOG:-${PERF_SEGMENT_LOG:-/dev/null}}"
+        if [[ -w ${__target} ]]; then
+            print -- "{\"type\":\"segment\",\"name\":\"prompt_ready\",\"ms\":${PROMPT_READY_DELTA_MS},\"phase\":\"prompt\",\"sample\":\"${PERF_SAMPLE_CONTEXT:-unknown}\",\"ts\":${__pr_ts}}" >> "${__target}" 2>/dev/null || true
+        fi
+        _PROMPT_READY_JSON_EMITTED=1
+    fi
+
     zsh_debug_echo "# [prompt-ready] captured PROMPT_READY_MS=${PROMPT_READY_MS:-n/a}"
 }
 

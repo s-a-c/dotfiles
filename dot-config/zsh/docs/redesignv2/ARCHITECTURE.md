@@ -1,9 +1,42 @@
 # ZSH Redesign Architecture (Consolidated)
-Version: 2.1
-Status: Authoritative Design Reference
-Last Updated: 2025-09-10
 
-Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v900f08def0e6f7959ffd283aebb73b625b3473f5e49c57e861c6461b50a62ef2
+## Part 08.19.10 — Classifier, Badges, and CI Updates
+
+This section summarizes the latest stabilization and CI publishing work that complements the architecture:
+
+- GOAL profiles and gating (flags-driven)
+  - Profiles: streak, governance, explore, ci — applied via `apply_goal_profile` internal flags (ALLOW_SYNTHETIC_SEGMENTS, REQUIRE_ALL_METRICS, HARD_STRICT, STRICT_PHASED, SOFT_MISSING_OK, JSON_PARTIAL_OK, EPHEMERAL_FLAG).
+  - Observe mode: always exit 0; Enforce mode: exit reflects worst status and strict gating (e.g., governance/ci disallow synthetic and require all metrics).
+- Single-metric JSON parity (always-before-exit)
+  - Single-metric path now writes JSON before any enforce-mode exit, matching multi-metric ordering (deterministic artifacts in CI even on failure).
+- Capture-runner noise suppression
+  - Prompt-ready capture stderr noise (“bad math expression”) is suppressed without altering capture logic or metrics.
+- Dynamic badges
+  - goal-state badge (docs/redesignv2/artifacts/badges/goal-state.json): governance/ci/streak/explore compact state mapping.
+  - summary-goal badge (docs/redesignv2/artifacts/badges/summary-goal.json): composes goal-state and folds in perf drift badge (perf-drift.json) and structure badge (structure.json) as suffixes; overall color reflects worst severity across these signals.
+- CI integration and publishing
+  - Strict classifier workflow (macOS): GOAL=ci enforce emits perf-current.json and goal-state badge.
+  - Nightly/push publisher (Ubuntu): runs classifier, generates goal-state and summary-goal, ensures perf-drift and structure badges, publishes artifacts to gh-pages with an index.
+  - Post-publish step: auto-updates root README to replace placeholder Shields endpoints with the repo’s actual `/<org>/<repo>/gh-pages/badges/...` URLs after the badges land on gh-pages.
+
+Shields endpoints (placeholders in docs; auto-resolved in README after first gh-pages publish):
+- Goal-state: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/&lt;org&gt;/&lt;repo&gt;/gh-pages/badges/goal-state.json
+- Summary-goal: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/&lt;org&gt;/&lt;repo&gt;/gh-pages/badges/summary-goal.json
+Version: 2.2
+Status: Authoritative Design Reference
+Last Updated: 2025-09-10 (Part 08.19 – Logging migration complete & instrumentation status refresh)
+
+Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v3fb33a85972b794c3c0b2f992b1e5a7c19cfbd2ccb3bb519f8865ad8fdfc0316
+
+### Stage 4 Sprint 2 Status (Part 08.19 Refresh)
+- Logging homogeneity complete: legacy underscore wrappers removed; gate test green (no `ZF_LOG_LEGACY_USED`)
+- Real segment probes active (anchors: `pre_plugin_start`, `pre_plugin_total`, `post_plugin_total`, `prompt_ready`, `deferred_total` + granular feature/dev/env/security segments)
+- Deferred dispatcher skeleton operational (one-shot postprompt; `DEFERRED id=<id> ms=<int> rc=<rc>` telemetry lines stable)
+- Structured telemetry flags available (`ZSH_LOG_STRUCTURED`, `ZSH_PERF_JSON`) — inert when unset (zero overhead)
+- Multi-metric performance classifier in observe mode (Warn 10% / Fail 25%); enforce activation pending 3× OK streak (S4-33)
+- Dependency export & DOT generator integrated (`zf::deps::export`)
+- Privacy appendix published & referenced; redaction whitelist stabilized
+- Baseline unchanged: 334ms cold start (RSD 1.9%) — no regression after new instrumentation
 
 This document defines the architectural intent, structural rules, performance strategies, and extensibility model for the ZSH configuration redesign. It supersedes scattered legacy rationale fragments and is the **single design source** unless superseded by a future version entry in the Change Log.
 
@@ -20,6 +53,8 @@ Establish a lean, deterministic, testable shell configuration with:
 - Observable integrity (fingerprints + async validation).
 - Easily auditable change surface (structured inventories, checksums).
 - **Test infrastructure upgraded:** All modules and tests validated for standards-compliant isolation (`zsh -f`), CI compatibility, and robust reporting.
+- **Logging namespace migration complete:** Legacy underscore wrappers removed; homogeneity gate enforced (no remaining underscore logging calls; gate tests green).
+- **Instrumentation status:** Real segment probes emitted (phase + granular), deferred dispatcher skeleton active (one-shot postprompt, `deferred_total` captured), multi-metric performance classifier in observe mode (OK/WARN/FAIL thresholds 10% / 25%); enforce-mode activation (S4-33) pending 3× consecutive OK streak (governance row to be appended to PERFORMANCE_LOG).
 
 ---
 
@@ -148,6 +183,51 @@ Budgets:
 Regression Guard:
 - Accepts ≤5% delta; failing results block promotion stage.
 
+### 8.1 Multi‑Metric Classifier Governance
+
+The performance regression classifier evaluates four primary metrics each run:
+| Metric Key | Source Derivation | Baseline Artifact | Typical Budget (delta vs baseline) |
+|------------|-------------------|-------------------|------------------------------------|
+| `pre_plugin_total_ms` | Anchors `pre_plugin_start` → `pre_plugin_total` | `artifacts/metrics/pre_plugin_total-baseline.json` | Warn 10% / Fail 25% |
+| `post_plugin_total_ms` | Post‑plugin functional span until boundary emission | `artifacts/metrics/post_plugin_total-baseline.json` | Warn 10% / Fail 25% |
+| `prompt_ready_ms` | Sum (pre + post + prompt finishing delta) | `artifacts/metrics/prompt_ready-baseline.json` | Warn 10% / Fail 25% |
+| `deferred_total_ms` | Deferred dispatcher batch (first pass) | `artifacts/metrics/deferred_total-baseline.json` | Warn 10% / Fail 25% |
+
+Classifier Modes:
+- observe: Always exits 0; creates missing baselines (first run) – status may be `BASELINE_CREATED`.
+- enforce: Fails build on WARN/FAIL thresholds (WARN = non‑zero exit chosen by workflow policy; FAIL = hard failure).
+
+Baseline Integrity & Schema Tests (CI Step “Telemetry Governance”):
+- `tests/performance/telemetry/test-classifier-baselines.zsh` (with `ENFORCE_BASELINES=1`) ensures required baseline JSON files exist & are sane.
+- `tests/performance/telemetry/test-structured-telemetry-schema.zsh` enforces allowed structured telemetry keys (privacy guard).
+
+README / Reference Synchronization:
+- Canonical segment & disable‑flag table lives in REFERENCE.md §5.3.
+- `tools/sync-readme-segments.zsh` mirrors §5.3 into README inside managed markers to prevent drift (future CI `--check` gate).
+
+Enforce‑Mode Activation Requirements:
+1. 3× consecutive classifier overall `OK` runs (no WARN/FAIL).
+2. Baseline integrity + schema tests green.
+3. No pending segment definition changes.
+4. RSD (variance) stable (≤5%) across recent prompt_ready samples.
+5. README sync check passes (`tools/sync-readme-segments.zsh --check`).
+
+Governance Logging:
+- Activation recorded as a `governance` row in PERFORMANCE_LOG (Type=governance; Scope=performance-classifier) with zero Δ values.
+- Any WARN/FAIL in enforce mode requires either mitigation (feature optimization) or regression investigation row.
+
+Rollback Path:
+- Temporarily re‑run classifier in observe mode (manual dispatch) if environmental noise suspected.
+- Never delete baseline files unless intentionally re‑baselining; create a governance note if re‑baselining is required.
+
+Privacy & Schema Evolution:
+- New telemetry keys must: (a) be added to REFERENCE §5.3.2, (b) updated in privacy appendix, (c) allowed by schema validator, (d) included in sync script output.
+
+Future Enhancements (Planned):
+- Percentile capture (P50/P95) per metric
+- Streak badge for enforce‑mode eligibility
+- Trend slope detector for early drift warnings
+
 ---
 
 ## 9. Testing Alignment Matrix
@@ -226,6 +306,7 @@ Pattern: `_LOADED_<UPPERCASE_FILE_NAME_WITH_DASHES_AS_UNDERSCORES>`
 | Security Command | Add to 80 module post-scan dispatch | Must not block when data stale |
 | Perf Hook | Precmd injection in 70 module | <5ms overhead |
 | Splash Enhancement | 90 module optional info provider | Must respect disable flag |
+| Structured Telemetry Channel | `ZSH_LOG_STRUCTURED` gated JSON emission | Opt-in only; schema changes require Privacy Appendix + Change Log update; zero overhead when disabled |
 
 ---
 
@@ -290,6 +371,7 @@ Pattern: `_LOADED_<UPPERCASE_FILE_NAME_WITH_DASHES_AS_UNDERSCORES>`
 
 | Date | Version | Summary |
 |------|---------|---------|
+| 2025-09-10 | 2.2 | Stage 4 Sprint 2: segment anchors (pre_plugin_start, post_plugin_total, prompt_ready, deferred_total), deferred dispatcher, structured telemetry flags, privacy appendix published |
 | 2025-01-03 | 2.0 | Initial consolidated architecture reference (migration to redesignv2) |
 
 ---

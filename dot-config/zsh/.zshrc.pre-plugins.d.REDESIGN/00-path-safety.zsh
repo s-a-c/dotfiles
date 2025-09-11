@@ -3,6 +3,36 @@
 [[ -n ${_LOADED_00_PATH_SAFETY:-} ]] && return
 _LOADED_00_PATH_SAFETY=1
 # Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+
+# --- Phase Attribution (Pre-Plugin Start) -------------------------------------
+# Capture global start timestamp (ms precision) if not already set.
+# This will anchor later computations (e.g., pre_plugin_total, prompt_ready delta).
+if [[ -z ${ZSH_START_MS:-} ]]; then
+    if command -v date >/dev/null 2>&1; then
+        ZSH_START_MS=$(date +%s%3N 2>/dev/null || date +%s000)
+        export ZSH_START_MS
+    fi
+fi
+
+# Emit a zero-duration phase start SEGMENT exactly once (optional; harmless if log missing).
+if [[ -n ${PERF_SEGMENT_LOG:-} && -w ${PERF_SEGMENT_LOG:-/dev/null} && -z ${_PREPLUGIN_START_SEGMENT_EMITTED:-} ]]; then
+    {
+        print "SEGMENT name=pre_plugin_start ms=0 phase=pre_plugin sample=${PERF_SAMPLE_CONTEXT:-unknown}"
+    } >> "${PERF_SEGMENT_LOG}" 2>/dev/null || true
+    _PREPLUGIN_START_SEGMENT_EMITTED=1
+fi
+# Structured telemetry JSON emission (opt-in, zero overhead when disabled)
+if [[ "${ZSH_LOG_STRUCTURED:-0}" == "1" && -z ${_PREPLUGIN_START_JSON_EMITTED:-} && -w ${PERF_SEGMENT_JSON_LOG:-${PERF_SEGMENT_LOG:-/dev/null}} ]]; then
+    local __pps_ts
+    if [[ -n ${EPOCHREALTIME:-} ]]; then
+        __pps_ts=$(awk -v t="${EPOCHREALTIME}" 'BEGIN{split(t,a,"."); printf "%s%03d", a[1], substr(a[2]"000",1,3)}')
+    else
+        __pps_ts="$(date +%s 2>/dev/null || printf 0)000"
+    fi
+    print -- "{\"type\":\"segment\",\"name\":\"pre_plugin_start\",\"ms\":0,\"phase\":\"pre_plugin\",\"sample\":\"${PERF_SAMPLE_CONTEXT:-unknown}\",\"ts\":${__pps_ts}}" >> "${PERF_SEGMENT_JSON_LOG:-${PERF_SEGMENT_LOG}}" 2>/dev/null || true
+    _PREPLUGIN_START_JSON_EMITTED=1
+fi
+# -------------------------------------------------------------------------------
 #
 # PURPOSE:
 #   Deterministic early PATH normalization & hygiene before any heavyweight plugin / env logic.
