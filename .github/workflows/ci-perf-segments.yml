@@ -1,0 +1,374 @@
+name: CI Perf Segments
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v900f08def0e6f7959ffd283aebb73b625b3473f5e49c57e861c6461b50a62ef2
+#
+# PURPOSE:
+#   Multi‑sample ZSH startup performance capture + variance gate + observe guard + budget report.
+#   Implements the sequence:
+#     1. tools/perf-capture-multi.zsh --samples 5 --sleep 0.3
+#     2. tests/performance/test-multi-sample-variance.zsh  (stability gate for observe→warn readiness)
+#     3. promotion-guard-perf.sh (G5a structured block emission)
+#     4. perf-segment-budget.sh (interim budgets, non-enforcing unless on main & env toggle)
+#
+# TRIGGERS:
+#   - Pull Requests (to surface perf telemetry early; non-fatal observe mode)
+#   - Manual dispatch
+#   - Nightly schedule (captures drift & variance under low load window)
+#
+# ENFORCEMENT MODES:
+#   - Default (PR / non-main): Observe only (no failures unless scripts encounter hard errors or variance test fails)
+#   - Main branch (optional): Enable budget enforcement by setting repository/organization variable PERF_BUDGET_ENFORCE=1
+#
+# ARTIFACTS:
+#   - perf-multi-current.json          (aggregate multi-sample stats)
+#   - perf-current-segments.txt        (latest segments)
+#   - perf-baseline-segments.txt       (if present)
+#   - perf-segment-budget.(block|json)
+#   - perf-diff.json (regression summary)
+#   - promotion-guard-perf.log (guard block)
+#
+# FUTURE:
+#   - Add badge generation for variance & budget status.
+#   - Switch to fail mode for perf-diff when Gate moves beyond observe.
+#   - Integrate JSON perf-diff output directly into promotion guard summary.
+#
+on:
+  workflow_dispatch: {}
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'dot-config/zsh/**'
+      - '.github/workflows/ci-perf-segments.yml'
+  schedule:
+    - cron: '15 4 * * *'   # Nightly run (UTC) – adjust as needed
+
+concurrency:
+  group: ci-perf-segments-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  perf-segments:
+    name: Multi-sample Perf (segments & guard)
+    runs-on: macos-latest
+    env:
+      # Allow optional enforcement toggles (configure in repo/organization variables)
+      PERF_BUDGET_ENFORCE: ${{ vars.PERF_BUDGET_ENFORCE || '0' }}
+      PERF_DIFF_FAIL_ON_REGRESSION: ${{ vars.PERF_DIFF_FAIL_ON_REGRESSION || '0' }}
+      # Samples & sleep tuning (override with repository variables if desired)
+      PERF_MULTI_SAMPLES: ${{ vars.PERF_MULTI_SAMPLES || '5' }}
+      PERF_MULTI_SLEEP: ${{ vars.PERF_MULTI_SLEEP || '0.3' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show Config
+        run: |
+          echo "PERF_BUDGET_ENFORCE=${PERF_BUDGET_ENFORCE}"
+          echo "PERF_DIFF_FAIL_ON_REGRESSION=${PERF_DIFF_FAIL_ON_REGRESSION}"
+          echo "PERF_MULTI_SAMPLES=${PERF_MULTI_SAMPLES}"
+          echo "PERF_MULTI_SLEEP=${PERF_MULTI_SLEEP}"
+          echo "Ref: $GITHUB_REF"
+
+      - name: Ensure Execution Bits
+        run: |
+          chmod +x tools/*.zsh 2>/dev/null || true
+          chmod +x tools/*.sh 2>/dev/null || true
+          find tests -type f -name 'test-*.zsh' -exec chmod +x {} + || true
+
+      - name: Multi-Sample Capture
+        shell: zsh {0}
+        run: |
+            if [[ ! -x tools/perf-capture-multi.zsh ]]; then
+              echo "::error::Missing tools/perf-capture-multi.zsh" && exit 1
+            fi
+            # Run multi-sample (observe mode; segments aggregated)
+            tools/perf-capture-multi.zsh --samples "${PERF_MULTI_SAMPLES}" --sleep "${PERF_MULTI_SLEEP}" || {
+              echo "::error::Multi-sample capture failed" ; exit 1; }
+
+      - name: Marker Presence (Single Run Native Markers)
+        shell: zsh {0}
+        run: |
+          # Validate lifecycle markers from the most recent single-run capture.
+          # Observe mode: allow adaptive & fallback paths; only warn on issues.
+          METRICS="docs/redesignv2/artifacts/metrics/perf-current.json"
+          if [[ -x dot-config/zsh/tools/test-marker-presence.zsh ]]; then
+            if dot-config/zsh/tools/test-marker-presence.zsh \
+                --metrics "$METRICS" \
+                --allow-adaptive \
+                --allow-approx-prompt \
+                --allow-fallback-post \
+                --json-report docs/redesignv2/artifacts/metrics/marker-presence.json; then
+              echo "[marker] lifecycle markers validated (allowing adaptive/approx in observe mode)"
+            else
+              echo "::warning::marker presence check reported issues (observe mode tolerant)"
+              [[ -f docs/redesignv2/artifacts/metrics/marker-presence.json ]] && \
+                cat docs/redesignv2/artifacts/metrics/marker-presence.json || true
+            fi
+          else
+            echo "::warning::marker presence script missing (dot-config/zsh/tools/test-marker-presence.zsh)"
+          fi
+
+      - name: Variance Stability Test (Observe→Warn Gate)
+        shell: zsh {0}
+        run: |
+          if [[ -f tests/performance/test-multi-sample-variance.zsh ]]; then
+            zsh tests/performance/test-multi-sample-variance.zsh || {
+              echo "::error::Variance test failed (instability detected)" ; exit 1; }
+          else
+            echo "::warning::Variance test missing (tests/performance/test-multi-sample-variance.zsh)"
+          fi
+      - name: Variance Gating Recommendation
+        shell: bash
+        run: |
+          if [[ -x tools/auto-enable-perf-warn-gate.zsh ]]; then
+            echo "[gating] Running variance stability recommender..."
+            tools/auto-enable-perf-warn-gate.zsh \
+              --output docs/redesignv2/artifacts/metrics/perf-gating-recommendation.json \
+              --state-file docs/redesignv2/artifacts/metrics/perf-gate-state.json \
+              --env-out docs/redesignv2/artifacts/metrics/perf-gating.env || true
+            echo "[gating] Recommendation (truncated):"
+            head -c 500 docs/redesignv2/artifacts/metrics/perf-gating-recommendation.json 2>/dev/null || true
+            if [[ -f docs/redesignv2/artifacts/metrics/perf-gating.env ]]; then
+              # Show env file; will be loaded later
+              echo "[gating] Env file:"
+              cat docs/redesignv2/artifacts/metrics/perf-gating.env || true
+            fi
+          else
+            echo "[gating][WARN] tools/auto-enable-perf-warn-gate.zsh missing (skipping)."
+          fi
+
+      - name: Promotion Guard (G5a Observe Block)
+        shell: bash
+        run: |
+          if [[ -x tools/promotion-guard-perf.sh ]]; then
+            bash tools/promotion-guard-perf.sh | tee promotion-guard-perf.log
+            # Extract block for quick visibility
+            echo ""
+            echo "---- Guard Block (Excerpt) ----"
+            sed -n '/--- PERF_GUARD_BEGIN ---/,/--- PERF_GUARD_END ---/p' promotion-guard-perf.log || true
+          else
+            echo "::error::promotion-guard-perf.sh missing" ; exit 1
+          fi
+
+      - name: perf-diff (JSON + Text)
+        shell: bash
+        run: |
+          # Load variance gating env if recommender produced it
+          if [[ -f docs/redesignv2/artifacts/metrics/perf-gating.env ]]; then
+            echo "[perf-diff] Loading perf gating environment"
+            cat docs/redesignv2/artifacts/metrics/perf-gating.env >> $GITHUB_ENV
+            source docs/redesignv2/artifacts/metrics/perf-gating.env
+            echo "[perf-diff] PERF_DIFF_FAIL_ON_REGRESSION=${PERF_DIFF_FAIL_ON_REGRESSION:-0} (streak=${PERF_DIFF_VARIANCE_STREAK:-0})"
+          else
+            echo "[perf-diff] No gating env present (observe mode)."
+          fi
+          BASE_SEG=""
+          CUR_SEG=""
+          # Auto-detect baseline/current segment files
+          for f in docs/redesignv2/artifacts/metrics/perf-baseline-segments.txt docs/redesign/metrics/perf-baseline-segments.txt; do
+            [[ -f "$f" ]] && BASE_SEG="$f" && break
+          done
+          for f in docs/redesignv2/artifacts/metrics/perf-current-segments.txt docs/redesign/metrics/perf-current-segments.txt; do
+            [[ -f "$f" ]] && CUR_SEG="$f" && break
+          done
+          if [[ -n "$BASE_SEG" && -n "$CUR_SEG" && -x tools/perf-diff.sh ]]; then
+            echo "[perf-diff] baseline=$BASE_SEG current=$CUR_SEG fail_on_reg=${PERF_DIFF_FAIL_ON_REGRESSION:-0}"
+            tools/perf-diff.sh --baseline "$BASE_SEG" --current "$CUR_SEG" --json ${PERF_DIFF_FAIL_ON_REGRESSION:+--fail} > perf-diff.out 2>&1 || true
+            # Separate JSON to its own file (tail braces)
+            awk '
+              /^{/ {json=1}
+              {print > (json?"perf-diff.json":"perf-diff.txt")}
+            ' perf-diff.out
+            echo "perf-diff summary:"
+            grep '^perf-diff:' perf-diff.txt || true
+          else
+            echo "::warning::perf-diff prerequisites missing (baseline/current segments or tool)."
+          fi
+
+      - name: Segment Budget Check (Interim Phase, Non-Enforcing by Default)
+        shell: bash
+        run: |
+          if [[ -x tools/perf-segment-budget.sh ]]; then
+             ENF=0
+             # Enforce budgets only on main if toggle is set
+             if [[ "$GITHUB_REF" == "refs/heads/main" && "${PERF_BUDGET_ENFORCE}" == "1" ]]; then
+               ENF=1
+               echo "[budget] Enforcement enabled (main branch & PERF_BUDGET_ENFORCE=1)"
+             else
+               echo "[budget] Dry run (ENFORCE=0). Set repo variable PERF_BUDGET_ENFORCE=1 to enforce on main."
+             fi
+             OUTPUT_MODE=json ENFORCE=$ENF tools/perf-segment-budget.sh > perf-budget.json 2>&1 || code=$?
+             # Extract text block if present
+             if grep -q 'PERF_BUDGET_BEGIN' perf-budget.json; then
+               echo "---- Budget Block ----"
+               sed -n '/--- PERF_BUDGET_BEGIN ---/,/--- PERF_BUDGET_END ---/p' perf-budget.json || true
+             else
+               echo "Budget JSON / output:"
+               cat perf-budget.json || true
+             fi
+             if [[ "${code:-0}" == "2" ]]; then
+               echo "::error::Budget enforcement failure"
+               exit 2
+             fi
+          else
+            echo "::warning::perf-segment-budget.sh missing"
+          fi
+
+      - name: Summarize Key Metrics
+        shell: bash
+        run: |
+          MULTI=docs/redesignv2/artifacts/metrics/perf-multi-current.json
+          CURR=docs/redesignv2/artifacts/metrics/perf-current.json
+          if [[ -f "$MULTI" ]]; then
+            echo "[summary] multi-sample present"
+            grep -E '"samples"|post_plugin_cost_ms' "$MULTI" || true
+          fi
+          if [[ -f "$CURR" ]]; then
+            echo "[summary] single-run current present"
+            grep -E '"post_plugin_cost_ms"|\"pre_plugin_cost_ms\"|\"prompt_ready_ms\"' "$CURR" || true
+          fi
+      - name: Perf Module Ledger (Experimental)
+        shell: bash
+        run: |
+          SEG=docs/redesignv2/artifacts/metrics/perf-current-segments.txt
+          LEDGER_OUT=docs/redesignv2/artifacts/metrics/perf-ledger.json
+          BADGE=docs/badges/perf-ledger.json
+          if [[ -x tools/experimental/perf-module-ledger.zsh ]]; then
+            echo "[ledger] Generating perf ledger (observe mode)..."
+            tools/experimental/perf-module-ledger.zsh \
+              --segments "$SEG" \
+              --output "$LEDGER_OUT" \
+              --budget post_plugin_total:3000,pre_plugin_total:120 \
+              --badge "$BADGE" \
+              --summary || true
+            echo "[ledger] Truncated ledger JSON:"
+            head -c 400 "$LEDGER_OUT" 2>/dev/null || true
+          else
+            echo "[ledger][WARN] tools/experimental/perf-module-ledger.zsh missing (skipping)."
+          fi
+      - name: Perf Ledger Drift Badge
+        shell: bash
+        run: |
+          mkdir -p docs/badges
+          if [[ -x tests/performance/test-perf-ledger-drift.zsh ]]; then
+            echo "[drift] Evaluating perf ledger drift..."
+            if tests/performance/test-perf-ledger-drift.zsh > perf-ledger-drift.out 2>&1; then
+              drift_status="pass"
+            else
+              drift_status="nonpass"
+            fi
+            warn_count=$(grep '^WARN:' perf-ledger-drift.out | wc -l | tr -d ' ')
+            fail_count=$(grep '^FAIL:' perf-ledger-drift.out | wc -l | tr -d ' ')
+            color="brightgreen"
+            msg="stable"
+            if [[ "$fail_count" != "0" ]]; then
+              color="red"; msg="${fail_count} fail"
+            elif [[ "$warn_count" != "0" ]]; then
+              color="orange"; msg="${warn_count} warn"
+            fi
+            echo "{\"schemaVersion\":1,\"label\":\"perf drift\",\"message\":\"$msg\",\"color\":\"$color\"}" > docs/badges/perf-drift.json
+            echo "[drift] Badge: $(cat docs/badges/perf-drift.json)"
+          else
+            echo '{"schemaVersion":1,"label":"perf drift","message":"unavailable","color":"lightgrey"}' > docs/badges/perf-drift.json
+            echo "[drift][WARN] test-perf-ledger-drift.zsh missing."
+          fi
+
+      - name: Variance State (Mode & Streak)
+        shell: bash
+        run: |
+          set -euo pipefail
+          VS_OUT="docs/redesignv2/artifacts/badges/variance-state.json"
+          VS_BADGE="docs/badges/variance-state.json"
+          mkdir -p "$(dirname "$VS_OUT")" docs/badges
+          if [[ -x dot-config/zsh/tools/generate-variance-state-badge.zsh ]]; then
+            echo "[variance] Generating variance state..."
+            if dot-config/zsh/tools/generate-variance-state-badge.zsh \
+                --samples docs/redesignv2/artifacts/metrics/perf-multi-current.json \
+                --output "$VS_OUT" \
+                --badge "$VS_BADGE" ; then
+              echo "[variance] variance-state written: $VS_OUT"
+            else
+              echo "[variance][WARN] generation failed; creating placeholder."
+              echo '{"schema":"variance-state.v1","mode":"observe","rsd":{"pre":{"rsd":null},"post":{"rsd":null}},"stable_run_count":0,"promotion_notes":"placeholder"}' > "$VS_OUT"
+              echo '{"label":"variance","message":"observe","color":"lightgrey"}' > "$VS_BADGE"
+            fi
+          else
+            echo "[variance][WARN] script missing (dot-config/zsh/tools/generate-variance-state-badge.zsh); creating placeholder."
+            echo '{"schema":"variance-state.v1","mode":"observe","rsd":{"pre":{"rsd":null},"post":{"rsd":null}},"stable_run_count":0,"promotion_notes":"missing-script"}' > "$VS_OUT"
+            echo '{"label":"variance","message":"observe","color":"lightgrey"}' > "$VS_BADGE"
+          fi
+          echo "[variance] Badge: $(cat "$VS_BADGE" || true)"
+
+      - name: Governance Badge (Extended + Simple)
+        shell: bash
+        run: |
+          set -euo pipefail
+          EXT_OUT="docs/redesignv2/artifacts/badges/governance.json"
+            BADGE_OUT="docs/badges/governance.json"
+          mkdir -p "docs/redesignv2/artifacts/badges" "docs/badges"
+          if [[ -x dot-config/zsh/tools/generate-governance-badge.zsh ]]; then
+            echo "[governance] Generating extended governance artifact..."
+            if dot-config/zsh/tools/generate-governance-badge.zsh --extended --output "$EXT_OUT"; then
+              echo "[governance] Extended JSON written: $EXT_OUT"
+              # Derive simple badge JSON from extended (.badge object) if jq available
+              if command -v jq >/dev/null 2>&1; then
+                jq -c '.badge' "$EXT_OUT" > "$BADGE_OUT" || {
+                  echo "[governance][WARN] jq extraction failed; writing fallback badge."
+                  echo '{"label":"governance","message":"parse-fallback","color":"lightgrey"}' > "$BADGE_OUT"
+                }
+              else
+                # Fallback: naive grep for message/color
+                msg=$(grep -o '"message":"[^"]*"' "$EXT_OUT" | head -1 | sed 's/"message":"//;s/"$//')
+                color=$(grep -o '"color":"[^"]*"' "$EXT_OUT" | head -1 | sed 's/"color":"//;s/"$//')
+                : "${msg:=unknown}" ; : "${color:=lightgrey}"
+                printf '{"label":"governance","message":"%s","color":"%s"}\n' "$msg" "$color" > "$BADGE_OUT"
+              fi
+            else
+              echo "[governance][WARN] Extended generation failed; creating placeholder."
+              echo '{"schema":"governance-badge.v1","badge":{"label":"governance","message":"error","color":"red"}}' > "$EXT_OUT"
+              echo '{"label":"governance","message":"error","color":"red"}' > "$BADGE_OUT"
+            fi
+          else
+            echo "[governance][WARN] Script missing (dot-config/zsh/tools/generate-governance-badge.zsh); creating placeholder."
+            echo '{"schema":"governance-badge.v1","badge":{"label":"governance","message":"missing","color":"lightgrey"}}' > "$EXT_OUT"
+            echo '{"label":"governance","message":"missing","color":"lightgrey"}' > "$BADGE_OUT"
+          fi
+          echo "[governance] Badge: $(cat "$BADGE_OUT" || true)"
+
+      - name: Upload Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: perf-segments-${{ github.run_id }}
+          path: |
+            promotion-guard-perf.log
+            perf-diff.txt
+            perf-diff.json
+            perf-budget.json
+            perf-ledger-drift.out
+            docs/redesignv2/artifacts/metrics/perf-gating-recommendation.json
+            docs/redesignv2/artifacts/metrics/perf-gating.env
+            docs/redesignv2/artifacts/metrics/perf-gate-state.json
+            docs/redesignv2/artifacts/metrics/perf-current-segments.txt
+            docs/redesignv2/artifacts/metrics/perf-baseline-segments.txt
+            docs/redesignv2/artifacts/metrics/perf-multi-current.json
+            docs/redesignv2/artifacts/metrics/perf-current.json
+            docs/redesignv2/artifacts/metrics/perf-ledger.json
+            docs/badges/perf-ledger.json
+            docs/badges/perf-drift.json
+            docs/redesignv2/artifacts/badges/governance.json
+            docs/badges/governance.json
+
+      - name: Fail if Guard Block Missing (Structural G5a Safety)
+        if: always()
+        run: |
+          if ! grep -q 'PERF_GUARD_BEGIN' promotion-guard-perf.log 2>/dev/null; then
+            echo "::error::Missing PERF_GUARD block (G5a structural expectation)" >&2
+            exit 1
+          fi
+          echo "PERF_GUARD block present."
+
+      - name: Final Status
+        if: always()
+        run: |
+          echo "Job complete (observe mode)."
+          echo "Budget enforcement: ${PERF_BUDGET_ENFORCE} (main ref? $([[ $GITHUB_REF == refs/heads/main ]] && echo yes || echo no))"

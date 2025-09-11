@@ -1,0 +1,287 @@
+name: repo-Perf Ledger Nightly
+run-name: repo perf ledger nightly • ${{ github.ref_name }}
+# Dedicated nightly performance ledger workflow
+#
+# Scope (repo-wide):
+#   - Repository-wide orchestration consuming ZSH project artifacts under docs/redesignv2/artifacts
+#   - Runs from repository root; do not assume ZDOTDIR; pass it explicitly when invoking project tools
+#   - May publish badges to gh-pages and auto-commit on main
+#   - Complements zsh-* workflows that generate artifacts under dot-config/zsh
+#
+# Ownership (RACI):
+#   - R: Infra/Perf CI
+#   - A: Repo Owners
+#   - C: ZSH Maintainers
+#   - I: Contributors
+#
+# Purpose:
+#   Generates a lightweight performance "ledger" artifact summarizing key
+#   segment metrics (pre_plugin_total, post_plugin_total, prompt_ready, etc.)
+#   from the latest perf-current-segments.txt file and evaluates configured
+#   soft budgets. Stores a historical dated snapshot (optional), updates / renders
+#   the perf-ledger badge, and (optionally) fails on budget overages when enabled.
+#
+# Relationship to Other Workflows:
+#   - Complements ci-perf-segments.yml (multi-sample + guard). This workflow
+#     is intentionally simpler and safe to run independently. If the segment
+#     file is missing, it emits a "missing" status rather than failing hard.
+#
+# Escalation Path (per IMPLEMENTATION.md):
+#   1. Observe (default)          -> No failures; collect history.
+#   2. Warn / Gate (future)       -> Enable PERF_LEDGER_FAIL_ON_OVER=1 (main only).
+#   3. Budget Tightening          -> Adjust PERF_LEDGER_BUDGETS variable.
+#
+# Environment / Repository Variables (configure in repository settings):
+#   PERF_LEDGER_BUDGETS          (e.g. "post_plugin_total:3000,pre_plugin_total:120")
+#   PERF_LEDGER_FAIL_ON_OVER     (0|1) fail (main only) if a budget exceeded.
+#   PERF_LEDGER_SNAPSHOT_HISTORY (0|1) store dated snapshot (default 1).
+#
+# Artifacts Produced:
+#   - docs/redesignv2/artifacts/metrics/perf-ledger.json          (latest)
+#   - docs/redesignv2/artifacts/metrics/ledger-history/perf-ledger-YYYYMMDD.json (optional history)
+#   - docs/badges/perf-ledger.json                                (shields schema)
+#   - docs/badges/perf-ledger.svg                                 (static SVG badge, if renderer present)
+#
+# Auto-Commit Behavior:
+#   - On main branch only. Commits changes to badge + new history snapshot
+#     (if content differs). Safe no-op if nothing changed.
+#
+# Notes:
+#   - This workflow does not try to regenerate perf-current-segments.txt.
+#     Ensure ci-perf-segments.yml (or another capture workflow) runs on a
+#     compatible schedule before this one for freshest data.
+#   - Failing early due to missing segment file would reduce longitudinal
+#     coverage; therefore we treat absence as a "missing" ledger status.
+#
+on:
+  schedule:
+    - cron: '5 5 * * *'   # Nightly (UTC) — adjust as needed
+  workflow_dispatch: {}
+
+concurrency:
+  group: ci-perf-ledger-nightly-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  perf-ledger-nightly:
+    name: Nightly Perf Ledger
+    runs-on: macos-latest
+    env:
+      LEDGER_SEGMENTS_FILE: docs/redesignv2/artifacts/metrics/perf-current-segments.txt
+      LEDGER_OUTPUT: docs/redesignv2/artifacts/metrics/perf-ledger.json
+      LEDGER_BADGE: docs/badges/perf-ledger.json
+      LEDGER_HISTORY_DIR: docs/redesignv2/artifacts/metrics/ledger-history
+      PERF_LEDGER_BUDGETS: ${{ vars.PERF_LEDGER_BUDGETS || 'post_plugin_total:3000,pre_plugin_total:120' }}
+      PERF_LEDGER_FAIL_ON_OVER: ${{ vars.PERF_LEDGER_FAIL_ON_OVER || '0' }}
+      PERF_LEDGER_SNAPSHOT_HISTORY: ${{ vars.PERF_LEDGER_SNAPSHOT_HISTORY || '1' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show Configuration
+        run: |
+          echo "PERF_LEDGER_BUDGETS=${PERF_LEDGER_BUDGETS}"
+          echo "PERF_LEDGER_FAIL_ON_OVER=${PERF_LEDGER_FAIL_ON_OVER}"
+          echo "PERF_LEDGER_SNAPSHOT_HISTORY=${PERF_LEDGER_SNAPSHOT_HISTORY}"
+          echo "Ref: $GITHUB_REF"
+
+      - name: Ensure Directories
+        run: |
+          mkdir -p "$(dirname "$LEDGER_OUTPUT")" docs/badges "$LEDGER_HISTORY_DIR"
+
+      - name: Verify Segment File Presence
+        id: segcheck
+        run: |
+          if [[ -f "$LEDGER_SEGMENTS_FILE" ]]; then
+            echo "segments_present=1" >> "$GITHUB_OUTPUT"
+            echo "[ledger] Found segment file: $LEDGER_SEGMENTS_FILE"
+          else
+            echo "segments_present=0" >> "$GITHUB_OUTPUT"
+            echo "[ledger][WARN] Segment file missing ($LEDGER_SEGMENTS_FILE). Ledger will record 'missing' status."
+          fi
+
+      - name: Generate Perf Ledger
+        run: |
+          set -e
+          CMD=( tools/experimental/perf-module-ledger.zsh
+            --segments "$LEDGER_SEGMENTS_FILE"
+            --output "$LEDGER_OUTPUT"
+            --budget "$PERF_LEDGER_BUDGETS"
+            --badge "$LEDGER_BADGE"
+            --summary
+          )
+
+          # If segment file is absent, allow placeholder ledger
+          if [[ "${{ steps.segcheck.outputs.segments_present }}" != "1" ]]; then
+            CMD+=( --allow-missing )
+          fi
+
+          # Enable fail-on-over only when:
+          #   - main branch
+          #   - PERF_LEDGER_FAIL_ON_OVER=1
+          if [[ "$GITHUB_REF" == "refs/heads/main" && "$PERF_LEDGER_FAIL_ON_OVER" == "1" ]]; then
+            CMD+=( --fail-on-over )
+            echo "[ledger] Fail-on-over ENABLED (main branch & PERF_LEDGER_FAIL_ON_OVER=1)"
+          else
+            echo "[ledger] Fail-on-over disabled (observe mode)."
+          fi
+
+          if [[ ! -x tools/experimental/perf-module-ledger.zsh ]]; then
+            echo "::error::Ledger script missing: tools/experimental/perf-module-ledger.zsh"
+            # Non-fatal: create a placeholder
+            cat > "$LEDGER_OUTPUT" <<EOF
+          {"schemaVersion":1,"source":"perf-module-ledger","generatedAt":"$(date -u +%Y-%m-%dT%H:%M:%SZ)","segmentsFile":null,"segments":{},"budgets":{},"overall":{"overBudgetCount":0,"status":"missing-script"}}
+          EOF
+            echo '{"schemaVersion":1,"label":"perf ledger","message":"missing","color":"lightgrey"}' > "$LEDGER_BADGE"
+            exit 0
+          fi
+
+          echo "[ledger] Running: ${CMD[*]}"
+          # Never set -o pipefail with this call; we want script's exit code
+          if ! "${CMD[@]}"; then
+            rc=$?
+            echo "::warning::Ledger script exited with code $rc (continuing to keep nightly series)."
+          fi
+
+          echo "[ledger] Truncated ledger output:"
+          head -c 600 "$LEDGER_OUTPUT" || true
+
+      - name: Snapshot Historical Copy (Dated)
+        if: env.PERF_LEDGER_SNAPSHOT_HISTORY == '1'
+        run: |
+          if [[ -f "$LEDGER_OUTPUT" ]]; then
+            stamp=$(date -u +%Y%m%d)
+            HIST_PATH="$LEDGER_HISTORY_DIR/perf-ledger-${stamp}.json"
+            # Only write if missing (preserve first nightly artifact of the day)
+            if [[ ! -f "$HIST_PATH" ]]; then
+              cp "$LEDGER_OUTPUT" "$HIST_PATH"
+              echo "[ledger-history] Stored new snapshot $HIST_PATH"
+            else
+              echo "[ledger-history] Snapshot already exists for $stamp (no overwrite)."
+            fi
+          else
+            echo "[ledger-history][WARN] No ledger output to snapshot."
+          fi
+
+      - name: Render SVG Badge
+        run: |
+          if [[ -x tools/render-badge-svg.zsh && -f "$LEDGER_BADGE" ]]; then
+            tools/render-badge-svg.zsh --json "$LEDGER_BADGE" --force || true
+          else
+            echo "[svg][WARN] Cannot render perf-ledger.svg (script or JSON missing)."
+          fi
+
+      - name: Variance State (Mode & Streak)
+        run: |
+          set -euo pipefail
+          VS_OUT="docs/redesignv2/artifacts/badges/variance-state.json"
+          VS_BADGE="docs/badges/variance-state.json"
+          mkdir -p "$(dirname "$VS_OUT")" docs/badges
+          if [[ -x tools/generate-variance-state-badge.zsh ]]; then
+            echo "[variance] Generating variance state..."
+            if tools/generate-variance-state-badge.zsh \
+                --samples docs/redesignv2/artifacts/metrics/perf-multi-current.json \
+                --output "$VS_OUT" \
+                --badge "$VS_BADGE" ; then
+              echo "[variance] variance-state written: $VS_OUT"
+            else
+              echo "[variance][WARN] generation failed; creating placeholder."
+              echo '{"schema":"variance-state.v1","mode":"observe","rsd":{"pre":{"rsd":null},"post":{"rsd":null}},"stable_run_count":0,"promotion_notes":"placeholder"}' > "$VS_OUT"
+              echo '{"label":"variance","message":"observe","color":"lightgrey"}' > "$VS_BADGE"
+            fi
+          else
+            echo "[variance][WARN] script missing (tools/generate-variance-state-badge.zsh); creating placeholder."
+            echo '{"schema":"variance-state.v1","mode":"observe","rsd":{"pre":{"rsd":null},"post":{"rsd":null}},"stable_run_count":0,"promotion_notes":"missing-script"}' > "$VS_OUT"
+            echo '{"label":"variance","message":"observe","color":"lightgrey"}' > "$VS_BADGE"
+          fi
+          echo "[variance] Badge: $(cat "$VS_BADGE" || true)"
+      - name: Governance Badge (Extended + Simple)
+        run: |
+          set -euo pipefail
+          EXT_OUT="docs/redesignv2/artifacts/badges/governance.json"
+          SIMPLE_OUT="docs/badges/governance.json"
+          mkdir -p "$(dirname "$EXT_OUT")" docs/badges
+          if [[ -x tools/generate-governance-badge.zsh ]]; then
+            echo "[governance] Generating extended governance artifact..."
+            if tools/generate-governance-badge.zsh --extended --output "$EXT_OUT"; then
+              echo "[governance] Extended JSON written: $EXT_OUT"
+              if command -v jq >/dev/null 2>&1; then
+                jq -c '.badge' "$EXT_OUT" > "$SIMPLE_OUT" || {
+                  echo "[governance][WARN] jq extraction failed; writing fallback simple badge."
+                  echo '{"label":"governance","message":"parse-fallback","color":"lightgrey"}' > "$SIMPLE_OUT"
+                }
+              else
+                msg=$(grep -o '"message":"[^"]*"' "$EXT_OUT" | head -1 | sed 's/"message":"//;s/"$//')
+                color=$(grep -o '"color":"[^"]*"' "$EXT_OUT" | head -1 | sed 's/"color":"//;s/"$//')
+                : "${msg:=unknown}" ; : "${color:=lightgrey}"
+                printf '{"label":"governance","message":"%s","color":"%s"}\n' "$msg" "$color" > "$SIMPLE_OUT"
+              fi
+            else
+              echo "[governance][WARN] Extended generation failed; creating error placeholder."
+              echo '{"schema":"governance-badge.v1","badge":{"label":"governance","message":"error","color":"red"}}' > "$EXT_OUT"
+              echo '{"label":"governance","message":"error","color":"red"}' > "$SIMPLE_OUT"
+            fi
+          else
+            echo "[governance][WARN] Script missing (tools/generate-governance-badge.zsh); creating placeholder."
+            echo '{"schema":"governance-badge.v1","badge":{"label":"governance","message":"missing","color":"lightgrey"}}' > "$EXT_OUT"
+            echo '{"label":"governance","message":"missing","color":"lightgrey"}' > "$SIMPLE_OUT"
+          fi
+          echo "[governance] Simple badge: $(cat "$SIMPLE_OUT" || true)"
+
+      - name: Auto-Commit (Main Branch Only)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          set -e
+            CHANGED=0
+            git add docs/badges/perf-ledger.json 2>/dev/null || true
+            if ls docs/badges/perf-ledger.svg >/dev/null 2>&1; then
+              git add docs/badges/perf-ledger.svg || true
+            fi
+            # Governance badge artifacts
+            if [[ -f docs/badges/governance.json ]]; then
+              git add docs/badges/governance.json || true
+            fi
+            if [[ -f docs/redesignv2/artifacts/badges/governance.json ]]; then
+              git add docs/redesignv2/artifacts/badges/governance.json || true
+            fi
+            if [[ -d "$LEDGER_HISTORY_DIR" ]]; then
+              git add "$LEDGER_HISTORY_DIR"/*.json 2>/dev/null || true
+            fi
+            if ! git diff --cached --quiet; then
+              CHANGED=1
+              git config user.name "ci-bot"
+              git config user.email "ci-bot@users.noreply.github.com"
+              git commit -m "chore(perf-ledger+governance): nightly update ($(date -u +%Y-%m-%d))"
+              git push || echo "::warning::Push failed (race / permissions?)."
+            fi
+            if [[ $CHANGED -eq 0 ]]; then
+              echo "[commit] No changes to commit."
+            fi
+
+      - name: Upload Ledger Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: perf-ledger-${{ github.run_id }}
+          path: |
+            docs/redesignv2/artifacts/metrics/perf-ledger.json
+            docs/badges/perf-ledger.json
+            docs/badges/perf-ledger.svg
+            docs/redesignv2/artifacts/metrics/ledger-history/
+            docs/redesignv2/artifacts/badges/governance.json
+            docs/badges/governance.json
+
+      - name: Final Status
+        if: always()
+        run: |
+          echo "[status] Nightly perf ledger workflow complete."
+          if [[ -f docs/badges/perf-ledger.json ]]; then
+            echo "[status] Badge:"
+            cat docs/badges/perf-ledger.json || true
+          fi
+          if [[ -f docs/redesignv2/artifacts/metrics/perf-ledger.json ]]; then
+            jq '.overall // empty' docs/redesignv2/artifacts/metrics/perf-ledger.json 2>/dev/null || grep -E '"overall"' docs/redesignv2/artifacts/metrics/perf-ledger.json || true
+          fi

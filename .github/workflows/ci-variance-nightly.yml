@@ -1,0 +1,295 @@
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v900f08def0e6f7959ffd283aebb73b625b3473f5e49c57e861c6461b50a62ef2
+name: repo-Variance Nightly
+run-name: repo variance nightly • ${{ github.ref_name }}
+# Dedicated nightly variance tracking and badge refresh workflow
+#
+# Scope (repo-wide):
+#   - Repository-wide orchestration consuming ZSH project artifacts under docs/redesignv2/artifacts
+#   - Runs from repository root; do not assume ZDOTDIR; pass it explicitly when invoking project tools
+#   - May publish badges to gh-pages and auto-commit on main
+#   - Complements zsh-* workflows that generate artifacts under dot-config/zsh
+#
+# Ownership (RACI):
+#   - R: Infra/Perf CI
+#   - A: Repo Owners
+#   - C: ZSH Maintainers
+#   - I: Contributors
+#
+#
+# Purpose:
+#   Performs N=5 fast-harness captures using perf-capture-multi-simple.zsh,
+#   then runs tools/update-variance-and-badges.zsh to refresh variance/governance/perf badges.
+#   Maintains the variance guard streak and monitors performance stability.
+#
+# Goals:
+#   1. Keep variance/governance/perf badges fresh with nightly automated runs
+#   2. Monitor variance stability and maintain guard streak (currently 3/3)
+#   3. Capture micro-benchmark baselines and surface in performance badges
+#   4. Prepare for drift gating thresholds and guard flip readiness
+#
+# Relationship to Other Workflows:
+#   - Complements ci-perf-segments.yml (comprehensive multi-sample analysis)
+#   - Focuses specifically on variance guard maintenance and badge freshness
+#   - Uses fast harness for efficiency while maintaining statistical validity
+#
+# Environment Variables (configure in repository settings):
+#   VARIANCE_NIGHTLY_SAMPLES     (default: 5) - Number of samples per run
+#   VARIANCE_DRIFT_WARN_PCT      (default: 5) - Warn threshold for drift detection
+#   VARIANCE_DRIFT_FAIL_PCT      (default: 10) - Fail threshold for drift detection
+#
+# Artifacts Produced:
+#   - docs/redesignv2/artifacts/metrics/perf-multi-simple.json (N=5 samples)
+#   - docs/redesignv2/artifacts/metrics/variance-gating-state.json (guard state)
+#   - docs/redesignv2/artifacts/badges/variance-state.json (detailed variance)
+#   - docs/redesignv2/artifacts/badges/governance.json (governance status)
+#   - docs/redesignv2/artifacts/badges/perf.json (performance + microbench)
+#
+# Auto-Commit Behavior:
+#   - On main branch only. Commits badge updates and state changes.
+#   - Safe no-op if nothing changed from previous run.
+#
+on:
+  schedule:
+    - cron: '15 4 * * *'   # Nightly at 04:15 UTC (before ledger at 05:05)
+  workflow_dispatch:
+    inputs:
+      samples:
+        description: 'Number of samples to capture'
+        required: false
+        default: '5'
+        type: string
+
+concurrency:
+  group: ci-variance-nightly-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  variance-nightly:
+    name: Nightly Variance & Badge Refresh
+    runs-on: macos-latest
+    env:
+      ZDOTDIR: ${{ github.workspace }}/dot-config/zsh
+      SAMPLES: ${{ inputs.samples || vars.VARIANCE_NIGHTLY_SAMPLES || '5' }}
+      DRIFT_WARN_PCT: ${{ vars.VARIANCE_DRIFT_WARN_PCT || '5' }}
+      DRIFT_FAIL_PCT: ${{ vars.VARIANCE_DRIFT_FAIL_PCT || '10' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show Configuration
+        run: |
+          echo "SAMPLES=${SAMPLES}"
+          echo "DRIFT_WARN_PCT=${DRIFT_WARN_PCT}"
+          echo "DRIFT_FAIL_PCT=${DRIFT_FAIL_PCT}"
+          echo "ZDOTDIR=${ZDOTDIR}"
+          echo "Ref: $GITHUB_REF"
+
+      - name: Ensure Directories
+        run: |
+          mkdir -p docs/redesignv2/artifacts/{metrics,badges}
+          mkdir -p docs/badges
+
+      - name: Verify Required Scripts
+        run: |
+          MISSING=0
+          if [[ ! -x "${ZDOTDIR}/tools/perf-capture-multi-simple.zsh" ]]; then
+            echo "::error::Missing ${ZDOTDIR}/tools/perf-capture-multi-simple.zsh"
+            MISSING=1
+          fi
+          if [[ ! -x "${ZDOTDIR}/tools/update-variance-and-badges.zsh" ]]; then
+            echo "::error::Missing ${ZDOTDIR}/tools/update-variance-and-badges.zsh"
+            MISSING=1
+          fi
+          if [[ $MISSING -eq 1 ]]; then
+            echo "::error::Required scripts missing. Please ensure tools are executable."
+            exit 1
+          fi
+          echo "✓ All required scripts found and executable"
+
+      - name: N=5 Fast-Harness Capture
+        working-directory: dot-config/zsh
+        run: |
+          set -euo pipefail
+          echo "[capture] Running N=${SAMPLES} fast-harness capture..."
+
+          # Run the multi-sample capture with fast harness
+          ZDOTDIR="$(pwd)" tools/perf-capture-multi-simple.zsh \
+            --samples "${SAMPLES}" \
+            --use-fast-harness \
+            --output docs/redesignv2/artifacts/metrics/perf-multi-simple.json
+
+          echo "[capture] Capture complete. Sample summary:"
+          if command -v jq >/dev/null 2>&1; then
+            jq -r '.samples, .authentic_samples, .metrics.post_plugin_total_ms.mean, .metrics.post_plugin_total_ms.rsd' \
+              docs/redesignv2/artifacts/metrics/perf-multi-simple.json 2>/dev/null || echo "jq parse failed"
+          else
+            echo "Sample count: $(grep -o '"samples":[0-9]*' docs/redesignv2/artifacts/metrics/perf-multi-simple.json | cut -d: -f2)"
+          fi
+
+      - name: Update Variance and Badges
+        working-directory: dot-config/zsh
+        run: |
+          set -euo pipefail
+          echo "[badges] Updating variance state and badges..."
+
+          # Run the badge updater
+          ZDOTDIR="$(pwd)" tools/update-variance-and-badges.zsh
+
+          echo "[badges] Badge update complete."
+          echo "[badges] Variance state:"
+          cat docs/redesignv2/artifacts/badges/variance-state.json 2>/dev/null | head -c 200 || echo "variance-state.json not found"
+          echo ""
+          echo "[badges] Governance badge:"
+          cat docs/redesignv2/artifacts/badges/governance.json 2>/dev/null | head -c 200 || echo "governance.json not found"
+          echo ""
+          echo "[badges] Performance badge:"
+          cat docs/redesignv2/artifacts/badges/perf.json 2>/dev/null | head -c 200 || echo "perf.json not found"
+
+      - name: Check Guard Status and Streak
+        run: |
+          set -euo pipefail
+          STATE_FILE="docs/redesignv2/artifacts/metrics/variance-gating-state.json"
+          if [[ -f "$STATE_FILE" ]]; then
+            if command -v jq >/dev/null 2>&1; then
+              MODE=$(jq -r '.mode // "unknown"' "$STATE_FILE")
+              STREAK=$(jq -r '.stable_run_count // 0' "$STATE_FILE")
+              echo "::notice::Variance Guard Status: mode=$MODE, streak=$STREAK/3"
+
+              if [[ "$MODE" == "guard" && "$STREAK" -ge 3 ]]; then
+                echo "::notice::✓ Variance guard is active and stable (streak $STREAK/3)"
+              elif [[ "$MODE" == "observe" ]]; then
+                echo "::notice::ℹ Variance mode is 'observe' (streak $STREAK/3, need 3 for guard)"
+              fi
+            else
+              echo "::notice::Variance state file found but jq unavailable for parsing"
+            fi
+          else
+            echo "::warning::Variance state file not found: $STATE_FILE"
+          fi
+
+      - name: Drift Detection and Gating
+        working-directory: dot-config/zsh
+        run: |
+          set -euo pipefail
+          echo "[drift] Running performance drift detection..."
+
+          # Check if we have historical data for drift comparison
+          LEDGER_HISTORY_DIR="docs/redesignv2/artifacts/metrics/ledger-history"
+          CURRENT_PERF="docs/redesignv2/artifacts/metrics/perf-multi-simple.json"
+          DRIFT_BADGE="docs/redesignv2/artifacts/badges/perf-drift.json"
+
+          if [[ ! -d "$LEDGER_HISTORY_DIR" ]] || [[ $(find "$LEDGER_HISTORY_DIR" -name "*.json" | wc -l) -lt 2 ]]; then
+            echo "[drift] Insufficient historical data for drift comparison"
+            echo '{"label":"perf drift","message":"observe","color":"lightgrey"}' > "$DRIFT_BADGE"
+            echo "::notice::Drift detection in observe mode (need historical data)"
+          else
+            # Use existing drift detection infrastructure
+            export PERF_DRIFT_WARN_PCT="${DRIFT_WARN_PCT}"
+            export PERF_DRIFT_FAIL_PCT="${DRIFT_FAIL_PCT}"
+
+            # Generate drift badge using existing tooling
+            if [[ -x tools/perf-drift-badge.sh ]]; then
+              # First try to generate perf diff for comparison
+              if [[ -x tools/perf-diff.sh ]]; then
+                DIFF_JSON="/tmp/perf-diff-$$.json"
+                if tools/perf-diff.sh --json --output "$DIFF_JSON" 2>/dev/null; then
+                  tools/perf-drift-badge.sh --diff-json "$DIFF_JSON" > "$DRIFT_BADGE" || {
+                    echo "[drift] Badge generation failed, creating placeholder"
+                    echo '{"label":"perf drift","message":"error","color":"red"}' > "$DRIFT_BADGE"
+                  }
+                else
+                  echo "[drift] Perf diff failed, creating observe badge"
+                  echo '{"label":"perf drift","message":"observe","color":"lightgrey"}' > "$DRIFT_BADGE"
+                fi
+                rm -f "$DIFF_JSON" 2>/dev/null || true
+              else
+                echo "[drift] Perf diff tool not available"
+                echo '{"label":"perf drift","message":"missing-tool","color":"lightgrey"}' > "$DRIFT_BADGE"
+              fi
+            else
+              echo "[drift] Drift badge tool not available"
+              echo '{"label":"perf drift","message":"missing-tool","color":"lightgrey"}' > "$DRIFT_BADGE"
+            fi
+          fi
+
+          # Report drift status
+          if [[ -f "$DRIFT_BADGE" ]]; then
+            DRIFT_MSG=$(grep -o '"message":"[^"]*"' "$DRIFT_BADGE" | cut -d'"' -f4 || echo "unknown")
+            echo "::notice::Drift detection result: $DRIFT_MSG"
+
+            # Check for failure conditions (when enabled)
+            if [[ "$DRIFT_MSG" == *"fail"* ]]; then
+              echo "::warning::Performance drift failure detected but not enforced (observe mode)"
+              # Future: Enable this after 7-day stability window
+              # echo "::error::Performance drift exceeds fail threshold (${DRIFT_FAIL_PCT}%)"
+              # exit 1
+            elif [[ "$DRIFT_MSG" == *"warn"* ]]; then
+              echo "::warning::Performance drift warning detected (>${DRIFT_WARN_PCT}%)"
+            fi
+          fi
+
+      - name: Auto-Commit Badge Updates (Main Branch Only)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          set -e
+          CHANGED=0
+
+          # Add all badge files that might have changed
+          git add docs/redesignv2/artifacts/metrics/variance-gating-state.json 2>/dev/null || true
+          git add docs/redesignv2/artifacts/badges/variance-state.json 2>/dev/null || true
+          git add docs/redesignv2/artifacts/badges/governance.json 2>/dev/null || true
+          git add docs/redesignv2/artifacts/badges/perf.json 2>/dev/null || true
+          git add docs/redesignv2/artifacts/badges/perf-drift.json 2>/dev/null || true
+          git add docs/redesignv2/artifacts/metrics/perf-multi-simple.json 2>/dev/null || true
+
+          # Check if there are any changes to commit
+          if ! git diff --cached --quiet; then
+            CHANGED=1
+            git config user.name "ci-variance-bot"
+            git config user.email "ci-variance-bot@users.noreply.github.com"
+
+            # Create commit message with current state info
+            COMMIT_MSG="chore(variance): nightly badge refresh ($(date -u +%Y-%m-%d))"
+            if [[ -f docs/redesignv2/artifacts/metrics/variance-gating-state.json ]] && command -v jq >/dev/null 2>&1; then
+              MODE=$(jq -r '.mode // "unknown"' docs/redesignv2/artifacts/metrics/variance-gating-state.json)
+              STREAK=$(jq -r '.stable_run_count // 0' docs/redesignv2/artifacts/metrics/variance-gating-state.json)
+              COMMIT_MSG="${COMMIT_MSG} [${MODE} ${STREAK}/3]"
+            fi
+
+            git commit -m "$COMMIT_MSG"
+            git push || echo "::warning::Push failed (race condition or permissions issue)"
+            echo "::notice::Committed variance badge updates"
+          fi
+
+          if [[ $CHANGED -eq 0 ]]; then
+            echo "::notice::No badge changes to commit"
+          fi
+
+      - name: Upload Variance Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: variance-nightly-${{ github.run_id }}
+          path: |
+            docs/redesignv2/artifacts/metrics/perf-multi-simple.json
+            docs/redesignv2/artifacts/metrics/variance-gating-state.json
+            docs/redesignv2/artifacts/badges/variance-state.json
+            docs/redesignv2/artifacts/badges/governance.json
+            docs/redesignv2/artifacts/badges/perf.json
+            docs/redesignv2/artifacts/badges/perf-drift.json
+          retention-days: 30
+
+      - name: Final Status
+        if: always()
+        run: |
+          echo "::notice::Nightly variance tracking workflow complete"
+          echo "[status] Artifacts generated:"
+          ls -la docs/redesignv2/artifacts/metrics/perf-multi-simple.json 2>/dev/null || echo "  - perf-multi-simple.json: missing"
+          ls -la docs/redesignv2/artifacts/metrics/variance-gating-state.json 2>/dev/null || echo "  - variance-gating-state.json: missing"
+          ls -la docs/redesignv2/artifacts/badges/variance-state.json 2>/dev/null || echo "  - variance-state.json: missing"
+          ls -la docs/redesignv2/artifacts/badges/governance.json 2>/dev/null || echo "  - governance.json: missing"
+          ls -la docs/redesignv2/artifacts/badges/perf.json 2>/dev/null || echo "  - perf.json: missing"
+          ls -la docs/redesignv2/artifacts/badges/perf-drift.json 2>/dev/null || echo "  - perf-drift.json: missing"

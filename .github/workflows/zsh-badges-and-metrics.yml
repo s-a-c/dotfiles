@@ -1,0 +1,326 @@
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md vb7f03a299a01b1b6d7c8be5a74646f0b5127cbc5b5d614c8b4c20fc99bc21620
+name: zsh-badges-and-metrics
+run-name: zsh badges & metrics • ${{ github.ref_name }}
+
+on:
+  push:
+    branches: [ main, master, develop ]
+    paths:
+      - 'dot-config/zsh/**'
+      - '.github/workflows/zsh-badges-and-metrics.yml'
+      - 'dot-config/zsh/.zshrc.d.REDESIGN/**'
+      - 'dot-config/zsh/.zshrc.pre-plugins.d.REDESIGN/**'
+      - 'dot-config/zsh/tools/generate-structure-audit.zsh'
+  pull_request:
+    branches: [ main, master, develop ]
+    paths:
+      - 'dot-config/zsh/**'
+      - '.github/workflows/zsh-badges-and-metrics.yml'
+      - 'dot-config/zsh/.zshrc.d.REDESIGN/**'
+      - 'dot-config/zsh/.zshrc.pre-plugins.d.REDESIGN/**'
+      - 'dot-config/zsh/tools/generate-structure-audit.zsh'
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./dot-config/zsh
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate Structure Audit & Badge
+        run: |
+          chmod +x tools/generate-structure-audit.zsh || true
+          tools/generate-structure-audit.zsh
+
+      - name: Generate Performance Badge
+        run: |
+          chmod +x tools/generate-perf-badge.zsh || true
+          tools/generate-perf-badge.zsh 5
+
+      - name: Generate Perf Drift Badge (observe mode)
+        run: |
+          set -e
+          chmod +x tools/perf-diff.sh tools/perf-drift-badge.sh || true
+          # Determine segments (current & baseline) with redesignv2 preference
+          BASE_SEG="docs/redesignv2/artifacts/metrics/perf-baseline-segments.txt"
+          CURR_SEG="docs/redesignv2/artifacts/metrics/perf-current-segments.txt"
+          if [ ! -f "$BASE_SEG" ] && [ -f docs/redesign/metrics/perf-baseline-segments.txt ]; then
+            BASE_SEG="docs/redesign/metrics/perf-baseline-segments.txt"
+          fi
+            if [ ! -f "$CURR_SEG" ] && [ -f docs/redesign/metrics/perf-current-segments.txt ]; then
+            CURR_SEG="docs/redesign/metrics/perf-current-segments.txt"
+          fi
+          # Only attempt drift diff if both present
+          if [ -f "$BASE_SEG" ] && [ -f "$CURR_SEG" ]; then
+            mkdir -p docs/redesignv2/artifacts/metrics || true
+            DIFF_JSON="docs/redesignv2/artifacts/metrics/perf-diff.json"
+            tools/perf-diff.sh --baseline "$BASE_SEG" --current "$CURR_SEG" --json --warn-only > "$DIFF_JSON" || true
+            # Extract JSON block if perf-diff also printed text
+            if grep -q '"counts"' "$DIFF_JSON"; then
+              :
+            else
+              # perf-diff may have printed text then JSON; attempt to isolate last JSON object
+              tail -500 "$DIFF_JSON" | awk 'BEGIN{json=""} /^{/{capture=1} {if(capture){json=json $0 ORS}} /}$/ {if(capture){print json; exit}}' > "${DIFF_JSON}.tmp" 2>/dev/null || true
+              if [ -s "${DIFF_JSON}.tmp" ]; then mv "${DIFF_JSON}.tmp" "$DIFF_JSON"; fi
+            fi
+            # Generate badge (prefer redesignv2 badge dir)
+            BADGE_DIR="docs/redesignv2/artifacts/badges"
+            [ -d "$BADGE_DIR" ] || BADGE_DIR="docs/redesign/badges"
+            mkdir -p "$BADGE_DIR"
+            tools/perf-drift-badge.sh --diff-json "$DIFF_JSON" > "${BADGE_DIR}/perf-drift.json" || true
+          else
+            echo "Perf drift badge skipped (segments baseline or current missing)" >&2
+          fi
+
+      - name: Run Perf Classifier (GOAL=ci enforce)
+        env:
+          GOAL: ci
+        run: |
+          set -e
+          mkdir -p docs/redesignv2/artifacts/metrics docs/redesignv2/artifacts/badges
+          chmod +x tools/perf-regression-classifier.zsh || true
+          tools/perf-regression-classifier.zsh \
+            --runs 5 \
+            --metrics prompt_ready,pre_plugin_total,post_plugin_total,deferred_total \
+            --mode enforce \
+            --baseline-dir docs/redesignv2/artifacts/metrics \
+            --json-out docs/redesignv2/artifacts/metrics/perf-current.json
+
+      - name: Generate Goal-State Badge
+        run: |
+          chmod +x tools/generate-goal-state-badge.zsh || true
+          tools/generate-goal-state-badge.zsh \
+            --output docs/redesignv2/artifacts/badges/goal-state.json
+          chmod +x tools/generate-summary-goal-badge.zsh || true
+          tools/generate-summary-goal-badge.zsh \
+            --output docs/redesignv2/artifacts/badges/summary-goal.json
+
+          # Integration check: ensure summary-goal.json exists whenever goal-state.json exists
+          if [ -s docs/redesignv2/artifacts/badges/goal-state.json ] && [ ! -s docs/redesignv2/artifacts/badges/summary-goal.json ]; then
+            echo "::error::summary-goal.json missing while goal-state.json exists"
+            exit 1
+          fi
+
+          # CI assertion: fail if summary-goal severity collapses to red
+          set -e
+          ROOT="docs/redesignv2/artifacts/badges"
+          if [ ! -f "$ROOT/summary-goal.json" ]; then
+            ROOT="docs/redesign/badges"
+          fi
+          if [ -f "$ROOT/summary-goal.json" ]; then
+            COLOR="$(sed -nE 's/.*"color"[[:space:]]*:[[:space:]]*"([^"]+)".*/\1/p' "$ROOT/summary-goal.json" | head -n1)"
+            IS_ERROR="$(sed -nE 's/.*"isError"[[:space:]]*:[[:space:]]*(true|false).*/\1/p' "$ROOT/summary-goal.json" | head -n1)"
+            echo "summary-goal color=${COLOR:-<unset>} isError=${IS_ERROR:-<unset>}"
+            if [ "$COLOR" = "red" ] || [ "$IS_ERROR" = "true" ]; then
+              echo "::error::summary-goal severity is red — failing workflow"
+              exit 1
+            fi
+          else
+            echo "::notice::summary-goal.json not found; skipping severity assertion"
+          fi
+
+      - name: Capture Micro Benchmark Baseline (one-time observational)
+        run: |
+          set -e
+          METRICS_DIR="docs/redesignv2/artifacts/metrics"
+          [ -d "$METRICS_DIR" ] || METRICS_DIR="docs/redesign/metrics"
+          mkdir -p "$METRICS_DIR"
+          BENCH_JSON="$METRICS_DIR/bench-core-baseline.json"
+          if [ ! -f "$BENCH_JSON" ]; then
+            echo "Capturing micro benchmark baseline..."
+            chmod +x tests/performance/core-functions/bench-core-functions.zsh || true
+            # Use moderate iteration/repeat; adjust later as needed
+            tests/performance/core-functions/bench-core-functions.zsh --json --iterations 5000 --repeat 3 --output-json "$BENCH_JSON" || true
+          else
+            echo "Micro benchmark baseline already exists; skipping capture."
+          fi
+
+      - name: Generate Summary Badge
+        run: |
+          chmod +x tools/generate-summary-badges.zsh || true
+          tools/generate-summary-badges.zsh
+
+      - name: Determine artifact root
+        id: artifact_root
+        run: |
+          if [ -d docs/redesignv2/artifacts/badges ] && [ -d docs/redesignv2/artifacts/metrics ]; then
+            echo "root=docs/redesignv2/artifacts" >> "$GITHUB_OUTPUT"
+          else
+            echo "root=docs/redesign" >> "$GITHUB_OUTPUT"
+          fi
+          echo "Selected artifact root: $(grep root= $GITHUB_OUTPUT | cut -d= -f2)"
+
+      - name: Soft bridge (copy new artifacts to legacy paths if using redesignv2)
+        if: steps.artifact_root.outputs.root == 'docs/redesignv2/artifacts'
+        run: |
+          mkdir -p docs/redesign/badges docs/redesign/metrics
+          rsync -a --delete docs/redesignv2/artifacts/badges/ docs/redesign/badges/
+          rsync -a --delete docs/redesignv2/artifacts/metrics/ docs/redesign/metrics/ || true
+          if [ -d docs/redesignv2/artifacts/checksums ]; then
+            mkdir -p docs/redesign/checksums
+            rsync -a --delete docs/redesignv2/artifacts/checksums/ docs/redesign/checksums/
+          fi
+          if [ -d docs/redesignv2/artifacts/inventories ]; then
+            mkdir -p docs/redesign/inventories
+            rsync -a --delete docs/redesignv2/artifacts/inventories/ docs/redesign/inventories/
+          fi
+
+      - name: Prepare publish directory
+        run: |
+          mkdir -p public
+          # Ensure badges exist before publishing
+          set -e
+          # Regenerate structure badge if missing
+          if [ ! -s docs/redesignv2/artifacts/badges/structure.json ]; then
+            chmod +x tools/generate-structure-audit.zsh || true
+            tools/generate-structure-audit.zsh
+          fi
+          # Regenerate perf drift badge if missing (requires diff JSON)
+          if [ ! -s docs/redesignv2/artifacts/badges/perf-drift.json ]; then
+            chmod +x tools/perf-drift-badge.sh || true
+            if [ -f docs/redesignv2/artifacts/metrics/perf-diff.json ]; then
+              tools/perf-drift-badge.sh --diff-json docs/redesignv2/artifacts/metrics/perf-diff.json > docs/redesignv2/artifacts/badges/perf-drift.json || true
+            fi
+          fi
+          # Prefer new root when publishing
+          if [ -d docs/redesignv2/artifacts/badges ]; then
+            cp -R docs/redesignv2/artifacts/badges public/
+          else
+            cp -R docs/redesign/badges public/
+          fi
+          if [ -d docs/redesignv2/artifacts/metrics ]; then
+            cp -R docs/redesignv2/artifacts/metrics public/
+          else
+            cp -R docs/redesign/metrics public/
+          fi
+          # Simple index
+          cat > public/index.html <<'HTML'
+          <html><head><title>ZSH Metrics</title></head><body>
+          <h1>ZSH Metrics & Badges</h1>
+          <ul>
+            <li><a href="badges/perf.json">perf.json</a></li>
+            <li><a href="badges/structure.json">structure.json</a></li>
+            <li><a href="badges/summary.json">summary.json</a></li>
+            <li><a href="badges/perf-drift.json">perf-drift.json</a></li>
+            <li><a href="badges/goal-state.json">goal-state.json</a></li>
+            <li><a href="badges/summary-goal.json">summary-goal.json</a></li>
+            <li><a href="metrics/structure-audit.md">structure-audit.md</a></li>
+            <li><a href="metrics/perf-current.json">perf-current.json</a></li>
+            <li><a href="metrics/perf-baseline.json">perf-baseline.json</a></li>
+            <li><a href="metrics/bench-core-baseline.json">bench-core-baseline.json</a></li>
+            <li><a href="metrics/perf-diff.json">perf-diff.json</a></li>
+          </ul>
+          <p>Raw badge endpoints can be consumed via shields.io endpoint parameter.</p>
+          <p>Source now prefers redesignv2 artifacts (legacy paths bridged temporarily).</p>
+          </body></html>
+          HTML
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dot-config/zsh/public
+          publish_branch: gh-pages
+          keep_files: true
+
+      - name: Post-publish: resolve README badge links
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+        run: |
+          set -e
+          ROOT="$(git rev-parse --show-toplevel)"
+          ORG_REPO="${GITHUB_REPOSITORY}"
+          # Update placeholder links in README at repo root
+          sed -i.bak "s|https://raw.githubusercontent.com/<org>/<repo>/gh-pages/badges/goal-state.json|https://raw.githubusercontent.com/${ORG_REPO}/gh-pages/badges/goal-state.json|g" "${ROOT}/README.md" || true
+          sed -i.bak "s|https://raw.githubusercontent.com/<org>/<repo>/gh-pages/badges/summary-goal.json|https://raw.githubusercontent.com/${ORG_REPO}/gh-pages/badges/summary-goal.json|g" "${ROOT}/README.md" || true
+          rm -f "${ROOT}/README.md.bak"
+          # Commit only if README changed
+          if [[ -n "$(git status --porcelain "${ROOT}/README.md")" ]]; then
+            git config --local user.email "action@github.com"
+            git config --local user.name "GitHub Action"
+            git add "${ROOT}/README.md"
+            git commit -m "docs(README): resolve goal badge endpoints after gh-pages publish [automated]" || true
+            git push || true
+          else
+            echo "README placeholders already resolved; nothing to commit."
+          fi
+
+      - name: Output Shield URLs
+        run: |
+          echo "Perf Badge: https://img.shields.io/endpoint?url=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/raw/gh-pages/badges/perf.json"
+          echo "Structure Badge: https://img.shields.io/endpoint?url=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/raw/gh-pages/badges/structure.json"
+          echo "Summary Badge: https://img.shields.io/endpoint?url=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/raw/gh-pages/badges/summary.json"
+          echo "Perf Drift Badge: https://img.shields.io/endpoint?url=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/raw/gh-pages/badges/perf-drift.json"
+          echo "Goal-State Badge: https://img.shields.io/endpoint?url=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/raw/gh-pages/badges/goal-state.json"
+          echo "Summary Goal Badge: https://img.shields.io/endpoint?url=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/raw/gh-pages/badges/summary-goal.json"
+
+      - name: Validate Structure Audit Output
+        run: |
+          root=""
+          if [ -d docs/redesignv2/artifacts/badges ] && [ -d docs/redesignv2/artifacts/metrics ]; then
+            root="docs/redesignv2/artifacts"
+          else
+            root="docs/redesign"
+          fi
+
+          # Validate structure audit JSON files exist and are valid
+          if [[ -f "$root/metrics/structure-audit.json" ]]; then
+            jq empty "$root/metrics/structure-audit.json"
+            total_modules=$(jq -r '.total' "$root/metrics/structure-audit.json")
+            violations=$(jq '.violations | length' "$root/metrics/structure-audit.json")
+            order_issue=$(jq -r '.order_issue' "$root/metrics/structure-audit.json")
+            echo "Structure Audit Results:"
+            echo "  Total modules: $total_modules"
+            echo "  Violations: $violations"
+            echo "  Order issues: $order_issue"
+            if [[ $violations -gt 0 || $order_issue != "false" ]]; then
+              echo "❌ Structure validation failed"
+              jq -r '.violations[]' "$root/metrics/structure-audit.json" 2>/dev/null || true
+              echo "::warning::Structure audit detected issues. See badge output for details."
+            else
+              echo "✅ Structure validation passed"
+            fi
+          fi
+
+          # Validate structure badge JSON
+          if [[ -f "$root/badges/structure.json" ]]; then
+            jq empty "$root/badges/structure.json"
+          fi
+
+      - name: Auto-commit Badge Updates (main branch only)
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+          # Stage any badge/metrics changes
+          changes_made=false
+          if [[ -n "$(git status --porcelain docs/redesignv2/artifacts/badges/ docs/redesignv2/artifacts/metrics/ 2>/dev/null)" ]]; then
+            git add docs/redesignv2/artifacts/badges/*.json 2>/dev/null || true
+            git add docs/redesignv2/artifacts/metrics/*.json 2>/dev/null || true
+            git add docs/redesignv2/artifacts/metrics/*.md 2>/dev/null || true
+            changes_made=true
+          fi
+          if [[ -n "$(git status --porcelain docs/redesign/badges/ docs/redesign/metrics/ 2>/dev/null)" ]]; then
+            git add docs/redesign/badges/*.json 2>/dev/null || true
+            git add docs/redesign/metrics/*.json 2>/dev/null || true
+            git add docs/redesign/metrics/*.md 2>/dev/null || true
+            changes_made=true
+          fi
+
+          if [[ "$changes_made" == "true" ]]; then
+            git commit -m "chore(badges): update ZSH badges and metrics [automated]" || true
+            git push || true
+          else
+            echo "No badge/metrics changes to commit"
+          fi
