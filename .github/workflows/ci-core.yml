@@ -203,6 +203,12 @@ jobs:
             zsh tests/style/phase06/test-structure-drift.zsh || true
           fi
       - name: Run Remaining Core Tests
+      - name: Telemetry Governance (Baselines + Schema)
+        shell: zsh {0}
+        run: |
+          echo "[telemetry] Enforcing performance classifier baselines & schema"
+          ENFORCE_BASELINES=1 zsh dot-config/zsh/tests/performance/telemetry/test-classifier-baselines.zsh
+          zsh dot-config/zsh/tests/performance/telemetry/test-structured-telemetry-schema.zsh
         shell: zsh {0}
         run: |
           tests/run-all-tests.zsh --category=unit,feature,integration,security --json-report || exit 1

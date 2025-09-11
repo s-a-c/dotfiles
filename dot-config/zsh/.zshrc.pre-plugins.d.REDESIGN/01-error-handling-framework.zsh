@@ -29,7 +29,7 @@ typeset -ga ZF_ERROR_LOG
 ZF_ERROR_LOG=()
 
 # ------------------------
-# Core Error Functions
+# Core Error Functions (Namespaced API + Legacy Wrappers)
 # ------------------------
 
 # Get error level numeric value
@@ -45,62 +45,65 @@ get_error_level() {
   esac
 }
 
-# Log error with severity level
-zf_error() {
-  local level="${1:-ERROR}"
-  local module="${2:-unknown}"
+# Unified dispatcher (namespaced)
+# Usage: zf::log LEVEL MODULE MESSAGE [CONTEXT]
+zf::log() {
+  local level="${1:-INFO}"
+  local module="${2:-core}"
   local message="$3"
   local context="${4:-}"
 
-  # Get numeric level
   local level_num
   level_num=$(get_error_level "$level")
 
-  # Check if we should log this level
+  # Respect minimum log level
   if (( level_num < ZF_MIN_LOG_LEVEL )); then
     return 0
   fi
 
-  # Create log entry
-  local timestamp
+  local timestamp entry
   timestamp=$(date -Iseconds 2>/dev/null || date)
-  local entry="$timestamp [$level] [$module] $message"
+  entry="$timestamp [$level] [$module] $message"
   [[ -n "$context" ]] && entry="$entry (context: $context)"
 
-  # Add to log buffer
+  # Buffer
   ZF_ERROR_LOG+=("$entry")
-
-  # Rotate log if too large
   if (( ${#ZF_ERROR_LOG[@]} > ZF_ERROR_LOG_MAX )); then
     local half=$((ZF_ERROR_LOG_MAX/2))
     ZF_ERROR_LOG=("${ZF_ERROR_LOG[@]: -$half}")
   fi
 
-  # Output to stderr if appropriate
-  if (( level_num >= 2 )); then  # WARN and above
+  # Emit (WARN and above)
+  if (( level_num >= 2 )); then
     print "[zf-error] $entry" >&2
   fi
 
-  # Performance monitoring integration
+  # PERF bridge (retain existing format)
   if [[ "$ZF_PERF_MONITOR_ERRORS" == "1" && -n "${PERF_SEGMENT_LOG:-}" ]]; then
     print "ERROR level=$level module=$module" >> "$PERF_SEGMENT_LOG" 2>/dev/null || true
   fi
 
-  # Trigger recovery if critical
-  if [[ "$level" == "CRITICAL" || "$level" == "FATAL" ]]; then
+  # Recovery trigger
+  if (( level_num >= 4 )); then
+    # CRITICAL (4) / FATAL (5)
     zf_trigger_recovery "$module" "$level" "$message"
   fi
 
   return $((level_num >= 3 ? 1 : 0))
 }
 
-# Convenience functions for different severity levels
-zf_debug() { zf_error "DEBUG" "$1" "$2" "$3"; }
-zf_info()  { zf_error "INFO" "$1" "$2" "$3"; }
-zf_warn()  { zf_error "WARN" "$1" "$2" "$3"; }
-zf_err()   { zf_error "ERROR" "$1" "$2" "$3"; }
-zf_crit()  { zf_error "CRITICAL" "$1" "$2" "$3"; }
-zf_fatal() { zf_error "FATAL" "$1" "$2" "$3"; }
+# Severity convenience (namespaced)
+zf::debug() { zf::log "DEBUG" "$@"; }
+zf::info()  { zf::log "INFO"  "$@"; }
+zf::warn()  { zf::log "WARN"  "$@"; }
+zf::err()   { zf::log "ERROR" "$@"; }
+zf::crit()  { zf::log "CRITICAL" "$@"; }
+zf::fatal() { zf::log "FATAL" "$@"; }
+
+# Legacy compatibility layer removed (Sprint 2):
+#   - All underscore logging wrappers eliminated.
+#   - Use only namespaced APIs: zf::debug / zf::info / zf::warn / zf::err / zf::crit / zf::fatal.
+#   - Variable ZF_LOG_LEGACY_USED no longer set (homogeneity gate active).
 
 # ------------------------
 # Module Health Tracking
@@ -162,11 +165,11 @@ zf_module_load_complete() {
 
   # Log if slow or failed
   if (( load_time_ms > 100 )); then
-    zf_warn "$module" "slow load time: ${load_time_ms}ms"
+    zf::warn "$module" "slow load time: ${load_time_ms}ms"
   fi
 
   if [[ "$load_status" != "success" ]]; then
-    zf_err "$module" "load failed with status: $load_status"
+    zf::err "$module" "load failed with status: $load_status"
   fi
 
   return 0
@@ -209,7 +212,7 @@ zf_validate_function() {
   local module="${2:-validation}"
 
   if ! typeset -f "$func" >/dev/null 2>&1; then
-    zf_err "$module" "required function '$func' not found"
+    zf::err "$module" "required function '$func' not found"
     return 1
   fi
 
@@ -224,10 +227,10 @@ zf_validate_command() {
 
   if ! command -v "$cmd" >/dev/null 2>&1; then
     if [[ "$required" == "true" ]]; then
-      zf_err "$module" "required command '$cmd' not found"
+      zf::err "$module" "required command '$cmd' not found"
       return 1
     else
-      zf_warn "$module" "optional command '$cmd' not found"
+      zf::warn "$module" "optional command '$cmd' not found"
       return 2
     fi
   fi
@@ -243,10 +246,10 @@ zf_validate_env() {
 
   if [[ -z "${(P)var:-}" ]]; then
     if [[ "$required" == "true" ]]; then
-      zf_err "$module" "required environment variable '$var' not set"
+      zf::err "$module" "required environment variable '$var' not set"
       return 1
     else
-      zf_warn "$module" "optional environment variable '$var' not set"
+      zf::warn "$module" "optional environment variable '$var' not set"
       return 2
     fi
   fi
@@ -263,18 +266,18 @@ zf_validate_directory() {
   if [[ ! -d "$dir" ]]; then
     if [[ "$create" == "true" ]]; then
       if ! mkdir -p "$dir" 2>/dev/null; then
-        zf_err "$module" "failed to create directory '$dir'"
+        zf::err "$module" "failed to create directory '$dir'"
         return 1
       fi
-      zf_info "$module" "created directory '$dir'"
+      zf::info "$module" "created directory '$dir'"
     else
-      zf_err "$module" "required directory '$dir' not found"
+      zf::err "$module" "required directory '$dir' not found"
       return 1
     fi
   fi
 
   if [[ ! -r "$dir" ]]; then
-    zf_err "$module" "directory '$dir' not readable"
+    zf::err "$module" "directory '$dir' not readable"
     return 1
   fi
 
@@ -295,7 +298,7 @@ zf_trigger_recovery() {
     return 0
   fi
 
-  zf_info "recovery" "triggering recovery for module '$module' (severity: $severity)"
+  zf::info "recovery" "triggering recovery for module '$module' (severity: $severity)"
 
   # Generic recovery: mark module as degraded or failed
   local health_file
@@ -307,7 +310,7 @@ zf_trigger_recovery() {
     echo "status=degraded recovery_time=$(date +%s)" >> "$health_file"
   fi
 
-  zf_warn "recovery" "recovery applied to module '$module' (marked as degraded/failed)"
+  zf::warn "recovery" "recovery applied to module '$module' (marked as degraded/failed)"
   return 0
 }
 
@@ -387,5 +390,5 @@ zf_test_module_registration() {
 
 # Initialize error handling framework
 zf_module_load_start "error-framework"
-zf_info "error-framework" "error handling framework initialized"
+zf::info "error-framework" "error handling framework initialized"
 zf_module_load_complete "error-framework" "success"

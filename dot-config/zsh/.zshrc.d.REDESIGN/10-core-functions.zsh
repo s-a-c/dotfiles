@@ -43,6 +43,13 @@ _LOADED_10_CORE_FUNCTIONS=1
 # ------------------------------
 : ${ZF_LOG_PREFIX:="[zf]"}
 : ${ZF_WARN_PREFIX:="[zf][WARN]"}
+# Structured telemetry flags (Sprint 2 stubs)
+: ${ZSH_LOG_STRUCTURED:=0}
+: ${ZSH_PERF_JSON:=0}
+# If JSON perf snapshot requested and no explicit path provided, derive sidecar file name
+if [[ "${ZSH_PERF_JSON}" == "1" && -z "${PERF_SEGMENT_JSON_LOG:-}" && -n "${PERF_SEGMENT_LOG:-}" ]]; then
+  PERF_SEGMENT_JSON_LOG="${PERF_SEGMENT_LOG%.log}.jsonl"
+fi
 
 # Allow external toggle for debug verbosity
 : ${ZF_DEBUG:=}
@@ -130,6 +137,18 @@ zf::with_timing() {
     {
       print -- "SEGMENT name=${seg} ms=${elapsed_ms} phase=core sample=inline"
     } >> "${PERF_SEGMENT_LOG}" 2>/dev/null || true
+    # Structured telemetry (opt-in, zero overhead when disabled)
+    if [[ "${ZSH_LOG_STRUCTURED:-0}" == "1" && -w ${PERF_SEGMENT_JSON_LOG:-${PERF_SEGMENT_LOG:-/dev/null}} ]]; then
+      # Minimal JSON payload (privacy appendix governs future field expansion)
+      # Fields: type, name, ms, phase, sample, ts (epoch ms)
+      local __ts
+      if [[ -n ${EPOCHREALTIME:-} ]]; then
+        __ts=$(awk -v t="${EPOCHREALTIME}" 'BEGIN{split(t,a,"."); printf "%s%03d", a[1], substr(a[2]"000",1,3)}')
+      else
+        __ts="$(date +%s 2>/dev/null || printf 0)000"
+      fi
+      print -- "{\"type\":\"segment\",\"name\":\"${seg}\",\"ms\":${elapsed_ms},\"phase\":\"core\",\"sample\":\"inline\",\"ts\":${__ts}}" >> "${PERF_SEGMENT_JSON_LOG:-${PERF_SEGMENT_LOG}}" 2>/dev/null || true
+    fi
   fi
 
   zf::debug "with_timing seg=${seg} ms=${elapsed_ms} rc=${rc}"

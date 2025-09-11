@@ -1,4 +1,4 @@
-# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v900f08def0e6f7959ffd283aebb73b625b3473f5e49c57e861c6461b50a62ef2
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md vb7f03a299a01b1b6d7c8be5a74646f0b5127cbc5b5d614c8b4c20fc99bc21620
 name: zsh-badges-and-metrics
 run-name: zsh badges & metrics • ${{ github.ref_name }}
 
@@ -19,6 +19,8 @@ on:
       - 'dot-config/zsh/.zshrc.d.REDESIGN/**'
       - 'dot-config/zsh/.zshrc.pre-plugins.d.REDESIGN/**'
       - 'dot-config/zsh/tools/generate-structure-audit.zsh'
+  schedule:
+    - cron: '0 3 * * *'
   workflow_dispatch: {}
 
 permissions:
@@ -81,6 +83,53 @@ jobs:
             echo "Perf drift badge skipped (segments baseline or current missing)" >&2
           fi
 
+      - name: Run Perf Classifier (GOAL=ci enforce)
+        env:
+          GOAL: ci
+        run: |
+          set -e
+          mkdir -p docs/redesignv2/artifacts/metrics docs/redesignv2/artifacts/badges
+          chmod +x tools/perf-regression-classifier.zsh || true
+          tools/perf-regression-classifier.zsh \
+            --runs 5 \
+            --metrics prompt_ready,pre_plugin_total,post_plugin_total,deferred_total \
+            --mode enforce \
+            --baseline-dir docs/redesignv2/artifacts/metrics \
+            --json-out docs/redesignv2/artifacts/metrics/perf-current.json
+
+      - name: Generate Goal-State Badge
+        run: |
+          chmod +x tools/generate-goal-state-badge.zsh || true
+          tools/generate-goal-state-badge.zsh \
+            --output docs/redesignv2/artifacts/badges/goal-state.json
+          chmod +x tools/generate-summary-goal-badge.zsh || true
+          tools/generate-summary-goal-badge.zsh \
+            --output docs/redesignv2/artifacts/badges/summary-goal.json
+
+          # Integration check: ensure summary-goal.json exists whenever goal-state.json exists
+          if [ -s docs/redesignv2/artifacts/badges/goal-state.json ] && [ ! -s docs/redesignv2/artifacts/badges/summary-goal.json ]; then
+            echo "::error::summary-goal.json missing while goal-state.json exists"
+            exit 1
+          fi
+
+          # CI assertion: fail if summary-goal severity collapses to red
+          set -e
+          ROOT="docs/redesignv2/artifacts/badges"
+          if [ ! -f "$ROOT/summary-goal.json" ]; then
+            ROOT="docs/redesign/badges"
+          fi
+          if [ -f "$ROOT/summary-goal.json" ]; then
+            COLOR="$(sed -nE 's/.*"color"[[:space:]]*:[[:space:]]*"([^"]+)".*/\1/p' "$ROOT/summary-goal.json" | head -n1)"
+            IS_ERROR="$(sed -nE 's/.*"isError"[[:space:]]*:[[:space:]]*(true|false).*/\1/p' "$ROOT/summary-goal.json" | head -n1)"
+            echo "summary-goal color=${COLOR:-<unset>} isError=${IS_ERROR:-<unset>}"
+            if [ "$COLOR" = "red" ] || [ "$IS_ERROR" = "true" ]; then
+              echo "::error::summary-goal severity is red — failing workflow"
+              exit 1
+            fi
+          else
+            echo "::notice::summary-goal.json not found; skipping severity assertion"
+          fi
+
       - name: Capture Micro Benchmark Baseline (one-time observational)
         run: |
           set -e
@@ -130,6 +179,20 @@ jobs:
       - name: Prepare publish directory
         run: |
           mkdir -p public
+          # Ensure badges exist before publishing
+          set -e
+          # Regenerate structure badge if missing
+          if [ ! -s docs/redesignv2/artifacts/badges/structure.json ]; then
+            chmod +x tools/generate-structure-audit.zsh || true
+            tools/generate-structure-audit.zsh
+          fi
+          # Regenerate perf drift badge if missing (requires diff JSON)
+          if [ ! -s docs/redesignv2/artifacts/badges/perf-drift.json ]; then
+            chmod +x tools/perf-drift-badge.sh || true
+            if [ -f docs/redesignv2/artifacts/metrics/perf-diff.json ]; then
+              tools/perf-drift-badge.sh --diff-json docs/redesignv2/artifacts/metrics/perf-diff.json > docs/redesignv2/artifacts/badges/perf-drift.json || true
+            fi
+          fi
           # Prefer new root when publishing
           if [ -d docs/redesignv2/artifacts/badges ]; then
             cp -R docs/redesignv2/artifacts/badges public/
@@ -150,6 +213,8 @@ jobs:
             <li><a href="badges/structure.json">structure.json</a></li>
             <li><a href="badges/summary.json">summary.json</a></li>
             <li><a href="badges/perf-drift.json">perf-drift.json</a></li>
+            <li><a href="badges/goal-state.json">goal-state.json</a></li>
+            <li><a href="badges/summary-goal.json">summary-goal.json</a></li>
             <li><a href="metrics/structure-audit.md">structure-audit.md</a></li>
             <li><a href="metrics/perf-current.json">perf-current.json</a></li>
             <li><a href="metrics/perf-baseline.json">perf-baseline.json</a></li>
@@ -169,12 +234,35 @@ jobs:
           publish_branch: gh-pages
           keep_files: true
 
+      - name: Post-publish: resolve README badge links
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+        run: |
+          set -e
+          ROOT="$(git rev-parse --show-toplevel)"
+          ORG_REPO="${GITHUB_REPOSITORY}"
+          # Update placeholder links in README at repo root
+          sed -i.bak "s|https://raw.githubusercontent.com/<org>/<repo>/gh-pages/badges/goal-state.json|https://raw.githubusercontent.com/${ORG_REPO}/gh-pages/badges/goal-state.json|g" "${ROOT}/README.md" || true
+          sed -i.bak "s|https://raw.githubusercontent.com/<org>/<repo>/gh-pages/badges/summary-goal.json|https://raw.githubusercontent.com/${ORG_REPO}/gh-pages/badges/summary-goal.json|g" "${ROOT}/README.md" || true
+          rm -f "${ROOT}/README.md.bak"
+          # Commit only if README changed
+          if [[ -n "$(git status --porcelain "${ROOT}/README.md")" ]]; then
+            git config --local user.email "action@github.com"
+            git config --local user.name "GitHub Action"
+            git add "${ROOT}/README.md"
+            git commit -m "docs(README): resolve goal badge endpoints after gh-pages publish [automated]" || true
+            git push || true
+          else
+            echo "README placeholders already resolved; nothing to commit."
+          fi
+
       - name: Output Shield URLs
         run: |
           echo "Perf Badge: https://img.shields.io/endpoint?url=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/raw/gh-pages/badges/perf.json"
           echo "Structure Badge: https://img.shields.io/endpoint?url=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/raw/gh-pages/badges/structure.json"
           echo "Summary Badge: https://img.shields.io/endpoint?url=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/raw/gh-pages/badges/summary.json"
           echo "Perf Drift Badge: https://img.shields.io/endpoint?url=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/raw/gh-pages/badges/perf-drift.json"
+          echo "Goal-State Badge: https://img.shields.io/endpoint?url=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/raw/gh-pages/badges/goal-state.json"
+          echo "Summary Goal Badge: https://img.shields.io/endpoint?url=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/raw/gh-pages/badges/summary-goal.json"
 
       - name: Validate Structure Audit Output
         run: |

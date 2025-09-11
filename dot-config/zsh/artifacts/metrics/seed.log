@@ -1,0 +1,4 @@
+SEGMENT name=prompt_ready ms=330 phase=prompt sample=mean
+SEGMENT name=pre_plugin_total ms=40 phase=pre_plugin sample=mean
+SEGMENT name=post_plugin_total ms=185 phase=post_plugin sample=mean
+SEGMENT name=deferred_total ms=30 phase=postprompt sample=mean

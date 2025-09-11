@@ -1,0 +1,99 @@
+name: Perf Classifier CI
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md vb7f03a299a01b1b6d7c8be5a74646f0b5127cbc5b5d614c8b4c20fc99bc21620
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: perf-classifier-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  perf-classifier:
+    name: GOAL=ci enforce
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+      - uses: actions/checkout@v4
+
+      - name: Ensure GNU awk (gawk) is installed
+        shell: bash
+        run: |
+          if ! command -v gawk >/dev/null 2>&1; then
+            brew update
+            brew install gawk
+          fi
+          gawk --version | head -n1
+
+      - name: Prepare directories
+        shell: bash
+        run: |
+          mkdir -p artifacts/metrics
+          mkdir -p docs/redesignv2/artifacts/metrics
+          mkdir -p docs/redesignv2/artifacts/badges
+
+      - name: Run perf classifier (strict CI gating)
+        env:
+          GOAL: ci
+        shell: bash
+        run: |
+          chmod +x dotfiles/dot-config/zsh/tools/perf-regression-classifier.zsh || true
+          dotfiles/dot-config/zsh/tools/perf-regression-classifier.zsh \
+            --runs 5 \
+            --metrics prompt_ready,pre_plugin_total,post_plugin_total,deferred_total \
+            --mode enforce \
+            --baseline-dir artifacts/metrics \
+            --json-out docs/redesignv2/artifacts/metrics/perf-current.json
+
+      - name: Generate goal-state badge
+        shell: bash
+        run: |
+          chmod +x dotfiles/dot-config/zsh/tools/generate-goal-state-badge.zsh || true
+          dotfiles/dot-config/zsh/tools/generate-goal-state-badge.zsh \
+            --output docs/redesignv2/artifacts/badges/goal-state.json
+
+      - name: Show JSON (if present)
+        if: always()
+        shell: bash
+        run: |
+          if [[ -s docs/redesignv2/artifacts/metrics/perf-current.json ]]; then
+            echo "---- perf-current.json ----"
+            sed -n '1,200p' docs/redesignv2/artifacts/metrics/perf-current.json
+          else
+            echo "perf-current.json not found or empty."
+          fi
+
+      # (moved) Generate goal-state badge runs immediately after classifier
+
+      - name: Show badge JSON (if present)
+        if: always()
+        shell: bash
+        run: |
+          if [[ -s docs/redesignv2/artifacts/badges/goal-state.json ]]; then
+            echo "---- goal-state.json ----"
+            sed -n '1,200p' docs/redesignv2/artifacts/badges/goal-state.json
+          else
+            echo "goal-state.json not found or empty."
+          fi
+
+      - name: Upload artifact - goal-state.json
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: goal-state-badge
+          path: docs/redesignv2/artifacts/badges/goal-state.json
+          if-no-files-found: warn
+
+      - name: Upload artifact - perf-current.json
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: perf-current-json
+          path: docs/redesignv2/artifacts/metrics/perf-current.json
+          if-no-files-found: warn
