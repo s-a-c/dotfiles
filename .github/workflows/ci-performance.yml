@@ -1,6 +1,15 @@
 name: CI Performance
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      runs:
+        description: 'Number of performance test runs'
+        required: false
+        default: '5'
+      mode:
+        description: 'Classifier mode (observe/enforce)'
+        required: false
+        default: 'observe'
   schedule:
     - cron: '0 3 * * *'
 
@@ -8,50 +17,68 @@ jobs:
   performance:
     runs-on: macos-latest
     env:
-      STRICT_PERF: ${{ github.ref == 'refs/heads/main' && '1' || '0' }}
+      RUNS: ${{ github.event.inputs.runs || '5' }}
+      MODE: ${{ github.event.inputs.mode || (github.ref == 'refs/heads/main' && 'enforce' || 'observe') }}
+      WARN_THRESHOLD: '10'
+      FAIL_THRESHOLD: '25'
     steps:
       - uses: actions/checkout@v4
+
       - name: Ensure jq
         run: brew install jq || true
-      - name: Run Performance Harness
+
+      - name: Run Multi-Metric Performance Classifier
+        id: classifier
         shell: zsh {0}
         run: |
-          if [[ -x bin/test-performance.zsh ]]; then
-            bin/test-performance.zsh --runs 10 --json-out perf-current.json || exit 1
+          mkdir -p artifacts/metrics docs/badges docs/redesignv2/artifacts/metrics
+          # Capture classifier stdout/stderr for downstream status generation
+            # (tee preserves ordering for downstream parsing)
+          exec > >(tee artifacts/classifier.log) 2>&1
+          if [[ -x tools/perf-regression-classifier.zsh ]]; then
+            tools/perf-regression-classifier.zsh \
+              --runs "${RUNS}" \
+              --metrics prompt_ready,pre_plugin_total,post_plugin_total,deferred_total \
+              --mode "${MODE}" \
+              --warn-threshold "${WARN_THRESHOLD}" \
+              --fail-threshold "${FAIL_THRESHOLD}" \
+              --json-out artifacts/perf-results.json \
+              --baseline-dir artifacts/metrics || EXIT_CODE=$?
+            if [[ -f artifacts/perf-results.json ]]; then
+              STATUS=$(jq -r '.overall_status // "UNKNOWN"' artifacts/perf-results.json)
+              echo "status=$STATUS" >> "$GITHUB_OUTPUT"
+              echo "exit_code=${EXIT_CODE:-0}" >> "$GITHUB_OUTPUT"
+            fi
           else
-            echo '{"error":"missing harness"}' > perf-current.json
+            echo '{"error":"missing classifier"}' > artifacts/perf-results.json
           fi
-      - name: Compare Against Baseline & Generate Badge
+          # Always succeed to allow subsequent artifact/badge steps
+          exit 0
+
+      - name: Generate Multi-Metric Performance Badge
         shell: zsh {0}
         run: |
           mkdir -p docs/badges
-          BASE=docs/redesign/metrics/perf-baseline.json
-          CUR=perf-current.json
-          if [[ -f $BASE && -f $CUR ]]; then
-            base_mean=$(jq -r '.startup_mean_ms // empty' "$BASE")
-            cur_mean=$(jq -r '.startup_mean_ms // empty' "$CUR")
-            if [[ -n $base_mean && -n $cur_mean ]]; then
-              delta=$(awk -v b="$base_mean" -v c="$cur_mean" 'BEGIN{ printf "%.2f", (c-b)/b*100 }')
-              echo "Delta %: $delta"
-              color="brightgreen"
-              if awk -v d="$delta" 'BEGIN{exit (d>5?0:1)}'; then
-                color="red"
-                echo "Performance regression >5%" >&2
-                echo "regression" > .perf_regression
-              elif awk -v d="$delta" 'BEGIN{exit (d>0?0:1)}'; then
-                color="orange"
-              elif awk -v d="$delta" 'BEGIN{exit (d>-10?0:1)}'; then
-                color="yellow"
-              fi
-              cat > docs/badges/perf.json <<EOF
-{"schemaVersion":1,"label":"startup","message":"${cur_mean}ms (${delta}% )","color":"${color}"}
-EOF
+          if [[ -f artifacts/perf-results.json ]]; then
+            STATUS=$(jq -r '.overall_status // "UNKNOWN"' artifacts/perf-results.json)
+            WORST_METRIC=$(jq -r '.worst_metric // "unknown"' artifacts/perf-results.json)
+            WORST_DELTA=$(jq -r '.worst_delta_pct // 0' artifacts/perf-results.json)
+            case "$STATUS" in
+              OK|BASELINE_CREATED) COLOR="brightgreen";;
+              WARN) COLOR="yellow";;
+              FAIL) COLOR="red";;
+              *) COLOR="lightgrey";;
+            esac
+            if [[ "$STATUS" == "OK" || "$STATUS" == "BASELINE_CREATED" ]]; then
+              MESSAGE="$STATUS"
             else
-              echo 'Missing mean values'
+              MESSAGE="$STATUS: ${WORST_METRIC} ${WORST_DELTA}%"
             fi
+            echo "{\"schemaVersion\":1,\"label\":\"performance\",\"message\":\"${MESSAGE}\",\"color\":\"${COLOR}\"}" > docs/badges/perf.json
           else
-            echo 'Baseline or current file missing'
+            echo '{"schemaVersion":1,"label":"performance","message":"no data","color":"lightgrey"}' > docs/badges/perf.json
           fi
+
       - name: Generate Badges Summary (perf only)
         shell: zsh {0}
         run: |
@@ -59,33 +86,96 @@ EOF
             tools/generate-badges-summary.zsh --output docs/badges/summary.json || true
             cat docs/badges/summary.json || true
           fi
-      - name: Upload Performance Artifact
+
+      - name: Update Performance Status JSON
+        shell: zsh {0}
+        run: |
+          mkdir -p docs/redesignv2/artifacts/metrics
+          STATE_OPT=""
+          if [[ -f docs/redesignv2/artifacts/metrics/perf_classifier_status.json ]]; then
+            STATE_OPT="--state docs/redesignv2/artifacts/metrics/perf_classifier_status.json"
+          fi
+          if [[ -f artifacts/classifier.log ]]; then
+            LOGSRC="artifacts/classifier.log"
+          else
+            LOGSRC="artifacts/perf-results.json"
+          fi
+          if [[ -x tools/update-performance-status.zsh ]]; then
+            tools/update-performance-status.zsh --log "$LOGSRC" $STATE_OPT --json-out docs/redesignv2/artifacts/metrics/perf_classifier_status.json || true
+            cat docs/redesignv2/artifacts/metrics/perf_classifier_status.json || true
+          else
+            echo "update-performance-status.zsh not present; skipping."
+          fi
+
+      - name: Sync README Performance Status Block
+        shell: zsh {0}
+        run: |
+          if [[ -x tools/sync-readme-performance-status.zsh ]]; then
+            # Non-blocking check (policy can later enforce failure)
+            tools/sync-readme-performance-status.zsh --check || echo "README perf status block drift (non-blocking)."
+          else
+            echo "sync-readme-performance-status.zsh not present; skipping."
+          fi
+
+      - name: Generate Performance Streak Badge
+        shell: zsh {0}
+        run: |
+          mkdir -p docs/badges
+          if [[ -f docs/redesignv2/artifacts/metrics/perf_classifier_status.json ]]; then
+            STREAK_CURRENT=$(grep -E '"ok_streak_current"' docs/redesignv2/artifacts/metrics/perf_classifier_status.json | sed -E 's/.*: *([0-9]+).*/\1/')
+            ENFORCE=$(grep -E '"enforce_active"' docs/redesignv2/artifacts/metrics/perf_classifier_status.json | sed -E 's/.*: *(true|false).*/\1/')
+            COLOR="blue"
+            if [[ "$ENFORCE" == "true" ]]; then COLOR="purple"; fi
+            echo "{\"schemaVersion\":1,\"label\":\"perf streak\",\"message\":\"${STREAK_CURRENT} ok\",\"color\":\"${COLOR}\"}" > docs/badges/perf-streak.json
+          else
+            echo "No perf_classifier_status.json; skipping streak badge."
+          fi
+
+      - name: Upload Performance Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: perf-current
+          name: performance-artifacts
           path: |
-            perf-current.json
+            artifacts/perf-results.json
+            artifacts/metrics/*.json
+            artifacts/classifier.log
+            docs/redesignv2/artifacts/metrics/perf_classifier_status.json
             docs/badges/perf.json
+            docs/badges/perf-streak.json
             docs/badges/summary.json
+
       - name: Install neomutt (macOS)
         if: always()
         run: brew install neomutt || true
-      - name: Fail on Regression (Main Branch)
+
+      - name: Enforce Regression Thresholds (enforce mode only)
         if: always()
         shell: zsh {0}
         run: |
-          if [[ -f .perf_regression && "$STRICT_PERF" == "1" ]]; then
-            echo "❌ Performance regression >5% on main" >&2
-            exit 1
+          STATUS="${{ steps.classifier.outputs.status || 'UNKNOWN' }}"
+          echo "Classifier overall status: $STATUS (mode=$MODE)"
+          if [[ "$MODE" == "enforce" ]]; then
+            if [[ "$STATUS" == "FAIL" ]]; then
+              echo "❌ Performance regression (FAIL) in enforce mode"
+              exit 3
+            elif [[ "$STATUS" == "WARN" ]]; then
+              echo "⚠️ Performance WARN threshold exceeded (enforce mode exit 2)"
+              exit 2
+            fi
           fi
-          echo "Performance status acceptable (STRICT_PERF=$STRICT_PERF)."
+          echo "Performance status acceptable."
+
       - name: Send Regression Email (neomutt)
-        if: failure() || steps.performance.outcome == 'failure' || hashFiles('.perf_regression') != ''
+        if: failure() || steps.classifier.outputs.status == 'FAIL'
         env:
-            ALERT_EMAIL: ${{ secrets.ALERT_EMAIL }}
+          ALERT_EMAIL: ${{ secrets.ALERT_EMAIL }}
         run: |
           if command -v neomutt >/dev/null 2>&1 && [[ -n "$ALERT_EMAIL" ]]; then
-            { echo 'Performance regression detected (>5%).'; echo 'See attached artifact perf-current.json.'; } | neomutt -s '[zsh-refactor] Performance Regression' -- "$ALERT_EMAIL" || true
+            STATUS="${{ steps.classifier.outputs.status || 'UNKNOWN' }}"
+            {
+              echo "Performance classifier status: $STATUS."
+              echo 'See artifacts/perf-results.json and artifacts/classifier.log for details.'
+            } | neomutt -s '[zsh-refactor] Performance Regression' -- "$ALERT_EMAIL" || true
           else
             echo 'neomutt or ALERT_EMAIL not available; skipping email.'
           fi

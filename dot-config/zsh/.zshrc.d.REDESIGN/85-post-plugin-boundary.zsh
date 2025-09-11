@@ -97,6 +97,16 @@ if [[ -n ${PERF_SEGMENT_LOG:-} && -n ${POST_PLUGIN_TOTAL_MS:-} ]]; then
     {
       print "POST_PLUGIN_COMPLETE ${POST_PLUGIN_TOTAL_MS}"
       print "SEGMENT name=post_plugin_total ms=${POST_PLUGIN_TOTAL_MS} phase=post_plugin sample=${PERF_SAMPLE_CONTEXT:-unknown}"
+      # Structured telemetry JSON (opt-in; zero overhead when disabled)
+      if [[ "${ZSH_LOG_STRUCTURED:-0}" == "1" && -w ${PERF_SEGMENT_JSON_LOG:-${PERF_SEGMENT_LOG:-/dev/null}} ]]; then
+        local _ppb_ts
+        if [[ -n ${EPOCHREALTIME:-} ]]; then
+          _ppb_ts=$(awk -v t="${EPOCHREALTIME}" 'BEGIN{split(t,a,"."); printf "%s%03d", a[1], substr(a[2]"000",1,3)}')
+        else
+          _ppb_ts="$(date +%s 2>/dev/null || printf 0)000"
+        fi
+        print -- "{\"type\":\"segment\",\"name\":\"post_plugin_total\",\"ms\":${POST_PLUGIN_TOTAL_MS},\"phase\":\"post_plugin\",\"sample\":\"${PERF_SAMPLE_CONTEXT:-unknown}\",\"ts\":${_ppb_ts}}" >> "${PERF_SEGMENT_JSON_LOG:-${PERF_SEGMENT_LOG}}" 2>/dev/null || true
+      fi
     } >>"${PERF_SEGMENT_LOG}" 2>/dev/null || true
     _ppb_dbg "emitted POST_PLUGIN_COMPLETE=${POST_PLUGIN_TOTAL_MS}"
   else

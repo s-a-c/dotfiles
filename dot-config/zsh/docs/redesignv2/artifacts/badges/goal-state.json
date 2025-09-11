@@ -1,0 +1,8 @@
+{
+  "governance": "clean",
+  "ci": "strict",
+  "streak": "building",
+  "explore": "sandbox",
+  "generated_at": "2025-09-11T13:53:17+01:00",
+  "source": "tools/generate-goal-state-badge.zsh"
+}

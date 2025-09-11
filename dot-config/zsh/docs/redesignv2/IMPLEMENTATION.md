@@ -1,14 +1,198 @@
 # ZSH Configuration Redesign – Implementation Guide
 
-**Version:** 3.2  
-**Last Updated:** 2025-09-10 (Part 08.18)  
-**Status:** Stage 3 In Progress - Testing Infrastructure Hardened  
-**Critical Update:**  
-- Manifest test fixed for `zsh -f` compatibility, all core tests CI-ready  
-- Migration to `run-all-tests-v2.zsh` complete: legacy runner deprecated, CI and docs updated  
-- All progress trackers and documentation reflect new runner and standards
+### Part 08.19.10 — Current Implementation Update
+
+- GOAL profiles fully wired via internal flags (streak, governance, explore, ci). Enforce-mode gating is flags-driven; observe mode remains rc=0.
+- Single-metric JSON emission now matches multi-metric ordering (always written before any enforce-mode exit).
+- Capture-runner stderr noise (“bad math expression”) is suppressed without changing capture logic or metrics.
+- Test matrix T-GOAL-01..06 stabilized and passing with gawk available; tests gracefully skip if gawk is missing; JSON parsing regexes hardened.
+- Dynamic badges implemented:
+  - goal-state badge: docs/redesignv2/artifacts/badges/goal-state.json
+  - summary-goal badge (aggregator): docs/redesignv2/artifacts/badges/summary-goal.json (folds in perf drift and structure health)
+- CI and publishing:
+  - Strict classifier workflow (GOAL=ci enforce) emits docs/redesignv2/artifacts/metrics/perf-current.json and generates goal-state badge; uploads artifacts.
+  - Nightly publisher runs the classifier, generates goal-state and summary-goal badges, ensures perf-drift and structure badges, and publishes to gh-pages with an index.
+  - Post-publish step auto-replaces README placeholders with correct shields endpoints once badges land on gh-pages.
+
+Badge endpoints (placeholders; auto-resolved in README after first gh-pages publish):
+- Goal-state (flat): https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/&lt;org&gt;/&lt;repo&gt;/gh-pages/badges/goal-state.json
+- Summary-goal (compact): https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/&lt;org&gt;/&lt;repo&gt;/gh-pages/badges/summary-goal.json
+Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v3fb33a85972b794c3c0b2f992b1e5a7c19cfbd2ccb3bb519f8865ad8fdfc0316
+
+### Stage 4 Sprint 2 Status (Part 08.19 Refresh)
+- Logging homogeneity complete: legacy underscore wrappers removed; gate test green (no `ZF_LOG_LEGACY_USED`)
+- Real segment probes active (anchors: `pre_plugin_start`, `pre_plugin_total`, `post_plugin_total`, `prompt_ready`, `deferred_total` + granular feature/dev-env/history/security/ui segments)
+- Deferred dispatcher skeleton operational (one-shot postprompt; telemetry lines: `DEFERRED id=<id> ms=<int> rc=<rc>`)
+- Structured telemetry flags available & inert when unset: `ZSH_LOG_STRUCTURED`, `ZSH_PERF_JSON` (zero-cost disabled path)
+- Multi-metric performance classifier in observe mode (Warn 10% / Fail 25% thresholds); enforce activation (S4-33) pending 3× consecutive OK streak
+- Dependency export (`zf::deps::export` JSON + DOT) and DOT generator integrated with initial validation tests
+- Privacy appendix published & referenced (redaction whitelist stabilized)
+- Baseline performance unchanged: 334ms cold start (RSD 1.9%) — no regression after new instrumentation
+- Immediate focus: finalize homogeneity documentation updates (S4-29), add classifier legend row to PERFORMANCE_LOG (S4-30), implement idle/background trigger design (S4-27), implement telemetry opt-in plumbing (`ZSH_FEATURE_TELEMETRY`) (S4-18), prepare enforce-mode governance activation procedure (S4-33)
+- Logging Homogeneity Policy Summary: Only `zf::log`, `zf::warn`, `zf::err` are approved; legacy underscore wrappers (`_zf_log`, `_zf_warn`, `_zf_err`) are prohibited and now enforced by homogeneity gate; raw `echo`/`print` for runtime logging disallowed except guarded diagnostics: `[[ ${ZSH_DEBUG:-0} == 1 ]] && print -- "[diag] ..."`
+- Legacy Wrapper Removal Policy (Completed): Introduced namespaced APIs, instrumented transitional wrappers with sentinel `ZF_LOG_LEGACY_USED`, verified ≥2 consecutive clean runs (no sentinel set), removed wrappers, updated REFERENCE §5.4 & ARCHITECTURE; rollback only via emergency branch + governance PERFORMANCE_LOG row (Type=governance, Scope=logging-homogeneity).
+- Developer Checklist (Homogeneity): (1) No underscore wrappers reintroduced, (2) No unguarded diagnostic `echo`, (3) Structured telemetry key additions accompanied by schema + privacy appendix update, (4) ADR required for any new logging helper variant, (5) Run design-only homogeneity test locally before commit.
+- Compliance Header Update Note: The checksum in the compliance header must refresh automatically when `/dot-config/ai/guidelines.md` changes; all automation touching this file should validate and rewrite the header if mismatch is detected (policy guard for drift).
+
+
+
+**Version:** 3.4  
+**Last Updated:** 2025-09-11 (Part 08.19 + GOAL Profiles)  
+**Status:** Stage 4 – Sprint 2 (Instrumentation & Telemetry Expansion – classifier in observe mode; enforcement pending 3× OK streak)  
+**Critical Update (Part 08.19):**  
+
+### Telemetry Opt-In Plumbing (S4-18 Scaffold)
+
+Purpose: Introduce gated feature timing & structured JSON export without altering baseline when disabled.
+
+Scope (MVP):
+- Environment Flag: `ZSH_FEATURE_TELEMETRY=1`
+- Data Structures:
+  - `typeset -A ZSH_FEATURE_TIMINGS_SYNC`
+  - `typeset -A ZSH_FEATURE_TIMINGS_DEFERRED` (future / idle tasks)
+- Capture Points:
+  - Around feature registry init wrapper (synchronous phases only in MVP)
+  - Optional hook after idle/background batch (future)
+- Export (when both `ZSH_FEATURE_TELEMETRY=1` AND `ZSH_PERF_JSON=1`):
+  - Append per-feature objects to structured telemetry JSON sidecar:
+    ```
+    {"type":"feature_timing","name":"<feature>","ms":<int>,"phase":"init","ts":<epoch_ms>}
+    ```
+- Overhead Constraints:
+  - Disabled path: ≤ 0.05ms aggregate (single boolean check)
+  - Enabled path: ≤ 0.5ms per feature timing (including associative array write)
+- Failure Policy:
+  - Missing timing boundary gracefully skips (no partial corrupt JSON)
+  - Any exporter error logs via `zf::err` but does not abort startup
+
+Test Plan (to be implemented):
+| ID | Assertion |
+|----|-----------|
+| T-TEL-01 | Disabled path emits no feature_timing JSON |
+| T-TEL-02 | Enabled path records ≥1 known feature timing key |
+| T-TEL-03 | Timing values are integers >0 for instrumented features |
+| T-TEL-04 | Overhead (disabled) difference vs baseline <0.5ms (5-run avg) |
+| T-TEL-05 | Schema validator accepts new `feature_timing` type |
+| T-TEL-06 | Privacy appendix lists `feature_timing` fields (name, ms, phase, ts) |
+
+Next Steps:
+1. Add flag evaluation + data structure declarations.
+2. Instrument registry wrapper (start/stop timestamps).
+3. Extend structured telemetry emitter with guarded `feature_timing` block.
+4. Add schema + privacy appendix updates.
+5. Implement tests T-TEL-01..T-TEL-05.
+6. Update PERFORMANCE_LOG if measurable (>1ms) overhead detected (expected: none).
+
+Governance Note: Enforce-mode flip for classifier (S4-33) contingent on telemetry addition showing zero delta to `prompt_ready_ms` in observe mode.
+
+- Real segment probes COMPLETE (phase anchors + granular attribution: pre_plugin_start, pre_plugin_total, post_plugin_total, prompt_ready, deferred_total, plus feature/plugin segments)  
+- Deferred dispatcher skeleton ACTIVE (one‑shot postprompt, cumulative `deferred_total` captured)  
+- Multi-metric performance classifier integrated (observe mode: OK/WARN/FAIL thresholds 10% / 25%; enforce flip S4-33 pending 3 consecutive OK runs)  
+- Governance readiness: PERFORMANCE_LOG governance placeholder + README performance status managed block (pending activation row on enforce flip)  
+- Logging namespace migration COMPLETE (underscore wrappers removed; homogeneity gate enforced)  
+- Structured telemetry flags AVAILABLE (`ZSH_LOG_STRUCTURED`, `ZSH_PERF_JSON`) – opt-in, zero overhead when unset; privacy appendix published and referenced  
+- Dependency export + DOT generator integrated (`zf::deps::export --dot`) with basic tests green  
+- New automation scripts: `tools/update-performance-status.zsh` (streak JSON) & `tools/sync-readme-performance-status.zsh` (managed README block)  
+- README segment sync automation operational (`tools/sync-readme-segments.zsh` + CI drift check workflow)  
+- Baseline stable: 334ms cold start (RSD 1.9%) – no regression after instrumentation additions  
 
 This document is the authoritative reference for the ZSH configuration redesign implementation, consolidating all progress tracking, execution plans, and promotion readiness criteria.
+
+### 4.x Classifier GOAL Profiles & Execution Semantics
+
+The performance regression classifier now supports adaptive execution via a `GOAL` profile controlling strictness, fallback resilience, baseline handling rules, JSON status augmentation, and exit semantics. Unset `GOAL` defaults to `Streak` for backward compatibility (legacy single-mode behavior maps to today’s Streak).
+
+| Dimension | Streak | Governance | Explore | CI |
+|-----------|--------|------------|---------|----|
+| Intent | Rapid OK streak build (resilient) | Pre-enforcement strict validation | Developer sandbox (diagnostics) | Deterministic automation gating |
+| Strictness | Phased: start `set -uo pipefail`; add `-e` before stats | Full `set -euo pipefail` | `set -uo pipefail` (no `-e`) | Full `set -euo pipefail` |
+| Synthetic Fallback | Allowed | Disallowed | Allowed | Disallowed |
+| Missing Metrics | Warn + continue (`partial`) | Hard fail | Warn + continue (`partial`) | Hard fail |
+| Baseline Creation | Yes (auto if absent) | Yes (only if complete & real) | Yes | Yes |
+| Partial Flag (`partial`) | May appear | Must NOT appear | May appear | Must NOT appear |
+| Synthetic Flag (`synthetic_used`) | Present if fallback used | Must NOT appear | Present if used | Must NOT appear |
+| Ephemeral Flag (`ephemeral`) | No | No | Yes | No |
+| Exit on Missing | No | Yes | No (unless catastrophic) | Yes |
+| Exit on Synthetic | No | Yes | No | Yes |
+| JSON Always | `goal` | `goal` | `goal` | `goal` |
+
+Internal flag mapping (derived after `apply_goal_profile` – documented, not user-facing):
+
+```
+streak:     ALLOW_SYNTHETIC_SEGMENTS=1 REQUIRE_ALL_METRICS=0 HARD_STRICT=0 STRICT_PHASED=1 SOFT_MISSING_OK=1 JSON_PARTIAL_OK=1 EPHEMERAL_FLAG=0
+governance: ALLOW_SYNTHETIC_SEGMENTS=0 REQUIRE_ALL_METRICS=1 HARD_STRICT=1 STRICT_PHASED=0 SOFT_MISSING_OK=0 JSON_PARTIAL_OK=0 EPHEMERAL_FLAG=0
+explore:    ALLOW_SYNTHETIC_SEGMENTS=1 REQUIRE_ALL_METRICS=0 HARD_STRICT=0 STRICT_PHASED=0 SOFT_MISSING_OK=1 JSON_PARTIAL_OK=1 EPHEMERAL_FLAG=1
+ci:         ALLOW_SYNTHETIC_SEGMENTS=0 REQUIRE_ALL_METRICS=1 HARD_STRICT=1 STRICT_PHASED=0 SOFT_MISSING_OK=0 JSON_PARTIAL_OK=0 EPHEMERAL_FLAG=0
+```
+
+Pseudocode scaffold:
+
+```
+apply_goal_profile() {
+  local g="${GOAL:-Streak}"
+  g="${g:l}"
+  ALLOW_SYNTHETIC_SEGMENTS=0 REQUIRE_ALL_METRICS=1 HARD_STRICT=1 STRICT_PHASED=0 \
+  SOFT_MISSING_OK=0 JSON_PARTIAL_OK=0 EPHEMERAL_FLAG=0
+  case "$g" in
+    streak)
+      ALLOW_SYNTHETIC_SEGMENTS=1 REQUIRE_ALL_METRICS=0 HARD_STRICT=0 STRICT_PHASED=1 \
+      SOFT_MISSING_OK=1 JSON_PARTIAL_OK=1 ;;
+    governance) ;;
+    explore)
+      ALLOW_SYNTHETIC_SEGMENTS=1 REQUIRE_ALL_METRICS=0 HARD_STRICT=0 SOFT_MISSING_OK=1 \
+      JSON_PARTIAL_OK=1 EPHEMERAL_FLAG=1 ;;
+    ci) ;;
+    *) g="streak";;
+  esac
+  export GOAL="$g" ALLOW_SYNTHETIC_SEGMENTS REQUIRE_ALL_METRICS HARD_STRICT STRICT_PHASED \
+         SOFT_MISSING_OK JSON_PARTIAL_OK EPHEMERAL_FLAG
+}
+```
+
+Missing metric handling (conceptual):
+
+```
+if [[ -z "${value:-}" ]]; then
+  if (( REQUIRE_ALL_METRICS )); then
+    zf::err "Metric '${metric}' missing (GOAL=${GOAL})"; MISSING_CRITICAL=1
+  else
+    zf::warn "Metric '${metric}' missing (tolerated; GOAL=${GOAL})"; PARTIAL_FLAG=1; continue
+  fi
+fi
+```
+
+Status JSON augmentation (new non-sensitive keys):
+
+- `goal` (enum: `streak|governance|explore|ci`)
+- `synthetic_used` (present only if synthetic fallback executed)
+- `partial` (present only if tolerant profile had missing metrics)
+- `ephemeral` (Explore only)
+
+Governance activation precondition update:
+- A8: Three consecutive `GOAL=Governance` runs with neither `synthetic_used` nor `partial` present.
+
+Historical note:
+Legacy classifier “observe” behavior (tolerant + synthetic) is now explicitly represented by `GOAL=Streak` (resilient) or `GOAL=Explore` (diagnostic), eliminating ambiguous implicit modes.
+
+Rollout phases:
+1. Docs (this section)
+2. Scaffold parser & `goal` field (no behavior change)
+3. Enforce synthetic gating & missing metric policy
+4. Strictness layering
+5. Emit conditional flags (`synthetic_used`, `partial`, `ephemeral`)
+6. Test matrix (T-GOAL-01..06)
+7. CI adoption (`GOAL=ci`)
+8. Governance activation with A8
+
+## Change Log
+
+| Date       | Version | Change |
+|------------|---------|--------|
+| 2025-09-11 | 3.4 | Introduced classifier GOAL profiles (Streak/Governance/Explore/CI), added governance precondition A8, privacy appendix v1.1 (goal/partial/synthetic_used/ephemeral), documentation & internal flag mapping | 
+| 2025-09-10 | 3.3 | Legacy underscore logging wrappers removed (homogeneity gate enforced); structured telemetry flags (ZSH_LOG_STRUCTURED, ZSH_PERF_JSON) introduced (opt-in, zero overhead by default) |
+| 2025-09-10 | 3.2 | Sprint 2 kickoff instrumentation updates (deferred dispatcher, cycle edge-case tests, initial segment probe groundwork) |
+| 2025-09-02 | 3.1 | Telemetry & deferred execution section (§2.2) expansion |
+| 2025-01-03 | 3.0 | Initial consolidated implementation guide (migration to redesignv2) |
 
 ---
 
@@ -17,41 +201,44 @@ This document is the authoritative reference for the ZSH configuration redesign 
 **Mission:** Refactor fragmented legacy ZSH configuration into a deterministic, test-driven, modular 19-file system with measurable performance improvements and comprehensive automation.
 
 **Current State:**  
-- Stage 3 at 92% completion  
-- Migration to new test runner (`run-all-tests-v2.zsh`) complete  
-- All CI workflows and documentation updated  
-- Variance guard active (streak 3/3)  
-- Performance monitoring automated  
-- CI enforcement operational  
-- **Performance issue resolved**: 40+ second timeouts were incorrect metrics - actual startup ~334ms  
-- Ready to proceed with comprehensive testing
+- Stage 3 completed (migration + stabilization baseline locked)  
+- Stage 4 scaffolding initiated (feature registry, template, status command)  
+- Unified test runner (`run-all-tests-v2.zsh`) fully adopted (legacy runner deprecated)  
+- Performance baseline established (334ms, 1.9% variance) for delta gating in Stage 4  
+- Compliance + policy headers embedded; drift detection active  
+- Initial Feature Layer principles ratified (deterministic ordering, failure containment, opt-in/opt-out)  
+- Proceeding with registry + contract test onboarding
 
 **Key Metrics Achieved:**
 - Performance: `334ms 1.9%` startup with micro-benchmark baseline `37-44µs`
 - Governance: `guard: stable` status with comprehensive badge automation
 - Structure: 8 pre-plugin + 11 post-plugin modules with 100% sentinel guards
 - Automation: Nightly CI workflows maintaining badge freshness and drift detection
+- Privacy & Telemetry: Structured telemetry flags opt-in (`ZSH_LOG_STRUCTURED`, `ZSH_PERF_JSON`); Privacy Appendix (privacy/PRIVACY_APPENDIX.md) documents minimal schema & governance
 
 ---
 
-### 1.2 Recent Achievements
+### 1.2 Recent Achievements (Part 08.19)
 
-- Migration to `run-all-tests-v2.zsh` complete; legacy runner deprecated
-- All CI workflows and documentation updated to reference new runner
-- Manifest test passes in isolation (`zsh -f`)
-- Performance: 334ms startup, 1.9% variance
-- 67+ tests across 6 categories
-- Nightly CI workflows maintain badge freshness and drift detection
+- Deferred dispatcher skeleton (postprompt trigger, one-shot, telemetry `DEFERRED id=… ms=… rc=…`)
+- Dependency cycle edge-case test suite (unknown deps, disabled suppression, multi-level cycles, cycle broken by disabled node)
+- Cycle detector enhancements (scope limiting, disabled filtering toggle)
+- Logging namespace migration completed (underscore wrappers removed; homogeneity test enforced)
+- Telemetry / deferred execution documentation expansion (§2.2)
+- Performance baseline reaffirmed (334ms, 1.9% variance; no regression)
+- Telemetry governance tests added (baseline presence: `test-classifier-baselines.zsh`; structured schema validation: `test-structured-telemetry-schema.zsh`) – enforce-mode activation pending 3× consecutive OK classifier runs
+- README segment sync automation tool (`tools/sync-readme-segments.zsh`) ensures REFERENCE §5.3 canonical segment table parity in README (drift prevention)
 
----
-
-### 1.3 Next Steps
-
-1. Run comprehensive test suite with new runner
-2. Document and fix any remaining test failures
-3. Monitor CI ledger for stability (7-day window)
-4. Proceed to Stage 4: Feature layer implementation
-5. Continue updating documentation and trackers as new tasks are discovered
+### 1.3 Next Steps (Sprint 2 Focus)
+1. Replace placeholder SEGMENT probes with real pre/plugin/post/prompt/deferred attribution
+2. Activate structured telemetry stubs (`ZSH_LOG_STRUCTURED`, `ZSH_PERF_JSON`) with no-op emit paths
+3. Introduce structured telemetry stubs (JSON sidecar opt-in flag)
+4. Performance regression harness & classifier (warn >10%, fail >25% observe mode)
+5. Add Performance Log classifier legend (OK/WARN/FAIL thresholds) & integrate harness output notation
+6. Dependency graph export (`zf::deps::export` + DOT renderer)
+7. Privacy appendix + redaction hooks before enabling richer structured telemetry
+8. Telemetry governance: integrate baseline & schema tests as gated CI step (ENFORCE_BASELINES + schema validation) and prepare enforce-mode flip after 3 consecutive OK runs
+9. README canonical segment sync: add CI check (`tools/sync-readme-segments.zsh --check`) to prevent drift between REFERENCE §5.3 and README
 
 ---
 
@@ -60,17 +247,14 @@ This document is the authoritative reference for the ZSH configuration redesign 
 ### 1.1 Stage Completion Status
 
 | Stage | Status | Completion | Key Deliverables |
-|-------|---------|------------|------------------|
-| **Stage 1** | ✅ Complete | 100% | Foundation, test infrastructure, tooling |
-| **Stage 2** | ✅ Complete | 100% | Pre-plugin content migration, path rules |
-| **Stage 3** | ✅ Complete | 100% | Migration to new runner, manifest test fixed, CI and docs updated, variance guard active |
-| Stage 4 | 🌀 Next | 0% | Feature layer implementation |
-| Stage 5 | ⏳ Pending | 0% | UI & performance |
-| Stage 6 | ⏳ Pending | 0% | Validation & promotion |
-| Stage 7 | ⏳ Pending | 0% | Cleanup & finalization |
-| Stage 5 | ⏳ Planned | 0% | UI, completion, async activation |
-| Stage 6 | ⏳ Planned | 0% | Promotion readiness validation |
-| Stage 7 | ⏳ Planned | 0% | Production promotion & legacy archive |
+|-------|--------|------------|------------------|
+| Stage 1 | ✅ Complete | 100% | Foundation, test infrastructure, tooling |
+| Stage 2 | ✅ Complete | 100% | Pre-plugin content migration, path rules |
+| Stage 3 | ✅ Complete | 100% | Runner migration, manifest test fix, variance guard |
+| Stage 4 | 🟡 In Progress (Sprint 2) | ~25% | Feature layer: registry (done), deferred dispatcher skeleton, segment probes (pending), telemetry scaffolding (pending) |
+| Stage 5 | ⏳ Pending | 0% | UI & completion enhancements |
+| Stage 6 | ⏳ Pending | 0% | Promotion readiness validation |
+| Stage 7 | ⏳ Pending | 0% | Production promotion & legacy archive |
 
 ### 1.2 Critical Metrics Dashboard
 
@@ -83,6 +267,17 @@ This document is the authoritative reference for the ZSH configuration redesign 
 | **Module Count** | 19/19 | 19 | ✅ Complete |
 | **Test Coverage** | Comprehensive | 100% critical | ✅ Enhanced (zsh -f compatible) |
 | **Badge Freshness** | Automated | Automated | ✅ Current |
+
+#### Sprint 2 Tracks (Summary)
+
+| Track | Goal | Success Metric |
+|-------|------|----------------|
+| Real Segment Probes | Replace placeholders with timing & phase fidelity | All core phases logged with non-zero ms (except negligible <1ms flagged) |
+| Deferred Triggers Expansion | Prepare idle/background trigger design | Design doc + idle stub function present |
+| Logging Homogeneity | Remove legacy underscore wrappers | Homogeneity test passes; `ZF_LOG_LEGACY_USED` absent |
+| Perf Regression Harness | Automatic comparison vs baseline | Classifier emits WARN (>10%) / FAIL (>25%) lines |
+| Dependency Export | Human + graph tooling | `zf::deps::export --dot` produces stable DOT |
+| Structured Telemetry & Privacy | JSON sidecar (opt-in) + redaction | `ZSH_LOG_STRUCTURED=1` yields sanitized JSON lines |
 
 ### 1.3 Stage 3 Status Update (2025-01-13)
 
@@ -159,10 +354,262 @@ This document is the authoritative reference for the ZSH configuration redesign 
 ├── 80-async-validation.zsh
 ├── 85-post-plugin-boundary.zsh
 ├── 90-cosmetic-finalization.zsh
+
+### 2.2 Telemetry, Timing & Deferred Execution (Stage 4 Enhancements)
+
+This section documents the emerging Stage 4 execution / measurement pipeline: how startup timing, policy checksum emission, and post‑prompt (deferred) tasks interoperate without regressing interactive readiness.
+
+#### Overview
+
+| Component | Purpose | Emission Form | When Recorded | File / Hook |
+|-----------|---------|---------------|---------------|-------------|
+| GUIDELINES_CHECKSUM | Policy integrity anchor | POLICY checksum=&lt;sha&gt; | Early pre‑plugin | `02-guidelines-checksum.zsh` |
+| Segment Timings (placeholders now) | Budget label stabilization | `SEGMENT name=<label> ms=<int> phase=<phase>` | During guarded probes | Various phase stubs |
+| Prompt Readiness Marker | Boundary for deferred dispatch eligibility | PROMPT_READY_MS env var | First successful `precmd` | `95-prompt-ready.zsh` |
+| Deferred Dispatcher | Executes non-critical jobs post-first prompt | `DEFERRED id=<id> ms=<int> rc=<rc>` | First `precmd` after PROMPT_READY | `96-deferred-dispatch.zsh` |
+| Dependency Cycle Scan (optional) | Safety net for module graph | `dependency-cycle:` errors (stderr) | On demand / test scope | `02-module-hardening.zsh` |
+| Error / Severity Log | Structured fault surface (namespaced) | `[zf-error] ...` + optional PERF `ERROR level=...` | On each severity event | `01-error-handling-framework.zsh` |
+
+#### Execution Phases (Simplified Timeline)
+
+```
+[zsh start]
+  -> Pre-plugin modules
+       - policy checksum export (POLICY line)
+       - (future) early segment markers (pre_plugin_total)
+  -> Plugin / post-plugin modules
+       - placeholder sync segments
+  -> Prompt instrumentation (95-prompt-ready) sets PROMPT_READY_MS
+  -> First prompt rendered (interactive control handed to user)
+  -> Deferred dispatcher (96-deferred-dispatch) runs queued jobs exactly once
+       - Emits DEFERRED timing lines (phase=postprompt logical bucket)
+```
+
+#### Deferred Dispatcher (Skeleton – Current Scope)
+
+| Aspect | Current Behavior | Roadmap |
+|--------|------------------|---------|
+| Registration API | `zf::defer::register <id> <func> postprompt <desc>` | Additional triggers: idle, background-safe, network |
+| Launch Condition | First `precmd` after `PROMPT_READY_MS` | Multi-trigger with prioritization |
+| Overhead Target | ≤ ~1–2ms definition cost; zero pre-prompt runtime | Fine-grained attribution + budget gating |
+| Telemetry | Per-job ms duration → PERF_SEGMENT_LOG (DEFERRED line) | Structured JSON stream |
+| Isolation | Silent; logs to `${ZDOTDIR}/.logs/deferred.log` | Failure classification + retry/backoff policies |
+| Non-interactive Guard | `$-` contains `i` required | Remote batch fallback queue (later) |
+
+#### Telemetry & Performance Emission Formats (Current + Classifier Integration)
+
+```
+POLICY checksum=<sha256>
+SEGMENT name=<label> ms=<int> phase=<phase> sample=<mode?>
+DEFERRED id=<id> ms=<int> rc=<rc>
+ERROR level=<LEVEL> module=<module>
+```
+
+The `SEGMENT` line family now underpins the multi-metric performance classifier.  
+Structured JSON sidecar records (when `ZSH_LOG_STRUCTURED=1`) mirror each textual SEGMENT with keys:
+`{"type":"segment","name":"<label>","ms":<int>,"phase":"<phase>","sample":"<context>","ts":<epoch_ms>}`
+
+##### Canonical Segment Inventory (Sprint 2)
+
+| Segment | Phase | Module | Purpose |
+|---------|-------|--------|---------|
+| pre_plugin_start | pre_plugin | 00-path-safety (pre) | Anchor (start reference) |
+| pre_plugin_total | pre_plugin | 40-pre-plugin-reserved | Aggregate pre-plugin elapsed |
+| post_plugin_total | post_plugin | 85-post-plugin-boundary / 90-splash | Aggregate functional post-plugin elapsed |
+| prompt_ready | prompt | 95-prompt-ready | Time to first prompt (TTFP) |
+| deferred_total | postprompt | 96-deferred-dispatch | Aggregated deferred batch |
+| essential/zsh-syntax-highlighting | post_plugin | 20-essential-plugins | Plugin attribution |
+| essential/zsh-autosuggestions | post_plugin | 20-essential-plugins | Plugin attribution |
+| essential/zsh-completions | post_plugin | 20-essential-plugins | Plugin attribution |
+| history/baseline | post_plugin | 50-completion-history | History & policy |
+| safety/aliases | post_plugin | 40-aliases-keybindings | Alias setup |
+| navigation/cd | post_plugin | 40-aliases-keybindings | Navigation helpers |
+| dev-env/nvm | post_plugin | 30-development-env | Toolchain surfacing |
+| dev-env/rbenv | post_plugin | 30-development-env | Toolchain surfacing |
+| dev-env/pyenv | post_plugin | 30-development-env | Toolchain surfacing |
+| dev-env/go | post_plugin | 30-development-env | Toolchain surfacing |
+| dev-env/rust | post_plugin | 30-development-env | Toolchain surfacing |
+| completion/history-setup | post_plugin | 50-completion-history | History initialization |
+| completion/cache-scan | post_plugin | 50-completion-history | Compinit cache inspection |
+| compinit | post_plugin | 55-compinit-instrument | Single guarded compinit |
+| p10k_theme | post_plugin | 60-p10k-instrument | Prompt theme init |
+| gitstatus_init | post_plugin | 65-vcs-gitstatus-instrument | Git status daemon |
+| ui/prompt-setup | post_plugin | 60-ui-prompt | Prompt orchestration placeholder |
+| security/validation | post_plugin | 80-security-validation | Integrity placeholder |
+
+(Full authoritative table also maintained in REFERENCE §5.3.)
+
+##### Disable Flags (Selective Suppression)
+
+| Flag | Suppresses Segments | Default |
+|------|---------------------|---------|
+| ZSH_DISABLE_ALIASES_KEYBINDINGS=1 | safety/aliases, navigation/cd | Off |
+| ZSH_DISABLE_UI_PROMPT_SEGMENT=1 | ui/prompt-setup | Off |
+| ZSH_DISABLE_SECURITY_VALIDATION_SEGMENT=1 | security/validation | Off |
+
+Disabling a segment does NOT disable its module sentinel; tests assert suppression behavior separately.
+
+##### Multi-Metric Classifier Integration
+
+Classifier script: `tools/perf-regression-classifier.zsh`
+
+| Metric Key (JSON) | Derived From | Segment Basis | Typical Baseline | Warn / Fail Thresholds |
+|-------------------|--------------|---------------|------------------|------------------------|
+| pre_plugin_total_ms | Time between pre-plugin anchors | pre_plugin_total | ~45ms | 10% / 25% |
+| post_plugin_total_ms | Functional post-plugin window | post_plugin_total | ~185ms | 10% / 25% |
+| prompt_ready_ms | Startup to first prompt | prompt_ready | 334ms | 10% / 25% |
+| deferred_total_ms | Deferred dispatcher batch | deferred_total | ~30ms | 10% / 25% (high slack) |
+
+Overall status = worst (FAIL > WARN > OK/Base).  
+First run per metric without an existing baseline ⇒ `BASELINE_CREATED` (green).
+
+##### Baseline Integrity (Planned / Implemented)
+
+| Aspect | Mechanism |
+|--------|-----------|
+| Segment presence & format | `test-granular-segments.zsh` |
+| Duplicate prevention | Same test (count == 1) |
+| Disable flag suppression | Added section in granular segments test |
+| Per-metric baseline existence | Future classifier baseline presence test |
+| JSON key whitelist | Planned sanitation test (privacy enforcement) |
+
+##### Policy to Add a New Segment
+
+1. Justify attribution or governance necessity.  
+2. Implement single guarded emission (no loops).  
+3. Update REFERENCE §5.3 + this section.  
+4. Extend granular segment & disable tests.  
+5. Run classifier (observe mode) to confirm benign delta.  
+6. Append PERFORMANCE_LOG entry if synchronous delta ≥1ms (otherwise note “+0”).  
+
+
+(All appended to `$PERF_SEGMENT_LOG` when writable.)
+
+#### Adding a New Deferred Job (Example)
+
+```zsh
+# Define the job
+my__cache_warm_job() {
+  # light, silent work here
+  command -v git >/dev/null 2>&1 && git --version >/dev/null 2>&1 || true
+}
+
+# Register (postprompt trigger)
+zf::defer::register "cache-warm" "my__cache_warm_job" "postprompt" "Light cache warm priming"
+```
+
+#### Design Invariants
+
+1. No deferred job may emit user-facing output to stdout/stderr (logs only).
+2. Dispatcher must not re-run (idempotent; guard `_ZSH_DEFERRED_DISPATCH_RAN`).
+3. Pre-prompt critical path must remain < existing variance thresholds (currently ~334ms, 1.9% RSD).
+4. Telemetry lines must remain parse-stable (regex compatibility with CI parsers).
+5. Policy checksum must precede any deferred reference to ensure integrity context is available downstream.
+
+#### Privacy & Scope
+
+Current telemetry is local-only:
+- No network transmission.
+- Plaintext append to PERF segment log + optional local deferred log.
+- Redaction not presently required; future structured mode will add redaction hooks before enabling richer content.
+
+#### Testing Guidance
+
+| Test Type | Focus | Example Assertion |
+|-----------|-------|-------------------|
+| Design / Structure | One-shot dispatch | Log contains single DEFERRED id=dummy-warm |
+| Performance | No added pre-plugin delta | Compare pre_plugin_total variance before/after |
+| Dependency Edge Cases | Disabled / unknown / cycle resilience | Cycle absent when disabled node breaks chain |
+| Namespace Homogeneity (logging) | Use of `zf::` API only | Grep ensures no stray `zf_warn` etc (excluding wrapper block) |
+
+#### Future Enhancements (Planned)
+
+- Idle time budgeted queue (increments after user keystrokes settle)
+- Adaptive backoff for failed jobs (exponential with cap)
+- Structured JSON ledger: `{"type":"deferred","id":"…","ms":12,"ts":...}`
+- Optional export command: `zf::telemetry::export --format=jsonl`
+- Telemetry gating flag: `ZSH_TELEMETRY_OPTOUT=1` (placeholder design)
+- Telemetry JSON key sanitation test (A): whitelist enforcement (planned CI gate) to fail on unexpected structured segment fields
+- Per-metric baseline presence test (B): classifier guard to ensure each tracked metric has an up-to-date baseline before enforcing drift
+- README cross-link automation (C): script to sync canonical segment & classifier table (REFERENCE §5.3 → README badges/legend)
+- Structured telemetry schema validator script (D): `tools/test-structured-telemetry-schema.zsh` – denies unknown keys, emits diff of allowed vs observed
+
+---
+
 └── 95-prompt-ready.zsh
 ```
 
 ### 2.2 Key Design Principles
+
+### 2.3 Feature Layer Architecture (Stage 4 Kickoff)
+
+The Feature Layer introduces an opt-in, modular capability stack above the stabilized core. Its design enforces deterministic loading, failure containment, and measurable performance impact.
+
+Core Components:
+1. Feature Registry (`feature/registry/feature-registry.zsh`)
+   - Stores metadata: phase, dependencies, category, deferred flag, GUID.
+   - Provides add/list/resolve functions with cycle detection (topological sort).
+   - Caches enablement decisions (per session) to minimize repeated dispatch cost.
+
+2. Feature Module Contract (see `_TEMPLATE_FEATURE_MODULE.zsh`)
+   - Required metadata variables (single-line for grep extraction).
+   - Required functions (by naming convention):
+     - `feature_<name>_metadata`
+     - `feature_<name>_is_enabled`
+     - `feature_<name>_register`
+     - `feature_<name>_init` (primary activation point)
+   - Optional: `preload`, `postprompt`, `teardown`, `self_check`, failure injection helper.
+
+3. Enable / Disable Semantics (precedence order)
+   - `ZSH_FEATURES_DISABLE` (supports `all`)
+   - `ZSH_FEATURES_ENABLE`
+   - Per-feature override: `ZSH_FEATURE_<UPPER_NAME>_ENABLED`
+   - Fallback to `FEATURE_DEFAULT_ENABLED`
+
+4. Load Phases (planned)
+   - Phase 1: Critical early UX scaffolding (minimal prompt base)
+   - Phase 2: Standard interactive features (history, completion augmentation, keybindings)
+   - Phase 3: Deferred / async (fzf integrations, telemetry, heavy scans)
+
+5. Performance Guardrails
+   - Baseline: 334ms cold start (Stage 3 reference)
+   - Hard ceiling (early Stage 4): +15% (< ~384ms) – failing CI (planned enforcement gate)
+   - Soft per-feature synchronous budget: 20ms (warn + defer recommendation)
+   - Telemetry is opt-in to avoid skewing baseline; timing wrappers to be introduced after stable registry adoption.
+
+6. Failure Containment Strategy
+   - Each feature invocation (future implementation) wrapped in:
+     - Timing capture (optional)
+     - `set -e`–resilient boundary with non-zero exit logged but not fatal
+   - A failing feature must not abort shell startup; registry resolution isolates dependency-related fallout.
+
+7. Testing Additions (Stage 4)
+   - Registry contract tests (present)
+   - Enable/disable semantics tests (planned)
+   - Dependency + cycle detection tests (present)
+   - Failure containment + injected error path tests (planned)
+   - Performance delta tests (planned once invocation wrapper added)
+   - Deferred load validation (will follow postprompt hook integration)
+
+8. Observability & Introspection
+   - `feature-status.zsh` provides:
+     - Table / raw / JSON output
+     - Summary counts
+     - Lightweight self-check
+   - Future: per-feature timing & phase execution ledger (opt-in)
+
+9. Compliance & Policy
+   - Each module carries checksum-referenced compliance header.
+   - Sensitive operations (PATH mutation, external process spawn) will cite exact guideline file + line references inline when introduced.
+
+10. Planned Next Increments
+   - Add invocation wrapper + timing
+   - Implement noop demo feature (contract exemplar)
+   - Add enable/disable + dependency edge-case test suite
+   - Integrate performance delta harness extension
+   - Author Feature Catalog + Developer Guide (tracked in Stage 4 kickoff doc)
+
+This section will evolve as invocation and deferred scheduling mechanisms are implemented; all structural changes require synchronized updates to the Feature Catalog and Task Tracker.
 
 1. **Deterministic Loading:** Sequential numbered modules with clear dependencies
 2. **Sentinel Guards:** Every module protected against multiple sourcing

@@ -1,0 +1,66 @@
+# README Segment Drift Workflow
+# Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v900f08def0e6f7959ffd283aebb73b625b3473f5e49c57e861c6461b50a62ef2
+# Purpose: Gate PRs if docs/redesignv2/README.md segment sync block drifts from canonical REFERENCE.md §5.3.
+# On failure, instruct contributor to run tools/sync-readme-segments.zsh locally.
+#
+# Exit behavior:
+#   - Job fails (non-zero) when README is out of sync (script exits 3)
+#   - Provides guidance step for contributors
+#
+# Safe to extend with additional drift checks later.
+
+name: README Segment Drift
+
+on:
+  pull_request:
+    paths:
+      - 'dot-config/zsh/docs/redesignv2/**'
+      - 'dot-config/zsh/tools/sync-readme-segments.zsh'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: readme-segment-drift-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  segment-drift:
+    name: Segment Sync Drift Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install zsh
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y zsh
+
+      - name: Run sync-readme-segments --check
+        working-directory: dot-config/zsh
+        run: |
+          set -euo pipefail
+          tools/sync-readme-segments.zsh --check
+
+      - name: Guidance on failure
+        if: failure()
+        run: |
+          echo 'README segment block is out of sync with REFERENCE.md §5.3.'
+          echo 'Run: tools/sync-readme-segments.zsh (optionally with DRY_RUN=1 first).'
+          echo 'Commit updated README after auto-generated block refresh.'
+
+  # Placeholder for future performance status block drift check (optional)
+  # perf-status-check:
+  #   name: Performance Status Block (Pending Activation)
+  #   if: false  # Enable once tools/sync-readme-performance-status.zsh is added
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Install zsh
+  #       run: |
+  #         sudo apt-get update && sudo apt-get install -y zsh
+  #     - name: (Future) Check performance classifier managed block
+  #       run: echo 'Pending script implementation; skipping.'
