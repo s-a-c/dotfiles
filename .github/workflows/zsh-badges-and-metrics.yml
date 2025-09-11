@@ -4,7 +4,7 @@ run-name: zsh badges & metrics • ${{ github.ref_name }}
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main, master, develop ]
     paths:
       - 'dot-config/zsh/**'
       - '.github/workflows/zsh-badges-and-metrics.yml'
@@ -12,7 +12,7 @@ on:
       - 'dot-config/zsh/.zshrc.pre-plugins.d.REDESIGN/**'
       - 'dot-config/zsh/tools/generate-structure-audit.zsh'
   pull_request:
-    branches: [ main, master ]
+    branches: [ main, master, develop ]
     paths:
       - 'dot-config/zsh/**'
       - '.github/workflows/zsh-badges-and-metrics.yml'

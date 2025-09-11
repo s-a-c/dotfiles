@@ -20,12 +20,12 @@ name: CI Async Guards
 #
 on:
   pull_request:
-    branches: [ main ]
+    branches: [ main, develop ]
     paths:
       - 'dot-config/zsh/**'
       - '.github/workflows/ci-async-guards.yml'
   push:
-    branches: [ main ]
+    branches: [ main, develop ]
     paths:
       - 'dot-config/zsh/**'
       - '.github/workflows/ci-async-guards.yml'
