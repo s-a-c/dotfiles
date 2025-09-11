@@ -15,12 +15,12 @@ name: zsh-Perf & Structure CI
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main, master, develop ]
     paths:
       - 'dot-config/zsh/**'
       - '.github/workflows/zsh-perf-structure-ci.yml'
   pull_request:
-    branches: [ main, master ]
+    branches: [ main, master, develop ]
     paths:
       - 'dot-config/zsh/**'
       - '.github/workflows/zsh-perf-structure-ci.yml'

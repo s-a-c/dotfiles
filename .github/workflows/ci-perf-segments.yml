@@ -34,7 +34,7 @@ name: CI Perf Segments
 on:
   workflow_dispatch: {}
   pull_request:
-    branches: [ main ]
+    branches: [ main, develop ]
     paths:
       - 'dot-config/zsh/**'
       - '.github/workflows/ci-perf-segments.yml'
