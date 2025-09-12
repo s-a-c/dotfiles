@@ -10,6 +10,7 @@ on:
         description: 'Classifier mode (observe/enforce)'
         required: false
         default: 'observe'
+
   schedule:
     - cron: '0 3 * * *'
 
@@ -147,6 +148,8 @@ jobs:
       - name: Install neomutt (macOS)
         if: always()
         run: brew install neomutt || true
+
+
 
       - name: Enforce Regression Thresholds (enforce mode only)
         if: always()
