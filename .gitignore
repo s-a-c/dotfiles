@@ -270,3 +270,4 @@ dist/
 dot-config/lmstudio/server-logs/
 dot-config/zsh/.zgenom
 dot-config/zsh/.zqs-zgenom
+.local/
