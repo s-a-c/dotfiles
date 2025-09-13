@@ -1,0 +1,2 @@
+phase=warm state=segments rc=0 total_ms=81502 pre=0 post=0 prompt=0 fast=0
+state=early_written file=perf-current-early.json mean_ms=77186
