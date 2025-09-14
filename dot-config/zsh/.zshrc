@@ -699,3 +699,8 @@ fi
 # /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.d/99-external-tools.zsh
 # They will be loaded automatically by the post-plugin system
 # To disable, set: export SKIP_EXTERNAL_TOOLS=1
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/s-a-c/.lmstudio/bin"
+# End of LM Studio CLI section
+

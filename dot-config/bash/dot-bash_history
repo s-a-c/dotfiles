@@ -510,3 +510,43 @@ z ..
 rm -rf zsh
 #1755915827
 cp -r ~/Downloads/zsh ./
+pwd
+ls -la | grep -E '\.(zsh|z)'
+ps aux | grep -E '(zsh|bash|shell)' | grep -v grep
+timeout 10 zsh -x -c 'echo "ZSH started successfully"' 2>&1 | head -50
+timeout 30 zsh -x -i -c 'echo "ZSH interactive mode started successfully"' 2>&1 | tail -50
+ls -la ~/.zgenom/ 2>/dev/null || echo "~/.zgenom does not exist"
+ls -la ~/.config/zsh/.zgenom 2>/dev/null || echo ".zgenom does not exist in config"
+ls -la ~/.config/zsh/.zqs-zgenom 2>/dev/null || echo ".zqs-zgenom does not exist in config"
+ls -la ~/dotfiles/dot-config/zsh/.zqs-zgenom 2>/dev/null || echo ".zqs-zgenom does not exist in dotfiles"
+timeout 15 zsh -c 'source ~/.config/zsh/.zshenv; echo "zshenv loaded successfully"' 2>&1
+timeout 30 zsh -c 'echo "Starting zshrc test"; source ~/.config/zsh/.zshrc; echo "zshrc loaded successfully"' 2>&1
+brew search xh
+brew install xh
+which brew
+uname -m
+ls -la /opt/homebrew/bin/brew
+/opt/homebrew/bin/brew install xh
+/opt/homebrew/bin/xh --version
+ls -lad ~/.config/zsh/*
+/opt/homebrew/bin/brew search curlie
+nvim ~/.config/nix-darwin/flake.nix
+/opt/homebrew/bin/brew install curlie
+curlie --version
+find "$HOME" -maxdepth 4 -type f -name 'init.zsh' -exec ls -lh {} \; -exec du -h {} \; 2>/dev/null | tee /tmp/zgenom-init-candidates.txt
+ls -lh ~/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+grep -n 'zgenom' ~/.config/zsh/.zshrc | head
+time env ZSH_SAFE_MODE=1 zsh -i -lc 'echo "[safe] interactive reached"; exit'
+backup_dir="$HOME/.cache/zsh-debug/backups/$(date +%Y%m%d-%H%M%S)"; mkdir -p "$backup_dir"; echo "[backup] Created backup directory: $backup_dir"
+backup_dir="/Users/s-a-c/.cache/zsh-debug/backups/20250914-123257"; cp -R ~/dotfiles/dot-config/zsh/.zqs-zgenom "$backup_dir/" && echo "[backup] Backed up .zqs-zgenom to $backup_dir"
+rm -f ~/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh && echo "[cleanup] Removed large init.zsh file ($(du -h /Users/s-a-c/.cache/zsh-debug/backups/20250914-123257/.zqs-zgenom/init.zsh | cut -f1))"
+time zsh -i -lc 'echo "[normal] interactive reached"; exit'
+ls -lh ~/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh
+for i in {1..3}; do echo "=== Test $i ==="; time zsh -i -lc 'exit'; echo; done
+chmod +x /tmp/zsh-healthcheck.sh
+/tmp/zsh-healthcheck.sh && echo "✅ zsh health check PASSED"
+mkdir -p ~/.cache/zsh && echo "Created zsh cache directory"
+zcompile ~/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh && echo "Compiled init.zsh for faster loading" || echo "Compilation failed or not needed"
+zsh -c 'zcompile ~/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh && echo "Compiled init.zsh for faster loading"' || echo "Compilation failed or not needed"
+ls -lh ~/dotfiles/dot-config/zsh/.zqs-zgenom/init.zsh*
+time zsh -i -lc 'echo "zsh startup test with compiled init.zsh"; exit' 2>/dev/null
