@@ -15,7 +15,7 @@ Progress Legend (single green usage; no red icon used):
 - ⏸ Deferred / On Hold
 
 <!-- TOC -->
-- [1. Task Breakdown & Sequencing](#1-task-breakdown--sequencing)
+- [1. Task Breakdown & Sequencing](#1-taREDACTED_OPENAI)
 - [1A. TDD & Git Activities Matrix](#1a-tdd--git-activities-matrix-per-main-task)
   - [Anchors (Matrix Task Detail)](#anchors-matrix-task-detail)
 - [1B. Condensed CLI Cheat Sheet](#1b-condensed-cli-cheat-sheet)
@@ -87,18 +87,18 @@ Progress Legend (single green usage; no red icon used):
 | 12 Maintenance Automation | Cron, summaries, sentinel | Add failing tests for drift guard & regression sentinel (RED); implement cron scripts & sentinel (GREEN) | git checkout -b chore/maintenance-automation; git add tools/run-nightly-maintenance.zsh tools/notify-email.zsh docs/redesign/metrics/summary-* tests/style; git commit -m "chore(maintenance): add nightly/weekly jobs and regression sentinel"; git push -u origin chore/maintenance-automation |
 
 ### Anchors (Matrix Task Detail)
-#### <a id="matrix-1"></a>Matrix Task 1 – Baseline Capture ([back to table](#1-task-breakdown--sequencing))
-#### <a id="matrix-2"></a>Matrix Task 2 – Backup & Archival ([back](#1-task-breakdown--sequencing))
-#### <a id="matrix-3"></a>Matrix Task 3 – Skeleton ([back](#1-task-breakdown--sequencing))
-#### <a id="matrix-4"></a>Matrix Task 4 – Phase 1 Core Migration ([back](#1-task-breakdown--sequencing))
-#### <a id="matrix-5"></a>Matrix Task 5 – Phase 2 Feature Migration ([back](#1-task-breakdown--sequencing))
-#### <a id="matrix-6"></a>Matrix Task 6 – Deferred & Async ([back](#1-task-breakdown--sequencing))
-#### <a id="matrix-7"></a>Matrix Task 7 – Validation & Benchmarks ([back](#1-task-breakdown--sequencing))
-#### <a id="matrix-8"></a>Matrix Task 8 – Promotion ([back](#1-task-breakdown--sequencing))
-#### <a id="matrix-9"></a>Matrix Task 9 – Documentation Finalization ([back](#1-task-breakdown--sequencing))
-#### <a id="matrix-10"></a>Matrix Task 10 – CI/CD Automation ([back](#1-task-breakdown--sequencing))
-#### <a id="matrix-11"></a>Matrix Task 11 – Enhancements Implementation ([back](#1-task-breakdown--sequencing))
-#### <a id="matrix-12"></a>Matrix Task 12 – Maintenance Automation ([back](#1-task-breakdown--sequencing))
+#### <a id="matrix-1"></a>Matrix Task 1 – Baseline Capture ([back to table](#1-taREDACTED_OPENAI))
+#### <a id="matrix-2"></a>Matrix Task 2 – Backup & Archival ([back](#1-taREDACTED_OPENAI))
+#### <a id="matrix-3"></a>Matrix Task 3 – Skeleton ([back](#1-taREDACTED_OPENAI))
+#### <a id="matrix-4"></a>Matrix Task 4 – Phase 1 Core Migration ([back](#1-taREDACTED_OPENAI))
+#### <a id="matrix-5"></a>Matrix Task 5 – Phase 2 Feature Migration ([back](#1-taREDACTED_OPENAI))
+#### <a id="matrix-6"></a>Matrix Task 6 – Deferred & Async ([back](#1-taREDACTED_OPENAI))
+#### <a id="matrix-7"></a>Matrix Task 7 – Validation & Benchmarks ([back](#1-taREDACTED_OPENAI))
+#### <a id="matrix-8"></a>Matrix Task 8 – Promotion ([back](#1-taREDACTED_OPENAI))
+#### <a id="matrix-9"></a>Matrix Task 9 – Documentation Finalization ([back](#1-taREDACTED_OPENAI))
+#### <a id="matrix-10"></a>Matrix Task 10 – CI/CD Automation ([back](#1-taREDACTED_OPENAI))
+#### <a id="matrix-11"></a>Matrix Task 11 – Enhancements Implementation ([back](#1-taREDACTED_OPENAI))
+#### <a id="matrix-12"></a>Matrix Task 12 – Maintenance Automation ([back](#1-taREDACTED_OPENAI))
 
 ## 1B. Condensed CLI Cheat Sheet
 | Phase | Quick Commands (Sequence) |
