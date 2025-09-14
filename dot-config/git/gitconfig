@@ -45,6 +45,7 @@ excludesFile = /Users/s-a-c/.gitignore
 	safecrlf = true
 	preloadindex = true
 	fscache = true
+	eol = lf
 [diff]
 tool = zed
 [difftool "zed"]

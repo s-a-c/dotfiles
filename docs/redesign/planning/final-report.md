@@ -7,7 +7,7 @@
 - [5. Performance Measurement Strategy](#5-performance-measurement-strategy)
 - [6. Security & Integrity Enhancements](#6-security--integrity-enhancements)
 - [7. Functionality Preservation Matrix](#7-functionality-preservation-matrix)
-- [8. Risk Register & Mitigations](#8-risk-register--mitigations)
+- [8. Risk Register & Mitigations](#8-riREDACTED_OPENAI)
 - [9. Post-Migration Maintenance](#9-post-migration-maintenance)
 - [10. Action Checklist](#10-action-checklist-abbreviated)
 - [11. Quick Reference Commands](#11-quick-reference-commands)
