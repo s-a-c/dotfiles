@@ -110,6 +110,19 @@ elif [[ -d "$HOME/.cargo/bin" ]]; then
 fi
 _zf_dev_segment "rust" "end"
 
+# GPG Configuration
+_zf_dev_segment "gpg" "start"
+if command -v gpg >/dev/null 2>&1; then
+    # Set GPG_TTY for proper terminal interaction
+    export GPG_TTY=$(tty)
+    
+    # Start gpg-agent if not running
+    if ! pgrep -x "gpg-agent" > /dev/null; then
+        gpg-connect-agent /bye >/dev/null 2>&1 || true
+    fi
+fi
+_zf_dev_segment "gpg" "end"
+
 # === Development environment setup END ===
 if [[ -n ${PERF_SEGMENT_LOG:-} && -n ${POST_SEG_30_DEV_ENV_START_MS:-} && -z ${POST_SEG_30_DEV_ENV_MS:-} ]]; then
   local __post_seg_30_end_ms __post_seg_30_delta
