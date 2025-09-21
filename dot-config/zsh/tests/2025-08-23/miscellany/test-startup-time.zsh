@@ -108,7 +108,7 @@ measure_quick_startup() {
         local start_time=$(date +%s%N 2>/dev/null || zsh_debug_echo "$(date +%s)000000000")
 
         # Run ZSH startup
-        env ZDOTDIR="$(dirname "$config_file")" /opt/homebrew/bin/zsh -i -c exit >/dev/null 2>&1
+        env ZDOTDIR="$(dirname "$config_file")" bash -c 'source "./.bash-harness-for-zsh-template.bash"; harness::run exit '>/dev/null 2>&1
 
         local end_time=$(date +%s%N 2>/dev/null || zsh_debug_echo "$(date +%s)000000000")
 

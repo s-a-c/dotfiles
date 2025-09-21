@@ -130,8 +130,8 @@ _log_test "=== Test Group 4: Startup Performance Testing ==="
 
 # Measure startup time with deferred loading
 _log_test "Measuring shell startup time with deferred loading..."
-_startup_time=$(_measure_time 'zsh -i -c "exit"')
-_log_test "Startup time: ${_startup_time}s"
+_startup_time=$(_measure_time 'bash -c 'source "./.bash-harness-for-zsh-template.bash"; harness::run "exit"')
+'_log_test "Startup time: ${_startup_time}s"
 
 # Parse startup time for validation (should be under 3 seconds on modern systems)
 _startup_time_int=$(echo "$_startup_time * 1000" | bc | cut -d. -f1)

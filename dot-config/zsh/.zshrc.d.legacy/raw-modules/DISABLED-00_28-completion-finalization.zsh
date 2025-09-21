@@ -1,6 +1,5 @@
 #!/usr/bin/env zsh
 # Safe completion initialization - prevents multiple compinit calls
-# This replaces the problematic completion setup
 
 # Prevent multiple initializations
 if [[ -n "${_COMPINIT_INITIALIZED:-}" ]]; then
@@ -14,10 +13,8 @@ mkdir -p "$(dirname "$compdump")"
 # Initialize completion system once
 autoload -Uz compinit
 if [[ -f "$compdump" && "$compdump" -nt ~/.zshrc ]]; then
-    # Use existing dump if newer than .zshrc
     compinit -C -d "$compdump" >/dev/null 2>&1
 else
-    # Rebuild completion dump
     compinit -d "$compdump" >/dev/null 2>&1
 fi
 

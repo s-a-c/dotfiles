@@ -1,0 +1,1 @@
+../.zshrc.d.legacy/consolidated-modules/08-legacy-compatibility.zsh
