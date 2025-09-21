@@ -159,7 +159,7 @@ Sprint 2 Focus (Active):
 - Real segment probes COMPLETE (all planned granular + phase anchors emitted)
 - Deferred dispatcher skeleton ACTIVE (one-shot postprompt; cumulative `deferred_total` segment captured)
 - Dependency cycle edge-case tests PASS (unknown / disabled suppression / multi-level / broken cycle scenarios covered)
-- Logging namespace migration COMPLETE (underscore wrappers removed; homogeneity gate enforced; documentation updates pending S4-29)
+- Logging namespace migration COMPLETE (underscore wrappers removed; homogeneity gate enforced; documentation fully updated)
 - Structured telemetry flags AVAILABLE (`ZSH_LOG_STRUCTURED`, `ZSH_PERF_JSON`) – opt-in, zero overhead when unset
 - Multi-metric performance classifier in OBSERVE mode (OK/WARN/FAIL thresholds: 10% / 25%); enforce-mode flip pending 3× consecutive OK streak (S4-33)
 - Governance: PERFORMANCE_LOG governance row (Type=governance) & enforce activation queued post-streak; README perf status block placeholder present
