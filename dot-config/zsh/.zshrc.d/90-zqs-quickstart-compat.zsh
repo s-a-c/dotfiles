@@ -232,18 +232,26 @@ if ! typeset -f warp_title >/dev/null 2>&1; then
   }
 fi
 
-# Guard against ZLE widgets array access when ZLE is not fully initialized
-# This can happen during rapid prompt evaluation or when widgets are not yet loaded
-if [[ -o interactive ]] && [[ -n "${ZLE_VERSION:-}" ]]; then
-  # Ensure widgets array exists as an associative array
-  if [[ -z "${widgets:-}" ]]; then
-    typeset -gA widgets
-  fi
+# Guard against ZLE widgets array access - CRITICAL FOR STARSHIP INIT
+# Starship's init script tries to access widgets[zle-keymap-select] at line 67
+# This happens during eval before ZLE is fully initialized
+if [[ -o interactive ]]; then
+  # Force ZLE to be available - this is crucial for Starship
+  autoload -Uz zle 2>/dev/null || true
   
-  # Ensure common widgets have default values to prevent parameter not set errors
-  [[ -z "${widgets[zle-keymap-select]:-}" ]] && widgets[zle-keymap-select]="user:_zle_keymap_select_placeholder"
-  [[ -z "${widgets[zle-line-init]:-}" ]] && widgets[zle-line-init]="user:_zle_line_init_placeholder"
-  [[ -z "${widgets[zle-line-finish]:-}" ]] && widgets[zle-line-finish]="user:_zle_line_finish_placeholder"
+  # Ensure widgets array exists as an associative array
+  # The widgets array is managed by ZLE but we need to ensure it exists
+  typeset -gA widgets 2>/dev/null || true
+  
+  # Pre-populate the specific widget that Starship checks
+  # This prevents "parameter not set" errors when Starship eval runs
+  widgets[zle-keymap-select]="" 2>/dev/null || true
+  
+  # Also ensure other common widgets exist for completeness
+  widgets[zle-line-init]="" 2>/dev/null || true
+  widgets[zle-line-finish]="" 2>/dev/null || true
+  
+  zsh_debug_echo "# [zqs-compat] ZLE widgets prepared for Starship initialization"
 fi
 
 zsh_debug_echo "# [zqs-compat] ZSH Quickstart compatibility functions loaded"
