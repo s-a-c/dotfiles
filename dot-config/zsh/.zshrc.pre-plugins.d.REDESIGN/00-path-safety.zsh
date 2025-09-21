@@ -117,6 +117,11 @@ fi
 
 _path_debug "Path safety initialization complete (${#path[@]} directories)"
 
+# Force command hash table rebuild after all PATH operations
+# This ensures commands are properly resolved during subsequent module loading
+rehash
+_path_debug "Command hash table rebuilt"
+
 # ==============================================================================
 # MODULE COMPLETION MARKER
 # ==============================================================================

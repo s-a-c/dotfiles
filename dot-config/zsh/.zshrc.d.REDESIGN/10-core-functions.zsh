@@ -186,13 +186,36 @@ zf::script_dir() {
   fi
 }
 
+# PATH management utilities (legacy compatibility)
+_path_prepend() {
+  # Prepend directory to PATH if not already present
+  local dir="$1"
+  [[ -z "$dir" || ! -d "$dir" ]] && return 1
+  case ":$PATH:" in
+    *:"$dir":*) return 0 ;; # already present
+    *) PATH="$dir:$PATH" ;;
+  esac
+  export PATH
+}
+
+_path_append() {
+  # Append directory to PATH if not already present
+  local dir="$1"
+  [[ -z "$dir" || ! -d "$dir" ]] && return 1
+  case ":$PATH:" in
+    *:"$dir":*) return 0 ;; # already present
+    *) PATH="$PATH:$dir" ;;
+  esac
+  export PATH
+}
+
 # ------------------------------
 # Export Metadata / Introspection
 # ------------------------------
 # Static export list (fallback for environments where `typeset -f` filtering
 # is restricted or altered by shell options). Bench / tooling can source this
 # variable or call zf::exports to obtain the canonical set without parsing.
-: ${ZF_CORE_EXPORTS:="zf::log zf::warn zf::debug zf::ensure_cmd zf::require zf::with_timing zf::timed zf::list_functions zf::script_dir"}
+: ${ZF_CORE_EXPORTS:="zf::log zf::warn zf::debug zf::ensure_cmd zf::require zf::with_timing zf::timed zf::list_functions zf::script_dir _path_prepend _path_append"}
 
 zf::exports() {
   print -r -- $ZF_CORE_EXPORTS

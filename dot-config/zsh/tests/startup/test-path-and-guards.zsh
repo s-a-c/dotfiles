@@ -29,8 +29,12 @@ else
     echo "✅ No widget parameter errors"
 fi
 
-if grep -q "command not found:" <<< "$out"; then
-    echo "⚠️  Some 'command not found' errors still present (check legacy modules)"
+# Count command not found errors
+if echo "$out" | grep -q "command not found:"; then
+    command_errors=$(echo "$out" | grep -c "command not found:")
+    echo "⚠️  $command_errors 'command not found' errors still present"
+    echo "    Details:"
+    echo "$out" | grep "command not found:" | sed 's/^/    - /'
 else
     echo "✅ No command not found errors"
 fi
