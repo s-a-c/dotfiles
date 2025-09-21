@@ -121,6 +121,24 @@ initialize_starship_prompt() {
     export STARSHIP_SHELL="${STARSHIP_SHELL:-zsh}"
     [[ -f "$HOME/.config/starship.toml" ]] && export STARSHIP_CONFIG="${STARSHIP_CONFIG:-$HOME/.config/starship.toml}"
     
+    # Ensure ZLE widgets array is properly initialized before Starship eval
+    # Starship tries to access widgets[zle-keymap-select] in its init script at line 67:
+    # __starship_preserved_zle_keymap_select=${widgets[zle-keymap-select]#user:}
+    if [[ -o interactive ]]; then
+        # Force ZLE to be available - this is crucial for Starship
+        autoload -Uz zle 2>/dev/null || true
+        
+        # Ensure widgets array exists as an associative array
+        # The widgets array is managed by ZLE but we need to ensure it exists
+        typeset -gA widgets 2>/dev/null || true
+        
+        # Pre-populate the specific widget that Starship checks
+        # This prevents "parameter not set" errors when Starship eval runs
+        widgets[zle-keymap-select]="" 2>/dev/null || true
+        
+        _post_debug "✅ ZLE widgets array prepared for Starship (zle-keymap-select initialized)"
+    fi
+    
     # Generate and execute starship initialization
     local starship_init
     starship_init="$("$_starship_bin" init zsh 2>/dev/null)"
@@ -128,13 +146,19 @@ initialize_starship_prompt() {
     if [[ -n "$starship_init" ]]; then
         _post_debug "✅ Starship init script generated (${#starship_init} chars)"
         
-        # Execute starship initialization
-        if eval "$starship_init" 2>/dev/null; then
+        # Execute starship initialization with better error handling
+        local starship_eval_result
+        {
+            eval "$starship_init"
+            starship_eval_result=$?
+        } 2>/dev/null
+        
+        if [[ $starship_eval_result -eq 0 ]]; then
             _post_debug "✅ Starship prompt initialized successfully (STARSHIP_SHELL=$STARSHIP_SHELL)"
             export STARSHIP_INITIALIZED="1"
             return 0
         else
-            _post_debug "❌ Starship eval failed"
+            _post_debug "❌ Starship eval failed with exit code $starship_eval_result"
             return 1
         fi
     else
