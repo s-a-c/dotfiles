@@ -12,10 +12,18 @@
 # DISABLE_AUTO_TITLE="true"
 #
 # Version 1.0.0
+
+# =================================================================================
+# === Redesign Toggle Defaults (Set early for test harness compatibility) ===
+# =================================================================================
+
+# Redesign toggles are now set in .zshenv - no longer defined here to avoid conflicts
+
 # Early minimal harness short-circuit:
 # When ZSH_SKIP_FULL_INIT=1 (set by perf minimal harness) skip remainder of .zshrc
 if [[ "${ZSH_SKIP_FULL_INIT:-0}" == "1" ]]; then
   zsh_debug_echo "# [.zshrc] Skipping full initialization (ZSH_SKIP_FULL_INIT=1)"
+  zsh_debug_echo "# [.zshrc] Redesign toggles: PREPLUGIN=${ZSH_ENABLE_PREPLUGIN_REDESIGN}, POSTPLUGIN=${ZSH_ENABLE_POSTPLUGIN_REDESIGN}"
   return 0
 fi
 #
@@ -43,7 +51,7 @@ function can_haz() {
 
 function zqs-debug() {
     if [[ -f "$ZDOTDIR/.zqs-debug-mode" ]]; then
-            zsh_debug_echo "$@"
+        zsh_debug_echo "$@"
     fi
 }
 
@@ -55,7 +63,8 @@ fi
 # Enable Powerlevel10k instant prompt. Should stay close to the top of .zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+# Guard P10K instant prompt from Warp (known incompatibility)
+if [[ $TERM_PROGRAM != "WarpTerminal" ]] && [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
     source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
@@ -137,9 +146,9 @@ _zqs-get-setting() {
 _zqs-set-setting() {
     if [[ $# -eq 2 ]]; then
         mkdir -p "$_ZQS_SETTINGS_DIR"
-            zsh_debug_echo "$2" > "${_ZQS_SETTINGS_DIR}/$1"
+        zsh_debug_echo "$2" > "${_ZQS_SETTINGS_DIR}/$1"
     else
-            zsh_debug_echo "Usage: _zqs-set-setting-value SETTINGNAME VALUE"
+        zsh_debug_echo "Usage: _zqs-set-setting-value SETTINGNAME VALUE"
     fi
 }
 
@@ -151,7 +160,7 @@ _zqs-delete-setting(){
     if [[ -f "$sfile" ]]; then
         rm -f "$sfile"
     else
-            zsh_debug_echo "There is no settings file for ${1}"
+        zsh_debug_echo "There is no settings file for ${1}"
     fi
 }
 
@@ -241,7 +250,7 @@ onepassword-agent-check() {
         if [[ -r "$ONE_P_SOCK" ]];then
             export SSH_AUTH_SOCK="$ONE_P_SOCK"
         else
-                zsh_debug_echo "Quickstart is set to use 1Password's ssh agent, but $ONE_P_SOCK isn't readable!"
+            zsh_debug_echo "Quickstart is set to use 1Password's ssh agent, but $ONE_P_SOCK isn't readable!"
         fi
         zqs-debug "Set SSH_AUTH_SOCK to $SSH_AUTH_SOCK"
     fi
@@ -331,7 +340,7 @@ fi
 # $ZDOTDIR/.zshrc.pre-plugins.d directory
 mkdir -p "$ZDOTDIR/.zshrc.pre-plugins.d"
 
-if [[ ${ZSH_ENABLE_PREPLUGIN_REDESIGN:-0} == 1 && -d "$ZDOTDIR/.zshrc.pre-plugins.d.REDESIGN" ]]; then
+if [[ ${ZSH_ENABLE_PREPLUGIN_REDESIGN} == 1 && -d "$ZDOTDIR/.zshrc.pre-plugins.d.REDESIGN" ]]; then
     zsh_debug_echo "# [pre-plugin] Using redesigned pre-plugin directory (.zshrc.pre-plugins.d.REDESIGN)"
     load-shell-fragments "$ZDOTDIR/.zshrc.pre-plugins.d.REDESIGN"
 else
@@ -564,7 +573,7 @@ if [[ -d "$ZDOTDIR/.zsh-completions.d" ]]; then
     load-shell-fragments "$ZDOTDIR/.zsh-completions.d"
 fi
 if [[ -d "$ZDOTDIR/.zsh-completions" ]]; then
-        zsh_debug_echo "$ZDOTDIR/.zsh_completions is deprecated in favor of $ZDOTDIR/.zsh_completions.d"
+    zsh_debug_echo "$ZDOTDIR/.zsh_completions is deprecated in favor of $ZDOTDIR/.zsh_completions.d"
     load-shell-fragments "$ZDOTDIR/.zsh-completions"
 fi
 
@@ -581,15 +590,14 @@ fi
 # quickstart's defaults by loading all files from the $ZDOTDIR/.zshrc.d directory
 mkdir -p "$ZDOTDIR/.zshrc.d"
 
-# Post-plugin redesign toggle: if enabled and redesign directory exists, load redesigned set instead
-# Guard variable: ZSH_ENABLE_POSTPLUGIN_REDESIGN=1 activates .zshrc.d.REDESIGN (parallel to pre-plugin redesign gating)
-# Auto-enable post-plugin redesign when pre-plugin redesign is active and redesign directory exists,
-# unless user explicitly exported ZSH_ENABLE_POSTPLUGIN_REDESIGN (honor explicit user intent).
-if [[ ${ZSH_ENABLE_PREPLUGIN_REDESIGN:-0} == 1 && -z ${ZSH_ENABLE_POSTPLUGIN_REDESIGN+x} && -d "$ZDOTDIR/.zshrc.d.REDESIGN" ]]; then
-    export ZSH_ENABLE_POSTPLUGIN_REDESIGN=1
-    zsh_debug_echo "# [post-plugin] auto-enabled redesign (pre-plugin redesign active)"
+# Post-plugin redesign toggle: controlled independently but requires pre-plugin redesign to be enabled
+# Validation: ZSH_ENABLE_POSTPLUGIN_REDESIGN=1 can only take effect when ZSH_ENABLE_PREPLUGIN_REDESIGN=1
+if [[ ${ZSH_ENABLE_POSTPLUGIN_REDESIGN} == 1 && ${ZSH_ENABLE_PREPLUGIN_REDESIGN} != 1 ]]; then
+    zsh_debug_echo "# [post-plugin] WARNING: Post-plugin redesign requires pre-plugin redesign to be enabled. Falling back to legacy modules."
+    ZSH_ENABLE_POSTPLUGIN_REDESIGN=0
 fi
-if [[ ${ZSH_ENABLE_POSTPLUGIN_REDESIGN:-0} == 1 && -d "$ZDOTDIR/.zshrc.d.REDESIGN" ]]; then
+
+if [[ ${ZSH_ENABLE_POSTPLUGIN_REDESIGN} == 1 && -d "$ZDOTDIR/.zshrc.d.REDESIGN" ]]; then
     zsh_debug_echo "# [post-plugin] Using redesigned post-plugin directory (.zshrc.d.REDESIGN)"
     load-shell-fragments "$ZDOTDIR/.zshrc.d.REDESIGN"
 else
@@ -628,11 +636,14 @@ typeset -aU path;
 ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(bracketed-paste)
 
 # Load iTerm shell integrations if found.
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+# Guard iTerm2 shell integration from Warp (known incompatibility)
+if [[ $TERM_PROGRAM != "WarpTerminal" ]]; then
+    test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+fi
 
 # To customize your prompt, run `p10k configure` or edit $ZDOTDIR/.p10k.zsh.
 if [[ ! -f "$ZDOTDIR/.p10k.zsh" ]]; then
-        zsh_debug_echo "Run p10k configure or edit $ZDOTDIR/.p10k.zsh to configure your prompt"
+    zsh_debug_echo "Run p10k configure or edit $ZDOTDIR/.p10k.zsh to configure your prompt"
 else
     source "$ZDOTDIR/.p10k.zsh"
 fi
@@ -661,9 +672,9 @@ if [[ $(_zqs-get-setting control-c-decorator 'true') == 'true' ]]; then
 fi
 
 if ! can_haz fzf; then
-        zsh_debug_echo "You'll need to install fzf or your history search will be broken."
+    zsh_debug_echo "You'll need to install fzf or your history search will be broken."
     echo
-        zsh_debug_echo "Install instructions can be found at https://github.com/junegunn/fzf/"
+    zsh_debug_echo "Install instructions can be found at https://github.com/junegunn/fzf/"
 fi
 
 # =================================================================================
@@ -703,4 +714,3 @@ fi
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/Users/s-a-c/.lmstudio/bin"
 # End of LM Studio CLI section
-

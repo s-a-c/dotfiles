@@ -83,3 +83,6 @@ autoSetupRemote = true
 	subjectPrefix = ^(feat|fix|chore|refactor|docs|style|test|perf|ci|build|revert)(\\([a-z-]+\\))?: [✨🐛🔧♻️📝💄✅⚡️👷🏗️⏪]
 [gc]
 	auto = 256
+[gitbutler]
+	gitbutlerCommitter = 1
+	aiModelProvider = anthropic

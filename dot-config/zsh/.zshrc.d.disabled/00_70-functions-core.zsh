@@ -12,7 +12,7 @@ if [[ -z "$ZSH_DEBUG_VERBOSE" ]]; then
 fi
 
 [[ "$ZSH_DEBUG" == "1" ]] && {
-        zsh_debug_echo "# ++++++ $0 ++++++++++++++++++++++++++++++++++++"
+    zsh_debug_echo "# ++++++ $0 ++++++++++++++++++++++++++++++++++++"
 }
 
 # PATH management functions are defined in .zshenv and should not be redefined
