@@ -163,13 +163,45 @@ ZQS_BASELINE_path=("${(s.:.)PATH}")
 
 # Safe defaults for prompt variables to prevent nounset errors
 typeset -g RPS1="${RPS1-}"
+typeset -g RPS2="${RPS2-}"  # Additional prompt variables
 typeset -g PROMPT="${PROMPT-}"
 typeset -g RPROMPT="${RPROMPT-}"
+typeset -g PS1="${PS1-%# }"
+typeset -g PS2="${PS2-%_ }"
+typeset -g PS3="${PS3-?# }"
+typeset -g PS4="${PS4-+%N:%i> }"
 typeset -g vi_mode_in_opts="${vi_mode_in_opts-0}"
+
+# AWS and cloud service variables
 typeset -g AWS_PROFILE_REGION="${AWS_PROFILE_REGION-}"
 typeset -g AWS_PROFILE="${AWS_PROFILE-}"
 typeset -g AWS_DEFAULT_PROFILE="${AWS_DEFAULT_PROFILE-}"
 typeset -g AWS_ACCOUNT_ID="${AWS_ACCOUNT_ID-}"
+
+# Ruby version management variables
+typeset -g RUBY_AUTO_VERSION="${RUBY_AUTO_VERSION-}"
+typeset -g CHRUBY_VERSION="${CHRUBY_VERSION-}"
+typeset -g RUBY_VERSION="${RUBY_VERSION-}"
+
+# ZLE and widget variables
+typeset -g ZLE_LINE_ABORTED="${ZLE_LINE_ABORTED-}"
+typeset -g ZLE_STATE="${ZLE_STATE-}"
+typeset -g KEYMAP="${KEYMAP-}"
+
+# Initialize widgets associative array if not already set
+if [[ -z ${widgets+x} ]]; then
+    typeset -gA widgets
+fi
+
+# Initialize parameters associative array if not already set
+if [[ -z ${parameters+x} ]]; then
+    typeset -gA parameters
+fi
+
+# Initialize functions associative array if not already set 
+if [[ -z ${functions+x} ]]; then
+    typeset -gA functions
+fi
 
 # ------------------------------------------------------------------------------
 # PATH Management Functions
