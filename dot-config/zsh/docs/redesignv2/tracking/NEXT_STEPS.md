@@ -75,10 +75,10 @@ Note: S4-12 (Invocation wrapper with timing & containment) and S4-13 (Per-featur
 | S4-26 | DOT generator & tests | Stable Graphviz output | s-a-c | Done (integrated in deps-export) |
 | S4-27 | Idle/background trigger design | Spec + initial stub (97-idle-trigger.zsh) + design doc | s-a-c | In Progress (draft: feature/IDLE_DEFERRED_TRIGGER_DESIGN.md) |
 | S4-28 | Privacy appendix & redaction hooks | Data category whitelist | s-a-c | Done (privacy/PRIVACY_APPENDIX.md published) |
-| S4-29 | Homogeneity gate doc updates | Reflect removal & enforcement | s-a-c | Pending |
-| S4-30 | Performance Log classifier legend | Document thresholds & statuses | s-a-c | Pending |
-| S4-18 | Telemetry opt-in flag stub (`ZSH_FEATURE_TELEMETRY=1`) | Controlled activation switch + timing arrays scaffold | s-a-c | In Progress (scaffold in IMPLEMENTATION.md Telemetry Opt-In section) |
-| S4-19 | Catalog status refresh pass | Ensure no drift after wrapper landing | s-a-c | Pending |
+| S4-29 | Homogeneity gate doc updates | Reflect removal & enforcement | s-a-c | Done |
+| S4-30 | Performance Log classifier legend | Document thresholds & statuses | s-a-c | Done |
+| S4-18 | Telemetry opt-in flag stub (`ZSH_FEATURE_TELEMETRY=1`) | Controlled activation switch + timing arrays scaffold | s-a-c | Done |
+| S4-19 | Catalog status refresh pass | Ensure no drift after wrapper landing | s-a-c | Done |
 
 ---
 

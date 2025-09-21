@@ -120,7 +120,8 @@ xcuserdata/
 # 4. LANGUAGE / TOOL ARTIFACTS
 ###############################################################################
 # JavaScript / TypeScript / Angular
-/node_modules
+node_modules/
+**/node_modules/
 npm-debug.log
 yarn-error.log
 /.angular/cache

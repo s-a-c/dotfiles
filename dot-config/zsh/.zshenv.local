@@ -27,7 +27,10 @@
 # ------------------------------------------------------------------------------
 # Enable zsh REDESIGN
 # ------------------------------------------------------------------------------
-export ZSH_ENABLE_PREPLUGIN_REDESIGN=1
-export ZSH_ENABLE_POSTPLUGIN_REDESIGN=1
+# Default configuration (respects existing environment variables):
+# - ZSH_ENABLE_PREPLUGIN_REDESIGN=1 (use redesigned pre-plugin modules)
+# - ZSH_ENABLE_POSTPLUGIN_REDESIGN=0 (use legacy consolidated post-plugin modules)
+export ZSH_ENABLE_PREPLUGIN_REDESIGN=${ZSH_ENABLE_PREPLUGIN_REDESIGN:-1}
+export ZSH_ENABLE_POSTPLUGIN_REDESIGN=${ZSH_ENABLE_POSTPLUGIN_REDESIGN:-0}
 
 # End of file
