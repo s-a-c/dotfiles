@@ -40,16 +40,16 @@ fi
 # Minimal safe PATH augmentation (append-preserving; do not clobber user/front-loaded entries)
 # If PATH is empty (very constrained subshell), seed it; otherwise append any missing core dirs.
 if [[ -z "${PATH:-}" ]]; then
-  PATH="/opt/homebrew/bin:/run/current-system/sw/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
+    PATH="/opt/homebrew/bin:/run/current-system/sw/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
 else
-  for __core_dir in /opt/homebrew/bin /run/current-system/sw/bin /usr/local/bin /usr/bin /bin /usr/local/sbin /usr/sbin /sbin; do
-    [ -d "$__core_dir" ] || continue
-    case ":$PATH:" in
-      *:"$__core_dir":*) ;;        # already present (preserve first occurrence)
-      *) PATH="${PATH}:$__core_dir" ;;
-    esac
-  done
-  unset __core_dir
+    for __core_dir in /opt/homebrew/bin /run/current-system/sw/bin /usr/local/bin /usr/bin /bin /usr/local/sbin /usr/sbin /sbin; do
+        [ -d "$__core_dir" ] || continue
+        case ":$PATH:" in
+            *:"$__core_dir":*) ;;        # already present (preserve first occurrence)
+            *) PATH="${PATH}:$__core_dir" ;;
+        esac
+    done
+    unset __core_dir
 fi
 export PATH
 
@@ -62,6 +62,8 @@ export XDG_BIN_HOME="${XDG_BIN_HOME:-${HOME}/.local/bin}"
 mkdir -p "${XDG_CONFIG_HOME}" "${XDG_CACHE_HOME}" "${XDG_DATA_HOME}" "${XDG_STATE_HOME}" "${XDG_BIN_HOME}" 2>/dev/null || true
 
 export ZDOTDIR="${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}"
+
+RIPGREP_CONFIG_PATH="${RIPGREP_CONFIG_PATH:-${XDG_CONFIG_HOME}/ripgrep/ripgreprc}"
 
 # Allow a localized override file to run early. This file may set ZDOTDIR
 # or other site/user-specific values. It's safe to source here because it is
@@ -115,6 +117,96 @@ export ZSH_DEBUG_LOG="${ZSH_LOG_DIR}/${ZSH_SESSION_ID}-zsh-debug.log"
 # Basic optional debug flag
 export ZSH_DEBUG="${ZSH_DEBUG:-0}"
 
+# Performance monitoring flag - set early to prevent module initialization errors
+export _PERFORMANCE_MONITORING_LOADED="${_PERFORMANCE_MONITORING_LOADED:-1}"
+
+# Set BREW_PREFIX early for module compatibility
+if [[ -z "${BREW_PREFIX:-}" ]]; then
+    if [[ -d "/opt/homebrew" ]]; then
+        export BREW_PREFIX="/opt/homebrew"
+    elif [[ -d "/usr/local" ]]; then
+        export BREW_PREFIX="/usr/local"
+    fi
+fi
+
+# Set DESK_ENV to empty to prevent undefined variable errors
+export DESK_ENV="${DESK_ENV:-}"
+
+# Set QUICKSTART_KIT_REFRESH_IN_DAYS to prevent undefined variable errors
+typeset -gi QUICKSTART_KIT_REFRESH_IN_DAYS=${QUICKSTART_KIT_REFRESH_IN_DAYS:-7}
+
+# ==============================================================================
+# REDESIGN FLAGS AND PATH BASELINE CAPTURE
+# ==============================================================================
+# Redesign toggles (pre-plugin ON, post-plugin OFF)
+export ZSH_ENABLE_PREPLUGIN_REDESIGN=1
+unset ZSH_ENABLE_POSTPLUGIN_REDESIGN
+: ${ZSH_ENABLE_POSTPLUGIN_REDESIGN:=}   # Keep it empty/unset
+
+# Composer home following XDG with safe fallback
+typeset -gx COMPOSER_HOME="${COMPOSER_HOME:-${XDG_DATA_HOME:-${HOME}/.local/share}/composer}"
+
+# Ensure directory exists with safe perms
+[[ -d $COMPOSER_HOME ]] || mkdir -p "$COMPOSER_HOME"
+
+# Add Composer vendor/bin to PATH without reducing baseline
+if [[ -d "$COMPOSER_HOME/vendor/bin" ]]; then
+  _path_append "$COMPOSER_HOME/vendor/bin"
+fi
+
+# After PATH is fully defined, capture a snapshot and set an early sentinel
+typeset -gx ZQS_BASELINE_PATH_SNAPSHOT="$PATH"
+typeset -gx ZQS_EARLY_PATH_BOOTSTRAPPED=1
+# Keep a normalized array view for later merge/dedupe operations
+typeset -ga ZQS_BASELINE_path
+ZQS_BASELINE_path=("${(s.:.)PATH}")
+
+# Safe defaults for prompt variables to prevent nounset errors
+typeset -g RPS1="${RPS1-}"
+typeset -g PROMPT="${PROMPT-}"
+typeset -g RPROMPT="${RPROMPT-}"
+typeset -g vi_mode_in_opts="${vi_mode_in_opts-0}"
+typeset -g AWS_PROFILE_REGION="${AWS_PROFILE_REGION-}"
+typeset -g AWS_PROFILE="${AWS_PROFILE-}"
+typeset -g AWS_DEFAULT_PROFILE="${AWS_DEFAULT_PROFILE-}"
+typeset -g AWS_ACCOUNT_ID="${AWS_ACCOUNT_ID-}"
+
+# ------------------------------------------------------------------------------
+# PATH Management Functions
+# ------------------------------------------------------------------------------
+# These functions automatically dedupe by removing the target path before
+# pre/appending it, as suggested by the user
+
+## [_path.remove]
+function _path_remove() {
+    for ARG in "$@"; do
+        while [[ ":${PATH}:" == *":${ARG}:"* ]]; do
+            ## Delete path by parts so we can never accidentally remove sub paths
+            [[ "${PATH}" == "${ARG}" ]] && PATH=""
+            PATH=${PATH//":${ARG}:"/:}  ## delete any instances in the middle
+            PATH=${PATH/#"${ARG}:"/}  ## delete any instance at the beginning
+            PATH=${PATH/%":${ARG}"/}  ## delete any instance at the end
+            export PATH
+        done
+    done
+}
+
+## [_path.append]
+function _path_append() {
+    for ARG in "$@"; do
+        _path_remove "${ARG}"
+        [[ -d "${ARG}" ]] && export PATH="${PATH:+"${PATH}:"}${ARG}"
+    done
+}
+
+## [_path.prepend]
+function _path_prepend() {
+    for ARG in "$@"; do
+        _path_remove "${ARG}"
+        [[ -d "${ARG}" ]] && export PATH="${ARG}${PATH:+":${PATH}"}"
+    done
+}
+
 zsh_debug_echo "[DEBUG] early .zshenv:" || true
 zsh_debug_echo "    ZDOTDIR=${ZDOTDIR}" || true
 zsh_debug_echo "    ZSH_CACHE_DIR=${ZSH_CACHE_DIR}" || true
@@ -123,7 +215,7 @@ zsh_debug_echo "    ZSH_LOG_DIR=${ZSH_LOG_DIR}" || true
 # ------------------------------------------------------------------------------
 # Utility: PATH de-duplication (preserve first occurrence)
 # ------------------------------------------------------------------------------
-path_dedupe() {
+function path_dedupe() {
     # Portable-ish PATH de-duplication (avoid zsh-only ${(j:...)} join & advanced array ops)
     # Flags:
     #   --verbose  : emit counts to stderr
@@ -220,31 +312,31 @@ export ZSH_SCRIPT_DIR_HELPERS=1
 # Opt-out: set PERF_HARNESS_DISABLE_WATCHDOG=1
 # ------------------------------------------------------------------------------
 if [ "${PERF_HARNESS_TIMEOUT_SEC:-0}" -gt 0 ] && [ "${PERF_HARNESS_DISABLE_WATCHDOG:-0}" != "1" ]; then
-  # Record parent PID for signaling (do not override if already set by caller)
-  : "${HARNESS_PARENT_PID:=$$}"
-  export HARNESS_PARENT_PID
-  (
-    timeout_sec="${PERF_HARNESS_TIMEOUT_SEC}"
-    grace_ms="${PERF_HARNESS_GRACE_MS:-400}"
-    sleep "${timeout_sec}"
-    if [[ -n "${PERF_PROMPT_HARNESS:-}" || -n "${PERF_SEGMENT_LOG:-}" ]]; then
-      if kill -0 "${HARNESS_PARENT_PID}" 2>/dev/null; then
-        kill -TERM "${HARNESS_PARENT_PID}" 2>/dev/null || true
-        # Convert grace to fractional seconds (numeric grace_ms -> ms to s.mmm; fallback 0.4s)
-        case "$grace_ms" in
-          ''|*[!0-9]*)
-            sleep 0.4
-            ;;
-          *)
-            _g="$grace_ms"
-            sleep "$(printf '%d.%03d' $((_g/1000)) $((_g%1000)))"
-            unset _g
-            ;;
-        esac
-        kill -0 "${HARNESS_PARENT_PID}" 2>/dev/null && kill -KILL "${HARNESS_PARENT_PID}" 2>/dev/null || true
-      fi
-    fi
-  ) &
+    # Record parent PID for signaling (do not override if already set by caller)
+    : "${HARNESS_PARENT_PID:=$$}"
+    export HARNESS_PARENT_PID
+    (
+        timeout_sec="${PERF_HARNESS_TIMEOUT_SEC}"
+        grace_ms="${PERF_HARNESS_GRACE_MS:-400}"
+        sleep "${timeout_sec}"
+        if [[ -n "${PERF_PROMPT_HARNESS:-}" || -n "${PERF_SEGMENT_LOG:-}" ]]; then
+        if kill -0 "${HARNESS_PARENT_PID}" 2>/dev/null; then
+            kill -TERM "${HARNESS_PARENT_PID}" 2>/dev/null || true
+            # Convert grace to fractional seconds (numeric grace_ms -> ms to s.mmm; fallback 0.4s)
+            case "$grace_ms" in
+            ''|*[!0-9]*)
+                sleep 0.4
+                ;;
+            *)
+                _g="$grace_ms"
+                sleep "$(printf '%d.%03d' $((_g/1000)) $((_g%1000)))"
+                unset _g
+                ;;
+            esac
+            kill -0 "${HARNESS_PARENT_PID}" 2>/dev/null && kill -KILL "${HARNESS_PARENT_PID}" 2>/dev/null || true
+        fi
+        fi
+    ) &
 fi
 # ------------------------------------------------------------------------------
 # Minimal perf harness mode (PERF_HARNESS_MINIMAL=1)
@@ -253,17 +345,17 @@ fi
 # in constrained CI sandboxes. Must appear before plugin manager / theme logic.
 # ------------------------------------------------------------------------------
 if [[ "${PERF_HARNESS_MINIMAL:-0}" == "1" ]]; then
-  # Minimal perf harness path detected, but early return disabled to allow full interactive startup.
-  # (Original minimal fast path intentionally bypassed.)
-  ZSH_DEBUG=${ZSH_DEBUG:-0}
-  export ZSH_PERF_PROMPT_MARKERS=1
-  if [[ -f "${ZDOTDIR}/.zshrc.d.REDESIGN/95-prompt-ready.zsh" ]]; then
-    source "${ZDOTDIR}/.zshrc.d.REDESIGN/95-prompt-ready.zsh"
-  fi
-  if [[ -f "${ZDOTDIR}/tools/segment-lib.zsh" ]]; then
-    source "${ZDOTDIR}/tools/segment-lib.zsh"
-  fi
-  # return 0  # disabled
+    # Minimal perf harness path detected, but early return disabled to allow full interactive startup.
+    # (Original minimal fast path intentionally bypassed.)
+    ZSH_DEBUG=${ZSH_DEBUG:-0}
+    export ZSH_PERF_PROMPT_MARKERS=1
+    if [[ -f "${ZDOTDIR}/.zshrc.d.REDESIGN/95-prompt-ready.zsh" ]]; then
+        source "${ZDOTDIR}/.zshrc.d.REDESIGN/95-prompt-ready.zsh"
+    fi
+    if [[ -f "${ZDOTDIR}/tools/segment-lib.zsh" ]]; then
+        source "${ZDOTDIR}/tools/segment-lib.zsh"
+    fi
+    # return 0  # disabled
 fi
 
 # ------------------------------------------------------------------------------
@@ -298,7 +390,7 @@ safe_git() {
 }
 # Provide backward-compatible wrapper if legacy references exist
 if ! typeset -f _lazy_gitwrapper >/dev/null 2>&1; then
-  _lazy_gitwrapper() { safe_git "$@"; }
+    _lazy_gitwrapper() { safe_git "$@"; }
 fi
 
 # ------------------------------------------------------------------------------
@@ -348,8 +440,10 @@ zsh_debug_echo "    ZGEN_AUTOLOAD_COMPINIT=$ZGEN_AUTOLOAD_COMPINIT" || true
 export ZGEN_AUTOLOAD_COMPINIT="${ZGEN_AUTOLOAD_COMPINIT:-0}"
 
 # Feature flags (planning): pre-plugin redesign & plugin ecosystem toggles
-export ZSH_ENABLE_PREPLUGIN_REDESIGN="${ZSH_ENABLE_PREPLUGIN_REDESIGN:-0}"
-export ZSH_ENABLE_NVM_PLUGINS="${ZSH_ENABLE_NVM_PLUGINS:-1}"
+# Pre-plugin: ENABLED (simpler modules), Post-plugin: DISABLED (avoid complex async/lazy loading)
+export ZSH_ENABLE_PREPLUGIN_REDESIGN="${ZSH_ENABLE_PREPLUGIN_REDESIGN:-1}"
+export ZSH_ENABLE_POSTPLUGIN_REDESIGN="${ZSH_ENABLE_POSTPLUGIN_REDESIGN:-0}"
+export ZSH_ENABLE_NVM_PLUGINS="${ZSH_ENABLE_NVM_PLUGINS:-0}"
 export ZSH_NODE_LAZY="${ZSH_NODE_LAZY:-1}"
 export ZSH_ENABLE_ABBR="${ZSH_ENABLE_ABBR:-0}"
 
@@ -362,19 +456,19 @@ export ZSH_ENABLE_ABBR="${ZSH_ENABLE_ABBR:-0}"
 # Safe: only appends; does not reorder front-of-line priorities.
 # ------------------------------------------------------------------
 {
-  _core_added=0
-  for __core_dir in /usr/local/bin /opt/homebrew/bin /usr/bin /bin /usr/sbin /sbin; do
-    [ -d "$__core_dir" ] || continue
-    case ":$PATH:" in
-      *:"$__core_dir":*) ;;
-      *)
-        PATH="${PATH:+$PATH:}$__core_dir"
-        _core_added=$(( _core_added + 1 ))
-        ;;
-    esac
-  done
-  export PATH
-  unset __core_dir _core_added
+    _core_added=0
+    for __core_dir in /usr/local/bin /opt/homebrew/bin /usr/bin /bin /usr/sbin /sbin; do
+        [ -d "$__core_dir" ] || continue
+        case ":$PATH:" in
+        *:"$__core_dir":*) ;;
+        *)
+            PATH="${PATH:+$PATH:}$__core_dir"
+            _core_added=$(( _core_added + 1 ))
+            ;;
+        esac
+    done
+    export PATH
+    unset __core_dir _core_added
 }
 
 # Optional: custom compdump location and compinit flags (keeps compdump in cache)

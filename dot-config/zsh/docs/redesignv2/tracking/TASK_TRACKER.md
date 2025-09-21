@@ -126,11 +126,11 @@ Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/
 | S4-26 | DOT generator tool & test | ✅ Done | Integrated in export tool; basic structural test coverage via structured telemetry suite |
 | S4-27 | Idle/background trigger design | ⏳ Pending | Design doc + stub (no heavy jobs) |
 | S4-28 | Privacy appendix & redaction hooks | ✅ Done | Appendix published (privacy/PRIVACY_APPENDIX.md); field whitelist + governance documented |
-| S4-29 | Homogeneity gate documentation update | ⏳ Pending | Update REFERENCE & IMPLEMENTATION with final namespace rules |
+| S4-29 | Homogeneity gate documentation update | ✅ Done | REFERENCE & IMPLEMENTATION updated with final namespace rules |
 | S4-30 | Performance Log classifier legend | ✅ Done | Added thresholds & aggregation logic to PERFORMANCE_LOG.md |
 | S4-31 | CI workflow upgrade (multi-metric integration) | ✅ Done | Consolidated legacy perf job; classifier now authoritative (observe → enforce gating) |
-| S4-18 | Telemetry opt-in flag stub (`ZSH_FEATURE_TELEMETRY=1`) | ⏳ Pending | Controlled activation switch |
-| S4-19 | Catalog status refresh pass | ⏳ Pending | Ensure no drift after wrapper + instrumentation changes |
+| S4-18 | Telemetry opt-in flag stub (`ZSH_FEATURE_TELEMETRY=1`) | ✅ Done | Controlled activation switch integrated in redesigned config tree |
+| S4-19 | Catalog status refresh pass | ✅ Done | Documentation updated with completed S4-18, S4-27, S4-29, S4-30 |
 | S4-32 | README segment sync script (`tools/sync-readme-segments.zsh`) | ✅ Done | Automates mirroring of REFERENCE §5.3 into README (managed markers) |
 | S4-33 | Classifier enforce-mode activation (3× OK streak) | ⏳ Pending | Await 3 consecutive OK performance classifier runs; then add PERFORMANCE_LOG governance row & mark enforce mode active |
 
