@@ -202,4 +202,49 @@ EOF
   }
 fi
 
+# =============================================================================
+# Defensive Parameter Guards (fix unset parameter errors)
+# =============================================================================
+
+# Guard against P10K variable references when using Starship
+# These may be checked by P10K configs or plugins even when Starship is active
+[[ -z "${POWERLEVEL9K_PROMPT_ADD_NEWLINE:-}" ]] && export POWERLEVEL9K_PROMPT_ADD_NEWLINE=false
+[[ -z "${POWERLEVEL9K_MODE:-}" ]] && export POWERLEVEL9K_MODE=""
+[[ -z "${POWERLEVEL9K_INSTANT_PROMPT:-}" ]] && export POWERLEVEL9K_INSTANT_PROMPT=quiet
+
+# Guard against Emacs-related variables checked by Oh-My-Zsh termsupport
+# Warp terminal integrations may reference these
+[[ -z "${INSIDE_EMACS:-}" ]] && export INSIDE_EMACS=""
+[[ -z "${EMACS:-}" ]] && export EMACS=""
+
+# Additional Warp-specific guards if needed
+[[ -z "${WARP_HONOR_PS1:-}" ]] && export WARP_HONOR_PS1="${WARP_HONOR_PS1:-1}"
+
+# Guard against warp_title function calls (may be referenced by Warp terminal integrations)
+# Create a safe no-op function if it doesn't exist
+if ! typeset -f warp_title >/dev/null 2>&1; then
+  warp_title() {
+    # Safe no-op implementation for warp_title if not defined by Warp terminal
+    # Check that INSIDE_EMACS is defined to avoid parameter not set errors
+    [[ -n "${INSIDE_EMACS:-}" && "$INSIDE_EMACS" != "vterm" ]] && return
+    # Optionally set terminal title using standard escape sequences if not in Emacs
+    return 0
+  }
+fi
+
+# Guard against ZLE widgets array access when ZLE is not fully initialized
+# This can happen during rapid prompt evaluation or when widgets are not yet loaded
+if [[ -o interactive ]] && [[ -n "${ZLE_VERSION:-}" ]]; then
+  # Ensure widgets array exists as an associative array
+  if [[ -z "${widgets:-}" ]]; then
+    typeset -gA widgets
+  fi
+  
+  # Ensure common widgets have default values to prevent parameter not set errors
+  [[ -z "${widgets[zle-keymap-select]:-}" ]] && widgets[zle-keymap-select]="user:_zle_keymap_select_placeholder"
+  [[ -z "${widgets[zle-line-init]:-}" ]] && widgets[zle-line-init]="user:_zle_line_init_placeholder"
+  [[ -z "${widgets[zle-line-finish]:-}" ]] && widgets[zle-line-finish]="user:_zle_line_finish_placeholder"
+fi
+
 zsh_debug_echo "# [zqs-compat] ZSH Quickstart compatibility functions loaded"
+zsh_debug_echo "# [zqs-compat] Defensive parameter guards active"
