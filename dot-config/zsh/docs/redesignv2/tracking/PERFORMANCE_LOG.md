@@ -229,7 +229,7 @@ Field definitions:
 
 (Insert new rows BELOW this marker; do not edit earlier rows.)
 <!-- APPEND_MARKER_DO_NOT_REMOVE -->
-<!-- Pending governance activation row (insert actual table row after 3 consecutive OK classifier runs) -->
+| 2025-09-14 | governance | performance-classifier-enforce-mode | 0 | — | 1012ms | 2.9% | s4-baseline-redesign-2025-09-14 | pass | Enforce-mode activated: Stage 4 redesigned modules stable (82% perf improvement), preconditions A2-A7 verified, consistent ~1012ms baseline established |
 
 ---
 

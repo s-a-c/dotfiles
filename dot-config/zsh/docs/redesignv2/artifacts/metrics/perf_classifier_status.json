@@ -1,44 +1,16 @@
 {
-  "schema": "perf-classifier-status.v1",
-  "generated_at": "2025-09-11T00:00:00Z",
-  "description": "First classifier observe-mode run ingested; initialization stub replaced with active status tracking.",
-  "overall_status": "OK",
-  "ok_streak_current": 1,
-  "ok_streak_max": 1,
-  "enforce_active": false,
+  "overall_status": "BASELINE_CREATED",
+  "goal": "streak",
+  "worst_metric": "_ms",
+  "worst_delta_pct": 0,
+  "warn_threshold_pct": 10,
+  "fail_threshold_pct": 25,
+  "runs": 5,
+  "mode": "observe",
   "metrics": {
-    "prompt_ready": {
-      "raw_metric_key": "prompt_ready_ms",
-      "status": "OK",
-      "mean_ms": 334,
-      "baseline_mean_ms": 334,
-      "delta_pct": 0.0,
-      "rsd_pct": 1.9,
-      "runs": 5
-    }
+    "prompt_ready_ms": { "status": "BASELINE_CREATED", "delta_pct": 0.00, "mean_ms": 0.00, "median_ms": 0.00, "stddev_ms": 0.00, "rsd_pct": 0.00, "baseline_mean_ms": 0.00, "values": [0,0,0,0,0] }
   },
-  "recent_overall": [
-    {"ts":"2025-09-11T00:00:00Z","status":"OK","worst_metric":"prompt_ready_ms","worst_delta_pct":0.0}
-  ],
-  "source": {
-    "mode": "observe",
-    "warn_threshold_pct": 10,
-    "fail_threshold_pct": 25
-  },
-  "governance": {
-    "activation_preconditions": [
-      "3 consecutive OK overall runs",
-      "Baseline integrity test passes",
-      "Structured telemetry schema test passes",
-      "No pending segment definition changes",
-      "README/REFERENCE segment sync clean",
-      "Prompt_ready RSD ≤5%",
-      "Privacy appendix updated for any new telemetry keys"
-    ],
-    "next_action": "Run performance classifier (observe mode) and update this artifact via update-performance-status.zsh"
-  },
-  "compliance": {
-    "guidelines_path": "/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md",
-    "checksum": "3fb33a85972b794c3c0b2f992b1e5a7c19cfbd2ccb3bb519f8865ad8fdfc0316"
-  }
+  "generated_at": "2025-09-14T14:10:47+01:00",
+  "baseline_dir": "artifacts/metrics",
+  "_debug": { "synthetic_used": 0, "partial": 0, "missing_metrics": [""] }
 }
