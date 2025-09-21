@@ -64,7 +64,7 @@ __ui_emit_segment() {
 if [[ -z ${_UI_PROMPT_SEGMENT_EMITTED:-} ]]; then
   typeset -g _UI_PROMPT_SEGMENT_EMITTED=1
   _ui_start="$(__ui_now_ms)"
-  # (Future placeholder: minimal hook registration or prompt introspection)
+# (Future placeholder: minimal hook registration or prompt introspection)
   # Keep body intentionally empty today.
   _ui_end="$(__ui_now_ms)"
   (( _ui_delta = _ui_end - _ui_start ))

@@ -84,7 +84,7 @@ ZSH_ENABLE_PREPLUGIN_REDESIGN=1 \
 PERF_PROMPT_HARNESS=1 \
 PERF_SEGMENT_LOG="$SEG_LOG" \
 ZSH_P10K_FILE="$THEME_FILE" \
-zsh -i </dev/null >/dev/null 2>&1 || true
+bash -c 'source "./.bash-harness-for-zsh-template.bash"; harness::run "exit"' >/dev/null 2>&1 || true
 
 if [[ ! -s "$SEG_LOG" ]]; then
   fail "Segment log empty – instrumentation harness did not run or failed"

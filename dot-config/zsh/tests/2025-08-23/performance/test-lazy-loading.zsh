@@ -81,7 +81,7 @@ mkdir -p "$log_dir"
     startup_times=()
     for i in {1..3}; do
         printf "   Run %d: " "$i"
-        startup_time=$(time zsh -i -c 'exit' 2>&1 | tail -1 | grep -o '[0-9.]*s' | head -1 | sed 's/s//')
+        startup_time=$(time bash -c 'source "./.bash-harness-for-zsh-template.bash"; harness::run 'exit' 2'>&1 | tail -1 | grep -o '[0-9.]*s' | head -1 | sed 's/s//')
         if [[ -n "$startup_time" ]]; then
             startup_times+=($startup_time)
                 zsh_debug_echo "${startup_time}s"
@@ -113,8 +113,8 @@ mkdir -p "$log_dir"
         zsh_debug_echo ""
         zsh_debug_echo "🔍 Testing lazy loading initialization in clean shell..."
 
-    lazy_test_result=$(zsh -i -c '
-        source ~/.config/zsh/.zshrc.pre-plugins.d/04-lazy-direnv.zsh 2>/dev/null
+    lazy_test_result=$(bash -c 'source "./.bash-harness-for-zsh-template.bash"; harness::run '
+'        source ~/.config/zsh/.zshrc.pre-plugins.d/04-lazy-direnv.zsh 2>/dev/null
         source ~/.config/zsh/.zshrc.pre-plugins.d/05-lazy-git-config.zsh 2>/dev/null
         source ~/.config/zsh/.zshrc.pre-plugins.d/06-lazy-gh-copilot.zsh 2>/dev/null
 
@@ -165,7 +165,7 @@ mkdir -p "$log_dir"
     direnv_before_logs=$(find "$log_dir" -name "*lazy-direnv*" | wc -l)
 
     # Start fresh shell and immediately exit (should not trigger direnv)
-    zsh -i -c 'exit' 2>/dev/null
+    bash -c 'source "./.bash-harness-for-zsh-template.bash"; harness::run 'exit' 2'>/dev/null
 
     direnv_after_logs=$(find "$log_dir" -name "*lazy-direnv*" | wc -l)
 
@@ -180,7 +180,7 @@ mkdir -p "$log_dir"
     # Test direnv loading when used
     if command -v direnv >/dev/null 2>&1; then
         direnv_logs_before=$(find "$log_dir" -name "*lazy-direnv*" | wc -l)
-        zsh -i -c 'direnv --version' 2>/dev/null >/dev/null
+        bash -c 'source "./.bash-harness-for-zsh-template.bash"; harness::run 'direnv --version' 2'>/dev/null >/dev/null
         direnv_logs_after=$(find "$log_dir" -name "*lazy-direnv*" | wc -l)
 
         run_test "Testing direnv loads when command is used" \
@@ -193,7 +193,7 @@ mkdir -p "$log_dir"
     # Test git config caching
     if command -v git >/dev/null 2>&1; then
         git_logs_before=$(find "$log_dir" -name "*lazy-git-config*" | wc -l)
-        zsh -i -c 'git config --get user.name' 2>/dev/null >/dev/null
+        bash -c 'source "./.bash-harness-for-zsh-template.bash"; harness::run 'git config --get user.name' 2'>/dev/null >/dev/null
         git_logs_after=$(find "$log_dir" -name "*lazy-git-config*" | wc -l)
 
         run_test "Testing git config loads when git command is used" \
