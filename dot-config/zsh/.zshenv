@@ -138,10 +138,27 @@ typeset -gi QUICKSTART_KIT_REFRESH_IN_DAYS=${QUICKSTART_KIT_REFRESH_IN_DAYS:-7}
 # ==============================================================================
 # REDESIGN FLAGS AND PATH BASELINE CAPTURE
 # ==============================================================================
-# Redesign toggles (pre-plugin ON, post-plugin OFF)
-export ZSH_ENABLE_PREPLUGIN_REDESIGN=1
-unset ZSH_ENABLE_POSTPLUGIN_REDESIGN
-: ${ZSH_ENABLE_POSTPLUGIN_REDESIGN:=}   # Keep it empty/unset
+# Redesign toggles with customizable defaults
+# Default: PREPLUGIN_REDESIGN=1 (enabled), POSTPLUGIN_REDESIGN=0 (disabled)
+# Users can override by setting these before sourcing .zshenv or in .zshenv.local
+
+# Set defaults and treat unset as false/0
+export ZSH_ENABLE_PREPLUGIN_REDESIGN="${ZSH_ENABLE_PREPLUGIN_REDESIGN:-1}"
+export ZSH_ENABLE_POSTPLUGIN_REDESIGN="${ZSH_ENABLE_POSTPLUGIN_REDESIGN:-0}"
+
+# Normalize values: anything that's not "1" becomes "0"
+if [[ "$ZSH_ENABLE_PREPLUGIN_REDESIGN" != "1" ]]; then
+    export ZSH_ENABLE_PREPLUGIN_REDESIGN="0"
+fi
+if [[ "$ZSH_ENABLE_POSTPLUGIN_REDESIGN" != "1" ]]; then
+    export ZSH_ENABLE_POSTPLUGIN_REDESIGN="0"
+fi
+
+# Debug output for flag status
+if [[ "${ZSH_DEBUG:-0}" == "1" ]]; then
+    zsh_debug_echo "# [zshenv] ZSH_ENABLE_PREPLUGIN_REDESIGN=$ZSH_ENABLE_PREPLUGIN_REDESIGN"
+    zsh_debug_echo "# [zshenv] ZSH_ENABLE_POSTPLUGIN_REDESIGN=$ZSH_ENABLE_POSTPLUGIN_REDESIGN"
+fi
 
 # Composer home following XDG with safe fallback
 typeset -gx COMPOSER_HOME="${COMPOSER_HOME:-${XDG_DATA_HOME:-${HOME}/.local/share}/composer}"
@@ -301,25 +318,28 @@ path_dedupe >/dev/null 2>&1 || true
 # ------------------------------------------------------------------------------
 if ! typeset -f resolve_script_dir >/dev/null 2>&1; then
 resolve_script_dir() {
-    emulate -L zsh
-    set -o no_unset
-    local src="${1:-${(%):-%N}}"
-    # If still empty (rare non-file contexts), fallback to PWD
-    [[ -z "$src" ]] && { print -r -- "$PWD"; return 0; }
-    # Resolve symlinks iteratively
-    local link
-    while [[ -h "$src" ]]; do
-        link="$(readlink "$src" 2>/dev/null || true)"
-        [[ -z "$link" ]] && break
-        if [[ "$link" == /* ]]; then
-            src="$link"
-        else
-            src="${src:h}/$link"
-        fi
-    done
-    # Canonical directory
-    builtin cd -q "${src:h}" 2>/dev/null || { print -r -- "${src:h}"; return 0; }
-    pwd -P
+    # Use subshell to contain emulate and set options - prevents affecting caller
+    (
+        emulate -L zsh
+        set -o no_unset
+        local src="${1:-${(%):-%N}}"
+        # If still empty (rare non-file contexts), fallback to PWD
+        [[ -z "$src" ]] && { print -r -- "$PWD"; return 0; }
+        # Resolve symlinks iteratively
+        local link
+        while [[ -h "$src" ]]; do
+            link="$(readlink "$src" 2>/dev/null || true)"
+            [[ -z "$link" ]] && break
+            if [[ "$link" == /* ]]; then
+                src="$link"
+            else
+                src="${src:h}/$link"
+            fi
+        done
+        # Canonical directory
+        builtin cd -q "${src:h}" 2>/dev/null || { print -r -- "${src:h}"; return 0; }
+        pwd -P
+    )
 }
 fi
 

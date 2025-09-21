@@ -1,8 +1,7 @@
-#files: 1414	version: 5.9
+#files: 1230	version: 5.9
 
 _comps=(
 '_arguments' '__arguments'
-'_git_log_prettily' '_git'
 '_hx' '_hx'
 '-' '_precommand'
 '-array-value-' '_value'
@@ -177,7 +176,6 @@ _comps=(
 'avahi-resolve-host-name' '_avahi'
 'avdmanager' '_avdmanager'
 'awk' '_awk'
-'aws' '_bash_complete -C aws_completer'
 'axi-cache' '_axi-cache'
 'b2sum' '_md5sum'
 'barbican' '_openstack'
@@ -290,7 +288,6 @@ _comps=(
 'chromium' '_chromium'
 'chroot' '_chroot'
 'chrt' '_chrt'
-'chruby' '_chruby'
 'chsh' '_chsh'
 'ci' '_rcs'
 'cifsiostat' '_sysstat'
@@ -369,7 +366,6 @@ _comps=(
 'cygserver.exe' '_cygserver'
 'cygstart' '_cygstart'
 'cygstart.exe' '_cygstart'
-'d' '_dirs'
 'dad' '_dad'
 'dak' '_dak'
 'darcs' '_darcs'
@@ -401,7 +397,6 @@ _comps=(
 'debuild' '_debuild'
 'declare' '_typeset'
 'defaults' '_defaults'
-'defstrace' '_strace'
 'delta' '_sccs'
 'deno' '_deno'
 'designate' '_openstack'
@@ -591,7 +586,6 @@ _comps=(
 'free' '_free'
 'freebsd-make' '_make'
 'freebsd-update' '_freebsd-update'
-'freespace' '_freespace'
 'freezer' '_openstack'
 'fs_usage' '_fs_usage'
 'fsh' '_fsh'
@@ -603,7 +597,6 @@ _comps=(
 'fw_update' '_fw_update'
 'fwhois' '_whois'
 'fwupdmgr' '_fwupdmgr'
-'fzf' '_fzf'
 'g++' '_gcc'
 'galeon' '_webbrowser'
 'gas' '_gas'
@@ -614,7 +607,6 @@ _comps=(
 'gbasename' '_basename'
 'gcat' '_cat'
 'gcc' '_gcc'
-'gccd' '_git'
 'gccgo' '_go'
 'gchgrp' '_chown'
 'gchmod' '_chmod'
@@ -631,9 +623,7 @@ _comps=(
 'gdd' '_dd'
 'gdf' '_df'
 'gdiff' '_diff'
-'gdnolock' '_git'
 'gdu' '_du'
-'gdv' '_git'
 'geany' '_geany'
 'gegrep' '_grep'
 'gem' '_gem'
@@ -658,15 +648,8 @@ _comps=(
 'gfmt' '_fmt'
 'gfold' '_fold'
 'ggetopt' '_getopt'
-'ggf' '_git'
-'ggfl' '_git'
-'ggl' '_git'
-'ggp' '_git'
-'ggpnp' '_git'
 'ggrep' '_grep'
-'ggu' '_git'
 'ggv' '_gnome-gv'
-'gh' '_gh'
 'ghc' '_ghc'
 'ghc-pkg' '_ghc'
 'ghci' '_ghc'
@@ -902,7 +885,6 @@ _comps=(
 'irssi' '_irssi'
 'isag' '_sysstat'
 'ispell' '_ispell'
-'itunes' '_music'
 'iwconfig' '_iwconfig'
 'iwyu' '_include-what-you-use'
 'jadetex' '_tex'
@@ -964,7 +946,6 @@ _comps=(
 'ldconfig' '_ldconfig'
 'ldconfig.real' '_ldconfig'
 'ldd' '_ldd'
-'ldig' '_dig'
 'less' '_less'
 'let' '_math'
 'lftp' '_ncftp'
@@ -1042,7 +1023,6 @@ _comps=(
 'makeinfo' '_texinfo'
 'makepkg' '_pkgtool'
 'man' '_man'
-'man-preview' '_man'
 'manage.py' '_django'
 'manila' '_openstack'
 'mark' '_mh'
@@ -1142,7 +1122,6 @@ _comps=(
 'mupdf' '_mupdf'
 'murano' '_openstack'
 'mush' '_mail'
-'music' '_music'
 'mussh' '_mussh'
 'mutt' '_mutt'
 'mux' '_tmuxinator'
@@ -1219,7 +1198,6 @@ _comps=(
 'ogginfo' '_vorbis'
 'oksh' '_sh'
 'okular' '_okular'
-'omz' '_omz'
 'open' '_open'
 'openssl' '_openssl'
 'openstack' '_openstack'
@@ -1302,9 +1280,6 @@ _comps=(
 'pip-3.4' '_pip'
 'pip2' '_pip'
 'pip3' '_pip'
-'pipig' '_pip'
-'pipigb' '_pip'
-'pipigp' '_pip'
 'pipx' '_pipx'
 'piuparts' '_piuparts'
 'pixz' '_pixz'
@@ -1530,7 +1505,6 @@ _comps=(
 'scselect' '_scselect'
 'scutil' '_scutil'
 'sdd' '_sdd'
-'sdig' '_dig'
 'sdkmanager' '_sdkmanager'
 'seaf-cli' '_seafile'
 'security' '_security'
@@ -1695,7 +1669,6 @@ _comps=(
 'texi2pdf' '_texinfo'
 'texindex' '_texinfo'
 'tg' '_topgit'
-'tgrep' '_grep'
 'thor' '_thor'
 'tidy' '_tidy'
 'tig' '_tig'
@@ -1865,7 +1838,6 @@ _comps=(
 'who' '_who'
 'whoami' '_nothing'
 'whois' '_whois'
-'whoism' '_whois'
 'whom' '_mh'
 'wiggle' '_wiggle'
 'wipefs' '_wipefs'
@@ -1952,7 +1924,6 @@ _comps=(
 'ytalk' '_other_accounts'
 'yum' '_yum'
 'yumdb' '_yum'
-'z' '__zoxide_z_complete'
 'zargs' '_zargs'
 'zcalc' '_zcalc'
 'zcash-cli' '_zcash-cli'
@@ -2008,7 +1979,6 @@ _comps=(
 )
 
 _services=(
-'_git_log_prettily' 'git-log'
 '-redirect-,<,bunzip2' 'bunzip2'
 '-redirect-,<,bzip2' 'bzip2'
 '-redirect-,<,compress' 'compress'
@@ -2023,18 +1993,8 @@ _services=(
 '-redirect-,>,xz' 'unxz'
 'bzcat' 'bunzip2'
 'dch' 'debchange'
-'defstrace' 'strace'
-'gccd' 'git-clone'
 'gchgrp' 'chgrp'
 'gchown' 'chown'
-'gdnolock' 'git-diff'
-'gdv' 'git-diff'
-'ggf' 'git-checkout'
-'ggfl' 'git-checkout'
-'ggl' 'git-checkout'
-'ggp' 'git-checkout'
-'ggpnp' 'git-checkout'
-'ggu' 'git-checkout'
 'gnupod_addsong.pl' 'gnupod_addsong'
 'gnupod_check.pl' 'gnupod_check'
 'gnupod_INIT.pl' 'gnupod_INIT'
@@ -2043,7 +2003,6 @@ _services=(
 'gzcat' 'gunzip'
 'https' 'http'
 'iceweasel' 'firefox'
-'ldig' 'dig'
 'lzcat' 'unxz'
 'lzma' 'xz'
 'Mail' 'mail'
@@ -2054,19 +2013,16 @@ _services=(
 'nedit-nc' 'nc'
 'pcat' 'unpack'
 'remsh' 'rsh'
-'sdig' 'dig'
 'slogin' 'ssh'
 'svnadmin-static' 'svnadmin'
 'svnlite' 'svn'
 'svnliteadmin' 'svnadmin'
-'tgrep' 'egrep'
 'tunes2pod.pl' 'tunes2pod'
 'unlzma' 'unxz'
 'vboxheadless' 'vboxheadless'
 'VBoxHeadless' 'vboxheadless'
 'vboxmanage' 'vboxmanage'
 'VBoxManage' 'vboxmanage'
-'whoism' 'whois'
 'xelatex' 'latex'
 'xetex' 'tex'
 'xzcat' 'unxz'
@@ -2113,7 +2069,6 @@ _compautos=(
 '_call_program' '+X'
 )
 
-zle -C __fzf_extract_command .complete-word __fzf_extract_command
 zle -C _bash_complete-word .complete-word _bash_completions
 zle -C _bash_list-choices .list-choices _bash_completions
 zle -C _complete_debug .complete-word _complete_debug
@@ -2145,86 +2100,48 @@ bindkey '^[,' _history-complete-newer
 bindkey '^[/' _history-complete-older
 bindkey '^[~' _bash_complete-word
 
-autoload -Uz _deno.zsh _afew _age _android _archlinux-java \
-            _artisan _atach _avdmanager _bitcoin-cli _blkid \
-            _bower _bundle _cap _cask _ccache \
-            _cf _chatblade _chmem _choc _chromium \
-            _clang-check _clang-format _clang-tidy _cmake _coffee \
-            _conan _concourse _console _cppcheck _dad \
-            _dart _dget _dhcpcd _diana _direnv \
-            _do-release-upgrade _docpad _drush _ecdsautil _emacs \
-            _emacsclient _emulator _envdir _exportfs _fab \
-            _fail2ban-client _fail2ban-regex _fallocate _ffind _fleetctl \
-            _flutter _fwupdmgr _gas _ghc _gist \
-            _git-flow _git-pulls _git-revise _git-wtf _glances \
-            _golang _google _gpgconf _grpcurl _gtk-launch \
-            _hello _hledger _homestead _httpie _ibus \
-            _include-what-you-use _inxi _ipcmk _ipcrm _ipcs \
-            _jest _jmeter _jmeter-plugins _jonas _jrnl \
-            _kak _kitchen _knife _l3build _language_codes \
-            _ldattach _lilypond _lscpu _lunchy _mc \
-            _mcookie _middleman _mina _mix _mkcert \
-            _mssh _mussh _mvn _nano _nanoc \
-            _neo _neofetch _networkQuality _nftables _node \
-            _nvm _openssl _openvpn3 _optirun _patool \
-            _periscope _pgsql_utils _phing _pixz _pkcon \
-            _play _pm2 _port _pre-commit _protoc \
-            _pygmentize _qmk _rails _ralio _rdfind \
-            _redis-cli _rfkill _rkt _rmlint _rslsync \
-            _rspec _rsvm _rubocop _sbt _scala \
-            _screencapture _scrub _sdd _sdkmanager _setcap \
-            _setup.py _sfdx _shallow-backup _shellcheck _showoff \
-            _srm _stack _subliminal _supervisorctl _supervisord \
-            _svm _teamocil _thor _tmuxinator _tmuxp \
-            _tox _ts-node _tsc _udisksctl _ufw \
-            _uuidd _uuidgen _uuidparse _virtualbox _vnstat \
-            _wemux _wg-quick _xsel _yarn _zcash-cli \
-            _security _vagrant _hub _pip _artisan \
-            _fzf _fast-theme _fzf _gh _afew \
-            _age _android _archlinux-java _artisan _atach \
-            _avdmanager _bitcoin-cli _blkid _bower _bundle \
-            _cap _cask _ccache _cf _chatblade \
-            _chmem _choc _chromium _clang-check _clang-format \
-            _clang-tidy _cmake _coffee _conan _concourse \
-            _console _cppcheck _dad _dart _dget \
-            _dhcpcd _diana _direnv _do-release-upgrade _docpad \
-            _drush _ecdsautil _emacs _emacsclient _emulator \
-            _envdir _exportfs _fab _fail2ban-client _fail2ban-regex \
-            _fallocate _ffind _fleetctl _flutter _fwupdmgr \
-            _gas _ghc _gist _git-flow _git-pulls \
-            _git-revise _git-wtf _glances _golang _google \
-            _gpgconf _grpcurl _gtk-launch _hello _hledger \
-            _homestead _httpie _ibus _include-what-you-use _inxi \
-            _ipcmk _ipcrm _ipcs _jest _jmeter \
-            _jmeter-plugins _jonas _jrnl _kak _kitchen \
-            _knife _l3build _language_codes _ldattach _lilypond \
-            _lscpu _lunchy _mc _mcookie _middleman \
-            _mina _mix _mkcert _mssh _mussh \
-            _mvn _nano _nanoc _neo _neofetch \
-            _networkQuality _nftables _node _nvm _openssl \
-            _openvpn3 _optirun _patool _periscope _pgsql_utils \
-            _phing _pixz _pkcon _play _pm2 \
-            _port _pre-commit _protoc _pygmentize _qmk \
-            _rails _ralio _rdfind _redis-cli _rfkill \
-            _rkt _rmlint _rslsync _rspec _rsvm \
-            _rubocop _sbt _scala _screencapture _scrub \
-            _sdd _sdkmanager _setcap _setup.py _sfdx \
-            _shallow-backup _shellcheck _showoff _srm _stack \
-            _subliminal _supervisorctl _supervisord _svm _teamocil \
-            _thor _tmuxinator _tmuxp _tox _ts-node \
-            _tsc _udisksctl _ufw _uuidd _uuidgen \
-            _uuidparse _virtualbox _vnstat _wemux _wg-quick \
-            _xsel _yarn _zcash-cli _security _vagrant \
-            _hub _pip _artisan _fast-theme __zgenom \
-            __zgenom_autoupdate __zgenom_clone_dir __zgenom_err __zgenom_out __zgenom_prezto_load \
-            _zgenom __zgenom __zgenom_autoupdate __zgenom_clone_dir __zgenom_err \
-            __zgenom_out __zgenom_prezto_load _zgenom __zgenom __zgenom_autoupdate \
-            __zgenom_clone_dir __zgenom_err __zgenom_out __zgenom_prezto_load _zgenom \
-            _aerospace _bat _bob _btm _buf \
-            _caddy _cb _charm _clang-uml _crush \
-            _deno _docker _docker-compose _dooit _email-notmuch \
-            _exercism _eza _fastfetch _fd _fly \
-            _flyctl _fnm _gh _ghcup _git \
+autoload -Uz _afew _age _android _archlinux-java _artisan \
+            _atach _avdmanager _bitcoin-cli _blkid _bower \
+            _bundle _cap _cask _ccache _cf \
+            _chatblade _chmem _choc _chromium _clang-check \
+            _clang-format _clang-tidy _cmake _coffee _conan \
+            _concourse _console _cppcheck _dad _dart \
+            _dget _dhcpcd _diana _direnv _do-release-upgrade \
+            _docpad _drush _ecdsautil _emacs _emacsclient \
+            _emulator _envdir _exportfs _fab _fail2ban-client \
+            _fail2ban-regex _fallocate _ffind _fleetctl _flutter \
+            _fwupdmgr _gas _ghc _gist _git-flow \
+            _git-pulls _git-revise _git-wtf _glances _golang \
+            _google _gpgconf _grpcurl _gtk-launch _hello \
+            _hledger _homestead _httpie _ibus _include-what-you-use \
+            _inxi _ipcmk _ipcrm _ipcs _jest \
+            _jmeter _jmeter-plugins _jonas _jrnl _kak \
+            _kitchen _knife _l3build _language_codes _ldattach \
+            _lilypond _lscpu _lunchy _mc _mcookie \
+            _middleman _mina _mix _mkcert _mssh \
+            _mussh _mvn _nano _nanoc _neo \
+            _neofetch _networkQuality _nftables _node _nvm \
+            _openssl _openvpn3 _optirun _patool _periscope \
+            _pgsql_utils _phing _pixz _pkcon _play \
+            _pm2 _port _pre-commit _protoc _pygmentize \
+            _qmk _rails _ralio _rdfind _redis-cli \
+            _rfkill _rkt _rmlint _rslsync _rspec \
+            _rsvm _rubocop _sbt _scala _screencapture \
+            _scrub _sdd _sdkmanager _setcap _setup.py \
+            _sfdx _shallow-backup _shellcheck _showoff _srm \
+            _stack _subliminal _supervisorctl _supervisord _svm \
+            _teamocil _thor _tmuxinator _tmuxp _tox \
+            _ts-node _tsc _udisksctl _ufw _uuidd \
+            _uuidgen _uuidparse _virtualbox _vnstat _wemux \
+            _wg-quick _xsel _yarn _zcash-cli _security \
+            _vagrant _hub _pip _fast-theme __zgenom \
+            __zgenom_err __zgenom_out _zgenom __zgenom __zgenom_err \
+            __zgenom_out _zgenom __zgenom __zgenom_err __zgenom_out \
+            _zgenom _aerospace _bat _bob _btm \
+            _buf _caddy _cb _charm _clang-uml \
+            _crush _deno _docker _docker-compose _dooit \
+            _email-notmuch _exercism _eza _fastfetch _fd \
+            _fly _flyctl _fnm _ghcup _git \
             _git-lfs _glow _gpg-tui _gum _hx \
             _hyperfine _jj _juliaup _kubectl _less \
             _lsd _luarocks _melt _mods _newsboat \
@@ -2426,9 +2343,11 @@ autoload -Uz _deno.zsh _afew _age _android _archlinux-java \
             _zfs_pool _zftp _zip _zle _zlogin \
             _zmodload _zmv _zoneadm _zones _zparseopts \
             _zpty _zsh _zsh-mime-handler _zsocket _zstyle \
-            _ztodo _zypper _ggrep _groff _ggrep \
-            _groff _nl
+            _ztodo _zypper
 autoload -Uz +X _call_program
 
 typeset -gUa _comp_assocs
 _comp_assocs=( '' )
+
+#omz revision: 2525dae6613652ec9cb572bdc2fdf80ef837a967
+#omz fpath: /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/functions /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/completions /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/custom/functions /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/custom/completions /Users/s-a-c/.cache/zsh/completions /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/romkatv/powerlevel10k/___ /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/supercrabtree/k/___ /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zsh-users/zsh-autosuggestions/___ /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/RobSis/zsh-completion-generator/___ /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/unixorn/1password-op.plugin.zsh/___ /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/srijanshetty/docker-zsh/___ /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zsh-users/zsh-completions/___/src /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/chrissicool/zsh-256color/___ /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/sharat87/pip-app/___ /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/plugins/macos /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/plugins/brew /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/plugins/vagrant /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/plugins/screen /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/plugins/rsync /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/plugins/python /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/plugins/github /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/plugins/git /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/plugins/colored-man-pages /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/plugins/chruby /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/plugins/aws /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/plugins/sudo /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/plugins/pip /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/StackExchange/blackbox/___ /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/peterhurford/git-it-on.zsh/___ /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/skx/sysadmin-util/___ /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/unixorn/bitbucket-git-helpers.plugin.zsh/___ /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/unixorn/fzf-zsh-plugin/___ /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/unixorn/git-extra-commands/___ /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/djui/alias-tips/___ /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/eventi/noreallyjustfuckingstopalready/___ /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/unixorn/tumult.plugin.zsh/___ /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/unixorn/warhol.plugin.zsh/___ /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/unixorn/jpb.zshplugin/___ /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/unixorn/autoupdate-zgenom/___ /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/unixorn/rake-completion.zshplugin/___ /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zsh-users/zsh-history-substring-search/___ /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/zdharma-continuum/fast-syntax-highlighting/___ /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/functions /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/functions /Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/functions /usr/local/share/zsh/site-functions /opt/homebrew/share/zsh/site-functions /opt/homebrew/Cellar/zsh/5.9/share/zsh/functions

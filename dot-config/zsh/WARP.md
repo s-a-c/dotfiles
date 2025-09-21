@@ -322,6 +322,33 @@ The project uses variance-state.json to track performance stability and determin
 - Test harnesses should validate prompt display, environment variables, and interactive functionality.
 - Avoid manual tab switching or interactive debugging - use automated validation instead.
 
+### 7.1.1. Mandatory Harness Standard (.bash-harness-for-zsh-template.bash)
+
+- All ZSH configuration testing MUST use the repository-standard Bash harness:
+  `./.bash-harness-for-zsh-template.bash`
+- Direct invocations of interactive ZSH in tests (e.g., `zsh -i -c "..."`) are prohibited outside this harness.
+- Tests MUST source the harness and use its functions (e.g., `harness::run`, `harness::probe_startup`).
+- The CI gate (`tools/enforce-harness-usage.bash`) enforces compliance.
+
+**Example (Bats)**:
+
+```bash
+source "./.bash-harness-for-zsh-template.bash"
+
+@test "ZSH startup succeeds" {
+  harness::probe_startup
+}
+```
+
+**Example (Bash)**:
+
+```bash
+#!/usr/bin/env bash
+source "./.bash-harness-for-zsh-template.bash"
+harness::run 'echo PROMPT_TEST_SUCCESS; exit'
+harness::assert_output_contains 'PROMPT_TEST_SUCCESS'
+```
+
 ### 7.2. Test Harness Requirements
 - Use bash scripts to launch ZSH with `ZDOTDIR=$PWD` for isolated testing.
 - Capture and verify that interactive prompts are displayed correctly.
@@ -394,6 +421,28 @@ test_starship_init() {
 - Capture both stdout and stderr for diagnostic purposes.
 - Validate environment variables are set correctly during startup.
 - Test Starship initialization by checking `$STARSHIP_SHELL` variable.
+
+### 7.5. CI Harness Enforcement
+
+The mandatory harness standard is enforced through automated CI checks:
+
+- **Self-Test**: `tools/selftest-harness.bash` validates the harness functions correctly
+- **Compliance Gate**: `tools/enforce-harness-usage.bash` scans for direct `zsh -i` usage in tests
+- **GitHub Actions Integration**: Both scripts run automatically in CI workflows
+- **Violation Detection**: CI fails if any test bypasses the harness requirement
+
+**Manual Enforcement Commands**:
+
+```bash
+# Test the harness itself
+bash tools/selftest-harness.bash
+
+# Check for harness compliance
+bash tools/enforce-harness-usage.bash
+
+# Run full harness test suite
+bash .bash-harness-for-zsh-template.bash
+```
 
 ---
 

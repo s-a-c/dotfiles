@@ -180,7 +180,11 @@ Sprint 2 Focus (Active):
 | Implementation snapshot | `./verify-implementation.zsh` |
 | Promotion readiness gate | `tools/promotion-guard.zsh` |
 | Perf capture (2 runs + segments) | `tools/perf-capture.zsh` |
-| Legacy checksum verification | `tools/verify-legacy-checksums.zsh` |
+|| Legacy checksum verification | `tools/verify-legacy-checksums.zsh` |
+|| **Testing Harness** | See [WARP.md §7.1.1](../../WARP.md#711-mandatory-harness-standard-bash-harness-for-zsh-templatebash) |
+|| Bash harness self-test | `bash tools/selftest-harness.bash` |
+|| Harness compliance check | `bash tools/enforce-harness-usage.bash` |
+|| Direct harness test suite | `bash .bash-harness-for-zsh-template.bash` |
 
 ### 1.2 Development Cycle (Per Stage)
 ```bash

@@ -291,7 +291,7 @@ test_interactive_shell_features() {
 
     # Test interactive shell functionality with a more reliable method
     local result
-    result=$(timeout 5 zsh -i -c 'echo "INTERACTIVE_SUCCESS"; exit 0' 2>/dev/null)
+    result=$(timeout 5 bash -c 'source "./.bash-harness-for-zsh-template.bash"; harness::run 'echo "INTERACTIVE_SUCCESS"; exit 0' 2'>/dev/null)
     local exit_code=$?
 
     if [[ $exit_code -eq 0 ]] &&     zsh_debug_echo "$result" | grep -q "INTERACTIVE_SUCCESS"; then

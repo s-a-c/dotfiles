@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 export ZDOTDIR="$PWD"
-out=$(timeout 15s zsh -i -c '
-  echo "OK:date=$(command -v date && echo yes || echo no)"
+out=$(timeout 15s bash -c 'source "./.bash-harness-for-zsh-template.bash"; harness::run '
+'  echo "OK:date=$(command -v date && echo yes || echo no)"
   echo "OK:rg=$(command -v rg && echo yes || echo no)"
   echo "OK:pre=$(print -r -- ${ZSH_ENABLE_PREPLUGIN_REDESIGN-})"
   echo "OK:post=$(print -r -- ${ZSH_ENABLE_POSTPLUGIN_REDESIGN-UNSET})"

@@ -642,10 +642,13 @@ if [[ $TERM_PROGRAM != "WarpTerminal" ]]; then
 fi
 
 # To customize your prompt, run `p10k configure` or edit $ZDOTDIR/.p10k.zsh.
+# NOTE: P10k loading disabled to prevent conflict with Starship prompt
+# Prompt configuration is now handled by the external integrations module
 if [[ ! -f "$ZDOTDIR/.p10k.zsh" ]]; then
     zsh_debug_echo "Run p10k configure or edit $ZDOTDIR/.p10k.zsh to configure your prompt"
 else
-    source "$ZDOTDIR/.p10k.zsh"
+    # source "$ZDOTDIR/.p10k.zsh"  # Disabled: conflicts with Starship
+    zsh_debug_echo "P10k config found but loading disabled - using Starship prompt instead"
 fi
 
 if [[ $(_zqs-get-setting list-ssh-keys true) == 'true' ]]; then

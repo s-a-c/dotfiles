@@ -1,0 +1,1 @@
+../.zshrc.d.legacy/consolidated-modules/02-performance-monitoring.zsh

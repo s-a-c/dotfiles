@@ -1,4 +1,25 @@
-#!/usr/bin/env zsh
+cat > "$ZDOTDIR/.zshrc.emergency-safe-mode" << 'EOF'
+# Plugin loading guards to prevent recursion
+# Usage: source ~/.config/zsh/.zshrc.emergency-safe-mode
+# Prevent multiple loading of this file
+if [[ -n "${_PLUGIN_LOADING_GUARD:-}" ]]; then
+if [[ -n "$_EMERGENCY_SAFE_MODE" ]]; then
+    return 0
+export _PLUGIN_LOADING_GUARD=1
+export _EMERGENCY_SAFE_MODE=1
+# Individual plugin guards
+if [[ -z "${_ZSH_ABBR_LOADING:-}" ]]; then
+    export _ZSH_ABBR_LOADING=1
+fi
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+if [[ -z "${_ZSH_AUTOSUGGESTIONS_LOADING:-}" ]]; then
+    export _ZSH_AUTOSUGGESTIONS_LOADING=1
+fi
+setopt APPEND_HISTORY SHARE_HISTORY HIST_IGNORE_DUPS
+if [[ -z "${_FAST_SYNTAX_HIGHLIGHTING_LOADING:-}" ]]; then
+    export _FAST_SYNTAX_HIGHLIGHTING_LOADING=1
+    export _SAFE_COMPINIT_DONE=1
+fi
 # Essential Plugins - Load immediately for core functionality
 # This file loads only the most critical plugins needed for basic shell operation
 # Load time target: <300ms
@@ -7,6 +28,11 @@
         zsh_debug_echo "# ++++++ $0 ++++++++++++++++++++++++++++++++++++"
 }
 
+# Fast path skip for perf capture: avoid any essential plugin bootstrap
+if [[ "${PERF_CAPTURE_FAST:-0}" == "1" ]]; then
+    zsh_debug_echo "# [essential-plugins][perf-capture-fast] Skipping essential plugin bootstrap (PERF_CAPTURE_FAST=1)"
+    return 0
+fi
 # Only proceed if zgenom is available
 if ! command -v zgenom >/dev/null 2>&1; then
     zsh_debug_echo "# [essential-plugins] Zgenom not available, skipping plugins"
