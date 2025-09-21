@@ -1,185 +1,130 @@
-#!/opt/homebrew/bin/zsh
-# 00-path-safety.zsh (Pre-Plugin Redesign Enhanced)
-[[ -n ${_LOADED_00_PATH_SAFETY:-} ]] && return
-_LOADED_00_PATH_SAFETY=1
-# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+#!/usr/bin/env zsh
+# ==============================================================================
+# ZSH Pre-Plugin Module: Path Safety
+# ==============================================================================
+# Purpose: Initialize PATH safety and ensure baseline protection
+# Dependencies: .zshenv (for ZQS_BASELINE_PATH_SNAPSHOT)
+# Load Order: 00/XX (first - before any PATH manipulation)
+# Author: ZSH Configuration System
+# Version: 1.0.0
+# ==============================================================================
 
-# --- Phase Attribution (Pre-Plugin Start) -------------------------------------
-# Capture global start timestamp (ms precision) if not already set.
-# This will anchor later computations (e.g., pre_plugin_total, prompt_ready delta).
-if [[ -z ${ZSH_START_MS:-} ]]; then
-    if command -v date >/dev/null 2>&1; then
-        ZSH_START_MS=$(date +%s%3N 2>/dev/null || date +%s000)
-        export ZSH_START_MS
-    fi
+# Prevent multiple loading
+if [[ -n "${_PATH_SAFETY_LOADED:-}" ]]; then
+    return 0
 fi
+export _PATH_SAFETY_LOADED=1
 
-# Emit a zero-duration phase start SEGMENT exactly once (optional; harmless if log missing).
-if [[ -n ${PERF_SEGMENT_LOG:-} && -w ${PERF_SEGMENT_LOG:-/dev/null} && -z ${_PREPLUGIN_START_SEGMENT_EMITTED:-} ]]; then
-    {
-        print "SEGMENT name=pre_plugin_start ms=0 phase=pre_plugin sample=${PERF_SAMPLE_CONTEXT:-unknown}"
-    } >> "${PERF_SEGMENT_LOG}" 2>/dev/null || true
-    _PREPLUGIN_START_SEGMENT_EMITTED=1
-fi
-# Structured telemetry JSON emission (opt-in, zero overhead when disabled)
-if [[ "${ZSH_LOG_STRUCTURED:-0}" == "1" && -z ${_PREPLUGIN_START_JSON_EMITTED:-} && -w ${PERF_SEGMENT_JSON_LOG:-${PERF_SEGMENT_LOG:-/dev/null}} ]]; then
-    local __pps_ts
-    if [[ -n ${EPOCHREALTIME:-} ]]; then
-        __pps_ts=$(awk -v t="${EPOCHREALTIME}" 'BEGIN{split(t,a,"."); printf "%s%03d", a[1], substr(a[2]"000",1,3)}')
-    else
-        __pps_ts="$(date +%s 2>/dev/null || printf 0)000"
-    fi
-    print -- "{\"type\":\"segment\",\"name\":\"pre_plugin_start\",\"ms\":0,\"phase\":\"pre_plugin\",\"sample\":\"${PERF_SAMPLE_CONTEXT:-unknown}\",\"ts\":${__pps_ts}}" >> "${PERF_SEGMENT_JSON_LOG:-${PERF_SEGMENT_LOG}}" 2>/dev/null || true
-    _PREPLUGIN_START_JSON_EMITTED=1
-fi
-# -------------------------------------------------------------------------------
-#
-# PURPOSE:
-#   Deterministic early PATH normalization & hygiene before any heavyweight plugin / env logic.
-#   Enforces invariants (I1–I8) referenced by test: test-path-normalization-edges.zsh
-#
-# INVARIANTS:
-#   I1  No duplicate logical directories (after canonicalization)
-#   I2  No nonexistent directories (pruned) unless whitelisted
-#   I3  No relative ('.' / '..') segments
-#   I4  No empty segments
-#   I5  Trailing slashes removed except root (/)
-#   I6  First-occurrence ordering preserved
-#   I7  ~ expansion to $HOME
-#   I8  Prevent accidental injection of $PWD (relative) unless explicitly allowed
-#
-# CONFIG / FLAGS:
-: ${ZSH_PATH_ALLOW_NONEXISTENT:=0} # If 1, retain nonexistent entries (diagnostic mode)
-: ${ZSH_PATH_ALLOW_RELATIVE:=0}    # If 1, allow '.' / '..' / relative segments
-: ${ZSH_PATH_WHITELIST:=""}        # Colon-separated explicit entries to keep even if nonexistent
-: ${ZSH_PATH_DEBUG:=0}             # If 1, emit before/after report
-#
-# INTERNALS:
-#   - Works on $path (array form) not $PATH string to avoid word-splitting issues.
-#   - Uses a single pass canonicalization + a second pass dedup/order retention.
-#
-# LEGACY MERGE NOTE:
-#   This supersedes ad-hoc logic from legacy 00_00 / 00_01 / 00_05 scripts.
-#
-# SECURITY / SAFETY:
-#   - Avoids command substitution beyond basic tests.
-#   - Does not introduce directories; only reorders / prunes / normalizes.
-#
-# TEST HOOKS:
-#   - test-path-normalization-edges.zsh (RED → will turn GREEN once invariants satisfied everywhere).
-#
-# Implementation Steps (documented for TDD traceability):
-#   1. Snapshot original $PATH (for debug).
-#   2. Split & canonicalize.
-#   3. Apply invariants I1–I8.
-#   4. Rebuild $path array preserving first valid canonical instance.
-#   5. Export updated PATH.
-#
-# NOTE:
-#   Additional platform-specific injections (e.g., /usr/local/sbin precedence) handled post-normalization.
-
-# Optional debug helper (noop if not defined globally)
-typeset -f zsh_debug_echo >/dev/null 2>&1 || zsh_debug_echo() { :; }
-
-_original_PATH="$PATH"
-
-# Convert whitelist to associative set for O(1) membership
-typeset -A _PATH_WHITELIST
-if [[ -n ${ZSH_PATH_WHITELIST} ]]; then
-    IFS=':' read -rA _wtmp <<<"${ZSH_PATH_WHITELIST}"
-    for __w in "${_wtmp[@]}"; do
-        [[ -n $__w ]] && _PATH_WHITELIST[$__w]=1
-    done
-    unset _wtmp __w
-fi
-
-# Canonicalization function
-__canon_path_component() {
-    local comp="$1"
-    [[ -z $comp ]] && return 1
-    # Expand ~
-    if [[ $comp == "~"* ]]; then
-        comp="${comp/#\~/$HOME}"
-    fi
-    # Collapse multiple slashes (but preserve leading double // if ever used for network paths)
-    comp="${comp//\/\//\/}"
-    # Remove trailing slashes except root
-    [[ $comp != "/" ]] && comp="${comp%/}"
-    # Return canonical form
-    print -r -- "$comp"
+# Debug helper - early stage, minimal logging
+_path_debug() {
+    [[ -n "${ZSH_DEBUG:-}" ]] && echo "[PATH-SAFETY] $1" >&2
 }
 
-typeset -A _seen_canon
-typeset -a _new_path
+_path_debug "Loading path safety module..."
 
-for raw in $path; do
-    # Skip empty segments early (I4)
-    [[ -z $raw ]] && continue
+# ==============================================================================
+# SECTION 1: PATH BASELINE PROTECTION
+# ==============================================================================
+# Purpose: Ensure PATH never regresses below .zshenv baseline
 
-    # Expand and canonicalize
-    canonical="$(__canon_path_component "$raw" 2>/dev/null || true)"
+_path_debug "Protecting PATH baseline..."
 
-    # Re-check emptiness post-canon
-    [[ -z $canonical ]] && continue
+# Ensure path array exists
+typeset -a path
 
-    # Relative detection (I3 / I8)
-    if [[ $canonical == "." || $canonical == ".." || $canonical != /* ]]; then
-        if ((ZSH_PATH_ALLOW_RELATIVE == 0)); then
-            ((ZSH_PATH_DEBUG)) && zsh_debug_echo "# [path] drop(relative): $raw"
-            continue
+# Merge baseline entries back if any are missing
+if [[ -n ${ZQS_BASELINE_PATH_SNAPSHOT-} ]]; then
+    local -a want have
+    want=("${(s.:.)ZQS_BASELINE_PATH_SNAPSHOT}")
+    have=("${path[@]}")
+    for d in "${want[@]}"; do
+        if [[ -n $d ]] && [[ ${have[(Ie)$d]} -eq 0 ]]; then
+            path+=("$d")
         fi
-    fi
+    done
+    # Unique-ify without removing any unique baseline entry
+    typeset -Ua path
+    export PATH="${(j.:.)path}"
+    hash -r
+    _path_debug "Merged baseline PATH protection (${#path[@]} total directories)"
+fi
 
-    # Nonexistent pruning (I2) unless whitelisted
-    if [[ ! -e $canonical ]]; then
-        if ((ZSH_PATH_ALLOW_NONEXISTENT == 0)) && [[ -z ${_PATH_WHITELIST[$canonical]:-} ]]; then
-            ((ZSH_PATH_DEBUG)) && zsh_debug_echo "# [path] drop(nonexistent): $canonical"
-            continue
-        fi
-    fi
+# ==============================================================================
+# SECTION 2: PATH SAFETY CORE
+# ==============================================================================
+# Purpose: Normalize PATH structure and ensure path array is available
 
-    # Deduplicate (I1) preserving order (I6)
-    if [[ -z ${_seen_canon[$canonical]:-} ]]; then
-        _seen_canon[$canonical]=1
-        _new_path+=("$canonical")
-    else
-        ((ZSH_PATH_DEBUG)) && zsh_debug_echo "# [path] drop(duplicate): $canonical"
+_path_debug "Initializing PATH safety..."
+
+# Ensure path array is properly initialized and synchronized with PATH
+if [[ -z "${path:-}" ]]; then
+    # Initialize path array from PATH if not already set
+    typeset -a path
+    path=("${(s.:.)PATH}")
+    _path_debug "Initialized path array from PATH"
+fi
+
+# Ensure PATH and path are synchronized
+if [[ "${(j.:.)path}" != "$PATH" ]]; then
+    # Sync PATH from path array
+    export PATH="${(j.:.)path}"
+    _path_debug "Synchronized PATH from path array"
+fi
+
+# ==============================================================================
+# SECTION 3: PATH NORMALIZATION
+# ==============================================================================
+# Purpose: Remove empty entries and normalize path structure
+
+_path_debug "Normalizing PATH structure..."
+
+# Remove empty path entries that can cause issues
+local -a cleaned_path
+cleaned_path=()
+for dir in "${path[@]}"; do
+    if [[ -n "$dir" ]]; then
+        cleaned_path+=("$dir")
     fi
 done
 
-# OPTIONAL: ensure /usr/local/sbin precedence if it exists (legacy behavior)
-if [[ -d /usr/local/sbin ]]; then
-    # Remove if already present later, then unshift
-    typeset -a _tmp_path
-    for comp in "${_new_path[@]}"; do
-        [[ $comp == "/usr/local/sbin" ]] && continue
-        _tmp_path+=("$comp")
-    done
-    _new_path=("/usr/local/sbin" "${_tmp_path[@]}")
-    unset _tmp_path
+# Update arrays if we removed empty entries
+if [[ ${#cleaned_path[@]} -ne ${#path[@]} ]]; then
+    local removed_count=$((${#path[@]} - ${#cleaned_path[@]}))
+    path=("${cleaned_path[@]}")
+    export PATH="${(j.:.)path}"
+    _path_debug "Removed ${removed_count} empty path entries"
 fi
 
-# Reassign path (array)
-path=("${_new_path[@]}")
-unset _new_path _seen_canon canonical raw comp
+# ==============================================================================
+# SECTION 4: EARLY PATH VALIDATION
+# ==============================================================================
+# Purpose: Validate critical commands are available
 
-# Final debug summary
-if ((ZSH_PATH_DEBUG)); then
-    zsh_debug_echo "# [path] original: $_original_PATH"
-    zsh_debug_echo "# [path] normalized: $PATH"
+_path_debug "Validating critical commands..."
+
+# Check for essential commands that should be available
+local -a missing_commands
+missing_commands=()
+for cmd in date rg direnv; do
+    if ! command -v "$cmd" >/dev/null 2>&1; then
+        missing_commands+=("$cmd")
+    fi
+done
+
+if [[ ${#missing_commands[@]} -gt 0 ]]; then
+    _path_debug "INFO: Commands not in PATH: ${missing_commands[*]}"
 fi
 
-unset _PATH_WHITELIST _original_PATH
+_path_debug "Path safety initialization complete (${#path[@]} directories)"
 
-# Pre-plugin start timestamp capture (only set once on first pre-plugin module)
-if [[ -z ${PRE_PLUGIN_START_REALTIME:-} ]]; then
-    zmodload zsh/datetime 2>/dev/null || true
-    PRE_PLUGIN_START_REALTIME=$EPOCHREALTIME
-    export PRE_PLUGIN_START_REALTIME
-    # Derive millisecond precision integer (fallback if awk absent gracefully ignored)
-    PRE_PLUGIN_START_MS=$(printf '%s' "$EPOCHREALTIME" | awk -F. '{ms = ($1 * 1000); if (NF>1) { ms += substr($2 "000",1,3)+0 } printf "%d", ms }' 2>/dev/null || echo "")
-    [[ -n ${PRE_PLUGIN_START_MS:-} ]] && export PRE_PLUGIN_START_MS
-    zsh_debug_echo "# [pre-plugin][perf] PRE_PLUGIN_START_REALTIME=$PRE_PLUGIN_START_REALTIME ms=${PRE_PLUGIN_START_MS:-n/a}"
-fi
+# ==============================================================================
+# MODULE COMPLETION MARKER
+# ==============================================================================
+export PATH_SAFETY_VERSION="1.0.0"
+export PATH_SAFETY_LOADED_AT="$(date '+%Y-%m-%d %H:%M:%S' 2>/dev/null || echo 'unknown')"
 
-zsh_debug_echo "# [pre-plugin] 00-path-safety enhanced normalization applied"
+_path_debug "Path safety module ready"
+
+# ==============================================================================
+# END OF PATH SAFETY MODULE
+# ==============================================================================

@@ -1,0 +1,1 @@
+../.zshrc.d.legacy/consolidated-modules/09-external-integrations.zsh
