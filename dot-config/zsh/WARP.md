@@ -327,8 +327,12 @@ The project uses variance-state.json to track performance stability and determin
 - All ZSH configuration testing MUST use the repository-standard Bash harness:
   `./.bash-harness-for-zsh-template.bash`
 - Direct invocations of interactive ZSH in tests (e.g., `zsh -i -c "..."`) are prohibited outside this harness.
-- Tests MUST source the harness and use its functions (e.g., `harness::run`, `harness::probe_startup`).
+- Tests MUST source the harness and use its functions for appropriate test type:
+  - `harness::run` - Configuration/functionality testing (normal interactive startup)
+  - `harness::perf_run` - Performance testing only (PERF_PROMPT_HARNESS mode)
 - The CI gate (`tools/enforce-harness-usage.bash`) enforces compliance.
+
+**CRITICAL**: Use `harness::run` for configuration testing. Performance mode (`harness::perf_run`) may mask configuration issues by creating an artificial testing environment that skips normal plugin initialization.
 
 **Example (Bats)**:
 
