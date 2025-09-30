@@ -49,7 +49,7 @@ fail() { FAIL+=("$1"); }
 skip() { print "SKIP: $1"; SKIPPED=1; }
 
 # Optional global debug echo (no-op fallback)
-typeset -f zsh_debug_echo >/dev/null 2>&1 || zsh_debug_echo() { :; }
+typeset -f zf::debug >/dev/null 2>&1 || zf::debug() { :; }
 
 # Respect developer override (temporary only)
 if [[ "${PATH_RESOLUTION_ENFORCE_SKIP:-0}" == "1" ]]; then

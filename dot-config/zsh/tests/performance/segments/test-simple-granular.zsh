@@ -13,7 +13,7 @@ TMP_LOG="$(mktemp)"
 export PERF_SEGMENT_LOG="$TMP_LOG"
 
 # Define minimal required functions
-typeset -f zsh_debug_echo >/dev/null 2>&1 || zsh_debug_echo() { :; }
+typeset -f zf::debug >/dev/null 2>&1 || zf::debug() { :; }
 
 # Source just the 20-essential-plugins module
 print "Testing 20-essential-plugins.zsh..."

@@ -1,4 +1,4 @@
-#!/opt/homebrew/bin/zsh
+#!/usr/bin/env zsh
 # Deploy consolidated legacy modules as symlinks in .zshrc.d
 # This replaces all existing modules with consolidated versions
 
@@ -49,7 +49,7 @@ for file in *; do
             echo "  Skipping existing consolidated symlink: $file"
             continue
         fi
-        
+
         echo "  Backing up: $file"
         if [[ -d "$file" ]]; then
             cp -r "$file" "$BACKUP_DIR/"
@@ -64,7 +64,7 @@ echo
 
 # Create deployment manifest
 MANIFEST_FILE="$BACKUP_DIR/DEPLOYMENT_MANIFEST.md"
-cat > "$MANIFEST_FILE" << 'MANIFEST_EOF'
+cat >"$MANIFEST_FILE" <<'MANIFEST_EOF'
 # Legacy Module Consolidation Deployment
 
 ## Deployment Information
@@ -78,10 +78,10 @@ MANIFEST_EOF
 
 for module in "${CONSOLIDATED_MODULES[@]}"; do
     module_name="$(basename "$module")"
-    echo "- $module_name" >> "$MANIFEST_FILE"
+    echo "- $module_name" >>"$MANIFEST_FILE"
 done
 
-cat >> "$MANIFEST_FILE" << 'MANIFEST_EOF'
+cat >>"$MANIFEST_FILE" <<'MANIFEST_EOF'
 
 ## Rollback Instructions
 To rollback this deployment:
@@ -115,7 +115,7 @@ echo "🔗 Creating symlinks to consolidated modules..."
 for module in "${CONSOLIDATED_MODULES[@]}"; do
     module_name="$(basename "$module")"
     relative_path="../.zshrc.d.legacy/consolidated-modules/$module_name"
-    
+
     echo "  Linking: $module_name -> $relative_path"
     ln -sf "$relative_path" "$TARGET_DIR/$module_name"
 done

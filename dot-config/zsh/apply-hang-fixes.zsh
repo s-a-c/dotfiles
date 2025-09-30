@@ -136,7 +136,7 @@ if [[ "${ZSH_PERF_PROMPT_MARKERS:-1}" == "0" ]]; then
 fi
 
 # Provide a quiet debug echo if global helper is absent
-typeset -f zsh_debug_echo >/dev/null 2>&1 || zsh_debug_echo() { :; }
+typeset -f zf::debug >/dev/null 2>&1 || zf::debug() { :; }
 
 # Simplified prompt ready capture without background jobs
 __pr__capture_prompt_ready() {
@@ -149,7 +149,7 @@ __pr__capture_prompt_ready() {
         export PROMPT_READY_MS
     fi
 
-    zsh_debug_echo "# [prompt-ready] captured PROMPT_READY_MS=${PROMPT_READY_MS:-n/a}"
+    zf::debug "# [prompt-ready] captured PROMPT_READY_MS=${PROMPT_READY_MS:-n/a}"
 }
 
 # Install hook if possible
@@ -166,7 +166,7 @@ fi
 # NO BACKGROUND JOBS - they can cause hangs in non-interactive shells
 # All sleep-based deferred checks have been removed
 
-zsh_debug_echo "# [prompt-ready] simplified instrumentation installed (no background jobs)"
+zf::debug "# [prompt-ready] simplified instrumentation installed (no background jobs)"
 EOF
 
     mv "$PROMPT_READY_FILE.fixed" "$PROMPT_READY_FILE"
@@ -210,7 +210,7 @@ if [[ -n "${ZSH_INIT_TIMEOUT:-}" ]]; then
     export NO_ZGENOM=1
     export SKIP_PLUGINS=1
     export SKIP_EXTERNAL_TOOLS=1
-    zsh_debug_echo "# [timeout-protection] Emergency mode activated"
+    zf::debug "# [timeout-protection] Emergency mode activated"
 fi
 EOF
 

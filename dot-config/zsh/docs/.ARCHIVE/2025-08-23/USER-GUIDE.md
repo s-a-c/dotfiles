@@ -176,7 +176,7 @@ $EDITOR ~/.config/zsh/.context-configs/python.zsh
 
 Example Python context:
 ```bash
-#!/opt/homebrew/bin/zsh
+#!/usr/bin/env zsh
 # Context-Aware Configuration: Python Projects
 
 export PROJECT_TYPE="python"

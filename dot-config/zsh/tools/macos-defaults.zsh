@@ -5,25 +5,25 @@
 # Source .zshenv to ensure consistent environment variables
 [[ -f "${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}/.zshenv" ]] && source "${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}/.zshenv"
 
-# Use zsh_debug_echo from .zshenv if available
-if declare -f zsh_debug_echo >/dev/null 2>&1; then
-    zsh_debug_echo "# [macos-defaults] Starting macOS defaults configuration"
+# Use zf::debug from .zshenv if available
+if declare -f zf::debug >/dev/null 2>&1; then
+    zf::debug "# [macos-defaults] Starting macOS defaults configuration"
     # Check for numbered files using ZDOTDIR
     if [[ -f "${ZDOTDIR}/2" ]] || [[ -f "${ZDOTDIR}/3" ]]; then
-        zsh_debug_echo "Warning: Numbered files detected - check for redirection typos"
+        zf::debug "Warning: Numbered files detected - check for redirection typos"
     fi
 else
     [[ "$ZSH_DEBUG" == "1" ]] && {
-            zsh_debug_echo "# ++++++ $0 ++++++++++++++++++++++++++++++++++++"
+            zf::debug "# ++++++ $0 ++++++++++++++++++++++++++++++++++++"
         if [[ -f "${ZDOTDIR:-$HOME}/2" ]] || [[ -f "${ZDOTDIR:-$HOME}/3" ]]; then
-                zsh_debug_echo "Warning: Numbered files detected - check for redirection typos"
+                zf::debug "Warning: Numbered files detected - check for redirection typos"
         fi
     }
 fi
 
 if [[ "$(uname)" == "Darwin" ]]; then
     # macOS Settings
-        zsh_debug_echo "Changing macOS defaults..."
+        zf::debug "Changing macOS defaults..."
     defaults write -g NSWindowShouldDragOnGesture YES
     defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
     defaults write com.apple.dock "mru-spaces" -bool "false"

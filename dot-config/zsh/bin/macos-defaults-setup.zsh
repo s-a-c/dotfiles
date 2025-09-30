@@ -1,4 +1,4 @@
-#!/opt/homebrew/bin/zsh
+#!/usr/bin/env zsh
 #=============================================================================
 # File: macos-defaults-setup.zsh
 # Purpose: 1.1 Configure macOS system defaults in a deferred, non-startup manner
@@ -23,31 +23,31 @@ export ORIGINAL_CWD="$(pwd)"
 # 1.3 Comprehensive Logging Setup
 _setup_logging() {
     # Use macOS-compatible date format instead of GNU format
-    local log_date=$(date +%Y-%m-%d 2>/dev/null || zsh_debug_echo "unknown")
-    local log_time=$(date +%H-%M-%S 2>/dev/null || zsh_debug_echo "unknown")
+    local log_date=$(date +%Y-%m-%d 2>/dev/null || zf::debug "unknown")
+    local log_time=$(date +%H-%M-%S 2>/dev/null || zf::debug "unknown")
     export LOG_DIR="/Users/s-a-c/.config/zsh/logs/$log_date"
     export LOG_FILE="$LOG_DIR/macos-defaults-setup_$log_time.log"
 
     # Create log directory
     mkdir -p "$LOG_DIR"
 
-        zsh_debug_echo "==============================================================================  "
-        zsh_debug_echo "macOS Defaults Setup Script Execution"
-        zsh_debug_echo "Started: $(date +%Y-%m-%dT%H:%M:%SZ)"
-        zsh_debug_echo "Log file: $LOG_FILE"
-        zsh_debug_echo "=============================================================================="
+    zf::debug "==============================================================================  "
+    zf::debug "macOS Defaults Setup Script Execution"
+    zf::debug "Started: $(date +%Y-%m-%dT%H:%M:%SZ)"
+    zf::debug "Log file: $LOG_FILE"
+    zf::debug "=============================================================================="
 }
 
 # 1.4 macOS System Defaults Configuration
 _apply_macos_defaults() {
-        zsh_debug_echo ""
-        zsh_debug_echo "🍎 Applying macOS system defaults..."
+    zf::debug ""
+    zf::debug "🍎 Applying macOS system defaults..."
 
     # Export current defaults for backup/comparison
-        zsh_debug_echo "📥 Backing up current defaults..."
-    defaults read > "${ZDOTDIR:-$HOME}/saved_macos_defaults.plist"
+    zf::debug "📥 Backing up current defaults..."
+    defaults read >"${ZDOTDIR:-$HOME}/saved_macos_defaults.plist"
 
-        zsh_debug_echo "⚙️  Setting macOS defaults..."
+    zf::debug "⚙️  Setting macOS defaults..."
 
     # Global settings
     defaults write -g NSWindowShouldDragOnGesture YES
@@ -110,39 +110,39 @@ _apply_macos_defaults() {
     defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
 
     # Fix for MX Master 3S (requires sudo - skip if not available)
-        zsh_debug_echo "🖱️  Applying MX Master 3S Bluetooth fix (requires sudo)..."
+    zf::debug "🖱️  Applying MX Master 3S Bluetooth fix (requires sudo)..."
     if sudo -n true 2>/dev/null; then
         sudo defaults write /Library/Preferences/com.apple.airport.bt.plist bluetoothCoexMgmt Hybrid
-            zsh_debug_echo "   ✅ MX Master 3S fix applied successfully"
+        zf::debug "   ✅ MX Master 3S fix applied successfully"
     else
-            zsh_debug_echo "   ⚠️  Skipping MX Master 3S fix - sudo not available or requires password"
+        zf::debug "   ⚠️  Skipping MX Master 3S fix - sudo not available or requires password"
     fi
 
-        zsh_debug_echo "✅ macOS defaults configuration complete!"
+    zf::debug "✅ macOS defaults configuration complete!"
 }
 
 # 1.5 Cleanup and Working Directory Restoration
 _cleanup() {
-        zsh_debug_echo ""
-        zsh_debug_echo "🧹 Cleaning up..."
+    zf::debug ""
+    zf::debug "🧹 Cleaning up..."
 
     # Restore original working directory
     if [[ -n "$ORIGINAL_CWD" ]]; then
         cd "$ORIGINAL_CWD" || {
-                zsh_debug_echo "⚠️  Warning: Could not restore original directory: $ORIGINAL_CWD"
+            zf::debug "⚠️  Warning: Could not restore original directory: $ORIGINAL_CWD"
             exit 1
         }
     fi
 
-        zsh_debug_echo "✅ macOS defaults setup completed successfully at $(date +%Y-%m-%dT%H:%M:%SZ)"
-        zsh_debug_echo "=============================================================================="
+    zf::debug "✅ macOS defaults setup completed successfully at $(date +%Y-%m-%dT%H:%M:%SZ)"
+    zf::debug "=============================================================================="
 }
 
 # 1.6 Main execution function
 main() {
     # Verify we're on macOS
     if [[ "$(uname)" != "Darwin" ]]; then
-            zsh_debug_echo "❌ Error: This script is only for macOS systems"
+        zf::debug "❌ Error: This script is only for macOS systems"
         exit 1
     fi
 

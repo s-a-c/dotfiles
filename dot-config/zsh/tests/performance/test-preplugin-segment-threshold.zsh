@@ -44,7 +44,7 @@
 set -euo pipefail
 
 # Debug helper (noop if not defined globally)
-typeset -f zsh_debug_echo >/dev/null 2>&1 || zsh_debug_echo() { :; }
+typeset -f zf::debug >/dev/null 2>&1 || zf::debug() { :; }
 
 # Resolve metrics directory (mirror logic from perf-capture.zsh)
 ZDOTDIR="${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}"
@@ -125,13 +125,13 @@ if [[ -f "$BASELINE_FILE" ]]; then
             _failures+=("I5 regression: pre_ms=${pre_ms}ms > allowed ${allowed_max}ms (baseline=${baseline_pre}ms, pct=${PREPLUGIN_REGRESSION_PCT}%)")
         fi
     elif [[ -z "$baseline_pre" || "$baseline_pre" == "0" ]]; then
-        zsh_debug_echo "# [perf-test] baseline file present but baseline_pre_plugin_cost_ms missing/zero – skipping I5 regression check"
+        zf::debug "# [perf-test] baseline file present but baseline_pre_plugin_cost_ms missing/zero – skipping I5 regression check"
     fi
 else
     if ((PREPLUGIN_REQUIRE_BASELINE == 1)); then
         _failures+=("I5 baseline required but ${BASELINE_FILE} not found")
     else
-        zsh_debug_echo "# [perf-test] baseline file not found – skipping regression comparison (I5)"
+        zf::debug "# [perf-test] baseline file not found – skipping regression comparison (I5)"
     fi
 fi
 
