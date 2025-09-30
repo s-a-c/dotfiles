@@ -43,7 +43,7 @@ if [[ "${TDD_SKIP_CORE_FN_NS:-0}" == "1" ]]; then
 fi
 
 # Quiet debug shim if not defined
-typeset -f zsh_debug_echo >/dev/null 2>&1 || zsh_debug_echo() { :; }
+typeset -f zf::debug >/dev/null 2>&1 || zf::debug() { :; }
 
 PASS=()
 FAIL=()

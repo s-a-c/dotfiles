@@ -43,7 +43,7 @@ return [
     | or the servers endpoint above.
     |
     */
-    'default_server' => 'eu-1',
+    'default_server' => 'free',
 
     /*
     |--------------------------------------------------------------------------

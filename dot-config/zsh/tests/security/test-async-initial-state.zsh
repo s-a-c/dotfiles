@@ -295,7 +295,7 @@ print_test "Premature async start detection"
         fi
     fi
     if (( premature_running )); then
-        zsh_debug_echo "# [async-test] Detected premature RUNNING; permissive mode (not failing)"
+        zf::debug "# [async-test] Detected premature RUNNING; permissive mode (not failing)"
     fi
 
     print_pass

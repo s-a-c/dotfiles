@@ -7,9 +7,9 @@ set -euo pipefail
 ZDOTDIR="${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}"
 [[ -f "${ZDOTDIR}/.zshenv" ]] && source "${ZDOTDIR}/.zshenv"
 
-# Use zsh_debug_echo from .zshenv if available
-if declare -f zsh_debug_echo >/dev/null 2>&1; then
-    zsh_debug_echo "# [test-path-dedup] Starting PATH deduplication test"
+# Use zf::debug from .zshenv if available
+if declare -f zf::debug >/dev/null 2>&1; then
+    zf::debug "# [test-path-dedup] Starting PATH deduplication test"
 fi
 
 cd "$ZDOTDIR" # ensure working directory is ZDOTDIR so .zshenv is present for subshell sourcing
@@ -41,20 +41,20 @@ for seg in "${all_segments[@]}"; do
     # Skip empty segments
     [[ -z $seg ]] && continue
     if [[ -n ${seen[$seg]:-} ]]; then
-        zsh_debug_echo "FAIL: duplicate PATH entry detected: $seg"
+        zf::debug "FAIL: duplicate PATH entry detected: $seg"
         ((duplicate_count++))
     fi
     seen[$seg]=1
 done
 
 if [[ $duplicate_count -gt 0 ]]; then
-    zsh_debug_echo "FAIL: Found $duplicate_count duplicate PATH entries"
+    zf::debug "FAIL: Found $duplicate_count duplicate PATH entries"
     exit 1
 fi
 
-# Use zsh_debug_echo for success message
-if declare -f zsh_debug_echo >/dev/null 2>&1; then
-    zsh_debug_echo "# [test-path-dedup] PATH deduplication test passed - no duplicates found"
+# Use zf::debug for success message
+if declare -f zf::debug >/dev/null 2>&1; then
+    zf::debug "# [test-path-dedup] PATH deduplication test passed - no duplicates found"
 fi
 
 echo "PASS: PATH deduplication working correctly"

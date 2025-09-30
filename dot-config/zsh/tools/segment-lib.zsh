@@ -60,7 +60,7 @@ typeset -gA _ZSH_SEGMENT_START_MS   # label -> start_ms
 typeset -gA _ZSH_SEGMENT_PHASE      # label -> phase
 typeset -gA _ZSH_SEGMENT_DONE       # label -> 1 (ended)
 
-typeset -f zsh_debug_echo >/dev/null 2>&1 || zsh_debug_echo() { :; }
+typeset -f zf::debug >/dev/null 2>&1 || zf::debug() { :; }
 
 # Internal: now (ms) using EPOCHREALTIME
 _zsh_perf_now_ms() {
@@ -95,7 +95,7 @@ _zsh_perf_segment_start() {
   _ZSH_SEGMENT_START_MS[$label]=$now
   _ZSH_SEGMENT_PHASE[$label]=$phase
   unset "_ZSH_SEGMENT_DONE[$label]"
-  zsh_debug_echo "# [segment-lib][start] label=$label phase=$phase ms=$now"
+  zf::debug "# [segment-lib][start] label=$label phase=$phase ms=$now"
 }
 
 # Public: end a segment and emit
@@ -139,7 +139,7 @@ _zsh_perf_segment_end() {
     fi
   fi
 
-  zsh_debug_echo "# [segment-lib][end] label=$label phase=$phase delta=${delta}ms sample=$sample"
+  zf::debug "# [segment-lib][end] label=$label phase=$phase delta=${delta}ms sample=$sample"
 }
 
 # Public: wrap helper
@@ -227,7 +227,7 @@ _zsh_perf_export_guidelines_checksum() {
     print "POLICY checksum=${GUIDELINES_CHECKSUM}" >>"${PERF_SEGMENT_LOG}" 2>/dev/null || true
   fi
 
-  zsh_debug_echo "# [segment-lib][policy] GUIDELINES_CHECKSUM=${GUIDELINES_CHECKSUM:-unset}"
+  zf::debug "# [segment-lib][policy] GUIDELINES_CHECKSUM=${GUIDELINES_CHECKSUM:-unset}"
 }
 
 # Convenience one-shot public alias
@@ -244,7 +244,7 @@ _zsh_perf_instrument_compinit() {
   # Only run if compinit available and not already executed (heuristics)
   autoload -Uz compinit 2>/dev/null || return 0
   if [[ -n ${ZSH_COMPINIT_RAN:-} || -n ${_COMPINIT_INITIALIZED:-} ]]; then
-    zsh_debug_echo "# [segment-lib][compinit] already ran (skipping instrumentation)"
+    zf::debug "# [segment-lib][compinit] already ran (skipping instrumentation)"
     return 0
   fi
   local label="compinit"
@@ -301,6 +301,6 @@ if [[ "${ZSH_SEGMENT_LIB_SKIP_POLICY:-0}" != "1" ]]; then
   _zsh_perf_export_guidelines_checksum
 fi
 
-zsh_debug_echo "# [segment-lib] loaded (policy=${GUIDELINES_CHECKSUM:-unset})"
+zf::debug "# [segment-lib] loaded (policy=${GUIDELINES_CHECKSUM:-unset})"
 
 # End of segment-lib.zsh

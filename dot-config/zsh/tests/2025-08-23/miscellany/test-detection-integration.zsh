@@ -1,4 +1,4 @@
-#!/opt/homebrew/bin/zsh
+#!/usr/bin/env zsh
 # ==============================================================================
 # ZSH Configuration: Detection Integration Test Suite
 # ==============================================================================
@@ -25,7 +25,7 @@ export ZSH_SOURCE_EXECUTE_DEBUG=false
 DETECTION_SCRIPT="${ZDOTDIR:-$HOME/.config/zsh}/.zshrc.d/00_01-source-execute-detection.zsh"
 
 if [[ ! -f "$DETECTION_SCRIPT" ]]; then
-        zsh_debug_echo "ERROR: Source/execute detection script not found: $DETECTION_SCRIPT"
+    zf::debug "ERROR: Source/execute detection script not found: $DETECTION_SCRIPT"
     exit 1
 fi
 
@@ -55,7 +55,7 @@ ZSHRC_DIR="$ZSH_CONFIG_ROOT/.zshrc.d"
 log_test() {
     local message="$1"
     local timestamp=$(date -u '+%Y-%m-%d %H:%M:%S UTC')
-        zsh_debug_echo "[$timestamp] [TEST] [$$] $message" >> "$LOG_FILE" 2>/dev/null || true
+    zf::debug "[$timestamp] [TEST] [$$] $message" >>"$LOG_FILE" 2>/dev/null || true
 }
 
 run_test() {
@@ -64,17 +64,17 @@ run_test() {
 
     TEST_COUNT=$((TEST_COUNT + 1))
 
-        zsh_debug_echo "Running test $TEST_COUNT: $test_name"
+    zf::debug "Running test $TEST_COUNT: $test_name"
     log_test "Starting test: $test_name"
 
     if "$test_function"; then
         TEST_PASSED=$((TEST_PASSED + 1))
-            zsh_debug_echo "  ✓ PASS: $test_name"
+        zf::debug "  ✓ PASS: $test_name"
         log_test "PASS: $test_name"
         return 0
     else
         TEST_FAILED=$((TEST_FAILED + 1))
-            zsh_debug_echo "  ✗ FAIL: $test_name"
+        zf::debug "  ✗ FAIL: $test_name"
         log_test "FAIL: $test_name"
         return 1
     fi
@@ -86,26 +86,26 @@ assert_file_contains_pattern() {
     local message="${3:-File should contain pattern}"
 
     if [[ ! -f "$file_path" ]]; then
-            zsh_debug_echo "    ASSERTION FAILED: File does not exist: $file_path"
+        zf::debug "    ASSERTION FAILED: File does not exist: $file_path"
         return 1
     fi
 
     if grep -q "$pattern" "$file_path" 2>/dev/null; then
         return 0
     else
-            zsh_debug_echo "    ASSERTION FAILED: $message"
-            zsh_debug_echo "    File: $file_path"
-            zsh_debug_echo "    Pattern: $pattern"
+        zf::debug "    ASSERTION FAILED: $message"
+        zf::debug "    File: $file_path"
+        zf::debug "    Pattern: $pattern"
         return 1
     fi
 }
 
 assert_file_has_shebang() {
     local file_path="$1"
-    local expected_shebang="${2:-#!/opt/homebrew/bin/zsh}"
+    local expected_shebang="${2:-#!/usr/bin/env zsh}"
 
     if [[ ! -f "$file_path" ]]; then
-            zsh_debug_echo "    ASSERTION FAILED: File does not exist: $file_path"
+        zf::debug "    ASSERTION FAILED: File does not exist: $file_path"
         return 1
     fi
 
@@ -113,9 +113,9 @@ assert_file_has_shebang() {
     if [[ "$first_line" == "$expected_shebang" ]]; then
         return 0
     else
-            zsh_debug_echo "    ASSERTION FAILED: Incorrect shebang in $file_path"
-            zsh_debug_echo "    Expected: $expected_shebang"
-            zsh_debug_echo "    Actual: $first_line"
+        zf::debug "    ASSERTION FAILED: Incorrect shebang in $file_path"
+        zf::debug "    Expected: $expected_shebang"
+        zf::debug "    Actual: $first_line"
         return 1
     fi
 }
@@ -142,14 +142,14 @@ test_existing_test_scripts_use_detection() {
             # Check for detection function usage
             if grep -q "is_being_sourced\|is_being_executed" "$test_file" 2>/dev/null; then
                 integration_count=$((integration_count + 1))
-                    zsh_debug_echo "    ✓ $test_file uses detection functions"
+                zf::debug "    ✓ $test_file uses detection functions"
             else
-                    zsh_debug_echo "    ⚠ $test_file does not use detection functions"
+                zf::debug "    ⚠ $test_file does not use detection functions"
             fi
         fi
     done
 
-        zsh_debug_echo "    Integration status: $integration_count/$total_files test files use detection"
+    zf::debug "    Integration status: $integration_count/$total_files test files use detection"
 
     # Pass if at least some files use detection (gradual integration)
     [[ $integration_count -gt 0 ]]
@@ -171,16 +171,16 @@ test_test_scripts_have_correct_shebang() {
         if [[ -f "$test_file" ]]; then
             total_files=$((total_files + 1))
 
-            if assert_file_has_shebang "$test_file" "#!/opt/homebrew/bin/zsh" 2>/dev/null; then
+            if assert_file_has_shebang "$test_file" "#!/usr/bin/env zsh" 2>/dev/null; then
                 correct_shebang_count=$((correct_shebang_count + 1))
-                    zsh_debug_echo "    ✓ $test_file has correct shebang"
+                zf::debug "    ✓ $test_file has correct shebang"
             else
-                    zsh_debug_echo "    ⚠ $test_file has incorrect shebang"
+                zf::debug "    ⚠ $test_file has incorrect shebang"
             fi
         fi
     done
 
-        zsh_debug_echo "    Shebang status: $correct_shebang_count/$total_files test files have correct shebang"
+    zf::debug "    Shebang status: $correct_shebang_count/$total_files test files have correct shebang"
 
     # Pass if most files have correct shebang
     [[ $correct_shebang_count -ge $((total_files / 2)) ]]
@@ -208,17 +208,17 @@ test_bin_scripts_use_detection() {
             # Check for detection function usage or sourcing of detection script
             if grep -q "is_being_sourced\|is_being_executed\|source.*detection" "$bin_file" 2>/dev/null; then
                 integration_count=$((integration_count + 1))
-                    zsh_debug_echo "    ✓ $bin_file uses detection system"
+                zf::debug "    ✓ $bin_file uses detection system"
             else
-                    zsh_debug_echo "    ⚠ $bin_file does not use detection system"
+                zf::debug "    ⚠ $bin_file does not use detection system"
             fi
         fi
     done
 
-        zsh_debug_echo "    Integration status: $integration_count/$total_files bin scripts use detection"
+    zf::debug "    Integration status: $integration_count/$total_files bin scripts use detection"
 
     # Pass if at least some files use detection
-    [[ $integration_count -ge 0 ]]  # Always pass for now, integration is gradual
+    [[ $integration_count -ge 0 ]] # Always pass for now, integration is gradual
 }
 
 test_bin_scripts_have_correct_shebang() {
@@ -234,20 +234,20 @@ test_bin_scripts_have_correct_shebang() {
         if [[ -f "$bin_file" ]]; then
             total_files=$((total_files + 1))
 
-            if assert_file_has_shebang "$bin_file" "#!/opt/homebrew/bin/zsh" 2>/dev/null; then
+            if assert_file_has_shebang "$bin_file" "#!/usr/bin/env zsh" 2>/dev/null; then
                 correct_shebang_count=$((correct_shebang_count + 1))
-                    zsh_debug_echo "    ✓ $bin_file has correct shebang"
+                zf::debug "    ✓ $bin_file has correct shebang"
             else
-                    zsh_debug_echo "    ⚠ $bin_file has incorrect shebang"
+                zf::debug "    ⚠ $bin_file has incorrect shebang"
             fi
         fi
     done
 
     if [[ $total_files -gt 0 ]]; then
-            zsh_debug_echo "    Shebang status: $correct_shebang_count/$total_files bin scripts have correct shebang"
+        zf::debug "    Shebang status: $correct_shebang_count/$total_files bin scripts have correct shebang"
         [[ $correct_shebang_count -ge $((total_files / 2)) ]]
     else
-            zsh_debug_echo "    No applicable bin scripts found"
+        zf::debug "    No applicable bin scripts found"
         return 0
     fi
 }
@@ -273,18 +273,18 @@ test_config_scripts_source_detection() {
             # Check for detection system usage
             if grep -q "source.*detection\|is_being_sourced\|is_being_executed" "$config_file" 2>/dev/null; then
                 integration_count=$((integration_count + 1))
-                    zsh_debug_echo "    ✓ $config_file integrates with detection system"
+                zf::debug "    ✓ $config_file integrates with detection system"
             else
-                    zsh_debug_echo "    ⚠ $config_file does not integrate with detection system"
+                zf::debug "    ⚠ $config_file does not integrate with detection system"
             fi
         fi
     done
 
     if [[ $total_files -gt 0 ]]; then
-            zsh_debug_echo "    Integration status: $integration_count/$total_files config files use detection"
-        [[ $integration_count -ge 0 ]]  # Always pass for now, integration is gradual
+        zf::debug "    Integration status: $integration_count/$total_files config files use detection"
+        [[ $integration_count -ge 0 ]] # Always pass for now, integration is gradual
     else
-            zsh_debug_echo "    No applicable config files found"
+        zf::debug "    No applicable config files found"
         return 0
     fi
 }
@@ -310,15 +310,15 @@ test_detection_functions_globally_available() {
     local total_functions=${#required_functions[@]}
 
     for func_name in "${required_functions[@]}"; do
-        if declare -f "$func_name" > /dev/null 2>&1; then
+        if declare -f "$func_name" >/dev/null 2>&1; then
             available_count=$((available_count + 1))
-                zsh_debug_echo "    ✓ $func_name is available"
+            zf::debug "    ✓ $func_name is available"
         else
-                zsh_debug_echo "    ✗ $func_name is not available"
+            zf::debug "    ✗ $func_name is not available"
         fi
     done
 
-        zsh_debug_echo "    Availability status: $available_count/$total_functions functions are globally available"
+    zf::debug "    Availability status: $available_count/$total_functions functions are globally available"
 
     # Pass if most functions are available
     [[ $available_count -ge $((total_functions * 3 / 4)) ]]
@@ -329,14 +329,14 @@ test_detection_system_initialization() {
     local detection_file="$ZSHRC_DIR/00_01-source-execute-detection.zsh"
 
     if [[ ! -f "$detection_file" ]]; then
-            zsh_debug_echo "    ASSERTION FAILED: Detection system file not found"
+        zf::debug "    ASSERTION FAILED: Detection system file not found"
         return 1
     fi
 
     # Check that the file has proper structure
     assert_file_contains_pattern "$detection_file" "is_being_sourced()" "Detection file should contain is_being_sourced function" &&
-    assert_file_contains_pattern "$detection_file" "is_being_executed()" "Detection file should contain is_being_executed function" &&
-    assert_file_contains_pattern "$detection_file" "export -f" "Detection file should export functions"
+        assert_file_contains_pattern "$detection_file" "is_being_executed()" "Detection file should contain is_being_executed function" &&
+        assert_file_contains_pattern "$detection_file" "export -f" "Detection file should export functions"
 }
 
 # ------------------------------------------------------------------------------
@@ -362,15 +362,15 @@ test_consistent_error_handling_patterns() {
             # Check for consistent error handling patterns
             if grep -q "handle_error\|safe_exit\|context_echo.*ERROR" "$script_file" 2>/dev/null; then
                 consistent_count=$((consistent_count + 1))
-                    zsh_debug_echo "    ✓ $script_file uses consistent error handling"
+                zf::debug "    ✓ $script_file uses consistent error handling"
             else
-                    zsh_debug_echo "    ⚠ $script_file may not use consistent error handling"
+                zf::debug "    ⚠ $script_file may not use consistent error handling"
             fi
         fi
     done
 
     if [[ $total_files -gt 0 ]]; then
-            zsh_debug_echo "    Consistency status: $consistent_count/$total_files scripts use consistent error handling"
+        zf::debug "    Consistency status: $consistent_count/$total_files scripts use consistent error handling"
         [[ $consistent_count -ge $((total_files / 2)) ]]
     else
         return 0
@@ -382,67 +382,67 @@ test_consistent_error_handling_patterns() {
 # ------------------------------------------------------------------------------
 
 run_all_tests() {
-        zsh_debug_echo "========================================================"
-        zsh_debug_echo "Detection Integration Test Suite"
-        zsh_debug_echo "========================================================"
-        zsh_debug_echo "Timestamp: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
-        zsh_debug_echo "Execution Context: $(get_execution_context)"
-        zsh_debug_echo "Log File: $LOG_FILE"
-        zsh_debug_echo ""
+    zf::debug "========================================================"
+    zf::debug "Detection Integration Test Suite"
+    zf::debug "========================================================"
+    zf::debug "Timestamp: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+    zf::debug "Execution Context: $(get_execution_context)"
+    zf::debug "Log File: $LOG_FILE"
+    zf::debug ""
 
     log_test "Starting detection integration test suite"
 
     # Test Script Integration
-        zsh_debug_echo "=== Test Script Integration Tests ==="
+    zf::debug "=== Test Script Integration Tests ==="
     run_test "Existing Test Scripts Use Detection" "test_existing_test_scripts_use_detection"
     run_test "Test Scripts Have Correct Shebang" "test_test_scripts_have_correct_shebang"
 
     # Helper Script Integration
-        zsh_debug_echo ""
-        zsh_debug_echo "=== Helper Script Integration Tests ==="
+    zf::debug ""
+    zf::debug "=== Helper Script Integration Tests ==="
     run_test "Bin Scripts Use Detection" "test_bin_scripts_use_detection"
     run_test "Bin Scripts Have Correct Shebang" "test_bin_scripts_have_correct_shebang"
 
     # Configuration Script Integration
-        zsh_debug_echo ""
-        zsh_debug_echo "=== Configuration Script Integration Tests ==="
+    zf::debug ""
+    zf::debug "=== Configuration Script Integration Tests ==="
     run_test "Config Scripts Source Detection" "test_config_scripts_source_detection"
 
     # Detection System Availability
-        zsh_debug_echo ""
-        zsh_debug_echo "=== Detection System Availability Tests ==="
+    zf::debug ""
+    zf::debug "=== Detection System Availability Tests ==="
     run_test "Detection Functions Globally Available" "test_detection_functions_globally_available"
     run_test "Detection System Initialization" "test_detection_system_initialization"
 
     # Integration Consistency
-        zsh_debug_echo ""
-        zsh_debug_echo "=== Integration Consistency Tests ==="
+    zf::debug ""
+    zf::debug "=== Integration Consistency Tests ==="
     run_test "Consistent Error Handling Patterns" "test_consistent_error_handling_patterns"
 
     # Results Summary
-        zsh_debug_echo ""
-        zsh_debug_echo "========================================================"
-        zsh_debug_echo "Test Results Summary"
-        zsh_debug_echo "========================================================"
-        zsh_debug_echo "Total Tests: $TEST_COUNT"
-        zsh_debug_echo "Passed: $TEST_PASSED"
-        zsh_debug_echo "Failed: $TEST_FAILED"
+    zf::debug ""
+    zf::debug "========================================================"
+    zf::debug "Test Results Summary"
+    zf::debug "========================================================"
+    zf::debug "Total Tests: $TEST_COUNT"
+    zf::debug "Passed: $TEST_PASSED"
+    zf::debug "Failed: $TEST_FAILED"
 
     local pass_percentage=0
     if [[ $TEST_COUNT -gt 0 ]]; then
-        pass_percentage=$(( (TEST_PASSED * 100) / TEST_COUNT ))
+        pass_percentage=$(((TEST_PASSED * 100) / TEST_COUNT))
     fi
-        zsh_debug_echo "Success Rate: ${pass_percentage}%"
+    zf::debug "Success Rate: ${pass_percentage}%"
 
     log_test "Detection integration test suite completed - $TEST_PASSED/$TEST_COUNT tests passed"
 
     if [[ $TEST_FAILED -eq 0 ]]; then
-            zsh_debug_echo ""
-            zsh_debug_echo "🎉 All detection integration tests passed!"
+        zf::debug ""
+        zf::debug "🎉 All detection integration tests passed!"
         return 0
     else
-            zsh_debug_echo ""
-            zsh_debug_echo "❌ $TEST_FAILED detection integration test(s) failed."
+        zf::debug ""
+        zf::debug "❌ $TEST_FAILED detection integration test(s) failed."
         return 1
     fi
 }
@@ -459,8 +459,8 @@ main() {
 if is_being_executed; then
     main "$@"
 elif is_being_sourced; then
-        zsh_debug_echo "Detection integration test functions loaded (sourced context)"
-        zsh_debug_echo "Available functions: run_all_tests, individual test functions"
+    zf::debug "Detection integration test functions loaded (sourced context)"
+    zf::debug "Available functions: run_all_tests, individual test functions"
 fi
 
 # ==============================================================================

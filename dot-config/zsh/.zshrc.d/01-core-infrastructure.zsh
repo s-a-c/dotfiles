@@ -1,1 +1,0 @@
-../.zshrc.d.legacy/consolidated-modules/01-core-infrastructure.zsh

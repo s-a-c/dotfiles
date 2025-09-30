@@ -50,7 +50,7 @@ fail() { FAIL+=("$1"); }
 skip() { print "SKIP: $1"; SKIP=1; }
 
 # Optional debug helper
-typeset -f zsh_debug_echo >/dev/null 2>&1 || zsh_debug_echo() { :; }
+typeset -f zf::debug >/dev/null 2>&1 || zf::debug() { :; }
 
 # ---------------------------------------------------------------------------
 # Capture "original" PATH via controlled subshell (attempt)

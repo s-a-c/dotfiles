@@ -23,6 +23,31 @@ _path_debug() {
 _path_debug "Loading path safety module..."
 
 # ==============================================================================
+# SECTION 0: PROMPT VARIABLE SAFETY
+# ==============================================================================
+# Purpose: Ensure all RPS* and prompt variables are defined before any plugins load
+# This prevents "parameter not set" errors from Oh My Zsh and other plugins
+# that may reference these variables unconditionally during async operations
+
+# Ensure all RPS variables exist (even if .zshenv already initialized them)
+# Use conditional assignment to avoid overriding existing values
+: ${RPS1:=""}
+: ${RPS2:=""}
+: ${RPS3:=""}
+: ${RPS4:=""}
+: ${RPS5:=""}
+: ${RPROMPT:=""}
+: ${PROMPT:=""}
+
+# Additional prompt-related variables that might be referenced
+: ${PS1:="%m%# "}
+: ${PS2:="> "}
+: ${PS3:="?# "}
+: ${PS4:="+%N:%i> "}
+
+_path_debug "Prompt variables initialized for plugin safety"
+
+# ==============================================================================
 # SECTION 1: PATH BASELINE PROTECTION
 # ==============================================================================
 # Purpose: Ensure PATH never regresses below .zshenv baseline

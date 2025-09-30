@@ -1,4 +1,4 @@
-#!/opt/homebrew/bin/zsh
+#!/usr/bin/env zsh
 # Context-Aware Configuration: Node.js Projects
 # Automatically loaded when entering Node.js project directories
 
@@ -67,4 +67,4 @@ if [[ -f "$PWD/tsconfig.json" ]]; then
     alias type-check="npm run type-check"
 fi
 
-echo "🟢 Node.js context loaded ($(node --version 2>/dev/null || zsh_debug_echo 'Node.js not found'))"
+echo "🟢 Node.js context loaded ($(node --version 2>/dev/null || zf::debug 'Node.js not found'))"

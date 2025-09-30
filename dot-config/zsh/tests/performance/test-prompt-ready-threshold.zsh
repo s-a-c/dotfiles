@@ -32,7 +32,7 @@
 #
 set -euo pipefail
 
-typeset -f zsh_debug_echo >/dev/null 2>&1 || zsh_debug_echo() { :; }
+typeset -f zf::debug >/dev/null 2>&1 || zf::debug() { :; }
 
 : "${PROMPT_READY_MAX_MS:=400}"
 : "${PROMPT_READY_REQUIRE:=0}"
