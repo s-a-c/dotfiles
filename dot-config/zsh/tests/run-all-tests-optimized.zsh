@@ -27,13 +27,10 @@ cd "$ZDOTDIR" || {
     exit 2
 }
 
-# Use zsh_debug_echo from .zshenv if available
-if ! declare -f zsh_debug_echo >/dev/null 2>&1; then
-    zsh_debug_echo() { echo "$@"; }
-fi
 
-zsh_debug_echo "# [run-all-tests-optimized] Starting optimized test suite"
-zsh_debug_echo "# [run-all-tests-optimized] Single .zshenv load complete"
+
+zf::debug "# [run-all-tests-optimized] Starting optimized test suite"
+zf::debug "# [run-all-tests-optimized] Single .zshenv load complete"
 
 # Test configuration
 TEST_BASE_DIR="${ZDOTDIR}/tests"

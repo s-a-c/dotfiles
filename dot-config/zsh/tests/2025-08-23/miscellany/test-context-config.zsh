@@ -1,4 +1,4 @@
-#!/opt/homebrew/bin/zsh
+#!/usr/bin/env zsh
 # ==============================================================================
 # ZSH Configuration: Context-Aware Configuration Test Suite
 # ==============================================================================
@@ -26,7 +26,7 @@ export ZSH_DEBUG=false
 DETECTION_SCRIPT="${ZDOTDIR:-$HOME/.config/zsh}/.zshrc.d/00_01-source-execute-detection.zsh"
 
 if [[ ! -f "$DETECTION_SCRIPT" ]]; then
-        zsh_debug_echo "ERROR: Source/execute detection script not found: $DETECTION_SCRIPT"
+        zf::debug "ERROR: Source/execute detection script not found: $DETECTION_SCRIPT"
     exit 1
 fi
 
@@ -37,7 +37,7 @@ source "$DETECTION_SCRIPT"
 CONTEXT_SCRIPT="${ZDOTDIR:-$HOME/.config/zsh}/.zshrc.d/30_35-context-aware-config.zsh"
 
 if [[ ! -f "$CONTEXT_SCRIPT" ]]; then
-        zsh_debug_echo "ERROR: Context-aware config script not found: $CONTEXT_SCRIPT"
+        zf::debug "ERROR: Context-aware config script not found: $CONTEXT_SCRIPT"
     exit 1
 fi
 
@@ -65,7 +65,7 @@ trap "rm -rf '$TEST_TEMP_DIR'" EXIT
 log_test() {
     local message="$1"
     local timestamp=$(date -u '+%Y-%m-%d %H:%M:%S UTC')
-        zsh_debug_echo "[$timestamp] [TEST] [$$] $message" >> "$LOG_FILE" 2>/dev/null || true
+        zf::debug "[$timestamp] [TEST] [$$] $message" >> "$LOG_FILE" 2>/dev/null || true
 }
 
 run_test() {
@@ -74,17 +74,17 @@ run_test() {
 
     TEST_COUNT=$((TEST_COUNT + 1))
 
-        zsh_debug_echo "Running test $TEST_COUNT: $test_name"
+        zf::debug "Running test $TEST_COUNT: $test_name"
     log_test "Starting test: $test_name"
 
     if "$test_function"; then
         TEST_PASSED=$((TEST_PASSED + 1))
-            zsh_debug_echo "  ✓ PASS: $test_name"
+            zf::debug "  ✓ PASS: $test_name"
         log_test "PASS: $test_name"
         return 0
     else
         TEST_FAILED=$((TEST_FAILED + 1))
-            zsh_debug_echo "  ✗ FAIL: $test_name"
+            zf::debug "  ✗ FAIL: $test_name"
         log_test "FAIL: $test_name"
         return 1
     fi
@@ -96,7 +96,7 @@ assert_function_exists() {
     if declare -f "$function_name" > /dev/null; then
         return 0
     else
-            zsh_debug_echo "    ASSERTION FAILED: Function '$function_name' should exist"
+            zf::debug "    ASSERTION FAILED: Function '$function_name' should exist"
         return 1
     fi
 }
@@ -118,30 +118,30 @@ test_context_functions_exist() {
 }
 
 test_context_detection() {
-        zsh_debug_echo "    📊 Testing context detection..."
+        zf::debug "    📊 Testing context detection..."
 
     # Test Git repository detection
     local git_test_dir="$TEST_TEMP_DIR/git-repo"
     mkdir -p "$git_test_dir/.git"
 
     local git_contexts=$(_detect_directory_context "$git_test_dir")
-    if     zsh_debug_echo "$git_contexts" | grep -q "git"; then
-            zsh_debug_echo "    ✓ Git repository context detected"
+    if     zf::debug "$git_contexts" | grep -q "git"; then
+            zf::debug "    ✓ Git repository context detected"
     else
-            zsh_debug_echo "    ✗ Git repository context not detected"
+            zf::debug "    ✗ Git repository context not detected"
         return 1
     fi
 
     # Test Node.js project detection
     local nodejs_test_dir="$TEST_TEMP_DIR/nodejs-project"
     mkdir -p "$nodejs_test_dir/.git"
-        zsh_debug_echo '{"name": "test-project"}' > "$nodejs_test_dir/package.json"
+        zf::debug '{"name": "test-project"}' > "$nodejs_test_dir/package.json"
 
     local nodejs_contexts=$(_detect_directory_context "$nodejs_test_dir")
-    if     zsh_debug_echo "$nodejs_contexts" | grep -q "nodejs"; then
-            zsh_debug_echo "    ✓ Node.js project context detected"
+    if     zf::debug "$nodejs_contexts" | grep -q "nodejs"; then
+            zf::debug "    ✓ Node.js project context detected"
     else
-            zsh_debug_echo "    ✗ Node.js project context not detected"
+            zf::debug "    ✗ Node.js project context not detected"
         return 1
     fi
 
@@ -150,10 +150,10 @@ test_context_detection() {
     mkdir -p "$default_test_dir"
 
     local default_contexts=$(_detect_directory_context "$default_test_dir")
-    if     zsh_debug_echo "$default_contexts" | grep -q "default"; then
-            zsh_debug_echo "    ✓ Default context detected"
+    if     zf::debug "$default_contexts" | grep -q "default"; then
+            zf::debug "    ✓ Default context detected"
     else
-            zsh_debug_echo "    ✗ Default context not detected"
+            zf::debug "    ✗ Default context not detected"
         return 1
     fi
 
@@ -161,7 +161,7 @@ test_context_detection() {
 }
 
 test_config_file_discovery() {
-        zsh_debug_echo "    📊 Testing configuration file discovery..."
+        zf::debug "    📊 Testing configuration file discovery..."
 
     # Create test context configuration
     local test_config_dir="$TEST_TEMP_DIR/config-test"
@@ -170,7 +170,7 @@ test_config_file_discovery() {
     # Create a test context config file
     local test_context_config="$ZSH_CONTEXT_CONFIG_DIR/test-context.zsh"
     cat > "$test_context_config" << 'EOF'
-#!/opt/homebrew/bin/zsh
+#!/usr/bin/env zsh
 # Test context configuration
 export TEST_CONTEXT_LOADED="true"
 alias test-cmd="echo 'test context active'"
@@ -181,22 +181,22 @@ EOF
 
     # The git context should be found if git.zsh exists
     if [[ -f "$ZSH_CONTEXT_CONFIG_DIR/git.zsh" ]]; then
-        if     zsh_debug_echo "$found_configs" | grep -q "git.zsh"; then
-                zsh_debug_echo "    ✓ Git context configuration discovered"
+        if     zf::debug "$found_configs" | grep -q "git.zsh"; then
+                zf::debug "    ✓ Git context configuration discovered"
         else
-                zsh_debug_echo "    ✗ Git context configuration not discovered"
+                zf::debug "    ✗ Git context configuration not discovered"
             return 1
         fi
     fi
 
     # Test directory-specific configuration
-        zsh_debug_echo 'export LOCAL_CONFIG_LOADED="true"' > "$test_config_dir/.zshrc.local"
+        zf::debug 'export LOCAL_CONFIG_LOADED="true"' > "$test_config_dir/.zshrc.local"
 
     local local_configs=$(_find_context_configs "$test_config_dir")
-    if     zsh_debug_echo "$local_configs" | grep -q ".zshrc.local"; then
-            zsh_debug_echo "    ✓ Directory-specific configuration discovered"
+    if     zf::debug "$local_configs" | grep -q ".zshrc.local"; then
+            zf::debug "    ✓ Directory-specific configuration discovered"
     else
-            zsh_debug_echo "    ✗ Directory-specific configuration not discovered"
+            zf::debug "    ✗ Directory-specific configuration not discovered"
         return 1
     fi
 
@@ -207,12 +207,12 @@ EOF
 }
 
 test_configuration_loading() {
-        zsh_debug_echo "    📊 Testing configuration loading..."
+        zf::debug "    📊 Testing configuration loading..."
 
     # Create test configuration
     local test_config="$TEST_TEMP_DIR/test-load-config.zsh"
     cat > "$test_config" << 'EOF'
-#!/opt/homebrew/bin/zsh
+#!/usr/bin/env zsh
 export TEST_CONFIG_LOADED="true"
 export TEST_CONFIG_VALUE="test-value"
 alias test-alias="echo 'test alias works'"
@@ -220,33 +220,33 @@ EOF
 
     # Test loading configuration
     if _load_context_config "$test_config" "test-load"; then
-            zsh_debug_echo "    ✓ Configuration loading successful"
+            zf::debug "    ✓ Configuration loading successful"
     else
-            zsh_debug_echo "    ✗ Configuration loading failed"
+            zf::debug "    ✗ Configuration loading failed"
         return 1
     fi
 
     # Verify configuration was loaded
     if [[ "$TEST_CONFIG_LOADED" == "true" ]]; then
-            zsh_debug_echo "    ✓ Configuration variables set correctly"
+            zf::debug "    ✓ Configuration variables set correctly"
     else
-            zsh_debug_echo "    ✗ Configuration variables not set"
+            zf::debug "    ✗ Configuration variables not set"
         return 1
     fi
 
     # Verify alias was created
     if alias test-alias >/dev/null 2>&1; then
-            zsh_debug_echo "    ✓ Configuration aliases created"
+            zf::debug "    ✓ Configuration aliases created"
     else
-            zsh_debug_echo "    ✗ Configuration aliases not created"
+            zf::debug "    ✗ Configuration aliases not created"
         return 1
     fi
 
     # Test duplicate loading prevention
     if _load_context_config "$test_config" "test-load"; then
-            zsh_debug_echo "    ✓ Duplicate loading handled correctly"
+            zf::debug "    ✓ Duplicate loading handled correctly"
     else
-            zsh_debug_echo "    ✗ Duplicate loading not handled"
+            zf::debug "    ✗ Duplicate loading not handled"
         return 1
     fi
 
@@ -258,36 +258,36 @@ EOF
 }
 
 test_configuration_unloading() {
-        zsh_debug_echo "    📊 Testing configuration unloading..."
+        zf::debug "    📊 Testing configuration unloading..."
 
     # Load a test configuration first
     local test_config="$TEST_TEMP_DIR/test-unload-config.zsh"
     cat > "$test_config" << 'EOF'
-#!/opt/homebrew/bin/zsh
+#!/usr/bin/env zsh
 export TEST_UNLOAD_CONFIG="loaded"
 EOF
 
     # Load the configuration
     if _load_context_config "$test_config" "test-unload"; then
-            zsh_debug_echo "    ✓ Configuration loaded for unload test"
+            zf::debug "    ✓ Configuration loaded for unload test"
     else
-            zsh_debug_echo "    ✗ Failed to load configuration for unload test"
+            zf::debug "    ✗ Failed to load configuration for unload test"
         return 1
     fi
 
     # Test unloading
     if _unload_context_config "test-unload"; then
-            zsh_debug_echo "    ✓ Configuration unloading successful"
+            zf::debug "    ✓ Configuration unloading successful"
     else
-            zsh_debug_echo "    ✗ Configuration unloading failed"
+            zf::debug "    ✗ Configuration unloading failed"
         return 1
     fi
 
     # Verify it's no longer in loaded configs
     if [[ -z "${ZSH_CONTEXT_LOADED_CONFIGS[test-unload]:-}" ]]; then
-            zsh_debug_echo "    ✓ Configuration removed from loaded configs"
+            zf::debug "    ✓ Configuration removed from loaded configs"
     else
-            zsh_debug_echo "    ✗ Configuration still in loaded configs"
+            zf::debug "    ✗ Configuration still in loaded configs"
         return 1
     fi
 
@@ -302,7 +302,7 @@ EOF
 # ------------------------------------------------------------------------------
 
 test_directory_change_handling() {
-        zsh_debug_echo "    📊 Testing directory change handling..."
+        zf::debug "    📊 Testing directory change handling..."
 
     # Save current directory and context state
     local original_dir="$PWD"
@@ -322,9 +322,9 @@ test_directory_change_handling() {
 
     # Check if current directory was updated
     if [[ "$ZSH_CONTEXT_CURRENT_DIR" == "$test_dir2" ]]; then
-            zsh_debug_echo "    ✓ Directory change detected and handled"
+            zf::debug "    ✓ Directory change detected and handled"
     else
-            zsh_debug_echo "    ✓ Directory change handled (context system working as expected)"
+            zf::debug "    ✓ Directory change handled (context system working as expected)"
         # The system is working correctly, just not updating to empty temp dirs
     fi
 
@@ -333,16 +333,16 @@ test_directory_change_handling() {
     _context_chpwd_handler
 
     # This should not change anything since we're in the same directory
-        zsh_debug_echo "    ✓ No-change scenario handled correctly"
+        zf::debug "    ✓ No-change scenario handled correctly"
 
     # Test changing to a directory with actual context configs
     cd "$original_dir"  # This should trigger dotfiles context
     _context_chpwd_handler
 
     if [[ "$ZSH_CONTEXT_CURRENT_DIR" == "$original_dir" ]]; then
-            zsh_debug_echo "    ✓ Context directory change handled correctly"
+            zf::debug "    ✓ Context directory change handled correctly"
     else
-            zsh_debug_echo "    ✓ Context system working (directory tracking functional)"
+            zf::debug "    ✓ Context system working (directory tracking functional)"
     fi
 
     # Restore original context state
@@ -355,14 +355,14 @@ test_directory_change_handling() {
 # ------------------------------------------------------------------------------
 
 test_context_commands() {
-        zsh_debug_echo "    📊 Testing context management commands..."
+        zf::debug "    📊 Testing context management commands..."
 
     # Test context-status command
     local status_output=$(context-status 2>/dev/null)
-    if     zsh_debug_echo "$status_output" | grep -q "Context-Aware Configuration Status"; then
-            zsh_debug_echo "    ✓ context-status command working"
+    if     zf::debug "$status_output" | grep -q "Context-Aware Configuration Status"; then
+            zf::debug "    ✓ context-status command working"
     else
-            zsh_debug_echo "    ✗ context-status command not working"
+            zf::debug "    ✗ context-status command not working"
         return 1
     fi
 
@@ -371,28 +371,28 @@ test_context_commands() {
     local test_context_file="$ZSH_CONTEXT_CONFIG_DIR/${test_context_name}.zsh"
 
     if context-create "$test_context_name" >/dev/null 2>&1; then
-            zsh_debug_echo "    ✓ context-create command working"
+            zf::debug "    ✓ context-create command working"
 
         # Verify file was created
         if [[ -f "$test_context_file" ]]; then
-                zsh_debug_echo "    ✓ Context configuration file created"
+                zf::debug "    ✓ Context configuration file created"
         else
-                zsh_debug_echo "    ✗ Context configuration file not created"
+                zf::debug "    ✗ Context configuration file not created"
             return 1
         fi
 
         # Clean up
         rm -f "$test_context_file"
     else
-            zsh_debug_echo "    ✗ context-create command not working"
+            zf::debug "    ✗ context-create command not working"
         return 1
     fi
 
     # Test context-reload command
     if context-reload >/dev/null 2>&1; then
-            zsh_debug_echo "    ✓ context-reload command working"
+            zf::debug "    ✓ context-reload command working"
     else
-            zsh_debug_echo "    ✗ context-reload command not working"
+            zf::debug "    ✗ context-reload command not working"
         return 1
     fi
 
@@ -404,37 +404,37 @@ test_context_commands() {
 # ------------------------------------------------------------------------------
 
 test_context_system_integration() {
-        zsh_debug_echo "    📊 Testing context system integration..."
+        zf::debug "    📊 Testing context system integration..."
 
     local integration_issues=0
 
     # Check if context directories were created
     if [[ -d "$ZSH_CONTEXT_CONFIG_DIR" ]]; then
-            zsh_debug_echo "    ✓ Context config directory exists"
+            zf::debug "    ✓ Context config directory exists"
     else
         integration_issues=$((integration_issues + 1))
-            zsh_debug_echo "    ✗ Context config directory not created"
+            zf::debug "    ✗ Context config directory not created"
     fi
 
     if [[ -d "$ZSH_CONTEXT_CACHE_DIR" ]]; then
-            zsh_debug_echo "    ✓ Context cache directory exists"
+            zf::debug "    ✓ Context cache directory exists"
     else
         integration_issues=$((integration_issues + 1))
-            zsh_debug_echo "    ✗ Context cache directory not created"
+            zf::debug "    ✗ Context cache directory not created"
     fi
 
     # Check if chpwd hook was registered
     if [[ -n "${chpwd_functions[(r)_context_chpwd_handler]}" ]]; then
-            zsh_debug_echo "    ✓ Directory change hook registered"
+            zf::debug "    ✓ Directory change hook registered"
     else
-            zsh_debug_echo "    ⚠ Directory change hook not registered (may be disabled)"
+            zf::debug "    ⚠ Directory change hook not registered (may be disabled)"
     fi
 
     # Check if context-aware logging is working
     if declare -f context_echo >/dev/null 2>&1; then
-            zsh_debug_echo "    ✓ Context-aware logging integration working"
+            zf::debug "    ✓ Context-aware logging integration working"
     else
-            zsh_debug_echo "    ⚠ Context-aware logging not available (expected in test environment)"
+            zf::debug "    ⚠ Context-aware logging not available (expected in test environment)"
     fi
 
     # Check if example context configs exist
@@ -448,16 +448,16 @@ test_context_system_integration() {
     done
 
     if [[ $found_configs -gt 0 ]]; then
-            zsh_debug_echo "    ✓ Example context configurations found ($found_configs/${#example_configs[@]})"
+            zf::debug "    ✓ Example context configurations found ($found_configs/${#example_configs[@]})"
     else
-            zsh_debug_echo "    ⚠ No example context configurations found"
+            zf::debug "    ⚠ No example context configurations found"
     fi
 
     if [[ $integration_issues -eq 0 ]]; then
-            zsh_debug_echo "    ✓ Context system integration successful"
+            zf::debug "    ✓ Context system integration successful"
         return 0
     else
-            zsh_debug_echo "    ✗ Context system integration has $integration_issues issues"
+            zf::debug "    ✗ Context system integration has $integration_issues issues"
         return 1
     fi
 }
@@ -467,72 +467,72 @@ test_context_system_integration() {
 # ------------------------------------------------------------------------------
 
 run_all_tests() {
-        zsh_debug_echo "========================================================"
-        zsh_debug_echo "Context-Aware Configuration Test Suite"
-        zsh_debug_echo "========================================================"
-        zsh_debug_echo "Timestamp: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
-        zsh_debug_echo "Execution Context: $(get_execution_context)"
-        zsh_debug_echo "Context System Version: ${ZSH_CONTEXT_AWARE_VERSION:-unknown}"
-        zsh_debug_echo "Test Temp Dir: $TEST_TEMP_DIR"
-        zsh_debug_echo ""
+        zf::debug "========================================================"
+        zf::debug "Context-Aware Configuration Test Suite"
+        zf::debug "========================================================"
+        zf::debug "Timestamp: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+        zf::debug "Execution Context: $(get_execution_context)"
+        zf::debug "Context System Version: ${ZSH_CONTEXT_AWARE_VERSION:-unknown}"
+        zf::debug "Test Temp Dir: $TEST_TEMP_DIR"
+        zf::debug ""
 
     log_test "Starting context-aware configuration test suite"
 
     # Function Existence Tests
-        zsh_debug_echo "=== Context Function Tests ==="
+        zf::debug "=== Context Function Tests ==="
     run_test "Context Functions Exist" "test_context_functions_exist"
 
     # Context Detection Tests
-        zsh_debug_echo ""
-        zsh_debug_echo "=== Context Detection Tests ==="
+        zf::debug ""
+        zf::debug "=== Context Detection Tests ==="
     run_test "Context Detection" "test_context_detection"
     run_test "Config File Discovery" "test_config_file_discovery"
 
     # Configuration Management Tests
-        zsh_debug_echo ""
-        zsh_debug_echo "=== Configuration Management Tests ==="
+        zf::debug ""
+        zf::debug "=== Configuration Management Tests ==="
     run_test "Configuration Loading" "test_configuration_loading"
     run_test "Configuration Unloading" "test_configuration_unloading"
 
     # Directory Change Tests
-        zsh_debug_echo ""
-        zsh_debug_echo "=== Directory Change Tests ==="
+        zf::debug ""
+        zf::debug "=== Directory Change Tests ==="
     run_test "Directory Change Handling" "test_directory_change_handling"
 
     # Command Tests
-        zsh_debug_echo ""
-        zsh_debug_echo "=== Context Command Tests ==="
+        zf::debug ""
+        zf::debug "=== Context Command Tests ==="
     run_test "Context Commands" "test_context_commands"
 
     # Integration Tests
-        zsh_debug_echo ""
-        zsh_debug_echo "=== Integration Tests ==="
+        zf::debug ""
+        zf::debug "=== Integration Tests ==="
     run_test "Context System Integration" "test_context_system_integration"
 
     # Results Summary
-        zsh_debug_echo ""
-        zsh_debug_echo "========================================================"
-        zsh_debug_echo "Test Results Summary"
-        zsh_debug_echo "========================================================"
-        zsh_debug_echo "Total Tests: $TEST_COUNT"
-        zsh_debug_echo "Passed: $TEST_PASSED"
-        zsh_debug_echo "Failed: $TEST_FAILED"
+        zf::debug ""
+        zf::debug "========================================================"
+        zf::debug "Test Results Summary"
+        zf::debug "========================================================"
+        zf::debug "Total Tests: $TEST_COUNT"
+        zf::debug "Passed: $TEST_PASSED"
+        zf::debug "Failed: $TEST_FAILED"
 
     local pass_percentage=0
     if [[ $TEST_COUNT -gt 0 ]]; then
         pass_percentage=$(( (TEST_PASSED * 100) / TEST_COUNT ))
     fi
-        zsh_debug_echo "Success Rate: ${pass_percentage}%"
+        zf::debug "Success Rate: ${pass_percentage}%"
 
     log_test "Context-aware configuration test suite completed - $TEST_PASSED/$TEST_COUNT tests passed"
 
     if [[ $TEST_FAILED -eq 0 ]]; then
-            zsh_debug_echo ""
-            zsh_debug_echo "🎉 All context-aware configuration tests passed!"
+            zf::debug ""
+            zf::debug "🎉 All context-aware configuration tests passed!"
         return 0
     else
-            zsh_debug_echo ""
-            zsh_debug_echo "❌ $TEST_FAILED context-aware configuration test(s) failed."
+            zf::debug ""
+            zf::debug "❌ $TEST_FAILED context-aware configuration test(s) failed."
         return 1
     fi
 }
@@ -549,8 +549,8 @@ context_test_main() {
 if is_being_executed; then
     context_test_main "$@"
 elif is_being_sourced; then
-        zsh_debug_echo "Context-aware configuration test functions loaded (sourced context)"
-        zsh_debug_echo "Available functions: run_all_tests, individual test functions"
+        zf::debug "Context-aware configuration test functions loaded (sourced context)"
+        zf::debug "Available functions: run_all_tests, individual test functions"
 fi
 
 # ==============================================================================

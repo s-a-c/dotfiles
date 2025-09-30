@@ -50,7 +50,7 @@ print "DEBUG: POST_DIR=$POST_DIR" >&2
 print "DEBUG: PWD=$PWD" >&2
 
 # Define missing functions that modules might need
-typeset -f zsh_debug_echo >/dev/null 2>&1 || zsh_debug_echo() { :; }
+typeset -f zf::debug >/dev/null 2>&1 || zf::debug() { :; }
 autoload -Uz is-at-least 2>/dev/null || true
 
 # Source segment-lib if available

@@ -16,7 +16,7 @@ echo ""
 echo "📝 Adding async-cache functionality to core infrastructure..."
 
 # Extract async-cache functionality and append to core infrastructure
-cat >> "$CONSOLIDATED_DIR/01-core-infrastructure.zsh" << 'EOF'
+cat >>"$CONSOLIDATED_DIR/01-core-infrastructure.zsh" <<'EOF'
 
 # ==============================================================================
 # SECTION: ASYNC CACHE AND COMPILATION SYSTEM
@@ -62,7 +62,7 @@ init_cache_system() {
     # Create cache manifest if it doesn't exist
     if [[ ! -f "$ZSH_CACHE_MANIFEST" ]]; then
         cat > "$ZSH_CACHE_MANIFEST" << 'MANIFEST_EOF'
-#!/opt/homebrew/bin/zsh
+#!/usr/bin/env zsh
 # ZSH Cache Manifest - Auto-generated
 # Do not edit manually
 
@@ -230,14 +230,14 @@ echo "=== 3. Creating 09-external-integrations.zsh ==="
 echo ""
 
 # Create the missing 9th module for external integrations
-cat > "$TEMP_DIR/09-external-integrations.zsh" << 'EOF'
+cat >"$TEMP_DIR/09-external-integrations.zsh" <<'EOF'
 #!/usr/bin/env zsh
 # ==============================================================================
 # ZSH Legacy Configuration: External Integrations Module
 # ==============================================================================
 # Purpose: External tool integrations, platform-specific configurations,
 #          and third-party service connections
-# 
+#
 # Consolidated from:
 #   - 99-external-tools.zsh (external tool integrations)
 #   - Various platform and service-specific configurations
@@ -346,7 +346,7 @@ setup_macos_integrations() {
         alias ls="ls -G"
         alias ll="ls -alG"
         alias la="ls -aG"
-        
+
         _ext_debug "macOS-specific configurations applied"
     fi
 }
@@ -360,7 +360,7 @@ setup_linux_integrations() {
         alias ls="ls --color=auto"
         alias ll="ls -al --color=auto"
         alias la="ls -a --color=auto"
-        
+
         _ext_debug "Linux-specific configurations applied"
     fi
 }
@@ -450,7 +450,7 @@ external-status() {
     echo ""
 
     echo "Tool Integration Status:"
-    
+
     local tools=("fzf" "direnv" "atuin" "gh" "aws" "docker" "kubectl" "brew")
     for tool in "${tools[@]}"; do
         if command -v "$tool" >/dev/null 2>&1; then
@@ -462,13 +462,13 @@ external-status() {
 
     echo ""
     echo "Version Managers:"
-    
+
     if [[ -d "$HOME/.nvm" ]]; then
         echo "  ✅ NVM - available"
     else
         echo "  ❌ NVM - not found"
     fi
-    
+
     local version_managers=("pyenv" "rbenv")
     for vm in "${version_managers[@]}"; do
         if command -v "$vm" >/dev/null 2>&1; then
@@ -482,13 +482,13 @@ external-status() {
 # Reload external integrations
 reload-external() {
     _ext_debug "Reloading external integrations..."
-    
+
     setup_external_tools
     setup_macos_integrations
     setup_linux_integrations
     setup_cloud_integrations
     setup_version_managers
-    
+
     echo "✅ External integrations reloaded"
 }
 
@@ -516,7 +516,7 @@ _ext_debug "External integrations module ready"
 test_external_integrations() {
     local tests_passed=0
     local tests_total=5
-    
+
     # Test 1: Module metadata
     if [[ -n "$ZSH_EXTERNAL_INTEGRATIONS_VERSION" ]]; then
         ((tests_passed++))
@@ -524,7 +524,7 @@ test_external_integrations() {
     else
         echo "❌ Module metadata missing"
     fi
-    
+
     # Test 2: Management commands
     if command -v external-status >/dev/null 2>&1; then
         ((tests_passed++))
@@ -532,7 +532,7 @@ test_external_integrations() {
     else
         echo "❌ Management commands missing"
     fi
-    
+
     # Test 3: Platform detection
     if [[ -n "$OSTYPE" ]]; then
         ((tests_passed++))
@@ -540,7 +540,7 @@ test_external_integrations() {
     else
         echo "❌ Platform detection failed"
     fi
-    
+
     # Test 4: Tool integration functions
     if command -v setup_external_tools >/dev/null 2>&1; then
         ((tests_passed++))
@@ -548,7 +548,7 @@ test_external_integrations() {
     else
         echo "❌ Tool integration functions missing"
     fi
-    
+
     # Test 5: Version manager functions
     if command -v setup_version_managers >/dev/null 2>&1; then
         ((tests_passed++))
@@ -556,10 +556,10 @@ test_external_integrations() {
     else
         echo "❌ Version manager functions missing"
     fi
-    
+
     echo ""
     echo "External Integrations Self-Test: $tests_passed/$tests_total tests passed"
-    
+
     if [[ $tests_passed -eq $tests_total ]]; then
         return 0
     else
@@ -607,7 +607,7 @@ echo ""
 for module in "$CONSOLIDATED_DIR"/*.zsh; do
     if [[ -f "$module" ]]; then
         echo "📄 $(basename "$module"):"
-        echo "  Size: $(wc -l < "$module") lines"
+        echo "  Size: $(wc -l <"$module") lines"
         echo "  Functions: $(grep -c "^[[:space:]]*[a-zA-Z_][a-zA-Z0-9_]*[[:space:]]*(" "$module" 2>/dev/null || echo "0")"
         echo ""
     fi
@@ -617,7 +617,7 @@ echo "🎉 LEGACY CONSOLIDATION COMPLETED!"
 echo ""
 echo "✅ All 9 consolidated modules are ready:"
 echo "   01-core-infrastructure.zsh     - Core functions, logging, caching"
-echo "   02-performance-monitoring.zsh  - Performance measurement and monitoring"  
+echo "   02-performance-monitoring.zsh  - Performance measurement and monitoring"
 echo "   03-security-integrity.zsh      - Security checks and plugin integrity"
 echo "   04-environment-options.zsh     - Environment variables and ZSH options"
 echo "   05-completion-system.zsh       - Completion management and configuration"

@@ -6,7 +6,7 @@
 [[ -f "${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}/.zshenv" ]] && source "${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}/.zshenv"
 
 rebuild_completions() {
-        zsh_debug_echo "🔄 Rebuilding completions safely..."
+        zf::debug "🔄 Rebuilding completions safely..."
 
     # Use ZSH_COMPDUMP from .zshenv for consistency
     local compdump_file="${ZSH_COMPDUMP:-${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}/.zcompdump}"
@@ -24,9 +24,9 @@ rebuild_completions() {
     if command -v compinit >/dev/null 2>&1; then
         autoload -Uz compinit
         compinit -d "$compdump_file"
-            zsh_debug_echo "✅ Completions rebuilt successfully at $compdump_file"
+            zf::debug "✅ Completions rebuilt successfully at $compdump_file"
     else
-            zsh_debug_echo "⚠️  compinit not available"
+            zf::debug "⚠️  compinit not available"
         return 1
     fi
 }

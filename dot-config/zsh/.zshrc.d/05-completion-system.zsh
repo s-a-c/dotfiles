@@ -1,1 +1,0 @@
-../.zshrc.d.legacy/consolidated-modules/05-completion-system.zsh

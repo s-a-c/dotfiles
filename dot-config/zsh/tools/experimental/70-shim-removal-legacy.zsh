@@ -43,10 +43,10 @@ _zred_shim_candidates=(
   ".zshrc.d/legacy-shim.zsh"        # example: legacy shim file
 )
 
-# Helper: debug emitter (no-op if zsh_debug_echo not present)
+# Helper: debug emitter (no-op if zf::debug not present)
 zred::_maybe_debug() {
-  if whence -w zsh_debug_echo >/dev/null 2>&1; then
-    zsh_debug_echo "$@"
+  if whence -w zf::debug >/dev/null 2>&1; then
+    zf::debug "$@"
   fi
 }
 

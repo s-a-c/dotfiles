@@ -45,17 +45,17 @@ echo "========================================" >&2
 # Function to trace file sourcing
 trace_source() {
     local file="$1"
-        zsh_debug_echo ">>> ATTEMPTING TO SOURCE: $file"
+        zf::debug ">>> ATTEMPTING TO SOURCE: $file"
     if [[ -f "$file" ]]; then
-            zsh_debug_echo ">>> FILE EXISTS: $file"
-            zsh_debug_echo ">>> FILE SIZE: $(wc -c < "$file") bytes"
-            zsh_debug_echo ">>> FILE PERMISSIONS: $(ls -la "$file")"
+            zf::debug ">>> FILE EXISTS: $file"
+            zf::debug ">>> FILE SIZE: $(wc -c < "$file") bytes"
+            zf::debug ">>> FILE PERMISSIONS: $(ls -la "$file")"
         source "$file"
         local exit_code=$?
-            zsh_debug_echo ">>> SOURCE COMPLETED: $file (exit code: $exit_code)"
+            zf::debug ">>> SOURCE COMPLETED: $file (exit code: $exit_code)"
         return $exit_code
     else
-            zsh_debug_echo ">>> FILE NOT FOUND: $file"
+            zf::debug ">>> FILE NOT FOUND: $file"
         return 1
     fi
 }
@@ -74,7 +74,7 @@ EOF
 # Backup original .zshrc
 if [[ -f "$ZSHRC_FILE" ]]; then
     cp "$ZSHRC_FILE" "${ZSHRC_FILE}.original"
-        zsh_debug_echo "✅ Backed up original .zshrc to ${ZSHRC_FILE}.original"
+        zf::debug "✅ Backed up original .zshrc to ${ZSHRC_FILE}.original"
 fi
 
 # Replace .zshrc with debug version
@@ -96,10 +96,10 @@ cat >> "${ZSHRC_FILE}.debug" << 'EOF'
 restore-original-zshrc() {
     if [[ -f "${ZDOTDIR}/.zshrc.original" ]]; then
         cp "${ZDOTDIR}/.zshrc.original" "${ZDOTDIR}/.zshrc"
-            zsh_debug_echo "✅ Restored original .zshrc"
-            zsh_debug_echo "💡 Start a new shell session to use normal configuration"
+            zf::debug "✅ Restored original .zshrc"
+            zf::debug "💡 Start a new shell session to use normal configuration"
     else
-            zsh_debug_echo "❌ No original .zshrc backup found"
+            zf::debug "❌ No original .zshrc backup found"
         return 1
     fi
 }

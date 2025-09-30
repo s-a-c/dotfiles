@@ -1,4 +1,4 @@
-#!/opt/homebrew/bin/zsh
+#!/usr/bin/env zsh
 # ==============================================================================
 # ZSH Configuration: Error Handling Context Test Suite
 # ==============================================================================
@@ -25,7 +25,7 @@ export ZSH_SOURCE_EXECUTE_DEBUG=false
 DETECTION_SCRIPT="${ZDOTDIR:-$HOME/.config/zsh}/.zshrc.d/00_01-source-execute-detection.zsh"
 
 if [[ ! -f "$DETECTION_SCRIPT" ]]; then
-        zsh_debug_echo "ERROR: Source/execute detection script not found: $DETECTION_SCRIPT"
+    zf::debug "ERROR: Source/execute detection script not found: $DETECTION_SCRIPT"
     exit 1
 fi
 
@@ -49,7 +49,7 @@ mkdir -p "$LOG_DIR" 2>/dev/null || true
 log_test() {
     local message="$1"
     local timestamp=$(date -u '+%Y-%m-%d %H:%M:%S UTC')
-        zsh_debug_echo "[$timestamp] [TEST] [$$] $message" >> "$LOG_FILE" 2>/dev/null || true
+    zf::debug "[$timestamp] [TEST] [$$] $message" >>"$LOG_FILE" 2>/dev/null || true
 }
 
 run_test() {
@@ -58,17 +58,17 @@ run_test() {
 
     TEST_COUNT=$((TEST_COUNT + 1))
 
-        zsh_debug_echo "Running test $TEST_COUNT: $test_name"
+    zf::debug "Running test $TEST_COUNT: $test_name"
     log_test "Starting test: $test_name"
 
     if "$test_function"; then
         TEST_PASSED=$((TEST_PASSED + 1))
-            zsh_debug_echo "  ✓ PASS: $test_name"
+        zf::debug "  ✓ PASS: $test_name"
         log_test "PASS: $test_name"
         return 0
     else
         TEST_FAILED=$((TEST_FAILED + 1))
-            zsh_debug_echo "  ✗ FAIL: $test_name"
+        zf::debug "  ✗ FAIL: $test_name"
         log_test "FAIL: $test_name"
         return 1
     fi
@@ -82,9 +82,9 @@ assert_equals() {
     if [[ "$expected" == "$actual" ]]; then
         return 0
     else
-            zsh_debug_echo "    ASSERTION FAILED: $message"
-            zsh_debug_echo "    Expected: '$expected'"
-            zsh_debug_echo "    Actual: '$actual'"
+        zf::debug "    ASSERTION FAILED: $message"
+        zf::debug "    Expected: '$expected'"
+        zf::debug "    Actual: '$actual'"
         return 1
     fi
 }
@@ -92,10 +92,10 @@ assert_equals() {
 assert_function_exists() {
     local function_name="$1"
 
-    if declare -f "$function_name" > /dev/null; then
+    if declare -f "$function_name" >/dev/null; then
         return 0
     else
-            zsh_debug_echo "    ASSERTION FAILED: Function '$function_name' should exist"
+        zf::debug "    ASSERTION FAILED: Function '$function_name' should exist"
         return 1
     fi
 }
@@ -106,8 +106,8 @@ assert_function_exists() {
 
 test_error_handling_functions_exist() {
     assert_function_exists "handle_error" &&
-    assert_function_exists "safe_exit" &&
-    assert_function_exists "exit_or_return"
+        assert_function_exists "safe_exit" &&
+        assert_function_exists "exit_or_return"
 }
 
 test_handle_error_message_formatting() {
@@ -128,8 +128,8 @@ test_handle_error_message_formatting() {
 
     # Check that error message contains expected components
     [[ "$error_output" =~ "ERROR" ]] &&
-    [[ "$error_output" =~ "$context" ]] &&
-    [[ "$error_output" =~ "$test_message" ]]
+        [[ "$error_output" =~ "$context" ]] &&
+        [[ "$error_output" =~ "$test_message" ]]
 }
 
 test_safe_exit_context_awareness() {
@@ -220,12 +220,12 @@ test_error_logging_functionality() {
         if grep -q "$test_error_message" "$detection_log" 2>/dev/null; then
             return 0
         else
-                zsh_debug_echo "    WARNING: Error message not found in detection log"
-            return 0  # Don't fail test, just warn
+            zf::debug "    WARNING: Error message not found in detection log"
+            return 0 # Don't fail test, just warn
         fi
     else
-            zsh_debug_echo "    WARNING: Detection log file not found"
-        return 0  # Don't fail test, just warn
+        zf::debug "    WARNING: Detection log file not found"
+        return 0 # Don't fail test, just warn
     fi
 }
 
@@ -239,9 +239,9 @@ test_error_handling_integration() {
 
     # Test that all error functions work together
     assert_function_exists "handle_error" &&
-    assert_function_exists "safe_exit" &&
-    assert_function_exists "exit_or_return" &&
-    assert_function_exists "context_echo"
+        assert_function_exists "safe_exit" &&
+        assert_function_exists "exit_or_return" &&
+        assert_function_exists "context_echo"
 }
 
 test_cross_context_compatibility() {
@@ -249,7 +249,7 @@ test_cross_context_compatibility() {
     local current_context=$(get_execution_context)
 
     # Document current context
-        zsh_debug_echo "  Testing in context: $current_context"
+    zf::debug "  Testing in context: $current_context"
 
     # Test basic error function availability
     assert_function_exists "handle_error"
@@ -260,64 +260,64 @@ test_cross_context_compatibility() {
 # ------------------------------------------------------------------------------
 
 run_all_tests() {
-        zsh_debug_echo "========================================================"
-        zsh_debug_echo "Error Handling Context Test Suite"
-        zsh_debug_echo "========================================================"
-        zsh_debug_echo "Timestamp: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
-        zsh_debug_echo "Execution Context: $(get_execution_context)"
-        zsh_debug_echo "Log File: $LOG_FILE"
-        zsh_debug_echo ""
+    zf::debug "========================================================"
+    zf::debug "Error Handling Context Test Suite"
+    zf::debug "========================================================"
+    zf::debug "Timestamp: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+    zf::debug "Execution Context: $(get_execution_context)"
+    zf::debug "Log File: $LOG_FILE"
+    zf::debug ""
 
     log_test "Starting error handling context test suite"
 
     # Core Function Tests
-        zsh_debug_echo "=== Error Handling Function Tests ==="
+    zf::debug "=== Error Handling Function Tests ==="
     run_test "Error Handling Functions Exist" "test_error_handling_functions_exist"
     run_test "Handle Error Message Formatting" "test_handle_error_message_formatting"
     run_test "Safe Exit Context Awareness" "test_safe_exit_context_awareness"
     run_test "Exit or Return Behavior" "test_exit_or_return_behavior"
 
     # Context Preservation Tests
-        zsh_debug_echo ""
-        zsh_debug_echo "=== Error Context Preservation Tests ==="
+    zf::debug ""
+    zf::debug "=== Error Context Preservation Tests ==="
     run_test "Error Context Information" "test_error_context_information"
     run_test "Function Stack Preservation" "test_function_stack_preservation"
 
     # Logging Tests
-        zsh_debug_echo ""
-        zsh_debug_echo "=== Error Logging Tests ==="
+    zf::debug ""
+    zf::debug "=== Error Logging Tests ==="
     run_test "Error Logging Functionality" "test_error_logging_functionality"
 
     # Integration Tests
-        zsh_debug_echo ""
-        zsh_debug_echo "=== Integration Tests ==="
+    zf::debug ""
+    zf::debug "=== Integration Tests ==="
     run_test "Error Handling Integration" "test_error_handling_integration"
     run_test "Cross Context Compatibility" "test_cross_context_compatibility"
 
     # Results Summary
-        zsh_debug_echo ""
-        zsh_debug_echo "========================================================"
-        zsh_debug_echo "Test Results Summary"
-        zsh_debug_echo "========================================================"
-        zsh_debug_echo "Total Tests: $TEST_COUNT"
-        zsh_debug_echo "Passed: $TEST_PASSED"
-        zsh_debug_echo "Failed: $TEST_FAILED"
+    zf::debug ""
+    zf::debug "========================================================"
+    zf::debug "Test Results Summary"
+    zf::debug "========================================================"
+    zf::debug "Total Tests: $TEST_COUNT"
+    zf::debug "Passed: $TEST_PASSED"
+    zf::debug "Failed: $TEST_FAILED"
 
     local pass_percentage=0
     if [[ $TEST_COUNT -gt 0 ]]; then
-        pass_percentage=$(( (TEST_PASSED * 100) / TEST_COUNT ))
+        pass_percentage=$(((TEST_PASSED * 100) / TEST_COUNT))
     fi
-        zsh_debug_echo "Success Rate: ${pass_percentage}%"
+    zf::debug "Success Rate: ${pass_percentage}%"
 
     log_test "Error handling test suite completed - $TEST_PASSED/$TEST_COUNT tests passed"
 
     if [[ $TEST_FAILED -eq 0 ]]; then
-            zsh_debug_echo ""
-            zsh_debug_echo "🎉 All error handling tests passed!"
+        zf::debug ""
+        zf::debug "🎉 All error handling tests passed!"
         return 0
     else
-            zsh_debug_echo ""
-            zsh_debug_echo "❌ $TEST_FAILED error handling test(s) failed."
+        zf::debug ""
+        zf::debug "❌ $TEST_FAILED error handling test(s) failed."
         return 1
     fi
 }
@@ -334,8 +334,8 @@ main() {
 if is_being_executed; then
     main "$@"
 elif is_being_sourced; then
-        zsh_debug_echo "Error handling context test functions loaded (sourced context)"
-        zsh_debug_echo "Available functions: run_all_tests, individual test functions"
+    zf::debug "Error handling context test functions loaded (sourced context)"
+    zf::debug "Available functions: run_all_tests, individual test functions"
 fi
 
 # ==============================================================================

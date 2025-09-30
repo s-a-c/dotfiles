@@ -58,7 +58,7 @@ fail() { FAIL+=("$1"); }
 skip() { SKIP+=("$1"); }
 
 # Quiet debug shim (optional)
-typeset -f zsh_debug_echo >/dev/null 2>&1 || zsh_debug_echo() { :; }
+typeset -f zf::debug >/dev/null 2>&1 || zf::debug() { :; }
 
 # ---------------------------
 # Repo Root Resolution
@@ -68,10 +68,10 @@ REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)"
 if [[ -z "$REPO_ROOT" ]]; then
   REPO_ROOT="$ZDOTDIR"
 fi
-zsh_debug_echo "DEBUG: PWD=$PWD"
-zsh_debug_echo "DEBUG: ZDOTDIR=$ZDOTDIR"
-zsh_debug_echo "DEBUG: SCRIPT_SRC=$SCRIPT_SRC"
-zsh_debug_echo "DEBUG: REPO_ROOT=$REPO_ROOT"
+zf::debug "DEBUG: PWD=$PWD"
+zf::debug "DEBUG: ZDOTDIR=$ZDOTDIR"
+zf::debug "DEBUG: SCRIPT_SRC=$SCRIPT_SRC"
+zf::debug "DEBUG: REPO_ROOT=$REPO_ROOT"
 
 # ---------------------------
 # Golden File Path

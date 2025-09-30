@@ -54,7 +54,7 @@ subshell_out="$(
   ZSH_DEBUG_LOG="${LOG_CAPTURE}" \
   zsh -c '
     set -euo pipefail
-    # Source project .zshenv (defines zsh_debug_echo & base vars)
+    # Source project .zshenv (defines zf::debug & base vars)
     [[ -f ./.zshenv ]] && source ./.zshenv
     # Source ONLY the FZF pre-plugin module (not the entire pre-plugin chain)
     target="./.zshrc.pre-plugins.d.REDESIGN/05-fzf-init.zsh"

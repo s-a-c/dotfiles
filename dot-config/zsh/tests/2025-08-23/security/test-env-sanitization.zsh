@@ -38,7 +38,7 @@ log_test() {
     local level="$1"
     local message="$2"
     local timestamp="$(date -u '+%Y-%m-%d %H:%M:%S UTC')"
-        zsh_debug_echo "[$timestamp] [$level] $message" | tee -a "$TEST_LOG_FILE" 2>/dev/null || zsh_debug_echo "[$timestamp] [$level] $message"
+        zf::debug "[$timestamp] [$level] $message" | tee -a "$TEST_LOG_FILE" 2>/dev/null || zf::debug "[$timestamp] [$level] $message"
 }
 
 setup_test_environment() {
@@ -78,7 +78,7 @@ setup_test_environment() {
     fi
 
     # Source the environment sanitization system with verbose debugging
-        zsh_debug_echo "Attempting to source: $sanitization_script"
+        zf::debug "Attempting to source: $sanitization_script"
     if ! source "$sanitization_script"; then
         log_test "ERROR" "Failed to source environment sanitization system"
         return 1
@@ -127,12 +127,12 @@ run_test() {
         test_results[$test_count]="PASS"
         ((passed_count++))
         log_test "PASS" "Test $test_count: $test_name - PASSED"
-            zsh_debug_echo "✅ Test $test_count: $test_name - PASSED"
+            zf::debug "✅ Test $test_count: $test_name - PASSED"
     else
         test_results[$test_count]="FAIL"
         ((failed_count++))
         log_test "FAIL" "Test $test_count: $test_name - FAILED"
-            zsh_debug_echo "❌ Test $test_count: $test_name - FAILED"
+            zf::debug "❌ Test $test_count: $test_name - FAILED"
     fi
 }
 
@@ -228,23 +228,23 @@ test_sensitive_variable_detection() {
     sensitive_vars="$(_find_sensitive_variables)"
 
     # Check that sensitive variables were detected
-    if !     zsh_debug_echo "$sensitive_vars" | grep -q "TEST_PASSWORD"; then
+    if !     zf::debug "$sensitive_vars" | grep -q "TEST_PASSWORD"; then
         log_test "ERROR" "TEST_PASSWORD not detected as sensitive"
         return 1
     fi
 
-    if !     zsh_debug_echo "$sensitive_vars" | grep -q "API_TOKEN"; then
+    if !     zf::debug "$sensitive_vars" | grep -q "API_TOKEN"; then
         log_test "ERROR" "API_TOKEN not detected as sensitive"
         return 1
     fi
 
-    if !     zsh_debug_echo "$sensitive_vars" | grep -q "SECRET_KEY"; then
+    if !     zf::debug "$sensitive_vars" | grep -q "SECRET_KEY"; then
         log_test "ERROR" "SECRET_KEY not detected as sensitive"
         return 1
     fi
 
     # Check that safe variable was not detected
-    if     zsh_debug_echo "$sensitive_vars" | grep -q "SAFE_VAR"; then
+    if     zf::debug "$sensitive_vars" | grep -q "SAFE_VAR"; then
         log_test "ERROR" "SAFE_VAR incorrectly detected as sensitive"
         return 1
     fi
@@ -332,7 +332,7 @@ test_privilege_escalation_detection() {
 
     # In normal 040-testing, we shouldn't be root
     if [[ "$EUID" -eq 0 ]]; then
-        if !     zsh_debug_echo "$priv_violations" | grep -q "Running as root"; then
+        if !     zf::debug "$priv_violations" | grep -q "Running as root"; then
             log_test "ERROR" "Root user detection failed"
             return 1
         fi
@@ -342,7 +342,7 @@ test_privilege_escalation_detection() {
     export LD_PRELOAD="/tmp/malicious.so"
 
     priv_violations="$(_check_privilege_escalation)"
-    if !     zsh_debug_echo "$priv_violations" | grep -q "LD_PRELOAD"; then
+    if !     zf::debug "$priv_violations" | grep -q "LD_PRELOAD"; then
         log_test "ERROR" "Suspicious LD_PRELOAD not detected"
         unset LD_PRELOAD
         return 1
@@ -435,20 +435,20 @@ test_logging_audit_trail() {
 
     # Check for expected log entries
     local log_content
-    log_content="$(cat "$ZSH_ENV_SECURITY_LOG" 2>/dev/null || zsh_debug_echo "")"
+    log_content="$(cat "$ZSH_ENV_SECURITY_LOG" 2>/dev/null || zf::debug "")"
 
-    if !     zsh_debug_echo "$log_content" | grep -q "VIOLATION.*PATH"; then
+    if !     zf::debug "$log_content" | grep -q "VIOLATION.*PATH"; then
         log_test "ERROR" "PATH violation not logged"
         return 1
     fi
 
-    if !     zsh_debug_echo "$log_content" | grep -q "DETECTED.*TEST_PASSWORD"; then
+    if !     zf::debug "$log_content" | grep -q "DETECTED.*TEST_PASSWORD"; then
         log_test "ERROR" "Sensitive variable detection not logged"
         return 1
     fi
 
     # Check UTC timestamp format
-    if !     zsh_debug_echo "$log_content" | grep -q "\[.*UTC\]"; then
+    if !     zf::debug "$log_content" | grep -q "\[.*UTC\]"; then
         log_test "ERROR" "Log entries missing UTC timestamps"
         return 1
     fi
@@ -467,28 +467,28 @@ test_security_status_functions() {
 
     # Test status function
     local status_output
-    status_output="$(_environment_security_status 2>/dev/null || zsh_debug_echo "status_failed")"
+    status_output="$(_environment_security_status 2>/dev/null || zf::debug "status_failed")"
 
     if [[ "$status_output" == "status_failed" ]]; then
         log_test "ERROR" "Security status function failed"
         return 1
     fi
 
-    if !     zsh_debug_echo "$status_output" | grep -q "Environment Security Status"; then
+    if !     zf::debug "$status_output" | grep -q "Environment Security Status"; then
         log_test "ERROR" "Status output missing expected header"
         return 1
     fi
 
     # Test scan function
     local scan_output
-    scan_output="$(_environment_security_scan 2>/dev/null || zsh_debug_echo "scan_failed")"
+    scan_output="$(_environment_security_scan 2>/dev/null || zf::debug "scan_failed")"
 
     if [[ "$scan_output" == "scan_failed" ]]; then
         log_test "ERROR" "Security scan function failed"
         return 1
     fi
 
-    if !     zsh_debug_echo "$scan_output" | grep -q "security scan"; then
+    if !     zf::debug "$scan_output" | grep -q "security scan"; then
         log_test "ERROR" "Scan output missing expected content"
         return 1
     fi
@@ -534,15 +534,15 @@ test_main_sanitization_function() {
 # Main Test Execution
 main() {
     log_test "INFO" "Starting $TEST_NAME test suite"
-        zsh_debug_echo "🛡️  Starting $TEST_NAME Test Suite"
-        zsh_debug_echo "📁 Test Directory: $TEST_DIR"
-        zsh_debug_echo "📋 Test Log: $TEST_LOG_FILE"
-        zsh_debug_echo ""
+        zf::debug "🛡️  Starting $TEST_NAME Test Suite"
+        zf::debug "📁 Test Directory: $TEST_DIR"
+        zf::debug "📋 Test Log: $TEST_LOG_FILE"
+        zf::debug ""
 
     # Setup test environment
     if ! setup_test_environment; then
         log_test "ERROR" "Failed to setup test environment"
-            zsh_debug_echo "❌ Failed to setup test environment"
+            zf::debug "❌ Failed to setup test environment"
         return 1
     fi
 
@@ -559,28 +559,28 @@ main() {
     run_test "Main Sanitization Function" test_main_sanitization_function
 
     # Test Summary
-        zsh_debug_echo ""
-        zsh_debug_echo "🛡️  $TEST_NAME Test Results:"
-        zsh_debug_echo "✅ Passed: $passed_count"
-        zsh_debug_echo "❌ Failed: $failed_count"
-        zsh_debug_echo "📊 Total:  $test_count"
-        zsh_debug_echo ""
+        zf::debug ""
+        zf::debug "🛡️  $TEST_NAME Test Results:"
+        zf::debug "✅ Passed: $passed_count"
+        zf::debug "❌ Failed: $failed_count"
+        zf::debug "📊 Total:  $test_count"
+        zf::debug ""
 
     local success_rate=0
     if [[ $test_count -gt 0 ]]; then
         success_rate=$(( (passed_count * 100) / test_count ))
     fi
 
-        zsh_debug_echo "📈 Success Rate: $success_rate%"
+        zf::debug "📈 Success Rate: $success_rate%"
 
     log_test "INFO" "$TEST_NAME test suite completed: $passed_count/$test_count tests passed ($success_rate%)"
 
     if [[ $failed_count -eq 0 ]]; then
-            zsh_debug_echo "🎉 All tests passed! Environment sanitization system is working correctly."
+            zf::debug "🎉 All tests passed! Environment sanitization system is working correctly."
         log_test "INFO" "All tests passed - system ready for production use"
         return 0
     else
-            zsh_debug_echo "⚠️  Some tests failed. Please review the logs and fix issues before deployment."
+            zf::debug "⚠️  Some tests failed. Please review the logs and fix issues before deployment."
         log_test "WARN" "$failed_count tests failed - system needs attention before production use"
         return 1
     fi

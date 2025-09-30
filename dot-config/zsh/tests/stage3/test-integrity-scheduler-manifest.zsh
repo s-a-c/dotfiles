@@ -108,9 +108,9 @@ else
 fi
 
 # Parse JSON (minimal schema check)
-schema="$(grep -E '"schema"' "$MANIFEST" 2>/dev/null | head -1 | sed -E 's/.*"schema"[[:space:]]*:[[:space:]]*"([^"]+)".*/\1/' || true)"
-version_val="$(grep -E '"version"' "$MANIFEST" 2>/dev/null | head -1 | sed -E 's/.*"version"[[:space:]]*:[[:space:]]*([0-9]+).*/\1/' || true)"
-registered_at="$(grep -E '"registered_at"' "$MANIFEST" 2>/dev/null | head -1 | sed -E 's/.*"registered_at"[[:space:]]*:[[:space:]]*"([^"]+)".*/\1/' || true)"
+schema="$(zf::safe_grep -E '"schema"' "$MANIFEST" 2>/dev/null | head -1 | sed -E 's/.*"schema"[[:space:]]*:[[:space:]]*"([^"]+)".*/\1/' || true)"
+version_val="$(zf::safe_grep -E '"version"' "$MANIFEST" 2>/dev/null | head -1 | sed -E 's/.*"version"[[:space:]]*:[[:space:]]*([0-9]+).*/\1/' || true)"
+registered_at="$(zf::safe_grep -E '"registered_at"' "$MANIFEST" 2>/dev/null | head -1 | sed -E 's/.*"registered_at"[[:space:]]*:[[:space:]]*"([^"]+)".*/\1/' || true)"
 
 # A3: Schema fields validations
 if [[ "$schema" == "integrity-scheduler.v1" ]]; then

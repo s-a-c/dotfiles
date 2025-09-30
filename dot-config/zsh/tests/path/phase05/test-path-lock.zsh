@@ -7,14 +7,14 @@ set -euo pipefail
 ZDOTDIR="${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}"
 [[ -f "${ZDOTDIR}/.zshenv" ]] && source "${ZDOTDIR}/.zshenv"
 
-# Use zsh_debug_echo from .zshenv if available
-if declare -f zsh_debug_echo >/dev/null 2>&1; then
-    zsh_debug_echo "# [test-path-lock] Testing PATH deduplication function consistency"
+# Use zf::debug from .zshenv if available
+if declare -f zf::debug >/dev/null 2>&1; then
+    zf::debug "# [test-path-lock] Testing PATH deduplication function consistency"
 fi
 
 # Test that path_dedupe function exists and works correctly
 if ! declare -f path_dedupe >/dev/null 2>&1; then
-        zsh_debug_echo "FAIL: path_dedupe function not available from .zshenv"
+        zf::debug "FAIL: path_dedupe function not available from .zshenv"
     exit 1
 fi
 
@@ -30,9 +30,9 @@ path_dedupe
 
 # Check that duplicates were removed
 if [[ "$PATH" == *"/usr/bin:/bin:/usr/bin"* ]] || [[ "$PATH" == *"/bin:/usr/local/bin:/bin"* ]]; then
-        zsh_debug_echo "FAIL: path_dedupe did not remove duplicates"
-        zsh_debug_echo "  Test PATH: $test_path"
-        zsh_debug_echo "  Result PATH: $PATH"
+        zf::debug "FAIL: path_dedupe did not remove duplicates"
+        zf::debug "  Test PATH: $test_path"
+        zf::debug "  Result PATH: $PATH"
     PATH="$original_path"  # Restore original PATH
     exit 1
 fi
@@ -41,7 +41,7 @@ fi
 essential_paths=("/usr/bin" "/bin" "/usr/local/bin" "/usr/sbin")
 for essential_path in "${essential_paths[@]}"; do
     if [[ ":$PATH:" != *":$essential_path:"* ]]; then
-            zsh_debug_echo "FAIL: Essential path removed by path_dedupe: $essential_path"
+            zf::debug "FAIL: Essential path removed by path_dedupe: $essential_path"
         PATH="$original_path"  # Restore original PATH
         exit 1
     fi
@@ -49,7 +49,7 @@ done
 
 # Test that PATH_DEDUP_DONE flag is set
 if [[ -z "$PATH_DEDUP_DONE" ]]; then
-        zsh_debug_echo "FAIL: PATH_DEDUP_DONE flag not set by path_dedupe"
+        zf::debug "FAIL: PATH_DEDUP_DONE flag not set by path_dedupe"
     PATH="$original_path"  # Restore original PATH
     exit 1
 fi
@@ -58,9 +58,9 @@ fi
 deduped_path="$PATH"
 path_dedupe
 if [[ "$PATH" != "$deduped_path" ]]; then
-        zsh_debug_echo "FAIL: path_dedupe is not idempotent"
-        zsh_debug_echo "  First run: $deduped_path"
-        zsh_debug_echo "  Second run: $PATH"
+        zf::debug "FAIL: path_dedupe is not idempotent"
+        zf::debug "  First run: $deduped_path"
+        zf::debug "  Second run: $PATH"
     PATH="$original_path"  # Restore original PATH
     exit 1
 fi
@@ -71,17 +71,17 @@ PATH="$original_path"
 # Test that XDG_BIN_HOME is properly handled if it exists
 if [[ -d "$XDG_BIN_HOME" ]]; then
     if [[ ":$PATH:" != *":$XDG_BIN_HOME:"* ]]; then
-            zsh_debug_echo "FAIL: XDG_BIN_HOME not found in PATH despite directory existing"
-            zsh_debug_echo "  XDG_BIN_HOME: $XDG_BIN_HOME"
-            zsh_debug_echo "  PATH: $PATH"
+            zf::debug "FAIL: XDG_BIN_HOME not found in PATH despite directory existing"
+            zf::debug "  XDG_BIN_HOME: $XDG_BIN_HOME"
+            zf::debug "  PATH: $PATH"
         exit 1
     fi
 fi
 
-# Use zsh_debug_echo for success message
-if declare -f zsh_debug_echo >/dev/null 2>&1; then
-    zsh_debug_echo "# [test-path-lock] PATH deduplication function test passed"
-    zsh_debug_echo "# [test-path-lock] PATH_DEDUP_DONE=$PATH_DEDUP_DONE"
+# Use zf::debug for success message
+if declare -f zf::debug >/dev/null 2>&1; then
+    zf::debug "# [test-path-lock] PATH deduplication function test passed"
+    zf::debug "# [test-path-lock] PATH_DEDUP_DONE=$PATH_DEDUP_DONE"
 fi
 
 echo "PASS: PATH deduplication function working correctly"

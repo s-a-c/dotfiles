@@ -6,7 +6,7 @@ echo "🔧 Fixing zgenom startup issues..."
 
 # Remove corrupted zgenom cache
 if [[ -d ~/.config/zsh/.zgenom ]]; then
-        zsh_debug_echo "📂 Backing up current zgenom directory..."
+        zf::debug "📂 Backing up current zgenom directory..."
     mv ~/.config/zsh/.zgenom ~/.config/zsh/.zgenom.backup.$(date +%Y%m%d_%H%M%S)
 fi
 
