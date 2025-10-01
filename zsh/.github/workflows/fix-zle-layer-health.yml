@@ -1,0 +1,176 @@
+name: fix-zle Layer Health & Badges
+
+on:
+  push:
+    paths:
+      - 'zsh/.zshrc*'
+      - 'zsh/.zshenv*'
+      - 'zsh/.zshrc.*/*'
+      - 'zsh/.zshrc.*.*/**'
+      - 'zsh/docs/fix-zle/**'
+      - 'zsh/tools/**'
+      - 'zsh/.github/workflows/fix-zle-layer-health.yml'
+  pull_request:
+    paths:
+      - 'zsh/.zshrc*'
+      - 'zsh/.zshenv*'
+      - 'zsh/.zshrc.*/*'
+      - 'zsh/.zshrc.*.*/**'
+      - 'zsh/docs/fix-zle/**'
+      - 'zsh/tools/**'
+      - 'zsh/.github/workflows/fix-zle-layer-health.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: fix-zle-layer-health-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  layer-health:
+    name: Layer Health / Segment Integrity / Badges
+    runs-on: macos-latest
+
+    env:
+      # Enable live segment capture for the probe run
+      ZF_SEGMENT_CAPTURE: 1
+      ZF_SEGMENT_CAPTURE_MIN_MS: 0
+      ZF_SEGMENT_CAPTURE_HOOKS: 1
+      # Enforce widget baseline inside report tool
+      LAYER_WIDGET_BASELINE: 417
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python (for potential PTY / validator helpers)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install pexpect (soft dependency for PTY features)
+        run: |
+          python -m pip install --upgrade pip
+          pip install pexpect || echo "pexpect install failed (non-fatal)"
+
+      - name: Warm Segment Capture (generate NDJSON events)
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Run a couple of interactive shells to trigger segment capture hooks
+          for i in 1 2 3; do
+            zsh -ic 'echo "[layer-health] warmup run $i"; sleep 0.05' >/dev/null 2>&1 || true
+          done
+          seg="${HOME}/.cache/zsh/segments/live-segments.ndjson"
+          if [[ -f "$seg" ]]; then
+            echo "SEGMENT_FILE=$seg" >> "$GITHUB_ENV"
+            echo "Segments lines: $(wc -l < "$seg" || echo 0)"
+          else
+            echo "No segment file produced yet (will still run report)."
+            echo "SEGMENT_FILE=" >> "$GITHUB_ENV"
+          fi
+
+      - name: Layer Health Report (JSON + Validation)
+        id: report
+        shell: bash
+        run: |
+          set -euo pipefail
+          seg_file="${SEGMENT_FILE:-$HOME/.cache/zsh/segments/live-segments.ndjson}"
+          # If file missing, allow the report script to note missing; do not fail early.
+          extra_seg_args=()
+          if [[ -f "$seg_file" ]]; then
+            extra_seg_args+=(--segments-file "$seg_file" --validate-segments)
+          fi
+          mkdir -p zsh/artifacts/health
+          zsh/tools/report-layer-health.zsh \
+            --json --pretty \
+            --baseline-widgets "${LAYER_WIDGET_BASELINE:-417}" \
+            --fail-on-regression \
+            "${extra_seg_args[@]}" \
+            > zsh/artifacts/health/layer-health.json
+          echo "Report written to zsh/artifacts/health/layer-health.json"
+          # Extract key fields (no jq dependency – simple grep/sed)
+          widgets=$(grep -Eo '"widgets":[0-9]+' zsh/artifacts/health/layer-health.json | head -n1 | cut -d: -f2 || echo 0)
+          segments_valid=$(grep -Eo '"validated":(true|false)' zsh/artifacts/health/layer-health.json | head -n1 | cut -d: -f2 || echo null)
+          layer=$(grep -Eo '"layer":"[^"]*"' zsh/artifacts/health/layer-health.json | head -n1 | sed 's/.*"layer":"//;s/"$//')
+          echo "widgets=$widgets" >> "$GITHUB_OUTPUT"
+          echo "segments_valid=$segments_valid" >> "$GITHUB_OUTPUT"
+          echo "layer=$layer" >> "$GITHUB_OUTPUT"
+
+      - name: Canonicalize Segment File (if present)
+        shell: bash
+        run: |
+          set -euo pipefail
+          seg_file="${SEGMENT_FILE:-$HOME/.cache/zsh/segments/live-segments.ndjson}"
+          if [[ -f "$seg_file" ]]; then
+            echo "Canonicalizing segment log: $seg_file"
+            zsh/tools/segment-canonicalize.sh "$seg_file" --ndjson --gzip || echo "Canonicalization non-fatal failure"
+            mkdir -p zsh/artifacts/segments
+            cp -f "${seg_file}.canonical.json" zsh/artifacts/segments/ 2>/dev/null || true
+            cp -f "${seg_file}.canonical.json.gz" zsh/artifacts/segments/ 2>/dev/null || true
+            cp -f "${seg_file}.sha256" zsh/artifacts/segments/ 2>/dev/null || true
+            cp -f "${seg_file}.integrity.json" zsh/artifacts/segments/ 2>/dev/null || true
+          else
+            echo "No segment file to canonicalize."
+          fi
+
+      - name: Generate Layer Health Badge JSON
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p docs/redesignv2/artifacts/badges || true
+          widgets="${{ steps.report.outputs.widgets }}"
+          segments_valid="${{ steps.report.outputs.segments_valid }}"
+          layer="${{ steps.report.outputs.layer }}"
+          color="brightgreen"
+          msg="${widgets} widgets"
+          if [[ "${segments_valid}" != "true" ]]; then
+            color="yellow"
+            msg="${widgets} widgets (segments?)"
+          fi
+          if [[ "${widgets}" -lt 417 ]]; then
+            color="red"
+            msg="${widgets} widgets (regression)"
+          fi
+          cat > docs/redesignv2/artifacts/badges/layer-health.json <<EOF
++{"schemaVersion":1,"label":"layer ${layer:-?}","message":"${msg}","color":"${color}"}
++EOF
++          echo "Badge JSON:"
++          cat docs/redesignv2/artifacts/badges/layer-health.json
++
++      - name: Render Layer Health Badge SVG
++        shell: bash
++        run: |
++          set -euo pipefail
++          if [[ -f docs/redesignv2/artifacts/badges/layer-health.json ]]; then
++            zsh/tools/render-badge-svg.zsh --json docs/redesignv2/artifacts/badges/layer-health.json || echo "Badge render failed (non-fatal)"
++          fi
++
++      - name: Upload Layer Health Artifacts
++        uses: actions/upload-artifact@v4
++        with:
++          name: fix-zle-layer-health
++          path: |
++            zsh/artifacts/health/layer-health.json
++            zsh/artifacts/segments/
++            docs/redesignv2/artifacts/badges/layer-health.json
++            docs/redesignv2/artifacts/badges/layer-health.svg
++          if-no-files-found: warn
++          retention-days: 14
++
++      - name: Job Summary
++        if: always()
++        run: |
++          echo "## fix-zle Layer Health Report" >> "$GITHUB_STEP_SUMMARY"
++          echo "" >> "$GITHUB_STEP_SUMMARY"
++          echo "| Field | Value |" >> "$GITHUB_STEP_SUMMARY"
++          echo "|-------|-------|" >> "$GITHUB_STEP_SUMMARY"
++          echo "| Layer | ${{ steps.report.outputs.layer }} |" >> "$GITHUB_STEP_SUMMARY"
++          echo "| Widgets | ${{ steps.report.outputs.widgets }} |" >> "$GITHUB_STEP_SUMMARY"
++          echo "| Segments Valid | ${{ steps.report.outputs.segments_valid }} |" >> "$GITHUB_STEP_SUMMARY"
++          if [[ -f docs/redesignv2/artifacts/badges/layer-health.svg ]]; then
++            echo "" >> "$GITHUB_STEP_SUMMARY"
++            echo "![Layer Health](docs/redesignv2/artifacts/badges/layer-health.svg)" >> "$GITHUB_STEP_SUMMARY"
++          fi
