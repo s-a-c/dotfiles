@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+# Test ZSH configuration with the load-shell-fragments wrapper
+
+echo "🧪 TESTING ZSH CONFIG WITH DEBUG WRAPPER"
+echo "========================================"
+echo ""
+
+cd /Users/s-a-c/dotfiles/dot-config/zsh
+
+echo "Starting ZSH with debug wrapper..."
+echo "This will show exactly which file breaks ZLE."
+echo ""
+echo "Press Ctrl+C if it hangs, or wait for it to complete."
+echo ""
+
+# Run ZSH with the wrapper in interactive mode
+ZDOTDIR="$PWD" timeout 30s zsh -i -c "
+    # Source the wrapper first
+    source debug-load-fragments-wrapper
+    
+    echo ''
+    echo '🎯 WRAPPER ACTIVE - Starting configuration load...'
+    echo ''
+    
+    # Now source the main .zshrc which will use our wrapped function
+    source .zshrc
+    
+    echo ''
+    echo '🎉 Configuration load complete!'
+    echo 'Final ZLE test:'
+    
+    test-final() { echo 'final test'; }
+    if zle -N test-final 2>/dev/null; then
+        echo '✅ ZLE working at end of configuration'
+        zle -D test-final 2>/dev/null || true
+    else
+        echo '❌ ZLE broken at end of configuration'
+    fi
+    
+    unfunction test-final 2>/dev/null || true
+    exit
+" 2>&1 | tee zsh-debug-output.log
+
+echo ""
+echo "🎯 Test complete!"
+echo ""
+echo "Results saved to: zsh-debug-output.log"
+echo ""
+
+if grep -q "CULPRIT IDENTIFIED" zsh-debug-output.log; then
+    echo "🚨 CULPRIT FOUND! Check the output above."
+    echo ""
+    echo "The problematic file is identified in the log."
+else
+    echo "🤔 No single culprit found. The issue might be:"
+    echo "  - Interaction between multiple files"
+    echo "  - Something in the interactive shell setup"
+    echo "  - A timing issue during startup"
+fi
+
+echo ""
+echo "To analyze the full log:"
+echo "  less zsh-debug-output.log"

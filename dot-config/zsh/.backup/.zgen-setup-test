@@ -1,0 +1,8 @@
+# Minimal zgenom setup for debugging (no plugins)
+# This file is intended for plugin isolation and error diagnosis.
+
+# Ensure zgenom itself is initialized
+zgenom autoupdate
+
+# Save the current (empty) plugin state
+zgenom save

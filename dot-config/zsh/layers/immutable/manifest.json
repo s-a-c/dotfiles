@@ -1,0 +1,143 @@
+{
+  "schema_version": "1.0",
+  "purpose": "Immutable manifest of redesign layer skeleton (.zshrc.*.d.empty) file hashes for drift & tamper detection.",
+  "generated_at": "2025-10-02T00:00:00Z",
+  "hash_algorithm": "sha256",
+  "aggregation_policy": "Per-file hashes recorded; directory aggregate hashes may be added in a future revision. Any modification to existing entries requires creating a NEW manifest file (append-only governance).",
+  "directories": [
+    {
+      "name": ".zshrc.pre-plugins.d.empty",
+      "relative_path": ".zshrc.pre-plugins.d.empty",
+      "expected_file_count": 5,
+      "files": [
+        {
+          "file": "010-shell-safety-nounset.zsh",
+            "sha256": "8c8f175f23918b1a15228380bd1ebe9025816f5e9ffe1b51776d034edad8739b"
+        },
+        {
+          "file": "015-xdg-extensions.zsh",
+          "sha256": "ecfa5fdd2875b4fc0f9a8a2c0f94c28ad953d1be9ac269742e56de9ff8b5647c"
+        },
+        {
+          "file": "020-delayed-nounset-activation.zsh",
+          "sha256": "5b5be61c2d8a2a90ec23606dfd9a92e6d13075b6fc615ed57ac6fa0c4bed78c9"
+        },
+        {
+          "file": "025-log-rotation.zsh",
+          "sha256": "32024b55ad47702a1c77432013f488b55fcbe71fbf0d9d863c8a36178f26b0d1"
+        },
+        {
+          "file": "030-segment-management.zsh",
+          "sha256": "0580c5a0f5f44e9e838b8a31f0d8115f42ac3f0959c64ef05e345b0b8e6f62b9"
+        }
+      ]
+    },
+    {
+      "name": ".zshrc.add-plugins.d.empty",
+      "relative_path": ".zshrc.add-plugins.d.empty",
+      "expected_file_count": 11,
+      "files": [
+        {
+          "file": "100-perf-core.zsh",
+          "sha256": "2fa33ab077c814a30a417af9d652bb243e6d2fcd5448380526c53e90adba35f4"
+        },
+        {
+          "file": "110-dev-php.zsh",
+          "sha256": "c5cfc3ee8fa54c4cfc2cbac5e6641fcb4eb77159b7e9090e648c15d22e6777a9"
+        },
+        {
+          "file": "120-dev-node.zsh",
+          "sha256": "bd1f897b64573fc4f770c58d14c74b3f00358f30e67956060fd16ec9d67de6b1"
+        },
+        {
+          "file": "130-dev-systems.zsh",
+          "sha256": "53e628abb0b664d048d4eede512d416b1d81413d0ebd6b4415423691249e251c"
+        },
+        {
+          "file": "136-dev-python-uv.zsh",
+          "sha256": "3168a14fa0b2d50b60141ea243fe9b28899d32693ab55adc240b5469807f26dd"
+        },
+        {
+          "file": "140-dev-github.zsh",
+          "sha256": "116bfe512e4a63db5de3230d7d5790ab619e4ec427663eebd620f652e8860b5a"
+        },
+        {
+          "file": "150-productivity-nav.zsh",
+          "sha256": "6f0f234b4a29c69a64f30ac5664c3462a03e804624121b8d2c8b1dd232259fb6"
+        },
+        {
+          "file": "160-productivity-fzf.zsh",
+          "sha256": "30687459c5c981acaaef31f99b61e41017d2e1aead13b45b0351cf99729341c0"
+        },
+        {
+          "file": "180-optional-autopair.zsh",
+          "sha256": "8831e83f2b830955d09fdfadd163a5cb40cfa46615ccb13dd607084257be7d7e"
+        },
+        {
+          "file": "190-optional-abbr.zsh",
+          "sha256": "dc565cc76b69c1020cc67d3180751d889a8dc47a142b199dba94dbfbd5fb2f69"
+        },
+        {
+          "file": "195-optional-brew-abbr.zsh",
+          "sha256": "5803a5f2c4ae58f4113399119cde57ba3a7586809e69e916301e49e2a8ae4db7"
+        }
+      ]
+    },
+    {
+      "name": ".zshrc.d.empty",
+      "relative_path": ".zshrc.d.empty",
+      "expected_file_count": 10,
+      "files": [
+        {
+          "file": "100-terminal-integration.zsh",
+          "sha256": "1e3eafbd0b6fe171bd35184dbcb36271107da4253aac6863b0f66afb8c116ff4"
+        },
+        {
+          "file": "110-starship-prompt.zsh",
+          "sha256": "1734f0369326bb51bb1796d5014c4a86b51167f2b3af81bc7ad21559a6b2d205"
+        },
+        {
+          "file": "195-optional-brew-abbr.zsh",
+          "sha256": "707ffcfd96c93ff713fcaf68e5618c7e42d823ee142be7b6d7c2729bc43a980e"
+        },
+        {
+          "file": "300-shell-history.zsh",
+          "sha256": "4dd29e864ef2c2a49bcbaf23f1c383d368ad91289a24614e55efa3a5b8214b94"
+        },
+        {
+          "file": "310-navigation.zsh",
+          "sha256": "6794d1b9c6af6736a6a365e7ba6b8a03edfbe5e82893f31649c2e15ecb7b6674"
+        },
+        {
+          "file": "320-fzf.zsh",
+          "sha256": "9593779254a27e24de24994091c8a1551b1fef7898f5762eb66353e03e132817"
+        },
+        {
+          "file": "330-completions.zsh",
+          "sha256": "856545e928aa33e4c5f901a0ae4d300c85522379b6e321a5d69314d2cd0e6771"
+        },
+        {
+          "file": "335-completion-styles.zsh",
+          "sha256": "04631e2f2f7d614e7b9af3520b9a1945a0f9c1cfe46cfa67066d2ea1a5cabe94"
+        },
+        {
+          "file": "340-neovim-environment.zsh",
+          "sha256": "23f3b83ab8bdcef9930f213afe165849ac0881276a98d4479cd2bb0153d5f1fc"
+        },
+        {
+          "file": "345-neovim-helpers.zsh",
+          "sha256": "3b5b2d5d8a9acec2574104ed478eeb3914785f2d6741c7b3380f5f0a7ceba467"
+        }
+      ]
+    }
+  ],
+  "governance": {
+    "immutability": "This file is append-only in spirit; modifications to existing hash entries constitute a governance breach unless accompanied by an auditable promotion or migration rationale.",
+    "verification_recommendation": "Run: for d in .zshrc.*.d.empty; do shasum -a 256 $d/*.zsh; done and compare against manifest.",
+    "next_steps": [
+      "Optionally compute per-directory aggregate digest (sha256 of newline-joined <sha256><space><filename> sorted) and add as dir_hash key.",
+      "Integrate check into CI: fail if any expected_file_count mismatches or hash drift detected.",
+      "Copy snapshot to layer promotion archives when promoting stable layer generations."
+    ]
+  }
+}

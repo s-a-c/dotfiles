@@ -1,0 +1,524 @@
+
+---
+
+### NVM config
+
+```zsh
+
+## [tools.herd] - PHP development environment
+{
+    zsh_debug_echo "# [tools.herd]"
+
+    export HERD_APP="/Applications/Herd.app"
+    export HERD_TOOLS_HOME="${HOME}/Library/Application Support/Herd"
+    export HERD_TOOLS_BIN="${HERD_TOOLS_HOME}/bin"
+    export HERD_TOOLS_CONFIG="${HERD_TOOLS_HOME}/config"
+
+    # PHP version-specific configurations
+    export HERD_PHP_82_INI_SCAN_DIR="${HERD_TOOLS_CONFIG}/php/82/"
+    export HERD_PHP_83_INI_SCAN_DIR="${HERD_TOOLS_CONFIG}/php/83/"
+    export HERD_PHP_84_INI_SCAN_DIR="${HERD_TOOLS_CONFIG}/php/84/"
+    export HERD_PHP_85_INI_SCAN_DIR="${HERD_TOOLS_CONFIG}/php/85/"
+
+    export PATH="${HERD_TOOLS_BIN}:${HERD_TOOLS_HOME}:${PATH}"
+}
+
+## [tools.nvm] - Node.js version manager
+{
+    [[ "$ZSH_DEBUG" == "1" ]] && echo "# [tools.nvm]" >&2
+
+    export NVM_AUTO_USE=true
+    export NVM_LAZY_LOAD=true
+    export NVM_COMPLETION=true
+
+    # Custom NVM directory detection
+    if [[ -d "${HOME}/Library/Application Support/Herd/config/nvm" ]]; then
+        export NVM_DIR="${HOME}/Library/Application Support/Herd/config/nvm"
+    elif [[ -d "${HOMEBREW_PREFIX}/opt/nvm" ]]; then
+        export NVM_DIR="${HOMEBREW_PREFIX}/opt/nvm"
+    elif [[ -d "${HOME}/.nvm" ]]; then
+        export NVM_DIR="${HOME}/.nvm"
+    fi
+
+    zstyle ':omz:plugins:nvm' lazy yes
+    zstyle ':omz:plugins:nvm' lazy-cmd eslint prettier typescript
+    zstyle ':omz:plugins:nvm' autoload yes
+
+    # Lazy load nvm for faster startup
+    [[ -d "$NVM_DIR" ]] && {
+        nvm() {
+            unfunction nvm
+            [[ -s "$NVM_DIR/nvm.sh" ]] && builtin source "$NVM_DIR/nvm.sh"
+            [[ -s "$NVM_DIR/bash_completion" ]] && builtin source "$NVM_DIR/bash_completion"
+            nvm "$@"
+        }
+    }
+}
+
+```
+
+---
+
+You are working with a zsh configuration system in the `/Users/s-a-c/dotfiles` repository that is built on the `https://github.com/unixorn/zsh-quickstart-kit` framework and uses `https://github.com/jandamm/zgenom` as the zsh plugin manager.
+
+The current configuration structure is defined by:
+```
+export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
+```
+
+The main active configuration files in this system are:
+- `$ZDOTDIR/.zshenv` (environment variables)
+- `$ZDOTDIR/.zshrc` (main configuration file)
+- `$ZDOTDIR/.zshrc.pre-plugins.d/*` (pre-plugin configurations)
+- `$ZDOTDIR/.zgen-setup` (zgenom plugin manager setup)
+- `$ZDOTDIR/.zshrc.add-plugins.d/*` (plugin additions)
+- `$ZDOTDIR/.zshrc.d/*` (additional configuration modules)
+
+**OBJECTIVE**: Design and document a comprehensive refactoring process to reorganize the existing `.zshrc.d` directory (and any `.zshrc.d.disabled` directory if present) into a new `.zshrc.d.REDESIGN` structure that maximizes performance, maintainability, and logical organization.
+The redesing should ensure the continued clear distinction between "pre-plugin" and "post-plugin" configurations.
+Document all findings, recommendations, and decisions in a comprehensive report.
+Save all outputs to suitably named files within `docs/redesign/planning`.
+
+
+**DELIVERABLES REQUIRED**:
+
+1. **Complete Analysis Document** containing:
+   - Inventory of all current files in `.zshrc.d` and `.zshrc.d.disabled` with functionality descriptions
+   - Identification of performance bottlenecks, redundancies, and organizational issues
+   - Proposed new file structure with detailed rationale for each organizational decision
+   - Migration strategy with backup and rollback procedures
+   - Expected improvements with measurable metrics
+
+2. **Visual Documentation** using Mermaid diagrams that are:
+   - Colorblind-accessible (using blues, oranges, grays, and avoiding red/green combinations)
+   - High contrast with clear shapes and patterns beyond color coding
+   - Enhanced with emojis and icons for visual clarity
+   - Include these specific diagram types:
+     * Current file relationships and dependencies
+     * Proposed new structure and organization
+     * Migration flow from old to new system
+     * Loading sequence and timing in the redesigned system
+
+3. **Implementation Plan** in tabular format with:
+   - Hierarchically numbered tasks (1.1, 1.2, 2.1, etc.)
+   - Colorblind-accessible priority indicators:
+     * Critical: ⬛ (Black square)
+     * High: 🔶 (Orange diamond)
+     * Medium: 🔵 (Blue circle)
+     * Low: ⚪ (White circle)
+   - Safety procedures for backing up current configuration
+   - Validation steps and rollback procedures
+
+**REFACTORING REQUIREMENTS**:
+- **Consistency**: Align with existing `.zshenv` patterns and XDG Base Directory specification
+- **Performance**: Minimize shell startup time through lazy loading and conditional execution
+- **Organization**: Use descriptive naming (e.g., `01-environment.zsh`, `10-aliases.zsh`) with numeric prefixes for load order
+- **Functionality**: Group by logical categories (environment, aliases, functions, completions, etc.)
+- **Resilience**: Include proper error handling, dependency checks, and graceful fallbacks
+- **Efficiency**: Eliminate all redundancy and duplication while preserving functionality
+- **Minimalism**: Create exactly the minimum number of files needed for logical organization
+
+**SUCCESS CRITERIA**:
+- Shell startup time reduced by at least 20%
+- All existing functionality preserved and properly organized
+- Configuration is more maintainable with clear separation of concerns
+- Documentation enables easy future modifications and troubleshooting
+- Migration can be completed safely with full rollback capability
+
+**EXECUTION STEPS**:
+1. Begin by examining the current codebase structure using the codebase-retrieval tool to understand all files in `.zshrc.d`, `.zshrc.d.disabled`, and their relationships
+2. Research the zsh-quickstart-kit and zgenom documentation to understand framework conventions
+3. Create the comprehensive analysis document with current state assessment
+4. Design the new structure based on the analysis findings
+5. Generate all required Mermaid diagrams with accessibility features
+6. Develop the detailed implementation plan with safety procedures
+7. Create the final refactoring document that consolidates all deliverables
+
+Start by using the codebase-retrieval tool to examine the current directory structure and file contents before proceeding with the analysis and design phases.
+
+---
+
+1. Document and add automated diff check that compares current .zshrc.pre-plugins.d listing to preplugin-inventory.txt each CI run (if not already in tests) to hard-fail on drift.
+2. Document and confirm existence of a promotion toggle variables for both pre-plugins redesign and .zshrc.d (post-plugins) redesign (planned ZSH_ENABLE_PREPLUGIN_REDESIGN) in .zshrc or gating script; if not yet implemented, create before migration rehearsal.
+3. Add checksum file(s) for legacy `.zshrc.pre-plugins.d/`, `.zshrc`, and `.zshrc.d/` to detect accidental edits pre-promotion.
+4. Add an automated drift check or to enumerate disabled/post-plugin disabled directories for completeness.
+
+**NOTE:** i note a number of condensed and abbreviated sections in the documentation: these need to be expanded/completed in full detail
+
+---
+
+1. Expand all condensed sections in the documentation to provide complete details.
+- Ensure all critical information is included and properly formatted.
+- Verify that all necessary details are provided for each deliverable.
+2. Populate skeleton module bodies incrementally (phase order: 00/05/10 → 20/30/40 → 50/60 → 70/80 → 90).
+3. Add generator script for recomputing checksums post-promotion.
+4. Extend performance tests to capture isolated post-plugin segment timing.
+
+---
+
+Expanded docs: implementation-plan.md and testing-strategy.md are now fully detailed (replaced condensed versions).
+
+Next recommended steps:
+1. Add checksum generator: tools/generate-legacy-checksums.zsh (mirrors verify script, writes new snapshot on promotion).
+2. Expand master-plan.md (remove “Condensed” note; align sections with new plan & testing taxonomy).
+3. Add detailed sub tasks to implementation-plan.md (align with testing-strategy.md categories).
+   - include and highlight "stages"
+      - include git commit tasks to "close out" stages
+4. Update docs/redesign/README.md status (reflect “Implementation In Progress”; add links to new gating-flags & post-plugin analysis).
+5. Add sentinel audit test: verify every redesign file sets a LOADED sentinel (phase03).
+6. Add post-plugin compinit test ensuring single compinit when ZSH_ENABLE_POSTPLUGIN_REDESIGN=1.
+7. Implement promotion guard enhancements (aggregate gates: structure, perf, checksums, async deferral) in promotion-guard.zsh.
+8. Create lazy framework unit tests (dispatcher, first-call load) and SSH agent functional test.
+9. Add async integrity state machine stub test (ensures initial IDLE/QUEUED, no RUNNING pre-prompt).
+10. Introduce structure badge workflow skeleton (placeholder GitHub Actions YAML) for later activation.
+11. Refresh legacy-checksums.sha256 comment to reference generator once added.
+
+---
+
+#### Summary (current state):
+- **Pre-plugin redesign (.zshrc.pre-plugins.d.REDESIGN) documentation:** Spec, mapping (diagrams.md sections 11 & 14), inventories (preplugin-inventory.txt), implementation-plan.md, testing-strategy.md all expanded; master-plan.md updated from “Condensed” to “Implementation In Progress”. Coverage is effectively complete for rationale, mapping, phases, metrics, rollback, and test taxonomy.
+- **Freeze status:** Legacy active sets frozen via inventories + legacy-checksums.sha256 (includes .zshrc, .zshrc.pre-plugins.d/.zsh, .zshrc.d/.zsh). Skeleton redesign directories (.zshrc.pre-plugins.d.REDESIGN: 8 slots incl reserved 40; .zshrc.d.REDESIGN: 11 slots) established behind toggles:
+   - ZSH_ENABLE_PREPLUGIN_REDESIGN implemented in .zshrc (pre path branch)
+   - ZSH_ENABLE_POSTPLUGIN_REDESIGN implemented in .zshrc (post path branch)
+   - Checksum verification script (verify-legacy-checksums.zsh) and generator (generate-legacy-checksums.zsh) present.
+- **Testing strategy alignment:** testing-strategy.md enumerates design (structure & drift), maintenance (checksums), performance (baseline, regression), compinit, async integrity. These directly reference frozen inventories and checksum gate; promotion guard script exists (needs enhancement to include checksums + async defer explicit validation). Structural + drift + checksum pillars are coherent with freeze requirements.
+- **Work just performed:** master-plan.md expanded (removed condensed note, added stage table); checksum generator previously added.
+
+#### Gaps / pending items:
+1. Sentinel audit test (ensure every redesign file sets a LOADED* or guarded sentinel) not yet added.
+2. Post-plugin compinit single-run test under redesign toggle missing (only legacy minimal-compinit integration test exists).
+3. Promotion guard lacks explicit checksum verification & async defer state assertions (currently validates structure, performance, badges).
+4. Async integrity state machine & deferred hash tests absent (placeholders only in docs).
+5. Lazy framework unit tests (dispatcher + first-call load) absent.
+6. SSH agent functional test absent.
+7. Async initial state (IDLE/QUEUED, not RUNNING pre-prompt) test absent.
+8. Structure badge workflow skeleton (GitHub Actions) not added.
+9. legacy-checksums.sha256 header not yet updated to mention generator script path in its NOTE (should add reference; currently partially references but can mention promotion event workflow).
+10. Docs/redesign/README.md still states “Planning Complete (Implementation Not Yet Begun)”—needs update to “Implementation In Progress” plus links to gating-flags & post-plugin analysis (gating-flags already present as file).
+
+#### Risk assessment (open):
+- *Minor risk:* absence of sentinel audit could allow unnoticed omission in new module content.
+- *Medium:* async deferral claims unvalidated by automated test; promotion guard could green-light without confirming defer.
+- *Low:* docs index status mismatch could cause confusion.
+
+#### Recommended next actions (ordered):
+1. Update docs/redesign/README.md status + add explicit links to gating-flags.md and post-plugin-redesign-analysis.md (and note current stage from master-plan).
+2. Add test: tests/design/test-redesign-sentinels.zsh (phase03) to scan both *.REDESIGN trees and assert each file defines a matching LOADED sentinel.
+3. Add test: tests/integration/test-postplugin-compinit-single-run.zsh enabling ZSH_ENABLE_POSTPLUGIN_REDESIGN=1 to mirror existing compinit single-run logic and ensure no duplicates.
+4. Enhance promotion-guard.zsh:
+   - Invoke verify-legacy-checksums.zsh (fail if mismatch)
+   - Parse async state artifact (create minimal JSON or log marker) to assert deferred start (e.g., ensure no RUNNING marker before PERF_PROMPT).
+5. Introduce async integrity stub module instrumentation (if not present) to emit SECURITY_ASYNC_QUEUE timestamp; create tests/security/test-async-state-machine.zsh.
+6. Implement lazy framework unit test: tests/unit/test-lazy-framework.zsh (register stub command, ensure first call replaces function).
+7. Implement SSH agent test: tests/feature/test-preplugin-ssh-agent-skeleton.zsh validating no spawn when socket exists and placeholder message when absent.
+8. Add GitHub Actions placeholder workflow .github/workflows/structure-badge.yml (disabled or no-op) referencing generate-structure-audit.zsh.
+9. Amend legacy-checksums.sha256 header NOTE to say “Regenerate only via tools/generate-legacy-checksums.zsh during promotion.”
+10. Add perf segment capture extension (if not already) to record pre vs post plugin durations in perf-current.json; then add regression guard for segment (post_plugin_cost_ms ≤500).
+
+#### Confirmation of success criteria coverage so far:
+- 20% startup reduction: gate documented; measurement tooling present; not yet empirically satisfied (pending content & metrics).
+- Preservation / organization: Skeleton modularization in place; docs map old→new thoroughly.
+- Maintainability: Numeric ordering, sentinel discipline (enforced by upcoming test) documented.
+- Rollback & safety: inventories, checksum freeze, rollback decision tree, tagging scheme defined.
+- Documentation completeness: All previously condensed docs (implementation plan, testing strategy, master plan) expanded; redesign mapping and diagrams comprehensive.
+
+If you want, I can proceed with implementing the tests and guard enhancements. Let me know to continue.
+
+---
+
+Documentation Structure Review & Improvement Recommendations
+
+## Current State Analysis
+
+The `docs/redesign/` directory contains **24+ markdown files** across 5 subdirectories with significant **information fragmentation**, **redundancy**, and **organizational inconsistencies**.
+
+---
+
+## 🎯 **Major Issues Identified**
+
+### 1. **Information Fragmentation & Redundancy**
+- **Triple overlap**: `master-plan.md` ↔ `implementation-plan.md` ↔ `final-report.md`
+- **Duplicate stage information** across multiple documents
+- **Scattered metrics** in planning docs, metrics files, and README
+- **Repeated performance targets** in 4+ locations
+
+### 2. **Inconsistent Organization**
+- **Mixed abstraction levels** in `planning/` (high-level strategy + detailed specs)
+- **Misplaced artifacts** (inventory `.txt` files mixed with documentation)
+- **Unclear hierarchy** between "master", "implementation", and "final" plans
+- **Wrong categorization** (`consolidation/plan.md` should be in planning)
+
+### 3. **Naming & Classification Issues**
+- **Misleading names**: `final-report.md` exists but implementation is ongoing
+- **Inconsistent prefixes**: Some files use hyphens, others don't
+- **Mixed file types**: `.md`, `.txt`, `.json`, `.tsv` in same directories
+- **Unclear purpose** from names alone
+
+### 4. **Maintenance Complexity**
+- **24+ cross-linked files** requiring synchronization
+- **Multiple sources of truth** for stage information
+- **Distributed updates** needed for single changes
+- **Link rot susceptibility**
+
+---
+
+## 🏗️ **Proposed Restructuring**
+
+### **New Directory Structure**
+```
+docs/redesign/
+├── README.md                    # Single entry point & navigation
+├── IMPLEMENTATION.md             # Consolidated implementation guide
+├── ARCHITECTURE.md               # System design & principles
+├── REFERENCE.md                  # Quick reference & glossary
+│
+├── artifacts/                   # Implementation artifacts (read-only)
+│   ├── inventories/            # *.txt inventory files
+│   ├── metrics/                # *.json performance data
+│   ├── badges/                 # Shield endpoint JSON
+│   └── checksums/              # Legacy checksums & validation
+│
+├── stages/                     # Stage-specific documentation
+│   ├── stage-1-foundation.md  # Stage 1: Complete details
+│   ├── stage-2-preplugin.md   # Stage 2: Ready to start
+│   ├── stage-3-core.md        # Stage 3: Pending
+│   └── ...                    # Additional stages
+│
+└── archive/                    # Completed/superseded documents
+    ├── planning-complete/      # Frozen planning docs
+    ├── analysis-historical/    # Original analysis
+    └── deprecated/             # Old versions
+```
+
+### **Consolidated Core Documents**
+
+#### 1. **README.md** (Enhanced Navigation Hub)
+
+- **Project status dashboard**
+- **Stage progress overview**
+- **Quick start commands**
+- **Document index with clear purposes**
+
+#### 2. **IMPLEMENTATION.md** (Consolidates 3 overlapping docs)
+**Replaces**: `master-plan.md` + `implementation-plan.md` + `final-report.md`
+```markdown
+# ZSH Redesign Implementation Guide
+
+## Overview & Objectives
+## Current Status & Progress
+## Stage-by-Stage Execution
+## Performance Targets & Metrics
+## Safety Controls & Rollback
+## Tools & Automation
+```
+
+#### 3. **ARCHITECTURE.md** (Design Principles)
+**Consolidates**: `architecture-overview.md` + design portions of multiple specs
+```markdown
+# ZSH Redesign Architecture
+
+## Design Principles
+## Module Organization (8+11 structure)
+## Performance Strategy
+## Security Model
+## Testing Strategy
+```
+
+#### 4. **REFERENCE.md** (Operational Reference)
+**Consolidates**: `glossary.md` + scattered reference information
+```markdown
+# ZSH Redesign Reference
+
+## Quick Commands
+## File Structure Map
+## Performance Metrics
+## Troubleshooting Guide
+## Glossary & Terminology
+```
+
+---
+
+## 📋 **Content Consolidation Strategy**
+
+### **Phase 1: Merge Overlapping Documents**
+| Current Documents | Target | Action |
+|------------------|--------|--------|
+| `master-plan.md` + `implementation-plan.md` + `final-report.md` | `IMPLEMENTATION.md` | Merge with single source of truth |
+| `architecture-overview.md` + design specs | `ARCHITECTURE.md` | Consolidate design principles |
+| `glossary.md` + scattered references | `REFERENCE.md` | Centralize operational info |
+| Multiple analysis docs | `archive/planning-complete/` | Archive completed planning |
+
+### **Phase 2: Relocate Artifacts**
+| Current Location | Target Location | Rationale |
+|-----------------|----------------|-----------|
+| `planning/*.txt` | `artifacts/inventories/` | Separate data from documentation |
+| `metrics/*.json` | `artifacts/metrics/` | Already correct, ensure consistency |
+| `planning/legacy-checksums.sha256` | `artifacts/checksums/` | Group validation artifacts |
+
+### **Phase 3: Stage-Specific Documentation**
+- **Extract stage details** from consolidated docs
+- **Create focused stage guides** for implementers
+- **Link stages to consolidated overview**
+- **Maintain traceability**
+
+---
+
+## 🎯 **Content Quality Improvements**
+
+### **1. Eliminate Redundancy**
+- **Single source of truth** for stage definitions
+- **Centralized performance targets** (no more 4+ copies)
+- **Unified terminology** and definitions
+- **Cross-reference instead of duplicate**
+
+### **2. Improve Clarity**
+- **Consistent abstraction levels** within documents
+- **Clear audience targeting** (implementer vs reviewer vs user)
+- **Progressive disclosure** (overview → details → specifics)
+- **Actionable content** with clear next steps
+
+### **3. Enhance Usability**
+- **README-driven navigation** with clear entry points
+- **Context-aware linking** (forward/backward navigation)
+- **Quick reference sections** for common tasks
+- **Status indicators** showing current progress
+
+### **4. Strengthen Maintenance**
+- **Fewer files to synchronize** (24+ → ~12)
+- **Clear content ownership** for each section
+- **Automated consistency checking** where possible
+- **Version-controlled artifact separation**
+
+---
+
+## 🚀 **Migration Plan**
+
+### **Step 1: Create New Structure** (Safe)
+```bash
+# Create new structure alongside existing
+mkdir -p docs/redesign-v2/{artifacts/{inventories,metrics,badges,checksums},stages,archive}
+```
+
+### **Step 2: Consolidate Core Documents** (Content merge)
+1. **Create IMPLEMENTATION.md** (merge master/implementation/final plans)
+2. **Create ARCHITECTURE.md** (consolidate design docs)
+3. **Create REFERENCE.md** (centralize operational info)
+4. **Enhance README.md** (navigation hub)
+
+### **Step 3: Migrate Artifacts** (File moves)
+```bash
+# Move data files to appropriate locations
+mv planning/*.txt artifacts/inventories/
+mv planning/legacy-checksums.sha256 artifacts/checksums/
+```
+
+### **Step 4: Archive Completed Planning** (Declutter)
+```bash
+# Move completed planning docs to archive
+mv planning/{analysis,*-spec,diagrams}.md archive/planning-complete/
+```
+
+### **Step 5: Create Stage-Specific Docs** (Extract details)
+- Extract stage-specific content from consolidated docs
+- Create focused implementation guides
+- Link back to consolidated overview
+
+### **Step 6: Validation & Cutover** (Replace old structure)
+1. **Validate all links** and cross-references
+2. **Test documentation workflows**
+3. **Update tool references** to new paths
+4. **Replace old structure** with new
+
+---
+
+## 📊 **Expected Benefits**
+
+### **Quantitative Improvements**
+| Metric | Current | Target | Improvement |
+|--------|---------|--------|-------------|
+| Total markdown files | 24+ | ~12 | 50% reduction |
+| Duplicate content instances | ~15 | ~3 | 80% reduction |
+| Cross-references to maintain | 50+ | ~20 | 60% reduction |
+| Average file size | Mixed | Consistent | Better balance |
+
+### **Qualitative Improvements**
+- **🎯 Clearer navigation** with obvious entry points
+- **📚 Single source of truth** for key information
+- **🔄 Easier maintenance** with fewer synchronization points
+- **👥 Better user experience** with progressive disclosure
+- **🏗️ Separation of concerns** (docs vs artifacts vs stages)
+
+---
+
+## ⚠️ **Implementation Considerations**
+
+### **Risks**
+- **Link breakage** during migration
+- **Content loss** during consolidation
+- **Workflow disruption** during transition
+- **Reference confusion** with path changes
+
+### **Mitigations**
+- **Parallel development** (v2 alongside v1)
+- **Comprehensive link validation** before cutover
+- **Tool path updates** in same commit as structure change
+- **Clear migration documentation** and announcements
+
+### **Success Criteria**
+- [ ] **All information preserved** (no content loss)
+- [ ] **Links function correctly** (no broken references)
+- [ ] **Tools work with new paths** (verify-implementation.zsh, etc.)
+- [ ] **Easier to navigate** (user feedback positive)
+- [ ] **Maintenance simplified** (fewer files to sync)
+
+---
+
+## 🎯 **Recommendation**
+
+**Execute the restructuring in 3 phases**:
+
+1. **Phase 1** (Immediate): Create consolidated core documents alongside existing structure
+2. **Phase 2** (After validation): Migrate artifacts and create stage-specific docs
+3. **Phase 3** (After testing): Replace old structure and archive completed planning
+
+This approach **reduces documentation complexity by 50%** while **improving usability** and **maintaining all critical information** in a more organized, maintainable structure.
+
+---
+
+===
+
+## zsh redesign part 07.01
+
+Current High-Level Status (post updates):
+- Stage 2 fully complete; baseline (pre_plugin_total mean=35ms N=5) locked and tagged (`refactor-stage2-preplugin`).
+- Path rules enforcement integrated (fail-fast + badge).
+- Strict enforcement mode available (`--strict`) for advanced audits.
+- Helper verification tooling (`verify-path-helpers.zsh`) in place.
+- Future plugin path guard test established (proactive).
+- Stage 3 has begun (security, options, core functions): progress ~5%.
+
+Recommended Next Steps (prioritized):
+1. Implement & test PATH append invariant (ensure pure append semantics, add explicit test).
+2. Build `00-security-integrity.zsh` skeleton (path hygiene + integrity scheduler stub) with idempotency test.
+3. Implement `05-interactive-options.zsh` with option snapshot diff test (golden).
+4. Implement `10-core-functions.zsh` with namespaced helpers and namespace uniqueness/checksum test.
+5. Add/reinforce tests: PATH append, option snapshot, core functions namespace, integrity scheduler single-registration, helper availability integration (initially non-fatal CI observe).
+6. Collect two multi-sample performance runs to verify variance <5%; then tighten pre-plugin regression tolerance from +7% to +5%.
+7. Introduce helper verification step in CI (observe → enforce).
+8. Prepare `stages/stage-3-core.md` with a living checklist; update README Stage Progress incrementally.
+9. Start capturing provisional post-plugin partial cost ledger (non-gating) to inform upcoming budget thresholds.
+10. Define success metrics for Stage 3 exit (all outlined exit criteria green).
+
+Optional (nice-to-have after core tasks):
+- Dry-run strict mode in nightly (non-fatal) to detect any accidental `${(%):-%N:h}` proliferation.
+- Prototype module cost ledger JSON for upcoming budget gating (Phase 3 performance roadmap).
+
+Let me know if you’d like:
+- A draft for `stages/stage-3-core.md`
+- CI YAML patch adding helper verification observe step
+- Test skeletons for the new Stage 3 checks
+- Performance ledger prototype script
+
+Just tell me which artifact or task you want next.
+
+===

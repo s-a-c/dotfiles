@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+# launch-clean-zsh
+# Purpose: Launch a pristine diagnostic zsh session with optional purge of compiled
+#          .zwc artifacts and a sanitized environment to reproduce early-startup issues.
+#
+# Usage:
+#   bin/launch-clean-zsh                # purge .zwc (default), start login+interactive zsh with debug
+#   PURGE_ZWC=0 bin/launch-clean-zsh    # skip purge
+#   ZSH_DEBUG=1 bin/launch-clean-zsh    # enable debug logging (writes to $ZSH_LOG_DIR/*-zsh-debug.log)
+#   EXTRA_PATH="/custom/bin" bin/launch-clean-zsh   # prepend additional path elements
+#
+# Environment variables honored:
+#   PURGE_ZWC (default 1)  - when 1, remove *.zwc and *.zwc.old under $ZDOTDIR and localized zgenom dir
+#   ZSH_DEBUG (default 0)  - when 1, enables verbose debug hooks inside configuration
+#   EXTRA_PATH (optional)  - colon-separated components prepended to baseline PATH
+#   ZSH_SHELL (default zsh) - override shell binary (helpful for testing alt zsh builds)
+#   SKIP_LOGIN (default 0) - when 1, do not treat shell as login (omit -l)
+#
+# Safety: We scope deletion strictly to $ZDOTDIR and the embedded zgenom area; no globbing outside.
+#         We only delete files matching '*.zwc' or '*.zwc.old'.
+#
+# Exit codes:
+#   0 - launched shell (control now in zsh)
+#   1 - missing ZDOTDIR or shell executable
+#
+set -euo pipefail
+
+: "${ZSH_SHELL:=zsh}"
+: "${PURGE_ZWC:=1}"
+: "${SKIP_LOGIN:=0}"
+: "${ZSH_DEBUG:=0}"
+
+if [[ -z "${ZDOTDIR:-}" ]]; then
+  echo "[launch-clean-zsh] ERROR: ZDOTDIR not set in environment; export ZDOTDIR first." >&2
+  exit 1
+fi
+
+if ! command -v "$ZSH_SHELL" >/dev/null 2>&1; then
+  echo "[launch-clean-zsh] ERROR: shell '$ZSH_SHELL' not found in PATH" >&2
+  exit 1
+fi
+
+# Resolve localized zgenom directory (heuristic)
+LOCAL_ZGENOM_DIR="${ZDOTDIR}/.zqs-zgenom"
+
+if [[ "$PURGE_ZWC" == "1" ]]; then
+  echo "[launch-clean-zsh] Purging cached .zwc artifacts under: $ZDOTDIR and $LOCAL_ZGENOM_DIR" >&2
+  find "$ZDOTDIR" "$LOCAL_ZGENOM_DIR" -type f \( -name '*.zwc' -o -name '*.zwc.old' \) -print -delete 2>/dev/null || true
+fi
+
+# Baseline minimal PATH (retain common system + homebrew). Allow user EXTRA_PATH prepend.
+BASE_PATH="/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin:/usr/local/bin"
+if [[ -n "${EXTRA_PATH:-}" ]]; then
+  BASE_PATH="${EXTRA_PATH}:$BASE_PATH"
+fi
+
+# Use env -i to scrub environment then selectively repopulate essentials.
+# We deliberately pass along HOME, USER, PATH, TERM, ZDOTDIR, ZSH_DEBUG.
+ARGS=(-i)
+if [[ "$SKIP_LOGIN" != "1" ]]; then
+  ARGS+=(-l)
+fi
+
+# Provide visibility of launch parameters
+{
+  echo "[launch-clean-zsh] Executing: $ZSH_SHELL ${ARGS[*]}"
+  echo "[launch-clean-zsh] ZSH_DEBUG=$ZSH_DEBUG PURGE_ZWC=$PURGE_ZWC SKIP_LOGIN=$SKIP_LOGIN"
+  echo "[launch-clean-zsh] PATH=$BASE_PATH"
+} >&2
+
+exec env -i \
+  HOME="${HOME}" \
+  USER="${USER}" \
+  TERM="${TERM:-xterm-256color}" \
+  ZDOTDIR="${ZDOTDIR}" \
+  ZSH_DEBUG="${ZSH_DEBUG}" \
+  PATH="${BASE_PATH}" \
+  "$ZSH_SHELL" "${ARGS[@]}"
