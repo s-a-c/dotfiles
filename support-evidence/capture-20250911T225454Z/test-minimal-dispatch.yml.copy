@@ -1,0 +1,73 @@
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v9ab717af287538a58515d2f3369d011f40ef239829ec614afadfc1cc419e5f20
+#
+# test-minimal-dispatch.yml
+#
+# Purpose:
+#   Minimal, stable reproduction workflow for the GitHub Actions anomaly:
+#     HTTP 422: "Workflow does not have 'workflow_dispatch' trigger"
+#   affecting *newly created* workflows in this repository.
+#
+# Design:
+#   - Absolutely minimal valid workflow using only `workflow_dispatch` plus a
+#     trivial echo step (no matrix, no conditionals, no inputs).
+#   - A push trigger restricted to this file lets you prove that
+#     the file is ingested (because push runs will appear even while
+#     manual dispatch returns 422).
+#
+# Usage (expected current behavior prior to GitHub fix):
+#   1. Attempt manual dispatch via UI → Fails with 422 (anomaly)
+#   2. Attempt API:
+#        curl -i -X POST \
+#          -H "Accept: application/vnd.github+json" \
+#          -H "Authorization: Bearer $GITHUB_TOKEN" \
+#          https://api.github.com/repos/<owner>/<repo>/actions/workflows/test-minimal-dispatch.yml/dispatches \
+#          -d '{"ref":"main"}'
+#      → Expect 422 response body:
+#          {"message":"Workflow does not have 'workflow_dispatch' trigger", ...}
+#   3. Commit a trivial change to this file → push event should run this workflow
+#      proving the file is parsed & available, isolating the issue specifically
+#      to manual dispatch registration.
+#
+# Stability Guidelines:
+#   - Keep this file unchanged except for *timestamp comment bumps* if Support
+#     requests a fresh commit (avoid adding steps / inputs; they risk changing
+#     variables unrelated to the anomaly).
+#   - Do NOT add required inputs; they complicate the reproduction.
+#
+# Cleanup:
+#   - Once GitHub resolves the underlying registration anomaly, confirm:
+#       a) Manual dispatch succeeds (UI & API 204)
+#       b) This reproduction file is no longer necessary
+#     Then remove this workflow (and reference its removal in the Support ticket).
+#
+# Security / Policy Notes:
+#   - No secrets used.
+#   - Echo only; no external network or write permissions requested.
+#
+name: minimal-dispatch-repro
+
+on:
+  # Intentionally minimal manual trigger — the element under investigation.
+  workflow_dispatch: {}
+  # Push trigger limited to this file to show ingestion works even when
+  # manual dispatch (workflow_dispatch) is rejected.
+  push:
+    branches: [ main, master, develop ]
+    paths:
+      - '.github/workflows/test-minimal-dispatch.yml'
+
+jobs:
+  noop:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Echo hello
+        run: echo "Hello from minimal-dispatch-repro (used to reproduce 422 manual dispatch anomaly)."
+
+      - name: Context (diagnostic aid)
+        run: |
+          echo "github.ref=${GITHUB_REF}"
+          echo "github.workflow=${GITHUB_WORKFLOW}"
+          echo "github.run_id=${GITHUB_RUN_ID}"
+          echo "timestamp=$(date -u +%Y-%m-%dT%H:%M:%SZ)"

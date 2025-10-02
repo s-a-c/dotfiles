@@ -1,0 +1,7 @@
+Diagnostics bundle copied: diagnostics-bundle.README.md
+Repro workflow present: .github/workflows/test-minimal-dispatch.yml
+Dispatch attempt: test-minimal-dispatch.yml (tag=repro)
+repro HTTP=204 expected=422
+Dispatch attempt: ci-performance.yml (tag=control)
+control HTTP=204 expected=204
+Tarball created: support-evidence/workflow-dispatch-evidence-20250911T225454Z.tar.gz
