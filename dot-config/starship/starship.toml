@@ -295,12 +295,12 @@ version_format = 'v${raw}'
 disabled = false
 detect_extensions = []
 detect_files = [
-  'deno.json',
-  'deno.jsonc',
-  'mod.ts',
-  'deps.ts',
-  'mod.js',
-  'deps.js',
+    'deno.json',
+    'deno.jsonc',
+    'mod.ts',
+    'deps.ts',
+    'mod.js',
+    'deps.js',
 ]
 detect_folders = []
 format = 'via [$symbol($version )]($style)'
@@ -343,7 +343,7 @@ use_os_path_sep = true
 
 [direnv]
 disabled = false
-detect_files = [ ".envrc", ".env" ]
+detect_files = [".envrc", ".env"]
 format = '[$symbol$dotenv|$rc_path|$loaded|$allowed]($style)'
 style = 'bold color1'
 symbol = '📦 '
@@ -362,11 +362,11 @@ symbol = '🐳 '
 disabled = false
 detect_extensions = ['csproj', 'fsproj', 'xproj']
 detect_files = [
-  'Directory.Build.props',
-  'Directory.Build.targets',
-  'Packages.props',
-  'global.json',
-  'project.json',
+    'Directory.Build.props',
+    'Directory.Build.targets',
+    'Packages.props',
+    'global.json',
+    'project.json',
 ]
 detect_folders = []
 format = 'via [$symbol($version )(🎯 $tfm )]($style)'
@@ -481,7 +481,7 @@ up_to_date = ''
 [gleam]
 disabled = false
 detect_extensions = ['gleam']
-detect_files = [ 'gleam.toml' ]
+detect_files = ['gleam.toml']
 detect_folders = ['Godeps']
 format = 'via [$symbol($version )]($style)'
 style = 'bold #ffaaff'
@@ -490,7 +490,15 @@ version_format = 'v${raw}'
 
 [golang]
 detect_extensions = ['go']
-detect_files = ['go.mod', 'go.sum', 'go.work', 'glide.yaml', 'Gopkg.yml', 'Gopkg.lock', '.go-version']
+detect_files = [
+    'go.mod',
+    'go.sum',
+    'go.work',
+    'glide.yaml',
+    'Gopkg.yml',
+    'Gopkg.lock',
+    '.go-version',
+]
 detect_folders = ['Godeps']
 disabled = false
 format = 'via [$symbol($version )]($style)'
@@ -537,13 +545,13 @@ trim_at = '.'
 [java]
 detect_extensions = ['java', 'class', 'jar', 'gradle', 'clj', 'cljc']
 detect_files = [
-  '.java-version',
-  'build.boot',
-  'build.gradle.kts',
-  'build.sbt',
-  'deps.edn',
-  'pom.xml',
-  'project.clj',
+    '.java-version',
+    'build.boot',
+    'build.gradle.kts',
+    'build.sbt',
+    'deps.edn',
+    'pom.xml',
+    'project.clj',
 ]
 detect_folders = []
 disabled = false
@@ -643,7 +651,13 @@ symbol = '❄️  '
 [nodejs]
 disabled = false
 detect_extensions = ['cjs', 'cts', 'js', 'mjs', 'mts', 'ts']
-detect_files = ['package.json', '.node-version', '.nvmrc', '!bunfig.toml', '!bun.lockb']
+detect_files = [
+    'package.json',
+    '.node-version',
+    '.nvmrc',
+    '!bunfig.toml',
+    '!bun.lockb',
+]
 detect_folders = ['node_modules']
 format = 'via [$symbol($version )]($style)'
 not_capable_style = 'bold red'
@@ -680,13 +694,13 @@ version_format = 'v${raw}'
 [perl]
 detect_extensions = ['pl', 'pm', 'pod']
 detect_files = [
-  '.perl-version',
-  'Build.PL',
-  'META.json',
-  'META.yml',
-  'Makefile.PL',
-  'cpanfile',
-  'cpanfile.snapshot',
+    '.perl-version',
+    'Build.PL',
+    'META.json',
+    'META.yml',
+    'Makefile.PL',
+    'cpanfile',
+    'cpanfile.snapshot',
 ]
 detect_folders = []
 disabled = false
@@ -727,13 +741,13 @@ version_format = 'v${raw}'
 disabled = false
 detect_extensions = ['py']
 detect_files = [
-  '.python-version',
-  'Pipfile',
-  '__init__.py',
-  'pyproject.toml',
-  'requirements.txt',
-  'setup.py',
-  'tox.ini',
+    '.python-version',
+    'Pipfile',
+    '__init__.py',
+    'pyproject.toml',
+    'requirements.txt',
+    'setup.py',
+    'tox.ini',
 ]
 detect_folders = []
 format = 'via [${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'

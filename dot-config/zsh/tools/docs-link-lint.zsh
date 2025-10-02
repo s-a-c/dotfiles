@@ -10,12 +10,12 @@ VERBOSE=0
 if [[ ${1:-} == --verbose ]]; then VERBOSE=1; fi
 
 DOCS_DIR="docs"
-[[ -d $DOCS_DIR ]] || {     zsh_debug_echo "[docs-link-lint] ERROR: docs directory not found" ; exit 2; }
+[[ -d $DOCS_DIR ]] || {     zf::debug "[docs-link-lint] ERROR: docs directory not found" ; exit 2; }
 
 # Collect markdown files using find for portability
 md_files=($(command find "$DOCS_DIR" -type f -name '*.md' -print))
 if (( ! ${#md_files} )); then
-      zsh_debug_echo "[docs-link-lint] No markdown files found"
+      zf::debug "[docs-link-lint] No markdown files found"
   exit 0
 fi
 
@@ -55,7 +55,7 @@ for f in $md_files; do
           missing+="$f:$target"
         fi
         ((checked++))
-        (( VERBOSE )) &&     zsh_debug_echo "[docs-link-lint] $f => $target"
+        (( VERBOSE )) &&     zf::debug "[docs-link-lint] $f => $target"
       done
     fi
   done < "$f"
@@ -63,9 +63,9 @@ for f in $md_files; do
 done
 
 if (( ${#missing} )); then
-      zsh_debug_echo "[docs-link-lint] Missing link targets (${#missing}):"
-  for m in $missing; do     zsh_debug_echo "  - $m" ; done
-      zsh_debug_echo "[docs-link-lint] Checked $checked links"
+      zf::debug "[docs-link-lint] Missing link targets (${#missing}):"
+  for m in $missing; do     zf::debug "  - $m" ; done
+      zf::debug "[docs-link-lint] Checked $checked links"
   exit 1
 fi
 

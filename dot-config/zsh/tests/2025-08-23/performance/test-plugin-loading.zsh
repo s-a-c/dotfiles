@@ -9,8 +9,8 @@
 _original_pwd="$PWD"
 
 # Create test log directory with UTC timestamp (required by user rules)
-_test_date=$(date '+%Y-%m-%d' 2>/dev/null || zsh_debug_echo "unknown")
-_test_timestamp=$(date '+%Y%m%d_%H%M%S' 2>/dev/null || zsh_debug_echo "unknown")
+_test_date=$(date '+%Y-%m-%d' 2>/dev/null || zf::debug "unknown")
+_test_timestamp=$(date '+%Y%m%d_%H%M%S' 2>/dev/null || zf::debug "unknown")
 _test_log_dir="$HOME/.config/zsh/logs/${_test_date}"
 [[ ! -d "$_test_log_dir" ]] && mkdir -p "$_test_log_dir"
 _test_log_file="${_test_log_dir}/test-plugin-loading_${_test_timestamp}.log"
@@ -22,8 +22,8 @@ _test_results=()
 
 # Function to log messages with timestamp (required by user rules)
 _log_test() {
-        zsh_debug_echo "[$(date '+%Y-%m-%d %H:%M:%S' 2>/dev/null || zsh_debug_echo "$(date)")] $*" >> "$_test_log_file" 2>&1
-        zsh_debug_echo "$*"
+        zf::debug "[$(date '+%Y-%m-%d %H:%M:%S' 2>/dev/null || zf::debug "$(date)")] $*" >> "$_test_log_file" 2>&1
+        zf::debug "$*"
 }
 
 # Test assertion functions
@@ -71,7 +71,7 @@ _measure_time() {
     local start_time=$(date +%s.%N)
     eval "$1" >/dev/null 2>&1
     local end_time=$(date +%s.%N)
-        zsh_debug_echo "scale=3; $end_time - $start_time" | bc
+        zf::debug "scale=3; $end_time - $start_time" | bc
 }
 
 # Start test execution
@@ -154,10 +154,10 @@ export ZDOTDIR="$HOME/.config/zsh"
 source "$HOME/.config/zsh/.zshrc.pre-plugins.d/04-plugin-deferred-loading.zsh" >/dev/null 2>&1
 
 # Test if deferred loading wrapper functions exist
-echo "WRAPPER_TEST_git:$(type git 2>/dev/null | grep -q 'git is a shell function' &&     zsh_debug_echo 'YES' || zsh_debug_echo 'NO')"
-echo "WRAPPER_TEST_docker:$(type docker 2>/dev/null | grep -q 'docker is a shell function' &&     zsh_debug_echo 'YES' || zsh_debug_echo 'NO')"
-echo "WRAPPER_TEST_op:$(type op 2>/dev/null | grep -q 'op is a shell function' &&     zsh_debug_echo 'YES' || zsh_debug_echo 'NO')"
-echo "WRAPPER_TEST_rake:$(type rake 2>/dev/null | grep -q 'rake is a shell function' &&     zsh_debug_echo 'YES' || zsh_debug_echo 'NO')"
+echo "WRAPPER_TEST_git:$(type git 2>/dev/null | grep -q 'git is a shell function' &&     zf::debug 'YES' || zf::debug 'NO')"
+echo "WRAPPER_TEST_docker:$(type docker 2>/dev/null | grep -q 'docker is a shell function' &&     zf::debug 'YES' || zf::debug 'NO')"
+echo "WRAPPER_TEST_op:$(type op 2>/dev/null | grep -q 'op is a shell function' &&     zf::debug 'YES' || zf::debug 'NO')"
+echo "WRAPPER_TEST_rake:$(type rake 2>/dev/null | grep -q 'rake is a shell function' &&     zf::debug 'YES' || zf::debug 'NO')"
 
 # Test environment variables for tracking loaded state
 echo "ENV_TEST_git:${_GIT_EXTRA_COMMANDS_LOADED:-UNSET}"
@@ -166,13 +166,13 @@ echo "ENV_TEST_op:${_1PASSWORD_OP_LOADED:-UNSET}"
 echo "ENV_TEST_rake:${_RAKE_COMPLETION_LOADED:-UNSET}"
 
 # Test zsh-defer availability
-echo "DEFER_TEST:$(command -v zsh-defer >/dev/null 2>&1 &&     zsh_debug_echo 'AVAILABLE' || zsh_debug_echo 'NOT_AVAILABLE')"
+echo "DEFER_TEST:$(command -v zsh-defer >/dev/null 2>&1 &&     zf::debug 'AVAILABLE' || zf::debug 'NOT_AVAILABLE')"
 EOF
 
 chmod +x "$_temp_test_script"
 
 # Run the test script with timeout to prevent hanging
-_test_output=$(timeout 10s zsh "$_temp_test_script" 2>/dev/null || zsh_debug_echo "TIMEOUT")
+_test_output=$(timeout 10s zsh "$_temp_test_script" 2>/dev/null || zf::debug "TIMEOUT")
 _log_test "Deferred loading test output:"
 _log_test "$_test_output"
 
@@ -183,7 +183,7 @@ if [[ "$_test_output" == "TIMEOUT" ]]; then
     _test_results+=("FAIL: Deferred loading test timed out")
 else
     # Parse test results
-        zsh_debug_echo "$_test_output" | while IFS=':' read -r test_type result; do
+        zf::debug "$_test_output" | while IFS=':' read -r test_type result; do
         case "$test_type" in
             WRAPPER_TEST_git)
                 _assert_true "[[ \"$result\" == \"YES\" ]]" \
@@ -309,8 +309,8 @@ _log_test "=== Test Group 11: Performance Comparison ==="
 
 # Simulate pre-deferred loading by counting original plugins in backup
 _backup_file=$(ls /Users/s-a-c/.config/zsh/.zgen-setup.backup-deferred-* | head -1)
-_original_plugin_count=$(grep -c "zgenom load" "$_backup_file" 2>/dev/null || zsh_debug_echo "0")
-_current_plugin_count=$(grep -c "zgenom load" /Users/s-a-c/.config/zsh/.zgen-setup 2>/dev/null || zsh_debug_echo "0")
+_original_plugin_count=$(grep -c "zgenom load" "$_backup_file" 2>/dev/null || zf::debug "0")
+_current_plugin_count=$(grep -c "zgenom load" /Users/s-a-c/.config/zsh/.zgen-setup 2>/dev/null || zf::debug "0")
 
 _log_test "Original plugin count (immediate loading): $_original_plugin_count"
 _log_test "Current plugin count (immediate loading): $_current_plugin_count"
@@ -380,7 +380,7 @@ _log_test "=== Test Group 15: Integration Testing ==="
 _integration_test_result=$(zsh -c '
     export ZDOTDIR="$HOME/.config/zsh"
     source "$HOME/.config/zsh/.zshrc.pre-plugins.d/04-plugin-deferred-loading.zsh" 2>&1
-        zsh_debug_echo "SOURCE_SUCCESS"
+        zf::debug "SOURCE_SUCCESS"
 ' 2>/dev/null | tail -1)
 
 _assert_true "[[ \"$_integration_test_result\" == \"SOURCE_SUCCESS\" ]]" \

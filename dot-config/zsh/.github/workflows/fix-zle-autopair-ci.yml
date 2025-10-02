@@ -1,0 +1,151 @@
+name: fix-zle Autopair / Widget Aggregation (Phase 7 D2)
+
+on:
+  push:
+    paths:
+      - 'zsh/docs/fix-zle/**'
+      - 'zsh/.zshrc.*'
+      - 'zsh/.zshenv*'
+      - 'zsh/.zshrc.d.empty/**'
+      - 'zsh/.zshrc.pre-plugins.d.empty/**'
+      - 'zsh/.zshrc.add-plugins.d.empty/**'
+      - 'zsh/.github/workflows/fix-zle-autopair-ci.yml'
+  pull_request:
+    paths:
+      - 'zsh/docs/fix-zle/**'
+      - 'zsh/.zshrc.*'
+      - 'zsh/.zshenv*'
+      - 'zsh/.zshrc.d.empty/**'
+      - 'zsh/.zshrc.pre-plugins.d.empty/**'
+      - 'zsh/.zshrc.add-plugins.d.empty/**'
+      - 'zsh/.github/workflows/fix-zle-autopair-ci.yml'
+
+concurrency:
+  group: fix-zle-autopair-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  autopair-validation:
+    name: Autopair / Aggregated Smoke Validation
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python (for pexpect PTY harness)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install pexpect (soft requirement)
+        run: |
+            python -m pip install --upgrade pip
+            pip install pexpect || echo "pexpect install failed (will degrade gracefully)"
+
+      - name: Run Aggregator (raw JSON + Segments)
+        id: aggregate_raw
+        run: |
+          set -euo pipefail
+          mkdir -p zsh/artifacts
+          # Enable live segment capture for shells spawned by harness
+          export ZF_SEGMENT_CAPTURE=1
+          SEG_FILE="$HOME/.cache/zsh/segments/live-segments.ndjson"
+          # Raw (compact) JSON for machine parsing WITH segments embedded & validated
+          bash zsh/docs/fix-zle/tests/aggregate-json-tests.sh \
+            --run-pty \
+            --segment-file "${SEG_FILE}" \
+            --embed-segments \
+            --require-segments-valid \
+            --output zsh/artifacts/autopair-report.json \
+            --quiet
+          echo "Aggregate JSON (compact):"
+          sed -n '1,200p' zsh/artifacts/autopair-report.json
+          # Extract top-level status (simple grep/sed; no jq dependency)
+          STATUS=$(grep -Eo '"status":"(ok|fail)"' zsh/artifacts/autopair-report.json | head -n1 | sed 's/.*"status":"//;s/"//')
+          echo "status=$STATUS" >> "$GITHUB_OUTPUT"
+
+      - name: Run Aggregator (pretty snapshot)
+        run: |
+          # Pretty variant for human review (non-fatal if Python pretty-print fails)
+          bash zsh/docs/fix-zle/tests/aggregate-json-tests.sh \
+            --run-pty \
+            --pretty \
+            --output zsh/artifacts/autopair-report.pretty.json \
+            --quiet || true
+          echo "Pretty JSON:"
+          sed -n '1,120p' zsh/artifacts/autopair-report.pretty.json || true
+
+      - name: Derive Widget & Autopair Summary (Enforce Baselines)
+        id: summary
+        run: |
+          set -euo pipefail
+          RAW="zsh/artifacts/autopair-report.json"
+          widgets=$(grep -Eo '"widget_count":[0-9]+' "$RAW" | head -n1 | cut -d: -f2 || echo 0)
+          delta=$(grep -Eo '"widget_delta":(-?[0-9]+|null)' "$RAW" | head -n1 | cut -d: -f2 || echo null)
+          ap_present=$(grep -Eo '"autopair_present":(true|false)' "$RAW" | head -n1 | cut -d: -f2 || echo false)
+          ap_pty=$(grep -Eo '"autopair_pty_passed":(true|false|null)' "$RAW" | head -n1 | cut -d: -f2 || echo null)
+          seg_enabled=$(grep -Eo '"segments_enabled":[0-1]' "$RAW" | head -n1 | cut -d: -f2 || echo 0)
+          seg_valid=$(grep -Eo '"segments_valid":(true|false|null)' "$RAW" | head -n1 | cut -d: -f2 || echo null)
+          # Enforce widget baseline
+          if [ "$widgets" -lt 417 ]; then
+            echo "::error ::Widget baseline regression ($widgets < 417)" >&2
+            exit 1
+          fi
+            # Enforce segment validation if segments embedded
+          if [ "$seg_enabled" = "1" ] && [ "$seg_valid" != "true" ]; then
+            echo "::error ::Segment validation failed (segments_valid=$seg_valid)" >&2
+            exit 1
+          fi
+          echo "widgets=$widgets" >> "$GITHUB_OUTPUT"
+          echo "delta=$delta" >> "$GITHUB_OUTPUT"
+          echo "autopair_present=$ap_present" >> "$GITHUB_OUTPUT"
+          echo "autopair_pty_passed=$ap_pty" >> "$GITHUB_OUTPUT"
+          echo "segments_enabled=$seg_enabled" >> "$GITHUB_OUTPUT"
+          echo "segments_valid=$seg_valid" >> "$GITHUB_OUTPUT"
+          {
+            echo "Widget Count: $widgets"
+            echo "Widget Delta: $delta"
+            echo "Autopair Present: $ap_present"
+            echo "Autopair PTY Passed: $ap_pty"
+            echo "Segments Enabled: $seg_enabled"
+            echo "Segments Valid: $seg_valid"
+          } > zsh/artifacts/autopair-summary.txt
+          cat zsh/artifacts/autopair-summary.txt
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: fix-zle-autopair-artifacts
+          path: |
+            zsh/artifacts/autopair-report.json
+            zsh/artifacts/autopair-report.pretty.json
+            zsh/artifacts/autopair-summary.txt
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Fail on Aggregator Failure
+        if: steps.aggregate_raw.outputs.status == 'fail'
+        run: |
+          echo "Aggregator reported status=fail. See artifacts for details." >&2
+          exit 1
+
+      - name: Post Result Summary (Job Summary)
+        if: always()
+        run: |
+          {
+            echo "## fix-zle Autopair / Widget Validation"
+            echo ""
+            echo "| Metric | Value |"
+            echo "|--------|-------|"
+            echo "| Status | ${{ steps.aggregate_raw.outputs.status }} |"
+            echo "| Widgets | ${{ steps.summary.outputs.widgets }} |"
+            echo "| Widget Delta | ${{ steps.summary.outputs.delta }} |"
+            echo "| Autopair Present | ${{ steps.summary.outputs.autopair_present }} |"
+            echo "| Autopair PTY Passed | ${{ steps.summary.outputs.autopair_pty_passed }} |"
+            echo ""
+            echo "Artifacts: download the 'fix-zle-autopair-artifacts' bundle for full JSON."
+          } >> "$GITHUB_STEP_SUMMARY"

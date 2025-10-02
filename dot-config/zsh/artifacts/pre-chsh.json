@@ -1,0 +1,25 @@
+{
+  "status":"ok",
+  "timestamp":"2025-10-02T00:07:57Z",
+  "tests":{
+    "smoke":{"status":"OK","widgets":409,"prompt_guard":0,"starship_ms":null,"tools":{"nvim":1,"fzf":0,"zoxide":0,"eza":0,"carapace":0,"atuin":1,"starship":1,"AUTOPAIR":0},"terminal":{"warp":0,"wezterm":0,"ghostty":0,"kitty":0},"autopair":0,"autopair_widgets":[],"widgets_core":409,"widgets_interactive":417,"widgets_delta":8,"plugin_manager_core":0},
+    "autopair_basic":{"status":"skip","reason":"plugin_manager_absent"},
+    "autopair_pty":{"status":"skip","reason":"plugin_manager_absent"}
+  },
+  "summary":{
+    "widget_count":417,
+    "widgets_core":409,
+    "widgets_interactive":417,
+    "widgets_delta":8,
+    "widget_delta":0,
+    "autopair_present":false,
+    "autopair_pty_passed":false,
+    "failures":[],
+    "instrumentation":{
+      "segments_enabled":0,
+      "segments_file":null,
+      "segments":null,
+      "segments_valid":null
+    }
+  }
+}

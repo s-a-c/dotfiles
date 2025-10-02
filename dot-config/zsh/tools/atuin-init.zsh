@@ -1,4 +1,4 @@
-#!/opt/homebrew/bin/zsh
+#!/usr/bin/env zsh
 # shellcheck disable=SC2034,SC2153,SC2086,SC2155
 
 # Above line is because shellcheck doesn't support zsh, per
@@ -10,18 +10,18 @@
 # Source .zshenv to ensure consistent environment variables
 [[ -f "${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}/.zshenv" ]] && source "${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}/.zshenv"
 
-# Use zsh_debug_echo from .zshenv if available
-if declare -f zsh_debug_echo >/dev/null 2>&1; then
-    zsh_debug_echo "# [atuin-init] Starting atuin initialization"
+# Use zf::debug from .zshenv if available
+if declare -f zf::debug >/dev/null 2>&1; then
+    zf::debug "# [atuin-init] Starting atuin initialization"
     # Check for numbered files using ZDOTDIR
     if [[ -f "${ZDOTDIR}/2" ]] || [[ -f "${ZDOTDIR}/3" ]]; then
-        zsh_debug_echo "Warning: Numbered files detected - check for redirection typos"
+        zf::debug "Warning: Numbered files detected - check for redirection typos"
     fi
 else
     [[ "$ZSH_DEBUG" == "1" ]] && {
-            zsh_debug_echo "# ++++++ $0 ++++++++++++++++++++++++++++++++++++"
+        zf::debug "# ++++++ $0 ++++++++++++++++++++++++++++++++++++"
         if [[ -f "${ZDOTDIR:-$HOME}/2" ]] || [[ -f "${ZDOTDIR:-$HOME}/3" ]]; then
-                zsh_debug_echo "Warning: Numbered files detected - check for redirection typos"
+            zf::debug "Warning: Numbered files detected - check for redirection typos"
         fi
     }
 fi
@@ -84,8 +84,7 @@ _atuin_search() {
         RBUFFER=""
         LBUFFER=$output
 
-        if [[ $LBUFFER == __atuin_accept__:* ]]
-        then
+        if [[ $LBUFFER == __atuin_accept__:* ]]; then
             LBUFFER=${LBUFFER#__atuin_accept__:}
             zle accept-line
         fi

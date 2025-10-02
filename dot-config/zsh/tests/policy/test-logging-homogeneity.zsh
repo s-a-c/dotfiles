@@ -81,11 +81,12 @@ typeset -a VIOLATIONS
 
 for file in "${CANDIDATES[@]}"; do
   # Grep with -n for line numbers; suppress errors for unreadable files (should not happen)
-  if grep -E -n -- "${FORBID_REGEX}" -- "${file}" >/dev/null 2>&1; then
+  # Use safe grep wrapper to avoid alias side effects
+  if zf::safe_grep -E -n -- "${FORBID_REGEX}" -- "${file}" >/dev/null 2>&1; then
     # Collect all matching lines for this file
     while IFS= read -r line; do
       VIOLATIONS+=("${file}:${line}")
-    done < <(grep -E -n -- "${FORBID_REGEX}" -- "${file}" 2>/dev/null || true)
+  done < <(zf::safe_grep -E -n -- "${FORBID_REGEX}" -- "${file}" 2>/dev/null || true)
   fi
 done
 

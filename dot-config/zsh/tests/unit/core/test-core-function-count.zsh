@@ -55,7 +55,7 @@ print "=== END DEBUG ENVIRONMENT ==="
 
 set -euo pipefail
 
-trap 'zsh_debug_echo "DEBUG: Error at line $LINENO in function $funcstack"; typeset -f ${funcstack[1]} 2>/dev/null' ERR
+trap 'zf::debug "DEBUG: Error at line $LINENO in function $funcstack"; typeset -f ${funcstack[1]} 2>/dev/null' ERR
 
 # ---------------------------------------
 # Skip Handling

@@ -1,4 +1,4 @@
-#!/opt/homebrew/bin/zsh
+#!/usr/bin/env zsh
 # ==============================================================================
 # ZSH Configuration: Duplication Detection Test Suite
 # ==============================================================================
@@ -25,7 +25,7 @@ export ZSH_DEBUG=false
 DETECTION_SCRIPT="${ZDOTDIR:-$HOME/.config/zsh}/.zshrc.d/00_01-source-execute-detection.zsh"
 
 if [[ ! -f "$DETECTION_SCRIPT" ]]; then
-        zsh_debug_echo "ERROR: Source/execute detection script not found: $DETECTION_SCRIPT"
+        zf::debug "ERROR: Source/execute detection script not found: $DETECTION_SCRIPT"
     exit 1
 fi
 
@@ -53,7 +53,7 @@ ZSHRC_DIR="$ZSH_CONFIG_ROOT/.zshrc.d"
 log_test() {
     local message="$1"
     local timestamp=$(date -u '+%Y-%m-%d %H:%M:%S UTC')
-        zsh_debug_echo "[$timestamp] [TEST] [$$] $message" >> "$LOG_FILE" 2>/dev/null || true
+        zf::debug "[$timestamp] [TEST] [$$] $message" >> "$LOG_FILE" 2>/dev/null || true
 }
 
 run_test() {
@@ -62,17 +62,17 @@ run_test() {
 
     TEST_COUNT=$((TEST_COUNT + 1))
 
-        zsh_debug_echo "Running test $TEST_COUNT: $test_name"
+        zf::debug "Running test $TEST_COUNT: $test_name"
     log_test "Starting test: $test_name"
 
     if "$test_function"; then
         TEST_PASSED=$((TEST_PASSED + 1))
-            zsh_debug_echo "  ✓ PASS: $test_name"
+            zf::debug "  ✓ PASS: $test_name"
         log_test "PASS: $test_name"
         return 0
     else
         TEST_FAILED=$((TEST_FAILED + 1))
-            zsh_debug_echo "  ✗ FAIL: $test_name"
+            zf::debug "  ✗ FAIL: $test_name"
         log_test "FAIL: $test_name"
         return 1
     fi
@@ -90,7 +90,7 @@ test_fzf_configuration_duplication() {
     local fzf_files=()
     local fzf_configs=()
 
-        zsh_debug_echo "    📊 Analyzing FZF configuration duplication..."
+        zf::debug "    📊 Analyzing FZF configuration duplication..."
 
     while IFS= read -r config_file; do
         [[ -f "$config_file" ]] || continue
@@ -104,19 +104,19 @@ test_fzf_configuration_duplication() {
             # FZF environment variables
             if grep -q "export FZF_" "$config_file" 2>/dev/null; then
                 patterns_found=$((patterns_found + 1))
-                    zsh_debug_echo "    ⚠ $(basename "$config_file"): FZF environment variables"
+                    zf::debug "    ⚠ $(basename "$config_file"): FZF environment variables"
             fi
 
             # FZF keybindings
             if grep -q "fzf.*widget\|bindkey.*fzf" "$config_file" 2>/dev/null; then
                 patterns_found=$((patterns_found + 1))
-                    zsh_debug_echo "    ⚠ $(basename "$config_file"): FZF keybindings"
+                    zf::debug "    ⚠ $(basename "$config_file"): FZF keybindings"
             fi
 
             # FZF command configuration
             if grep -q "FZF_DEFAULT_COMMAND\|FZF_CTRL_" "$config_file" 2>/dev/null; then
                 patterns_found=$((patterns_found + 1))
-                    zsh_debug_echo "    ⚠ $(basename "$config_file"): FZF command configuration"
+                    zf::debug "    ⚠ $(basename "$config_file"): FZF command configuration"
             fi
 
             fzf_configs+=($patterns_found)
@@ -129,7 +129,7 @@ test_fzf_configuration_duplication() {
         total_patterns=$((total_patterns + pattern_count))
     done
 
-        zsh_debug_echo "    📊 FZF analysis: $total_fzf_files files contain FZF config, $total_patterns total patterns"
+        zf::debug "    📊 FZF analysis: $total_fzf_files files contain FZF config, $total_patterns total patterns"
 
     # Pass if FZF configuration is reasonably consolidated (≤3 files with significant config)
     local significant_configs=0
@@ -137,7 +137,7 @@ test_fzf_configuration_duplication() {
         [[ $pattern_count -ge 2 ]] && significant_configs=$((significant_configs + 1))
     done
 
-        zsh_debug_echo "    📊 Significant FZF configs: $significant_configs files"
+        zf::debug "    📊 Significant FZF configs: $significant_configs files"
     [[ $significant_configs -le 3 ]]
 }
 
@@ -149,7 +149,7 @@ test_git_configuration_duplication() {
     local git_files=()
     local git_configs=()
 
-        zsh_debug_echo "    📊 Analyzing Git configuration duplication..."
+        zf::debug "    📊 Analyzing Git configuration duplication..."
 
     while IFS= read -r config_file; do
         [[ -f "$config_file" ]] || continue
@@ -163,19 +163,19 @@ test_git_configuration_duplication() {
             # Git global config commands
             if grep -q "git config --global" "$config_file" 2>/dev/null; then
                 patterns_found=$((patterns_found + 1))
-                    zsh_debug_echo "    ⚠ $(basename "$config_file"): Git global configuration"
+                    zf::debug "    ⚠ $(basename "$config_file"): Git global configuration"
             fi
 
             # Git environment variables
             if grep -q "export GIT_" "$config_file" 2>/dev/null; then
                 patterns_found=$((patterns_found + 1))
-                    zsh_debug_echo "    ⚠ $(basename "$config_file"): Git environment variables"
+                    zf::debug "    ⚠ $(basename "$config_file"): Git environment variables"
             fi
 
             # Git aliases
             if grep -q "git.*alias\|alias.*git" "$config_file" 2>/dev/null; then
                 patterns_found=$((patterns_found + 1))
-                    zsh_debug_echo "    ⚠ $(basename "$config_file"): Git aliases"
+                    zf::debug "    ⚠ $(basename "$config_file"): Git aliases"
             fi
 
             git_configs+=($patterns_found)
@@ -188,7 +188,7 @@ test_git_configuration_duplication() {
         total_patterns=$((total_patterns + pattern_count))
     done
 
-        zsh_debug_echo "    📊 Git analysis: $total_git_files files contain Git config, $total_patterns total patterns"
+        zf::debug "    📊 Git analysis: $total_git_files files contain Git config, $total_patterns total patterns"
 
     # Pass if Git configuration is reasonably consolidated (≤2 files with significant config)
     local significant_configs=0
@@ -196,7 +196,7 @@ test_git_configuration_duplication() {
         [[ $pattern_count -ge 2 ]] && significant_configs=$((significant_configs + 1))
     done
 
-        zsh_debug_echo "    📊 Significant Git configs: $significant_configs files"
+        zf::debug "    📊 Significant Git configs: $significant_configs files"
     [[ $significant_configs -le 2 ]]
 }
 
@@ -208,7 +208,7 @@ test_path_manipulation_duplication() {
     local path_files=()
     local path_configs=()
 
-        zsh_debug_echo "    📊 Analyzing PATH manipulation duplication..."
+        zf::debug "    📊 Analyzing PATH manipulation duplication..."
 
     while IFS= read -r config_file; do
         [[ -f "$config_file" ]] || continue
@@ -222,19 +222,19 @@ test_path_manipulation_duplication() {
             # Direct PATH assignment
             if grep -q "export PATH=" "$config_file" 2>/dev/null; then
                 patterns_found=$((patterns_found + 1))
-                    zsh_debug_echo "    ⚠ $(basename "$config_file"): Direct PATH assignment"
+                    zf::debug "    ⚠ $(basename "$config_file"): Direct PATH assignment"
             fi
 
             # PATH prepending/appending
             if grep -q "PATH.*:\|:.*PATH" "$config_file" 2>/dev/null; then
                 patterns_found=$((patterns_found + 1))
-                    zsh_debug_echo "    ⚠ $(basename "$config_file"): PATH modification"
+                    zf::debug "    ⚠ $(basename "$config_file"): PATH modification"
             fi
 
             # Helper function usage
             if grep -q "path_prepend\|path_append" "$config_file" 2>/dev/null; then
                 patterns_found=$((patterns_found - 1))  # Subtract because this is good
-                    zsh_debug_echo "    ✓ $(basename "$config_file"): Uses PATH helper functions"
+                    zf::debug "    ✓ $(basename "$config_file"): Uses PATH helper functions"
             fi
 
             path_configs+=($patterns_found)
@@ -247,7 +247,7 @@ test_path_manipulation_duplication() {
         total_patterns=$((total_patterns + pattern_count))
     done
 
-        zsh_debug_echo "    📊 PATH analysis: $total_path_files files modify PATH, $total_patterns problematic patterns"
+        zf::debug "    📊 PATH analysis: $total_path_files files modify PATH, $total_patterns problematic patterns"
 
     # Pass if PATH manipulation is reasonably consolidated (≤5 problematic patterns)
     [[ $total_patterns -le 5 ]]
@@ -261,7 +261,7 @@ test_environment_variable_duplication() {
     local env_vars=()
     local duplicate_vars=()
 
-        zsh_debug_echo "    📊 Analyzing environment variable duplication..."
+        zf::debug "    📊 Analyzing environment variable duplication..."
 
     # Collect all exported variables
     while IFS= read -r config_file; do
@@ -286,18 +286,18 @@ test_environment_variable_duplication() {
     for var_name in "${(@k)var_counts}"; do
         if [[ ${var_counts[$var_name]} -gt 1 ]]; then
             duplicate_count=$((duplicate_count + 1))
-                zsh_debug_echo "    ⚠ $var_name: exported in ${var_counts[$var_name]} files"
+                zf::debug "    ⚠ $var_name: exported in ${var_counts[$var_name]} files"
 
             # Show which files
             for var_entry in "${env_vars[@]}"; do
                 if [[ "$var_entry" =~ ^$var_name: ]]; then
-                        zsh_debug_echo "      - ${var_entry#*:}"
+                        zf::debug "      - ${var_entry#*:}"
                 fi
             done
         fi
     done
 
-        zsh_debug_echo "    📊 Environment variable analysis: $duplicate_count variables exported in multiple files"
+        zf::debug "    📊 Environment variable analysis: $duplicate_count variables exported in multiple files"
 
     # Pass if reasonable number of duplicates (≤3 acceptable for common vars like PATH, EDITOR)
     [[ $duplicate_count -le 3 ]]
@@ -308,61 +308,61 @@ test_environment_variable_duplication() {
 # ------------------------------------------------------------------------------
 
 run_all_tests() {
-        zsh_debug_echo "========================================================"
-        zsh_debug_echo "Duplication Detection Test Suite"
-        zsh_debug_echo "========================================================"
-        zsh_debug_echo "Timestamp: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
-        zsh_debug_echo "Execution Context: $(get_execution_context)"
-        zsh_debug_echo "Configuration Directory: $ZSHRC_DIR"
-        zsh_debug_echo ""
+        zf::debug "========================================================"
+        zf::debug "Duplication Detection Test Suite"
+        zf::debug "========================================================"
+        zf::debug "Timestamp: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+        zf::debug "Execution Context: $(get_execution_context)"
+        zf::debug "Configuration Directory: $ZSHRC_DIR"
+        zf::debug ""
 
     log_test "Starting duplication detection test suite"
 
     # FZF Configuration Tests
-        zsh_debug_echo "=== FZF Configuration Duplication Tests ==="
+        zf::debug "=== FZF Configuration Duplication Tests ==="
     run_test "FZF Configuration Duplication" "test_fzf_configuration_duplication"
 
     # Git Configuration Tests
-        zsh_debug_echo ""
-        zsh_debug_echo "=== Git Configuration Duplication Tests ==="
+        zf::debug ""
+        zf::debug "=== Git Configuration Duplication Tests ==="
     run_test "Git Configuration Duplication" "test_git_configuration_duplication"
 
     # PATH Manipulation Tests
-        zsh_debug_echo ""
-        zsh_debug_echo "=== PATH Manipulation Duplication Tests ==="
+        zf::debug ""
+        zf::debug "=== PATH Manipulation Duplication Tests ==="
     run_test "PATH Manipulation Duplication" "test_path_manipulation_duplication"
 
     # Environment Variable Tests
-        zsh_debug_echo ""
-        zsh_debug_echo "=== Environment Variable Duplication Tests ==="
+        zf::debug ""
+        zf::debug "=== Environment Variable Duplication Tests ==="
     run_test "Environment Variable Duplication" "test_environment_variable_duplication"
 
     # Results Summary
-        zsh_debug_echo ""
-        zsh_debug_echo "========================================================"
-        zsh_debug_echo "Test Results Summary"
-        zsh_debug_echo "========================================================"
-        zsh_debug_echo "Total Tests: $TEST_COUNT"
-        zsh_debug_echo "Passed: $TEST_PASSED"
-        zsh_debug_echo "Failed: $TEST_FAILED"
+        zf::debug ""
+        zf::debug "========================================================"
+        zf::debug "Test Results Summary"
+        zf::debug "========================================================"
+        zf::debug "Total Tests: $TEST_COUNT"
+        zf::debug "Passed: $TEST_PASSED"
+        zf::debug "Failed: $TEST_FAILED"
 
     local pass_percentage=0
     if [[ $TEST_COUNT -gt 0 ]]; then
         pass_percentage=$(( (TEST_PASSED * 100) / TEST_COUNT ))
     fi
-        zsh_debug_echo "Success Rate: ${pass_percentage}%"
+        zf::debug "Success Rate: ${pass_percentage}%"
 
     log_test "Duplication detection test suite completed - $TEST_PASSED/$TEST_COUNT tests passed"
 
     if [[ $TEST_FAILED -eq 0 ]]; then
-            zsh_debug_echo ""
-            zsh_debug_echo "🎉 All duplication detection tests passed!"
-            zsh_debug_echo "Configuration is reasonably consolidated."
+            zf::debug ""
+            zf::debug "🎉 All duplication detection tests passed!"
+            zf::debug "Configuration is reasonably consolidated."
         return 0
     else
-            zsh_debug_echo ""
-            zsh_debug_echo "❌ $TEST_FAILED duplication detection test(s) failed."
-            zsh_debug_echo "Consolidation opportunities identified."
+            zf::debug ""
+            zf::debug "❌ $TEST_FAILED duplication detection test(s) failed."
+            zf::debug "Consolidation opportunities identified."
         return 1
     fi
 }
@@ -379,8 +379,8 @@ main() {
 if is_being_executed; then
     main "$@"
 elif is_being_sourced; then
-        zsh_debug_echo "Duplication detection test functions loaded (sourced context)"
-        zsh_debug_echo "Available functions: run_all_tests, individual test functions"
+        zf::debug "Duplication detection test functions loaded (sourced context)"
+        zf::debug "Available functions: run_all_tests, individual test functions"
 fi
 
 # ==============================================================================

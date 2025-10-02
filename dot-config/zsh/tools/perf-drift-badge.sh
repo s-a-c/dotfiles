@@ -58,6 +58,10 @@
 # FUTURE ENHANCEMENTS (documented hook):
 #   - Accept direct perf-ledger historical diff JSON (planned).
 #   - Emit extended JSON schema (badge + raw stats) for composite infra-health badge.
+#   - Integrate dual widget metrics context:
+#       * Read optional artifacts/widget-metrics.json
+#       * If present, augment badge (or extended mode) with interactive/core widget delta
+#       * Provide perf drift correlation token (e.g. wΔ=<delta>) for composite infra badge
 #
 # USAGE EXAMPLES:
 #   ./perf-drift-badge.sh --diff-json docs/redesignv2/artifacts/metrics/perf-diff.json

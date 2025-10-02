@@ -404,7 +404,7 @@ This comprehensive implementation plan provides a structured approach to transfo
 - **Fixed ZSH Compatibility**: Removed invalid `export -f` syntax (bash-specific)
 - **Corrected Function Export**: Updated to use ZSH-native function availability
 - **Enhanced Robustness**: 5-method detection algorithm with fallback mechanisms
-- **Proper Shebang**: All scripts use `#!/opt/homebrew/bin/zsh` as specified
+- **Proper Shebang**: All scripts use `#!/usr/bin/env zsh` as specified
 
 ### 8.2. Verification Results
 

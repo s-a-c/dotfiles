@@ -2,16 +2,15 @@ if [ -z "$SHELL" ]; then
     SHELL="$(which bash)"
 fi
 
-
 ## [carapace]    ## Carapace shell integration for Bash. This must be at the top of your bashrc!
 export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense' # optional
 builtin source <(carapace _carapace)
 
 ## [fzf]    ## Fzf shell integration for Bash. This must be the top of your bashrc!
-[ -f ~/.fzf.bash ] && builtin source ~/.fzf.bash
+[ -f "$HOME/.fzf.bash" ] && builtin source "$HOME/.fzf.bash"
 
 ## [fzf-tab]    ## Fzf-tab shell integration for Bash. This must be the top of your bashrc!
-[ -f ~/.fzf-tab.bash ] && builtin source ~/.fzf-tab.bash
+[ -f "$HOME/.fzf-tab.bash" ] && builtin source "$HOME/.fzf-tab.bash"
 
 ## [ghostty]    ## Ghostty shell integration for Bash. This must be at the top of your bashrc!
 [ -n "${GHOSTTY_RESOURCES_DIR}" ] && builtin source "${GHOSTTY_RESOURCES_DIR}/shell-integration/bash/ghostty.bash"
@@ -21,7 +20,6 @@ eval "$(starship init bash)"
 
 ## [zoxide]    ## Zoxide shell integration for Bash. This must be the top of your bashrc!
 eval "$(zoxide init bash)"
-
 
 export HISTCONTROL=ignoredups:ignorespace
 export HISTFILE=~/.bash_history
@@ -90,41 +88,59 @@ shopt -u shift_verbose
 shopt -s sourcepath
 shopt -u varredir_close
 shopt -u xpg_echo
+
 # Source the Lazyman shell initialization for aliases and nvims selector
 # shellcheck source=.config/nvim-Lazyman/.lazymanrc
-[ -f ~/.config/nvim-Lazyman/.lazymanrc ] && source ~/.config/nvim-Lazyman/.lazymanrc
+[ -f "$HOME/.config/nvim-Lazyman/.lazymanrc" ] && source "$HOME/.config/nvim-Lazyman/.lazymanrc"
 # Source the Lazyman .nvimsbind for nvims key binding
 # shellcheck source=.config/nvim-Lazyman/.nvimsbind
-[ -f ~/.config/nvim-Lazyman/.nvimsbind ] && source ~/.config/nvim-Lazyman/.nvimsbind
-. "/Users/s-a-c/.local/share/cargo/env"
+[ -f "$HOME/.config/nvim-Lazyman/.nvimsbind" ] && source "$HOME/.config/nvim-Lazyman/.nvimsbind"
+builtin source "$HOME/.local/share/cargo/env"
 
+PATH="$HOME/.console-ninja/.bin:$PATH"
 
-PATH=~/.console-ninja/.bin:$PATH
-. "$HOME/.atuin/bin/env"
+builtin source "$HOME/.atuin/bin/env"
 
-[[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
+[[ -f "$HOME/.bash-preexec.sh" ]] && source "$HOME/.bash-preexec.sh"
+
 eval "$(atuin init bash)"
-source /Users/s-a-c/.local/share/bash-completion/completions/deno.bash
+
+source "$HOME/.local/share/bash-completion/completions/deno.bash"
+
 # Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/s-a-c/.lmstudio/bin"
+export PATH="$PATH:$HOME/.lmstudio/bin"
 
 # --- github copilot cli ---
 eval "$(gh copilot alias -- bash)"
 
 function nvimvenv {
-  if [[ -e "$VIRTUAL_ENV" && -f "$VIRTUAL_ENV/bin/activate" ]]; then
-    source "$VIRTUAL_ENV/bin/activate"
-    command nvim "$@"
-    deactivate
-  else
-    command nvim "$@"
-  fi
+    if [[ -e "$VIRTUAL_ENV" && -f "$VIRTUAL_ENV/bin/activate" ]]; then
+        source "$VIRTUAL_ENV/bin/activate"
+        command nvim "$@"
+        deactivate
+    else
+        command nvim "$@"
+    fi
 }
 
 alias nvim=nvimvenv
 
+eval "$(uv --generate-shell-completion bash)"
 
-eval "$(uv generate-shell-completion bash)"
+eval "$(uvx --generate-shell-completion bash)"
 
+# ZDOTDIR for ZSH
+export ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
+for dir in "${ZDOTDIR}/.env"; do
+    if [[ -d "$dir" ]]; then
+        for f in "$dir"/*.env; do
+            # shellcheck disable=SC1090
+            builtin source "$f" || {
+                echo "ERROR: failed sourcing $f"
+                exit 2
+            }
+        done
+    fi
+done
 
-eval "$(uvx generate-shell-completion bash)"
+export PATH="$HOME/.lazycli:$PATH"

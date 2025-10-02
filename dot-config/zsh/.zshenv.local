@@ -1,36 +1,93 @@
-# Localized zgenom configuration (zsh/.zshenv.local)
-#
-# Purpose:
-# - Centralize ZGEN/zgenom variables for a localized install under $ZDOTDIR
-# - Keep values idempotent and safe to source multiple times
-# - Intended to be sourced from .zshenv early in startup:
-#     [[ -f "${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}/.zshenv.local" ]] && source "${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}/.zshenv.local"
-#
-# Usage:
-# - Add the single-line source above to the very top of your .zshenv (if not present).
-# - This file only sets defaults when the variable is not already defined, so you
-#   may override any value earlier (e.g. in an environment or CI).
-#
-# Notes:
-# - This config chooses the "localized" approach: zgenom source + plugin storage
-#   live under $ZDOTDIR (self-contained dotfiles tree).
-# - We intentionally default ZGEN_AUTOLOAD_COMPINIT=0 to avoid compinit races during
-#   debugging. Change to 1 when your completion environment is stable.
+#!/usr/bin/env zsh
+# .zshenv.local - Local environment overrides
+# This file is sourced by .zshenv and runs before .zshrc
 
-# ------------------------------------------------------------------------------
-# Doom Emacs
-# ------------------------------------------------------------------------------
-[[ -z "${DOOMDIR}" ]]  && export DOOMDIR="${DOOMDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/doom}"
-[[ -d "${XDG_CONFIG_HOME:-$HOME/.config}/emacs/bin" ]] && PATH="${XDG_CONFIG_HOME:-$HOME/.config}/emacs/bin:${PATH}"
-
-
-# ------------------------------------------------------------------------------
-# Enable zsh REDESIGN
-# ------------------------------------------------------------------------------
-# Default configuration (respects existing environment variables):
-# - ZSH_ENABLE_PREPLUGIN_REDESIGN=1 (use redesigned pre-plugin modules)
-# - ZSH_ENABLE_POSTPLUGIN_REDESIGN=0 (use legacy consolidated post-plugin modules)
-export ZSH_ENABLE_PREPLUGIN_REDESIGN=${ZSH_ENABLE_PREPLUGIN_REDESIGN:-1}
-export ZSH_ENABLE_POSTPLUGIN_REDESIGN=${ZSH_ENABLE_POSTPLUGIN_REDESIGN:-0}
-
-# End of file
+# Debug hook for load-shell-fragments function
+# Enable with: DEBUG_LOAD_FRAGMENTS=1
+if [[ "${DEBUG_LOAD_FRAGMENTS:-0}" == "1" ]]; then
+    echo "[ZSHENV.LOCAL] Installing load-shell-fragments debug hook..."
+    
+    # Test ZLE status function
+    _debug_test_zle() {
+        local context="$1"
+        local test_func="_zle_debug_test_$$_$(date +%s)"
+        
+        # Create test function
+        eval "${test_func}() { echo 'zle test'; }"
+        
+        # Try to register as ZLE widget
+        if zle -N "$test_func" 2>/dev/null; then
+            zle -D "$test_func" 2>/dev/null || true
+            unfunction "$test_func" 2>/dev/null || true
+            echo "        ✅ ZLE: OK ($context)"
+            return 0
+        else
+            unfunction "$test_func" 2>/dev/null || true
+            echo "        ❌ ZLE: BROKEN ($context)"
+                             fi
+    }
+    
+    # Override load-shell-fragments function before .zshrc loads
+    load-shell-fragments() {
+        local fragment_dir="$1"
+        
+        echo ""
+        echo "    📂 [DEBUG] Loading fragments from: $fragment_dir"
+        
+        # Test ZLE before loading this directory
+        _debug_test_zle "before $fragment_dir"
+        
+        # Check if directory exists
+        if [[ ! -d "$fragment_dir" ]]; then
+            echo "        ⚠️  Directory not found: $fragment_dir"
+            return 0
+        fi
+        
+        # Get files to load (matching the original function's pattern)
+        local -a files
+        files=("$fragment_dir"/*.{sh,zsh}(N))
+        
+        if [[ ${#files[@]} -eq 0 ]]; then
+            echo "        📝 No .sh or .zsh files found in $fragment_dir"
+            return 0
+        fi
+        
+        echo "        📋 Found ${#files[@]} files to load"
+        
+        # Load each file individually and test ZLE after each
+        local file
+        for file in "${files[@]}"; do
+            [[ -f "$file" ]] || continue
+            
+            local filename=$(basename "$file")
+            echo "        📄 Loading: $filename"
+            
+            # Source the file
+            if source "$file" 2>/dev/null; then
+                echo "            ✅ Sourced successfully"
+            else
+                local rc=$?
+                echo "            ⚠️  Source failed (exit code: $rc)"
+            fi
+            
+            # Test ZLE after this specific file
+            if ! _debug_test_zle "after $filename"; then
+                echo ""
+                echo "        🚨 CULPRIT IDENTIFIED!"
+                echo "        ====================="
+                echo "        File: $file"
+                echo "        This file broke ZLE!"
+                echo ""
+                echo "        First 15 lines of the problematic file:"
+                head -15 "$file" | sed 's/^/            /'
+                echo ""
+                return 1
+            fi
+        done
+        
+        echo "        ✅ All files in $fragment_dir loaded successfully"
+        _debug_test_zle "after all files in $fragment_dir"
+    }
+    
+    echo "[ZSHENV.LOCAL] Debug hook installed - will intercept all load-shell-fragments calls"
+fi

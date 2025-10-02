@@ -25,11 +25,11 @@ _test_setup() {
     exec 1> >(tee -a "$LOG_FILE")
     exec 2> >(tee -a "$LOG_FILE" >&2)
 
-        zsh_debug_echo "🧪 Testing ZSH Configuration Backup/Restore System"
-        zsh_debug_echo "=================================================="
-        zsh_debug_echo "📅 Test Started: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-        zsh_debug_echo "📋 Log File: $LOG_FILE"
-        zsh_debug_echo ""
+        zf::debug "🧪 Testing ZSH Configuration Backup/Restore System"
+        zf::debug "=================================================="
+        zf::debug "📅 Test Started: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+        zf::debug "📋 Log File: $LOG_FILE"
+        zf::debug ""
 
     export ZSH_CONFIG_BASE="/Users/s-a-c/.config/zsh"
     export BACKUP_DIR="$ZSH_CONFIG_BASE/.zsh-backups"
@@ -44,7 +44,7 @@ _test_setup() {
 
 # Test backup system creation
 _test_backup_creation() {
-        zsh_debug_echo "\n1. Testing backup system creation..."
+        zf::debug "\n1. Testing backup system creation..."
 
     # Create backup function
     _create_zsh_backup() {
@@ -53,17 +53,17 @@ _test_backup_creation() {
 
         mkdir -p "$backup_dir"
 
-            zsh_debug_echo "# ZSH Configuration Backup Manifest" > "$manifest"
-            zsh_debug_echo "# Created: $(date)" >> "$manifest"
-            zsh_debug_echo "# System: $(uname -a)" >> "$manifest"
-            zsh_debug_echo "# User: $(whoami)" >> "$manifest"
-            zsh_debug_echo "" >> "$manifest"
+            zf::debug "# ZSH Configuration Backup Manifest" > "$manifest"
+            zf::debug "# Created: $(date)" >> "$manifest"
+            zf::debug "# System: $(uname -a)" >> "$manifest"
+            zf::debug "# User: $(whoami)" >> "$manifest"
+            zf::debug "" >> "$manifest"
 
         # Backup main files
         for file in ~/.zshrc ~/.zshenv ~/.zprofile; do
             if [[ -f "$file" ]]; then
                 cp "$file" "$backup_dir/"
-                    zsh_debug_echo "$(basename "$file"): $(wc -l < "$file") lines" >> "$manifest"
+                    zf::debug "$(basename "$file"): $(wc -l < "$file") lines" >> "$manifest"
             fi
         done
 
@@ -74,7 +74,7 @@ _test_backup_creation() {
                 cp -r "$dir" "$backup_dir/$dest_name"
                 local file_count=$(find "$dir" -name "*.zsh" 2>/dev/null | wc -l)
                 local line_count=$(find "$dir" -name "*.zsh" -exec cat {} \; 2>/dev/null | wc -l)
-                    zsh_debug_echo "$dest_name/: $file_count files, $line_count lines" >> "$manifest"
+                    zf::debug "$dest_name/: $file_count files, $line_count lines" >> "$manifest"
             fi
         done
 
@@ -83,45 +83,45 @@ _test_backup_creation() {
 
     # Test backup creation
     if _create_zsh_backup "$TEST_BACKUP_DIR"; then
-            zsh_debug_echo "   ✅ Backup creation function works"
+            zf::debug "   ✅ Backup creation function works"
         ((TESTS_PASSED++))
     else
-            zsh_debug_echo "   ❌ Backup creation failed"
+            zf::debug "   ❌ Backup creation failed"
         ((TESTS_FAILED++))
         return 1
     fi
 
     # Test backup directory exists
     if [[ -d "$TEST_BACKUP_DIR" ]]; then
-            zsh_debug_echo "   ✅ Backup directory created: $TEST_BACKUP_DIR"
+            zf::debug "   ✅ Backup directory created: $TEST_BACKUP_DIR"
         ((TESTS_PASSED++))
     else
-            zsh_debug_echo "   ❌ Backup directory not found: $TEST_BACKUP_DIR"
+            zf::debug "   ❌ Backup directory not found: $TEST_BACKUP_DIR"
         ((TESTS_FAILED++))
     fi
 
     # Test manifest file exists
     if [[ -f "$TEST_BACKUP_DIR/manifest.txt" ]]; then
-            zsh_debug_echo "   ✅ Manifest file created"
+            zf::debug "   ✅ Manifest file created"
         ((TESTS_PASSED++))
 
         # Check manifest content
         if grep -q "ZSH Configuration Backup Manifest" "$TEST_BACKUP_DIR/manifest.txt"; then
-                zsh_debug_echo "   ✅ Manifest file has proper header"
+                zf::debug "   ✅ Manifest file has proper header"
             ((TESTS_PASSED++))
         else
-                zsh_debug_echo "   ❌ Manifest file missing header"
+                zf::debug "   ❌ Manifest file missing header"
             ((TESTS_FAILED++))
         fi
     else
-            zsh_debug_echo "   ❌ Manifest file not created"
+            zf::debug "   ❌ Manifest file not created"
         ((TESTS_FAILED++))
     fi
 }
 
 # Test backup integrity verification
 _test_backup_integrity() {
-        zsh_debug_echo "\n2. Testing backup integrity verification..."
+        zf::debug "\n2. Testing backup integrity verification..."
 
     # Create integrity verification function
     _verify_backup_integrity() {
@@ -135,7 +135,7 @@ _test_backup_integrity() {
         local key_files=(.zshrc .zshenv)
         for file in "${key_files[@]}"; do
             if [[ -f "$HOME/$file" ]] && [[ ! -f "$backup_dir/$file" ]]; then
-                    zsh_debug_echo "Missing backup for: $file"
+                    zf::debug "Missing backup for: $file"
                 return 1
             fi
         done
@@ -145,31 +145,31 @@ _test_backup_integrity() {
 
     # Test integrity verification
     if _verify_backup_integrity "$TEST_BACKUP_DIR"; then
-            zsh_debug_echo "   ✅ Backup integrity verification works"
+            zf::debug "   ✅ Backup integrity verification works"
         ((TESTS_PASSED++))
     else
-            zsh_debug_echo "   ❌ Backup integrity verification failed"
+            zf::debug "   ❌ Backup integrity verification failed"
         ((TESTS_FAILED++))
     fi
 }
 
 # Test backup archival
 _test_backup_archival() {
-        zsh_debug_echo "\n3. Testing backup archival..."
+        zf::debug "\n3. Testing backup archival..."
 
     # Create archive
     local archive_file="$TEST_BACKUP_DIR.tar.gz"
 
     if tar -czf "$archive_file" -C "$(dirname "$TEST_BACKUP_DIR")" "$(basename "$TEST_BACKUP_DIR")" 2>/dev/null; then
-            zsh_debug_echo "   ✅ Backup archive created: $archive_file"
+            zf::debug "   ✅ Backup archive created: $archive_file"
         ((TESTS_PASSED++))
 
         # Test archive integrity
         if tar -tzf "$archive_file" >/dev/null 2>&1; then
-                zsh_debug_echo "   ✅ Archive integrity verified"
+                zf::debug "   ✅ Archive integrity verified"
             ((TESTS_PASSED++))
         else
-                zsh_debug_echo "   ❌ Archive integrity check failed"
+                zf::debug "   ❌ Archive integrity check failed"
             ((TESTS_FAILED++))
         fi
 
@@ -178,45 +178,45 @@ _test_backup_archival() {
 
         # Test archive extraction
         if tar -xzf "$archive_file" -C "$BACKUP_DIR" 2>/dev/null; then
-                zsh_debug_echo "   ✅ Archive extraction works"
+                zf::debug "   ✅ Archive extraction works"
             ((TESTS_PASSED++))
         else
-                zsh_debug_echo "   ❌ Archive extraction failed"
+                zf::debug "   ❌ Archive extraction failed"
             ((TESTS_FAILED++))
         fi
 
     else
-            zsh_debug_echo "   ❌ Backup archive creation failed"
+            zf::debug "   ❌ Backup archive creation failed"
         ((TESTS_FAILED++))
     fi
 }
 
 # Test restore simulation
 _test_restore_simulation() {
-        zsh_debug_echo "\n4. Testing restore simulation..."
+        zf::debug "\n4. Testing restore simulation..."
 
     # Create restore function (simulation only)
     _simulate_restore() {
         local backup_dir="$1"
         local manifest="$backup_dir/manifest.txt"
 
-            zsh_debug_echo "   📋 Simulating restore from: $backup_dir"
+            zf::debug "   📋 Simulating restore from: $backup_dir"
 
         # Verify manifest exists
         [[ -f "$manifest" ]] || {
-                zsh_debug_echo "   ❌ No manifest found for restore"
+                zf::debug "   ❌ No manifest found for restore"
             return 1
         }
 
         # List what would be restored
-            zsh_debug_echo "   📄 Files that would be restored:"
+            zf::debug "   📄 Files that would be restored:"
         find "$backup_dir" -name ".zsh*" -type f | while read file; do
-                zsh_debug_echo "      - $(basename "$file")"
+                zf::debug "      - $(basename "$file")"
         done
 
-            zsh_debug_echo "   📁 Directories that would be restored:"
+            zf::debug "   📁 Directories that would be restored:"
         find "$backup_dir" -name ".zshrc.*" -type d | while read dir; do
-                zsh_debug_echo "      - $(basename "$dir")/"
+                zf::debug "      - $(basename "$dir")/"
         done
 
         return 0
@@ -224,17 +224,17 @@ _test_restore_simulation() {
 
     # Test restore simulation
     if _simulate_restore "$TEST_BACKUP_DIR"; then
-            zsh_debug_echo "   ✅ Restore simulation completed successfully"
+            zf::debug "   ✅ Restore simulation completed successfully"
         ((TESTS_PASSED++))
     else
-            zsh_debug_echo "   ❌ Restore simulation failed"
+            zf::debug "   ❌ Restore simulation failed"
         ((TESTS_FAILED++))
     fi
 }
 
 # Test cleanup
 _test_cleanup() {
-        zsh_debug_echo "\n🧩 Cleaning up test artifacts..."
+        zf::debug "\n🧩 Cleaning up test artifacts..."
 
     # Remove test backup directory and archive
     rm -rf "$TEST_BACKUP_DIR"
@@ -242,22 +242,22 @@ _test_cleanup() {
 
     # Restore original working directory
     if [[ -n "$ORIGINAL_CWD" ]]; then
-        cd "$ORIGINAL_CWD" || zsh_debug_echo "Warning: Could not restore original directory: $ORIGINAL_CWD"
+        cd "$ORIGINAL_CWD" || zf::debug "Warning: Could not restore original directory: $ORIGINAL_CWD"
     fi
 
-        zsh_debug_echo "\n🏁 Test Results Summary"
-        zsh_debug_echo "======================"
-        zsh_debug_echo "✅ Tests Passed: $TESTS_PASSED"
-        zsh_debug_echo "❌ Tests Failed: $TESTS_FAILED"
-        zsh_debug_echo "📊 Total Tests: $((TESTS_PASSED + TESTS_FAILED))"
+        zf::debug "\n🏁 Test Results Summary"
+        zf::debug "======================"
+        zf::debug "✅ Tests Passed: $TESTS_PASSED"
+        zf::debug "❌ Tests Failed: $TESTS_FAILED"
+        zf::debug "📊 Total Tests: $((TESTS_PASSED + TESTS_FAILED))"
 
     if (( TESTS_FAILED == 0 )); then
-            zsh_debug_echo "\n🎉 All backup/restore tests passed!"
-            zsh_debug_echo "✅ Task 5.4 (Backup and versioning automation) - READY"
+            zf::debug "\n🎉 All backup/restore tests passed!"
+            zf::debug "✅ Task 5.4 (Backup and versioning automation) - READY"
         return 0
     else
-            zsh_debug_echo "\n⚠️  Some backup/restore tests failed"
-            zsh_debug_echo "❌ Task 5.4 needs attention"
+            zf::debug "\n⚠️  Some backup/restore tests failed"
+            zf::debug "❌ Task 5.4 needs attention"
         return 1
     fi
 }

@@ -1,4 +1,4 @@
-#!/opt/homebrew/bin/zsh
+#!/usr/bin/env zsh
 # ==============================================================================
 # ZSH Configuration: Completion Optimization Verification
 # ==============================================================================
@@ -18,15 +18,15 @@ EXPECTED_COMPDUMP="$ZDOTDIR/.completions/zcompdump"
 # Test 1: Check if centralized completion directory exists
 echo "=== Test 1: Centralized Completion Directory ==="
 if [[ -d "$ZDOTDIR/.completions" ]]; then
-        zsh_debug_echo "✅ Centralized completion directory exists: $ZDOTDIR/.completions"
+    zf::debug "✅ Centralized completion directory exists: $ZDOTDIR/.completions"
 else
-        zsh_debug_echo "❌ Centralized completion directory missing: $ZDOTDIR/.completions"
-        zsh_debug_echo "Creating directory..."
+    zf::debug "❌ Centralized completion directory missing: $ZDOTDIR/.completions"
+    zf::debug "Creating directory..."
     mkdir -p "$ZDOTDIR/.completions" 2>/dev/null
     if [[ -d "$ZDOTDIR/.completions" ]]; then
-            zsh_debug_echo "✅ Created centralized completion directory"
+        zf::debug "✅ Created centralized completion directory"
     else
-            zsh_debug_echo "❌ Failed to create centralized completion directory"
+        zf::debug "❌ Failed to create centralized completion directory"
     fi
 fi
 
@@ -37,20 +37,20 @@ echo "Expected centralized location: $EXPECTED_COMPDUMP"
 
 # Test if we can source the completion management system
 if [[ -f "$ZDOTDIR/.zshrc.d/00_03-completion-management.zsh" ]]; then
-        zsh_debug_echo "✅ Completion management system file exists"
+    zf::debug "✅ Completion management system file exists"
 
     # Try to extract key variables from the file
     local comp_dir=$(grep "ZSH_COMPLETION_DIR=" "$ZDOTDIR/.zshrc.d/00_03-completion-management.zsh" | head -1 | cut -d'"' -f2)
     local comp_file=$(grep "ZSH_COMPDUMP_FILE=" "$ZDOTDIR/.zshrc.d/00_03-completion-management.zsh" | head -1 | cut -d'"' -f2)
 
     if [[ -n "$comp_dir" ]]; then
-            zsh_debug_echo "✅ Completion directory configured: $comp_dir"
+        zf::debug "✅ Completion directory configured: $comp_dir"
     fi
     if [[ -n "$comp_file" ]]; then
-            zsh_debug_echo "✅ Completion dump file configured: $comp_file"
+        zf::debug "✅ Completion dump file configured: $comp_file"
     fi
 else
-        zsh_debug_echo "❌ Completion management system file not found"
+    zf::debug "❌ Completion management system file not found"
 fi
 
 # Test 3: Check for old scattered .zcompdump files
@@ -68,16 +68,16 @@ local check_locations=(
 
 for pattern in "${check_locations[@]}"; do
     if ls $pattern 2>/dev/null | head -3; then
-            zsh_debug_echo "⚠️  Found old files matching: $pattern"
+        zf::debug "⚠️  Found old files matching: $pattern"
         old_files_found=$((old_files_found + 1))
     fi
 done
 
 if [[ $old_files_found -eq 0 ]]; then
-        zsh_debug_echo "✅ No old .zcompdump files found in common locations"
+    zf::debug "✅ No old .zcompdump files found in common locations"
 else
-        zsh_debug_echo "⚠️  Found $old_files_found old .zcompdump file patterns"
-        zsh_debug_echo "💡 These can be cleaned up with the cleanup command"
+    zf::debug "⚠️  Found $old_files_found old .zcompdump file patterns"
+    zf::debug "💡 These can be cleaned up with the cleanup command"
 fi
 
 # Test 4: Check current ZSH session completion setup
@@ -86,23 +86,23 @@ echo "=== Test 4: Current Session Completion Setup ==="
 
 # Check if compinit is loaded
 if declare -f compinit >/dev/null 2>&1; then
-        zsh_debug_echo "✅ compinit function is available"
+    zf::debug "✅ compinit function is available"
 else
-        zsh_debug_echo "⚠️  compinit function not loaded"
+    zf::debug "⚠️  compinit function not loaded"
 fi
 
 # Check completion cache settings
 local cache_path=$(zstyle -L ':completion:*' cache-path 2>/dev/null | cut -d"'" -f4)
 if [[ -n "$cache_path" ]]; then
-        zsh_debug_echo "✅ Completion cache configured: $cache_path"
+    zf::debug "✅ Completion cache configured: $cache_path"
     if [[ -d "$cache_path" ]]; then
         local cache_files=$(find "$cache_path" -type f 2>/dev/null | wc -l)
-            zsh_debug_echo "   Cache directory exists with $cache_files files"
+        zf::debug "   Cache directory exists with $cache_files files"
     else
-            zsh_debug_echo "   ⚠️  Cache directory doesn't exist yet"
+        zf::debug "   ⚠️  Cache directory doesn't exist yet"
     fi
 else
-        zsh_debug_echo "⚠️  No completion cache path configured"
+    zf::debug "⚠️  No completion cache path configured"
 fi
 
 # Test 5: Performance estimation
@@ -111,22 +111,22 @@ echo "=== Test 5: Performance Estimation ==="
 
 # Check if centralized file exists and get its size/age
 if [[ -f "$EXPECTED_COMPDUMP" ]]; then
-    local file_size=$(wc -c < "$EXPECTED_COMPDUMP" 2>/dev/null || zsh_debug_echo "unknown")
-    local file_age=$(stat -f "%Sm" -t "%Y-%m-%d %H:%M:%S" "$EXPECTED_COMPDUMP" 2>/dev/null || zsh_debug_echo "unknown")
-        zsh_debug_echo "✅ Centralized .zcompdump exists:"
-        zsh_debug_echo "   File: $EXPECTED_COMPDUMP"
-        zsh_debug_echo "   Size: $file_size bytes"
-        zsh_debug_echo "   Modified: $file_age"
+    local file_size=$(wc -c <"$EXPECTED_COMPDUMP" 2>/dev/null || zf::debug "unknown")
+    local file_age=$(stat -f "%Sm" -t "%Y-%m-%d %H:%M:%S" "$EXPECTED_COMPDUMP" 2>/dev/null || zf::debug "unknown")
+    zf::debug "✅ Centralized .zcompdump exists:"
+    zf::debug "   File: $EXPECTED_COMPDUMP"
+    zf::debug "   Size: $file_size bytes"
+    zf::debug "   Modified: $file_age"
 
     # Check if compiled version exists
     if [[ -f "${EXPECTED_COMPDUMP}.zwc" ]]; then
-            zsh_debug_echo "✅ Compiled version exists (faster loading)"
+        zf::debug "✅ Compiled version exists (faster loading)"
     else
-            zsh_debug_echo "⚠️  No compiled version (can be created for faster loading)"
+        zf::debug "⚠️  No compiled version (can be created for faster loading)"
     fi
 else
-        zsh_debug_echo "⚠️  Centralized .zcompdump not found"
-        zsh_debug_echo "   This will be created on next shell startup"
+    zf::debug "⚠️  Centralized .zcompdump not found"
+    zf::debug "   This will be created on next shell startup"
 fi
 
 # Test 6: Integration verification
@@ -142,17 +142,17 @@ local core_files=(
 local integration_ok=true
 for file in "${core_files[@]}"; do
     if [[ -f "$file" ]]; then
-            zsh_debug_echo "✅ Core file exists: $(basename "$file")"
+        zf::debug "✅ Core file exists: $(basename "$file")"
     else
-            zsh_debug_echo "❌ Core file missing: $(basename "$file")"
+        zf::debug "❌ Core file missing: $(basename "$file")"
         integration_ok=false
     fi
 done
 
 if $integration_ok; then
-        zsh_debug_echo "✅ Integration files are in place"
+    zf::debug "✅ Integration files are in place"
 else
-        zsh_debug_echo "❌ Integration has missing components"
+    zf::debug "❌ Integration has missing components"
 fi
 
 # Summary
@@ -168,15 +168,15 @@ if [[ ! -f "$EXPECTED_COMPDUMP" ]]; then issues=$((issues + 1)); fi
 if ! $integration_ok; then issues=$((issues + 1)); fi
 
 if [[ $issues -eq 0 ]]; then
-        zsh_debug_echo "🎉 Completion optimization system is properly configured!"
-        zsh_debug_echo "✅ All components are in place"
-        zsh_debug_echo "✅ Ready for centralized .zcompdump management"
+    zf::debug "🎉 Completion optimization system is properly configured!"
+    zf::debug "✅ All components are in place"
+    zf::debug "✅ Ready for centralized .zcompdump management"
 elif [[ $issues -le 2 ]]; then
-        zsh_debug_echo "⚠️  Completion optimization system is mostly configured ($issues minor issues)"
-        zsh_debug_echo "💡 System will work but may need minor adjustments"
+    zf::debug "⚠️  Completion optimization system is mostly configured ($issues minor issues)"
+    zf::debug "💡 System will work but may need minor adjustments"
 else
-        zsh_debug_echo "❌ Completion optimization system needs attention ($issues issues found)"
-        zsh_debug_echo "🔧 Manual configuration may be required"
+    zf::debug "❌ Completion optimization system needs attention ($issues issues found)"
+    zf::debug "🔧 Manual configuration may be required"
 fi
 
 echo ""
