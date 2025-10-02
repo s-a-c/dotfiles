@@ -1,0 +1,147 @@
+#!/usr/bin/env zsh
+# ==============================================================================
+# ZSH Configuration: PATH System Management
+# ==============================================================================
+# Purpose: Comprehensive PATH management system with intelligent path detection,
+#          deduplication, and platform-specific optimizations. Ensures essential
+#          system commands are always available.
+#
+# Author: ZSH Configuration Management System
+# Created: 2025-08-26
+# Version: 1.0
+# Load Order: 3rd in 00-core (after environment, before options)
+# Dependencies: 00-standard-helpers.zsh, 00_10-environment.zsh
+# ==============================================================================
+
+[[ "$ZSH_DEBUG" == "1" ]] && {
+    printf "# ++++++ %s ++++++++++++++++++++++++++++++++++++\n" "$0"
+    zsh_debug_echo "# [path-system] Loading comprehensive PATH management"
+}
+
+# Store original PATH for debugging
+export ZSH_ORIGINAL_PATH="$PATH"
+
+# Essential system paths that must always be present
+typeset -a ESSENTIAL_PATHS
+ESSENTIAL_PATHS=(
+    "/bin"
+    "/usr/bin"
+    "/usr/local/bin"
+    "/sbin"
+    "/usr/sbin"
+    "/usr/local/sbin"
+)
+
+# Platform-specific essential paths
+case "$(uname -s)" in
+    Darwin)
+        ESSENTIAL_PATHS+=(
+            "/opt/homebrew/bin"
+            "/opt/homebrew/sbin"
+            "/usr/local/MacGPG2/bin"
+            "/Applications/Xcode.app/Contents/Developer/usr/bin"
+            "/Library/Developer/CommandLineTools/usr/bin"
+        )
+        ;;
+    Linux)
+        ESSENTIAL_PATHS+=(
+            "/home/linuxbrew/.linuxbrew/bin"
+            "/home/linuxbrew/.linuxbrew/sbin"
+        )
+        ;;
+esac
+
+# User-specific paths
+typeset -a USER_PATHS
+USER_PATHS=(
+    "${XDG_BIN_HOME:-$HOME/.local/bin}"
+    "$HOME/bin"
+    "$HOME/.cargo/bin"
+    "$HOME/.rbenv/bin"
+    "$HOME/.pip-apps/bin"
+    "$HOME/.composer/vendor/bin"
+    "$HOME/.config/composer/vendor/bin"
+)
+
+# Development tool paths
+typeset -a DEV_PATHS
+DEV_PATHS=(
+    "$HOME/src/gocode/bin"
+    "$HOME/gocode"
+    "$HOME/.cabal/bin"
+    "/usr/local/share/dotnet"
+    "$HOME/.dotnet/tools"
+    "/usr/local/go/bin"
+    "/usr/local/share/npm/bin"
+)
+
+# NOTE: PATH manipulation functions removed - use the superior implementations from .zshenv
+# The following functions are available from .zshenv:
+# - path_dedupe() - with --verbose and --dry-run options
+# - _path_prepend(), _path_append(), _path_remove() - field-based implementations
+# - _field_* functions for advanced field manipulation
+
+# Verify essential commands are accessible
+verify_essential_commands() {
+    local -a missing_commands
+    local -a essential_commands=("date" "git" "ls" "cat" "grep" "sed" "awk")
+
+    for cmd in "${essential_commands[@]}"; do
+        if ! command -v "$cmd" >/dev/null 2>&1; then
+            missing_commands+=("$cmd")
+        fi
+    done
+
+    if [[ ${#missing_commands[@]} -gt 0 ]]; then
+        zsh_debug_echo "⚠️  Missing essential commands: ${missing_commands[*]}"
+        return 1
+    fi
+    return 0
+}
+
+# Build optimized PATH
+build_optimized_path() {
+    local -a final_paths
+
+    # Start fresh with essential system paths
+    final_paths=("${ESSENTIAL_PATHS[@]}")
+
+    # Add user paths that exist
+    for dir in "${USER_PATHS[@]}"; do
+        [[ -d "$dir" ]] && final_paths+=("$dir")
+    done
+
+    # Add development paths that exist
+    for dir in "${DEV_PATHS[@]}"; do
+        [[ -d "$dir" ]] && final_paths+=("$dir")
+    done
+
+    # Join paths
+    PATH="${(j.:.)final_paths}"
+
+    # Deduplicate
+    path_dedupe
+
+    export PATH
+}
+
+# Initialize PATH system
+init_path_system() {
+    zsh_debug_echo "# [path-system] Initializing PATH management system"
+
+    # Build optimized PATH
+    build_optimized_path
+
+    # Verify essential commands
+    if ! verify_essential_commands; then
+        zsh_debug_echo "# [path-system] WARNING: Some essential commands are missing"
+        zsh_debug_echo "# [path-system] Current PATH: $PATH"
+    fi
+
+    zsh_debug_echo "# [path-system] PATH system initialized with ${#${(s.:.)PATH}} entries"
+}
+
+# Execute initialization
+init_path_system
+
+zsh_debug_echo "# [path-system] ✅ PATH system management loaded"

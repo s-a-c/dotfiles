@@ -1,0 +1,122 @@
+#!/usr/bin/env zsh
+# Systematic configuration layer debugging
+# This will test each configuration layer to find what's breaking ZLE
+
+echo "🔍 SYSTEMATIC ZSH CONFIGURATION DEBUGGING"
+echo "=========================================="
+echo ""
+
+# Test function
+test_zle() {
+    local layer="$1"
+    echo "Testing: $layer"
+    
+    # Test ZLE in a subshell
+    local result=$(ZDOTDIR="$PWD" timeout 8s zsh -c "
+        $2
+        test-widget() { echo works; }
+        if zle -N test-widget 2>/dev/null; then
+            echo 'ZLE:SUCCESS'
+        else
+            echo 'ZLE:FAILED'
+        fi
+        exit
+    " 2>/dev/null | tail -1)
+    
+    if [[ "$result" == "ZLE:SUCCESS" ]]; then
+        echo "  ✅ $layer: ZLE working"
+        return 0
+    else
+        echo "  ❌ $layer: ZLE broken"
+        return 1
+    fi
+}
+
+echo "Phase 1: Testing base layers"
+echo "----------------------------"
+
+# Test 1: Clean environment
+test_zle "Clean ZSH" "true"
+
+# Test 2: Just .zshenv
+test_zle "With .zshenv" "source .zshenv"
+
+# Test 3: Pre-plugins layer
+echo ""
+echo "Phase 2: Testing pre-plugins layer"
+echo "----------------------------------"
+
+# Test each pre-plugin file individually
+if [[ -d .zshrc.pre-plugins.d ]]; then
+    for file in .zshrc.pre-plugins.d/*.zsh; do
+        [[ -f "$file" ]] || continue
+        filename=$(basename "$file")
+        
+        test_zle "Pre-plugin: $filename" "
+            source .zshenv
+            source '$file'
+        "
+        
+        # If this file breaks ZLE, investigate further
+        if [[ $? -ne 0 ]]; then
+            echo "    🚨 CULPRIT FOUND: $filename breaks ZLE!"
+            echo "    📝 Investigate this file: $file"
+            break
+        fi
+    done
+fi
+
+echo ""
+echo "Phase 3: Testing plugin layer"
+echo "-----------------------------"
+
+# Test plugin loading without Oh-My-Zsh
+test_zle "Plugins (no OMZ)" "
+    source .zshenv
+    for f in .zshrc.pre-plugins.d/*.zsh; do [[ -f \"\$f\" ]] && source \"\$f\"; done
+    touch .zsh-quickstart-no-omz
+    source zsh-quickstart-kit/zsh/.zgen-setup 2>/dev/null
+"
+
+# Test with Oh-My-Zsh
+test_zle "Plugins (with OMZ)" "
+    source .zshenv
+    for f in .zshrc.pre-plugins.d/*.zsh; do [[ -f \"\$f\" ]] && source \"\$f\"; done
+    rm -f .zsh-quickstart-no-omz
+    source zsh-quickstart-kit/zsh/.zgen-setup 2>/dev/null
+"
+
+echo ""
+echo "Phase 4: Testing post-plugins layer"
+echo "-----------------------------------"
+
+# Test each post-plugin file individually
+if [[ -d .zshrc.d ]]; then
+    for file in .zshrc.d/*.zsh; do
+        [[ -f "$file" ]] || continue
+        filename=$(basename "$file")
+        
+        test_zle "Post-plugin: $filename" "
+            source .zshenv
+            for f in .zshrc.pre-plugins.d/*.zsh; do [[ -f \"\$f\" ]] && source \"\$f\"; done
+            touch .zsh-quickstart-no-omz
+            source zsh-quickstart-kit/zsh/.zgen-setup 2>/dev/null
+            source '$file'
+        "
+        
+        # If this file breaks ZLE, investigate further
+        if [[ $? -ne 0 ]]; then
+            echo "    🚨 CULPRIT FOUND: $filename breaks ZLE!"
+            echo "    📝 Investigate this file: $file"
+            break
+        fi
+    done
+fi
+
+echo ""
+echo "🎯 DEBUGGING COMPLETE"
+echo "===================="
+echo ""
+echo "If a culprit was found above, that's the file breaking ZLE."
+echo "If no culprit was found, the issue might be in the interaction"
+echo "between multiple files or in the interactive shell setup."

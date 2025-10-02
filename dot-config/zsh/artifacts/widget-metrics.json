@@ -1,0 +1,14 @@
+{
+  "timestamp":"2025-10-02T00:05:16Z",
+  "baseline_enforced":417,
+  "expected_core_widgets":409,
+  "widgets_core":409,
+  "widgets_interactive":417,
+  "widgets_delta":8,
+  "plugin_manager_core":0,
+  "baseline_met":true,
+  "core_below_baseline":true,
+  "status":"ok",
+  "core_mode_rationale":"plugin manager absent (core-only harness)"
+  
+}

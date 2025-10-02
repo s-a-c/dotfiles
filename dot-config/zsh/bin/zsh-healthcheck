@@ -1,0 +1,38 @@
+#!/usr/bin/env zsh
+# ZSH Environment Health Check Script
+# Created as part of zsh startup cleanup project
+# 
+# This script validates that the essential zsh environment
+# is healthy and that basic commands are available.
+
+required=(/usr/bin /bin)
+for d in $required; do
+  [[ -d $d ]] || { print -u2 "Missing $d"; exit 1 }
+done
+
+for c in ls grep awk head tail sed; do
+  command -v $c >/dev/null || { print -u2 "$c missing"; exit 1 }
+done
+
+# Check that PATH includes essential directories
+if [[ ":$PATH:" != *":/usr/bin:"* ]] || [[ ":$PATH:" != *":/bin:"* ]]; then
+  print -u2 "Essential directories missing from PATH"
+  exit 1
+fi
+
+# Check for overly long PATH
+if [[ ${#PATH} -gt 2000 ]]; then
+  print -u2 "PATH is suspiciously long (${#PATH} chars) - possible duplication"
+  exit 1
+fi
+
+# Test basic zsh functionality
+if ! zsh -c 'echo "test"' >/dev/null 2>&1; then
+  print -u2 "Basic zsh execution failing"
+  exit 1
+fi
+
+print "zsh environment OK"
+print "PATH length: ${#PATH} chars"
+print "Essential commands: available"
+exit 0
