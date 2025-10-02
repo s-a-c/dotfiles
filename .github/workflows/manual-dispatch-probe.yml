@@ -1,0 +1,52 @@
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md vb7f03a299a01b1b6d7c8be5a74646f0b5127cbc5b5d614c8b4c20fc99bc21620
+#
+# manual-dispatch-probe.yml
+#
+# Purpose:
+#   Minimal probe workflow to verify that GitHub indexes and exposes the
+#   `workflow_dispatch` trigger (used to differentiate a file‑specific
+#   indexing anomaly from a repository‑wide regression).
+#
+# Design:
+#   - Single manual trigger
+#   - One job, one step (echo timestamp)
+#   - Optional input `ref_echo` to confirm inputs parsing (non-required)
+#   - No checkout to keep it as small as possible
+#
+# Removal:
+#   - Safe to delete once dispatch button appears reliably for other workflows.
+#
+# Observability:
+#   - Writes a brief summary line with UTC timestamp and provided input (if any).
+#
+# Opt-out from automated health checks:
+#   - Set the following annotation to true if the health check enumerator
+#     should skip this workflow:
+#       # dispatch-health-skip: true
+#
+# Security:
+#   - Uses only default GITHUB_TOKEN with read permissions.
+#
+name: manual-dispatch-probe
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref_echo:
+        description: "Optional string to echo (for visibility test)"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Echo probe confirmation
+        run: |
+          echo "manual-dispatch-probe: $(date -u +%Y-%m-%dT%H:%M:%SZ) ref_echo='${{ github.event.inputs.ref_echo }}'"
+          echo "Actor: $GITHUB_ACTOR  RunID: $GITHUB_RUN_ID  Workflow: $GITHUB_WORKFLOW"

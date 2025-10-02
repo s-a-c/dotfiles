@@ -1,0 +1,291 @@
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v9ab717af287538a58515d2f3369d011f40ef239829ec614afadfc1cc419e5f20
+#
+# workflow-dispatch-health-check.yml
+#
+# Purpose:
+#   Scheduled + on-demand health validation that `workflow_dispatch` remains functional
+#   for representative workflows in this repository (post anomaly resolution).
+#
+# Design:
+#   - Enumerates workflow files under `.github/workflows/` that declare `workflow_dispatch`.
+#   - Excludes itself to avoid recursive cascades.
+#   - Optionally limits number of test dispatches (input: max_samples).
+#   - Attempts API dispatch of each selected workflow using the repo default branch (or override `ref` input).
+#   - Captures HTTP status per workflow; any non-204 causes failure (unless `continue_on_error` is true).
+#   - Emits a Markdown summary to `GITHUB_STEP_SUMMARY`.
+#
+# Safety:
+#   - Rate-limited (sleep between dispatches) to avoid burst load.
+#   - Provides dry-run mode (no dispatches, just enumeration).
+#   - Skips workflows that have `dispatch-health-skip: true` annotation comment (opt-out mechanism).
+#
+# Inputs:
+#   ref                : Git ref to dispatch against (default: main)
+#   max_samples        : Maximum workflows to test (0 = unlimited, default: 5)
+#   dry_run            : "true" -> enumerate only, no dispatches
+#   continue_on_error  : "true" -> do not fail job even if some dispatches fail
+#   verbose            : "true" -> echo extended diagnostic details
+#
+# Concurrency:
+#   - Single run at a time; prevents overlapping weekly checks.
+#
+# Permissions:
+#   - Requires `actions: write` to create workflow dispatch events.
+#
+# Failure Semantics:
+#   - Job fails if any dispatch returns non-204 and continue_on_error != true.
+#
+# Opt-Out Annotation:
+#   - Add a top-level comment line in a workflow file:
+#       # dispatch-health-skip: true
+#     to exclude it from test dispatching without removing workflow_dispatch capability.
+#
+# Future Extensions (not implemented yet):
+#   - Slack / email notification integration
+#   - Historical trend artifact (JSON log)
+#
+name: workflow-dispatch-health-check
+run-name: dispatch health check • ${{ inputs.ref || 'main' }} • ${{ github.event_name }}
+
+on:
+  schedule:
+    # Weekly (Monday 04:15 UTC) — adjust as needed
+    - cron: '15 4 * * 1'
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Git ref to use for dispatch tests"
+        required: false
+        default: "main"
+      max_samples:
+        description: "Max workflows to test (0 = all)"
+        required: false
+        default: "5"
+      dry_run:
+        description: "If true, do not perform dispatch calls"
+        required: false
+        default: "false"
+      continue_on_error:
+        description: "If true, do not fail job on failed dispatch"
+        required: false
+        default: "false"
+      verbose:
+        description: "If true, print verbose diagnostics"
+        required: false
+        default: "false"
+
+permissions:
+  contents: read
+  actions: write
+  issues: write
+
+concurrency:
+  group: workflow-dispatch-health-check
+  cancel-in-progress: false
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      TARGET_REF: ${{ inputs.ref || 'main' }}
+      MAX_SAMPLES: ${{ inputs.max_samples || '5' }}
+      DRY_RUN: ${{ inputs.dry_run || 'false' }}
+      CONTINUE_ON_ERROR: ${{ inputs.continue_on_error || 'false' }}
+      VERBOSE: ${{ inputs.verbose || 'false' }}
+      SELF_FILE: workflow-dispatch-health-check.yml
+      WORKFLOWS_DIR: .github/workflows
+      DISPATCH_DELAY_SEC: "3"          # delay between dispatches
+      RESULTS_JSON: results.json
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Enumerate Dispatchable Workflows
+        id: enumerate
+        run: |
+          set -euo pipefail
+          echo "Enumerating workflow_dispatch capable workflows..."
+          mapfile -t wf_files < <(grep -Rl "workflow_dispatch:" "${WORKFLOWS_DIR}" | sort)
+          > dispatch_candidates.txt
+          for f in "${wf_files[@]}"; do
+            base="$(basename "$f")"
+            # Skip self
+            if [[ "$base" == "$SELF_FILE" ]]; then
+              [[ "$VERBOSE" == "true" ]] && echo "Skip self: $base"
+              continue
+            fi
+            # Opt-out annotation
+            if grep -qi "^# *dispatch-health-skip: *true" "$f"; then
+              [[ "$VERBOSE" == "true" ]] && echo "Skip annotated (dispatch-health-skip): $base"
+              continue
+            fi
+            echo "$base" >> dispatch_candidates.txt
+          done
+          echo "Candidate files:"
+          cat dispatch_candidates.txt || true
+          COUNT=$(wc -l < dispatch_candidates.txt | tr -d ' ')
+          echo "count=$COUNT" >> "$GITHUB_OUTPUT"
+
+      - name: Select Sample
+        id: select
+        run: |
+          set -euo pipefail
+          MAX="$MAX_SAMPLES"
+          if [[ ! -s dispatch_candidates.txt ]]; then
+            echo "No dispatch-capable workflows found (unexpected)."
+            echo "selected_count=0" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [[ "$MAX" == "0" ]]; then
+            cp dispatch_candidates.txt selected.txt
+          else
+            head -n "$MAX" dispatch_candidates.txt > selected.txt
+          fi
+          echo "Selected workflows (limit=${MAX_SAMPLES}):"
+          cat selected.txt
+          SEL_COUNT=$(wc -l < selected.txt | tr -d ' ')
+          echo "selected_count=$SEL_COUNT" >> "$GITHUB_OUTPUT"
+
+      - name: Dry Run Notice
+        if: ${{ env.DRY_RUN == 'true' }}
+        run: |
+          echo "DRY RUN enabled — no dispatch requests will be made."
+          echo "Workflows that would be tested:"
+          cat selected.txt || true
+
+      - name: Dispatch Workflows
+        if: ${{ env.DRY_RUN != 'true' && steps.select.outputs.selected_count != '0' }}
+        id: dispatch
+        run: |
+          set -euo pipefail
+          repo="${{ github.repository }}"
+          ref="${TARGET_REF}"
+          results='[]'
+          failures=0
+          idx=0
+          while IFS= read -r wf; do
+            idx=$((idx+1))
+            url="https://api.github.com/repos/${repo}/actions/workflows/${wf}/dispatches"
+            echo "::group::Dispatch ${wf} (#${idx})"
+            echo "POST ${url} ref=${ref}"
+            code=$(curl -sS -o /tmp/resp.json -w '%{http_code}' \
+              -H "Accept: application/vnd.github+json" \
+              -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+              -X POST "${url}" \
+              -d "{\"ref\":\"${ref}\"}")
+            echo "HTTP ${code}"
+            if [[ "$VERBOSE" == "true" ]]; then
+              echo "--- Response Body (may be empty for 204) ---"
+              cat /tmp/resp.json || true
+            fi
+            echo "::endgroup::"
+            ts=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+            if [[ "$code" != "204" ]]; then
+              failures=$((failures+1))
+              status="FAIL"
+            else
+              status="OK"
+            fi
+            # Append JSON entry
+            entry=$(jq -n --arg wf "$wf" --arg code "$code" --arg status "$status" --arg ts "$ts" '{workflow:$wf,http_code:$code,status:$status,timestamp:$ts}')
+            results=$(jq -n --argjson arr "$results" --argjson e "$entry" '$arr + [$e]')
+            # Rate limit between dispatches
+            sleep "${DISPATCH_DELAY_SEC}"
+          done < selected.txt
+          jq '.' <<<"$results" > "$RESULTS_JSON"
+          echo "failures=$failures" >> "$GITHUB_OUTPUT"
+          echo "results_json=$RESULTS_JSON" >> "$GITHUB_OUTPUT"
+          echo "Results captured to $RESULTS_JSON"
+          if [[ "$failures" -gt 0 ]]; then
+            echo "One or more dispatches failed (non-204)."
+          fi
+
+      - name: Emit Summary
+        if: always()
+        run: |
+          set -euo pipefail
+          {
+            echo "## workflow_dispatch Health Check"
+            echo ""
+            echo "| Field | Value |"
+            echo "|-------|-------|"
+            echo "| Run ID | $GITHUB_RUN_ID |"
+            echo "| Ref Used | ${TARGET_REF} |"
+            echo "| Dry Run | ${DRY_RUN} |"
+            echo "| Max Samples | ${MAX_SAMPLES} |"
+            echo "| Continue On Error | ${CONTINUE_ON_ERROR} |"
+            echo ""
+            echo "### Candidates"
+            if [[ -s dispatch_candidates.txt ]]; then
+              echo '```'
+              cat dispatch_candidates.txt
+              echo '```'
+            else
+              echo "_None found_"
+            fi
+            echo ""
+            if [[ -f "$RESULTS_JSON" ]]; then
+              echo "### Dispatch Results"
+              echo ""
+              echo "| Workflow File | HTTP | Status | Timestamp (UTC) |"
+              echo "| ------------- | ---- | ------ | --------------- |"
+              jq -r '.[] | "| " + .workflow + " | " + .http_code + " | " + .status + " | " + .timestamp + " |"' "$RESULTS_JSON"
+              echo ""
+              FAIL_CT=$(jq '[.[] | select(.status=="FAIL")] | length' "$RESULTS_JSON")
+              OK_CT=$(jq '[.[] | select(.status=="OK")] | length' "$RESULTS_JSON")
+              echo "- Successful: ${OK_CT}"
+              echo "- Failed: ${FAIL_CT}"
+              if [[ "$FAIL_CT" -gt 0 ]]; then
+                echo ""
+                echo "> :warning: Failures detected. Investigate HTTP codes and retry manually."
+              else
+                echo ""
+                echo "> :white_check_mark: All sampled dispatches returned 204."
+              fi
+            else
+              echo "No dispatch results (dry run or no candidates)."
+            fi
+            echo ""
+            echo "### Notes"
+            echo "- Self workflow excluded from sampling."
+            echo "- To skip a workflow add comment: \`# dispatch-health-skip: true\`"
+            echo "- Adjust schedule or sample size via workflow_dispatch inputs."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Fail on Errors (if configured)
+        if: ${{ always() && env.DRY_RUN != 'true' && steps.dispatch.outputs.failures && steps.dispatch.outputs.failures != '0' && env.CONTINUE_ON_ERROR != 'true' }}
+        run: |
+          echo "Failing job due to dispatch failures (CONTINUE_ON_ERROR=false)."
+          exit 1
+
+      - name: Notify Issue #15 on Failure
+        if: failure()
+        env:
+          ISSUE_NUMBER: "15"
+        run: |
+          echo "Posting failure notification to Issue #${ISSUE_NUMBER}"
+          SUMMARY_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          BODY=$(cat <<'EOF'
+Dispatch Health Check Failure Detected
+
+- Workflow: workflow-dispatch-health-check
+- Run ID: ${GITHUB_RUN_ID}
+- Ref: ${TARGET_REF}
+- URL: ${SUMMARY_URL}
+
+At least one sampled workflow_dispatch probe returned a non-204 HTTP status.
+Please review logs and re-run if transient. If recurrence persists, reopen anomaly investigation.
+
+Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v9ab717af287538a58515d2f3369d011f40ef239829ec614afadfc1cc419e5f20
+EOF
+)
+          eval "echo \"${BODY}\"" > issue_comment.txt
+          curl -sS -H "Accept: application/vnd.github+json" \
+               -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+               -X POST \
+               "https://api.github.com/repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}/comments" \
+               -d "$(jq -n --arg body "$(<issue_comment.txt)" '{body:$body}')" \
+            || echo "Warning: issue comment POST failed"
