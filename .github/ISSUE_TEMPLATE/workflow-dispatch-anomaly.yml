@@ -1,0 +1,273 @@
+# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v9ab717af287538a58515d2f3369d011f40ef239829ec614afadfc1cc419e5f20
+#
+# GitHub Issue Template: Workflow Dispatch Anomaly
+# Purpose:
+#   Standardized escalation artifact when newly added workflows in this repository
+#   fail manual dispatch (`workflow_dispatch`) with HTTP 422:
+#     "Workflow does not have 'workflow_dispatch' trigger"
+#
+# Scope:
+#   Captures reproduction evidence, eliminated hypotheses, environment context,
+#   and explicit request for internal re-index / backend investigation.
+#
+# Instructions:
+#   1. Fill every REQUIRED field (marked with *) before submitting the issue.
+#   2. Attach raw `curl -v` output (token redacted) as a file attachment (NOT inline if large).
+#   3. Keep formatting; support staff can copy/paste structured blocks.
+#
+name: "Workflow Dispatch 422 Anomaly"
+description: "Report / escalate the persistent 422 manual dispatch failure for new workflows"
+title: "[workflow-dispatch-422] New workflow manual dispatch returns 422 (registration anomaly)"
+labels:
+  - ci
+  - actions
+  - needs-support
+  - workflow-dispatch
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🚨 Workflow Dispatch Registration Anomaly
+
+        Use this template to escalate the persistent 422 error:
+        `{"message":"Workflow does not have 'workflow_dispatch' trigger"}`
+
+        Reference diagnostics bundle: `.github/dispatch-diagnostics/README.md`
+
+  - type: input
+    id: reporter
+    attributes:
+      label: Reporter GitHub Handle *
+      description: Who is filing this escalation?
+      placeholder: e.g. @s-a-c
+    validations:
+      required: true
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: High-Level Summary *
+      description: One-paragraph summary of the failure and its impact.
+      placeholder: >
+        Example: Newly created workflows (badge/metrics, minimal reproduction) fail manual dispatch with HTTP 422 stating
+        the workflow lacks 'workflow_dispatch'. Legacy workflow (ci-performance.yml) dispatches successfully. Need GitHub
+        to re-index or repair backend registration.
+    validations:
+      required: true
+
+  - type: input
+    id: first_observed
+    attributes:
+      label: First Observed Date/Time (UTC) *
+      description: When was the anomaly first confirmed reproducible?
+      placeholder: 2025-08-19T14:23:00Z
+    validations:
+      required: true
+
+  - type: textarea
+    id: affected_workflows
+    attributes:
+      label: Affected Workflow Filenames *
+      description: List filenames that fail manual dispatch (exact paths).
+      placeholder: |
+        .github/workflows/zsh-badges-and-metrics.yml
+        .github/workflows/test-minimal-dispatch.yml
+    validations:
+      required: true
+
+  - type: textarea
+    id: unaffected_workflows
+    attributes:
+      label: Unaffected (Control) Workflow(s)
+      description: List at least one legacy workflow that still dispatches successfully.
+      placeholder: |
+        .github/workflows/ci-performance.yml -> manual dispatch returns 204 (control case)
+
+  - type: textarea
+    id: reproduction_steps
+    attributes:
+      label: Reproduction Steps (UI & API) *
+      description: Exact deterministic steps to produce the 422 error.
+      placeholder: |
+        1. Open Actions tab → select `minimal-dispatch-repro` → Run workflow → Error banner referencing 422.
+        2. REST API:
+           curl -i -X POST \
+             -H "Accept: application/vnd.github+json" \
+             -H "Authorization: Bearer ***REDACTED***" \
+             https://api.github.com/repos/<owner>/<repo>/actions/workflows/test-minimal-dispatch.yml/dispatches \
+             -d '{"ref":"main"}'
+        3. Response: HTTP/1.1 422 Unprocessable Entity + JSON body:
+           {"message":"Workflow does not have 'workflow_dispatch' trigger", ...}
+    validations:
+      required: true
+
+  - type: textarea
+    id: response_body
+    attributes:
+      label: Exact 422 Response Body (Sanitized) *
+      description: Paste JSON from failing dispatch (remove token / sensitive headers).
+      placeholder: |
+        {
+          "message": "Workflow does not have 'workflow_dispatch' trigger",
+          "documentation_url": "https://docs.github.com/rest/actions/workflows#create-a-workflow-dispatch-event"
+        }
+    validations:
+      required: true
+
+  - type: textarea
+    id: curl_verbose
+    attributes:
+      label: Redacted curl -v Output (Optional if attached as file)
+      description: Provide sanitized verbose curl transcript (strip Authorization header).
+      placeholder: |
+        *   Trying 140.82.xx.xx:443...
+        > POST /repos/<owner>/<repo>/actions/workflows/test-minimal-dispatch.yml/dispatches HTTP/2
+        > Host: api.github.com
+        > user-agent: curl/8.x
+        > accept: application/vnd.github+json
+        > authorization: Bearer ***REDACTED***
+        > content-type: application/json
+        > content-length: 15
+        ...
+
+  - type: textarea
+    id: eliminated
+    attributes:
+      label: Eliminated Causes Checklist *
+      description: Mark each line with [x] once verified.
+      value: |
+        - [ ] YAML validated (no syntax errors; push/PR triggers succeed)
+        - [ ] No required inputs causing validation failure (minimal file tested)
+        - [ ] Repo Actions settings: "Allow all actions and reusable workflows"
+        - [ ] No org policy banner or pending approval requirement
+        - [ ] File present on default branch and visible in Actions → New Workflow list
+        - [ ] Attempted filename change (same result)
+        - [ ] Attempted content simplification down to minimal reproduction
+        - [ ] Waited >30 minutes (propagation delay ruled out)
+        - [ ] Legacy workflow manual dispatch still succeeds
+        - [ ] Token scope adequate (works on legacy workflow)
+        - [ ] No stray non-UTF8 / BOM bytes (hexdump inspected)
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional_attempts
+    attributes:
+      label: Additional Mitigations Attempted
+      description: Note any transient edits, duplication, or cache-busting steps already tried.
+      placeholder: |
+        - Removed and re-added workflow_dispatch key
+        - Touched file with whitespace-only commit
+        - Renamed file to force re-ingestion
+        - Created brand new minimal file (still 422)
+
+  - type: textarea
+    id: workarounds_in_place
+    attributes:
+      label: Current Operational Workarounds
+      description: Summarize active fallback paths keeping CI functional.
+      value: |
+        - repository_dispatch (event_type: badges_v2_run)
+        - Tag-based trigger: push tag `zsh-badges-run-<timestamp>`
+        - Chained dispatch via legacy `ci-performance.yml` (`dispatchBadges=true`)
+        - Helper script: tools/dispatch-badges.sh
+
+  - type: dropdown
+    id: impact_level
+    attributes:
+      label: Operational Impact Level *
+      description: Select the highest applicable impact.
+      options:
+        - Low (cosmetic / convenience)
+        - Moderate (manual workflows blocked; fallbacks exist)
+        - High (automation reliability at risk)
+        - Critical (core delivery blocked)
+      default: 1
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact_description
+    attributes:
+      label: Impact Narrative *
+      description: Business / engineering effect of degraded manual dispatch capability.
+      placeholder: |
+        Example: Increases friction for ad-hoc badge generation and regression triage; requires indirect invocation flows
+        that add latency and complexity. Risk of operator error and reduced visibility in audit logs.
+
+    validations:
+      required: true
+
+  - type: textarea
+    id: requested_action
+    attributes:
+      label: Requested GitHub Action / Support Intervention *
+      description: What specifically are you asking GitHub to do?
+      value: |
+        Please (a) verify backend registration state for new workflows, (b) re-index or refresh workflow event bindings,
+        and (c) confirm restoration of native manual dispatch (workflow_dispatch) for newly added files.
+
+    validations:
+      required: true
+
+  - type: textarea
+    id: commit_refs
+    attributes:
+      label: Relevant Commit SHAs
+      description: Provide SHAs for (a) creation of failing workflow, (b) last successful legacy dispatch, and any rename events.
+      placeholder: |
+        failing_workflow_added: <sha>
+        legacy_control_dispatch_ok: <sha>
+        minimal_repro_added: <sha>
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Local / Invoker Environment
+      description: Detail CLI/tooling versions used when reproducing (gh version, curl version, OS).
+      placeholder: |
+        gh version 2.x
+        curl 8.x
+        macOS 14.x / Ubuntu 22.04 test shells
+
+  - type: checkboxes
+    id: attachments
+    attributes:
+      label: Attachments Provided
+      description: Check all that you have attached to the issue (files or gists).
+      options:
+        - label: Diagnostics bundle (.github/dispatch-diagnostics/README.md)
+        - label: Redacted curl -v transcript
+        - label: Screenshot of UI 422 error
+        - label: Hexdump snippet (first 20 lines) of minimal workflow
+        - label: GitHub Actions run URL for failed manual attempt
+        - label: Commit diff introducing minimal workflow
+        - label: Support ticket ID (to be added later)
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional Notes / Hypotheses
+      description: Any patterns (e.g., only files created after date X) or theories for root cause.
+      placeholder: |
+        Example: Hypothesis that event binding cache not refreshed for new files after rapid sequence of workflow additions.
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        ### ✅ Submission Checklist
+        Before submitting, ensure:
+        - All REQUIRED fields filled
+        - Response body pasted & sanitized
+        - At least one successful legacy dispatch evidence provided
+        - Workarounds enumerated
+        - Requested action clearly stated
+
+        After submitting:
+        - Open GitHub Support ticket and reference this issue
+        - Update this issue with Support ticket ID
+        - Close issue only after native manual dispatch is restored and reproduction file confirms success
+
+        Thank you for maintaining reproducible evidence for faster resolution.
