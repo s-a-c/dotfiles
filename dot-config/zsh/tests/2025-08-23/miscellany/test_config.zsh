@@ -4,10 +4,10 @@
 # This script will source the problematic files and check for warnings
 
 [[ "$ZSH_DEBUG" == "1" ]] && {
-        zsh_debug_echo "# ++++++ $0 ++++++++++++++++++++++++++++++++++++"
+        zf::debug "# ++++++ $0 ++++++++++++++++++++++++++++++++++++"
     # Add this check to detect errant file creation:
     if [[ -f "${ZDOTDIR:-$HOME}/2" ]] || [[ -f "${ZDOTDIR:-$HOME}/3" ]]; then
-            zsh_debug_echo "Warning: Numbered files detected - check for redirection typos"
+            zf::debug "Warning: Numbered files detected - check for redirection typos"
     fi
 }
 
@@ -25,9 +25,9 @@ source ./.zshrc
 echo "\nTesting secure-env.zsh loading:"
 if [[ -d "./.zshrc.pre-plugins.d" ]]; then
     load-shell-fragments "./.zshrc.pre-plugins.d"
-        zsh_debug_echo "✓ Pre-plugins loaded successfully"
+        zf::debug "✓ Pre-plugins loaded successfully"
 else
-        zsh_debug_echo "✗ .zshrc.pre-plugins.d directory not found"
+        zf::debug "✗ .zshrc.pre-plugins.d directory not found"
 fi
 
 echo "\nConfiguration test completed."

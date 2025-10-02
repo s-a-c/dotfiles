@@ -15,8 +15,8 @@ if command -v compinit >/dev/null 2>&1; then
     compinit -d "$compdump_file" 2>/dev/null || true
     _COMPINIT_DONE=1
     export _COMPINIT_DONE
-    # Use zsh_debug_echo from .zshenv if available
-    if declare -f zsh_debug_echo >/dev/null 2>&1; then
-        zsh_debug_echo "# [minimal-completion-init] Initialized with $compdump_file (single-run)"
+    # Use zf::debug from .zshenv if available
+    if declare -f zf::debug >/dev/null 2>&1; then
+        zf::debug "# [minimal-completion-init] Initialized with $compdump_file (single-run)"
     fi
 fi

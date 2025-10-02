@@ -1,0 +1,254 @@
+#!/usr/bin/env zsh
+# ==============================================================================
+# ESSENTIAL .zshenv - Clean version with only necessary functionality
+# Based on full .zshenv but with problematic sections removed/simplified
+# ==============================================================================
+
+# Minimal debug logger used during early startup
+zf::debug() {
+  # Always append to debug log when both ZSH_DEBUG=1 and ZSH_DEBUG_LOG are set.
+  if [[ "${ZSH_DEBUG:-0}" == "1" ]]; then
+    # stderr for separation from command output pipelines
+    printf '%s\n' "$@" 1>&2
+    if [[ -n "${ZSH_DEBUG_LOG:-}" ]]; then
+      print -r -- "$@" >> "$ZSH_DEBUG_LOG" 2>/dev/null || true
+    fi
+  fi
+}
+
+# EMERGENCY IFS PROTECTION - Prevent corruption during startup
+if [[ "$IFS" != $' \t\n' ]]; then
+    unset IFS
+fi
+
+# Emergency PATH fix if corrupted with literal $sep
+if [[ "$PATH" == *'$sep'* ]]; then
+    PATH="${PATH//\$sep/:}"
+fi
+
+# Simple PATH setup (no complex loops)
+if [[ -z "${PATH:-}" ]]; then
+    PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
+fi
+export PATH
+
+# XDG Base Directory Specification (set early so other code can rely on them)
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-${HOME}/.cache}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}"
+export XDG_STATE_HOME="${XDG_STATE_HOME:-${HOME}/.local/state}"
+export XDG_BIN_HOME="${XDG_BIN_HOME:-${HOME}/.local/bin}"
+mkdir -p "${XDG_CONFIG_HOME}" "${XDG_CACHE_HOME}" "${XDG_DATA_HOME}" "${XDG_STATE_HOME}" "${XDG_BIN_HOME}" 2>/dev/null || true
+
+# Prefer repo path if available; otherwise default to XDG
+if [[ -z "${ZDOTDIR:-}" ]]; then
+  if [[ -d "${HOME}/dotfiles/dot-config/zsh" ]]; then
+    export ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
+  else
+    export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
+  fi
+fi
+
+# Simple ZDOTDIR canonicalization (no complex symlink resolution)
+if [[ -n "${ZDOTDIR:-}" && -d "${ZDOTDIR}" ]]; then
+    if command -v realpath >/dev/null 2>&1; then
+        ZDOTDIR="$(realpath "${ZDOTDIR}" 2>/dev/null || echo "${ZDOTDIR}")"
+    fi
+fi
+export ZDOTDIR
+
+# Create common cache/log dirs
+export ZSH_CACHE_DIR="${XDG_CACHE_HOME}/zsh"
+export ZSH_LOG_DIR="${ZDOTDIR}/logs"
+mkdir -p "$ZSH_CACHE_DIR" "$ZSH_LOG_DIR" 2>/dev/null || true
+
+# Provide a short session id for debug/log filenames
+export ZSH_SESSION_ID="${ZSH_SESSION_ID:-$$-$(date +%s 2>/dev/null || echo 'unknown')}"
+export ZSH_DEBUG_LOG="${ZSH_LOG_DIR}/${ZSH_SESSION_ID}-zsh-debug.log"
+
+# Basic debug flag
+export ZSH_DEBUG="${ZSH_DEBUG:-0}"
+
+# Simple debug policy (no complex function)
+zf::apply_debug_policy() {
+  export ZSH_DEBUG="${ZSH_DEBUG:-0}"
+  export ZSH_DEBUG_POLICY_APPLIED=1
+  # Disable xtrace if it's on (our xtrace fix)
+  if [[ "${options[xtrace]}" == "on" && "${ZSH_FORCE_XTRACE:-0}" != "1" ]]; then
+    set +x 2>/dev/null || true
+  fi
+}
+
+# Apply the debug policy early
+zf::apply_debug_policy
+
+# Performance monitoring flag
+export _PERFORMANCE_MONITORING_LOADED="${_PERFORMANCE_MONITORING_LOADED:-1}"
+
+# Set BREW_PREFIX early for module compatibility
+if [[ -z "${BREW_PREFIX:-}" ]]; then
+    if [[ -d "/opt/homebrew" ]]; then
+        export BREW_PREFIX="/opt/homebrew"
+    elif [[ -d "/usr/local" ]]; then
+        export BREW_PREFIX="/usr/local"
+    fi
+fi
+
+# Essential configuration flags (simplified, no complex loop)
+export ZSH_DISABLE_SPLASH="${ZSH_DISABLE_SPLASH:-0}"
+export ZSH_MINIMAL="${ZSH_MINIMAL:-0}"
+export FORCE_SPLASH="${FORCE_SPLASH:-1}"
+export ZSH_ENABLE_ABBR="${ZSH_ENABLE_ABBR:-1}"
+export ZSH_ENABLE_NVM_PLUGINS="${ZSH_ENABLE_NVM_PLUGINS:-1}"
+export ZSH_NODE_LAZY="${ZSH_NODE_LAZY:-1}"
+export PATH_CLEANUP="${PATH_CLEANUP:-1}"
+export DEBUG_ZSH_REDESIGN="${DEBUG_ZSH_REDESIGN:-0}"
+
+# PATH management functions (essential only)
+zf::path_remove() {
+  for ARG in "$@"; do
+    while [[ ":${PATH}:" == *":${ARG}:"* ]]; do
+      PATH="${PATH//:${ARG}:/:}"
+      PATH="${PATH/#${ARG}:/}"
+      PATH="${PATH/%:${ARG}/}"
+    done
+  done
+}
+
+zf::path_append() {
+  for ARG in "$@"; do
+    zf::path_remove "${ARG}"
+    [[ -d "${ARG}" ]] && PATH="${PATH}:${ARG}"
+  done
+}
+
+zf::path_prepend() {
+  for ARG in "$@"; do
+    zf::path_remove "${ARG}"
+    [[ -d "${ARG}" ]] && PATH="${ARG}:${PATH}"
+  done
+}
+
+# Add XDG user bin to PATH if present
+[[ -d ${XDG_BIN_HOME} ]] && PATH="${XDG_BIN_HOME}:${PATH}"
+export PATH
+
+# Safe defaults for prompt variables to prevent nounset errors
+typeset -g RPS1="${RPS1-}"
+typeset -g RPS2="${RPS2-}"
+typeset -g RPS3="${RPS3-}"
+typeset -g RPS4="${RPS4-}"
+typeset -g RPS5="${RPS5-}"
+typeset -g PROMPT="${PROMPT-}"
+typeset -g RPROMPT="${RPROMPT-}"
+typeset -g PS1="${PS1-%# }"
+typeset -g PS2="${PS2-%_ }"
+typeset -g PS3="${PS3-?# }"
+typeset -g PS4="${PS4-+%N:%i> }"
+
+# Guard oh-my-zsh variables for nounset compatibility
+if ! (( ${+ZSH} )); then
+  typeset -g ZSH=""
+fi
+
+if ! (( ${+ZSH_CUSTOM} )); then
+  if [[ -n ${ZSH:-} ]]; then
+    typeset -g ZSH_CUSTOM="${ZSH}/custom"
+  else
+    typeset -g ZSH_CUSTOM="${ZSH_CACHE_DIR}/oh-my-zsh-custom"
+  fi
+fi
+mkdir -p -- "$ZSH_CUSTOM" 2>/dev/null || true
+
+# Oh My Zsh variable defaults for nounset compatibility
+if ! (( ${+DISABLE_UPDATE_PROMPT} )); then typeset -g DISABLE_UPDATE_PROMPT=0; fi
+if ! (( ${+DISABLE_AUTO_UPDATE}   )); then typeset -g DISABLE_AUTO_UPDATE=1; fi
+if ! (( ${+ENABLE_CORRECTION}     )); then typeset -g ENABLE_CORRECTION=0; fi
+if ! (( ${+COMPLETION_WAITING_DOTS} )); then typeset -g COMPLETION_WAITING_DOTS=0; fi
+if ! (( ${+plugins} )); then typeset -ga plugins; plugins=(); fi
+if ! (( ${+TERM_PROGRAM} )); then typeset -g TERM_PROGRAM="unknown"; fi
+if ! (( ${+ZSH_COMPDUMP} )); then typeset -g ZSH_COMPDUMP="${ZSH_CACHE_DIR}/.zcompdump"; fi
+if ! (( ${+CASE_SENSITIVE} )); then typeset -g CASE_SENSITIVE=0; fi
+if ! (( ${+DISABLE_MAGIC_FUNCTIONS} )); then typeset -g DISABLE_MAGIC_FUNCTIONS=0; fi
+if ! (( ${+INSIDE_EMACS} )); then typeset -g INSIDE_EMACS=""; fi
+if ! (( ${+DISABLE_LS_COLORS} )); then typeset -g DISABLE_LS_COLORS=0; fi
+if ! (( ${+ZSH_THEME} )); then typeset -g ZSH_THEME=""; fi
+
+# Ensure nounset is off very early for plugin safety
+unsetopt UNSET 2>/dev/null || true
+
+# Starship prompt variables (essential only)
+if ! (( ${+STARSHIP_CMD_STATUS} )); then typeset -gi STARSHIP_CMD_STATUS=0; fi
+export STARSHIP_CMD_STATUS
+
+# zgenom arrays for nounset compatibility
+typeset -ga ZGENOM_LOADED 2>/dev/null || true
+typeset -ga ZGEN_LOADED 2>/dev/null || true
+typeset -ga ZGENOM_PLUGINS 2>/dev/null || true
+typeset -ga ZGEN_COMPLETIONS 2>/dev/null || true
+
+# ZLE variables (let ZLE initialize these itself)
+typeset -g ZLE_LINE_ABORTED="${ZLE_LINE_ABORTED-}"
+typeset -g ZLE_STATE="${ZLE_STATE-}"
+typeset -g KEYMAP="${KEYMAP-}"
+
+# ZGENOM configuration (simplified)
+ZGENOM_PARENT_DIR="${ZDOTDIR}"
+
+# Resolve zgenom source directory
+if [[ -n "${ZDOTDIR:-}" && -d "${ZDOTDIR}/.zqs-zgenom" ]]; then
+    ZGEN_SOURCE="${ZDOTDIR}/.zqs-zgenom"
+elif [[ -n "${ZDOTDIR:-}" && -d "${ZDOTDIR}/zgenom" ]]; then
+    ZGEN_SOURCE="${ZDOTDIR}/zgenom"
+elif [[ -d "${HOME}/.zgenom" ]]; then
+    ZGEN_SOURCE="${HOME}/.zgenom"
+else
+    ZGEN_SOURCE="${ZDOTDIR}/zgenom"
+fi
+
+ZGEN_DIR="$ZGEN_SOURCE"
+ZGEN_INIT="$ZGEN_DIR/init.zsh"
+ZGENOM_SOURCE_FILE=$ZGEN_SOURCE/zgenom.zsh
+ZGENOM_BIN_DIR=$ZGEN_SOURCE
+
+export ZGENOM_PARENT_DIR ZGEN_SOURCE ZGENOM_SOURCE_FILE ZGEN_DIR ZGEN_INIT ZGENOM_BIN_DIR
+
+# Completion behavior control
+export ZGEN_AUTOLOAD_COMPINIT="${ZGEN_AUTOLOAD_COMPINIT:-0}"
+
+# Initialize fpath and add zgenom functions
+: ${fpath:=()}
+if [[ -d "${ZGEN_SOURCE}/functions" ]]; then
+    fpath=("${ZGEN_SOURCE}/functions" $fpath)
+elif [[ -d "${ZGEN_DIR}/functions" ]]; then
+    fpath=("${ZGEN_DIR}/functions" $fpath)
+fi
+
+# History defaults
+export HISTFILE="${ZDOTDIR}/.zsh_history"
+export HISTSIZE="${HISTSIZE:-2000000}"
+export SAVEHIST="${SAVEHIST:-2000200}"
+
+# Export a stable EDITOR if not set
+if [[ -z "${EDITOR:-}" ]]; then
+    for e in nvim vim nano; do
+        if command -v "$e" >/dev/null 2>&1; then
+            export EDITOR="$e"
+            break
+        fi
+    done
+fi
+
+# Set sane locale defaults
+export LANG="${LANG:-en_GB.UTF-8}"
+export LC_ALL="${LC_ALL:-${LANG}}"
+
+# Final PATH export
+export PATH
+
+# Debug summary
+if [[ "${ZSH_DEBUG}" == "1" ]]; then
+  zf::debug "[DEBUG] Essential .zshenv completed: ZDOTDIR=${ZDOTDIR} ZSH_CACHE_DIR=${ZSH_CACHE_DIR}"
+fi
+
+# End of essential .zshenv

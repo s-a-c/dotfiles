@@ -32,7 +32,7 @@
 set -euo pipefail
 
 # Quiet debug helper
-typeset -f zsh_debug_echo >/dev/null 2>&1 || zsh_debug_echo() { :; }
+typeset -f zf::debug >/dev/null 2>&1 || zf::debug() { :; }
 
 # Determine ZDOTDIR / repo root (assumes test resides under .../dot-config/zsh/tests/security/)
 # Use absolute paths and avoid fragile parameter expansion fallbacks
@@ -157,7 +157,7 @@ if [[ -n "${ZSH_DEBUG:-}" ]]; then
   mkdir -p "$log_dir"
   test_agg_log="${log_dir}/test-preplugin-aggregate-input"
   printf '%s' "$aggregate_input" > "$test_agg_log"
-  zsh_debug_echo "# [integrity-test] Wrote aggregate_input (${#aggregate_input} bytes) to $test_agg_log"
+  zf::debug "# [integrity-test] Wrote aggregate_input (${#aggregate_input} bytes) to $test_agg_log"
 fi
 
 # Recompute aggregate hash (ordered) using no trailing newline to match generator
@@ -186,10 +186,10 @@ if [[ -f "$BASE" ]]; then
   fi
   # Divergence is informational only
   if [[ -n "$base_agg" && "$base_agg" != "$reported_aggregate" ]]; then
-    zsh_debug_echo "# [integrity-test] Baseline aggregate differs (baseline=$base_agg current=$reported_aggregate) – permissive mode"
+    zf::debug "# [integrity-test] Baseline aggregate differs (baseline=$base_agg current=$reported_aggregate) – permissive mode"
   fi
 else
-  zsh_debug_echo "# [integrity-test] Baseline file absent – permissive mode"
+  zf::debug "# [integrity-test] Baseline file absent – permissive mode"
 fi
 
 if (( ${#failures[@]} == 0 )); then

@@ -1,1 +1,0 @@
-../.zshrc.d.legacy/consolidated-modules/03-security-integrity.zsh

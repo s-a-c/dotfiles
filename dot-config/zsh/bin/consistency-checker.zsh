@@ -18,8 +18,8 @@
 
 # Configuration - use variables from .zshenv
 ZSHRC_DIR="${ZDOTDIR}"
-REPORT_FILE="$ZSH_LOG_DIR/consistency-report-$(date "+%Y%m%d-%H%M%S" 2>/dev/null || zsh_debug_echo "unknown").log"
-BACKUP_DIR="$ZDOTDIR/.backups/consistency-$(date "+%Y%m%d-%H%M%S" 2>/dev/null || zsh_debug_echo "unknown")"
+REPORT_FILE="$ZSH_LOG_DIR/consistency-report-$(date "+%Y%m%d-%H%M%S" 2>/dev/null || zf::debug "unknown").log"
+BACKUP_DIR="$ZDOTDIR/.backups/consistency-$(date "+%Y%m%d-%H%M%S" 2>/dev/null || zf::debug "unknown")"
 
 # Counters
 TOTAL_FILES=0
@@ -29,38 +29,31 @@ ISSUES_FIXED=0
 # Create necessary directories
 mkdir -p "$(dirname "$REPORT_FILE")" "$BACKUP_DIR" 2>/dev/null
 
-# Use zsh_debug_echo from .zshenv if available, otherwise create fallback
-zsh_debug_echo() {
-    echo "$@"
-    if [[ "${ZSH_DEBUG:-0}" == "1" ]]; then
-        print -r -- "$@" >> "$ZSH_DEBUG_LOG"
-    fi
-}
 
 # Logging functions - consistent with .zshenv debug system
 log_info() {
-        zsh_debug_echo "ℹ️  $1" | tee -a "$REPORT_FILE"
-    zsh_debug_echo "# [consistency-checker] INFO: $1"
+    zf::debug "ℹ️  $1" | tee -a "$REPORT_FILE"
+    zf::debug "# [consistency-checker] INFO: $1"
 }
 
 log_warn() {
-        zsh_debug_echo "⚠️  $1" | tee -a "$REPORT_FILE"
-    zsh_debug_echo "# [consistency-checker] WARN: $1"
+    zf::debug "⚠️  $1" | tee -a "$REPORT_FILE"
+    zf::debug "# [consistency-checker] WARN: $1"
 }
 
 log_error() {
-        zsh_debug_echo "❌ $1" | tee -a "$REPORT_FILE"
-    zsh_debug_echo "# [consistency-checker] ERROR: $1"
+    zf::debug "❌ $1" | tee -a "$REPORT_FILE"
+    zf::debug "# [consistency-checker] ERROR: $1"
 }
 
 log_success() {
-        zsh_debug_echo "✅ $1" | tee -a "$REPORT_FILE"
-    zsh_debug_echo "# [consistency-checker] SUCCESS: $1"
+    zf::debug "✅ $1" | tee -a "$REPORT_FILE"
+    zf::debug "# [consistency-checker] SUCCESS: $1"
 }
 
 log_fix() {
-        zsh_debug_echo "🔧 $1" | tee -a "$REPORT_FILE"
-    zsh_debug_echo "# [consistency-checker] FIX: $1"
+    zf::debug "🔧 $1" | tee -a "$REPORT_FILE"
+    zf::debug "# [consistency-checker] FIX: $1"
     ISSUES_FIXED=$((ISSUES_FIXED + 1))
 }
 
@@ -223,13 +216,13 @@ check_documentation_headers() {
     # Check for inconsistent shebang
     local first_line=$(head -1 "$file")
     if [[ "$first_line" =~ ^#!/ ]]; then
-        if [[ "$first_line" != "#!/opt/homebrew/bin/zsh" ]]; then
+        if [[ "$first_line" != "#!/usr/bin/env zsh" ]]; then
             issues=$((issues + 1))
             log_warn "File $file: Inconsistent shebang: $first_line"
 
             if [[ "$fix_mode" == "true" ]]; then
                 backup_file "$file"
-                sed -i '1s|^#!/.*|#!/opt/homebrew/bin/zsh|' "$file"
+                sed -i '1s|^#!/.*|#!/usr/bin/env zsh|' "$file"
                 log_fix "Standardized shebang in $file"
             fi
         fi
@@ -335,36 +328,36 @@ generate_report() {
     local consistency_score
     if [[ $TOTAL_FILES -gt 0 && $ISSUES_FOUND -gt 0 ]]; then
         # Calculate consistency score (higher is better)
-        local max_possible_issues=$((TOTAL_FILES * 6))  # 6 check categories per file
-        consistency_score=$(( (max_possible_issues - ISSUES_FOUND) * 100 / max_possible_issues ))
+        local max_possible_issues=$((TOTAL_FILES * 6)) # 6 check categories per file
+        consistency_score=$(((max_possible_issues - ISSUES_FOUND) * 100 / max_possible_issues))
     else
         consistency_score=100
     fi
 
-        zsh_debug_echo "========================================================"
-        zsh_debug_echo "ZSH Configuration Consistency Report"
-        zsh_debug_echo "========================================================"
-        zsh_debug_echo "Generated: $(date)"
-        zsh_debug_echo "Files analyzed: $TOTAL_FILES"
-        zsh_debug_echo "Issues found: $ISSUES_FOUND"
-        zsh_debug_echo "Issues fixed: $ISSUES_FIXED"
-        zsh_debug_echo "Consistency Score: ${consistency_score}%"
-        zsh_debug_echo ""
+    zf::debug "========================================================"
+    zf::debug "ZSH Configuration Consistency Report"
+    zf::debug "========================================================"
+    zf::debug "Generated: $(date)"
+    zf::debug "Files analyzed: $TOTAL_FILES"
+    zf::debug "Issues found: $ISSUES_FOUND"
+    zf::debug "Issues fixed: $ISSUES_FIXED"
+    zf::debug "Consistency Score: ${consistency_score}%"
+    zf::debug ""
 
     if [[ $consistency_score -ge 95 ]]; then
-            zsh_debug_echo "🏆 EXCELLENT: Configuration meets high consistency standards"
+        zf::debug "🏆 EXCELLENT: Configuration meets high consistency standards"
     elif [[ $consistency_score -ge 85 ]]; then
-            zsh_debug_echo "✅ GOOD: Configuration has good consistency with minor issues"
+        zf::debug "✅ GOOD: Configuration has good consistency with minor issues"
     elif [[ $consistency_score -ge 70 ]]; then
-            zsh_debug_echo "⚠️  ACCEPTABLE: Configuration needs consistency improvements"
+        zf::debug "⚠️  ACCEPTABLE: Configuration needs consistency improvements"
     else
-            zsh_debug_echo "❌ NEEDS WORK: Configuration requires significant consistency fixes"
+        zf::debug "❌ NEEDS WORK: Configuration requires significant consistency fixes"
     fi
 
-        zsh_debug_echo ""
-        zsh_debug_echo "Report saved to: $REPORT_FILE"
+    zf::debug ""
+    zf::debug "Report saved to: $REPORT_FILE"
     if [[ $ISSUES_FIXED -gt 0 ]]; then
-            zsh_debug_echo "Backups saved to: $BACKUP_DIR"
+        zf::debug "Backups saved to: $BACKUP_DIR"
     fi
 }
 
@@ -376,35 +369,35 @@ main() {
     # Parse arguments
     while [[ $# -gt 0 ]]; do
         case $1 in
-            --fix)
-                fix_mode=true
-                shift
-                ;;
-            --report)
-                report_only=true
-                shift
-                ;;
-            *)
-                    zsh_debug_echo "Usage: $0 [--fix] [--report]"
-                    zsh_debug_echo "  --fix    Apply automatic fixes"
-                    zsh_debug_echo "  --report Generate report only"
-                exit 1
-                ;;
+        --fix)
+            fix_mode=true
+            shift
+            ;;
+        --report)
+            report_only=true
+            shift
+            ;;
+        *)
+            zf::debug "Usage: $0 [--fix] [--report]"
+            zf::debug "  --fix    Apply automatic fixes"
+            zf::debug "  --report Generate report only"
+            exit 1
+            ;;
         esac
     done
 
-        zsh_debug_echo "========================================================"
-        zsh_debug_echo "ZSH Configuration Consistency Checker"
-        zsh_debug_echo "========================================================"
-        zsh_debug_echo "Mode: $(if $fix_mode; then     zsh_debug_echo "CHECK AND FIX"; else     zsh_debug_echo "CHECK ONLY"; fi)"
-        zsh_debug_echo "Directory: $ZSHRC_DIR"
-        zsh_debug_echo ""
+    zf::debug "========================================================"
+    zf::debug "ZSH Configuration Consistency Checker"
+    zf::debug "========================================================"
+    zf::debug "Mode: $(if $fix_mode; then echo CHECK AND FIX; else echo CHECK ONLY; fi)"
+    zf::debug "Directory: $ZSHRC_DIR"
+    zf::debug ""
 
     # Initialize report
-    cat > "$REPORT_FILE" << EOF
+    cat >"$REPORT_FILE" <<EOF
 ZSH Configuration Consistency Report
 Generated: $(date)
-Mode: $(if $fix_mode; then     zsh_debug_echo "CHECK AND FIX"; else     zsh_debug_echo "CHECK ONLY"; fi)
+Mode: $(if $fix_mode; then echo CHECK AND FIX; else echo CHECK ONLY; fi)
 
 EOF
 
@@ -425,20 +418,20 @@ EOF
     fi
 
     log_info "Found $TOTAL_FILES ZSH configuration files"
-        zsh_debug_echo ""
+    zf::debug ""
 
     # Check each file
     for file in "${zsh_files[@]}"; do
         check_file_consistency "$file" "$fix_mode"
     done
 
-        zsh_debug_echo ""
+    zf::debug ""
     generate_report
 
     # Exit with appropriate code
     if [[ $ISSUES_FOUND -gt 0 && $fix_mode == false ]]; then
-            zsh_debug_echo ""
-            zsh_debug_echo "💡 Run with --fix to automatically fix issues"
+        zf::debug ""
+        zf::debug "💡 Run with --fix to automatically fix issues"
         exit 1
     else
         exit 0

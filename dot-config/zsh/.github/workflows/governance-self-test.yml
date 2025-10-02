@@ -1,0 +1,136 @@
+name: Governance Self-Test
+
+on:
+  push:
+    branches:
+      - main
+      - 'feat/**'
+      - 'fix/**'
+    paths:
+      - 'zsh/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'zsh/**'
+  workflow_dispatch:
+
+concurrency:
+  group: governance-self-test-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  EMERGENCY_FLOOR: '387'
+  GOVERNANCE_SCRIPT: zsh/tools/governance-self-test.sh
+
+jobs:
+  governance:
+    name: Governance Self-Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify governance harness presence
+        id: verify
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ ! -f "$GOVERNANCE_SCRIPT" ]]; then
+            echo "Governance self-test script missing at $GOVERNANCE_SCRIPT" >&2
+            exit 1
+          fi
+          chmod +x "$GOVERNANCE_SCRIPT" || true
+          echo "present=true" >> "$GITHUB_OUTPUT"
+
+      - name: Run governance self-tests (including emergency extended)
+        id: run
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Ensure emergency widget counter is executable if present
+          if [[ -f zsh/tools/emergency-widget-count.sh ]]; then
+            chmod +x zsh/tools/emergency-widget-count.sh || true
+          fi
+          # Execute harness; extended emergency mode + JSON output
+            ZF_EMERGENCY_EXTEND=1 "$GOVERNANCE_SCRIPT" \
+              --json \
+              --include-emergency \
+              --emergency-extend \
+              --emergency-floor "${EMERGENCY_FLOOR}" > governance-self-test.json || STATUS=$?
+          STATUS=${STATUS:-0}
+          echo "Harness exit code: $STATUS"
+          cat governance-self-test.json || true
+          # Basic JSON sanity (no jq; use python fallback)
+          python3 - <<'PY'
+import json, sys
+data=json.load(open("governance-self-test.json"))
+status=data.get("status","unknown")
+em_w=data.get("summary",{}).get("emergency_widgets")
+floor=data.get("summary",{}).get("emergency_floor")
+print(f"Parsed status={status} emergency_widgets={em_w} floor={floor}")
+if status != "ok":
+    print("Governance self-test reported failure", file=sys.stderr)
+    sys.exit(1)
+if isinstance(em_w,int) and isinstance(floor,int) and em_w < floor:
+    print(f"Emergency widget floor breach: {em_w} < {floor}", file=sys.stderr)
+    sys.exit(1)
+PY
+
+      - name: Summarize results
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "## Governance Self-Test Summary" >> "$GITHUB_STEP_SUMMARY"
+          if [[ ! -f governance-self-test.json ]]; then
+            echo "**No governance-self-test.json produced.**" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          python3 - <<'PY'
+import json, sys
+d=json.load(open("governance-self-test.json"))
+tools=d.get("tools",{})
+summary=d.get("summary",{})
+print("### Tool Statuses")
+for k,v in tools.items():
+    if isinstance(v, dict):
+        print(f"- {k}: {v.get('status')}")
+    else:
+        print(f"- {k}: {v}")
+print("\n### Summary")
+print(f"- Overall status: {d.get('status')}")
+print(f"- Stray detector pass: {summary.get('stray_pass')}")
+print(f"- Redirection lint pass: {summary.get('redirection_pass')}")
+print(f"- Emergency checked: {summary.get('emergency_checked')}")
+print(f"- Emergency widgets (effective): {summary.get('emergency_widgets')}")
+ext = summary.get('emergency_extended_widgets')
+if ext:
+    print(f"- Emergency extended widgets: {ext}")
+print(f"- Emergency core authentic flag: {summary.get('emergency_core_authentic')}")
+print(f"- Emergency synthetic flag: {summary.get('emergency_synthetic')}")
+fails=summary.get("failures") or []
+if fails:
+    print("\n### Failures")
+    for f in fails:
+        print(f"- {f}")
+PY >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload governance artifact
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+            name: governance-self-test
+            path: governance-self-test.json
+
+      - name: Final status
+        if: ${{ success() }}
+        run: echo "Governance self-test passed."
+
+      - name: Failure marker
+        if: ${{ failure() }}
+        run: echo "Governance self-test failed." >&2

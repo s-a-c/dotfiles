@@ -1,0 +1,70 @@
+📋 Running comprehensive module validation tests...
+[PATH-SAFETY] Loading comprehensive PATH safety system (v2.2.0)
+[PATH-SAFETY] Preserving .zshenv PATH baseline, applying intelligent merge
+[PATH-SAFETY] Cached FZF location: /opt/homebrew/bin/fzf
+[PATH-SAFETY] Cached BAT location: /opt/homebrew/bin/bat
+[PATH-SAFETY] Cached EZA location: /opt/homebrew/bin/eza
+[PATH-SAFETY] Performing final PATH validation and cleanup
+[PATH-SAFETY] Command hash table rebuilt
+[PATH-SAFETY] Prompt variables initialized for plugin safety
+[PATH-SAFETY] Comprehensive PATH safety system ready (15 directories in PATH)
+[ENV-SETUP] Loading environment setup and toggles (v2.0.0)
+[ENV-SETUP] Redesign system status:
+[ENV-SETUP]   PREPLUGIN_REDESIGN: 1
+[ENV-SETUP]   POSTPLUGIN_REDESIGN: 0
+[ENV-SETUP] Non-interactive shell - minimal initialization
+[ENV-SETUP] Debug mode active - enhanced logging enabled
+[ENV-SETUP] XDG directories initialized
+[ENV-SETUP] Performance timing initialized
+[ENV-SETUP] Compatibility functions verified
+[ENV-SETUP] Environment setup completed successfully
+[FZF-INIT] Loading FZF integration system (v2.0.0)
+[FZF-INIT] FZF installation detected: /opt/homebrew
+[FZF-INIT] Warning: FZF integration file not found: /opt/homebrew/shell/completion.zsh
+[FZF-INIT] Warning: FZF integration file not found: /opt/homebrew/shell/key-bindings.zsh
+# ++++++ /Users/s-a-c/.local/share/fzf/fzf.zsh ++++++++++++++++++++++++++++++++++++
+[FZF-INIT] Loaded additional FZF source: /Users/s-a-c/.local/share/fzf/fzf.zsh
+# ++++++ /Users/s-a-c/.fzf.zsh ++++++++++++++++++++++++++++++++++++
+[FZF-INIT] Loaded additional FZF source: /Users/s-a-c/.fzf.zsh
+[FZF-INIT] Set default FZF options
+[FZF-INIT] Configured FZF to use fd for file discovery
+[FZF-INIT] FZF integration completed (0 shell integration files loaded)
+[LAZY-FRAMEWORK] Loading enhanced lazy loading framework (v2.1.0)
+[LAZY-FRAMEWORK] Performance instrumentation disabled (no PERF_SEGMENT_LOG)
+[LAZY-FRAMEWORK] Lazy loading registry initialized
+[LAZY-FRAMEWORK] Enhanced lazy loading framework ready with performance instrumentation
+[NODE-RUNTIME] Loading Node.js runtime environment (v2.0.0)
+[NODE-RUNTIME] Node.js environment variables configured
+[NODE-RUNTIME] Node.js runtime environment ready
+[MACOS] Loading macOS integration (v2.0.0)
+[MACOS] Detected macOS version: 26.0
+[MACOS] Loaded Homebrew shell environment
+[MACOS] Added macOS path: /usr/local/MacGPG2/bin
+[MACOS] Added macOS path: /Library/TeX/texbin
+[MACOS] Set development security environment
+[MACOS] Xcode developer path: /Applications/Xcode.app/Contents/Developer
+[MACOS] Lazy framework not available, skipping deferred defaults
+[MACOS] macOS clipboard utilities available
+[MACOS] Running in terminal: WarpTerminal
+[MACOS] macOS integration ready
+[DEV-INTEGRATIONS] Loading development integrations (v2.0.0)
+[DEV-INTEGRATIONS] Lazy framework not available, loading direnv immediately
+[DEV-INTEGRATIONS] Loading direnv for command: direnv
+[DEV-INTEGRATIONS] direnv hook loaded
+[DEV-INTEGRATIONS] Basic git vcs_info configured
+[DEV-INTEGRATIONS] Git configuration applied
+[DEV-INTEGRATIONS] Loading GitHub Copilot for command: gh-copilot
+[DEV-INTEGRATIONS] GitHub Copilot CLI aliases configured
+[DEV-INTEGRATIONS] Detected development environments: git,dotenv
+[DEV-INTEGRATIONS] Docker environment configured
+[DEV-INTEGRATIONS] Docker Compose (modern) aliases configured
+[DEV-INTEGRATIONS] Kubernetes aliases configured
+[DEV-INTEGRATIONS] VS Code aliases configured
+[DEV-INTEGRATIONS] Development integrations ready
+[SSH-SECURITY] Loading SSH agent and security setup (v2.0.0)
+[SSH-SECURITY] Setting up SSH agent
+[SSH-SECURITY] Connected to existing SSH agent via socket
+[SSH-SECURITY] GPG agent SSH support available
+[SSH-SECURITY] SSH agent and security setup ready
+[PERF-CONTROLS] Loading performance and controls (v2.0.0)
+perf_checkpoint:6: bad math expression: operator expected at `N'

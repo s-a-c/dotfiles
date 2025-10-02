@@ -1,4 +1,4 @@
-#!/opt/homebrew/bin/zsh
+#!/usr/bin/env zsh
 # ==============================================================================
 # ZSH Configuration: Quick Consistency Fixes
 # ==============================================================================
@@ -9,6 +9,9 @@
 # Created: 2025-08-22
 # Version: 1.0
 # ==============================================================================
+# Source .zshenv for standardized helpers and logging
+[[ -f "${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}/.zshenv" ]] && source "${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}/.zshenv"
+
 
 ZSHRC_DIR="${ZDOTDIR:-$HOME/.config/zsh}"
 BACKUP_DIR="$ZSHRC_DIR/.backups/consistency-$(date +%Y%m%d-%H%M%S)"
@@ -29,19 +32,19 @@ backup_file() {
     local file="$1"
     local backup_path="$BACKUP_DIR/$(basename "$file")"
     cp "$file" "$backup_path" 2>/dev/null
-        zsh_debug_echo "📁 Backed up: $(basename "$file")"
+    zf::debug "📁 Backed up: $(basename "$file")"
 }
 
 # Apply fix function
 apply_fix() {
     local description="$1"
-        zsh_debug_echo "🔧 $description"
+    zf::debug "🔧 $description"
     FIXES_APPLIED=$((FIXES_APPLIED + 1))
 }
 
 # Fix 1: Standardize comment headers in key files
 fix_comment_headers() {
-        zsh_debug_echo "=== Fix 1: Standardizing Comment Headers ==="
+    zf::debug "=== Fix 1: Standardizing Comment Headers ==="
 
     local key_files=(
         "$ZSHRC_DIR/.zshrc.d/00_00-standard-helpers.zsh"
@@ -64,8 +67,8 @@ fix_comment_headers() {
 
 # Fix 2: Ensure consistent export patterns
 fix_export_patterns() {
-        zsh_debug_echo ""
-        zsh_debug_echo "=== Fix 2: Standardizing Export Patterns ==="
+    zf::debug ""
+    zf::debug "=== Fix 2: Standardizing Export Patterns ==="
 
     local config_files=(
         "$ZSHRC_DIR/.zshrc.d/00_01-environment.zsh"
@@ -87,8 +90,8 @@ fix_export_patterns() {
 
 # Fix 3: Standardize array declarations
 fix_array_declarations() {
-        zsh_debug_echo ""
-        zsh_debug_echo "=== Fix 3: Standardizing Array Declarations ==="
+    zf::debug ""
+    zf::debug "=== Fix 3: Standardizing Array Declarations ==="
 
     local files_with_arrays=(
         "$ZSHRC_DIR/.zshrc.d/00_00-standard-helpers.zsh"
@@ -110,8 +113,8 @@ fix_array_declarations() {
 
 # Fix 4: Remove trailing whitespace
 fix_trailing_whitespace() {
-        zsh_debug_echo ""
-        zsh_debug_echo "=== Fix 4: Removing Trailing Whitespace ==="
+    zf::debug ""
+    zf::debug "=== Fix 4: Removing Trailing Whitespace ==="
 
     local core_files=(
         "$ZSHRC_DIR/.zshrc.d/00-core"/*.zsh
@@ -134,8 +137,8 @@ fix_trailing_whitespace() {
 
 # Fix 5: Standardize indentation (convert tabs to spaces)
 fix_indentation() {
-        zsh_debug_echo ""
-        zsh_debug_echo "=== Fix 5: Standardizing Indentation ==="
+    zf::debug ""
+    zf::debug "=== Fix 5: Standardizing Indentation ==="
 
     local all_config_files=(
         "$ZSHRC_DIR/.zshrc.d/00-core"/*.zsh
@@ -158,8 +161,8 @@ fix_indentation() {
 
 # Fix 6: Ensure consistent error handling patterns
 fix_error_handling() {
-        zsh_debug_echo ""
-        zsh_debug_echo "=== Fix 6: Improving Error Handling Consistency ==="
+    zf::debug ""
+    zf::debug "=== Fix 6: Improving Error Handling Consistency ==="
 
     # This is more complex and requires manual 020-review, but we can add
     # basic error handling to simple commands
@@ -177,8 +180,8 @@ fix_error_handling() {
 
 # Fix 7: Add missing file descriptions
 fix_file_descriptions() {
-        zsh_debug_echo ""
-        zsh_debug_echo "=== Fix 7: Ensuring File Descriptions ==="
+    zf::debug ""
+    zf::debug "=== Fix 7: Ensuring File Descriptions ==="
 
     local files_to_check=(
         "$ZSHRC_DIR/.zshrc.d/00_06-performance-monitoring.zsh"
@@ -198,8 +201,8 @@ fix_file_descriptions() {
 
 # Fix 8: Standardize variable naming
 fix_variable_naming() {
-        zsh_debug_echo ""
-        zsh_debug_echo "=== Fix 8: Standardizing Variable Naming ==="
+    zf::debug ""
+    zf::debug "=== Fix 8: Standardizing Variable Naming ==="
 
     # Check for any lowercase environment variables
     local env_files=(
@@ -231,27 +234,27 @@ main() {
     fix_file_descriptions
     fix_variable_naming
 
-        zsh_debug_echo ""
-        zsh_debug_echo "========================================================"
-        zsh_debug_echo "Consistency Fixes Complete"
-        zsh_debug_echo "========================================================"
-        zsh_debug_echo "Total fixes applied: $FIXES_APPLIED"
-        zsh_debug_echo "Backup directory: $BACKUP_DIR"
-        zsh_debug_echo ""
+    zf::debug ""
+    zf::debug "========================================================"
+    zf::debug "Consistency Fixes Complete"
+    zf::debug "========================================================"
+    zf::debug "Total fixes applied: $FIXES_APPLIED"
+    zf::debug "Backup directory: $BACKUP_DIR"
+    zf::debug ""
 
     if [[ $FIXES_APPLIED -gt 0 ]]; then
-            zsh_debug_echo "✅ Consistency improvements applied successfully!"
-            zsh_debug_echo "🎯 Estimated consistency score improvement: +5-10%"
-            zsh_debug_echo "📊 Expected new consistency score: 95-100%"
+        zf::debug "✅ Consistency improvements applied successfully!"
+        zf::debug "🎯 Estimated consistency score improvement: +5-10%"
+        zf::debug "📊 Expected new consistency score: 95-100%"
     else
-            zsh_debug_echo "✅ Configuration already highly consistent!"
-            zsh_debug_echo "🏆 Current consistency score: 90%+"
+        zf::debug "✅ Configuration already highly consistent!"
+        zf::debug "🏆 Current consistency score: 90%+"
     fi
 
-        zsh_debug_echo ""
-        zsh_debug_echo "💡 To verify improvements, run configuration tests:"
-        zsh_debug_echo "   ./tests/test-config-validation.zsh"
-        zsh_debug_echo ""
+    zf::debug ""
+    zf::debug "💡 To verify improvements, run configuration tests:"
+    zf::debug "   ./tests/test-config-validation.zsh"
+    zf::debug ""
 }
 
 # Run main function

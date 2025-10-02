@@ -7,26 +7,26 @@ set -euo pipefail
 ZDOTDIR="${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}"
 [[ -f "${ZDOTDIR}/.zshenv" ]] && source "${ZDOTDIR}/.zshenv"
 
-# Use zsh_debug_echo from .zshenv if available
-if declare -f zsh_debug_echo >/dev/null 2>&1; then
-    zsh_debug_echo "# [test-lock-contention] Testing completion rebuild lock contention"
+# Use zf::debug from .zshenv if available
+if declare -f zf::debug >/dev/null 2>&1; then
+    zf::debug "# [test-lock-contention] Testing completion rebuild lock contention"
 fi
 
 # Test completion rebuild tools exist and are consistent
 rebuild_tool="${ZDOTDIR}/tools/rebuild-completions.zsh"
 if [[ ! -f "$rebuild_tool" ]]; then
-        zsh_debug_echo "FAIL: Rebuild completions tool not found: $rebuild_tool"
+        zf::debug "FAIL: Rebuild completions tool not found: $rebuild_tool"
     exit 1
 fi
 
 if [[ ! -x "$rebuild_tool" ]]; then
-        zsh_debug_echo "FAIL: Rebuild completions tool not executable: $rebuild_tool"
+        zf::debug "FAIL: Rebuild completions tool not executable: $rebuild_tool"
     exit 1
 fi
 
 # Test that ZSH_COMPDUMP is properly configured for lock testing
 if [[ -z "$ZSH_COMPDUMP" ]]; then
-        zsh_debug_echo "FAIL: ZSH_COMPDUMP not set in .zshenv"
+        zf::debug "FAIL: ZSH_COMPDUMP not set in .zshenv"
     exit 1
 fi
 
@@ -99,21 +99,21 @@ rm -f "$log1" "$log2" 2>/dev/null || true
 
 # Both processes should succeed (or at least one should succeed)
 if [[ $exit1 -ne 0 && $exit2 -ne 0 ]]; then
-        zsh_debug_echo "FAIL: Both concurrent rebuild processes failed"
-        zsh_debug_echo "  Process 1 exit code: $exit1"
-        zsh_debug_echo "  Process 2 exit code: $exit2"
+        zf::debug "FAIL: Both concurrent rebuild processes failed"
+        zf::debug "  Process 1 exit code: $exit1"
+        zf::debug "  Process 2 exit code: $exit2"
     exit 1
 fi
 
 # Verify that completion dump was created
 if [[ ! -f "$ZSH_COMPDUMP" ]]; then
-        zsh_debug_echo "FAIL: Completion dump not created after concurrent rebuilds"
+        zf::debug "FAIL: Completion dump not created after concurrent rebuilds"
     exit 1
 fi
 
 # Test that completion dump is valid (contains expected content)
 if ! grep -q "^#compdef" "$ZSH_COMPDUMP" 2>/dev/null; then
-        zsh_debug_echo "FAIL: Completion dump appears to be invalid (no #compdef entries)"
+        zf::debug "FAIL: Completion dump appears to be invalid (no #compdef entries)"
     exit 1
 fi
 
@@ -130,15 +130,15 @@ if command -v flock >/dev/null 2>&1; then
 
     # Exit code should be 0 (success) or specific lock-detected code
     if [[ $rebuild_with_lock_exit -gt 1 ]]; then
-            zsh_debug_echo "WARN: Rebuild script may not handle lock files gracefully (exit: $rebuild_with_lock_exit)"
+            zf::debug "WARN: Rebuild script may not handle lock files gracefully (exit: $rebuild_with_lock_exit)"
         # This is a warning, not a failure, as lock handling implementation may vary
     fi
 fi
 
-# Use zsh_debug_echo for success message
-if declare -f zsh_debug_echo >/dev/null 2>&1; then
-    zsh_debug_echo "# [test-lock-contention] Lock contention test passed"
-    zsh_debug_echo "# [test-lock-contention] Process exits: $exit1, $exit2"
+# Use zf::debug for success message
+if declare -f zf::debug >/dev/null 2>&1; then
+    zf::debug "# [test-lock-contention] Lock contention test passed"
+    zf::debug "# [test-lock-contention] Process exits: $exit1, $exit2"
 fi
 
 echo "PASS: Completion rebuild lock contention handled correctly"

@@ -1,0 +1,173 @@
+{
+  "schema_version": "1.0.0-segment-draft",
+  "generated_at_utc": "2025-10-01T00:00:00Z",
+  "host_context": {
+    "os": "macOS",
+    "zsh_version": "UNKNOWN",
+    "git_head": "UNKNOWN",
+    "baseline_widget_count": 416,
+    "_note": "Populate zsh_version & git_head dynamically if/when a capture script is implemented."
+  },
+  "capture_parameters": {
+    "method": "manual_instrumentation_stub",
+    "precision_class": "coarse",
+    "time_source": "date +%s%3N (ms granularity)",
+    "environment": {
+      "TERM": "UNKNOWN",
+      "COLORTERM": "UNKNOWN"
+    },
+    "flags": {
+      "deferred_loading": true,
+      "evalcache_active": true,
+      "zsh_defer_active": true
+    }
+  },
+  "segments": [
+    {
+      "id": "seg-010-env-bootstrap",
+      "name": "Environment Bootstrap",
+      "phase": "phase1",
+      "order": 10,
+      "status": "ok",
+      "start_ms": 0,
+      "end_ms": 45,
+      "duration_ms": 45,
+      "metrics": {
+        "exports_added": 12,
+        "path_mutations": 3,
+        "errors": 0
+      },
+      "notes": "Initial environment guards + safety toggles."
+    },
+    {
+      "id": "seg-020-plugin-framework",
+      "name": "Plugin Framework Init",
+      "phase": "phase2",
+      "order": 20,
+      "status": "ok",
+      "start_ms": 45,
+      "end_ms": 130,
+      "duration_ms": 85,
+      "metrics": {
+        "plugins_registered": 8,
+        "deferred_count": 5,
+        "cache_hits": 7,
+        "cache_misses": 1
+      },
+      "notes": "Framework shells loaded; majority of heavy plugin bodies deferred."
+    },
+    {
+      "id": "seg-030-toolchain-integration",
+      "name": "Dev Toolchains",
+      "phase": "phase3",
+      "order": 30,
+      "status": "ok",
+      "start_ms": 130,
+      "end_ms": 275,
+      "duration_ms": 145,
+      "metrics": {
+        "toolchains_detected": 4,
+        "toolchains_configured": 4,
+        "lazy_wrappers_created": 6,
+        "errors": 0
+      },
+      "notes": "Node / Go / Rust / PHP (Herd) paths & helper wrappers."
+    },
+    {
+      "id": "seg-040-productivity-layer",
+      "name": "Productivity Layer",
+      "phase": "phase4",
+      "order": 40,
+      "status": "ok",
+      "start_ms": 275,
+      "end_ms": 420,
+      "duration_ms": 145,
+      "metrics": {
+        "fzf_integrations": 3,
+        "history_backends": 1,
+        "navigation_tools": 3,
+        "abbr_packs": 2
+      },
+      "notes": "Atuin, fzf, zoxide, eza, abbreviations, history behavior."
+    },
+    {
+      "id": "seg-050-neovim-profiles",
+      "name": "Neovim Multi-Profile",
+      "phase": "phase5",
+      "order": 50,
+      "status": "ok",
+      "start_ms": 420,
+      "end_ms": 560,
+      "duration_ms": 140,
+      "metrics": {
+        "profiles_detected": 3,
+        "aliases_defined": 5
+      },
+      "notes": "nvprofile dispatcher + guarded path conditions."
+    },
+    {
+      "id": "seg-060-terminal-integration",
+      "name": "Terminal Integration",
+      "phase": "phase6",
+      "order": 60,
+      "status": "ok",
+      "start_ms": 560,
+      "end_ms": 650,
+      "duration_ms": 90,
+      "metrics": {
+        "term_flavors_supported": 5,
+        "markers_set": 4
+      },
+      "notes": "Warp / WezTerm / Ghostty / Kitty / iTerm2 evidence markers."
+    },
+    {
+      "id": "seg-070-optional-enhancements",
+      "name": "Optional Enhancements",
+      "phase": "phase7",
+      "order": 70,
+      "status": "partial",
+      "start_ms": 650,
+      "end_ms": 760,
+      "duration_ms": 110,
+      "metrics": {
+        "prompt_impl": "starship",
+        "prompt_init_ms": 72,
+        "autopair_variant": "simple|hlissner|none",
+        "autopair_widgets": 3
+      },
+      "notes": "Autopair behavioral harness & prompt instrumentation; phase still partial."
+    }
+  ],
+  "aggregate": {
+    "total_duration_ms": 760,
+    "segment_count": 7,
+    "ok_segments": 6,
+    "partial_segments": 1,
+    "failed_segments": 0,
+    "earliest_start_ms": 0,
+    "latest_end_ms": 760,
+    "widget_baseline": 416,
+    "_interpretation": "All mandatory phases complete; optional enhancements still in progress."
+  },
+  "integrity": {
+    "capture_method": "prototype",
+    "checksum": "NOT_COMPUTED",
+    "tamper_evident": false,
+    "_note": "When formalized, include a hash over the ordered segment list."
+  },
+  "guidance": {
+    "_usage": "Pass this file to the aggregator with --segment-file to embed under summary.instrumentation.segments.",
+    "_next_steps": [
+      "Replace placeholder timings with measured values (ms since shell start).",
+      "Add dynamic extraction for prompt init ms and cache metrics.",
+      "Integrate checksum calculation (e.g., sha256 of canonical JSON).",
+      "Elevate precision_class to 'fine' after per-file instrumentation.",
+      "Expand metrics for deferred load events vs immediate."
+    ],
+    "_cautions": [
+      "Do not treat sample timings as performance regressions.",
+      "Update widget_baseline if global baseline changes (currently 416).",
+      "Keep schema_version stable or bump semver on structural changes."
+    ]
+  }
+}

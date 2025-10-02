@@ -1,0 +1,466 @@
+# ==============================================================================
+# CRITICAL STARTUP STANZA - MUST BE FIRST
+# Sets essential environment variables before any other shell initialization
+# ==============================================================================
+# RULE (Path Resolution):
+#   Avoid using the brittle form `${0:A:h}` directly inside any redesign or plugin
+#   module (especially when code may be compiled / cached by a plugin manager).
+#   Instead, use the helper `zf::script_dir` (defined later in this file) or,
+#   for very early bootstrap contexts, `resolve_script_dir` with an optional
+#   path argument. These helpers are resilient to symlinks and compilation
+#   contexts and defer to `${(%):-%N}` rather than `$0` where appropriate.
+#   Migration Plan:
+#     - New code MUST use `zf::script_dir` or `resolve_script_dir`.
+#     - Existing `${0:A:h}` usages should be incrementally refactored.
+# ==============================================================================
+
+# Minimal debug logger used during early startup
+zf::debug() {
+  # Emit only when debugging is enabled; send human-visible output to stderr.
+  # Always append to debug log when both ZSH_DEBUG=1 and ZSH_DEBUG_LOG are set.
+  if [[ "${ZSH_DEBUG:-0}" == "1" ]]; then
+    # stderr for separation from command output pipelines
+    printf '%s\n' "$@" 1>&2
+    if [[ -n "${ZSH_DEBUG_LOG:-}" ]]; then
+      print -r -- "$@" >> "$ZSH_DEBUG_LOG" 2>/dev/null || true
+    fi
+  fi
+}
+# Back-compat wrapper
+# Removed legacy zsh_debug_echo wrapper; use zf::debug directly
+
+# EMERGENCY IFS PROTECTION - Prevent corruption during startup
+if [[ "$IFS" != $' \t\n' ]]; then
+    unset IFS
+    IFS=$' \t\n'
+    export IFS
+fi
+
+# Emergency PATH fix if corrupted with literal $sep
+if [[ "$PATH" == *'$sep'* ]]; then
+    PATH="${PATH//\$sep/:}"
+    export PATH
+fi
+
+# Minimal safe PATH augmentation (append-preserving; do not clobber user/front-loaded entries)
+# If PATH is empty (very constrained subshell), seed it; otherwise append any missing core dirs.
+if [[ -z "${PATH:-}" ]]; then
+    PATH="/opt/homebrew/bin:/run/current-system/sw/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
+else
+    for __core_dir in /opt/homebrew/bin /run/current-system/sw/bin /usr/local/bin /usr/bin /bin /usr/local/sbin /usr/sbin /sbin; do
+        [ -d "$__core_dir" ] || continue
+        case ":$PATH:" in
+            *:"$__core_dir":*) ;;        # already present (preserve first occurrence)
+            *) PATH="${PATH}:$__core_dir" ;;
+        esac
+    done
+    unset __core_dir
+fi
+export PATH
+
+# XDG Base Directory Specification (set early so other code can rely on them)
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-${HOME}/.cache}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}"
+export XDG_STATE_HOME="${XDG_STATE_HOME:-${HOME}/.local/state}"
+export XDG_BIN_HOME="${XDG_BIN_HOME:-${HOME}/.local/bin}"
+mkdir -p "${XDG_CONFIG_HOME}" "${XDG_CACHE_HOME}" "${XDG_DATA_HOME}" "${XDG_STATE_HOME}" "${XDG_BIN_HOME}" 2>/dev/null || true
+
+# Prefer repo path if available; otherwise default to XDG
+if [[ -z "${ZDOTDIR:-}" ]]; then
+  if [[ -d "${HOME}/dotfiles/dot-config/zsh" ]]; then
+    export ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
+  else
+    export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
+  fi
+fi
+
+RIPGREP_CONFIG_PATH="${RIPGREP_CONFIG_PATH:-${XDG_CONFIG_HOME}/ripgrep/ripgreprc}"
+
+# Allow a localized override file to run early. This file may set ZDOTDIR
+# or other site/user-specific values. It's safe to source here because it is
+# expected to be conservative and provide defaults only.
+_local_zshenv_local="${XDG_CONFIG_HOME:-${HOME}/.config}/zsh/.zshenv.local"
+if [[ -f "${_local_zshenv_local}" ]]; then
+    # shellcheck disable=SC1090
+    source "${_local_zshenv_local}"
+fi
+unset _local_zshenv_local
+
+# Prefer XDG user bin early in PATH if present
+[[ -d ${XDG_BIN_HOME} ]] && PATH="${XDG_BIN_HOME}:${PATH}"
+export PATH
+
+# Set ZDOTDIR to an XDG-friendly localized default but do not overwrite
+
+# ------------------------------------------------------------------------------
+# Robustly canonicalize ZDOTDIR (resolve symlinks) WITHOUT breaking on systems
+# that lack `realpath`. We only canonicalize if ZDOTDIR is set and points to a
+# directory so we don't accidentally touch unrelated values.
+# ------------------------------------------------------------------------------
+if [[ -n "${ZDOTDIR:-}" && -d "${ZDOTDIR}" ]]; then
+    if command -v realpath >/dev/null 2>&1; then
+        # Use realpath when available (portable and resolves symlinks)
+        ZDOTDIR="$(realpath "${ZDOTDIR}")"
+    else
+        # Fallback: attempt to cd into dir and print the physical path (pwd -P)
+        # If that fails for any reason, leave ZDOTDIR as-is.
+        _zd_prev_pwd=""
+        _zd_prev_pwd="$PWD" 2>/dev/null || true
+        if cd "${ZDOTDIR}" 2>/dev/null; then
+            ZDOTDIR="$(pwd -P 2>/dev/null || pwd)"
+            # return to previous working directory
+            cd "$_zd_prev_pwd" 2>/dev/null || true
+        fi
+        unset _zd_prev_pwd
+    fi
+fi
+
+# Create common cache/log dirs (do not fail startup if mkdir fails)
+# Recreate ensured dirs now anchored to canonical ZDOTDIR
+export ZSH_CACHE_DIR="${XDG_CACHE_HOME}/zsh"
+export ZSH_LOG_DIR="${ZDOTDIR}/logs"
+mkdir -p "$ZSH_CACHE_DIR" "$ZSH_LOG_DIR" 2>/dev/null || true
+
+# Provide a short session id for debug/log filenames
+export ZSH_SESSION_ID="${ZSH_SESSION_ID:-$$-$(date +%s 2>/dev/null || echo 'unknown')}"
+export ZSH_DEBUG_LOG="${ZSH_LOG_DIR}/${ZSH_SESSION_ID}-zsh-debug.log"
+
+# Basic optional debug flag
+export ZSH_DEBUG="${ZSH_DEBUG:-0}"
+
+# ---------------------------------------------------------------------------
+# Centralized Debug Policy Helper
+#   zf::apply_debug_policy
+# Purpose:
+#   - Normalize ZSH_DEBUG (only "1" is treated as enabled)
+#   - Control the generic DEBUG variable (unset unless explicitly allowed)
+#   - Set or clear PS4 for xtrace readability
+#   - Enforce/disallow xtrace unless user opts in via ZSH_FORCE_XTRACE=1
+#   - Provide a single place to adjust future debug heuristics
+# Environment knobs:
+#   ZSH_DEBUG=1           -> enable internal debug (logging via zf::debug)
+#   ZSH_FORCE_XTRACE=1    -> allow inherited xtrace / do not disable if on
+#   ZSH_DEBUG_KEEP_DEBUG=1-> keep $DEBUG exported when ZSH_DEBUG=1
+#   ZSH_DEBUG_PS4_FORMAT  -> override default PS4 format
+# ---------------------------------------------------------------------------
+if ! typeset -f zf::apply_debug_policy >/dev/null 2>&1; then
+zf::apply_debug_policy() {
+  emulate -L zsh
+  # Capture original state only first time
+  if [[ -z "${ZSH_DEBUG_POLICY_SNAPSHOTTED:-}" ]]; then
+    export ZSH_DEBUG_ORIG_DEBUG="${DEBUG-}"
+    export ZSH_DEBUG_ORIG_ZSH_DEBUG="${ZSH_DEBUG-}"
+    export ZSH_DEBUG_ORIG_PS4="${PS4-}"
+    export ZSH_DEBUG_ORIG_XTRACE="${options[xtrace]}"
+    export ZSH_DEBUG_POLICY_SNAPSHOTTED=1
+  fi
+  local debug_enabled=0
+  [[ "${ZSH_DEBUG:-0}" == "1" ]] && debug_enabled=1 || debug_enabled=0
+
+  # Normalize ZSH_DEBUG to 0/1 only
+  if [[ $debug_enabled -eq 1 ]]; then
+    export ZSH_DEBUG=1
+  else
+    export ZSH_DEBUG=0
+  fi
+
+  # Generic DEBUG var control: unset unless explicitly allowed during active debug
+  if [[ $debug_enabled -eq 1 && "${ZSH_DEBUG_KEEP_DEBUG:-0}" == "1" ]]; then
+    : # retain existing DEBUG
+  else
+    if [[ -n "${DEBUG:-}" ]]; then
+      unset DEBUG 2>/dev/null || true
+    fi
+  fi
+
+  # PS4 formatting for any xtrace sessions (user forced only)
+  local default_ps4='+TRACE:%N:%i> '
+  if [[ $debug_enabled -eq 1 ]]; then
+    export PS4="${ZSH_DEBUG_PS4_FORMAT:-$default_ps4}"
+  else
+    # Do not leave potentially verbose PS4 lingering if xtrace later enabled externally
+    unset PS4 2>/dev/null || true
+  fi
+
+  # Xtrace suppression unless explicitly forced
+  if [[ "${options[xtrace]}" == "on" && "${ZSH_FORCE_XTRACE:-0}" != "1" ]]; then
+    set +x 2>/dev/null || true
+  fi
+
+  # Provide a marker variable for other modules
+  export ZSH_DEBUG_POLICY_APPLIED=1
+}
+fi
+
+# Teardown / reset debug policy: restore snapshot (best-effort)
+if ! typeset -f zf::reset_debug_policy >/dev/null 2>&1; then
+zf::reset_debug_policy() {
+  emulate -L zsh
+  # Only act if snapshot exists
+  [[ -n "${ZSH_DEBUG_POLICY_SNAPSHOTTED:-}" ]] || return 0
+
+  # Restore DEBUG (respect emptiness)
+  if [[ -n "${ZSH_DEBUG_ORIG_DEBUG+x}" ]]; then
+    if [[ -n "${ZSH_DEBUG_ORIG_DEBUG}" ]]; then
+      export DEBUG="${ZSH_DEBUG_ORIG_DEBUG}"
+    else
+      unset DEBUG 2>/dev/null || true
+    fi
+  fi
+
+  # Restore ZSH_DEBUG exactly
+  if [[ -n "${ZSH_DEBUG_ORIG_ZSH_DEBUG+x}" ]]; then
+    export ZSH_DEBUG="${ZSH_DEBUG_ORIG_ZSH_DEBUG}"
+  fi
+
+  # Restore PS4 (if originally set) or unset if it was absent
+  if [[ -n "${ZSH_DEBUG_ORIG_PS4+x}" ]]; then
+    if [[ -n "${ZSH_DEBUG_ORIG_PS4}" ]]; then
+      export PS4="${ZSH_DEBUG_ORIG_PS4}"
+    else
+      unset PS4 2>/dev/null || true
+    fi
+  fi
+
+  # Restore xtrace state if it differs now and user didn't force override
+  if [[ -n "${ZSH_DEBUG_ORIG_XTRACE+x}" ]]; then
+    local current="${options[xtrace]}"
+    if [[ "${ZSH_DEBUG_ORIG_XTRACE}" == "on" && "$current" == "off" ]]; then
+      [[ "${ZSH_FORCE_XTRACE:-0}" == "1" ]] && set -x 2>/dev/null || true
+    elif [[ "${ZSH_DEBUG_ORIG_XTRACE}" == "off" && "$current" == "on" ]]; then
+      set +x 2>/dev/null || true
+    fi
+  fi
+
+  export ZSH_DEBUG_POLICY_RESET=1
+}
+fi
+
+# Apply the debug policy early (before plugins or other modules)
+zf::apply_debug_policy
+
+# Performance monitoring flag - set early to prevent module initialization errors
+export _PERFORMANCE_MONITORING_LOADED="${_PERFORMANCE_MONITORING_LOADED:-1}"
+
+# Set BREW_PREFIX early for module compatibility
+if [[ -z "${BREW_PREFIX:-}" ]]; then
+    if [[ -d "/opt/homebrew" ]]; then
+        export BREW_PREFIX="/opt/homebrew"
+    elif [[ -d "/usr/local" ]]; then
+        export BREW_PREFIX="/usr/local"
+    fi
+fi
+
+# Set DESK_ENV to empty to prevent undefined variable errors
+export DESK_ENV="${DESK_ENV:-}"
+
+# Set QUICKSTART_KIT_REFRESH_IN_DAYS to prevent undefined variable errors
+typeset -gi QUICKSTART_KIT_REFRESH_IN_DAYS=${QUICKSTART_KIT_REFRESH_IN_DAYS:-7}
+
+# ==============================================================================
+# REDESIGN CONFIGURATION (ALWAYS ACTIVE VIA SYMLINKS)
+# ==============================================================================
+# Note: The redesign configuration is now always active since .zshrc.pre-plugins.d/
+# and .zshrc.d/ are symlinked to their respective REDESIGN directories.
+# The old ZSH_ENABLE_*PLUGIN_REDESIGN flags are no longer used.
+
+# ==============================================================================
+# SPLASH SCREEN AND VISUAL CONTROL OPTIONS
+# ==============================================================================
+# Visual startup and user interface control flags with customizable defaults
+# Default: All visual features disabled (0) for minimal startup by default
+# Users can enable features by setting these to 1 in .zshenv.local or environment
+
+# Splash screen control
+# Note: ZSH_DISABLE_SPLASH=1 disables splash entirely
+# When ZSH_DISABLE_SPLASH=0 (default), splash displays with all visual elements
+# Individual visual controls only disable specific elements when explicitly set to 1
+export ZSH_DISABLE_SPLASH="${ZSH_DISABLE_SPLASH:-0}"
+export ZSH_ENABLE_HEALTH_CHECK="${ZSH_ENABLE_HEALTH_CHECK:-0}"
+export ZSH_DISABLE_TIPS="${ZSH_DISABLE_TIPS:-0}"
+export ZSH_MINIMAL="${ZSH_MINIMAL:-0}"
+export FORCE_SPLASH="${FORCE_SPLASH:-1}"
+
+# Visual elements control
+# Note: 0 = show by default when splash is enabled, 1 = explicitly disable
+export ZSH_DISABLE_FASTFETCH="${ZSH_DISABLE_FASTFETCH:-0}"
+export ZSH_DISABLE_COLORSCRIPT="${ZSH_DISABLE_COLORSCRIPT:-0}"
+export ZSH_DISABLE_LOLCAT="${ZSH_DISABLE_LOLCAT:-0}"
+
+# Performance and logging control
+export ZF_ASSERT_EXIT="${ZF_ASSERT_EXIT:-0}"
+export ZF_WITH_TIMING_EMIT="${ZF_WITH_TIMING_EMIT:-auto}"
+export ZSH_PERF_TRACK="${ZSH_PERF_TRACK:-0}"
+export PERF_SEGMENT_LOG="${PERF_SEGMENT_LOG:-}"
+export PERF_SEGMENT_TRACE="${PERF_SEGMENT_TRACE:-0}"
+
+# Security and integrity control
+export ZSH_SEC_DISABLE_AUTO_DEDUP="${ZSH_SEC_DISABLE_AUTO_DEDUP:-0}"
+export ZSH_INTERACTIVE_OPTIONS_STRICT="${ZSH_INTERACTIVE_OPTIONS_STRICT:-0}"
+
+# Plugin and integration control
+export ZSH_AUTOSUGGEST_SSH_DISABLE="${ZSH_AUTOSUGGEST_SSH_DISABLE:-0}"
+export ZSH_SUPPRESS_WELCOME="${ZSH_SUPPRESS_WELCOME:-0}"
+export ZSH_ENABLE_ABBR="${ZSH_ENABLE_ABBR:-1}"
+export ZSH_ENABLE_NVM_PLUGINS="${ZSH_ENABLE_NVM_PLUGINS:-1}"
+export ZSH_NODE_LAZY="${ZSH_NODE_LAZY:-1}"
+
+# Development and performance control
+export PERF_CAPTURE_FAST="${PERF_CAPTURE_FAST:-0}"
+export PATH_CLEANUP="${PATH_CLEANUP:-1}"
+export DEBUG_ZSH_REDESIGN="${DEBUG_ZSH_REDESIGN:-0}"
+# BASH_COMPAT removed - was causing compatibility warnings
+export ZQS_COMPAT="${ZQS_COMPAT:-0}"
+
+# Normalize all boolean values: anything that's not "1" becomes "0"
+for _flag_var in \
+    DEBUG_ZSH_REDESIGN \
+    ZF_ASSERT_EXIT \
+    ZQS_COMPAT \
+    ZSH_ENABLE_ABBR \
+    ZSH_AUTOSUGGEST_SSH_DISABLE \
+    ZSH_DISABLE_COLORSCRIPT \
+    ZSH_DISABLE_FASTFETCH \
+    ZSH_ENABLE_HEALTH_CHECK \
+    ZSH_INTERACTIVE_OPTIONS_STRICT \
+    ZSH_DISABLE_LOLCAT \
+    ZSH_MINIMAL \
+    ZSH_NODE_LAZY \
+    ZSH_ENABLE_NVM_PLUGINS \
+    PATH_CLEANUP \
+    ZSH_PERF_TRACK \
+    PERF_CAPTURE_FAST \
+    PERF_SEGMENT_TRACE \
+    ZSH_SEC_DISABLE_AUTO_DEDUP \
+    FORCE_SPLASH \
+    ZSH_DISABLE_SPLASH \
+    ZSH_SUPPRESS_WELCOME \
+    DISABLE_TIPS \
+    ; do
+    if [[ "${(P)_flag_var}" != "1" ]]; then
+        export "$_flag_var"="0"
+    fi
+done
+unset _flag_var
+
+# Set performance log path if performance tracking is enabled
+if [[ "$ZSH_PERF_TRACK" == "1" && -z "$PERF_SEGMENT_LOG" ]]; then
+    export PERF_SEGMENT_LOG="${ZSH_LOG_DIR}/perf-segments-${ZSH_SESSION_ID}.log"
+fi
+
+# Debug output for flag status
+if [[ "${ZSH_DEBUG:-0}" == "1" ]]; then
+  zf::debug "# [zshenv] ZSH_DISABLE_SPLASH=$ZSH_DISABLE_SPLASH"
+  zf::debug "# [zshenv] ZSH_ENABLE_HEALTH_CHECK=$ZSH_ENABLE_HEALTH_CHECK"
+  zf::debug "# [zshenv] ZSH_PERF_TRACK=$ZSH_PERF_TRACK"
+  zf::debug "# [zshenv] PERF_SEGMENT_LOG=$PERF_SEGMENT_LOG"
+fi
+
+# Composer home following XDG with safe fallback
+typeset -gx COMPOSER_HOME="${COMPOSER_HOME:-${XDG_DATA_HOME:-${HOME}/.local/share}/composer}"
+
+# Ensure directory exists with safe perms
+[[ -d $COMPOSER_HOME ]] || mkdir -p "$COMPOSER_HOME"
+
+# Add Composer vendor/bin to PATH without reducing baseline
+[[ -d "$COMPOSER_HOME/vendor/bin" ]] && zf::path_prepend "$COMPOSER_HOME/vendor/bin"
+
+# After PATH is fully defined, capture a snapshot and set an early sentinel
+typeset -gx ZQS_BASELINE_PATH_SNAPSHOT="$PATH"
+typeset -gx ZQS_EARLY_PATH_BOOTSTRAPPED=1
+# Keep a normalized array view for later merge/dedupe operations
+typeset -ga ZQS_BASELINE_path
+ZQS_BASELINE_path=("${(s.:.)PATH}")
+
+# Safe defaults for prompt variables to prevent nounset errors
+typeset -g RPS1="${RPS1-}"
+typeset -g RPS2="${RPS2-}"
+typeset -g RPS3="${RPS3-}"  # Referenced by Oh My Zsh git plugin async functions
+typeset -g RPS4="${RPS4-}"
+typeset -g RPS5="${RPS5-}"  # Additional prompt variables for completeness
+typeset -g PROMPT="${PROMPT-}"
+typeset -g RPROMPT="${RPROMPT-}"
+typeset -g PS1="${PS1-%# }"
+typeset -g PS2="${PS2-%_ }"
+typeset -g PS3="${PS3-?# }"
+typeset -g PS4="${PS4-+%N:%i> }"
+typeset -g vi_mode_in_opts="${vi_mode_in_opts-0}"
+
+# Guard oh-my-zsh root variable so zgenom-oh-my-zsh can reference $ZSH under set -u
+if ! (( ${+ZSH} )); then
+  typeset -g ZSH=""
+fi
+
+# Guard oh-my-zsh custom directory variable ($ZSH_CUSTOM) early so numerous
+# upstream oh-my-zsh scripts that reference it under nounset do not explode.
+# If ZSH is empty (because oh-my-zsh not yet cloned) point custom dir at cache.
+if ! (( ${+ZSH_CUSTOM} )); then
+  if [[ -n ${ZSH:-} ]]; then
+    typeset -g ZSH_CUSTOM="${ZSH}/custom"
+  else
+    typeset -g ZSH_CUSTOM="${ZSH_CACHE_DIR}/ohmyzsh-custom"
+  fi
+fi
+
+# Ensure the custom dir exists lazily (do not fail if cannot create)
+mkdir -p -- "$ZSH_CUSTOM" 2>/dev/null || true
+
+# ---------------------------------------------------------------------------
+# Oh My Zsh frequently references variables such as DISABLE_UPDATE_PROMPT and
+# the 'plugins' array before user config sets them. Under 'set -u' this causes
+# immediate aborts. Seed them to safe defaults early.
+# ---------------------------------------------------------------------------
+if ! (( ${+DISABLE_UPDATE_PROMPT} )); then typeset -g DISABLE_UPDATE_PROMPT=0; fi
+if ! (( ${+DISABLE_AUTO_UPDATE}   )); then typeset -g DISABLE_AUTO_UPDATE=1; fi
+if ! (( ${+ENABLE_CORRECTION}     )); then typeset -g ENABLE_CORRECTION=0; fi
+if ! (( ${+COMPLETION_WAITING_DOTS} )); then typeset -g COMPLETION_WAITING_DOTS=0; fi
+if ! (( ${+plugins} )); then typeset -ga plugins; plugins=(); fi
+if ! (( ${+TERM_PROGRAM} )); then typeset -g TERM_PROGRAM="unknown"; fi
+if ! (( ${+ZSH_COMPDUMP} )); then typeset -g ZSH_COMPDUMP="${ZSH_CACHE_DIR}/.zcompdump"; fi
+if ! (( ${+CASE_SENSITIVE} )); then typeset -g CASE_SENSITIVE=0; fi
+if ! (( ${+DISABLE_MAGIC_FUNCTIONS} )); then typeset -g DISABLE_MAGIC_FUNCTIONS=0; fi
+if ! (( ${+INSIDE_EMACS} )); then typeset -g INSIDE_EMACS=""; fi
+if ! (( ${+DISABLE_LS_COLORS} )); then typeset -g DISABLE_LS_COLORS=0; fi
+if ! (( ${+ZSH_THEME} )); then typeset -g ZSH_THEME=""; fi
+
+# Ensure nounset is off very early for plugin safety
+unsetopt UNSET 2>/dev/null || true
+
+## ---------------------------------------------------------------------------
+## Starship & prompt instrumentation guard block
+## Goal: Provide unconditional, nounset-safe first declarations for all custom
+## STARSHIP_CMD_* variables that our prompt or hooks may reference. Some third-
+## party plugins (or user experimentation) may enable `set -u` mid-startup or
+## temporarily `unset` these symbols; declaring them here (earliest practical
+## point) prevents cascading "parameter not set" errors during precmd/preexec.
+## ---------------------------------------------------------------------------
+
+# Core status (integer)
+if ! (( ${+STARSHIP_CMD_STATUS} )); then typeset -gi STARSHIP_CMD_STATUS=0; fi
+
+# Additional timing / reason / job context (integers)
+if ! (( ${+STARSHIP_DURATION_MS}       )); then typeset -gi STARSHIP_DURATION_MS=0; fi
+if ! (( ${+STARSHIP_CMD_EXIT_REASON}   )); then typeset -gi STARSHIP_CMD_EXIT_REASON=0; fi
+if ! (( ${+STARSHIP_CMD_START_TIME}    )); then typeset -gi STARSHIP_CMD_START_TIME=0; fi
+if ! (( ${+STARSHIP_CMD_END_TIME}      )); then typeset -gi STARSHIP_CMD_END_TIME=0; fi
+if ! (( ${+STARSHIP_CMD_BG}            )); then typeset -gi STARSHIP_CMD_BG=0; fi
+if ! (( ${+STARSHIP_CMD_JOBS}          )); then typeset -gi STARSHIP_CMD_JOBS=0; fi
+if ! (( ${+STARSHIP_CMD_PIPESTATUS}    )); then typeset -gi STARSHIP_CMD_PIPESTATUS=0; fi
+if ! (( ${+STARSHIP_CMD_SIG}           )); then typeset -gi STARSHIP_CMD_SIG=0; fi
+if ! (( ${+STARSHIP_CMD_ERR}           )); then typeset -gi STARSHIP_CMD_ERR=0; fi
+if ! (( ${+STARSHIP_CMD_ERRNO}         )); then typeset -gi STARSHIP_CMD_ERRNO=0; fi
+if ! (( ${+STARSHIP_CMD_ERRCODE}       )); then typeset -gi STARSHIP_CMD_ERRCODE=0; fi
+if ! (( ${+STARSHIP_CMD_ERRLINE}       )); then typeset -gi STARSHIP_CMD_ERRLINE=0; fi
+
+# String/context fields
+if ! (( ${+STARSHIP_CMD_ERRMSG}        )); then typeset -g STARSHIP_CMD_ERRMSG=""; fi
+if ! (( ${+STARSHIP_CMD_ERRCTX}        )); then typeset -g STARSHIP_CMD_ERRCTX=""; fi
+if ! (( ${+STARSHIP_CMD_ERRFUNC}       )); then typeset -g STARSHIP_CMD_ERRFUNC=""; fi
+if ! (( ${+STARSHIP_CMD_ERRFILE}       )); then typeset -g STARSHIP_CMD_ERRFILE=""; fi
+
+export STARSHIP_CMD_STATUS
+
+# STARSHIP_PIPE_STATUS (from upstream starship usage) is usually an array; we
+# keep a separate guard but don't export. Only declare if truly unset to avoid
+# clobbering caller-provided type.

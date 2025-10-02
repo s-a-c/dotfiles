@@ -1,4 +1,4 @@
-#!/opt/homebrew/bin/zsh
+#!/usr/bin/env zsh
 # Plugin Dependency Cache - Auto-generated
 # Do not edit manually
 

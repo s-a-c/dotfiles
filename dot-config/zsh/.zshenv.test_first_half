@@ -1,0 +1,247 @@
+#!/usr/bin/env zsh
+# Testing first half of .zshenv.full.backup (lines 1-480)
+# This will help us identify which section causes hangs
+
+# Start with minimal working base
+export ZDOTDIR="${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}"
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+
+# Now add the first half of the full .zshenv (lines 17-480)
+# This includes: debug functions, PATH setup, XDG setup, ZDOTDIR setup, debug policy, flags, etc.
+
+# Minimal debug logger used during early startup
+zf::debug() {
+  # Emit only when debugging is enabled; send human-visible output to stderr.
+  # Always append to debug log when both ZSH_DEBUG=1 and ZSH_DEBUG_LOG are set.
+  if [[ "${ZSH_DEBUG:-0}" == "1" ]]; then
+    # stderr for separation from command output pipelines
+    printf '%s\n' "$@" 1>&2
+    if [[ -n "${ZSH_DEBUG_LOG:-}" ]]; then
+      print -r -- "$@" >> "$ZSH_DEBUG_LOG" 2>/dev/null || true
+    fi
+  fi
+}
+
+# Back-compat wrapper
+# Removed legacy zsh_debug_echo wrapper; use zf::debug directly
+
+# EMERGENCY IFS PROTECTION - Prevent corruption during startup
+if [[ "$IFS" != $' \t\n' ]]; then
+    unset IFS
+fi
+
+# Emergency PATH fix if corrupted with literal $sep
+if [[ "$PATH" == *'$sep'* ]]; then
+    PATH="${PATH//\$sep/:}"
+fi
+
+# Minimal safe PATH augmentation (append-preserving; do not clobber user/front-loaded entries)
+# If PATH is empty (very constrained subshell), seed it; otherwise append any missing core dirs.
+if [[ -z "${PATH:-}" ]]; then
+    PATH="/opt/homebrew/bin:/run/current-system/sw/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
+else
+    for __core_dir in /opt/homebrew/bin /run/current-system/sw/bin /usr/local/bin /usr/bin /bin /usr/local/sbin /usr/sbin /sbin; do
+        [ -d "$__core_dir" ] || continue
+        case ":$PATH:" in
+            *:"$__core_dir":*) ;;        # already present (preserve first occurrence)
+            *) PATH="$PATH:$__core_dir" ;;
+        esac
+    done
+    unset __core_dir
+fi
+export PATH
+
+# XDG Base Directory Specification (set early so other code can rely on them)
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-${HOME}/.cache}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}"
+export XDG_STATE_HOME="${XDG_STATE_HOME:-${HOME}/.local/state}"
+export XDG_BIN_HOME="${XDG_BIN_HOME:-${HOME}/.local/bin}"
+mkdir -p "${XDG_CONFIG_HOME}" "${XDG_CACHE_HOME}" "${XDG_DATA_HOME}" "${XDG_STATE_HOME}" "${XDG_BIN_HOME}" 2>/dev/null || true
+
+# Prefer repo path if available; otherwise default to XDG
+if [[ -z "${ZDOTDIR:-}" ]]; then
+  if [[ -d "${HOME}/dotfiles/dot-config/zsh" ]]; then
+    export ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
+  else
+    export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
+  fi
+fi
+
+# Allow a localized override file to run early. This file may set ZDOTDIR
+# or other site/user-specific values. It's safe to source here because it is
+# expected to be conservative and provide defaults only.
+_local_zshenv_local="${XDG_CONFIG_HOME:-${HOME}/.config}/zsh/.zshenv.local"
+if [[ -f "${_local_zshenv_local}" ]]; then
+    # shellcheck disable=SC1090
+    source "${_local_zshenv_local}"
+fi
+unset _local_zshenv_local
+
+# Prefer XDG user bin early in PATH if present
+[[ -d ${XDG_BIN_HOME} ]] && PATH="${XDG_BIN_HOME}:${PATH}"
+export PATH
+
+# Set ZDOTDIR to an XDG-friendly localized default but do not overwrite
+
+# ------------------------------------------------------------------------------
+# Robustly canonicalize ZDOTDIR (resolve symlinks) WITHOUT breaking on systems
+# that lack `realpath`. We only canonicalize if ZDOTDIR is set and points to a
+# directory so we don't accidentally touch unrelated values.
+# ------------------------------------------------------------------------------
+if [[ -n "${ZDOTDIR:-}" && -d "${ZDOTDIR}" ]]; then
+    if command -v realpath >/dev/null 2>&1; then
+        # Use realpath when available (portable and resolves symlinks)
+        ZDOTDIR="$(realpath "${ZDOTDIR}" 2>/dev/null || echo "${ZDOTDIR}")"
+    else
+        # Fallback: attempt to cd into dir and print the physical path (pwd -P)
+        # If that fails for any reason, leave ZDOTDIR as-is.
+        _zd_prev_pwd=""
+        _zd_prev_pwd="$PWD" 2>/dev/null || true
+        if cd "${ZDOTDIR}" 2>/dev/null; then
+            ZDOTDIR="$(pwd -P 2>/dev/null || pwd)"
+            cd "${_zd_prev_pwd}" 2>/dev/null || true
+        fi
+        unset _zd_prev_pwd
+    fi
+fi
+export ZDOTDIR
+
+# Create common cache/log dirs (do not fail startup if mkdir fails)
+# Recreate ensured dirs now anchored to canonical ZDOTDIR
+export ZSH_CACHE_DIR="${XDG_CACHE_HOME}/zsh"
+export ZSH_LOG_DIR="${ZDOTDIR}/logs"
+mkdir -p "$ZSH_CACHE_DIR" "$ZSH_LOG_DIR" 2>/dev/null || true
+
+# Provide a short session id for debug/log filenames
+export ZSH_SESSION_ID="${ZSH_SESSION_ID:-$$-$(date +%s 2>/dev/null || echo 'unknown')}"
+export ZSH_DEBUG_LOG="${ZSH_LOG_DIR}/${ZSH_SESSION_ID}-zsh-debug.log"
+
+# Basic optional debug flag
+export ZSH_DEBUG="${ZSH_DEBUG:-0}"
+
+# ---------------------------------------------------------------------------
+# Centralized Debug Policy Helper
+#   zf::apply_debug_policy
+# Purpose:
+#   - Normalize ZSH_DEBUG (only "1" is treated as enabled)
+#   - Control the generic DEBUG variable (unset unless explicitly allowed)
+#   - Set or clear PS4 for xtrace readability
+#   - Enforce/disallow xtrace unless user opts in via ZSH_FORCE_XTRACE=1
+#   - Provide a single place to adjust future debug heuristics
+# Environment knobs:
+#   ZSH_DEBUG=1           -> enable internal debug (logging via zf::debug)
+#   ZSH_FORCE_XTRACE=1    -> allow inherited xtrace / do not disable if on
+#   ZSH_DEBUG_KEEP_DEBUG=1-> keep $DEBUG exported when ZSH_DEBUG=1
+#   ZSH_DEBUG_PS4_FORMAT  -> override default PS4 format
+# ---------------------------------------------------------------------------
+if ! typeset -f zf::apply_debug_policy >/dev/null 2>&1; then
+zf::apply_debug_policy() {
+  emulate -L zsh
+  # Capture original state only first time
+  if [[ -z "${ZSH_DEBUG_POLICY_SNAPSHOTTED:-}" ]]; then
+    export ZSH_DEBUG_ORIG_DEBUG="${DEBUG-}"
+    export ZSH_DEBUG_ORIG_ZSH_DEBUG="${ZSH_DEBUG-}"
+    export ZSH_DEBUG_ORIG_PS4="${PS4-}"
+    export ZSH_DEBUG_ORIG_XTRACE="${options[xtrace]}"
+    export ZSH_DEBUG_POLICY_SNAPSHOTTED=1
+  fi
+  local debug_enabled=0
+  [[ "${ZSH_DEBUG:-0}" == "1" ]] && debug_enabled=1 || debug_enabled=0
+
+  # Normalize ZSH_DEBUG to 0/1 only
+  if [[ $debug_enabled -eq 1 ]]; then
+    export ZSH_DEBUG=1
+  else
+    export ZSH_DEBUG=0
+  fi
+
+  # Generic DEBUG var control: unset unless explicitly allowed during active debug
+  if [[ $debug_enabled -eq 1 && "${ZSH_DEBUG_KEEP_DEBUG:-0}" == "1" ]]; then
+    : # retain existing DEBUG
+  else
+    if [[ -n "${DEBUG:-}" ]]; then
+      unset DEBUG 2>/dev/null || true
+    fi
+  fi
+
+  # PS4 formatting for any xtrace sessions (user forced only)
+  local default_ps4='+TRACE:%N:%i> '
+  if [[ $debug_enabled -eq 1 ]]; then
+    export PS4="${ZSH_DEBUG_PS4_FORMAT:-$default_ps4}"
+  else
+    # Do not leave potentially verbose PS4 lingering if xtrace later enabled externally
+    unset PS4 2>/dev/null || true
+  fi
+
+  # Xtrace suppression unless explicitly forced
+  if [[ "${options[xtrace]}" == "on" && "${ZSH_FORCE_XTRACE:-0}" != "1" ]]; then
+    set +x 2>/dev/null || true
+  fi
+
+  # Provide a marker variable for other modules
+  export ZSH_DEBUG_POLICY_APPLIED=1
+}
+fi
+
+# Apply the debug policy early (before plugins or other modules)
+zf::apply_debug_policy
+
+# Performance monitoring flag - set early to prevent module initialization errors
+export _PERFORMANCE_MONITORING_LOADED="${_PERFORMANCE_MONITORING_LOADED:-1}"
+
+# Set BREW_PREFIX early for module compatibility
+if [[ -z "${BREW_PREFIX:-}" ]]; then
+    if [[ -d "/opt/homebrew" ]]; then
+        export BREW_PREFIX="/opt/homebrew"
+    elif [[ -d "/usr/local" ]]; then
+        export BREW_PREFIX="/usr/local"
+    fi
+fi
+
+# Set DESK_ENV to empty to prevent undefined variable errors
+export DESK_ENV="${DESK_ENV:-}"
+
+# Set QUICKSTART_KIT_REFRESH_IN_DAYS to prevent undefined variable errors
+typeset -gi QUICKSTART_KIT_REFRESH_IN_DAYS=${QUICKSTART_KIT_REFRESH_IN_DAYS:-7}
+
+# Visual startup and user interface control flags with customizable defaults
+export ZSH_DISABLE_SPLASH="${ZSH_DISABLE_SPLASH:-0}"
+export ZSH_ENABLE_HEALTH_CHECK="${ZSH_ENABLE_HEALTH_CHECK:-0}"
+export ZSH_DISABLE_TIPS="${ZSH_DISABLE_TIPS:-0}"
+export ZSH_MINIMAL="${ZSH_MINIMAL:-0}"
+export FORCE_SPLASH="${FORCE_SPLASH:-1}"
+
+# Visual elements control
+export ZSH_DISABLE_FASTFETCH="${ZSH_DISABLE_FASTFETCH:-0}"
+export ZSH_DISABLE_COLORSCRIPT="${ZSH_DISABLE_COLORSCRIPT:-0}"
+export ZSH_DISABLE_LOLCAT="${ZSH_DISABLE_LOLCAT:-0}"
+
+# Performance and logging control
+export ZF_ASSERT_EXIT="${ZF_ASSERT_EXIT:-0}"
+export ZF_WITH_TIMING_EMIT="${ZF_WITH_TIMING_EMIT:-auto}"
+export ZSH_PERF_TRACK="${ZSH_PERF_TRACK:-0}"
+export PERF_SEGMENT_LOG="${PERF_SEGMENT_LOG:-}"
+export PERF_SEGMENT_TRACE="${PERF_SEGMENT_TRACE:-0}"
+
+# Security and integrity control
+export ZSH_SEC_DISABLE_AUTO_DEDUP="${ZSH_SEC_DISABLE_AUTO_DEDUP:-0}"
+export ZSH_INTERACTIVE_OPTIONS_STRICT="${ZSH_INTERACTIVE_OPTIONS_STRICT:-0}"
+
+# Plugin and integration control
+export ZSH_AUTOSUGGEST_SSH_DISABLE="${ZSH_AUTOSUGGEST_SSH_DISABLE:-0}"
+export ZSH_SUPPRESS_WELCOME="${ZSH_SUPPRESS_WELCOME:-0}"
+export ZSH_ENABLE_ABBR="${ZSH_ENABLE_ABBR:-1}"
+export ZSH_ENABLE_NVM_PLUGINS="${ZSH_ENABLE_NVM_PLUGINS:-1}"
+export ZSH_NODE_LAZY="${ZSH_NODE_LAZY:-1}"
+
+# Development and performance control
+export PERF_CAPTURE_FAST="${PERF_CAPTURE_FAST:-0}"
+export PATH_CLEANUP="${PATH_CLEANUP:-1}"
+export DEBUG_ZSH_REDESIGN="${DEBUG_ZSH_REDESIGN:-0}"
+export ZQS_COMPAT="${ZQS_COMPAT:-0}"
+
+# TEST MARKER: This is the end of the first half test
+echo "FIRST_HALF_TEST_COMPLETE" >&2

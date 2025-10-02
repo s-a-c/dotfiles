@@ -79,11 +79,11 @@ for g in "${module_globs[@]}"; do
     esac
 
     # Grep for any legacy wrapper usage
-    if grep -E -n "$pat" "$f" >/dev/null 2>&1; then
+  if zf::safe_grep -E -n "$pat" "$f" >/dev/null 2>&1; then
       # Extract lines for context
       while IFS= read -r line; do
         violations+=("${rel}:${line}")
-      done < <(grep -E -n "$pat" "$f" || true)
+  done < <(zf::safe_grep -E -n "$pat" "$f" || true)
     fi
   done
 done

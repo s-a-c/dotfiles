@@ -304,7 +304,7 @@ POST_DIR="${ZDOTDIR_ROOT}/.zshrc.d.REDESIGN"
 FEATURE_REGISTRY="${ZDOTDIR_ROOT}/feature/registry/feature-registry.zsh"
 
 # Define missing functions
-typeset -f zsh_debug_echo >/dev/null 2>&1 || zsh_debug_echo() { :; }
+typeset -f zf::debug >/dev/null 2>&1 || zf::debug() { :; }
 
 if [[ -n ${PERF_CLASSIFIER_DEBUG:-} ]]; then
   echo "[capture][dbg] starting capture-runner (PID=$$) log=$PERF_SEGMENT_LOG" >&2

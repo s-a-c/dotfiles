@@ -1,0 +1,50 @@
+#!/usr/bin/env zsh
+# Switch to emergency ZSH configuration
+
+echo "🚨 ACTIVATING EMERGENCY ZSH MODE 🚨"
+echo ""
+echo "This will:"
+echo "  - Backup your current .zshrc"
+echo "  - Replace it with minimal emergency config"
+echo "  - Restore basic ZSH functionality"
+echo ""
+
+# Backup current config
+if [[ -f .zshrc ]]; then
+    cp .zshrc .zshrc.backup.$(date +%Y%m%d_%H%M%S)
+    echo "✅ Backed up .zshrc"
+fi
+
+# Switch to emergency config
+cp .zshrc.emergency .zshrc
+echo "✅ Activated emergency configuration"
+
+echo ""
+echo "🎯 Emergency mode activated!"
+echo ""
+echo "To test: start a new zsh session"
+echo "To restore: run 'restore-normal-mode'"
+echo ""
+
+# Create restore script
+cat > restore-normal-mode << 'EOF'
+#!/usr/bin/env zsh
+echo "🔄 RESTORING NORMAL ZSH MODE"
+echo ""
+
+# Find most recent backup
+backup=$(ls -t .zshrc.backup.* 2>/dev/null | head -1)
+if [[ -n "$backup" ]]; then
+    cp "$backup" .zshrc
+    echo "✅ Restored .zshrc from $backup"
+else
+    echo "❌ No backup found - you'll need to restore manually"
+fi
+
+echo ""
+echo "🎯 Normal mode restored!"
+echo "Start a new zsh session to test"
+EOF
+
+chmod +x restore-normal-mode
+echo "✅ Created restore-normal-mode script"

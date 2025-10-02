@@ -1,0 +1,119 @@
+#!/usr/bin/env zsh
+# Wrapper for load-shell-fragments to debug ZLE status after each module
+
+echo "🔍 INSTALLING load-shell-fragments DEBUG WRAPPER"
+echo "================================================="
+echo ""
+
+# First, let's create a backup of the original function
+if ! typeset -f _original_load_shell_fragments >/dev/null 2>&1; then
+    # Save the original function
+    eval "$(typeset -f load-shell-fragments | sed '1s/load-shell-fragments/_original_load_shell_fragments/')"
+    echo "✅ Backed up original load-shell-fragments function"
+fi
+
+# Test ZLE status
+_test_zle_status() {
+    local context="$1"
+    local test_func_name="_zle_test_$$_$(date +%s)"
+    
+    # Create a unique test function
+    eval "${test_func_name}() { echo 'zle test'; }"
+    
+    # Try to register it as a ZLE widget
+    if zle -N "$test_func_name" 2>/dev/null; then
+        # Success - clean up
+        zle -D "$test_func_name" 2>/dev/null || true
+        unfunction "$test_func_name" 2>/dev/null || true
+        echo "    ✅ ZLE: OK"
+        return 0
+    else
+        # Failed - clean up anyway
+        unfunction "$test_func_name" 2>/dev/null || true
+        echo "    ❌ ZLE: BROKEN"
+        return 1
+    fi
+}
+
+# Our debugging wrapper
+load-shell-fragments() {
+    local fragment_dir="$1"
+    
+    echo ""
+    echo "📂 Loading fragments from: $fragment_dir"
+    echo "   Testing ZLE before loading..."
+    _test_zle_status "before $fragment_dir"
+    
+    # Check if directory exists
+    if [[ ! -d "$fragment_dir" ]]; then
+        echo "   ⚠️  Directory doesn't exist: $fragment_dir"
+        return 0
+    fi
+    
+    # Get list of files to load
+    local -a files
+    files=("$fragment_dir"/*.zsh(N) "$fragment_dir"/*.sh(N))
+    
+    if [[ ${#files[@]} -eq 0 ]]; then
+        echo "   📝 No .zsh or .sh files found in $fragment_dir"
+        return 0
+    fi
+    
+    echo "   📋 Found ${#files[@]} files to load"
+    
+    # Load each file individually and test ZLE after each
+    local file
+    for file in "${files[@]}"; do
+        [[ -f "$file" ]] || continue
+        
+        local filename=$(basename "$file")
+        echo "   📄 Loading: $filename"
+        
+        # Source the file
+        if source "$file" 2>/dev/null; then
+            echo "      ✅ Sourced successfully"
+        else
+            echo "      ⚠️  Source had errors"
+        fi
+        
+        # Test ZLE after this specific file
+        echo "      🧪 Testing ZLE after $filename..."
+        if ! _test_zle_status "after $filename"; then
+            echo ""
+            echo "🚨 CULPRIT IDENTIFIED!"
+            echo "====================="
+            echo "File: $file"
+            echo "This file broke the ZLE system!"
+            echo ""
+            echo "To investigate further:"
+            echo "  1. Examine the contents of: $file"
+            echo "  2. Look for ZLE-related code, widget definitions, or shell option changes"
+            echo "  3. Check for nounset violations or parameter errors"
+            echo ""
+            
+            # Show the problematic file content
+            echo "📄 File contents:"
+            echo "=================="
+            head -20 "$file" | sed 's/^/    /'
+            if [[ $(wc -l < "$file") -gt 20 ]]; then
+                echo "    ... (file continues, showing first 20 lines)"
+            fi
+            echo ""
+            
+            return 1
+        fi
+    done
+    
+    echo "   ✅ All files in $fragment_dir loaded successfully"
+    echo "   🧪 Final ZLE test for $fragment_dir..."
+    _test_zle_status "after all files in $fragment_dir"
+}
+
+echo "✅ Debug wrapper installed!"
+echo ""
+echo "Now run: ZDOTDIR=\"\$PWD\" zsh -i"
+echo "The wrapper will show exactly which file breaks ZLE."
+echo ""
+echo "To remove the wrapper later, restart your shell or run:"
+echo "  unfunction load-shell-fragments"
+echo "  eval \"\$(typeset -f _original_load_shell_fragments | sed '1s/_original_load_shell_fragments/load-shell-fragments/')\""

@@ -55,7 +55,7 @@ REPO_ROOT="$(cd "${(%):-%N:h}/../../../.." && pwd -P)"
 fi
 cd "${REPO_ROOT}"
 
-# Source environment (defines zsh_debug_echo, etc.)
+# Source environment (defines zf::debug, etc.)
 [[ -f ./.zshenv ]] && source ./.zshenv
 
 # Source ONLY the integration module (not the full chain)
@@ -180,7 +180,7 @@ test_tool() {
   fi
 
   # Summarize (debug)
-  zsh_debug_echo "# [integrations-idempotence] $name present=$present exit1=$exit1 exit2=$exit2 f(before/mid/after)=$was_function_before/$was_function_mid/$was_function_after"
+  zf::debug "# [integrations-idempotence] $name present=$present exit1=$exit1 exit2=$exit2 f(before/mid/after)=$was_function_before/$was_function_mid/$was_function_after"
 }
 
 # Choose safe args:

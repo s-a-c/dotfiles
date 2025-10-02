@@ -47,7 +47,7 @@
 set -euo pipefail
 
 # Honor project debug echo if available after sourcing
-zsh_debug_echo() { :; }
+zf::debug() { :; }
 
 # Guard: allow temporary skip (never commit with this variable exported)
 if [[ "${TDD_ALLOW_FAIL_PATH_EDGES:-0}" == 1 ]]; then

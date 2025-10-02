@@ -49,7 +49,7 @@ pass() { PASS+=("$1"); }
 fail() { FAIL+=("$1"); }
 skip() { print "SKIP: $1"; SKIPPED=1; }
 
-typeset -f zsh_debug_echo >/dev/null 2>&1 || zsh_debug_echo() { :; }
+typeset -f zf::debug >/dev/null 2>&1 || zf::debug() { :; }
 
 SCRIPT_SRC="${(%):-%N}"
 if typeset -f zf::script_dir >/dev/null 2>&1; then

@@ -14,7 +14,7 @@ echo "🧪 Running Simple Environment Sanitization Test"
 
 # Source the sanitization script
 if ! source "$HOME/.config/zsh/.zshrc.pre-plugins.d/05-environment-sanitization.zsh"; then
-        zsh_debug_echo "❌ Failed to source sanitization script"
+        zf::debug "❌ Failed to source sanitization script"
     exit 1
 fi
 
@@ -23,24 +23,24 @@ echo "✅ Script sourced successfully"
 # Test 1: Basic PATH validation
 echo "🔍 Test 1: PATH validation..."
 if _validate_path_security "/usr/bin:/bin" >/dev/null 2>&1; then
-        zsh_debug_echo "✅ Secure PATH validation passed"
+        zf::debug "✅ Secure PATH validation passed"
 else
-        zsh_debug_echo "❌ Secure PATH validation failed"
+        zf::debug "❌ Secure PATH validation failed"
 fi
 
 if ! _validate_path_security ".:/usr/bin:/bin" >/dev/null 2>&1; then
-        zsh_debug_echo "✅ Insecure PATH validation correctly failed"
+        zf::debug "✅ Insecure PATH validation correctly failed"
 else
-        zsh_debug_echo "❌ Insecure PATH validation should have failed"
+        zf::debug "❌ Insecure PATH validation should have failed"
 fi
 
 # Test 2: PATH sanitization
 echo "🔍 Test 2: PATH sanitization..."
 sanitized="$(_sanitize_path ".:/usr/bin:/tmp:/bin")"
 if [[ "$sanitized" == *"/usr/bin"* && "$sanitized" != *"."* && "$sanitized" != *"/tmp"* ]]; then
-        zsh_debug_echo "✅ PATH sanitization working correctly"
+        zf::debug "✅ PATH sanitization working correctly"
 else
-        zsh_debug_echo "❌ PATH sanitization failed: $sanitized"
+        zf::debug "❌ PATH sanitization failed: $sanitized"
 fi
 
 # Test 3: Sensitive variable detection
@@ -49,11 +49,11 @@ export TEST_PASSWORD="secret123"
 export TEST_NORMAL="normal_value"
 
 sensitive_vars="$(_find_sensitive_variables)"
-if     zsh_debug_echo "$sensitive_vars" | grep -q "TEST_PASSWORD" && !     zsh_debug_echo "$sensitive_vars" | grep -q "TEST_NORMAL"; then
-        zsh_debug_echo "✅ Sensitive variable detection working"
+if     zf::debug "$sensitive_vars" | grep -q "TEST_PASSWORD" && !     zf::debug "$sensitive_vars" | grep -q "TEST_NORMAL"; then
+        zf::debug "✅ Sensitive variable detection working"
 else
-        zsh_debug_echo "❌ Sensitive variable detection failed"
-        zsh_debug_echo "Found: $sensitive_vars"
+        zf::debug "❌ Sensitive variable detection failed"
+        zf::debug "Found: $sensitive_vars"
 fi
 
 unset TEST_PASSWORD TEST_NORMAL
@@ -61,9 +61,9 @@ unset TEST_PASSWORD TEST_NORMAL
 # Test 4: Main sanitization function
 echo "🔍 Test 4: Main sanitization function..."
 if _sanitize_environment >/dev/null 2>&1; then
-        zsh_debug_echo "✅ Main sanitization function works"
+        zf::debug "✅ Main sanitization function works"
 else
-        zsh_debug_echo "❌ Main sanitization function failed"
+        zf::debug "❌ Main sanitization function failed"
 fi
 
 echo "🎉 Simple test completed"

@@ -1,0 +1,127 @@
+!=0
+'#'=1
+'$'=48192
+'?'=0
+ARGC=1
+COLUMNS=90
+EGID=20
+EUID=501
+FUNCNEST=500
+GID=20
+HISTCMD=0
+HISTSIZE=2000
+KEYTIMEOUT=40
+LINENO=29
+LINES=46
+LISTMAX=100
+MAILCHECK=60
+OPTIND=1
+PPID=48190
+QUICKSTART_KIT_REFRESH_IN_DAYS=7
+RANDOM=4110
+SAVEHIST=1000
+SECONDS=0
+SHLVL=4
+STARSHIP_CMD_BG=0
+STARSHIP_CMD_END_TIME=0
+STARSHIP_CMD_ERR=0
+STARSHIP_CMD_ERRCODE=0
+STARSHIP_CMD_ERRLINE=0
+STARSHIP_CMD_ERRNO=0
+STARSHIP_CMD_EXIT_REASON=0
+STARSHIP_CMD_JOBS=0
+STARSHIP_CMD_PIPESTATUS=0
+STARSHIP_CMD_SIG=0
+STARSHIP_CMD_START_TIME=0
+STARSHIP_DURATION_MS=0
+TRY_BLOCK_ERROR=-1
+TRY_BLOCK_INTERRUPT=-1
+TTYIDLE=0
+UID=501
+ZSH_SUBSHELL=0
+status=0
+Creating a zgenom save
+compinit:557: zle: function definition file not found
+compinit:557: zle: function definition file not found
+compinit:557: zle: function definition file not found
+compinit:557: zle: function definition file not found
+compinit:557: zle: function definition file not found
+compinit:557: zle: function definition file not found
+compinit:557: zle: function definition file not found
+compinit:557: zle: function definition file not found
+compinit:559: zle: function definition file not found
+/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/lib/completion.zsh:70: zle: function definition file not found
+/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/lib/key-bindings.zsh:14: zle: function definition file not found
+/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/lib/key-bindings.zsh:15: zle: function definition file not found
+/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/lib/key-bindings.zsh:36: zle: function definition file not found
+/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/lib/key-bindings.zsh:49: zle: function definition file not found
+/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/lib/key-bindings.zsh:122: zle: function definition file not found
+/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/lib/misc.zsh:9: zle: function definition file not found
+/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/lib/misc.zsh:12: zle: function definition file not found
+zgenom-load:17: 2: parameter not set
+[ZLE-REPAIR] Emergency ZLE repair starting...
+[ZLE-REPAIR] ❌ ZLE system still broken - attempting deep repair
+
+Current SSH Keys:
+256 SHA256:2925ZCutAr6zy/xpYt1IZch74+sSBiTcrgzkr+bXBhY embrace.s0ul+s-a-c@gmail.com (ED25519)
+
+🔍 INSTALLING load-shell-fragments DEBUG WRAPPER
+=================================================
+
+✅ Backed up original load-shell-fragments function
+✅ Debug wrapper installed!
+
+Now run: ZDOTDIR="$PWD" zsh -i
+The wrapper will show exactly which file breaks ZLE.
+
+To remove the wrapper later, restart your shell or run:
+  unfunction load-shell-fragments
+  eval "$(typeset -f _original_load_shell_fragments | sed '1s/_original_load_shell_fragments/load-shell-fragments/')"
+
+🎯 WRAPPER ACTIVE - Starting configuration load...
+
+Creating a zgenom save
+compdef:93: zle: function definition file not found
+compdef:93: zle: function definition file not found
+compdef:115: zle: function definition file not found
+compdef:115: zle: function definition file not found
+compdef:115: zle: function definition file not found
+compdef:115: zle: function definition file not found
+compdef:115: zle: function definition file not found
+compdef:93: zle: function definition file not found
+compdef:93: zle: function definition file not found
+compdef:93: zle: function definition file not found
+compdef:93: zle: function definition file not found
+compdef:93: zle: function definition file not found
+compdef:115: zle: function definition file not found
+compdef:115: zle: function definition file not found
+compdef:115: zle: function definition file not found
+compdump:84: zle: function definition file not found
+compinit:557: zle: function definition file not found
+compinit:557: zle: function definition file not found
+compinit:557: zle: function definition file not found
+compinit:557: zle: function definition file not found
+compinit:557: zle: function definition file not found
+compinit:557: zle: function definition file not found
+compinit:557: zle: function definition file not found
+compinit:557: zle: function definition file not found
+compinit:559: zle: function definition file not found
+/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/lib/completion.zsh:17: CASE_SENSITIVE: parameter not set
+/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/lib/key-bindings.zsh:14: zle: function definition file not found
+/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/lib/key-bindings.zsh:15: zle: function definition file not found
+/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/lib/key-bindings.zsh:36: zle: function definition file not found
+/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/lib/key-bindings.zsh:49: zle: function definition file not found
+/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/lib/key-bindings.zsh:122: zle: function definition file not found
+/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/lib/misc.zsh:9: zle: function definition file not found
+/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/ohmyzsh/ohmyzsh/master/lib/misc.zsh:12: zle: function definition file not found
+zgenom-load:17: 2: parameter not set
+[ZLE-REPAIR] Emergency ZLE repair starting...
+[ZLE-REPAIR] ❌ ZLE system still broken - attempting deep repair
+
+Current SSH Keys:
+256 SHA256:2925ZCutAr6zy/xpYt1IZch74+sSBiTcrgzkr+bXBhY embrace.s0ul+s-a-c@gmail.com (ED25519)
+
+
+🎉 Configuration load complete!
+Final ZLE test:
+❌ ZLE broken at end of configuration

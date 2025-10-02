@@ -1,4 +1,4 @@
-#!/opt/homebrew/bin/zsh
+#!/usr/bin/env zsh
 # ==============================================================================
 # Minimal ZSH Startup Performance Test
 # ==============================================================================
@@ -20,26 +20,26 @@ echo "Loading minimal ZSH configuration..."
 # 1. Source/Execute Detection (essential)
 if [[ -f "$ZDOTDIR/.zshrc.d/00_01-source-execute-detection.zsh" ]]; then
     source "$ZDOTDIR/.zshrc.d/00_01-source-execute-detection.zsh"
-        zsh_debug_echo "✓ Source/execute detection loaded"
+    zf::debug "✓ Source/execute detection loaded"
 fi
 
 # 2. Standard Helpers (essential)
 if [[ -f "$ZDOTDIR/.zshrc.d/00_00-standard-helpers.zsh" ]]; then
     export ZSH_HELPERS_TESTING=1
     source "$ZDOTDIR/.zshrc.d/00_00-standard-helpers.zsh"
-        zsh_debug_echo "✓ Standard helpers loaded"
+    zf::debug "✓ Standard helpers loaded"
 fi
 
 # 3. Basic Environment (essential)
 if [[ -f "$ZDOTDIR/.zshrc.d/00_01-environment.zsh" ]]; then
     source "$ZDOTDIR/.zshrc.d/00_01-environment.zsh"
-        zsh_debug_echo "✓ Basic environment loaded"
+    zf::debug "✓ Basic environment loaded"
 fi
 
 # 4. Path System (essential)
 if [[ -f "$ZDOTDIR/.zshrc.d/00_02-path-system.zsh" ]]; then
     source "$ZDOTDIR/.zshrc.d/00_02-path-system.zsh"
-        zsh_debug_echo "✓ Path system loaded"
+    zf::debug "✓ Path system loaded"
 fi
 
 echo "Minimal ZSH configuration loaded successfully"

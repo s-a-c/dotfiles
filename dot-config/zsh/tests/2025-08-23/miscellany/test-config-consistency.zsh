@@ -1,4 +1,4 @@
-#!/opt/homebrew/bin/zsh
+#!/usr/bin/env zsh
 # ==============================================================================
 # ZSH Configuration: Configuration Consistency Test Suite
 # ==============================================================================
@@ -25,7 +25,7 @@ export ZSH_DEBUG=false
 DETECTION_SCRIPT="${ZDOTDIR:-$HOME/.config/zsh}/.zshrc.d/00_01-source-execute-detection.zsh"
 
 if [[ ! -f "$DETECTION_SCRIPT" ]]; then
-        zsh_debug_echo "ERROR: Source/execute detection script not found: $DETECTION_SCRIPT"
+    zf::debug "ERROR: Source/execute detection script not found: $DETECTION_SCRIPT"
     exit 1
 fi
 
@@ -53,7 +53,7 @@ ZSHRC_DIR="$ZSH_CONFIG_ROOT/.zshrc.d"
 log_test() {
     local message="$1"
     local timestamp=$(date -u '+%Y-%m-%d %H:%M:%S UTC')
-        zsh_debug_echo "[$timestamp] [TEST] [$$] $message" >> "$LOG_FILE" 2>/dev/null || true
+    zf::debug "[$timestamp] [TEST] [$$] $message" >>"$LOG_FILE" 2>/dev/null || true
 }
 
 run_test() {
@@ -62,17 +62,17 @@ run_test() {
 
     TEST_COUNT=$((TEST_COUNT + 1))
 
-        zsh_debug_echo "Running test $TEST_COUNT: $test_name"
+    zf::debug "Running test $TEST_COUNT: $test_name"
     log_test "Starting test: $test_name"
 
     if "$test_function"; then
         TEST_PASSED=$((TEST_PASSED + 1))
-            zsh_debug_echo "  ✓ PASS: $test_name"
+        zf::debug "  ✓ PASS: $test_name"
         log_test "PASS: $test_name"
         return 0
     else
         TEST_FAILED=$((TEST_FAILED + 1))
-            zsh_debug_echo "  ✗ FAIL: $test_name"
+        zf::debug "  ✗ FAIL: $test_name"
         log_test "FAIL: $test_name"
         return 1
     fi
@@ -103,16 +103,16 @@ test_shebang_consistency() {
         if [[ "$first_line" =~ ^#!/ ]]; then
             files_with_shebang=$((files_with_shebang + 1))
 
-            if [[ "$first_line" == "#!/opt/homebrew/bin/zsh" ]]; then
+            if [[ "$first_line" == "#!/usr/bin/env zsh" ]]; then
                 files_with_correct_shebang=$((files_with_correct_shebang + 1))
-                    zsh_debug_echo "    ✓ $(basename "$config_file"): Correct shebang"
+                zf::debug "    ✓ $(basename "$config_file"): Correct shebang"
             else
-                    zsh_debug_echo "    ⚠ $(basename "$config_file"): Incorrect shebang: $first_line"
+                zf::debug "    ⚠ $(basename "$config_file"): Incorrect shebang: $first_line"
             fi
         fi
     done < <(get_config_files)
 
-        zsh_debug_echo "    📊 Shebang analysis: $files_with_correct_shebang correct, $files_with_shebang total with shebang, $total_files total files"
+    zf::debug "    📊 Shebang analysis: $files_with_correct_shebang correct, $files_with_shebang total with shebang, $total_files total files"
 
     # Pass if files that have shebangs use the correct one
     [[ $files_with_shebang -eq 0 ]] || [[ $files_with_correct_shebang -eq $files_with_shebang ]]
@@ -137,14 +137,14 @@ test_debug_pattern_consistency() {
             # Check for consistent debug pattern
             if grep -q '\[\[ "$ZSH_DEBUG" == "1" \]\]' "$config_file" 2>/dev/null; then
                 files_with_consistent_debug=$((files_with_consistent_debug + 1))
-                    zsh_debug_echo "    ✓ $(basename "$config_file"): Consistent debug pattern"
+                zf::debug "    ✓ $(basename "$config_file"): Consistent debug pattern"
             else
-                    zsh_debug_echo "    ⚠ $(basename "$config_file"): Inconsistent debug pattern"
+                zf::debug "    ⚠ $(basename "$config_file"): Inconsistent debug pattern"
             fi
         fi
     done < <(get_config_files)
 
-        zsh_debug_echo "    📊 Debug pattern analysis: $files_with_consistent_debug/$files_with_debug files use consistent debug patterns"
+    zf::debug "    📊 Debug pattern analysis: $files_with_consistent_debug/$files_with_debug files use consistent debug patterns"
 
     # Pass if most files with debug use consistent patterns
     [[ $files_with_debug -eq 0 ]] || [[ $files_with_consistent_debug -ge $((files_with_debug * 3 / 4)) ]]
@@ -181,14 +181,14 @@ test_export_pattern_consistency() {
 
             if [[ $problematic_exports -eq 0 ]]; then
                 files_with_good_exports=$((files_with_good_exports + 1))
-                    zsh_debug_echo "    ✓ $(basename "$config_file"): Good export patterns"
+                zf::debug "    ✓ $(basename "$config_file"): Good export patterns"
             else
-                    zsh_debug_echo "    ⚠ $(basename "$config_file"): $problematic_exports problematic export patterns"
+                zf::debug "    ⚠ $(basename "$config_file"): $problematic_exports problematic export patterns"
             fi
         fi
     done < <(get_config_files)
 
-        zsh_debug_echo "    📊 Export pattern analysis: $files_with_good_exports/$files_with_exports files have good export patterns"
+    zf::debug "    📊 Export pattern analysis: $files_with_good_exports/$files_with_exports files have good export patterns"
 
     # Pass if most files with exports use good patterns
     [[ $files_with_exports -eq 0 ]] || [[ $files_with_good_exports -ge $((files_with_exports * 2 / 3)) ]]
@@ -234,14 +234,14 @@ test_helper_function_usage() {
             # Check if actually using helper functions
             if grep -q "has_command\|path_prepend\|path_append\|has_readable_file\|safe_source" "$config_file" 2>/dev/null; then
                 files_using_helpers=$((files_using_helpers + 1))
-                    zsh_debug_echo "    ✓ $(basename "$config_file"): Uses helper functions"
+                zf::debug "    ✓ $(basename "$config_file"): Uses helper functions"
             else
-                    zsh_debug_echo "    ⚠ $(basename "$config_file"): Could use helper functions"
+                zf::debug "    ⚠ $(basename "$config_file"): Could use helper functions"
             fi
         fi
     done < <(get_config_files)
 
-        zsh_debug_echo "    📊 Helper usage analysis: $files_using_helpers/$files_that_could_use_helpers files use helper functions where beneficial"
+    zf::debug "    📊 Helper usage analysis: $files_using_helpers/$files_that_could_use_helpers files use helper functions where beneficial"
 
     # Pass if at least some files use helpers (gradual adoption expected)
     [[ $files_that_could_use_helpers -eq 0 ]] || [[ $files_using_helpers -gt 0 ]]
@@ -270,22 +270,22 @@ test_documentation_consistency() {
             local good_header=true
 
             # Should have purpose/description
-            if !     zsh_debug_echo "$header_content" | grep -qi "purpose\|description\|configuration" 2>/dev/null; then
+            if ! zf::debug "$header_content" | grep -qi "purpose\|description\|configuration" 2>/dev/null; then
                 good_header=false
             fi
 
             if $good_header; then
                 files_with_good_headers=$((files_with_good_headers + 1))
-                    zsh_debug_echo "    ✓ $(basename "$config_file"): Good documentation header"
+                zf::debug "    ✓ $(basename "$config_file"): Good documentation header"
             else
-                    zsh_debug_echo "    ⚠ $(basename "$config_file"): Could improve documentation header"
+                zf::debug "    ⚠ $(basename "$config_file"): Could improve documentation header"
             fi
         else
-                zsh_debug_echo "    ⚠ $(basename "$config_file"): No header documentation"
+            zf::debug "    ⚠ $(basename "$config_file"): No header documentation"
         fi
     done < <(get_config_files)
 
-        zsh_debug_echo "    📊 Documentation analysis: $files_with_good_headers/$files_with_headers files have good headers, $files_with_headers/$total_files have headers"
+    zf::debug "    📊 Documentation analysis: $files_with_good_headers/$files_with_headers files have good headers, $files_with_headers/$total_files have headers"
 
     # Pass if most files have some form of header
     [[ $files_with_headers -ge $((total_files * 2 / 3)) ]]
@@ -296,64 +296,64 @@ test_documentation_consistency() {
 # ------------------------------------------------------------------------------
 
 run_all_tests() {
-        zsh_debug_echo "========================================================"
-        zsh_debug_echo "Configuration Consistency Test Suite"
-        zsh_debug_echo "========================================================"
-        zsh_debug_echo "Timestamp: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
-        zsh_debug_echo "Execution Context: $(get_execution_context)"
-        zsh_debug_echo "Configuration Directory: $ZSHRC_DIR"
-        zsh_debug_echo ""
+    zf::debug "========================================================"
+    zf::debug "Configuration Consistency Test Suite"
+    zf::debug "========================================================"
+    zf::debug "Timestamp: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+    zf::debug "Execution Context: $(get_execution_context)"
+    zf::debug "Configuration Directory: $ZSHRC_DIR"
+    zf::debug ""
 
     log_test "Starting configuration consistency test suite"
 
     # Shebang Consistency
-        zsh_debug_echo "=== Shebang Consistency Tests ==="
+    zf::debug "=== Shebang Consistency Tests ==="
     run_test "Shebang Consistency" "test_shebang_consistency"
 
     # Debug Pattern Consistency
-        zsh_debug_echo ""
-        zsh_debug_echo "=== Debug Pattern Consistency Tests ==="
+    zf::debug ""
+    zf::debug "=== Debug Pattern Consistency Tests ==="
     run_test "Debug Pattern Consistency" "test_debug_pattern_consistency"
 
     # Export Pattern Consistency
-        zsh_debug_echo ""
-        zsh_debug_echo "=== Export Pattern Consistency Tests ==="
+    zf::debug ""
+    zf::debug "=== Export Pattern Consistency Tests ==="
     run_test "Export Pattern Consistency" "test_export_pattern_consistency"
 
     # Helper Function Usage
-        zsh_debug_echo ""
-        zsh_debug_echo "=== Helper Function Usage Tests ==="
+    zf::debug ""
+    zf::debug "=== Helper Function Usage Tests ==="
     run_test "Helper Function Usage" "test_helper_function_usage"
 
     # Documentation Consistency
-        zsh_debug_echo ""
-        zsh_debug_echo "=== Documentation Consistency Tests ==="
+    zf::debug ""
+    zf::debug "=== Documentation Consistency Tests ==="
     run_test "Documentation Consistency" "test_documentation_consistency"
 
     # Results Summary
-        zsh_debug_echo ""
-        zsh_debug_echo "========================================================"
-        zsh_debug_echo "Test Results Summary"
-        zsh_debug_echo "========================================================"
-        zsh_debug_echo "Total Tests: $TEST_COUNT"
-        zsh_debug_echo "Passed: $TEST_PASSED"
-        zsh_debug_echo "Failed: $TEST_FAILED"
+    zf::debug ""
+    zf::debug "========================================================"
+    zf::debug "Test Results Summary"
+    zf::debug "========================================================"
+    zf::debug "Total Tests: $TEST_COUNT"
+    zf::debug "Passed: $TEST_PASSED"
+    zf::debug "Failed: $TEST_FAILED"
 
     local pass_percentage=0
     if [[ $TEST_COUNT -gt 0 ]]; then
-        pass_percentage=$(( (TEST_PASSED * 100) / TEST_COUNT ))
+        pass_percentage=$(((TEST_PASSED * 100) / TEST_COUNT))
     fi
-        zsh_debug_echo "Success Rate: ${pass_percentage}%"
+    zf::debug "Success Rate: ${pass_percentage}%"
 
     log_test "Configuration consistency test suite completed - $TEST_PASSED/$TEST_COUNT tests passed"
 
     if [[ $TEST_FAILED -eq 0 ]]; then
-            zsh_debug_echo ""
-            zsh_debug_echo "🎉 All configuration consistency tests passed!"
+        zf::debug ""
+        zf::debug "🎉 All configuration consistency tests passed!"
         return 0
     else
-            zsh_debug_echo ""
-            zsh_debug_echo "❌ $TEST_FAILED configuration consistency test(s) failed."
+        zf::debug ""
+        zf::debug "❌ $TEST_FAILED configuration consistency test(s) failed."
         return 1
     fi
 }
@@ -370,8 +370,8 @@ main() {
 if is_being_executed; then
     main "$@"
 elif is_being_sourced; then
-        zsh_debug_echo "Configuration consistency test functions loaded (sourced context)"
-        zsh_debug_echo "Available functions: run_all_tests, individual test functions"
+    zf::debug "Configuration consistency test functions loaded (sourced context)"
+    zf::debug "Available functions: run_all_tests, individual test functions"
 fi
 
 # ==============================================================================

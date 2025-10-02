@@ -1,1 +1,0 @@
-../.zshrc.d.legacy/consolidated-modules/04-environment-options.zsh
