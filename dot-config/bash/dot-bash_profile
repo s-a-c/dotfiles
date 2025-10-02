@@ -1,0 +1,34 @@
+# FALLBACK: Simple PATH setup
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:$PATH"
+
+# XDG Base Directory Specification (set early so other code can rely on them)
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-${HOME}/.cache}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}"
+export XDG_STATE_HOME="${XDG_STATE_HOME:-${HOME}/.local/state}"
+export XDG_BIN_HOME="${XDG_BIN_HOME:-${HOME}/.local/bin}"
+mkdir -p "${XDG_CONFIG_HOME}" "${XDG_CACHE_HOME}" "${XDG_DATA_HOME}" "${XDG_STATE_HOME}" "${XDG_BIN_HOME}" 2>/dev/null || true
+
+# Prefer XDG user bin early in PATH if present
+[[ -d ${XDG_BIN_HOME} ]] && PATH="${XDG_BIN_HOME}:${PATH}"
+export PATH
+
+export RIPGREP_CONFIG_PATH="${RIPGREP_CONFIG_PATH:-${XDG_CONFIG_HOME}/ripgrep/ripgreprc}"
+
+export PATH="$HOME/Library/Application Support/Herd/bin/:$PATH"
+
+# Herd injected PHP 8.4 configuration.
+export HERD_PHP_84_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/84/"
+
+# Herd injected PHP 8.5 configuration.
+export HERD_PHP_85_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/85/"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:$HOME/.lmstudio/bin"
+# End of LM Studio CLI section
+
+# Herd injected NVM configuration
+export NVM_DIR="$HOME/Library/Application Support/Herd/config/nvm"
+[[ -s "$NVM_DIR/nvm.sh" ]] && builtin source "$NVM_DIR/nvm.sh" # This loads nvm
+
+[[ -s "$HOME/.bashrc" ]] && builtin source "$HOME/.bashrc"
