@@ -13,3 +13,6 @@
 *.jpg binary
 *.gif binary
 
+support-evidence/*.raw.log -text
+support-evidence/*.log -text
+

@@ -1,0 +1,78 @@
+* Host api.github.com:443 was resolved.
+* IPv6: (none)
+* IPv4: 20.26.156.210
+*   Trying 20.26.156.210:443...
+* Connected to api.github.com (20.26.156.210) port 443
+* ALPN: curl offers h2,http/1.1
+* (304) (OUT), TLS handshake, Client hello (1):
+} [319 bytes data]
+*  CAfile: /etc/ssl/cert.pem
+*  CApath: none
+* (304) (IN), TLS handshake, Server hello (2):
+{ [122 bytes data]
+* (304) (IN), TLS handshake, Unknown (8):
+{ [19 bytes data]
+* (304) (IN), TLS handshake, Certificate (11):
+{ [3134 bytes data]
+* (304) (IN), TLS handshake, CERT verify (15):
+{ [78 bytes data]
+* (304) (IN), TLS handshake, Finished (20):
+{ [36 bytes data]
+* (304) (OUT), TLS handshake, Finished (20):
+} [36 bytes data]
+* SSL connection using TLSv1.3 / AEAD-CHACHA20-POLY1305-SHA256 / [blank] / UNDEF
+* ALPN: server accepted h2
+* Server certificate:
+*  subject: CN=*.github.com
+*  start date: Feb  5 00:00:00 2025 GMT
+*  expire date: Feb  5 23:59:59 2026 GMT
+*  subjectAltName: host "api.github.com" matched cert's "*.github.com"
+*  issuer: C=GB; ST=Greater Manchester; L=Salford; O=Sectigo Limited; CN=Sectigo ECC Domain Validation Secure Server CA
+*  SSL certificate verify ok.
+* using HTTP/2
+* [HTTP/2] [1] OPENED stream for https://api.github.com/repos/s-a-c/dotfiles/actions/workflows/test-minimal-dispatch.yml/dispatches
+* [HTTP/2] [1] [:method: POST]
+* [HTTP/2] [1] [:scheme: https]
+* [HTTP/2] [1] [:authority: api.github.com]
+* [HTTP/2] [1] [:path: /repos/s-a-c/dotfiles/actions/workflows/test-minimal-dispatch.yml/dispatches]
+* [HTTP/2] [1] [user-agent: curl/8.7.1]
+* [HTTP/2] [1] [accept: application/vnd.github+json]
+* [HTTP/2] [1] [authorization: Bearer ***REDACTED***
+* [HTTP/2] [1] [content-length: 14]
+* [HTTP/2] [1] [content-type: application/x-www-form-urlencoded]
+> POST /repos/s-a-c/dotfiles/actions/workflows/test-minimal-dispatch.yml/dispatches HTTP/2
+> Host: api.github.com
+> User-Agent: curl/8.7.1
+> Accept: application/vnd.github+json
+> Authorization: Bearer ***REDACTED***
+> Content-Length: 14
+> Content-Type: application/x-www-form-urlencoded
+> 
+} [14 bytes data]
+* upload completely sent off: 14 bytes
+< HTTP/2 204 
+< date: Thu, 11 Sep 2025 22:54:54 GMT
+< x-oauth-scopes: admin:enterprise, admin:org, admin:org_hook, admin:public_key, admin:repo_hook, audit_log, codespace, copilot, delete:packages, delete_repo, gist, notifications, project, read:gpg_key, read:ssh_signing_key, repo, user, workflow, write:discussion, write:network_configurations, write:packages
+< x-accepted-oauth-scopes: 
+< github-authentication-token-expiration: 2026-07-26 23:00:00 UTC
+< x-github-media-type: github.v3; format=json
+< x-github-api-version-selected: 2022-11-28
+< x-ratelimit-limit: 5000
+< x-ratelimit-remaining: 4999
+< x-ratelimit-reset: 1757634894
+< x-ratelimit-used: 1
+< x-ratelimit-resource: core
+< access-control-expose-headers: ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset
+< access-control-allow-origin: *
+< strict-transport-security: max-age=31536000; includeSubdomains; preload
+< x-frame-options: deny
+< x-content-type-options: nosniff
+< x-xss-protection: 0
+< referrer-policy: origin-when-cross-origin, strict-origin-when-cross-origin
+< content-security-policy: default-src 'none'
+< vary: Accept-Encoding, Accept, X-Requested-With
+< server: github.com
+< x-github-request-id: C4E8:5102B:49D37:61345:68C3533E
+< 
+{ [0 bytes data]
+* Connection #0 to host api.github.com left intact
