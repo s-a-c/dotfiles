@@ -232,8 +232,15 @@ if [[ $MANIFEST_STATUS == "missing" ]]; then
 else
   for i in {1..$total_dirs}; do
     idx=$((i-1))
-    dpath=${DIR_PATHS[$idx]}
-    expected_count=${DIR_EXPECT_COUNTS[$idx]}
+    # Nounset-safe retrieval of directory path & expected count (guard against sparse arrays when manifest parse skips malformed objects)
+    dpath=${DIR_PATHS[$idx]:-}
+    expected_count=${DIR_EXPECT_COUNTS[$idx]:-}
+    if [[ -z "$dpath" || -z "$expected_count" ]]; then
+      DIR_RESULT_STATUS[$idx]="missing_index"
+      GLOBAL_ERRORS+="$idx:dir_index_missing"
+      DRIFT=1
+      continue
+    fi
     abs_dir="$ROOT_DIR/$dpath"
     missing=()
     extra=()
@@ -344,11 +351,11 @@ if (( ! QUIET )); then
     echo "[immutability] Manifest: $MANIFEST_PATH"
     for i in {1..$total_dirs}; do
       idx=$((i-1))
-      name=${DIR_NAMES[$idx]}
+      name=${DIR_NAMES[$idx]:-"(index:$idx missing name)"}
       status=${DIR_RESULT_STATUS[$idx]:-unprocessed}
-      expc=${DIR_EXPECT_COUNTS[$idx]}
+      expc=${DIR_EXPECT_COUNTS[$idx]:-0}
       actc=${DIR_ACTUAL_COUNT[$idx]:-0}
-      printf " - %-30s status=%s expected=%d actual=%d\n" "$name" "$status" "$expc" "$actc"
+      printf " - %-30s status=%s expected=%s actual=%s\n" "$name" "$status" "$expc" "$actc"
       # Detailed drift reasons
       if [[ $status == drift ]]; then
         # Missing
@@ -389,8 +396,8 @@ if (( EMIT_JSON )); then
   json_dirs=()
   for i in {1..$total_dirs}; do
     idx=$((i-1))
-    name=${DIR_NAMES[$idx]}
-    expc=${DIR_EXPECT_COUNTS[$idx]}
+    name=${DIR_NAMES[$idx]:-"(index:$idx missing name)"}
+    expc=${DIR_EXPECT_COUNTS[$idx]:-0}
     actc=${DIR_ACTUAL_COUNT[$idx]:-0}
     status=${DIR_RESULT_STATUS[$idx]:-unprocessed}
 
