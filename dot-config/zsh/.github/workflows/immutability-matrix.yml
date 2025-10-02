@@ -1,0 +1,234 @@
+name: Immutability Matrix
+
+on:
+  push:
+    branches:
+      - main
+      - "feat/**"
+      - "fix/**"
+    paths:
+      - 'zsh/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'zsh/**'
+  workflow_dispatch:
+
+concurrency:
+  group: immutability-matrix-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  MANIFEST_PATH: zsh/layers/immutable/manifest.json
+  EMERGENCY_FLOOR: "387"
+  WIDGET_BASELINE: "417"
+
+jobs:
+  immutability-matrix:
+    name: Matrix (${{ matrix.mode }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - mode: baseline
+            flags: "--json --recompute-dir-hash"
+            description: "Baseline validation with aggregate hash emission"
+          - mode: strict
+            flags: "--json --recompute-dir-hash --strict --list-changes"
+            description: "Strict schema + unlisted dir enforcement"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show matrix mode
+        run: |
+          echo "Mode: ${{ matrix.mode }}"
+          echo "Flags: ${{ matrix.flags }}"
+          echo "Description: ${{ matrix.description }}"
+
+      - name: Ensure checker executable
+        run: |
+            chmod +x zsh/tools/check-empty-layer-immutability.zsh || true
+
+      - name: Run immutability checker (${{ matrix.mode }})
+        id: run
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "::group::Checker Output"
+          zsh zsh/tools/check-empty-layer-immutability.zsh ${{ matrix.flags }} > checker.json
+          echo "::endgroup::"
+          echo "Captured JSON:"
+          sed -e 's/^/JSON: /' checker.json | head -n 120
+          python3 - <<'PY'
+import json,sys,os
+path="checker.json"
+data=json.load(open(path))
+mode=os.environ.get("MATRIX_MODE","baseline")
+status=data.get("status")
+drift_flag=data.get("drift")
+errors=data.get("errors") or []
+metrics=data.get("metrics") or {}
+agg_mm = metrics.get("aggregate_hash_mismatches",0)
+dirs = data.get("directories",[])
+def fail(msg):
+    print(f"VALIDATION_FAIL: {msg}", file=sys.stderr)
+    sys.exit(1)
+
+print(f"STATUS={status} DRIFT={drift_flag} MODE={mode}")
+if status in ("error","self_test_fail"):
+    fail(f"status={status}")
+
+if mode=="baseline":
+    if status not in ("ok","manifest_missing"):
+        fail(f"unexpected status for baseline: {status}")
+    if drift_flag:
+        fail("baseline drift_flag=1")
+elif mode=="strict":
+    if status!="ok":
+        fail(f"strict mode requires status=ok, got {status}")
+    if drift_flag:
+        fail("strict mode drift_flag=1")
+    blocked = [e for e in errors if e.startswith("directory_schema_invalid:") or e.startswith("fs_directory_unlisted:")]
+    if blocked:
+        fail(f"strict mode structural errors: {blocked}")
+    if agg_mm and int(agg_mm)>0:
+        fail(f"aggregate hash mismatches present: {agg_mm}")
+    # In strict mode check no directory has expected_count=0 unless allow-empty-ok would have been set (it is not)
+    zero_dirs=[d["name"] for d in dirs if d.get("expected_count")==0]
+    if zero_dirs:
+        fail(f"unexpected zero expected_count directories: {zero_dirs}")
+
+# Surface first drift directory details for visibility
+if drift_flag:
+    for d in dirs:
+        if d.get("status")=="drift":
+            print("DRIFT_DIR:", d.get("name"),
+                  "missing=", d.get("missing_files"),
+                  "extra=", d.get("extra_files"),
+                  "hash_mismatches=", d.get("hash_mismatches"))
+            break
+
+# Export summary outputs
+print("OK: validation passed")
+PY
+        env:
+          MATRIX_MODE: ${{ matrix.mode }}
+
+      - name: Upload checker artifact
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: immutability-${{ matrix.mode }}
+          path: checker.json
+
+      - name: Emergency floor sanity (baseline only)
+        if: ${{ matrix.mode == 'baseline' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -x zsh/tools/emergency-widget-count.sh ]]; then
+            ZF_EMERGENCY_EXTEND=1 bash zsh/tools/emergency-widget-count.sh --json > emergency.json || {
+              echo "Emergency script failed" >&2
+              cat emergency.json || true
+              exit 1
+            }
+            python3 - <<'PY'
+import json,sys,os
+d=json.load(open("emergency.json"))
+w=d.get("widgets") or d.get("emergency_widgets") or d.get("count")
+floor=int(os.environ.get("EMERGENCY_FLOOR","387"))
+print(f"Emergency widgets={w} floor={floor}")
+if w is None or int(w)<floor:
+    print(f"Emergency floor breach: {w} < {floor}", file=sys.stderr)
+    sys.exit(1)
+PY
+          else
+            echo "Emergency widget script missing – failing by policy."
+            exit 1
+          fi
+
+      - name: Summary (append)
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "### Immutability Matrix: ${{ matrix.mode }}"
+            if [[ -f checker.json ]]; then
+              python3 - <<'PY'
+import json
+d=json.load(open("checker.json"))
+print(f"- Status: {d.get('status')}")
+print(f"- Drift: {d.get('drift')}")
+m=d.get("metrics") or {}
+if m:
+    print("- Metrics:")
+    for k in sorted(m):
+        print(f"  - {k}: {m[k]}")
+drifts=[x for x in d.get("directories",[]) if x.get("status")=='drift']
+if drifts:
+    print("- Drift Directories:")
+    for dd in drifts:
+        print(f"  - {dd['name']} missing={len(dd.get('missing_files',[]))} extra={len(dd.get('extra_files',[]))} mismatches={len(dd.get('hash_mismatches',[]))}")
+PY
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  self-test:
+    name: Checker Self-Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Run self-test
+        shell: bash
+        run: |
+          set -euo pipefail
+          chmod +x zsh/tools/check-empty-layer-immutability.zsh || true
+          zsh zsh/tools/check-empty-layer-immutability.zsh --self-test --json > selftest.json || {
+            echo "Self-test failed (non-zero exit). Captured JSON (if any):"
+            cat selftest.json || true
+            exit 1
+          }
+          echo "Self-test JSON:"
+          cat selftest.json
+          python3 - <<'PY'
+import json,sys
+d=json.load(open("selftest.json"))
+if d.get("status")!="self_test_pass":
+    print("Self-test did not pass", file=sys.stderr)
+    sys.exit(1)
+print("Self-test passed.")
+PY
+      - name: Upload self-test artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: immutability-self-test
+          path: selftest.json
+
+  # Optional aggregate status gate: require both matrix variants & self-test
+  gate:
+    name: Aggregate Gate
+    runs-on: ubuntu-latest
+    needs: [immutability-matrix, self-test]
+    if: ${{ always() }}
+    steps:
+      - name: Evaluate upstream job results
+        shell: bash
+        run: |
+          echo "Matrix result: ${{ needs.immutability-matrix.result }}"
+          echo "Self-test result: ${{ needs.self-test.result }}"
+          if [[ "${{ needs.immutability-matrix.result }}" != "success" ]]; then
+            echo "Matrix job failed or unstable" >&2
+            exit 1
+          fi
+          if [[ "${{ needs.self-test.result }}" != "success" ]]; then
+            echo "Self-test job failed or unstable" >&2
+            exit 1
+          fi
+          echo "All immutability matrix checks passed."
