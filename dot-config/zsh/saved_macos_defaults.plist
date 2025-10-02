@@ -184,10 +184,10 @@
     };
     ContextStoreAgent =     {
         "_DKThrottledActivityLast_DKKnowledgeStorageLogging_DKKnowledgeStorageDidInsertEventsNotification:/app/mediaUsageActivityDate" = "2025-05-23 23:42:57 +0000";
-        "_DKThrottledActivityLast_DKKnowledgeStorageLogging_DKKnowledgeStorageDidInsertEventsNotification:/app/usageActivityDate" = "2025-10-02 12:02:01 +0000";
+        "_DKThrottledActivityLast_DKKnowledgeStorageLogging_DKKnowledgeStorageDidInsertEventsNotification:/app/usageActivityDate" = "2025-10-02 13:08:27 +0000";
         "_DKThrottledActivityLast_DKKnowledgeStorageLogging_DKKnowledgeStorageDidInsertEventsNotification:/media/nowPlayingActivityDate" = "2024-11-11 01:36:47 +0000";
         "_DKThrottledActivityLast_DKKnowledgeStorageLogging_DKKnowledgeStorageDidInsertLocalEventsNotification:/app/mediaUsageActivityDate" = "2025-05-23 23:42:57 +0000";
-        "_DKThrottledActivityLast_DKKnowledgeStorageLogging_DKKnowledgeStorageDidInsertLocalEventsNotification:/app/usageActivityDate" = "2025-10-02 12:02:01 +0000";
+        "_DKThrottledActivityLast_DKKnowledgeStorageLogging_DKKnowledgeStorageDidInsertLocalEventsNotification:/app/usageActivityDate" = "2025-10-02 13:08:27 +0000";
         "_DKThrottledActivityLast_DKKnowledgeStorageLogging_DKKnowledgeStorageDidInsertLocalEventsNotification:/media/nowPlayingActivityDate" = "2024-11-11 01:36:47 +0000";
     };
     LighthouseBitacoraFramework =     {
@@ -3690,10 +3690,10 @@
         ATXNotificationAndSuggestionDatastoreAppLaunchTimestamp = "769380918.829452";
         ATXPrivacyPreservingLocationHashDeviceSpecificSalt = {length = 8, bytes = 0xcb45486ffa6d6d85};
         "ATXUpdatePredictionsLoggerCountsDictionary-ActionPredictions" =         {
-            "TRIGGER_TYPE_APPLAUNCH" = 23;
+            "TRIGGER_TYPE_APPLAUNCH" = 29;
             "TRIGGER_TYPE_CTS" = 6;
             "TRIGGER_TYPE_OTHER" = 8;
-            "TRIGGER_TYPE_TOTAL" = 37;
+            "TRIGGER_TYPE_TOTAL" = 43;
         };
         "ATXUpdatePredictionsLoggerCountsDictionary-AppPredictions" =         {
         };
@@ -6145,7 +6145,7 @@
         HearingFeatureUsagePreference = 576;
     };
     "com.apple.IFTelemetrySELFIngestor" =     {
-        LastCollectionEndTime = "781094333.712271";
+        LastCollectionEndTime = "781102412.443747";
     };
     "com.apple.IMCoreSpotlight" =     {
         IMCSClientStateStorageMechanism = 1;
@@ -11883,7 +11883,7 @@
         );
     };
     "com.apple.TelephonyUtilities.sharePlayAppPolicies" =     {
-        "CPAppPolicy.ContactsChangeHistoryToken" = {length = 760, bytes = 0x62706c69 73743030 d4010203 04050607 ... 00000000 00000266 };
+        "CPAppPolicy.ContactsChangeHistoryToken" = {length = 753, bytes = 0x62706c69 73743030 d4010203 04050607 ... 00000000 00000261 };
     };
     "com.apple.Terminal" =     {
         "Default Window Settings" = Basic;
@@ -13266,7 +13266,7 @@
         CKStartupTime = 1759045795;
     };
     "com.apple.calaccessd" =     {
-        CalContactsProviderHistoryToken = {length = 760, bytes = 0x62706c69 73743030 d4010203 04050607 ... 00000000 00000266 };
+        CalContactsProviderHistoryToken = {length = 753, bytes = 0x62706c69 73743030 d4010203 04050607 ... 00000000 00000261 };
     };
     "com.apple.calculator" =     {
         LastResultValue = "4916666666666666666666666666666667E-32";
@@ -18513,7 +18513,7 @@
             exceededLimit = 0;
         };
         GKURLPatternCacheBagURLUserDefaultsKey = {length = 307, bytes = 0x62706c69 73743030 d4010203 04050607 ... 00000000 000000f9 };
-        GKURLPatternCacheExpirationDateUserDefaultsKey = "2025-10-02 12:22:58 +0000";
+        GKURLPatternCacheExpirationDateUserDefaultsKey = "2025-10-02 13:23:00 +0000";
     };
     "com.apple.generativepartnerservicesettings" =     {
         gatMigrationComplete2 = 1;
@@ -19723,7 +19723,7 @@
         LastOSLaunchVersion = 24D81;
         LimitReachedAlertShown =         (
         );
-        OwnedDeviceLastPublishDate = "2025-10-02 11:56:25 +0000";
+        OwnedDeviceLastPublishDate = "2025-10-02 13:09:28 +0000";
         PersistenceLayerVersion = 28;
         "ProductInfoManager.oneTimeMigration" = 1;
         "baseDate.LocalBeaconingManager" = "2025-09-20 15:10:37 +0000";
@@ -20090,9 +20090,9 @@
                 "hk818/" =                 {
                     c = 1668676239;
                     v = dOAhuYypi5edfqSyyRiTFawaROkXYmKAh7QCBXbOwVsvpyzcinVaxTJCpmzxtOqyaFXINnVUdSJClkvZtLYfKiRmiFcHW7cCR7OurlUWXhSm28Vi6LXLRK57TOrKkiKmr7eH6NQKBXNMsmIvXQbMIscDhTjwvvHmdDwyOqSOw5kA;
-                    w = 3995550;
+                    w = 6921289;
                 };
-                w = 43262;
+                w = 19441;
                 x = 1288271;
             };
         };
@@ -20119,18 +20119,18 @@
         "_DKThrottledActivityLast_DKKnowledgeStorageLogging_DKKnowledgeStorageDidInsertEventsNotification:/app/mediaUsageActivityDate" = "2025-09-28 07:53:07 +0000";
         "_DKThrottledActivityLast_DKKnowledgeStorageLogging_DKKnowledgeStorageDidInsertEventsNotification:/app/usageActivityDate" = "2025-04-30 14:58:55 +0000";
         "_DKThrottledActivityLast_DKKnowledgeStorageLogging_DKKnowledgeStorageDidInsertEventsNotification:/app/webUsageActivityDate" = "2025-09-28 07:36:18 +0000";
-        "_DKThrottledActivityLast_DKKnowledgeStorageLogging_DKKnowledgeStorageDidInsertEventsNotification:/notification/usageActivityDate" = "2025-10-02 12:10:45 +0000";
+        "_DKThrottledActivityLast_DKKnowledgeStorageLogging_DKKnowledgeStorageDidInsertEventsNotification:/notification/usageActivityDate" = "2025-10-02 13:23:31 +0000";
         "_DKThrottledActivityLast_DKKnowledgeStorageLogging_DKKnowledgeStorageDidInsertEventsNotification:/portrait/entityActivityDate" = "2025-04-24 08:13:49 +0000";
         "_DKThrottledActivityLast_DKKnowledgeStorageLogging_DKKnowledgeStorageDidInsertEventsNotification:/portrait/topicActivityDate" = "2025-04-22 09:04:01 +0000";
         "_DKThrottledActivityLast_DKKnowledgeStorageLogging_DKKnowledgeStorageDidInsertLocalEventsNotification:/app/mediaUsageActivityDate" = "2025-09-28 07:53:07 +0000";
         "_DKThrottledActivityLast_DKKnowledgeStorageLogging_DKKnowledgeStorageDidInsertLocalEventsNotification:/app/webUsageActivityDate" = "2025-09-28 07:36:18 +0000";
-        "_DKThrottledActivityLast_DKKnowledgeStorageLogging_DKKnowledgeStorageDidInsertLocalEventsNotification:/notification/usageActivityDate" = "2025-10-02 12:10:45 +0000";
+        "_DKThrottledActivityLast_DKKnowledgeStorageLogging_DKKnowledgeStorageDidInsertLocalEventsNotification:/notification/usageActivityDate" = "2025-10-02 13:23:31 +0000";
         "_DKThrottledActivityLast_DKKnowledgeStorageLogging_DKKnowledgeStorageDidInsertLocalEventsNotification:/portrait/entityActivityDate" = "2025-04-24 08:13:49 +0000";
         "_DKThrottledActivityLast_DKKnowledgeStorageLogging_DKKnowledgeStorageDidInsertLocalEventsNotification:/portrait/topicActivityDate" = "2025-04-22 09:04:02 +0000";
         "_DKThrottledActivityLast_DKKnowledgeStorageLogging_DKKnowledgeStorageDidTombstoneEventsNotification:/app/webUsageActivityDate" = "2024-10-18 18:00:08 +0000";
         "_DKThrottledActivityLasthandshake:A5DA0B1D-0C2C-5F20-8732-7881452177F9ActivityDate" = "2025-09-30 05:22:42 +0000";
         "_DKThrottledActivityLasthandshake:rapport:88D75599-44AD-433A-9990-0434122B79BCActivityDate" = "2024-10-17 21:30:44 +0000";
-        kCDIntentDeletionContactStoreChangeHistoryToken = {length = 760, bytes = 0x62706c69 73743030 d4010203 04050607 ... 00000000 00000266 };
+        kCDIntentDeletionContactStoreChangeHistoryToken = {length = 753, bytes = 0x62706c69 73743030 d4010203 04050607 ... 00000000 00000261 };
         kCDIntentDeletionPendingDeletesQueued = 0;
     };
     "com.apple.lighthouse.PnROnDeviceWoker.default-data-worker" =     {
@@ -20151,8 +20151,8 @@
         "com.apple.biome.self.processedstreamLastBookmarkTrackTime" = "781093845.8466001";
     };
     "com.apple.lighthouse.siri.IFTranscriptIngestor" =     {
-        "IntelligenceFlow.IFRequestTelemetryLastCollectionEndTime" = "781094333.72992";
-        "com.apple.lighthouse.siri.IFTranscriptIngestorLastCollectionEndTime" = "781094333.723575";
+        "IntelligenceFlow.IFRequestTelemetryLastCollectionEndTime" = "781102412.431967";
+        "com.apple.lighthouse.siri.IFTranscriptIngestorLastCollectionEndTime" = "781102412.428665";
     };
     "com.apple.liveactivitiesd" =     {
         KnownClients =         (
@@ -20752,8 +20752,8 @@
     };
     "com.apple.mmcs" =     {
         "report.LastFailedCheckDate" = "01/01/2001, 00:00:00.0000";
-        "report.LastSuccessfulCheckDate" = "10/02/2025, 13:07:57.7080";
-        "report.LastSuccessfulCheckTime" = "781099677.707914";
+        "report.LastSuccessfulCheckDate" = "10/02/2025, 14:08:39.6540";
+        "report.LastSuccessfulCheckTime" = "781103319.6537271";
         "report.ReportLevels" =         {
             "auth.simulcast.response.signing.key.public.current" = "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEAocv/GNpYVOMkps9l8bGHZH8JvMEFQavMbuRpHNch+VpT7abwkns3kA7SnvG6Lv37ko5OkTLJc5ZmtO7fkbonw==";
             "auth.simulcast.response.signing.key.public.prior" = "";
@@ -23462,7 +23462,7 @@
         "com.apple.AnnotationKit.userDefaultsVersion" = 1;
     };
     "com.apple.quicklook.ThumbnailsAgent" =     {
-        QLMTCacheSizeLastCheckAbsoluteTime = "780963089.5333869";
+        QLMTCacheSizeLastCheckAbsoluteTime = "781100900.0281169";
     };
     "com.apple.rapport" =     {
         familySyncedName = "StandAloneComplex\\U2019s MacBook Pro";
@@ -23618,7 +23618,7 @@
         "XPCActivityLastAttemptDate.com.apple.routined.cloudkit.infrequentFetchAllZones" = "2025-04-24 06:36:37 +0000";
         "XPCActivityLastAttemptDate.com.apple.routined.cloudkit.initializeSentinelZone" = "2025-10-02 03:46:41 +0000";
         "XPCActivityLastAttemptDate.com.apple.routined.learnedLocationEngine.train" = "2025-10-02 10:31:57 +0000";
-        "XPCActivityLastAttemptDate.com.apple.routined.locationAwareness.heartbeat" = "2025-10-02 11:24:42 +0000";
+        "XPCActivityLastAttemptDate.com.apple.routined.locationAwareness.heartbeat" = "2025-10-02 12:24:11 +0000";
         "XPCActivityLastAttemptDate.com.apple.routined.metrics.daily" = "2025-10-01 19:56:39 +0000";
         "XPCActivityLastAttemptDate.com.apple.routined.persistence.mirroring.background" = "2025-10-01 19:54:57 +0000";
         "XPCActivityLastAttemptDate.com.apple.routined.persistence.mirroring.post-install" = "2025-09-20 15:21:49 +0000";
@@ -23628,7 +23628,7 @@
         "XPCActivityLastCompleteDate.com.apple.routined.cloudkit.infrequentFetchAllZones" = "2025-04-24 06:38:31 +0000";
         "XPCActivityLastCompleteDate.com.apple.routined.cloudkit.initializeSentinelZone" = "2025-10-02 03:46:44 +0000";
         "XPCActivityLastCompleteDate.com.apple.routined.learnedLocationEngine.train" = "2025-10-02 10:32:24 +0000";
-        "XPCActivityLastCompleteDate.com.apple.routined.locationAwareness.heartbeat" = "2025-10-02 11:24:42 +0000";
+        "XPCActivityLastCompleteDate.com.apple.routined.locationAwareness.heartbeat" = "2025-10-02 12:24:11 +0000";
         "XPCActivityLastCompleteDate.com.apple.routined.metrics.daily" = "2025-10-01 19:56:44 +0000";
         "XPCActivityLastCompleteDate.com.apple.routined.persistence.mirroring.background" = "2025-10-01 19:55:23 +0000";
         "XPCActivityLastCompleteDate.com.apple.routined.persistence.mirroring.post-install" = "2025-09-20 15:22:45 +0000";
@@ -23758,10 +23758,10 @@
     "com.apple.sharingd" =     {
         AutoUnlockPresentedBluetoothError = 0;
         AutoUnlockPresentedWiFiError = 0;
-        "HashManager-LastConsumedHistoryTokenKey" = {length = 760, bytes = 0x62706c69 73743030 d4010203 04050607 ... 00000000 00000266 };
+        "HashManager-LastConsumedHistoryTokenKey" = {length = 753, bytes = 0x62706c69 73743030 d4010203 04050607 ... 00000000 00000261 };
         "HashManager-LastDeviceIDHashKey" = "-1473443321646241175";
         "HashManager-LastRebuiltDateKey" = "2025-09-28 07:54:21 +0000";
-        "HashManager-LastUpdatedDateKey" = "2025-09-28 07:54:21 +0000";
+        "HashManager-LastUpdatedDateKey" = "2025-10-02 12:45:41 +0000";
         "HashManager-StoredDatabaseVersionKey" = 3;
         OneTimeAirDropReset2 = 1;
         SDLastConnectedDateByDeviceID =         {
@@ -24497,12 +24497,12 @@
             );
             stats =             (
                 "2025-10-02:[2]queryItemExtractedCount:36",
-                "2025-10-02:[4]queryItemUpdatedCount:2043",
+                "2025-10-02:[2]queryItemUpdatedCount:36",
                 "2025-10-02:processing all done:25",
                 "2025-10-02:completed reporting progress:28",
+                "2025-10-02:currentPid:1388",
                 "2025-10-02:text processing all done:23",
-                "2025-10-02:[2]queryItemUpdatedCount:36",
-                "2025-10-02:currentPid:922"
+                "2025-10-02:[4]queryItemUpdatedCount:2043"
             );
             suggestedEventsGenCompleteDay = 0;
             "suggestedEventsGenCompleteDay#com.apple.MobileSMS" = 0;
@@ -24918,7 +24918,7 @@
         "TPSAnalyticsUsageEvents_doc6874b3e4-732f-4baf-a3d0-b1cc63ebc59b_UsageEventsProcessed" = {length = 138, bytes = 0x62706c69 73743030 d4010203 04050607 ... 00000000 0000005d };
         "TPSAnalyticsUsageEvents_docbd074cf9-07c6-47f3-bbf6-22758d798695_PreHintUsage" = {length = 139, bytes = 0x62706c69 73743030 d4010203 04050607 ... 00000000 0000005e };
         "TPSAnalyticsUsageEvents_docbd074cf9-07c6-47f3-bbf6-22758d798695_UsageEventsProcessed" = {length = 138, bytes = 0x62706c69 73743030 d4010203 04050607 ... 00000000 0000005d };
-        TPSContentUpdatedNotificationDate = "2025-10-02 11:49:01 +0000";
+        TPSContentUpdatedNotificationDate = "2025-10-02 12:51:52 +0000";
         TPSDCloudHintDisplayed =         (
             WindowTiling,
             "CID-stacks-learn-organize-desktop",
@@ -25608,7 +25608,7 @@
         "ChoiceRequests.CollectionIdentifiers" =         (
         );
         "ChoiceRequests.ImageFiles" =         (
-            {length = 1775, bytes = 0x62706c69 73743030 d6010203 04050607 ... 00000000 000006af }
+            {length = 1770, bytes = 0x62706c69 73743030 d6010203 04050607 ... 00000000 000006aa }
         );
         "ChoiceRequests.PersonIdentifiers" =         (
         );
@@ -25655,7 +25655,7 @@
             "PDAuxiliaryCapabilityManager.checkPassRegistrationState" = "1994-10-02 07:51:47 +0000";
             "PDCardFileManager.RevocationCheck" = "1994-10-02 07:51:47 +0000";
             "PDCloudStoreClientID.ContainerSetupShortInterval" = "2025-09-27 21:20:56 +0000";
-            "PDCloudStoreClientID.PDPassChangesActivityIdentifier" = "2025-10-02 12:47:08 +0000";
+            "PDCloudStoreClientID.PDPassChangesActivityIdentifier" = "2025-10-02 13:32:08 +0000";
             "PDCloudStoreClientID.PDPassSyncActivityIdentifier" = "1994-10-02 07:51:47 +0000";
             "PDIssuerBindingManager.checkAllPasses" = "1994-10-02 07:51:47 +0000";
             "PDMapsBrandAndMerchantUpdaterClientIdentifier.PDMapsBrandAndMerchantUpdaterActivityIdentifier" = "1994-10-02 07:51:47 +0000";
@@ -25708,7 +25708,7 @@
             "com.apple.SafariBookmarksSyncAgent.XPC.TabCollectionMaintenance" = "1994-10-02 07:51:47 +0000";
             "com.apple.SafariBookmarksSyncAgent.XPC.ZoneSubscriptionRegistration" = "2025-09-28 08:17:03 +0000";
             "com.apple.ScreenTimeAgent.activity.clean-up-expired-store-items" = "2025-09-27 05:05:45 +0000";
-            "com.apple.UsageTrackingAgent.activity.device-activity-collection" = "2025-10-02 12:03:32 +0000";
+            "com.apple.UsageTrackingAgent.activity.device-activity-collection" = "2025-10-02 13:03:32 +0000";
             "com.apple.UsageTrackingAgent.activity.uncategorized-web-usage" = "2025-10-02 07:50:48 +0000";
             "com.apple.XProtect.PluginService.agent.fast.scan" = "2025-09-23 21:21:37 +0000";
             "com.apple.XProtect.PluginService.agent.scan" = "2025-10-02 07:50:48 +0000";
@@ -25742,10 +25742,10 @@
             "com.apple.backgroundassets.periodic_check" = "2025-09-30 00:02:06 +0000";
             "com.apple.betaenrollment.verify" = "1994-10-02 07:51:47 +0000";
             "com.apple.biome.prune-expired-events" = "2025-10-02 07:50:48 +0000";
-            "com.apple.biomesyncd.cascade.periodic-sync" = "2025-10-02 11:50:48 +0000";
+            "com.apple.biomesyncd.cascade.periodic-sync" = "2025-10-02 13:50:48 +0000";
             "com.apple.biomesyncd.database-maintenance" = "2025-10-02 07:50:48 +0000";
             "com.apple.biomesyncd.metrics-collection" = "2025-10-02 07:50:48 +0000";
-            "com.apple.biomesyncd.periodic-sync" = "2025-10-02 11:51:31 +0000";
+            "com.apple.biomesyncd.periodic-sync" = "2025-10-02 13:51:31 +0000";
             "com.apple.bird.analytics-report" = "2025-09-20 01:40:47 +0000";
             "com.apple.bird.app-telemetry" = "2025-09-20 01:40:42 +0000";
             "com.apple.bird.cache-delete.push" = "2025-09-20 01:40:39 +0000";
@@ -25795,10 +25795,10 @@
             "com.apple.coreduetd.intentsprivacydeletions" = "1994-10-02 07:51:47 +0000";
             "com.apple.coreduetd.knowledge.user" = "2025-10-02 21:22:18 +0000";
             "com.apple.corespotlightd.updateContacts" = "2025-10-02 07:50:48 +0000";
-            "com.apple.dataaccess.dataaccessd.dailyAnalytics" = "2025-10-01 12:44:55 +0000";
+            "com.apple.dataaccess.dataaccessd.dailyAnalytics" = "2025-10-02 13:44:55 +0000";
             "com.apple.dataaccess.dataaccessd.dailyrefresh" = "2025-10-01 23:14:56 +0000";
-            "com.apple.dataaccess.dataaccessd.fetch.3314E213-A783-489C-971E-E59AB7E2B336" = "2025-10-02 11:54:57 +0000";
-            "com.apple.dataaccess.dataaccessd.fetch.9FF3E0A9-656C-4A57-8608-5A35DF7BF4AB" = "2025-10-02 11:54:51 +0000";
+            "com.apple.dataaccess.dataaccessd.fetch.3314E213-A783-489C-971E-E59AB7E2B336" = "2025-10-02 13:24:57 +0000";
+            "com.apple.dataaccess.dataaccessd.fetch.9FF3E0A9-656C-4A57-8608-5A35DF7BF4AB" = "2025-10-02 13:24:51 +0000";
             "com.apple.dataaccess.dataaccessd.fetch.C46F9452-8D4C-401D-BB19-8D568A2DDC70" = "2025-10-02 11:15:26 +0000";
             "com.apple.dataaccess.dataaccessd.retry.0D9062FE-589C-49EC-8FA6-15FC490D6276" = "2025-09-25 16:55:57 +0000";
             "com.apple.dataaccess.dataaccessd.retry.360A0392-9AF3-4FCC-95B9-135137BADCF2" = "2025-09-28 06:28:31 +0000";
@@ -25809,7 +25809,7 @@
             "com.apple.duetexpertd.anchormodeltraining" = "2025-09-20 01:40:38 +0000";
             "com.apple.duetexpertd.appdirectory" = "2025-10-02 07:50:48 +0000";
             "com.apple.duetexpertd.appdirectorylogging" = "2025-10-02 07:50:48 +0000";
-            "com.apple.duetexpertd.apppredictionupdate" = "2025-10-02 11:50:48 +0000";
+            "com.apple.duetexpertd.apppredictionupdate" = "2025-10-02 13:50:48 +0000";
             "com.apple.duetexpertd.atxtrain" = "2025-09-20 01:40:38 +0000";
             "com.apple.duetexpertd.biome-ui-feedback-result-stream-writing" = "2025-10-02 07:50:48 +0000";
             "com.apple.duetexpertd.biomepruning" = "2025-10-02 07:50:48 +0000";
@@ -25817,7 +25817,7 @@
             "com.apple.duetexpertd.blendingbiomestreamlogging" = "2025-10-02 07:50:48 +0000";
             "com.apple.duetexpertd.blendingfeedbackmetricslogging" = "2025-10-02 07:50:48 +0000";
             "com.apple.duetexpertd.controlsupdate" = "1994-10-02 07:51:47 +0000";
-            "com.apple.duetexpertd.everydayshortcuts" = "2025-10-02 11:50:48 +0000";
+            "com.apple.duetexpertd.everydayshortcuts" = "2025-10-02 13:50:48 +0000";
             "com.apple.duetexpertd.focusMetricsLogging" = "2025-10-02 07:50:48 +0000";
             "com.apple.duetexpertd.idle_time_begin_trigger" = "2025-09-15 23:01:19 +0000";
             "com.apple.duetexpertd.infoStorePeriodicCleanup" = "2025-10-02 07:50:48 +0000";
@@ -25838,7 +25838,7 @@
             "com.apple.email.EDRemoteContentPersistence.analyticsScheduler" = "1994-10-02 07:51:47 +0000";
             "com.apple.email.maild.sendlaterdelivery.alarmrestart" = "2025-09-30 17:21:42 +0000";
             "com.apple.exchange.exchangesyncd.accountauthupgrader" = "2025-09-25 10:58:07 +0000";
-            "com.apple.exchangesyncd.activity.maintenance" = "2025-10-02 12:08:35 +0000";
+            "com.apple.exchangesyncd.activity.maintenance" = "2025-10-02 13:08:35 +0000";
             "com.apple.exchangesyncd.polling_3F3ACF77-153B-47C5-A56A-C474809E4C66" = "2025-09-28 22:29:30 +0000";
             "com.apple.exchangesyncd.polling_8F0E7751-BBF2-478E-88DD-7365503C09A9" = "2025-09-26 19:05:00 +0000";
             "com.apple.feedbackd.process-notifications" = "2025-08-09 06:24:53 +0000";
@@ -25866,15 +25866,15 @@
             "com.apple.intelligenceplatform.IntelligencePlatformCore.EventAndFeedbackDailyProcessing" = "2025-10-02 07:50:48 +0000";
             "com.apple.intelligenceplatform.IntelligencePlatformCore.FullPipeline" = "2025-09-20 01:40:38 +0000";
             "com.apple.intelligenceplatform.IntelligencePlatformCore.FullPipeline.LongRunning" = "2025-10-01 06:53:07 +0000";
-            "com.apple.intelligenceplatform.IntelligencePlatformCore.GlobalKnowledgeTwoHourPrune" = "2025-10-02 11:50:48 +0000";
+            "com.apple.intelligenceplatform.IntelligencePlatformCore.GlobalKnowledgeTwoHourPrune" = "2025-10-02 13:50:48 +0000";
             "com.apple.intelligenceplatform.IntelligencePlatformCore.ResetDisabledViewsDaily" = "2025-10-02 07:50:48 +0000";
             "com.apple.intelligenceplatform.IntelligencePlatformCore.ViewDaily" = "2025-10-02 07:50:48 +0000";
             "com.apple.intelligenceplatform.IntelligencePlatformCore.ViewDailyWithNetworking" = "2025-10-02 07:50:48 +0000";
-            "com.apple.intelligenceplatform.IntelligencePlatformCore.ViewEvery21Minutes" = "2025-10-02 11:50:49 +0000";
-            "com.apple.intelligenceplatform.IntelligencePlatformCore.ViewEvery2Hours" = "2025-10-02 11:50:48 +0000";
+            "com.apple.intelligenceplatform.IntelligencePlatformCore.ViewEvery21Minutes" = "2025-10-02 13:18:30 +0000";
+            "com.apple.intelligenceplatform.IntelligencePlatformCore.ViewEvery2Hours" = "2025-10-02 13:50:48 +0000";
             "com.apple.intelligenceplatform.IntelligencePlatformCore.ViewEvery4Hours" = "2025-10-02 11:50:48 +0000";
-            "com.apple.intelligenceplatform.IntelligencePlatformCore.ViewEvery7Minutes" = "2025-10-02 10:29:00 +0000";
-            "com.apple.intelligenceplatform.IntelligencePlatformCore.ViewLive" = "2025-10-02 12:00:30 +0000";
+            "com.apple.intelligenceplatform.IntelligencePlatformCore.ViewEvery7Minutes" = "2025-10-02 12:29:38 +0000";
+            "com.apple.intelligenceplatform.IntelligencePlatformCore.ViewLive" = "2025-10-02 13:00:06 +0000";
             "com.apple.intelligenceplatform.IntelligencePlatformCore.ViewWeekly" = "1994-10-02 07:51:47 +0000";
             "com.apple.intelligentroutingd.DBCleanupXPCActivityIdentifier" = "2025-09-20 01:40:37 +0000";
             "com.apple.intelligentroutingd.MALoaderXPCActivityIdentifier" = "2025-09-20 01:40:39 +0000";
@@ -25951,7 +25951,7 @@
             "com.apple.routined.assets" = "1994-10-02 07:51:47 +0000";
             "com.apple.routined.cloudkit.initializeSentinelZone" = "1994-10-02 07:51:47 +0000";
             "com.apple.routined.learnedLocationEngine.train" = "2025-10-02 10:25:19 +0000";
-            "com.apple.routined.locationAwareness.heartbeat" = "2025-10-02 11:54:08 +0000";
+            "com.apple.routined.locationAwareness.heartbeat" = "2025-10-02 12:54:08 +0000";
             "com.apple.routined.metrics.daily" = "1994-10-02 07:51:47 +0000";
             "com.apple.routined.persistence.mirroring.background" = "1994-10-02 07:51:47 +0000";
             "com.apple.routined.persistence.mirroring.backup" = "2025-08-09 06:28:03 +0000";
@@ -25966,11 +25966,11 @@
             "com.apple.searchd.loadtrial" = "2025-10-02 19:50:48 +0000";
             "com.apple.searchparty.BeaconStore.Analytics" = "1994-10-02 07:51:47 +0000";
             "com.apple.searchpartyd.BeaconSharing" = "2025-09-28 07:54:26 +0000";
-            "com.apple.searchpartyd.OwnDevicePublish" = "2025-10-02 12:09:26 +0000";
+            "com.apple.searchpartyd.OwnDevicePublish" = "2025-10-02 13:24:26 +0000";
             "com.apple.securityd.daily" = "2025-10-02 07:50:48 +0000";
             "com.apple.securityd.entropyhealth" = "2025-10-02 07:50:48 +0000";
             "com.apple.securityd.kcsharing.resync" = "1994-10-02 07:51:47 +0000";
-            "com.apple.securityd.prng" = "2025-10-02 11:50:48 +0000";
+            "com.apple.securityd.prng" = "2025-10-02 13:50:48 +0000";
             "com.apple.securityuploadd.triggerupload" = "2025-10-02 07:50:48 +0000";
             "com.apple.sesd.keySyncStateStatistics" = "1994-10-02 07:51:47 +0000";
             "com.apple.siri.cdm.xpc_activity.maintenance" = "1994-10-02 07:51:47 +0000";
@@ -25979,7 +25979,7 @@
             "com.apple.siri.inference.FirstBoot" = "2025-09-28 07:55:08 +0000";
             "com.apple.siri.inference.SiriInference.HolidaysDBUpdater" = "1994-10-02 07:51:47 +0000";
             "com.apple.siri.inference.Stitching.ProcessOldIntents" = "1994-10-02 07:51:47 +0000";
-            "com.apple.siri.inference.UserEngagementSignalCollection" = "2025-10-02 11:21:56 +0000";
+            "com.apple.siri.inference.UserEngagementSignalCollection" = "2025-10-02 12:52:13 +0000";
             "com.apple.siri.remembers.ScrubInteractionStore" = "1994-10-02 07:51:47 +0000";
             "com.apple.siri.vocabulary.indexMaintenance" = "1994-10-02 07:51:47 +0000";
             "com.apple.siri.xpc_activity.cloudkitsync.weekly" = "1994-10-02 07:51:47 +0000";
@@ -26001,9 +26001,9 @@
             "com.apple.sirittsd.weeklyVoiceUpdate" = "1994-10-02 07:51:47 +0000";
             "com.apple.spotlight.modelUpdating" = "2025-09-20 01:41:15 +0000";
             "com.apple.spotlight.sendmlfeedback" = "2025-09-20 01:41:11 +0000";
-            "com.apple.spotlight.textstore.Analytics" = "2025-10-02 11:44:44 +0000";
+            "com.apple.spotlight.textstore.Analytics" = "2025-10-02 12:49:44 +0000";
             "com.apple.statuskit.maintenance" = "1994-10-02 07:51:47 +0000";
-            "com.apple.suggestd.analytics-heartbeat" = "2025-10-02 10:50:48 +0000";
+            "com.apple.suggestd.analytics-heartbeat" = "2025-10-02 13:50:48 +0000";
             "com.apple.suggestd.cd-cache-rebuild" = "2025-10-02 07:50:48 +0000";
             "com.apple.suggestd.harvested-url-metric-upload" = "2025-10-02 07:50:48 +0000";
             "com.apple.suggestd.identityanalysis" = "2025-10-02 07:50:48 +0000";
@@ -26034,14 +26034,14 @@
             "com.apple.weatherd.notifications" = "2025-09-28 08:07:47 +0000";
             "com.apple.windowmanager" = "2025-09-24 21:53:41 +0000";
             "com.example.finder.RemoveOldTrashItems" = "1994-10-02 07:51:47 +0000";
-            "com.raycast.macos.calendar" = "2025-10-02 12:09:14 +0000";
+            "com.raycast.macos.calendar" = "2025-10-02 13:24:14 +0000";
             "com.raycast.macos.extensions.autoupdate.activity" = "2025-10-02 11:56:42 +0000";
             "com.raycast.macos.updates" = "2025-10-02 12:23:06 +0000";
-            "com.raycast.quicklinks.sync" = "2025-10-02 11:54:26 +0000";
-            "com.raycast.snippets.sync" = "2025-10-02 11:54:26 +0000";
+            "com.raycast.quicklinks.sync" = "2025-10-02 13:24:26 +0000";
+            "com.raycast.snippets.sync" = "2025-10-02 13:24:26 +0000";
             "pl.maketheweb.InsiderKit.upload" = "2025-10-02 01:43:02 +0000";
             "pl.maketheweb.cleanshotx.checkUser" = "2025-10-02 13:41:13 +0000";
-            "pl.maketheweb.cleanshotx.cleanMedia" = "2025-10-02 09:22:51 +0000";
+            "pl.maketheweb.cleanshotx.cleanMedia" = "2025-10-02 13:22:52 +0000";
         };
         ProductBuildVersion = 25A354;
         VersionSpecificActivitiesRun =         (
@@ -27388,7 +27388,7 @@
         SigninDelayHintMsgKey = 20;
         XVActivatationDate = "2024-10-19 21:52:12 +0000";
         XVCurrentIAMDisplayDurationKey = 1800;
-        XVCurrentIAMDisplayTimeKey = "2025-10-02 11:54:24 +0000";
+        XVCurrentIAMDisplayTimeKey = "2025-10-02 13:24:26 +0000";
         XVCurrentIAMIndexKey = 0;
         XVFMInstallationId = "418947B6-333B-4267-9C64-14B9A6E58D27";
         XVLastConnectTimeArray =         (
@@ -29369,12 +29369,12 @@
     "com.jetson.24hourwallpaper-setapp" =     {
         CurrentDesktopImages =         {
             "37D8832A-2D66-02CA-B9F7-8F30A301B230" =             {
-                date = "2025-10-02 12:10:02 +0000";
-                path = "/Users/s-a-c/Library/Containers/com.jetson.24hourwallpaper-setapp/Data/Library/Application Support/24 Hour Wallpaper/Desktop Pictures/california_highland-lakes_24h-day_4-5120x2880__00c02o01oc.png";
+                date = "2025-10-02 13:25:02 +0000";
+                path = "/Users/s-a-c/Library/Containers/com.jetson.24hourwallpaper-setapp/Data/Library/Application Support/24 Hour Wallpaper/Desktop Pictures/illinois_chicago_river_2_24h-day_6-5120x2880__00c02o01oc.png";
             };
         };
         CurrentScenes =         {
-            "37D8832A-2D66-02CA-B9F7-8F30A301B230" = "california_highland-lakes_24h";
+            "37D8832A-2D66-02CA-B9F7-8F30A301B230" = "illinois_chicago_river_2_24h";
         };
         DidOpenLocationSettings = 1;
         DockAndMenuBarIconOptions = 2;
@@ -29407,7 +29407,7 @@
             "alabamahills_1_mix-sunset_2-5120x2880__00c02o01oc.png" = "780515704.28353";
             "alabamahills_24h-day_1-5120x2880__00c02o01oc.png" = "780994502.292949";
             "alabamahills_24h-day_3-5120x2880__00c02o01oc.png" = "780918905.273617";
-            "alabamahills_24h-day_5-5120x2880__00c02o01oc.png" = "780842401.1783921";
+            "alabamahills_24h-day_5-5120x2880__00c02o01oc.png" = "781100102.0776139";
             "alabamahills_24h-day_8-5120x2880__00c02o01oc.png" = "780943802.876386";
             "alabamahills_24h-night_1-5120x2880__00c02o01oc.png" = "780692404.112341";
             "alabamahills_24h-night_4-5120x2880__00c02o01oc.png" = "781051802.659044";
@@ -29418,7 +29418,7 @@
             "alabamahills_24h-sunset_8-5120x2880__00c02o01oc.png" = "780777901.689183";
             "amsterdam_painted_24h-day_1-5120x2880__00c02o01oc.png" = "780825000.839726";
             "amsterdam_painted_24h-day_3-5120x2880__00c02o01oc.png" = "781006501.78915";
-            "amsterdam_painted_24h-day_5-5120x2880__00c02o01oc.png" = "780671104.0180171";
+            "amsterdam_painted_24h-day_5-5120x2880__00c02o01oc.png" = "781102580.6263911";
             "amsterdam_painted_24h-day_6-5120x2880__00c02o01oc.png" = "780589504.558697";
             "amsterdam_painted_24h-day_8-5120x2880__00c02o01oc.png" = "780945002.168841";
             "amsterdam_painted_24h-night_4-5120x2880__00c02o01oc.png" = "781062901.737842";
@@ -29537,7 +29537,7 @@
             "boston_charles_river_2_24h-day_3-5120x2880__00c02o01oc.png" = "781008001.7094671";
             "boston_charles_river_2_24h-day_4-5120x2880__00c02o01oc.png" = "781008007.8664531";
             "boston_charles_river_2_24h-day_5-5120x2880__00c02o01oc.png" = "780841801.900915";
-            "boston_charles_river_2_24h-day_6-5120x2880__00c02o01oc.png" = "780762601.443073";
+            "boston_charles_river_2_24h-day_6-5120x2880__00c02o01oc.png" = "781103702.119143";
             "boston_charles_river_2_24h-day_8-5120x2880__00c02o01oc.png" = "780683405.108513";
             "boston_charles_river_2_24h-night_1-5120x2880__00c02o01oc.png" = "780780600.7882611";
             "boston_charles_river_2_24h-night_4-5120x2880__00c02o01oc.png" = "780622816.765959";
@@ -29629,7 +29629,7 @@
             "california_catalina_avalon_left_24h-sunset_3-5120x2880__00c02o01oc.png" = "781033202.589843";
             "california_catalina_avalon_left_24h-sunset_7-5120x2880__00c02o01oc.png" = "780950247.6355751";
             "california_catalina_avalon_right_24h-day_1-5120x2880__00c02o01oc.png" = "780910201.350745";
-            "california_catalina_avalon_right_24h-day_5-5120x2880__00c02o01oc.png" = "780756601.478726";
+            "california_catalina_avalon_right_24h-day_5-5120x2880__00c02o01oc.png" = "781100771.981419";
             "california_catalina_avalon_right_24h-day_6-5120x2880__00c02o01oc.png" = "780847202.020254";
             "california_catalina_avalon_right_24h-day_7-5120x2880__00c02o01oc.png" = "780681003.85049";
             "california_catalina_avalon_right_24h-night_1-5120x2880__00c02o01oc.png" = "780693304.25273";
@@ -29710,7 +29710,7 @@
             "california_highland-lakes_2023_24h-sunset_8-5120x2880__00c02o01oc.png" = "780605404.67996";
             "california_highland-lakes_24h-day_1-5120x2880__00c02o01oc.png" = "780739800.756868";
             "california_highland-lakes_24h-day_2-5120x2880__00c02o01oc.png" = "781004101.778331";
-            "california_highland-lakes_24h-day_4-5120x2880__00c02o01oc.png" = "781099802.074954";
+            "california_highland-lakes_24h-day_4-5120x2880__00c02o01oc.png" = "781100094.931145";
             "california_highland-lakes_24h-day_5-5120x2880__00c02o01oc.png" = "780846601.207288";
             "california_highland-lakes_24h-night_1-5120x2880__00c02o01oc.png" = "780695106.508531";
             "california_highland-lakes_24h-night_2-5120x2880__00c02o01oc.png" = "780611703.545653";
@@ -29724,7 +29724,7 @@
             "california_losangeles_2019_24h-day_1-5120x2880__00c02o01oc.png" = "780736205.829196";
             "california_losangeles_2019_24h-day_3-5120x2880__00c02o01oc.png" = "781004701.791117";
             "california_losangeles_2019_24h-day_4-5120x2880__00c02o01oc.png" = "780576303.775803";
-            "california_losangeles_2019_24h-day_5-5120x2880__00c02o01oc.png" = "780842701.1949281";
+            "california_losangeles_2019_24h-day_5-5120x2880__00c02o01oc.png" = "781102802.149756";
             "california_losangeles_2019_24h-day_6-5120x2880__00c02o01oc.png" = "780673804.024058";
             "california_losangeles_2019_24h-day_8-5120x2880__00c02o01oc.png" = "780940940.15149";
             "california_losangeles_2019_24h-night_1-5120x2880__00c02o01oc.png" = "780782401.758611";
@@ -29766,7 +29766,6 @@
             "california_mojave-preserve_kelso-dunes-night_8-5120x2880__00c02o01oc.png" = "780897902.27277";
             "california_mojave-preserve_mid-hills-day_3-5120x2880__00c02o01oc.png" = "781005601.68378";
             "california_mojave-preserve_mid-hills-day_4-5120x2880__00c02o01oc.png" = "780576961.012766";
-            "california_mojave-preserve_mid-hills-day_5-5120x2880__00c02o01oc.png" = "780497704.21706";
             "california_mojave-preserve_mid-hills-day_6-5120x2880__00c02o01oc.png" = "780847802.573184";
             "california_mojave-preserve_mid-hills-night_3-5120x2880__00c02o01oc.png" = "780789302.131699";
             "california_mojave-preserve_mid-hills-night_5-5120x2880__00c02o01oc.png" = "781059002.6354671";
@@ -29857,7 +29856,7 @@
             "capelookout_mix-sunset_5-5120x2880__00c02o01oc.png" = "780948194.833517";
             "catalina_1_mix-day_1-5120x2880__00c02o01oc.png" = "780651605.247142";
             "catalina_1_mix-day_3-5120x2880__00c02o01oc.png" = "780834301.835566";
-            "catalina_1_mix-day_5-5120x2880__00c02o01oc.png" = "780757201.539341";
+            "catalina_1_mix-day_5-5120x2880__00c02o01oc.png" = "781103279.7551841";
             "catalina_1_mix-day_6-5120x2880__00c02o01oc.png" = "781020601.8444771";
             "catalina_1_mix-day_7-5120x2880__00c02o01oc.png" = "780937202.332973";
             "catalina_1_mix-night_2-5120x2880__00c02o01oc.png" = "780955802.3319269";
@@ -30072,7 +30071,7 @@
             "illinois_chicago_river_2_24h-day_1-5120x2880__00c02o01oc.png" = "780821400.991116";
             "illinois_chicago_river_2_24h-day_4-5120x2880__00c02o01oc.png" = "781010401.804796";
             "illinois_chicago_river_2_24h-day_5-5120x2880__00c02o01oc.png" = "780930601.531238";
-            "illinois_chicago_river_2_24h-day_6-5120x2880__00c02o01oc.png" = "780675303.8789361";
+            "illinois_chicago_river_2_24h-day_6-5120x2880__00c02o01oc.png" = "781104302.128864";
             "illinois_chicago_river_2_24h-day_7-5120x2880__00c02o01oc.png" = "780764701.6096621";
             "illinois_chicago_river_2_24h-day_8-5120x2880__00c02o01oc.png" = "780596703.80222";
             "illinois_chicago_river_2_24h-night_2-5120x2880__00c02o01oc.png" = "780525304.276292";
@@ -30084,7 +30083,8 @@
             "iss_2_mix-day_2-5120x2880__00c02o01oc.png" = "780657304.934226";
             "iss_2_mix-day_3-5120x2880__00c02o01oc.png" = "780657569.747542";
             "iss_2_mix-day_4-5120x2880__00c02o01oc.png" = "780836101.1652991";
-            "iss_2_mix-day_5-5120x2880__00c02o01oc.png" = "780928201.516618";
+            "iss_2_mix-day_5-5120x2880__00c02o01oc.png" = "781103402.152378";
+            "iss_2_mix-day_6-5120x2880__00c02o01oc.png" = "781103687.664188";
             "iss_2_mix-day_7-5120x2880__00c02o01oc.png" = "781024516.270203";
             "iss_2_mix-day_8-5120x2880__00c02o01oc.png" = "780595238.636063";
             "iss_2_mix-night_4-5120x2880__00c02o01oc.png" = "780536618.423298";
@@ -30112,6 +30112,7 @@
             "japan_tokyo_shinjuku_east_24h-day_1-5120x2880__00c02o01oc.png" = "780648303.729417";
             "japan_tokyo_shinjuku_east_24h-day_2-5120x2880__00c02o01oc.png" = "780999601.733727";
             "japan_tokyo_shinjuku_east_24h-day_4-5120x2880__00c02o01oc.png" = "780749700.5369641";
+            "japan_tokyo_shinjuku_east_24h-day_5-5120x2880__00c02o01oc.png" = "781100402.868188";
             "japan_tokyo_shinjuku_east_24h-day_8-5120x2880__00c02o01oc.png" = "780941401.6097209";
             "japan_tokyo_shinjuku_east_24h-night_1-5120x2880__00c02o01oc.png" = "780951602.388271";
             "japan_tokyo_shinjuku_east_24h-night_4-5120x2880__00c02o01oc.png" = "780533748.651608";
@@ -30157,7 +30158,6 @@
             "joshua_1_mix-day_1-5120x2880__00c02o01oc.png" = "780736504.118855";
             "joshua_1_mix-day_3-5120x2880__00c02o01oc.png" = "781005001.785856";
             "joshua_1_mix-day_4-5120x2880__00c02o01oc.png" = "781094702.108658";
-            "joshua_1_mix-day_5-5120x2880__00c02o01oc.png" = "780495604.1170861";
             "joshua_1_mix-day_8-5120x2880__00c02o01oc.png" = "781027201.847074";
             "joshua_1_mix-night_3-5120x2880__00c02o01oc.png" = "780961544.263141";
             "joshua_1_mix-night_5-5120x2880__00c02o01oc.png" = "780710704.359809";
@@ -30233,7 +30233,7 @@
             "losangeles_historiccore_24h-sunset_6-5120x2880__00c02o01oc.png" = "780862631.82042";
             "madrid_1_mix-day_4-5120x2880__00c02o01oc.png" = "780839401.851056";
             "madrid_1_mix-day_5-5120x2880__00c02o01oc.png" = "780584104.775772";
-            "madrid_1_mix-day_6-5120x2880__00c02o01oc.png" = "780676503.883746";
+            "madrid_1_mix-day_6-5120x2880__00c02o01oc.png" = "781104002.131958";
             "madrid_1_mix-day_7-5120x2880__00c02o01oc.png" = "781023776.371497";
             "madrid_1_mix-night_3-5120x2880__00c02o01oc.png" = "781049401.921326";
             "madrid_1_mix-night_5-5120x2880__00c02o01oc.png" = "780708904.2233469";
@@ -30593,7 +30593,7 @@
             "oregon_mthood_24h-sunrise_4-5120x2880__00c02o01oc.png" = "780731104.381264";
             "oregon_nature_1_mix-day_1-5120x2880__00c02o01oc.png" = "780650104.056484";
             "oregon_nature_1_mix-day_4-5120x2880__00c02o01oc.png" = "781009202.653792";
-            "oregon_nature_1_mix-day_5-5120x2880__00c02o01oc.png" = "780930901.453954";
+            "oregon_nature_1_mix-day_5-5120x2880__00c02o01oc.png" = "781101623.238903";
             "oregon_nature_1_mix-day_6-5120x2880__00c02o01oc.png" = "780930986.339089";
             "oregon_nature_1_mix-night_2-5120x2880__00c02o01oc.png" = "780610803.542312";
             "oregon_nature_1_mix-night_3-5120x2880__00c02o01oc.png" = "780877802.1261981";
@@ -30704,7 +30704,7 @@
             "seattle_cloudy_24h-sunset_5-5120x2880__00c02o01oc.png" = "780517203.153373";
             "sf_1_mix-day_2-5120x2880__00c02o01oc.png" = "780656103.77677";
             "sf_1_mix-day_3-5120x2880__00c02o01oc.png" = "780922201.497722";
-            "sf_1_mix-day_4-5120x2880__00c02o01oc.png" = "780753001.488607";
+            "sf_1_mix-day_4-5120x2880__00c02o01oc.png" = "781101563.350975";
             "sf_1_mix-day_5-5120x2880__00c02o01oc.png" = "780584704.533498";
             "sf_1_mix-day_7-5120x2880__00c02o01oc.png" = "781022657.3631409";
             "sf_1_mix-day_8-5120x2880__00c02o01oc.png" = "780855900.94104";
@@ -30773,7 +30773,6 @@
             "switzerland_hergiswil_24h-sunset_8-5120x2880__00c02o01oc.png" = "780691640.441327";
             "tahoe-dock-2026_24h-day_1-5120x2880__00c02o01oc.png" = "780824401.098033";
             "tahoe-dock-2026_24h-day_2-5120x2880__00c02o01oc.png" = "781090201.912596";
-            "tahoe-dock-2026_24h-day_3-5120x2880__00c02o01oc.png" = "780498904.119002";
             "tahoe-dock-2026_24h-day_4-5120x2880__00c02o01oc.png" = "781030565.302451";
             "tahoe-dock-2026_24h-night_2-5120x2880__00c02o01oc.png" = "780876302.0248491";
             "tahoe-dock-2026_24h-night_3-5120x2880__00c02o01oc.png" = "780712204.322603";
@@ -30949,7 +30948,7 @@
             "wyoming_grand-teton-np_24h-day_2-5120x2880__00c02o01oc.png" = "781002602.502198";
             "wyoming_grand-teton-np_24h-day_3-5120x2880__00c02o01oc.png" = "780919501.442662";
             "wyoming_grand-teton-np_24h-day_4-5120x2880__00c02o01oc.png" = "780575948.545452";
-            "wyoming_grand-teton-np_24h-day_5-5120x2880__00c02o01oc.png" = "780496503.985374";
+            "wyoming_grand-teton-np_24h-day_5-5120x2880__00c02o01oc.png" = "781101002.118518";
             "wyoming_grand-teton-np_24h-day_8-5120x2880__00c02o01oc.png" = "780769800.888762";
             "wyoming_grand-teton-np_24h-night_4-5120x2880__00c02o01oc.png" = "780968702.365641";
             "wyoming_grand-teton-np_24h-night_5-5120x2880__00c02o01oc.png" = "781059902.4869159";
@@ -30974,7 +30973,7 @@
             "yosemite_2_mix-day_1-5120x2880__00c02o01oc.png" = "780649204.094099";
             "yosemite_2_mix-day_2-5120x2880__00c02o01oc.png" = "780568803.510349";
             "yosemite_2_mix-day_4-5120x2880__00c02o01oc.png" = "781011001.821825";
-            "yosemite_2_mix-day_5-5120x2880__00c02o01oc.png" = "780927901.48713";
+            "yosemite_2_mix-day_5-5120x2880__00c02o01oc.png" = "781102292.746894";
             "yosemite_2_mix-night_1-5120x2880__00c02o01oc.png" = "780779101.727953";
             "yosemite_2_mix-night_2-5120x2880__00c02o01oc.png" = "781044002.769255";
             "yosemite_2_mix-night_3-5120x2880__00c02o01oc.png" = "780703204.1454819";
@@ -30985,6 +30984,7 @@
             "yosemite_waterlogue_mix-day_2-5120x2880__00c02o01oc.png" = "780913501.200407";
             "yosemite_waterlogue_mix-day_3-5120x2880__00c02o01oc.png" = "781006802.696004";
             "yosemite_waterlogue_mix-day_4-5120x2880__00c02o01oc.png" = "780663305.135729";
+            "yosemite_waterlogue_mix-day_5-5120x2880__00c02o01oc.png" = "781101937.129577";
             "yosemite_waterlogue_mix-day_8-5120x2880__00c02o01oc.png" = "780513004.419054";
             "yosemite_waterlogue_mix-night_1-5120x2880__00c02o01oc.png" = "780780901.79062";
             "yosemite_waterlogue_mix-night_3-5120x2880__00c02o01oc.png" = "780961447.020876";
@@ -30996,7 +30996,7 @@
         };
         LastLaunchVersion = "7.0.0";
         LastLaunchVersionCount = 5;
-        LastSceneShuffleDate = "2025-10-02 12:10:01 +0000";
+        LastSceneShuffleDate = "2025-10-02 13:25:01 +0000";
         LaunchAtLogin = 1;
         LaunchAtLoginWasSet = 1;
         MSAppCenter310AnalyticsUserDefaultsMigratedKey = 1;
@@ -31048,22 +31048,7 @@
                 "california_mojave-preserve_kelso-dunes",
                 "monument_1_mix",
                 "newzealand_taupo_24h",
-                "tahoe_kingsbury2_24h",
-                "illinois_chicago_river_2_24h",
-                "madrid_1_mix",
-                "boston_charles_river_2_24h",
-                "iss_2_mix",
-                "catalina_1_mix",
-                "california_losangeles_2019_24h",
-                "amsterdam_painted_24h",
-                "yosemite_2_mix",
-                "yosemite_waterlogue_mix",
-                "oregon_nature_1_mix",
-                "sf_1_mix",
-                "wyoming_grand-teton-np_24h",
-                "california_catalina_avalon_right_24h",
-                "japan_tokyo_shinjuku_east_24h",
-                "alabamahills_24h"
+                "tahoe_kingsbury2_24h"
             );
         };
         UpdateLocationAutomatically = 1;
@@ -31242,13 +31227,13 @@
         CrashActionServiceUrlKey = "https://officeci.azurewebsites.net/api/";
         OSLocale = "en_GB";
         OSVersion = "26.0";
-        SessionDuration = "41.08448791503906";
-        SessionId = "A05C32C1-6EF5-4C6F-BD47-8EDB33B91DEC";
+        SessionDuration = "41.16744005680084";
+        SessionId = "80854B0E-9FE6-4A2C-AF01-4F57F8425A91";
         SessionLongBuildNumber = 25073044;
         SessionTelemetryVersion = "4.80.730.0";
         SessionVersion = "4.80";
-        TerminationDuration = "781096702.739674";
-        kAppBootTimeForUAE = "2025-10-02 11:17:41 +0000";
+        TerminationDuration = "781103944.1519541";
+        kAppBootTimeForUAE = "2025-10-02 13:18:22 +0000";
     };
     "com.microsoft.autoupdate2" =     {
         AcknowledgedDataCollectionPolicy = RequiredDataOnly;
@@ -32566,7 +32551,7 @@
     };
     "com.setapp.DesktopClient" =     {
         "17115242195940125665-favorites" = {length = 740, bytes = 0x62706c69 73743030 d4010203 04050607 ... 00000000 00000218 };
-        "4766321432293575660-LastAppsRefreshDate" = "2025-10-02 11:53:37 +0000";
+        "4766321432293575660-LastAppsRefreshDate" = "2025-10-02 12:56:51 +0000";
         AFXDataHubUID = 3507016;
         AIAssistantReleaseDate = "2024-10-19 23:44:29 +0000";
         APNSDeviceTokenString = 5c0f6aa6dbb774cef436106cc531d3eaf50973373b638386be7ced1707a7e4f9;
@@ -32579,16 +32564,16 @@
             "topChartsFilterInstalledApps_eaa84d2d-080d-4fcb-b956-b7093979191f" = "filterInstalledAppsFromTopChartsTest:0default";
         };
         FFStorage =         {
-            assistantButtonPosition = {length = 49, bytes = 0x7b227661 6c756522 3a226c65 6674222c ... 73697469 6f6e227d };
-            autocompleteSearchEnabled = {length = 48, bytes = 0x7b227661 6c756522 3a223122 2c226e61 ... 6e61626c 6564227d };
-            badgesProviding = {length = 38, bytes = 0x7b227661 6c756522 3a223122 2c226e61 ... 76696469 6e67227d };
-            newNotificationCenter = {length = 47, bytes = 0x7b227661 6c756522 3a227472 7565222c ... 43656e74 6572227d };
-            newUpdatesNotification = {length = 48, bytes = 0x7b227661 6c756522 3a227472 7565222c ... 63617469 6f6e227d };
-            newUpdatesNotificationInterval = {length = 54, bytes = 0x7b227661 6c756522 3a223438 222c226e ... 74657276 616c227d };
-            noDesktopLogin2 = {length = 128, bytes = 0x7b227661 6c756522 3a227472 7565222c ... 4c6f6769 6e227d7d };
-            searchFieldInputDelay = {length = 46, bytes = 0x7b227661 6c756522 3a22302e 31222c22 ... 7444656c 6179227d };
-            searchResponseTimeLimit = {length = 49, bytes = 0x7b227661 6c756522 3a223132 3030222c ... 654c696d 6974227d };
-            soundEffects = {length = 38, bytes = 0x7b227661 6c756522 3a227472 7565222c ... 66666563 7473227d };
+            assistantButtonPosition = {length = 49, bytes = 0x7b226e61 6d65223a 22617373 69737461 ... 3a226c65 6674227d };
+            autocompleteSearchEnabled = {length = 48, bytes = 0x7b226e61 6d65223a 22617574 6f636f6d ... 7565223a 2231227d };
+            badgesProviding = {length = 38, bytes = 0x7b226e61 6d65223a 22626164 67657350 ... 7565223a 2231227d };
+            newNotificationCenter = {length = 47, bytes = 0x7b226e61 6d65223a 226e6577 4e6f7469 ... 3a227472 7565227d };
+            newUpdatesNotification = {length = 48, bytes = 0x7b226e61 6d65223a 226e6577 55706461 ... 3a227472 7565227d };
+            newUpdatesNotificationInterval = {length = 54, bytes = 0x7b226e61 6d65223a 226e6577 55706461 ... 65223a22 3438227d };
+            noDesktopLogin2 = {length = 128, bytes = 0x7b227370 6c697452 6573756c 74223a7b ... 3a227472 7565227d };
+            searchFieldInputDelay = {length = 46, bytes = 0x7b226e61 6d65223a 22736561 72636846 ... 223a2230 2e31227d };
+            searchResponseTimeLimit = {length = 49, bytes = 0x7b226e61 6d65223a 22736561 72636852 ... 3a223132 3030227d };
+            soundEffects = {length = 38, bytes = 0x7b226e61 6d65223a 22736f75 6e644566 ... 3a227472 7565227d };
             useResumableBundleDownloads = {length = 53, bytes = 0x7b227661 6c756522 3a227472 7565222c ... 6e6c6f61 6473227d };
         };
         GoogleAnalyticsCID = "5A0A4094-4249-4CED-ADE5-AACCFA91A09A";
@@ -32750,7 +32735,7 @@
         HaveConvertedSFUsToTriggers = 1;
         HaveCreatedDefaultTriggers = 1;
         HideItemsWhenShowingOthers = 0;
-        "MenuBarColoring-SpaceSettings" = {length = 7552, bytes = 0x7b223735 44314635 38352d46 3845462d ... 31423233 30227d7d };
+        "MenuBarColoring-SpaceSettings" = {length = 7552, bytes = 0x7b223735 44314635 38352d46 3845462d ... 6572223a 31317d7d };
         MenuBarShape = capsule;
         MenuBarStyle = "{\\"shadow\\":true,\\"border\\":{\\"position\\":\\"complete\\",\\"thickness\\":1,\\"color\\":{\\"red\\":0.5960784554481506,\\"green\\":0.5960784554481506,\\"blue\\":0.6156863570213318,\\"alpha\\":0.5}},\\"type\\":\\"glass\\",\\"roundBelowMenuBar\\":true,\\"roundBottomOfScreen\\":true}";
         MouseExitDelay = "0.4";
@@ -33205,7 +33190,7 @@
             "2025-09-20",
             "2025-09-28"
         );
-        recentSessions = {length = 1147, bytes = 0x5b7b2273 74223a31 37353133 39333939 ... 33363130 36367d5d };
+        recentSessions = {length = 1147, bytes = 0x5b7b2273 74223a31 37353133 39333939 ... 33363536 31377d5d };
     };
     "com.tinyapp.DBngin" =     {
         EngineVersion =         {
@@ -33814,8 +33799,8 @@
             "com.apple.keychainaccess"
         );
         lastLaunchedVersion = {length = 31, bytes = 0x7b226d69 6e6f7222 3a302c22 70617463 ... 616a6f72 223a367d };
-        "pasteboard-change-token" = 4992;
-        pasteboardSyncCount = 36857;
+        "pasteboard-change-token" = 5056;
+        pasteboardSyncCount = 36909;
         selectedListIdentifier = {length = 25, bytes = 0x22736861 72656450 61737465 626f6172 ... 48697374 6f727922 };
     };
     "com.witt-software.PDF-Squeezer-setapp" =     {
@@ -34183,10 +34168,10 @@
     };
     "group.com.jetson.24hourwallpaper-setapp" =     {
         WidgetWallpaperLocations =         {
-            "37D8832A-2D66-02CA-B9F7-8F30A301B230" = "Highland Lakes";
+            "37D8832A-2D66-02CA-B9F7-8F30A301B230" = "Chicago #2";
         };
         WidgetWallpaperNames =         {
-            "37D8832A-2D66-02CA-B9F7-8F30A301B230" = "Highland Lakes";
+            "37D8832A-2D66-02CA-B9F7-8F30A301B230" = "Chicago #2";
         };
     };
     "group.is.workflow.my.app" =     {
@@ -34302,8 +34287,8 @@
     "jetbrains.jetprofile.asset" =     {
         "/jetbrains/jetprofile/asset/" =         {
             "pansihighlight/" =             {
-                period = 14345374;
-                stamp = 1759395148749;
+                period = 16684566;
+                stamp = 1759409495416;
             };
             "pbetterhighligh/" =             {
                 period = 10860386;
@@ -34322,8 +34307,8 @@
                 stamp = 1759394463663;
             };
             "ps/" =             {
-                period = 17184195;
-                stamp = 1759393417790;
+                period = 11811334;
+                stamp = 1759410605728;
             };
             "psymfonyplugin/" =             {
                 period = 17075892;
@@ -34502,7 +34487,7 @@
         LastRunAppBundlePath = "/Applications/Helium.app";
         SUAutomaticallyUpdate = 1;
         SUEnableAutomaticChecks = 1;
-        SULastCheckTime = "2025-10-02 11:51:40 +0000";
+        SULastCheckTime = "2025-10-02 12:51:43 +0000";
         SUUpdateGroupIdentifier = 265916393;
     };
     "net.lowreal.KeyCast" =     {
@@ -34513,7 +34498,7 @@
         SULastCheckTime = "2025-07-01 17:32:14 +0000";
     };
     "net.whatsapp.WhatsApp" =     {
-        31 = "1759367904.339525";
+        31 = "1759408865.614866";
         7 = 0;
         "7__appScope" = 0;
         8 = 16;
@@ -34526,7 +34511,7 @@
             "app_uid" = 7687607410050383139;
         };
         FBAnalyticsEventSequenceNumberStorageKey = 81;
-        LogCounter = 4089;
+        LogCounter = 4091;
         LogObfuscationSalt = {length = 32, bytes = 0x2c793e59 54a4f391 00a37452 9439f1bf ... 45a17611 2950af0f };
         "METAI18NContext.prev.pref.langid" = en;
         NSNavPanelExpandedSizeForOpenMode = "{1258, 448}";
@@ -34562,7 +34547,7 @@
         gen37 = 0;
         "gen37__appScope" = 0;
         gen38 = {length = 394, bytes = 0x62706c69 73743030 d4010203 04050607 ... 00000000 0000012a };
-        gen39 = 1759360904;
+        gen39 = 1759410479;
         gen40 = 1759474800;
         gen49 = "d76IfLrPYy+BjiEQx46ZgA==";
         "gen49__appScope" = "d76IfLrPYy+BjiEQx46ZgA==";
@@ -34588,7 +34573,7 @@
         tsID = 6;
         tsPr = 3;
         tsVC = WAChatListViewController;
-        usid = 302521418;
+        usid = 306479546;
         uslc = 0;
         "uslc__appScope" = 0;
     };
@@ -34607,7 +34592,7 @@
             42196056 = 1;
             56300709 = 1;
         };
-        usid = 256904022;
+        usid = 303971524;
     };
     "net.whatsapp.WhatsApp.ServiceExtension" =     {
         LogCounter = 157;
