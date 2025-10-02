@@ -1,0 +1,26 @@
+# Legacy stub move manifest 20250928-031423
+# PWD=/Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.pre-plugins.d.REDESIGN
+# Files:
+00-path-safety.zsh
+04-safe-grep.zsh
+05-zgen-reset.zsh
+07-grep-debug-tracer.zsh
+11-ensure-zgenom-symlink.zsh
+13-fsh-sanitize.zsh
+15-environment-setup.zsh
+17-early-vars-and-keymap.zsh
+20-zle-initialization.zsh
+25-fzf-initialization.zsh
+30-simple-autopair.zsh
+35-lazy-framework.zsh
+40-node-runtime-env.zsh
+45-macos-defaults-deferred.zsh
+50-node-runtime.zsh
+55-lazy-integrations.zsh
+60-macos-integration.zsh
+65-development-integrations.zsh
+70-ssh-agent.zsh
+75-ssh-and-security.zsh
+80-performance-and-controls.zsh
+85-pre-plugin-reserved.zsh
+90-warp-pre-plugin-compat.zsh

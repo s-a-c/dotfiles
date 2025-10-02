@@ -1,0 +1,15 @@
+=== BASELINE TEST RESULTS ===
+Date: [FILL IN]
+Test: Complete minimal configuration (.zshenv.minimal.complete + .zshrc.minimal)
+
+RESULT: [SUCCESS/HANGS/ERROR/ZLE_BROKEN]
+
+Details:
+- ZLE widgets available: [NUMBER]
+- ZLE widget creation: [SUCCESS/FAILED]
+- grep command: [SUCCESS/FAILED]
+- ZDOTDIR value: [VALUE]
+- Any error messages: [LIST OR "NONE"]
+
+Notes:
+[ANY ADDITIONAL OBSERVATIONS]

@@ -1,0 +1,261 @@
+name: Immutability & Layer Health
+on:
+  push:
+    branches:
+      - main
+      - 'feat/**'
+      - 'fix/**'
+    paths:
+      - 'zsh/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'zsh/**'
+  workflow_dispatch:
+
+concurrency:
+  group: immutability-layer-health-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  WIDGET_BASELINE: '417'
+  EMERGENCY_FLOOR: '387'
+  MANIFEST_PATH: zsh/layers/immutable/manifest.json
+
+jobs:
+  immutability:
+    name: Immutability & Layer Health
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify manifest presence
+        id: manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+            if [[ ! -f "${MANIFEST_PATH}" ]]; then
+              echo "Manifest missing: ${MANIFEST_PATH}" >&2
+              echo "present=false" >> "$GITHUB_OUTPUT"
+              exit 1
+            fi
+            echo "present=true" >> "$GITHUB_OUTPUT"
+
+      - name: Stray artifact detector
+        id: stray
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -x zsh/tools/detect-stray-artifacts.zsh ]]; then
+            zsh zsh/tools/detect-stray-artifacts.zsh --json > stray-artifacts.json || {
+              echo "Stray artifacts detected" >&2
+              cat stray-artifacts.json || true
+              exit 1
+            }
+            echo "Stray artifact scan complete"
+            cat stray-artifacts.json
+          else
+            echo '{"status":"skipped","reason":"detector_missing"}' > stray-artifacts.json
+            echo "Detector script missing, produced skip JSON."
+          fi
+
+      - name: Redirection misuse lint
+        id: redir
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -x zsh/tools/lint-redirections.zsh ]]; then
+            zsh zsh/tools/lint-redirections.zsh --json > redirection-lint.json || {
+              echo "Redirection lint failures" >&2
+              cat redirection-lint.json || true
+              exit 1
+            }
+            echo "Redirection lint completed"
+            cat redirection-lint.json
+          else
+            echo '{"status":"skipped","reason":"script_missing"}' > redirection-lint.json
+            echo "Redirection lint script missing; recorded skip JSON."
+          fi
+
+      - name: Run empty layer immutability check
+        id: immut
+        shell: bash
+        run: |
+          set -euo pipefail
+          chmod +x zsh/tools/check-empty-layer-immutability.zsh || true
+          zsh zsh/tools/check-empty-layer-immutability.zsh --json --recompute-dir-hash > immutability.json
+          echo "Immutability JSON:"
+          cat immutability.json
+          # Basic drift detection without jq (use Python)
+          python3 - <<'PY'
+          import json,sys
+          data=json.load(open("immutability.json"))
+          print(f"status={data.get('status')}")
+          if data.get("status") not in ("ok","manifest_missing"):
+              print("DRIFT DETECTED",file=sys.stderr)
+              # Surface first few mismatches
+              for d in data.get("directories",[])[:5]:
+                  if d.get("status")=="drift":
+                      print(f"DIR {d['name']} drift: missing={d['missing_files']} extra={d['extra_files']}",file=sys.stderr)
+              sys.exit(1)
+          if data.get("drift"):
+              print("drift_flag=true",file=sys.stderr)
+              sys.exit(1)
+          PY
+
+      - name: Upload immutability artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: immutability-report
+          path: immutability.json
+
+      - name: Layer health probe
+        id: layerhealth
+        shell: bash
+        run: |
+          set -euo pipefail
+          chmod +x zsh/tools/report-layer-health.zsh || true
+          bash zsh/tools/report-layer-health.zsh --json --baseline-widgets "${WIDGET_BASELINE}" --fail-on-regression > layer-health.json
+          echo "Layer Health JSON:"
+          cat layer-health.json
+          python3 - <<'PY'
+          import json,sys
+          d=json.load(open("layer-health.json"))
+          widgets=d.get("widgets")
+          baseline=d.get("baseline")
+          widget_pass=d.get("widget_pass")
+          print(f"widgets={widgets} baseline={baseline} pass={widget_pass}")
+          if baseline and not widget_pass:
+              print("Widget baseline regression",file=sys.stderr)
+              sys.exit(1)
+          PY
+
+      - name: Emergency widget floor check
+        id: emerg
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -x zsh/tools/emergency-widget-count.sh ]]; then
+            # Use extended emergency mode to ensure authentic widget population (needs ≥387)
+            ZF_EMERGENCY_EXTEND=1 bash zsh/tools/emergency-widget-count.sh --json > emergency-widgets.json || {
+              echo "Emergency script failed" >&2
+              cat emergency-widgets.json || true
+              exit 1
+            }
+            echo "Emergency widgets JSON (extended mode):"
+            cat emergency-widgets.json
+            python3 - <<'PY'
+            import json,sys
+            data=json.load(open("emergency-widgets.json"))
+            # Accept possible key variants
+            w = data.get("widgets") or data.get("emergency_widgets") or data.get("count")
+            floor=int("$EMERGENCY_FLOOR")
+            print(f"emergency_widgets={w} floor={floor}")
+            if w is None:
+                print("Missing emergency widget count in JSON",file=sys.stderr)
+                sys.exit(1)
+            if int(w) < floor:
+                print(f"Emergency widget floor breach: {w} < {floor}",file=sys.stderr)
+                sys.exit(1)
+            PY
+          else
+            echo "Emergency widget script not found; failing by policy."
+            exit 1
+          fi
+
+      - name: Summarize results
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "## Immutability & Layer Health Summary"
+            if [[ -f stray-artifacts.json ]]; then
+              echo
+              echo "### Stray Artifact Scan"
+              python3 - <<'PY'
+import json
+d=json.load(open("stray-artifacts.json"))
+print(f"- Status: {d.get('status')}")
+violations=d.get("violations") or []
+if violations:
+    print("- Violations:")
+    for v in violations:
+        print(f"  - {v.get('type')} {v.get('name')} ({v.get('reason')})")
+PY
+            fi
+            if [[ -f redirection-lint.json ]]; then
+              echo
+              echo "### Redirection Lint"
+              python3 - <<'PY'
+import json
+d=json.load(open("redirection-lint.json"))
+print(f"- Status: {d.get('status','unknown')}")
+issues=d.get("issues") or d.get("violations") or []
+if issues:
+    print("- Findings:")
+    for i in issues:
+        if isinstance(i, dict):
+            print(f"  - {i.get('file','?')}:{i.get('line','?')} {i.get('pattern','')}")
+        else:
+            print(f"  - {i}")
+PY
+            fi
+            if [[ -f immutability.json ]]; then
+              echo
+              echo "### Immutability"
+              python3 - <<'PY'
+              import json
+              d=json.load(open("immutability.json"))
+              print(f"- Status: {d.get('status')}")
+              for dd in d.get("directories",[]):
+                  print(f"  - {dd['name']}: {dd['status']} (expected={dd['expected_count']} actual={dd['actual_count']})")
+              PY
+            fi
+            if [[ -f layer-health.json ]]; then
+              echo
+              echo "### Layer Health"
+              python3 - <<'PY'
+              import json
+              d=json.load(open("layer-health.json"))
+              print(f"- Widgets: {d.get('widgets')} (baseline={d.get('baseline')} pass={d.get('widget_pass')})")
+              mk=d.get("markers",{})
+              if mk:
+                  print("- Markers:")
+                  for k in sorted(mk):
+                      print(f"  - {k}={mk[k]}")
+              PY
+            fi
+            if [[ -f emergency-widgets.json ]]; then
+              echo
+              echo "### Emergency Fallback"
+              python3 - <<'PY'
+              import json
+              d=json.load(open("emergency-widgets.json"))
+              w = d.get("widgets") or d.get("emergency_widgets") or d.get("count")
+              print(f"- Emergency widgets: {w}")
+              PY
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload health artifacts
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: layer-health-artifacts
+          path: |
+            immutability.json
+            layer-health.json
+            emergency-widgets.json
+            stray-artifacts.json
+            redirection-lint.json
+
+      - name: Final status
+        if: ${{ success() }}
+        run: echo "All immutability & health checks passed."
+
+      - name: Failure marker
+        if: ${{ failure() }}
+        run: echo "One or more immutability / health checks failed." >&2

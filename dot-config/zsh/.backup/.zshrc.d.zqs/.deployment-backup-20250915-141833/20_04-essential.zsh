@@ -1,0 +1,99 @@
+cat > "$ZDOTDIR/.zshrc.emergency-safe-mode" << 'EOF'
+# Plugin loading guards to prevent recursion
+# Usage: source ~/.config/zsh/.zshrc.emergency-safe-mode
+# Prevent multiple loading of this file
+if [[ -n "${_PLUGIN_LOADING_GUARD:-}" ]]; then
+if [[ -n "$_EMERGENCY_SAFE_MODE" ]]; then
+    return 0
+export _PLUGIN_LOADING_GUARD=1
+export _EMERGENCY_SAFE_MODE=1
+# Individual plugin guards
+if [[ -z "${_ZSH_ABBR_LOADING:-}" ]]; then
+    export _ZSH_ABBR_LOADING=1
+fi
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+if [[ -z "${_ZSH_AUTOSUGGESTIONS_LOADING:-}" ]]; then
+    export _ZSH_AUTOSUGGESTIONS_LOADING=1
+fi
+setopt APPEND_HISTORY SHARE_HISTORY HIST_IGNORE_DUPS
+if [[ -z "${_FAST_SYNTAX_HIGHLIGHTING_LOADING:-}" ]]; then
+    export _FAST_SYNTAX_HIGHLIGHTING_LOADING=1
+    export _SAFE_COMPINIT_DONE=1
+fi
+# Essential Plugins - Load immediately for core functionality
+# This file loads only the most critical plugins needed for basic shell operation
+# Load time target: <300ms
+
+[[ "$ZSH_DEBUG" == "1" ]] && {
+        zf::debug "# ++++++ $0 ++++++++++++++++++++++++++++++++++++"
+}
+
+# Fast path skip for perf capture: avoid any essential plugin bootstrap
+if [[ "${PERF_CAPTURE_FAST:-0}" == "1" ]]; then
+    zf::debug "# [essential-plugins][perf-capture-fast] Skipping essential plugin bootstrap (PERF_CAPTURE_FAST=1)"
+    return 0
+fi
+# Only proceed if zgenom is available
+if ! command -v zgenom >/dev/null 2>&1; then
+    zf::debug "# [essential-plugins] Zgenom not available, skipping plugins"
+    return 0
+fi
+
+# Track plugin loading time
+typeset -g ESSENTIAL_PLUGINS_START=$SECONDS
+
+# Check if we need to regenerate the plugin cache
+if ! zgenom saved; then
+    zf::debug "# [essential-plugins] Regenerating plugin configuration..."
+
+    # Load essential Oh My Zsh libraries first
+    zgenom ohmyzsh lib/compfix.zsh
+    zgenom ohmyzsh lib/completion.zsh
+    zgenom ohmyzsh lib/directories.zsh
+    zgenom ohmyzsh lib/history.zsh
+    zgenom ohmyzsh lib/key-bindings.zsh
+    zgenom ohmyzsh lib/theme-and-appearance.zsh
+
+    # Essential plugins for immediate functionality
+    # Fast syntax highlighting (essential for usability)
+    zgenom load zdharma-continuum/fast-syntax-highlighting
+
+    # Autosuggestions (essential for productivity)
+    zgenom load zsh-users/zsh-autosuggestions
+
+    # Basic Git completions (essential for development)
+    zgenom ohmyzsh plugins/git
+
+    # Homebrew completions if available
+    if [[ -n "$HOMEBREW_PREFIX" ]]; then
+        zgenom ohmyzsh plugins/brew
+    fi
+
+    # Essential directory navigation
+    zgenom ohmyzsh plugins/common-aliases
+
+    # Save the configuration
+    zgenom save
+    zf::debug "# [essential-plugins] Plugin configuration saved"
+else
+    zf::debug "# [essential-plugins] Using cached plugin configuration"
+fi
+
+# Configure autosuggestions for better performance
+if (( $+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE )); then
+    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8"
+    ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+    ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
+    ZSH_AUTOSUGGEST_USE_ASYNC=1
+fi
+
+# Configure fast-syntax-highlighting for better performance
+if (( $+FAST_HIGHLIGHT )); then
+    FAST_HIGHLIGHT[use_async]=1
+fi
+
+# Track essential plugin loading time
+local plugin_time=$((SECONDS - ESSENTIAL_PLUGINS_START))
+zf::debug "# [essential-plugins] Essential plugins loaded in ${plugin_time}s"
+
+zf::debug "# [20-plugins] Essential plugins configured"
