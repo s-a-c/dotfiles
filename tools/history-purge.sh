@@ -15,6 +15,7 @@
 #   - Force push (lease or hard) with safety backup tag
 #   - Can skip push (for inspection first)
 #   - Allows but discourages dirty tree override
+#   - Optional preservation & restoration of 'origin' remote after rewrite
 #
 # Exit codes:
 #   0 success
@@ -24,7 +25,7 @@
 #
 set -euo pipefail
 
-VERSION="1.0.0"
+VERSION="1.1.0"
 
 # Color handling (only if TTY)
 if [[ -t 1 ]]; then
@@ -87,6 +88,9 @@ PATHS_FILE=""
 EXTRA_PATHS=()
 POSITIONAL=()
 PRINT_COMMAND=0
+PRESERVE_REMOTE=0
+ORIGIN_FETCH=""
+ORIGIN_PUSH=""
 
 usage() {
     cat <<'EOF'
@@ -115,6 +119,7 @@ Options:
   --add-path <path>                 Add path (repeatable)
   --paths-file <file>               Include additional paths
   --print-command                   Print constructed git filter-repo command
+  --restore-origin                  Preserve & restore 'origin' remote after rewrite
   --version                         Print version
   -h, --help                        This help
 
@@ -199,6 +204,10 @@ while [[ $# -gt 0 ]]; do
         ;;
     --print-command)
         PRINT_COMMAND=1
+        shift
+        ;;
+    --restore-origin)
+        PRESERVE_REMOTE=1
         shift
         ;;
     --version)
@@ -382,6 +391,17 @@ fi
 log "Creating safety tag: $BACKUP_TAG"
 git tag "$BACKUP_TAG"
 
+# Capture origin remote (if requested) BEFORE rewrite (git-filter-repo will drop remotes)
+if [[ $PRESERVE_REMOTE -eq 1 ]]; then
+    if git remote get-url origin >/dev/null 2>&1; then
+        ORIGIN_FETCH=$(git remote get-url origin || true)
+        ORIGIN_PUSH=$(git remote get-url --push origin 2>/dev/null || true)
+        note "Captured origin remote: fetch=$ORIGIN_FETCH push=${ORIGIN_PUSH:-<same>}"
+    else
+        warn "--restore-origin requested but no existing origin remote"
+    fi
+fi
+
 ask "Execute history rewrite now?" || die "Aborted before git-filter-repo."
 
 log "Running git-filter-repo..."
@@ -390,6 +410,17 @@ git filter-repo "${FILTER_ARGS[@]}"
 log "Expiring reflogs & running aggressive gc"
 git reflog expire --expire=now --all || true
 git gc --prune=now --aggressive || true
+
+# Restore origin remote if requested and removed
+if [[ $PRESERVE_REMOTE -eq 1 ]]; then
+    if [[ -n "$ORIGIN_FETCH" ]] && ! git remote get-url origin >/dev/null 2>&1; then
+        log "Restoring origin remote after rewrite"
+        git remote add origin "$ORIGIN_FETCH"
+        if [[ -n "$ORIGIN_PUSH" && "$ORIGIN_PUSH" != "$ORIGIN_FETCH" ]]; then
+            git remote set-url --push origin "$ORIGIN_PUSH"
+        fi
+    fi
+fi
 
 # Verification
 REMOVED_COUNT=0
