@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 # report-layer-health.zsh
 # Phase 7 (Optional Enhancements) – Layer Health & Integrity Report
 #
@@ -89,6 +89,7 @@ FAIL_ON_REGRESSION=0
 SEG_FILE=""
 VALIDATE_SEGMENTS=0
 STRICT_SEGMENTS=0
+# (moved baseline_json computation until after argument parsing to ensure final BASELINE value)
 
 usage() {
   sed -n '1,/^# -----------------------------------------------------------------------------/p' "$0" | sed 's/^# \{0,1\}//'
@@ -132,6 +133,12 @@ while (($#)); do
   esac
   shift
 done
+
+# Compute baseline_json after argument parsing (zsh-safe)
+baseline_json="$BASELINE"
+if [[ -z "$baseline_json" ]]; then
+  baseline_json="null"
+fi
 
 # ---------------------------
 # Helper Functions
@@ -229,9 +236,12 @@ if ! zsh -i --no-rcs --no-globalrcs "$probe_script" >"$probe_out" 2>/dev/null; t
   exit 3
 fi
 
-widgets=$(grep '^__WIDGETS_TOTAL=' "$probe_out" | head -n1 | cut -d= -f2 || echo 0)
+_zf_layer_widgets=$(grep '^__WIDGETS_TOTAL=' "$probe_out" | head -n1 | cut -d= -f2 || echo 0)
 _autopair_present=$(grep '^__AUTOPAIR_PRESENT=' "$probe_out" | head -n1 | cut -d= -f2 || echo 0)
-mapfile -t autopair_widgets < <(grep '^__AUTOPAIR_WIDGET=' "$probe_out" | sed 's/^__AUTOPAIR_WIDGET=//' || true)
+autopair_widgets=()
+while IFS= read -r _apw; do
+  [[ -n "$_apw" ]] && autopair_widgets+=("$_apw")
+done < <(grep '^__AUTOPAIR_WIDGET=' "$probe_out" | sed 's/^__AUTOPAIR_WIDGET=//' || true)
 
 declare -A MARKERS=()
 while IFS= read -r line; do
@@ -297,13 +307,13 @@ widget_pass=true
 fail_reasons=()
 if [[ -n "$BASELINE" ]]; then
   if _require_number "$BASELINE"; then
-    if ! _require_number "$widgets"; then
+    if ! _require_number "$_zf_layer_widgets"; then
       widget_pass=false
       fail_reasons+=("widget_count_non_numeric")
     else
-      if (( widgets < BASELINE )); then
+      if (( _zf_layer_widgets < BASELINE )); then
         widget_pass=false
-        fail_reasons+=("widget_regression:${widgets}<${BASELINE}")
+        fail_reasons+=("widget_regression:${_zf_layer_widgets}<${BASELINE}")
       fi
     fi
   else
@@ -335,11 +345,12 @@ if (( JSON == 0 )); then
     printf "  %-28s -> %s\n" "$p" "${tgt:-<not-symlink>}"
   done
   echo ""
-  echo "Widgets: $widgets"
+  echo "Widgets: $_zf_layer_widgets"
   [[ -n "$BASELINE" ]] && echo "Baseline: $BASELINE (pass=$widget_pass)"
   echo ""
   echo "Markers:"
-  for k in "${!MARKERS[@]}"; do
+  # zsh associative array key iteration
+  for k in "${(@k)MARKERS}"; do
     printf "  %-24s = %s\n" "$k" "${MARKERS[$k]}"
   done | sort
   echo ""
@@ -393,7 +404,8 @@ else
 
   json_markers="{"
   first=1
-  for k in "${!MARKERS[@]}"; do
+  # zsh associative array key iteration
+  for k in "${(@k)MARKERS}"; do
     esc_k=$(json_escape "$k")
     esc_v=$(json_escape "${MARKERS[$k]}")
     if [[ $first -eq 0 ]]; then json_markers+=",";
@@ -438,8 +450,8 @@ else
     ".zshrc.add-plugins.d": "$(json_escape "$(symlink_target_or_empty .zshrc.add-plugins.d || true)")",
     ".zshrc.d": "$(json_escape "$(symlink_target_or_empty .zshrc.d || true)")"
   },
-  "widgets": ${widgets:-0},
-  "baseline": ${BASELINE:-null},
+  "widgets": ${_zf_layer_widgets:-0},
+  "baseline": ${baseline_json},
   "widget_pass": $([[ "$widget_pass" == true ]] && echo true || echo false),
   "markers": $json_markers,
   "autopair": {

@@ -87,6 +87,7 @@ IN_PLACE=0
 PRETTY=0
 AGGREGATE=0
 FORCE_OVERWRITE=0
+EMBED_DIR_HASH=0
 
 zf::usage() {
   cat <<'EOF'
@@ -97,6 +98,7 @@ Options:
   --in-place             Overwrite canonical layers/immutable/manifest.json (governance breach unless justified)
   --pretty               Pretty-print JSON (multi-line, indented)
   --aggregate            Include per-directory aggregate sha256 (sorted "<sha256> <file>" lines)
+  --embed-dir-hash       Also embed canonical directory aggregate as "dir_hash" (implies aggregate computation)
   --force-overwrite      Allow overwrite of existing file (otherwise abort if target exists)
   --schema-version <v>   Override schema_version (default: 1.0)
   --help                 Show this help
@@ -131,6 +133,9 @@ while (( $# > 0 )); do
       ;;
     --aggregate)
       AGGREGATE=1
+      ;;
+    --embed-dir-hash)
+      EMBED_DIR_HASH=1
       ;;
     --force-overwrite)
       FORCE_OVERWRITE=1
@@ -240,17 +245,15 @@ for d in "${ZF_EMPTY_DIRS[@]}"; do
     file_entries+="{\"file\":\"$base\",\"sha256\":\"$digest\"}"
   done
 
-  # Compute optional aggregate hash
+  # Compute optional aggregate hash (needed if either aggregate or embed-dir-hash requested)
   dir_aggregate=""
-  if (( AGGREGATE )); then
-    # Lines: "<sha256> <file>"
+  if (( AGGREGATE || EMBED_DIR_HASH )); then
     lines=()
     for f in "${files[@]}"; do
       base=${f:t}
       digest=$(zf::file_hash "$f")
       lines+="$digest $base"
     done
-    # Stable sort
     IFS=$'\n' sorted=($(printf "%s\n" "${lines[@]}" | LC_ALL=C sort))
     aggregate_input=$(printf "%s\n" "${sorted[@]}")
     dir_aggregate=$($=HASH_CMD <<<"$aggregate_input" | awk '{print $1}')
@@ -259,6 +262,9 @@ for d in "${ZF_EMPTY_DIRS[@]}"; do
   entry="{\"name\":\"$d\",\"relative_path\":\"$d\",\"expected_file_count\":${#files[@]},\"files\":[${(j:,:)file_entries}]"
   if (( AGGREGATE )); then
     entry+=",\"aggregate_sha256\":\"$dir_aggregate\""
+  fi
+  if (( EMBED_DIR_HASH )); then
+    entry+=",\"dir_hash\":\"$dir_aggregate\""
   fi
   entry+="}"
   JSON_DIR_OBJECTS+="$entry"
