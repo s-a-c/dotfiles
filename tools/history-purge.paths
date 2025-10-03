@@ -1,0 +1,12 @@
+# Paths to purge from history via git-filter-repo --invert-paths
+# Approved by user (R1,R2,R3,G1,O1 = yes)
+# These should also be present in .gitignore to prevent reintroduction.
+
+# Looping/broken symlinks and local caches
+.trunk/
+dot-config/emacs/.local/straight/
+dot-config/venv/
+dot-config/zed/.archive/
+
+# Explicit symlink slated for removal
+dot-config/rovodev/.rovodev
