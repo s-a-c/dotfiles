@@ -31,6 +31,8 @@ export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND ;} history -a"
 
 bind '"\e[3~": delete-char'
 
+set -o emacs
+
 shopt -s autocd
 shopt -s assoc_expand_once
 shopt -s cdable_vars
@@ -59,7 +61,7 @@ shopt -u failglob
 shopt -s force_fignore
 shopt -s globasciiranges
 shopt -s globskipdots
-shopt -u globstar
+shopt -s globstar
 shopt -u gnu_errfmt
 shopt -s histappend
 shopt -s histreedit
