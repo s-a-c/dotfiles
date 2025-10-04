@@ -362,6 +362,8 @@ for p in "${FINAL_PATHS[@]}"; do
     FILTER_ARGS+=(--path "$p")
 done
 FILTER_ARGS+=(--invert-paths)
+# Always force to avoid interactive prompts and non-fresh-clone refusal
+FILTER_ARGS+=(--force)
 
 if [[ $PRINT_COMMAND -eq 1 || $DRY_RUN -eq 1 ]]; then
     note "git filter-repo command:"
