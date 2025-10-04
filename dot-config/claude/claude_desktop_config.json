@@ -1,0 +1,6 @@
+{
+  "api_key": "SET_OUTSIDE_REPO",
+  "note": "Sanitized placeholder committed to repo. Provide your actual key via environment variable, OS keychain, or external secrets manager.",
+  "managed_by": "dotfiles",
+  "last_updated_utc": "2025-10-03T01:09:00Z"
+}
