@@ -2,35 +2,6 @@ if [ -z "$SHELL" ]; then
     SHELL="$(which bash)"
 fi
 
-## [carapace]    ## Carapace shell integration for Bash. This must be at the top of your bashrc!
-export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense' # optional
-builtin source <(carapace _carapace)
-
-## [fzf]    ## Fzf shell integration for Bash. This must be the top of your bashrc!
-[ -f "$HOME/.fzf.bash" ] && builtin source "$HOME/.fzf.bash"
-
-## [fzf-tab]    ## Fzf-tab shell integration for Bash. This must be the top of your bashrc!
-[ -f "$HOME/.fzf-tab.bash" ] && builtin source "$HOME/.fzf-tab.bash"
-
-## [ghostty]    ## Ghostty shell integration for Bash. This must be at the top of your bashrc!
-[ -n "${GHOSTTY_RESOURCES_DIR}" ] && builtin source "${GHOSTTY_RESOURCES_DIR}/shell-integration/bash/ghostty.bash"
-
-## [starship]    ## Starship shell integration for Bash. This must be the top of your bashrc!
-eval "$(starship init bash)"
-
-## [zoxide]    ## Zoxide shell integration for Bash. This must be the top of your bashrc!
-eval "$(zoxide init bash)"
-
-export HISTCONTROL=ignoredups:ignorespace
-export HISTFILE=~/.bash_history
-export HISTFILESIZE=120000
-export HISTIGNORE="ls:ll:cd:pwd:exit:mc:history:clear"
-export HISTSIZE=100000
-export HISTTIMEFORMAT="%F %T "
-export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND ;} history -a"
-
-bind '"\e[3~": delete-char'
-
 set -o emacs
 
 shopt -s autocd
@@ -90,6 +61,37 @@ shopt -u shift_verbose
 shopt -s sourcepath
 shopt -u varredir_close
 shopt -u xpg_echo
+
+export PATH="opt/homebrew/bin:$PATH"
+
+## [carapace]    ## Carapace shell integration for Bash. This must be at the top of your bashrc!
+export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense' # optional
+builtin source <(carapace _carapace)
+
+## [fzf]    ## Fzf shell integration for Bash. This must be the top of your bashrc!
+[ -f "$HOME/.fzf.bash" ] && builtin source "$HOME/.fzf.bash"
+
+## [fzf-tab]    ## Fzf-tab shell integration for Bash. This must be the top of your bashrc!
+[ -f "$HOME/.fzf-tab.bash" ] && builtin source "$HOME/.fzf-tab.bash"
+
+## [ghostty]    ## Ghostty shell integration for Bash. This must be at the top of your bashrc!
+[ -n "${GHOSTTY_RESOURCES_DIR}" ] && builtin source "${GHOSTTY_RESOURCES_DIR}/shell-integration/bash/ghostty.bash"
+
+## [starship]    ## Starship shell integration for Bash. This must be the top of your bashrc!
+eval "$(starship init bash)"
+
+## [zoxide]    ## Zoxide shell integration for Bash. This must be the top of your bashrc!
+eval "$(zoxide init bash)"
+
+export HISTCONTROL=ignoredups:ignorespace
+export HISTFILE=~/.bash_history
+export HISTFILESIZE=120000
+export HISTIGNORE="ls:ll:cd:pwd:exit:mc:history:clear"
+export HISTSIZE=100000
+export HISTTIMEFORMAT="%F %T "
+export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND ;} history -a"
+
+bind '"\e[3~": delete-char'
 
 # Source the Lazyman shell initialization for aliases and nvims selector
 # shellcheck source=.config/nvim-Lazyman/.lazymanrc
