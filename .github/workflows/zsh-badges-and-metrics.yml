@@ -8,16 +8,16 @@ on:
     paths:
       - 'dot-config/zsh/**'
       - '.github/workflows/zsh-badges-and-metrics.yml'
-      - 'dot-config/zsh/.zshrc.d.REDESIGN/**'
-      - 'dot-config/zsh/.zshrc.pre-plugins.d.REDESIGN/**'
+      - '../../dot-config/zsh/.backup/.zshrc.d.REDESIGN/**'
+      - '../../dot-config/zsh/.backup/.zshrc.pre-plugins.d.REDESIGN/**'
       - 'dot-config/zsh/tools/generate-structure-audit.zsh'
   pull_request:
     branches: [ main, master ]
     paths:
       - 'dot-config/zsh/**'
       - '.github/workflows/zsh-badges-and-metrics.yml'
-      - 'dot-config/zsh/.zshrc.d.REDESIGN/**'
-      - 'dot-config/zsh/.zshrc.pre-plugins.d.REDESIGN/**'
+      - '../../dot-config/zsh/.backup/.zshrc.d.REDESIGN/**'
+      - '../../dot-config/zsh/.backup/.zshrc.pre-plugins.d.REDESIGN/**'
       - 'dot-config/zsh/tools/generate-structure-audit.zsh'
   schedule:
     - cron: '0 3 * * *'
