@@ -38,7 +38,7 @@ This directory contains the complete documentation for a sophisticated ZSH confi
 
 ### Implementation Planning
 
-- **[900-implementation-plan.md](900-implementation-plan.md)** - Detailed implementation roadmap for Next Steps
+- **[900-next-steps-implementation-plan.md](900-next-steps-implementation-plan.md)** - Next steps implementation roadmap
 
 ### ZSH REDESIGN Project
 
