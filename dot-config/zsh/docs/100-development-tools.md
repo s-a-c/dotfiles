@@ -17,54 +17,79 @@ The configuration aims to be unopinionated while providing sensible defaults for
 - Node.js: nvm and asdf shims (recommended: use asdf for global consistency)
 - Python: pyenv and asdf
 - Ruby: rbenv and asdf
-- Other: Herd (PHP) where provided by the host system
+- PHP: Herd (optional)
+- Other: Any runtime exposed via asdf
 
-## Discovery & prioritization
+## Node.js guidance
 
-1. If `ASDF_DIR`/`asdf` is present and configured, prefer asdf-provided shims for versions declared in project `.tool-versions`.
+### Recommended workflow
 
-2. If `nvm` or `pyenv` are present but asdf is not configured for a project, fall back to the manager detected in the current shell session.
+- Prefer `asdf` for per-project versions when a `.tool-versions` file exists.
+- Use `nvm` only for legacy projects that require it; the configuration will prefer asdf when available.
 
-3. The configuration exposes small helper functions and PATH ordering to prefer explicit project-local shims over system-wide installs.
+### Common troubleshooting
 
-### Example: prefer asdf when available
-
-```bash
-# Example: ensure asdf shims are earlier in PATH for interactive shells
-export PATH="${ASDF_DIR:-$HOME/.asdf}/shims:$PATH"
-```
-
-## Recommended environment variables and helpers
-
-- `ASDF_DIR` — path to asdf installation (default: `$HOME/.asdf`)
-- `NVM_DIR` — nvm installation path
-- `ZF::dev::use_system_node` (example helper) — a small exported variable used by the config to force system node when needed
-
-Example helper function (namespaced to avoid collisions):
+- Wrong Node version shown:
 
 ```bash
-zf::dev::which_node() {
-  # prefer asdf shims, then nvm, then system
-  command -v node 2>/dev/null || echo "node-not-found"
-}
+# Re-evaluate shell initialization for asdf
+export ASDF_DIR="${ASDF_DIR:-$HOME/.asdf}"
+source "${ASDF_DIR}/asdf.sh" 2>/dev/null || true
+# Rehash shims
+asdf reshim nodejs || true
 ```
 
-## Troubleshooting & common workarounds
+- Node binary still points to global install:
 
-- Symptom: Wrong Node version in an interactive shell
+```bash
+# Diagnose which node is being picked
+command -v node && node -v
+echo "$PATH" | tr ':' '\n' | nl -ba | sed -n '1,40p'
+```
 
-  - Ensure project has a `.tool-versions` (for asdf) or `.nvmrc` (for nvm)
-  - Restart the shell or manually source the manager initialization script for the session
+## Python guidance
 
-- Symptom: PATH ordering unexpectedly picks a global binary
+- Prefer `pyenv` or `asdf` for project-specific versions.
+- Use `pipx` for isolated CLI tool installations where appropriate.
 
-  - Inspect `echo $PATH` and confirm `${ASDF_DIR:-$HOME/.asdf}/shims` is earlier than `/usr/local/bin`.
+Example: ensure project venv activation
+
+```bash
+# Preferred: use poetry or pyenv-virtualenv
+poetry shell || python -m venv .venv && source .venv/bin/activate
+```
+
+## PHP (Herd)
+
+- Herd is optional and only enabled when present; guard with `command -v herd` checks.
+- Provide php.ini overrides via project-local configurations when necessary.
+
+## Helpers and utilities
+
+- `zf::dev::which_node` — prefers asdf shims first and falls back to nvm/system
+- `zf::dev::use_system_node` — environment switch to force system node for build scripts
+
+## Troubleshooting and recovery
+
+- Reinitialize manager shims if versions are out of sync
+- Check for `.tool-versions` / `.nvmrc` files in project root and ensure their contents are valid
+- If runtime binaries unexpectedly change, run `asdf reshim` where applicable and confirm PATH order
 
 ## Acceptance criteria
 
-- Documentation shows where each tool's shims are located and how the configuration prefers them
-- Example snippets exist for common fixups and PATH manipulations
-- At least one troubleshooting example covers overriding a misdetected runtime
+- Documented guidance for Node, Python, and PHP
+- Practical troubleshooting commands for common mis-detections
+- One worked example showing how to recover from a PATH ordering issue
+
+## FAQ
+
+Q: I upgraded node but the shell still shows old version.
+
+A: Run `asdf reshim nodejs` or re-source your manager initialization script; confirm `command -v node` order.
+
+Q: How do I force the system node for a single command?
+
+A: Use `ZF::dev::use_system_node=1 node -v` or call `env -u ASDF_DIR node` to run the system binary in a clean environment.
 
 ## Related
 

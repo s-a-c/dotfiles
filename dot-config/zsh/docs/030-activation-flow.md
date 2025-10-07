@@ -1,5 +1,7 @@
 # Activation Flow & Loading Sequence
 
+## Top
+
 ## Overview
 
 The ZSH configuration implements a sophisticated multi-stage activation process that ensures safe, performant, and modular shell initialization. This document details the complete startup sequence from shell invocation through prompt readiness.
