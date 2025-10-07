@@ -11,16 +11,16 @@
   - [1. Current vs. Proposed Symlink Structure](#1-current-vs-proposed-symlink-structure)
     - [1.1 Current Structure Analysis](#11-current-structure-analysis)
       - [Strengths of Current Structure](#strengths-of-current-structure)
-      - [Considerations:](#considerations)
+      - [Considerations](#considerations)
     - [1.2 Proposed Architecture Options](#12-proposed-architecture-options)
       - [Option A: Enhanced Current Structure (Recommended)](#option-a-enhanced-current-structure-recommended)
-      - [Advantages:](#advantages)
+      - [Advantages (Option A — Enhanced Current Structure)](#advantages-option-a--enhanced-current-structure)
       - [Option B: Direct Symlink Approach](#option-b-direct-symlink-approach)
-      - [Advantages:](#advantages-1)
-      - [Disadvantages:](#disadvantages)
+      - [Advantages (Option B — Direct Symlink Approach)](#advantages-option-b--direct-symlink-approach)
+      - [Disadvantages (Option B — Direct Symlink Approach)](#disadvantages-option-b--direct-symlink-approach)
       - [Option C: Hybrid Approach](#option-c-hybrid-approach)
-      - [Advantages:](#advantages-2)
-      - [Disadvantages:](#disadvantages-1)
+      - [Advantages (Option C — Hybrid Approach)](#advantages-option-c--hybrid-approach)
+      - [Disadvantages (Option C — Hybrid Approach)](#disadvantages-option-c--hybrid-approach)
   - [2. Recommended Architecture: Enhanced Current Structure](#2-recommended-architecture-enhanced-current-structure)
     - [2.1 Rationale for Recommendation](#21-rationale-for-recommendation)
     - [2.2 Detailed Implementation Plan](#22-detailed-implementation-plan)
@@ -79,7 +79,7 @@ Based on your existing setup, you currently have:
 - ✅ Atomic switching capability
 
 
-#### Considerations:
+#### Considerations
 
 - The `.live` naming could be more descriptive
 - No explicit support for `.dev` configurations yet
@@ -97,7 +97,7 @@ Based on your existing setup, you currently have:
 .zshrc.d → .zshrc.d.active → .zshrc.d.00/.dev
 ```
 
-#### Advantages:
+#### Advantages (Option A — Enhanced Current Structure)
 
 - Minimal change from existing structure
 - Leverages proven `.live` pattern
@@ -114,14 +114,14 @@ Based on your existing setup, you currently have:
 .zshrc.d → .zshrc.d.00/.dev
 ```
 
-#### Advantages:
+#### Advantages (Option B — Direct Symlink Approach)
 
 - Simpler structure
 - Fewer symlink layers
 - Slightly faster resolution
 
 
-#### Disadvantages:
+#### Disadvantages (Option B — Direct Symlink Approach)
 
 - No intermediate pointer for validation
 - Higher risk during switch operations
@@ -137,14 +137,14 @@ Based on your existing setup, you currently have:
 .zshrc.d → .zshrc.d.live → .zshrc.d.active → .zshrc.d.00/.dev
 ```
 
-#### Advantages:
+#### Advantages (Option C — Hybrid Approach)
 
 - Maximum flexibility
 - Multiple validation points
 - Backward compatibility
 
 
-#### Disadvantages:
+#### Disadvantages (Option C — Hybrid Approach)
 
 - Complex to manage
 - More potential failure points
