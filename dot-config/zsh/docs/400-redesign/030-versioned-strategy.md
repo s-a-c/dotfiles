@@ -2,7 +2,6 @@
 
 ## Top
 
-
 ## Table of Contents
 
 - [4. ZSH REDESIGN - Final Implementation Guide](#4-zsh-redesign---final-implementation-guide)
@@ -79,7 +78,6 @@ Development (.dev) → Staging (.01) → Production (.00) → Archive (.02+)
 #### 1.1 Create Development Configuration
 
 ```bash
-
 #!/bin/bash
 
 # Phase 1.1: Create .dev configuration copies
@@ -108,7 +106,6 @@ echo "✅ Development configuration created"
 #### 1.2 Create .active Symlink Pointers
 
 ```bash
-
 #!/bin/bash
 
 # Phase 1.2: Create .active symlink pointers
@@ -130,7 +127,6 @@ echo "✅ .active pointers created"
 #### 1.3 Update Main Symlinks
 
 ```bash
-
 #!/bin/bash
 
 # Phase 1.3: Update main symlinks to use .active pointers
@@ -159,7 +155,6 @@ echo "✅ Main symlinks updated"
 #### 1.4 Initialize Version Tracking
 
 ```bash
-
 #!/bin/bash
 
 # Phase 1.4: Initialize version tracking
@@ -238,7 +233,6 @@ chmod 755 bin
 ##### bin/switch-to-config.sh
 
 ```bash
-
 #!/bin/bash
 
 # bin/switch-to-config.sh - Switch to specific configuration version
@@ -276,7 +270,6 @@ echo "💡 Run 'exec zsh' to apply changes"
 ##### bin/promote-config.sh
 
 ```bash
-
 #!/bin/bash
 
 # bin/promote-config.sh - Promote configuration from one version to another
@@ -357,7 +350,6 @@ chmod +x bin/*.sh
 #### 3.1 Create Test Structure
 
 ```bash
-
 # Create comprehensive test structure
 
 mkdir -p tests/{unit/{pre-plugins,add-plugins,post-plugins},integration,performance,security,switching,fixtures,helpers}
@@ -368,7 +360,6 @@ mkdir -p tests/{unit/{pre-plugins,add-plugins,post-plugins},integration,performa
 #### tests/switching/config-switching.test.zsh
 
 ```bash
-
 #!/usr/bin/env zsh
 
 # Test configuration switching functionality
@@ -410,7 +401,6 @@ mkdir -p tests/{unit/{pre-plugins,add-plugins,post-plugins},integration,performa
 Since `.zgenom` is vendored, update the configuration to handle multiple versions:
 
 ```bash
-
 # In each .zshenv.VERSION file, add:
 
 export ZSH_CONFIG_MODE="${ZSH_CONFIG_MODE:-00}"
@@ -420,7 +410,6 @@ export ZGENOM_INIT_FILE="${ZDOTDIR}/.zgenom.init.${ZSH_CONFIG_MODE}"
 #### 4.2 Create Zgenom Init Scripts
 
 ```bash
-
 # Create configuration-specific init scripts
 
 touch .zgenom.init.00 .zgenom.init.dev
@@ -431,7 +420,6 @@ touch .zgenom.init.00 .zgenom.init.dev
 #### 5.1 Comprehensive Testing
 
 ```bash
-
 #!/bin/bash
 
 # Phase 5.1: Comprehensive validation
@@ -472,7 +460,6 @@ echo "✅ All validation tests passed"
 #### 5.2 Performance Benchmarking
 
 ```bash
-
 #!/bin/bash
 
 # Phase 5.2: Performance benchmarking
@@ -502,7 +489,6 @@ echo "✅ Performance benchmarking completed"
 ### 4.1 Standard Development Cycle
 
 ```bash
-
 # 1. Start development work
 
 ./bin/switch-to-config.sh dev
@@ -545,7 +531,6 @@ exec zsh
 ### 4.2 Emergency Procedures
 
 ```bash
-
 # Quick rollback to previous stable
 
 ./bin/switch-to-config.sh 01
@@ -634,4 +619,4 @@ The approach leverages your proven `.live` symlink pattern while adding enterpri
 
 ---
 
-*Compliant with `/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md` v(checksum)*
+*Compliant with [`/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md`](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v[checksum]*
