@@ -6,6 +6,8 @@ This folder contains automated reports produced by the documentation maintenance
 
 - **[link-existence-map.json](link-existence-map.json)** - Machine-readable JSON map of every link encountered and its status
 - **[markdown-lint-report.md](markdown-lint-report.md)** - Human-readable lint-style report summarizing anchor and link issues
+- **[final-markdown-lint-report.md](final-markdown-lint-report.md)** - Final human-readable lint report after auto-fix and manual edits (2025-10-07)
+
 
 Quick checks:
 
