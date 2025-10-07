@@ -43,14 +43,14 @@ This documentation serves multiple audiences:
 - **[310-flow-diagrams.md](310-flow-diagrams.md)** - Process flow and sequence diagrams
 
 ### Implementation Planning (900)
-- **[900-next-steps-implementation-plan.md](900-next-steps-implementation-plan.md)** - Next steps implementation roadmap
+- **[900-next-steps-implementation-plan.md](250-next-steps/010-next-steps-implementation-plan.md)** - Next steps implementation roadmap
 
-### ZSH REDESIGN Project (900-redesign/)
-- **[900-redesign/000-index.md](900-redesign/000-index.md)** - ZSH REDESIGN project documentation
-  - **[900-redesign/010-implementation-plan.md](900-redesign/010-implementation-plan.md)** - Comprehensive implementation plan
-  - **[900-redesign/020-symlink-architecture.md](900-redesign/020-symlink-architecture.md)** - Symlink architecture analysis
-  - **[900-redesign/030-versioned-strategy.md](900-redesign/030-versioned-strategy.md)** - Versioned configuration strategy
-  - **[900-redesign/040-implementation-guide.md](900-redesign/040-implementation-guide.md)** - Final implementation guide
+### ZSH REDESIGN Project (400-redesign/)
+- **[400-redesign/000-index.md](400-redesign/000-index.md)** - ZSH REDESIGN project documentation
+  - **[400-redesign/010-implementation-plan.md](400-redesign/010-implementation-plan.md)** - Comprehensive implementation plan
+  - **[400-redesign/020-symlink-architecture.md](400-redesign/020-symlink-architecture.md)** - Symlink architecture analysis
+  - **[400-redesign/030-versioned-strategy.md](400-redesign/030-versioned-strategy.md)** - Versioned configuration strategy
+  - **[400-redesign/040-implementation-guide.md](400-redesign/040-implementation-guide.md)** - Final implementation guide
 
 ## 🔑 Key Features
 
@@ -217,7 +217,7 @@ See [200-current-state.md](200-current-state.md) for:
 - [XDG Base Directory Specification](https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html)
 
 ### **Internal References**
-- **AI Guidelines**: `[/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md)`
+- **AI Guidelines**: [`/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md`](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md)
 - **Performance Tests**: Various test files in `tests/` directory
 - **Bin Scripts**: Utility scripts in `bin/` directory
 

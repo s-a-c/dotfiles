@@ -38,15 +38,15 @@ This directory contains the complete documentation for a sophisticated ZSH confi
 
 ### Implementation Planning
 
-- **[900-next-steps-implementation-plan.md](900-next-steps-implementation-plan.md)** - Next steps implementation roadmap
+- **[900-next-steps-implementation-plan.md](250-next-steps/010-next-steps-implementation-plan.md)** - Next steps implementation roadmap
 
 ### ZSH REDESIGN Project
 
-- **[900-redesign/000-index.md](900-redesign/000-index.md)** - ZSH REDESIGN project documentation
-  - **[900-redesign/010-implementation-plan.md](900-redesign/010-implementation-plan.md)** - Comprehensive implementation plan
-  - **[900-redesign/020-symlink-architecture.md](900-redesign/020-symlink-architecture.md)** - Symlink architecture analysis
-  - **[900-redesign/030-versioned-strategy.md](900-redesign/030-versioned-strategy.md)** - Versioned configuration strategy
-  - **[900-redesign/040-implementation-guide.md](900-redesign/040-implementation-guide.md)** - Final implementation guide
+- **[400-redesign/000-index.md](400-redesign/000-index.md)** - ZSH REDESIGN project documentation
+  - **[400-redesign/010-implementation-plan.md](400-redesign/010-implementation-plan.md)** - Comprehensive implementation plan
+  - **[400-redesign/020-symlink-architecture.md](400-redesign/020-symlink-architecture.md)** - Symlink architecture analysis
+  - **[400-redesign/030-versioned-strategy.md](400-redesign/030-versioned-strategy.md)** - Versioned configuration strategy
+  - **[400-redesign/040-implementation-guide.md](400-redesign/040-implementation-guide.md)** - Final implementation guide
 
 ## Key Features
 
