@@ -32,3 +32,8 @@ export NVM_DIR="$HOME/Library/Application Support/Herd/config/nvm"
 [[ -s "$NVM_DIR/nvm.sh" ]] && builtin source "$NVM_DIR/nvm.sh" # This loads nvm
 
 [[ -s "$HOME/.bashrc" ]] && builtin source "$HOME/.bashrc"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/s-a-c/.lmstudio/bin"
+# End of LM Studio CLI section
+

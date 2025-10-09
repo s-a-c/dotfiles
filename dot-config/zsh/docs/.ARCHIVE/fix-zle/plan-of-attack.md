@@ -62,6 +62,34 @@ Next Documentation / Follow-up Actions:
 
 (Previous content continues below.)
 
+### 2025-10-08 Update: Post-Plugin NVM Augmentation (Option B)
+
+Implemented late-layer NVM environment augmentation while retaining upstream oh-my-zsh `nvm` plugin:
+
+- New module: `450-nvm-post-augmentation.zsh` (Phase 5 partial)
+- Actions: `unset NPM_CONFIG_HOME`, apply `zstyle` directives (`lazy`, `autoload`, `silent-autoload`), prefer Herd-managed `NVM_DIR` when present
+- Ordering rationale: ensures baseline (Herd or system) `node`/`npm` visible prior to first lazy activation of NVM
+- No override of plugin-provided lazy wrapper; zero redefinition of `nvm()` to avoid race conditions
+- Validation snippet embedded (manual): check `type -t nvm` pre/post first invocation and behavior inside a directory containing `.nvmrc`
+- Risk profile: low (read-only adjustments unless Herd NVM path discovered); adheres to namespace & nounset safety policies
+
+Phase Impact:
+- Phase 5 remains PARTIAL; Neovim hybrid + NVM layering now both present pending remaining prompt safety & multi-profile validation.
+
+Metrics unchanged (widget baseline unaffected). Next potential step: evaluate whether early minimal Node path exposure needs its own pre-plugin micro-module or remains implicit via system/Herd installation.
+
+### 2025-10-08 Update (Later): Early Node Runtime Path Shaping
+
+Implemented pre-plugin micro-module `035-early-node-runtimes.zsh` to expose alternative JS runtimes (bun, deno, pnpm) prior to plugin layer without invoking NVM:
+
+- Adds paths only if corresponding directories exist (no forced creation)
+- Maintains baseline ordering: Herd/system node -> early alt runtimes -> oh-my-zsh nvm plugin (lazy) -> post-plugin NVM augmentation
+- Avoids setting `NVM_DIR` here to preserve late-layer override semantics
+- Rationale: ensures pnpm/bun/deno are visible for any plugin lazy-cmd interception and early user scripts while keeping startup minimal (no shelling out)
+
+No widget or performance impact anticipated (pure env + path adjustments).
+
+
 ## 🎯 Strategic Pivot: COMPREHENSIVE REBUILD APPROACH ✅
 
 **Previous Goal**: ~~Identify specific custom configuration files causing ZLE corruption~~ **COMPLETED**
@@ -1268,10 +1296,10 @@ Objective: Formalize the existing “layer set” symlink approach into an audit
 2. Run: `zsh/tools/report-layer-health.zsh --layer 01 --json > layers/reports/01-pre.json`
 3. (Optional) Capture segment log & canonicalize:
    ```
-   export ZF_SEGMENT_CAPTURE=1
+export ZF_SEGMENT_CAPTURE=1
    zsh -ic 'echo warmup'
    zsh/tools/segment-canonicalize.sh ~/.cache/zsh/segments/live-segments.ndjson --ndjson
-   ```
+```
 4. Execute: `zsh/tools/promote-layer.sh 01`
    - Validates:
      - Widget count ≥ current baseline (417)
@@ -1279,7 +1307,7 @@ Objective: Formalize the existing “layer set” symlink approach into an audit
      - Abbrev markers stable (core pack + brew pack consistent unless intentionally disabled)
    - Appends manifest entry:
      ```json
-     {
+{
        "layer":"01",
        "promoted_from":"00",
        "timestamp":"<UTC ISO8601>",
@@ -1289,7 +1317,7 @@ Objective: Formalize the existing “layer set” symlink approach into an audit
        "checksum_set":[ "sha256:..." ],
        "rationale":"Phase 7 closure + instrumentation expansion"
      }
-     ```
+```
    - Flips symlinks:
      - `.zshrc.pre-plugins.d -> .zshrc.pre-plugins.d.01`
      - `.zshrc.add-plugins.d -> .zshrc.add-plugins.d.01`
@@ -1420,9 +1448,9 @@ Review backlog at Phase 7 closure and after first stable instrumentation pass (p
 
 ---
 
-## 🟢 “Green Light” Snapshot Process (Pre–Default Shell Switch)  
-Updated 2025-10-01 (Baseline widgets = 417; historical emergency rollback floor = 387).  
-Purpose: Produce a deterministic, auditable evidence bundle before executing:  
+## 🟢 “Green Light” Snapshot Process (Pre–Default Shell Switch)
+Updated 2025-10-01 (Baseline widgets = 417; historical emergency rollback floor = 387).
+Purpose: Produce a deterministic, auditable evidence bundle before executing:
   chsh -s "$(command -v zsh)"
 
 All steps are nounset‑safe oriented; tolerate missing optional scripts with explicit logged fallback (NO silent failure).
@@ -1439,7 +1467,7 @@ All JSON / digests written under: artifacts/ (created if absent)
 
 1. Baseline Smoke (if script exists; otherwise proceed with aggregator)
    ```bash
-   mkdir -p artifacts
+mkdir -p artifacts
    if [[ -f docs/fix-zle/test-smoke.sh ]]; then
      bash docs/fix-zle/test-smoke.sh --json --baseline 417 \
        | tee artifacts/last-smoke.json
@@ -1448,11 +1476,11 @@ All JSON / digests written under: artifacts/ (created if absent)
    else
      echo "[INFO] Smoke script absent – skipping (acceptable)."
    fi
-   ```
+```
 
 2. Full Aggregator (PTY + segments + validation)
    ```bash
-   bash docs/fix-zle/tests/aggregate-json-tests.sh \
+bash docs/fix-zle/tests/aggregate-json-tests.sh \
      --run-pty \
      --segment-file "$HOME/.cache/zsh/segments/live-segments.ndjson" \
      --embed-segments \
@@ -1467,11 +1495,11 @@ All JSON / digests written under: artifacts/ (created if absent)
      || echo "[WARN] Autopair PTY not true (document fallback acceptance)."
    grep '"segments_valid":true' artifacts/pre-chsh.json \
      || echo "[ERROR] Segment validation failed – investigate before proceeding."
-   ```
+```
 
 3. Segment Canonicalization (if segment file present)
    ```bash
-   seg="$HOME/.cache/zsh/segments/live-segments.ndjson"
+seg="$HOME/.cache/zsh/segments/live-segments.ndjson"
    if [[ -f "$seg" ]]; then
      zsh/tools/segment-canonicalize.sh "$seg" --ndjson --gzip --force --quiet
      if [[ -f "${seg}.canonical.sha256" ]]; then
@@ -1482,11 +1510,11 @@ All JSON / digests written under: artifacts/ (created if absent)
    else
      echo "[INFO] No live segment file; skipping canonicalization."
    fi
-   ```
+```
 
 4. Layer Health Report (enforces baseline & optionally re-validates segments)
    ```bash
-   zsh/tools/report-layer-health.zsh \
+zsh/tools/report-layer-health.zsh \
      --json --pretty \
      --baseline-widgets 417 --fail-on-regression \
      --segments-file "$HOME/.cache/zsh/segments/live-segments.ndjson" \
@@ -1496,60 +1524,60 @@ All JSON / digests written under: artifacts/ (created if absent)
    grep '"widgets": 417' artifacts/layer-health.json
    grep '"validated":true' artifacts/layer-health.json \
      || echo "[WARN] Segment validation flag not true in layer-health.json."
-   ```
+```
 
 5. Archive Integrity Sanity (counts must match manifest)
    ```bash
-   ARCH_FS_COUNT=$(find .ARCHIVE/tools -type f 2>/dev/null | wc -l | tr -d ' ')
+ARCH_FS_COUNT=$(find .ARCHIVE/tools -type f 2>/dev/null | wc -l | tr -d ' ')
    ARCH_MAN_COUNT=$(grep -c '"original_path"' .ARCHIVE/manifest.json 2>/dev/null || echo 0)
    echo "ARCHIVE_FS=$ARCH_FS_COUNT ARCHIVE_MANIFEST=$ARCH_MAN_COUNT"
    [[ "$ARCH_FS_COUNT" == "$ARCH_MAN_COUNT" ]] \
      || echo "[WARN] Archive mismatch – investigate before marking Green Light."
-   ```
+```
 
 6. Core Markers / Toolchain Presence
    ```bash
-   zsh -ic 'echo PNPM=${_ZF_PNPM:-0} PNPM_FLAGS=${_ZF_PNPM_FLAGS:-0} STAR_MS=${_ZF_STARSHIP_INIT_MS:-NA} ABRR=${_ZF_ABBR:-0} CORE_ABBR=${_ZF_ABBR_PACK_CORE:-0} BREW_ABBR=${_ZF_ABBR_PACK_BREW:-0}'
-   ```
+zsh -ic 'echo PNPM=${_ZF_PNPM:-0} PNPM_FLAGS=${_ZF_PNPM_FLAGS:-0} STAR_MS=${_ZF_STARSHIP_INIT_MS:-NA} ABRR=${_ZF_ABBR:-0} CORE_ABBR=${_ZF_ABBR_PACK_CORE:-0} BREW_ABBR=${_ZF_ABBR_PACK_BREW:-0}'
+```
 
 7. Emergency Fallback Sanity
    ```bash
-   zsh -ic 'source .zshrc.emergency; echo EMERGENCY_WIDGETS=$(zle -la | wc -l)'
+zsh -ic 'source .zshrc.emergency; echo EMERGENCY_WIDGETS=$(zle -la | wc -l)'
    # Expect EMERGENCY_WIDGETS >= 387 (historical floor). Prefer ≥417; doc deviation if lower.
-   ```
+```
 
 8. Terminal Integration Markers (run under each emulator if possible)
    ```bash
-   zsh -ic 'echo TERM_PROG=$TERM_PROGRAM WARP=${WARP_IS_LOCAL_SHELL_SESSION:-0} WEZ=${WEZTERM_SHELL_INTEGRATION:-0} GHOSTTY=${GHOSTTY_SHELL_INTEGRATION:-0} KITTY=${KITTY_SHELL_INTEGRATION:-0}'
-   ```
+zsh -ic 'echo TERM_PROG=$TERM_PROGRAM WARP=${WARP_IS_LOCAL_SHELL_SESSION:-0} WEZ=${WEZTERM_SHELL_INTEGRATION:-0} GHOSTTY=${GHOSTTY_SHELL_INTEGRATION:-0} KITTY=${KITTY_SHELL_INTEGRATION:-0}'
+```
 
 9. (Optional) Performance Sampling (5 interactive inits)
    ```bash
-   for i in {1..5}; do /usr/bin/time -p zsh -i -c exit; done
-   ```
+for i in {1..5}; do /usr/bin/time -p zsh -i -c exit; done
+```
 
 10. (Optional) Promotion Dry-Run (ensures tooling gating still stable)
    ```bash
-   bash zsh/tools/promote-layer.sh promote 01 \
+bash zsh/tools/promote-layer.sh promote 01 \
      --with-segments \
      --baseline 417 \
      --dry-run \
      --rationale "green-light-dry-run"
-   ```
+```
 
 11. (Optional) Additional Segment Stats (if needing schema evolution evidence)
    ```bash
-   if [[ -f zsh/.performance/segments.sample.json ]]; then
+if [[ -f zsh/.performance/segments.sample.json ]]; then
      bash docs/fix-zle/tests/validate-segments.sh \
        --stats zsh/.performance/segments.sample.json
    fi
-   ```
+```
 
 12. Default Shell Switch (only after all above are clean)
    ```bash
-   command -v zsh | sudo tee -a /etc/shells >/dev/null
+command -v zsh | sudo tee -a /etc/shells >/dev/null
    chsh -s "$(command -v zsh)"
-   ```
+```
 
 ### Success Criteria (All Must Hold Unless Explicitly Documented)
 - Aggregator: "status":"ok", "widget_count":417, "segments_valid":true. (Baseline 417 enforced; fail <417)
@@ -1574,6 +1602,26 @@ All JSON / digests written under: artifacts/ (created if absent)
 - If any WARN conditions accepted, record rationale inline (append-only).
 
 (End Green Light Snapshot Section – supersedes earlier 416-based instructions.)
+## ℹ️ Debug Variable Rationale (Why Both ZF_DEBUG and ZSH_DEBUG?)
+
+| Variable    | Scope / Intent                            | Behavior |
+|-------------|--------------------------------------------|----------|
+| `ZF_DEBUG`  | Redesign / framework‑level selective logs  | Enables `zf::debug` output in modular code paths. |
+| `ZSH_DEBUG` | Broader legacy / compatibility debug gate  | Triggers legacy blocks and certain transitional traces. |
+
+Design Decisions:
+1. Separation avoids coupling legacy verbosity to new minimal modules.
+2. Allows turning on *only* redesign diagnostics (`ZF_DEBUG=1`) while leaving historical or noisy compatibility traces off.
+3. Migration Path: Eventually deprecate `ZSH_DEBUG` once legacy fragments fully retired; unify under `ZF_DEBUG` with fine-grained channels (e.g. `ZF_DEBUG=perf,abbr,terminal`).
+4. Safety: Both default off to maintain fast, quiet startup and prevent log growth (rotation now handled by `025-log-rotation.zsh` when enabled).
+
+Recommendation:
+- Day‑to‑day: keep both unset.
+- Targeted troubleshooting of a new module: `ZF_DEBUG=1 zsh -i`.
+- Legacy anomaly investigation: `ZSH_DEBUG=1 ZF_DEBUG=1 zsh -i` (collect, then rotate).
+
+---
+r 416-based instructions.)
 ## ℹ️ Debug Variable Rationale (Why Both ZF_DEBUG and ZSH_DEBUG?)
 
 | Variable    | Scope / Intent                            | Behavior |

@@ -1,5 +1,6 @@
 {
-    "global": { "show_in_menu_bar": false },
+    "global": { "show_additional_menu_items": true },
+    "machine_specific": { "krbn-2f16e338-dc68-480b-bc71-9ab30f3bbc02": { "enable_multitouch_extension": true } },
     "profiles": [
         {
             "complex_modifications": {
@@ -113,6 +114,7 @@
                     "ignore": false
                 },
                 {
+                    "disable_built_in_keyboard_if_exists": true,
                     "identifiers": {
                         "is_keyboard": true,
                         "is_pointing_device": true,

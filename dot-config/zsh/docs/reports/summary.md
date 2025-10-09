@@ -15,10 +15,12 @@ This summary lists the changes applied by the automated maintenance run on the `
   - `docs/400-redesign/060-risk-assessment.md` (STUB)
   - `docs/400-redesign/070-maintenance-guide.md` (STUB)
 
+
 ## Rationale
 
 - Ensure every index entry resolves to an existing file to avoid broken navigation and to provide a clean baseline for further content work.
 - Record findings & lint-like issues in `docs/reports/` for review.
+
 
 ## Next steps
 

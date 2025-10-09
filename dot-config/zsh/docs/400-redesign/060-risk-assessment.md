@@ -13,6 +13,7 @@ This risk assessment captures known and anticipated risks for the ZSH REDESIGN p
 - Scope: configuration switching, plugin loading, prompt and widget health, symlink operations, user-facing performance regressions, and data privacy (history storage).
 - Objectives: identify top risks, define mitigations and acceptance criteria, and provide clear rollback procedures.
 
+
 ## Risk matrix (example)
 
 | ID | Risk | Likelihood | Impact | Mitigation | Owner |
@@ -46,10 +47,15 @@ This risk assessment captures known and anticipated risks for the ZSH REDESIGN p
 - Runbook:
   - If a switch fails, run:
 
+
 ```bash
+
 # Recover previous symlink state
+
 readlink .zshrc.d.active.backup 2>/dev/null | xargs -I{} ln -sf {} .zshrc.d.active
+
 # Validate config
+
 ./bin/validate-config.sh 00 || ./bin/validate-config.sh 01
 ```
 
@@ -71,11 +77,13 @@ readlink .zshrc.d.active.backup 2>/dev/null | xargs -I{} ln -sf {} .zshrc.d.acti
 - Remediation:
   - Provide a guide to scrub sensitive entries from Atuin or `.zsh_history` and rotate any leaked tokens
 
+
 ## Risk acceptance & prioritization
 
 - High impact (blocker) risks must have automated mitigations and a documented rollback
 - Medium impact risks require monitoring and clear remediation plans
 - Low impact risks should be logged and scheduled for backlog remediation
+
 
 ## Post-incident analysis
 
@@ -86,16 +94,19 @@ readlink .zshrc.d.active.backup 2>/dev/null | xargs -I{} ln -sf {} .zshrc.d.acti
   - Actions taken
   - Follow-up items and owners
 
+
 ## Reporting & ownership
 
 - Each risk entry should be owned by a team or maintainer with a person assigned for escalation
 - Maintain a short living risk register file (e.g., `docs/400-redesign/RISKS.md`) that is updated as risks change
+
 
 ## Acceptance criteria
 
 - Risk matrix exists for top risks with assigned mitigation strategies
 - Rollback runbook is present and tested manually at least once per release cycle
 - CI detects regressions in startup performance and blocks promotion when thresholds are exceeded
+
 
 ## Related
 

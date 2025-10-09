@@ -908,7 +908,7 @@ style = 'color14'
 time_format = "%T"
 time_range = '-'
 use_12hr = false
-utc_time_offset = 'local'
+utc_time_offset = '+00.00'
 
 [username]
 disabled = false

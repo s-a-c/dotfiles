@@ -4,18 +4,18 @@ local commands = require 'commands'
 local config = wezterm.config_builder()
 -- Set the color scheme depending on the system setting
 function get_appearance()
-  if wezterm.gui then
-    return wezterm.gui.get_appearance()
-  end
-  return 'Dark'
+    if wezterm.gui then
+        return wezterm.gui.get_appearance()
+    end
+    return 'Dark'
 end
 
 function scheme_for_appearance(appearance)
-  if appearance:find 'Dark' then
-    return 'Modus-Vivendi'
-  else
-    return 'Modus-Operandi'
-  end
+    if appearance:find 'Dark' then
+        return 'Modus-Vivendi'
+    else
+        return 'Modus-Operandi'
+    end
 end
 
 config.automatically_reload_config = true
@@ -24,38 +24,38 @@ config.check_for_updates = true
 
 -- Font settings
 config.font_size = 16
-config.line_height = 1.4
+config.line_height = 1.2
 config.font = wezterm.font_with_fallback {
-  {
-    family = 'Dank Mono',
-    harfbuzz_features = {
-      'calt',
-      'ss01',
-      'ss02',
-      'ss03',
-      'ss04',
-      'ss05',
-      'ss06',
-      'ss07',
-      'ss08',
-      'ss09',
-      'liga',
+    {
+        family = 'Monaspace Neon NF',
+        harfbuzz_features = {
+            'calt',
+            'ss01',
+            'ss02',
+            'ss03',
+            'ss04',
+            'ss05',
+            'ss06',
+            'ss07',
+            'ss08',
+            'ss09',
+            'liga',
+        },
     },
-  },
-  { family = 'Symbols Nerd Font Mono' },
+    { family = 'Symbols Nerd Font Mono' },
 }
 config.font_rules = {
-  {
-    font = wezterm.font('Dank Mono', {
-      bold = true,
-    }),
-  },
-  {
-    italic = true,
-    font = wezterm.font('Dank Mono', {
-      italic = true,
-    }),
-  },
+    {
+        font = wezterm.font('Dank Mono', {
+            bold = true,
+        }),
+    },
+    {
+        italic = true,
+        font = wezterm.font('Dank Mono', {
+            italic = true,
+        }),
+    },
 }
 
 -- Colors
@@ -66,10 +66,10 @@ config.cursor_blink_rate = 300
 -- config.window_decorations = 'RESIZE'
 config.hide_tab_bar_if_only_one_tab = true
 config.window_padding = {
-  left = 0,
-  right = 0,
-  top = 0,
-  bottom = 0,
+    left = 0,
+    right = 0,
+    top = 0,
+    bottom = 0,
 }
 config.macos_window_background_blur = 40
 
@@ -106,7 +106,7 @@ config.native_macos_fullscreen_mode = false
 
 -- Custom commands
 wezterm.on('augment-command-palette', function()
-  return commands
+    return commands
 end)
 
 return config

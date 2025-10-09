@@ -10,7 +10,7 @@ The ZSH configuration implements a sophisticated modular architecture designed f
 
 The configuration is organized into three distinct phases:
 
-```
+```bash
 .zshenv → .zshrc.pre-plugins.d/ → .zshrc.add-plugins.d/ → .zshrc.d/
      ↑         ↑                        ↑                   ↑
   Environment  Security/Safety        Plugin Loading     Integration
@@ -25,17 +25,22 @@ All modules follow the `XX_YY-name.zsh` pattern:
 - **YY** (-): Category separator
 - **name**: Descriptive identifier
 
-**Examples:**
+
+#### Examples:
+
 - `010-shell-safety-nounset.zsh` - Load order 010, shell safety category
 - `100-perf-core.zsh` - Load order 100, performance core category
 - `195-optional-brew-abbr.zsh` - Load order 195, optional feature category
 
+
 ### **Feature-Driven Design Philosophy**
 
 Rather than rigid structural constraints, the system prioritizes:
+
 - **Feature enablement** over configuration complexity
 - **User customization** without requiring forks
 - **Clear extension points** for new functionality
+
 
 ## Loading Phase Architecture
 
@@ -43,7 +48,8 @@ Rather than rigid structural constraints, the system prioritizes:
 
 **Purpose:** Establish safe environment before plugin loading
 
-**Key Components:**
+#### Key Components:
+
 - **000-layer-set-marker.zsh** - Layered system initialization
 - **010-shell-safety-nounset.zsh** - Nounset safety and variable guards
 - **015-xdg-extensions.zsh** - XDG base directory setup
@@ -51,18 +57,22 @@ Rather than rigid structural constraints, the system prioritizes:
 - **025-log-rotation.zsh** - Log management and rotation
 - **030-segment-management.zsh** - Performance monitoring setup
 
+
 **Load Order:** 000 → 010 → 015 → 020 → 025 → 030
 
 ### **Phase 2: Plugin Definition** (`.zshrc.add-plugins.d/`)
 
 **Purpose:** Load and configure zgenom plugins
 
-**Categories:**
+#### Categories:
+
 - **100-130: Core Systems** - Performance, development tools
 - **140-170: Productivity** - Navigation, search, integration
 - **180-199: Optional Features** - Auto-pairing, abbreviations
 
-**Load Order:**
+
+#### Load Order:
+
 - `100-perf-core.zsh` - Performance utilities (evalcache, zsh-async, zsh-defer)
 - `110-dev-php.zsh` - PHP development environment
 - `120-dev-node.zsh` - Node.js development tools
@@ -75,15 +85,19 @@ Rather than rigid structural constraints, the system prioritizes:
 - `190-optional-abbr.zsh` - Abbreviation system
 - `195-optional-brew-abbr.zsh` - Homebrew aliases
 
+
 ### **Phase 3: Post-Plugin Integration** (`.zshrc.d/`)
 
 **Purpose:** Terminal integration and environment-specific setup
 
-**Categories:**
+#### Categories:
+
 - **100-199: Core Integration** - Terminal, prompt, completions
 - **300-399: Advanced Features** - History, navigation, Neovim
 
-**Load Order:**
+
+#### Load Order:
+
 - `100-terminal-integration.zsh` - Terminal detection and setup
 - `110-starship-prompt.zsh` - Starship prompt configuration
 - `115-live-segment-capture.zsh` - Real-time performance monitoring
@@ -96,6 +110,7 @@ Rather than rigid structural constraints, the system prioritizes:
 - `340-neovim-environment.zsh` - Neovim environment integration
 - `345-neovim-helpers.zsh` - Neovim helper functions
 
+
 ## Security Architecture
 
 ### **Nounset Safety System**
@@ -105,6 +120,7 @@ Rather than rigid structural constraints, the system prioritizes:
 **Solution:** Multi-layered protection system:
 
 1. **Early Variable Guards** (`.zshenv`)
+
    ```bash
    : ${ZSH_DEBUG:=0}
    : ${STARSHIP_CMD_STATUS:=0}
@@ -112,6 +128,7 @@ Rather than rigid structural constraints, the system prioritizes:
    ```
 
 2. **Plugin Compatibility Mode** (`010-shell-safety-nounset.zsh`)
+
    ```bash
    if [[ -o nounset ]]; then
        export _ZQS_NOUNSET_WAS_ON=1
@@ -121,6 +138,7 @@ Rather than rigid structural constraints, the system prioritizes:
    ```
 
 3. **Controlled Re-enablement** (`020-delayed-nounset-activation.zsh`)
+
    ```bash
    zf::enable_nounset_safe() {
        # Safe nounset activation after environment stabilization
@@ -129,10 +147,12 @@ Rather than rigid structural constraints, the system prioritizes:
 
 ### **Path Security**
 
-**Features:**
+#### Features:
+
 - **Path deduplication** - Removes duplicate entries while preserving order
 - **Directory validation** - Only adds existing directories to PATH
 - **XDG compliance** - Uses XDG base directories when available
+
 
 ## Performance Architecture
 
@@ -152,11 +172,13 @@ zf::segment_fallback() {
 }
 ```
 
-**Timing Sources:**
+#### Timing Sources:
+
 1. **Primary:** `python3 -c "import time; print(int(time.time() * 1000))"`
 2. **Secondary:** `node -e "console.log(Date.now())"`
 3. **Tertiary:** `perl -MTime::HiRes=time -E 'say int(time*1000)'`
 4. **Fallback:** `$(($(date +%s) * 1000))`
+
 
 ### **Performance Targets**
 
@@ -165,20 +187,25 @@ zf::segment_fallback() {
 - **Memory Usage:** Monitored through segment system
 - **Cache Efficiency:** zgenom handles plugin caching
 
+
 ## Plugin Management Architecture
 
 ### **zgenom Integration**
 
-**Configuration Strategy:**
+#### Configuration Strategy:
+
 - **Centralized Setup:** `.zgen-setup` file manages plugin loading
 - **Conditional Loading:** Plugins only load if zgenom function exists
 - **Error Handling:** Non-fatal plugin load failures with debug logging
 
-**Plugin Categories:**
+
+#### Plugin Categories:
+
 - **Performance:** evalcache, zsh-async, zsh-defer
 - **Development:** PHP, Node.js, Python, GitHub tools
 - **Productivity:** FZF, navigation, abbreviations
 - **Optional:** Auto-pairing, Homebrew integration
+
 
 ### **Cache Management**
 
@@ -186,24 +213,29 @@ zf::segment_fallback() {
 - **Location:** `${ZDOTDIR}/.zgenom/` (localized to config directory)
 - **Integrity:** Plugin loading verification and error reporting
 
+
 ## Layered Configuration Architecture
 
 ### **Symlink-Based Versioning**
 
-**Structure:**
-```
+#### Structure:
+```bash
 .zshrc.add-plugins.d -> .zshrc.add-plugins.d.live -> .zshrc.add-plugins.d.00
 ```
 
-**Benefits:**
+#### Benefits:
+
 - **Safe Updates:** Active config is symlink to stable version
 - **Rollback:** Quick reversion to previous working state
 - **Development:** Non-.00 directories for active development
 
-**Files Involved:**
+
+#### Files Involved:
+
 - `.zshrc.add-plugins.d` → `.zshrc.add-plugins.d.live` → `.zshrc.add-plugins.d.00`
 - `.zshrc.d` → `.zshrc.d.live` → `.zshrc.d.00`
 - `.zshenv` → `.zshenv.live` → `.zshenv.00`
+
 
 ## Integration Architecture
 
@@ -216,11 +248,14 @@ if [[ -n ${ALACRITTY_LOG:-} ]]; then
     export TERM_PROGRAM=Alacritty
 elif ps -o comm= -p "$(ps -o ppid= -p $$)" | grep -qi terminal; then
     export TERM_PROGRAM=Apple_Terminal
+
 # ... additional terminal detection
+
 fi
 ```
 
-**Supported Terminals:**
+#### Supported Terminals:
+
 - **Alacritty** - Cross-platform GPU terminal
 - **Apple Terminal** - macOS built-in terminal
 - **Ghostty** - Modern terminal emulator
@@ -229,32 +264,39 @@ fi
 - **Warp** - AI-enhanced terminal
 - **WezTerm** - Cross-platform terminal
 
+
 ### **Development Tool Integration**
 
-**Language Runtimes:**
+#### Language Runtimes:
+
 - **Node.js/nvm** - JavaScript runtime management
 - **PHP/Herd** - PHP version management
 - **Python/uv** - Python package management
 - **Rust** - Systems programming language
 - **Go** - Cloud-native programming language
 
-**Productivity Tools:**
+
+#### Productivity Tools:
+
 - **Atuin** - Shell history synchronization
 - **FZF** - Fuzzy finder integration
 - **Carapace** - Multi-shell completions
 - **Starship** - Cross-shell prompt
 
+
 ## Error Handling Architecture
 
 ### **Debug System**
 
-**Components:**
+#### Components:
+
 - **zf::debug()** - Conditional debug output
 - **ZSH_DEBUG** - Master debug flag
 - **ZSH_DEBUG_LOG** - Debug log file location
 - **Performance Tracing** - Segment-based performance logging
 
-**Usage:**
+
+#### Usage:
 ```bash
 export ZSH_DEBUG=1                    # Enable debug output
 export PERF_SEGMENT_LOG="/path/to/log" # Enable performance logging
@@ -263,58 +305,77 @@ export PERF_SEGMENT_TRACE=1           # Verbose segment tracing
 
 ### **Error Recovery**
 
-**Strategies:**
+#### Strategies:
+
 - **Graceful Degradation** - Continue operation despite plugin failures
 - **Fallback Systems** - Alternative implementations when primary fails
 - **User Notification** - Clear error messages for troubleshooting
+
 
 ## Extension Architecture
 
 ### **Module Header Format**
 
-**Standard Header:**
+#### Standard Header:
 ```bash
+
 #!/usr/bin/env zsh
+
 # XX_YY-name.zsh - Brief description
+
 # Phase: [pre_plugin|add_plugin|post_plugin]
+
 # PRE_PLUGIN_DEPS: comma,separated,list
+
 # POST_PLUGIN_DEPS: comma,separated,list
+
 # RESTART_REQUIRED: [yes|no]
+
 ```
 
 ### **Integration Points**
 
-**Available Functions:**
+#### Available Functions:
+
 - `zf::segment "module" "start|end"` - Performance monitoring
 - `zf::debug "message"` - Debug logging
 - `zf::path_prepend/append/remove` - Safe PATH management
 - `zf::has_command "cmd"` - Command existence checking
 
-**Environment Variables:**
+
+#### Environment Variables:
+
 - `ZDOTDIR` - Configuration directory
 - `ZSH_CACHE_DIR` - Cache location
 - `ZSH_LOG_DIR` - Log directory
 - `XDG_*` - XDG base directories
 
+
 ## Assessment
 
 ### **Strengths**
+
 - ✅ **Clear separation of concerns**
 - ✅ **Comprehensive performance monitoring**
 - ✅ **Robust error handling**
 - ✅ **Extensive integration capabilities**
 - ✅ **Sophisticated security model**
 
+
 ### **Areas for Improvement**
+
 - ⚠️ **Duplicate filename issue** in `.zshrc.d/`
 - ⚠️ **Layered system complexity** may confuse newcomers
 - ⚠️ **Extensive configuration** options increase learning curve
 
+
 ### **Scalability Considerations**
+
 - **Modular design** supports easy feature additions
 - **Performance monitoring** enables optimization
 - **Standardized interfaces** ensure consistency
 - **Layered system** provides safe update mechanisms
+
 
 ---
 

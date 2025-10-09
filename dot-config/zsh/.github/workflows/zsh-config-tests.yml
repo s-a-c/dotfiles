@@ -1,0 +1,86 @@
+name: ZSH Config Tests
+
+on:
+    push:
+        branches: [main, feature/**]
+    pull_request:
+        branches: [main]
+
+jobs:
+    runtime-tests:
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                shell: bash
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Set up Zsh
+              run: |
+                  sudo apt-get update
+                  sudo apt-get install -y zsh curl ca-certificates
+
+            - name: Cache ShellCheck
+              id: shellcheck-cache
+              uses: actions/cache@v4
+              with:
+                  path: ~/.local/bin/shellcheck
+                  key: shellcheck-0.9.0-linux-x86_64
+                  restore-keys: shellcheck-
+
+            - name: Install ShellCheck (if cache miss)
+              if: steps.shellcheck-cache.outputs.cache-hit != 'true'
+              run: |
+                  mkdir -p ~/.local/bin
+                  curl -sSL https://github.com/koalaman/shellcheck/releases/download/v0.9.0/shellcheck-v0.9.0.linux.x86_64.tar.xz -o /tmp/sc.tar.xz
+                  tar -xf /tmp/sc.tar.xz -C /tmp
+                  mv /tmp/shellcheck-v0.9.0/shellcheck ~/.local/bin/
+                  chmod +x ~/.local/bin/shellcheck
+                  echo "$HOME/.local/bin" >> $GITHUB_PATH
+            - name: Add ShellCheck to PATH (cache hit)
+              if: steps.shellcheck-cache.outputs.cache-hit == 'true'
+              run: echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+            - name: Run redirection lint
+              run: |
+                  if [[ -f tools/lint-redirections.zsh ]]; then
+                    zsh tools/lint-redirections.zsh --quick || (echo "redirection lint failed" && exit 1)
+                  else
+                    echo "lint-redirections script not found; skipping"
+                  fi
+
+            - name: Run nvm + prompt runtime harness (Starship forced)
+              env:
+                  ZF_ENABLE_STARSHIP: "1"
+                  ZSH_DEBUG: "1"
+              run: |
+                  if [[ -f tests/runtime/test_nvm_prompt_env.zsh ]]; then
+                    export ZDOTDIR="$PWD"/ # ensure ZDOTDIR points to repo root
+                    zsh tests/runtime/test_nvm_prompt_env.zsh
+                  else
+                    echo "runtime harness missing" && exit 1
+                  fi
+
+            - name: Shellcheck staged-like set
+              run: |
+                  shopt -s globstar nullglob
+                  files=( **/*.zsh **/*.sh )
+                  if command -v shellcheck >/dev/null 2>&1; then
+                    for f in "${files[@]}"; do
+                      if [[ "$f" == *.ARCHIVE/* ]]; then continue; fi
+                      shellcheck -x "$f" || exit 1
+                    done
+                  fi
+
+            - name: Prompt timing harness
+              env:
+                  ZSH_DEBUG: "1"
+              run: |
+                  if [[ -f tests/runtime/test_prompt_timings.zsh ]]; then
+                    export ZDOTDIR="$PWD"/
+                    zsh tests/runtime/test_prompt_timings.zsh | tee prompt_timings.tsv
+                    echo "--- prompt timings ---"; cat prompt_timings.tsv
+                  else
+                    echo "timing harness missing (non-fatal)"
+                  fi

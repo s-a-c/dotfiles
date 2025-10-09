@@ -142,6 +142,51 @@ behaviour, open an issue or a draft PR and tag me for review. Small changes to
 `.zshenv` and early startup code can affect non-interactive services — test with
 a clean shell session.
 
+## Maintenance: Cleaning Ephemeral Artifacts
+
+A helper script `tools/clean-zsh-refactor.sh` performs safe cleanup of generated metrics and log artifacts. It is dry-run by default.
+
+Usage examples:
+
+```
+# List planned deletions for all default scopes (logs + artifacts)
+./tools/clean-zsh-refactor.sh
+
+# Actually delete artifact JSON/metrics only
+./tools/clean-zsh-refactor.sh --scope artifacts --apply
+
+# Keep newest 5 baseline_* log metric files, delete older ones
+./tools/clean-zsh-refactor.sh --scope logs --retain 5 --apply
+
+# Include cache directories (.context-cache, .zsh-evalcache, etc.)
+./tools/clean-zsh-refactor.sh --purge-caches --apply
+
+# Protect a specific file from deletion
+./tools/clean-zsh-refactor.sh --keep artifacts/smoke.json --apply
+```
+
+Scopes:
+- `logs` – files `logs/baseline_*` and dated subdirectories `logs/YYYY-MM-DD/`
+- `artifacts` – JSON files at `artifacts/` root and everything under `artifacts/metrics/`
+- `caches` – cache dirs (only when `--purge-caches`): `.context-cache/`, `.zsh-evalcache/`, `.performance/`, `.augment/`
+- `all` – union of logs + artifacts, plus caches if `--purge-caches` supplied
+
+Flags:
+- `--dry-run` (default) Show planned deletions
+- `--apply` Perform deletions
+- `--scope <name>` Restrict scope (logs|artifacts|caches|all)
+- `--retain <N>` Keep newest N `baseline_*` log files (older removed)
+- `--keep <pattern>` Protect specific relative path (may repeat)
+- `--purge-caches` Add cache directories to deletion set
+- `--list-scopes` Show scope summary
+
+Safety guards:
+- Never deletes outside repository root
+- Requires explicit `--apply` to perform destructive action
+- Pattern-based keeps evaluated after retention filtering
+
+Please prefer this script over ad‑hoc `rm -rf` to avoid accidental loss of tracked data.
+
 Policy acknowledgement
 ----------------------
 Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v<checksum>
