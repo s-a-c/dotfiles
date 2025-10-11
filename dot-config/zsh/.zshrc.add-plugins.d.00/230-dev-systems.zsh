@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# 130-dev-systems.zsh - Systems Languages (Rust + Go) for ZSH REDESIGN v2
+# 230-dev-systems.zsh - Systems Languages (Rust + Go) for ZSH REDESIGN v2
 # Phase 3C: Rust + Go Environment
 # New module for systems programming languages
 

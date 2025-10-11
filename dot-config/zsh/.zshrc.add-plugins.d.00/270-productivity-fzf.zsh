@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# 160-productivity-fzf.zsh - FZF Fuzzy Finder Integration for ZSH REDESIGN v2
+# 270-productivity-fzf.zsh - FZF Fuzzy Finder Integration for ZSH REDESIGN v2
 # Phase 4B: FZF Integration (continued)
 # Refactored from legacy 010-add-plugins.zsh (lines 110-115)
 

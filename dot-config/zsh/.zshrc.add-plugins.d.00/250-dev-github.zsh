@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# 140-dev-github.zsh - GitHub CLI Integration for ZSH REDESIGN v2
+# 250-dev-github.zsh - GitHub CLI Integration for ZSH REDESIGN v2
 # Phase 3D: GitHub Integration
 # Refactored from legacy 010-add-plugins.zsh (lines 62-63)
 

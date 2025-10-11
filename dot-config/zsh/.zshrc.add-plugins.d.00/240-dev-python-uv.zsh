@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# 136-dev-python-uv.zsh - Python Packaging (uv / uvx) Integration for ZSH REDESIGN v2
+# 240-dev-python-uv.zsh - Python Packaging (uv / uvx) Integration for ZSH REDESIGN v2
 # Phase 3E (Development Environments – auxiliary)
 #
 # Purpose:
@@ -69,7 +69,7 @@ fi
 
 # If neither tool present, we exit early (still marking module as sourced)
 if [[ $_ZF_UV -eq 0 && $_ZF_UVX -eq 0 ]]; then
-  zf::debug "# [uv] neither uv nor uvx detected – skipping"
+  zf::debug "# [dev-python-uv] neither uv nor uvx detected – skipping"
   return 0
 fi
 
@@ -89,7 +89,7 @@ fi
 _fpath_joined=":${(j.:.)fpath}:"
 if [[ "${_fpath_joined}" != *":${_uv_cache_dir}:"* ]]; then
   fpath=("${_uv_cache_dir}" "${fpath[@]}")
-  zf::debug "# [uv] added completion dir to fpath: ${_uv_cache_dir}"
+  zf::debug "# [dev-python-uv] added completion dir to fpath: ${_uv_cache_dir}"
 fi
 unset _fpath_joined
 
@@ -119,7 +119,7 @@ if [[ $_ZF_UV -eq 1 ]]; then
     local _arr
     _arr=(${=~_candidate})
     if _uv_out="$(_zf_uv_try_generate "${_arr[@]}")"; then
-      zf::debug "# [uv] completion generation succeeded via: ${_candidate}"
+      zf::debug "# [dev-python-uv] completion generation succeeded via: ${_candidate}"
       break
     fi
     _uv_out=""
@@ -135,7 +135,7 @@ if [[ -z "${_uv_out}" && $_ZF_UVX -eq 1 ]]; then
     local _arr
     _arr=(${=~_candidate})
     if _uv_out="$(_zf_uv_try_generate "${_arr[@]}")"; then
-      zf::debug "# [uv] uvx completion generation succeeded via: ${_candidate}"
+      zf::debug "# [dev-python-uv] uvx completion generation succeeded via: ${_candidate}"
       break
     fi
     _uv_out=""
@@ -153,30 +153,30 @@ if [[ -n "${_uv_out}" ]]; then
       # Fallback: attempt eval if write fails
       if eval "${_uv_out}" 2>/dev/null; then
         _ZF_UV_COMPLETION_MODE="eval"
-        zf::debug "# [uv] fallback eval-based completion loaded (file write failed)"
+        zf::debug "# [dev-python-uv] fallback eval-based completion loaded (file write failed)"
       else
-        zf::debug "# [uv] completion generation output unusable (write+eval failed)"
+        zf::debug "# [dev-python-uv] completion generation output unusable (write+eval failed)"
       fi
     }
     if [[ -f "${_uv_tmp_file}" ]]; then
       _ZF_UV_COMPLETION_MODE="file"
-      zf::debug "# [uv] completion script written: ${_uv_tmp_file}"
+      zf::debug "# [dev-python-uv] completion script written: ${_uv_tmp_file}"
     fi
   else
     # Not a classic compdef script – attempt eval
     if eval "${_uv_out}" 2>/dev/null; then
       _ZF_UV_COMPLETION_MODE="eval"
-      zf::debug "# [uv] evaluated inline completion (no #compdef signature)"
+      zf::debug "# [dev-python-uv] evaluated inline completion (no #compdef signature)"
     else
-      zf::debug "# [uv] generated output did not evaluate cleanly"
+      zf::debug "# [dev-python-uv] generated output did not evaluate cleanly"
     fi
   fi
 else
   if [[ $_ZF_UV -eq 1 ]]; then
     if [[ ${_uv_generation_attempted} -eq 1 ]]; then
-      zf::debug "# [uv] no usable completion output from generation attempts"
+      zf::debug "# [dev-python-uv] no usable completion output from generation attempts"
     else
-      zf::debug "# [uv] generation not attempted (unexpected state)"
+      zf::debug "# [dev-python-uv] generation not attempted (unexpected state)"
     fi
   fi
 fi
@@ -187,6 +187,6 @@ fi
 # Cleanup local temporaries (keep marker vars)
 unset _uv_cache_dir _uv_tmp_file _uv_out _candidate _uv_generation_attempted
 
-zf::debug "# [uv] integration complete (uv=${_ZF_UV} uvx=${_ZF_UVX} mode=${_ZF_UV_COMPLETION_MODE})"
+zf::debug "# [dev-python-uv] integration complete (uv=${_ZF_UV} uvx=${_ZF_UVX} mode=${_ZF_UV_COMPLETION_MODE})"
 
 return 0

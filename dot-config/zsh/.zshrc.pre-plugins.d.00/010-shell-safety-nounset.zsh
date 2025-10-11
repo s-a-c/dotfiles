@@ -35,7 +35,7 @@ if [[ -o nounset ]]; then
     export _ZQS_NOUNSET_WAS_ON=1
     unsetopt nounset
     export _ZQS_NOUNSET_DISABLED_FOR_OMZ=1
-    zf::debug "[NOUNSET-SAFETY][010] permanently disabled nounset for Oh-My-Zsh/zgenom compatibility"
+    zf::debug "# [shell-safety-nounset] permanently disabled nounset for Oh-My-Zsh/zgenom compatibility"
 else
     export _ZQS_NOUNSET_WAS_ON=0
     export _ZQS_NOUNSET_DISABLED_FOR_OMZ=0
@@ -51,12 +51,12 @@ if ! typeset -f zf::debug >/dev/null 2>&1; then
 	zf::debug() { [[ ${ZSH_DEBUG:-0} == 1 ]] && print -u2 -- "$@"; }
 fi
 
-zf::debug "[NOUNSET-SAFETY][010] applying early guards"
+zf::debug "# [shell-safety-nounset] applying early guards"
 
 # If nounset already on this early, protect common probes by defining safe indirections
 if set -o | grep -q '^nounset *on'; then
 	# Wrap ${var:-} expansion pattern for widespread later use
-	zf::debug "[NOUNSET-SAFETY][010] nounset already active - strengthening guards"
+	zf::debug "# [shell-safety-nounset] nounset already active - strengthening guards"
 else
 	# Defer enabling nounset until after core pre-plugin environment stabilizes
 	# (enabling too early risks third-party plugin eval failures on legitimate probes)
@@ -67,13 +67,13 @@ fi
 if ! typeset -f zf::enable_nounset_safe >/dev/null 2>&1; then
 	zf::enable_nounset_safe() {
 		if set -o | grep -q '^nounset *on'; then
-			zf::debug "[NOUNSET-SAFETY][010] nounset already enabled"
+			zf::debug "# [shell-safety-nounset] nounset already enabled"
 			return 0
 		fi
 		# Dry-run probe: ensure sentinel scalars resolve
 		: ${STARSHIP_CMD_STATUS:=0} ${STARSHIP_PIPE_STATUS:=""}
 		set -o nounset
-		zf::debug "[NOUNSET-SAFETY][010] nounset enabled safely"
+		zf::debug "# [shell-safety-nounset] nounset enabled safely"
 	}
 fi
 
@@ -88,7 +88,7 @@ if ! typeset -f zf::restore_option_snapshot >/dev/null 2>&1; then
 				set +o $k 2>/dev/null || true
 			fi
 		done
-		zf::debug "[NOUNSET-SAFETY][010] restored option snapshot"
+		zf::debug "# [shell-safety-nounset] restored option snapshot"
 	}
 fi
 

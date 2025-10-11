@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# 055-starship-compat.zsh - Legacy Starship env compatibility & diagnostics
+# 060-starship-compat.zsh - Legacy Starship env compatibility & diagnostics
 # Phase: pre-plugins (ensures mapping before prompt layer in post-plugin phase)
 # Purpose:
 #   - Map legacy ZF_ENABLE_STARSHIP=1 -> ZSH_DISABLE_STARSHIP=0 when unset

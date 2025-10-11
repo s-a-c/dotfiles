@@ -1,4 +1,4 @@
-# 065-dev-codeql.zsh — Early PATH for CodeQL CLI
+# 070-dev-codeql.zsh — Early PATH for CodeQL CLI
 # Phase: pre-plugins (.zshrc.pre-plugins.d.00)
 # Purpose: Add CodeQL CLI directory to PATH if present (XDG)
 # Dependencies:
@@ -16,8 +16,8 @@ if [[ -d "${_zf_codeql_dir}" ]]; then
     zf::path_prepend "${_zf_codeql_dir}"
   else
     case ":$PATH:" in
-      *":${_zf_codeql_dir}:"*) ;;
-      *) PATH="${_zf_codeql_dir}:${PATH}" ;;
+    *":${_zf_codeql_dir}:"*) ;;
+    *) PATH="${_zf_codeql_dir}:${PATH}" ;;
     esac
   fi
   if typeset -f zf::debug >/dev/null 2>&1; then

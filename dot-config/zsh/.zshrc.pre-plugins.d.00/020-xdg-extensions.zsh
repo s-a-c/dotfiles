@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# 015-xdg-extensions.zsh - Early XDG-based environment enhancements
+# 020-xdg-extensions.zsh - Early XDG-based environment enhancements
 # Phase: 1 (auxiliary – follows core safety modules, precedes plugin loading)
 #
 # Purpose:

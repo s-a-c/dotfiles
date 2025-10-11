@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# 025-log-rotation.zsh - Early Log Rotation / Hygiene Module
+# 040-log-rotation.zsh - Early Log Rotation / Hygiene Module
 # Phase: Pre-Plugins (runs before heavy plugin & prompt initialization)
 #
 # Purpose:

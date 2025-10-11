@@ -192,7 +192,7 @@ fi
 
 # FALLBACK: Simple PATH setup
 if [[ -z "${PATH:-}" ]]; then
-    PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
+    PATH="/opt/homebrew/bin:/usr/local/bin:/run/current-system/sw/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
 fi
 export PATH
 

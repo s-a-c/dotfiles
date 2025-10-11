@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# 150-productivity-nav.zsh - Directory Navigation & File Management for ZSH REDESIGN v2
+# 260-productivity-nav.zsh - Directory Navigation & File Management for ZSH REDESIGN v2
 # Phase 4B: Directory Navigation + FZF
 # Refactored from legacy 010-add-plugins.zsh (lines 90-102)
 

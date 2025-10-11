@@ -1,4 +1,4 @@
-# Early Node/JS Runtime Path Shaping (Phase 5 support)
+# 070-early-node-runtimes.zsh - Early Node/JS Runtime Path Shaping (Phase 5 support)
 # Purpose: expose alternative JS toolchain bins (bun, deno, pnpm) BEFORE plugin layer
 # so that:
 #   * oh-my-zsh nvm plugin lazy-cmd detection (node/npm/pnpm) sees pnpm if installed
@@ -7,11 +7,11 @@
 # Policy Alignment: no nvm load here; minimal env only; nounset-safe; zf:: helpers when needed.
 
 if [[ -n "${ZF_DISABLE_EARLY_JS:-}" ]]; then
-  zf::debug "# [035-early-node-runtimes] disabled via ZF_DISABLE_EARLY_JS"
+  zf::debug "# [early-node-runtimes] disabled via ZF_DISABLE_EARLY_JS"
   return 0
 fi
 
-zf::debug "# [035-early-node-runtimes] begin"
+zf::debug "# [early-node-runtimes] begin"
 
 # Bun
 if [[ -z "${BUN_INSTALL:-}" ]]; then
@@ -19,7 +19,7 @@ if [[ -z "${BUN_INSTALL:-}" ]]; then
 fi
 if [[ -d "${BUN_INSTALL}/bin" ]]; then
   zf::path_prepend "${BUN_INSTALL}/bin"
-  zf::debug "# [035-early-node-runtimes] bun path added"
+  zf::debug "# [early-node-runtimes] bun path added"
 fi
 
 # Deno
@@ -28,7 +28,7 @@ if [[ -z "${DENO_INSTALL:-}" ]]; then
 fi
 if [[ -d "${DENO_INSTALL}/bin" ]]; then
   zf::path_prepend "${DENO_INSTALL}/bin"
-  zf::debug "# [035-early-node-runtimes] deno path added"
+  zf::debug "# [early-node-runtimes] deno path added"
 fi
 
 # PNPM
@@ -37,10 +37,10 @@ if [[ -z "${PNPM_HOME:-}" ]]; then
 fi
 if [[ -d "${PNPM_HOME}" ]]; then
   zf::path_prepend "${PNPM_HOME}"
-  zf::debug "# [035-early-node-runtimes] pnpm path added"
+  zf::debug "# [early-node-runtimes] pnpm path added"
 fi
 
 # Do NOT set or modify NVM_DIR here; ordering reserved for post-plugin augmentation.
 # Intentionally no node version manager manipulation at this layer.
 
-zf::debug "# [035-early-node-runtimes] complete"
+zf::debug "# [early-node-runtimes] complete"

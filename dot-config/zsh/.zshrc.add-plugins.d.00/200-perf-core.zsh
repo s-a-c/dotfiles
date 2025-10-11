@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# 100-perf-core.zsh - Core Performance Plugins for ZSH REDESIGN v2
+# 200-perf-core.zsh - Core Performance Plugins for ZSH REDESIGN v2
 # Phase 2: Performance + Core Plugins
 # Refactored from legacy 010-add-plugins.zsh (lines 22-33)
 # PRE_PLUGIN_DEPS: none

@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# 110-dev-php.zsh - PHP Development Environment for ZSH REDESIGN v2
+# 210-dev-php.zsh - PHP Development Environment for ZSH REDESIGN v2
 # Phase 3A: PHP Environment (Herd + Traditional)
 # Refactored from legacy 010-add-plugins.zsh (lines 54-69)
 # PRE_PLUGIN_DEPS: none (Herd manages PHP environment)

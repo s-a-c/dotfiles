@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# 030-segment-management.zsh - Segment Library Loader for ZSH REDESIGN v2
+# 050-segment-management.zsh - Segment Library Loader for ZSH REDESIGN v2
 # Phase 1C: Performance Monitoring Infrastructure
 # NOTE: Core segment functions (zf::segment, zf::add_segment, etc.) have been
 #       moved to .zshenv to ensure availability during zgenom save.
@@ -43,12 +43,12 @@ _zf_seg_zdotdir="${ZDOTDIR:-${HOME}/.config/zsh}"
 if [[ -f "${_zf_seg_zdotdir}/tools/segment-lib.zsh" ]]; then
   # shellcheck disable=SC1090
   source "${_zf_seg_zdotdir}/tools/segment-lib.zsh" || true
-  zf::debug "# [segment-mgmt] Advanced segment library loaded"
+  zf::debug "# [segment-management] Advanced segment library loaded"
 else
-  zf::debug "# [segment-mgmt] Advanced segment library not found - using fallback (from .zshenv)"
+  zf::debug "# [segment-management] Advanced segment library not found - using fallback (from .zshenv)"
 fi
 
-zf::debug "# [segment-mgmt] Segment management initialized (core functions in .zshenv)"
+zf::debug "# [segment-management] Segment management initialized (core functions in .zshenv)"
 
 # Always succeed when sourced (test harness expects non-fatal behavior)
 return 0

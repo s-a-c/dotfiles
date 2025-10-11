@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# 120-dev-node.zsh - Node.js + Bun (+ PNPM) Development Environment for ZSH REDESIGN v2
+# 220-dev-node.zsh - Node.js + Bun (+ PNPM) Development Environment for ZSH REDESIGN v2
 # Phase 3B: Node.js + Bun Environment
 # Refactored from legacy 010-add-plugins.zsh (lines 75-82)
 # PRE_PLUGIN_DEPS: 050-dev-node.zsh (NVM environment variables)
