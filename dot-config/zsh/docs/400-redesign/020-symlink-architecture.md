@@ -1,66 +1,66 @@
-# 2. Symlink Architecture Design Analysis
-
-## Top
-
+# Symlink Architecture Design Analysis
 
 ## Table of Contents
 
-- [2. Symlink Architecture Design Analysis](#2-symlink-architecture-design-analysis)
-  - [Top](#top)
-  - [Table of Contents](#table-of-contents)
-  - [1. Current vs. Proposed Symlink Structure](#1-current-vs-proposed-symlink-structure)
-    - [1.1 Current Structure Analysis](#11-current-structure-analysis)
-      - [Strengths of Current Structure](#strengths-of-current-structure)
-      - [Considerations](#considerations)
-    - [1.2 Proposed Architecture Options](#12-proposed-architecture-options)
-      - [Option A: Enhanced Current Structure (Recommended)](#option-a-enhanced-current-structure-recommended)
-      - [Advantages (Option A — Enhanced Current Structure)](#advantages-option-a--enhanced-current-structure)
-      - [Option B: Direct Symlink Approach](#option-b-direct-symlink-approach)
-      - [Advantages (Option B — Direct Symlink Approach)](#advantages-option-b--direct-symlink-approach)
-      - [Disadvantages (Option B — Direct Symlink Approach)](#disadvantages-option-b--direct-symlink-approach)
-      - [Option C: Hybrid Approach](#option-c-hybrid-approach)
-      - [Advantages (Option C — Hybrid Approach)](#advantages-option-c--hybrid-approach)
-      - [Disadvantages (Option C — Hybrid Approach)](#disadvantages-option-c--hybrid-approach)
-  - [2. Recommended Architecture: Enhanced Current Structure](#2-recommended-architecture-enhanced-current-structure)
-    - [2.1 Rationale for Recommendation](#21-rationale-for-recommendation)
-    - [2.2 Detailed Implementation Plan](#22-detailed-implementation-plan)
-      - [Phase 1: Add .dev Configurations](#phase-1-add-dev-configurations)
-      - [Phase 2: Introduce .active Pointers](#phase-2-introduce-active-pointers)
-      - [Phase 3: Update Main Symlinks](#phase-3-update-main-symlinks)
-      - [Migration Strategy](#migration-strategy)
-  - [3. Zgenom Cache Integration](#3-zgenom-cache-integration)
-    - [3.1 Current Zgenom Setup Analysis](#31-current-zgenom-setup-analysis)
-    - [3.2 Proposed Cache Isolation](#32-proposed-cache-isolation)
-      - [Option 1: Environment-Based (Recommended)](#option-1-environment-based-recommended)
-      - [Option 2: Symlink-Based](#option-2-symlink-based)
-      - [Option 3: Directory Structure](#option-3-directory-structure)
-  - [4. Configuration Switching Mechanisms](#4-configuration-switching-mechanisms)
-    - [4.1 Switching Commands](#41-switching-commands)
-      - [Switch to Development](#switch-to-development)
-      - [Switch to Stable](#switch-to-stable)
-    - [4.2 Validation Commands](#42-validation-commands)
-      - [Configuration Status](#configuration-status)
-  - [5. Risk Analysis \& Mitigation](#5-risk-analysis--mitigation)
-    - [5.1 High-Risk Scenarios](#51-high-risk-scenarios)
-      - [1. Broken Symlinks During Switch](#1-broken-symlinks-during-switch)
-      - [2. Cache Corruption](#2-cache-corruption)
-      - [3. Configuration Drift](#3-configuration-drift)
-    - [5.2 Medium-Risk Scenarios](#52-medium-risk-scenarios)
-      - [1. Performance Impact](#1-performance-impact)
-      - [2. Tool Integration Issues](#2-tool-integration-issues)
-  - [6. Alternative Architectures Considered](#6-alternative-architectures-considered)
-    - [Direct Configuration Switching](#direct-configuration-switching)
-    - [Git Branch-Based Configuration](#git-branch-based-configuration)
-    - [Configuration Manager Script](#configuration-manager-script)
-  - [7. Final Recommendation](#7-final-recommendation)
-    - [Justification](#justification)
-    - [Implementation Priority](#implementation-priority)
-  - [Navigation](#navigation)
+<details>
+<summary>Click to expand</summary>
+
+- [1. Current vs. Proposed Symlink Structure](#1-current-vs-proposed-symlink-structure)
+  - [1.1. Current Structure Analysis](#11-current-structure-analysis)
+    - [1.1.1. Strengths of Current Structure](#111-strengths-of-current-structure)
+    - [1.1.2. Considerations](#112-considerations)
+  - [1.2. Proposed Architecture Options](#12-proposed-architecture-options)
+    - [1.2.1. Option A: Enhanced Current Structure (Recommended)](#121-option-a-enhanced-current-structure-recommended)
+    - [1.2.2. Advantages (Option A — Enhanced Current Structure)](#122-advantages-option-a-enhanced-current-structure)
+    - [1.2.3. Option B: Direct Symlink Approach](#123-option-b-direct-symlink-approach)
+    - [1.2.4. Advantages (Option B — Direct Symlink Approach)](#124-advantages-option-b-direct-symlink-approach)
+    - [1.2.5. Disadvantages (Option B — Direct Symlink Approach)](#125-disadvantages-option-b-direct-symlink-approach)
+    - [1.2.6. Option C: Hybrid Approach](#126-option-c-hybrid-approach)
+    - [1.2.7. Advantages (Option C — Hybrid Approach)](#127-advantages-option-c-hybrid-approach)
+    - [1.2.8. Disadvantages (Option C — Hybrid Approach)](#128-disadvantages-option-c-hybrid-approach)
+- [2. Recommended Architecture: Enhanced Current Structure](#2-recommended-architecture-enhanced-current-structure)
+  - [2.1. Rationale for Recommendation](#21-rationale-for-recommendation)
+  - [2.2. Detailed Implementation Plan](#22-detailed-implementation-plan)
+    - [2.2.1. Phase 1: Add .dev Configurations](#221-phase-1-add-dev-configurations)
+    - [2.2.2. Phase 2: Introduce .active Pointers](#222-phase-2-introduce-active-pointers)
+    - [2.2.3. Phase 3: Update Main Symlinks](#223-phase-3-update-main-symlinks)
+    - [2.2.4. Migration Strategy](#224-migration-strategy)
+- [3. Zgenom Cache Integration](#3-zgenom-cache-integration)
+  - [3.1. Current Zgenom Setup Analysis](#31-current-zgenom-setup-analysis)
+  - [3.2. Proposed Cache Isolation](#32-proposed-cache-isolation)
+    - [3.2.1. Option 1: Environment-Based (Recommended)](#321-option-1-environment-based-recommended)
+    - [3.2.2. Option 2: Symlink-Based](#322-option-2-symlink-based)
+    - [3.2.3. Option 3: Directory Structure](#323-option-3-directory-structure)
+- [4. Configuration Switching Mechanisms](#4-configuration-switching-mechanisms)
+  - [4.1. Switching Commands](#41-switching-commands)
+    - [4.1.1. Switch to Development](#411-switch-to-development)
+    - [4.1.2. Switch to Stable](#412-switch-to-stable)
+  - [4.2. Validation Commands](#42-validation-commands)
+    - [4.2.1. Configuration Status](#421-configuration-status)
+- [5. Risk Analysis & Mitigation](#5-risk-analysis-mitigation)
+  - [5.1. High-Risk Scenarios](#51-high-risk-scenarios)
+    - [5.1.1. Broken Symlinks During Switch](#511-broken-symlinks-during-switch)
+    - [5.1.2. Cache Corruption](#512-cache-corruption)
+    - [5.1.3. Configuration Drift](#513-configuration-drift)
+  - [5.2. Medium-Risk Scenarios](#52-medium-risk-scenarios)
+    - [5.2.1. Performance Impact](#521-performance-impact)
+    - [5.2.2. Tool Integration Issues](#522-tool-integration-issues)
+- [6. Alternative Architectures Considered](#6-alternative-architectures-considered)
+  - [6.1. Direct Configuration Switching](#61-direct-configuration-switching)
+  - [6.2. Git Branch-Based Configuration](#62-git-branch-based-configuration)
+  - [6.3. Configuration Manager Script](#63-configuration-manager-script)
+- [7. Final Recommendation](#7-final-recommendation)
+  - [7.1. Justification](#71-justification)
+  - [7.2. Implementation Priority](#72-implementation-priority)
+
+</details>
+
+---
 
 
 ## 1. Current vs. Proposed Symlink Structure
 
-### 1.1 Current Structure Analysis
+### 1.1. Current Structure Analysis
 
 Based on your existing setup, you currently have:
 
@@ -71,7 +71,7 @@ Based on your existing setup, you currently have:
 .zshrc.d → .zshrc.d.live → .zshrc.d.00
 ```
 
-#### Strengths of Current Structure
+#### 1.1.1. Strengths of Current Structure
 
 - ✅ Already implements intermediate pointer pattern (`.live`)
 - ✅ Proven stability in production
@@ -79,16 +79,16 @@ Based on your existing setup, you currently have:
 - ✅ Atomic switching capability
 
 
-#### Considerations
+#### 1.1.2. Considerations
 
 - The `.live` naming could be more descriptive
 - No explicit support for `.dev` configurations yet
 - Missing cache isolation mechanism
 
 
-### 1.2 Proposed Architecture Options
+### 1.2. Proposed Architecture Options
 
-#### Option A: Enhanced Current Structure (Recommended)
+#### 1.2.1. Option A: Enhanced Current Structure (Recommended)
 
 ```bash
 .zshenv → .zshenv.active → .zshenv.00/.dev
@@ -97,7 +97,7 @@ Based on your existing setup, you currently have:
 .zshrc.d → .zshrc.d.active → .zshrc.d.00/.dev
 ```
 
-#### Advantages (Option A — Enhanced Current Structure)
+#### 1.2.2. Advantages (Option A — Enhanced Current Structure)
 
 - Minimal change from existing structure
 - Leverages proven `.live` pattern
@@ -105,7 +105,7 @@ Based on your existing setup, you currently have:
 - Easy to understand and maintain
 
 
-#### Option B: Direct Symlink Approach
+#### 1.2.3. Option B: Direct Symlink Approach
 
 ```bash
 .zshenv → .zshenv.00/.dev
@@ -114,21 +114,21 @@ Based on your existing setup, you currently have:
 .zshrc.d → .zshrc.d.00/.dev
 ```
 
-#### Advantages (Option B — Direct Symlink Approach)
+#### 1.2.4. Advantages (Option B — Direct Symlink Approach)
 
 - Simpler structure
 - Fewer symlink layers
 - Slightly faster resolution
 
 
-#### Disadvantages (Option B — Direct Symlink Approach)
+#### 1.2.5. Disadvantages (Option B — Direct Symlink Approach)
 
 - No intermediate pointer for validation
 - Higher risk during switch operations
 - Less flexible for future enhancements
 
 
-#### Option C: Hybrid Approach
+#### 1.2.6. Option C: Hybrid Approach
 
 ```bash
 .zshenv → .zshenv.live → .zshenv.active → .zshenv.00/.dev
@@ -137,14 +137,14 @@ Based on your existing setup, you currently have:
 .zshrc.d → .zshrc.d.live → .zshrc.d.active → .zshrc.d.00/.dev
 ```
 
-#### Advantages (Option C — Hybrid Approach)
+#### 1.2.7. Advantages (Option C — Hybrid Approach)
 
 - Maximum flexibility
 - Multiple validation points
 - Backward compatibility
 
 
-#### Disadvantages (Option C — Hybrid Approach)
+#### 1.2.8. Disadvantages (Option C — Hybrid Approach)
 
 - Complex to manage
 - More potential failure points
@@ -153,7 +153,7 @@ Based on your existing setup, you currently have:
 
 ## 2. Recommended Architecture: Enhanced Current Structure
 
-### 2.1 Rationale for Recommendation
+### 2.1. Rationale for Recommendation
 
 1. **Leverages Existing Investment**: Your current `.live` pattern is already proven and stable
 2. **Minimal Disruption**: Small change from `.live` to `.active` maintains familiarity
@@ -161,9 +161,9 @@ Based on your existing setup, you currently have:
 4. **Future-Ready**: Easy to extend for additional configuration variants
 
 
-### 2.2 Detailed Implementation Plan
+### 2.2. Detailed Implementation Plan
 
-#### Phase 1: Add .dev Configurations
+#### 2.2.1. Phase 1: Add .dev Configurations
 
 ```bash
 # Create .dev copies
@@ -174,7 +174,7 @@ cp -a .zshrc.add-plugins.d.00 .zshrc.add-plugins.d.dev
 cp -a .zshrc.d.00 .zshrc.d.dev
 ```
 
-#### Phase 2: Introduce .active Pointers
+#### 2.2.2. Phase 2: Introduce .active Pointers
 
 ```bash
 # Create .active pointers pointing to current .00 configs
@@ -185,7 +185,7 @@ ln -sf .zshrc.add-plugins.d.00 .zshrc.add-plugins.d.active
 ln -sf .zshrc.d.00 .zshrc.d.active
 ```
 
-#### Phase 3: Update Main Symlinks
+#### 2.2.3. Phase 3: Update Main Symlinks
 
 ```bash
 # Update main symlinks to use .active instead of .live
@@ -196,7 +196,7 @@ ln -sf .zshrc.add-plugins.d.active .zshrc.add-plugins.d
 ln -sf .zshrc.d.active .zshrc.d
 ```
 
-#### Migration Strategy
+#### 2.2.4. Migration Strategy
 
 The migration can be performed atomically to avoid any downtime:
 
@@ -247,7 +247,7 @@ rm -f .zshenv.live .zshrc.pre-plugins.d.live .zshrc.add-plugins.d.live .zshrc.d.
 
 ## 3. Zgenom Cache Integration
 
-### 3.1 Current Zgenom Setup Analysis
+### 3.1. Current Zgenom Setup Analysis
 
 From your `.zgen-setup` file, zgenom uses:
 
@@ -256,9 +256,9 @@ From your `.zgen-setup` file, zgenom uses:
 - Automatic rebuild when plugin directories change
 
 
-### 3.2 Proposed Cache Isolation
+### 3.2. Proposed Cache Isolation
 
-#### Option 1: Environment-Based (Recommended)
+#### 3.2.1. Option 1: Environment-Based (Recommended)
 
 ```bash
 # In .zshenv.dev
@@ -270,7 +270,7 @@ export ZGEN_DIR="${ZDOTDIR}/.zgenom.dev"
 export ZGEN_DIR="${ZDOTDIR}/.zgenom.00"
 ```
 
-#### Option 2: Symlink-Based
+#### 3.2.2. Option 2: Symlink-Based
 
 ```bash
 # Create cache symlink that switches with configuration
@@ -278,7 +278,7 @@ export ZGEN_DIR="${ZDOTDIR}/.zgenom.00"
 .zgenom → .zgenom.active → .zgenom.00/.dev
 ```
 
-#### Option 3: Directory Structure
+#### 3.2.3. Option 3: Directory Structure
 
 ```
 .zgenom/
@@ -294,9 +294,9 @@ export ZGEN_DIR="${ZDOTDIR}/.zgenom.00"
 
 ## 4. Configuration Switching Mechanisms
 
-### 4.1 Switching Commands
+### 4.1. Switching Commands
 
-#### Switch to Development
+#### 4.1.1. Switch to Development
 
 ```bash
 #!/bin/bash
@@ -327,7 +327,7 @@ echo "✅ Switched to development configuration"
 echo "💡 Run 'exec zsh' to apply changes"
 ```
 
-#### Switch to Stable
+#### 4.1.2. Switch to Stable
 
 ```bash
 #!/bin/bash
@@ -351,9 +351,9 @@ echo "✅ Switched to stable configuration"
 echo "💡 Run 'exec zsh' to apply changes"
 ```
 
-### 4.2 Validation Commands
+### 4.2. Validation Commands
 
-#### Configuration Status
+#### 4.2.1. Configuration Status
 
 ```bash
 #!/bin/bash
@@ -418,9 +418,9 @@ done
 
 ## 5. Risk Analysis & Mitigation
 
-### 5.1 High-Risk Scenarios
+### 5.1. High-Risk Scenarios
 
-#### 1. Broken Symlinks During Switch
+#### 5.1.1. Broken Symlinks During Switch
 
 **Risk**: Partial switch leaving inconsistent state
 
@@ -431,7 +431,7 @@ done
 - Emergency rollback procedures
 
 
-#### 2. Cache Corruption
+#### 5.1.2. Cache Corruption
 
 **Risk**: Zgenom cache corruption causing startup failure
 
@@ -442,7 +442,7 @@ done
 - Cache validation scripts
 
 
-#### 3. Configuration Drift
+#### 5.1.3. Configuration Drift
 
 **Risk**: .00 and .dev configurations diverging significantly
 
@@ -453,9 +453,9 @@ done
 - Merge strategies for .dev → .00 promotion
 
 
-### 5.2 Medium-Risk Scenarios
+### 5.2. Medium-Risk Scenarios
 
-#### 1. Performance Impact
+#### 5.2.1. Performance Impact
 
 **Risk**: Additional symlink resolution overhead
 
@@ -466,7 +466,7 @@ done
 - Monitor startup times
 
 
-#### 2. Tool Integration Issues
+#### 5.2.2. Tool Integration Issues
 
 **Risk**: External tools not recognizing symlinked configurations
 
@@ -479,7 +479,7 @@ done
 
 ## 6. Alternative Architectures Considered
 
-### Direct Configuration Switching
+### 6.1. Direct Configuration Switching
 
 Instead of symlinks, use environment variables:
 
@@ -499,7 +499,7 @@ source ".zshrc.d.${ZSH_CONFIG_MODE}/"
 **Pros**: No symlink complexity
 **Cons**: Less atomic, harder to validate
 
-### Git Branch-Based Configuration
+### 6.2. Git Branch-Based Configuration
 
 Use separate git branches for configurations:
 
@@ -511,7 +511,7 @@ git checkout develop   # .dev configuration
 **Pros**: Git-based version control
 **Cons**: Complex workflow, requires git operations for switching
 
-### Configuration Manager Script
+### 6.3. Configuration Manager Script
 
 Central script manages all configuration state:
 
@@ -528,7 +528,7 @@ Central script manages all configuration state:
 
 **Recommended Architecture**: Enhanced Current Structure with `.active` pointers
 
-### Justification
+### 7.1. Justification
 
 1. **Proven Foundation**: Builds on your existing `.live` pattern
 2. **Minimal Risk**: Small, incremental changes
@@ -537,7 +537,7 @@ Central script manages all configuration state:
 5. **Tool Compatibility**: Maintains compatibility with existing tools
 
 
-### Implementation Priority
+### 7.2. Implementation Priority
 
 1. **High Priority**: Add .dev configurations and .active pointers
 2. **Medium Priority**: Implement switching scripts and validation
@@ -548,13 +548,8 @@ This approach provides the best balance of stability, functionality, and maintai
 
 ---
 
-## Navigation
-
-- [Previous](010-implementation-plan.md) - Implementation plan
-- [Next](030-versioned-strategy.md) - Versioned configuration strategy
-- [Top](#top) - Back to top
-
+**Navigation:** [← Implementation Plan](400-redesign/010-implementation-plan.md) | [Top ↑](#symlink-architecture-design-analysis) | [Versioned Strategy →](400-redesign/030-versioned-strategy.md)
 
 ---
 
-*Compliant with `/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md` v(checksum)*
+*Last updated: 2025-10-13*

@@ -92,3 +92,5 @@ if [[ "${DEBUG_LOAD_FRAGMENTS:-0}" == "1" ]]; then
 
     echo "[ZSHENV.LOCAL] Debug hook installed - will intercept all load-shell-fragments calls"
 fi
+
+export ZF_DISABLE_AUTO_UPDATES=0

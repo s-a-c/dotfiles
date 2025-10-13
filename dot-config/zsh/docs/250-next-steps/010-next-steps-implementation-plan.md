@@ -1,121 +1,121 @@
-# 1. ZSH Configuration Next Steps Implementation Plan
-
-## Top
-
+# ZSH Configuration Next Steps Implementation Plan
 
 ## Table of Contents
 
-- [1. ZSH Configuration Next Steps Implementation Plan](#1-zsh-configuration-next-steps-implementation-plan)
-  - [Top](#top)
-  - [Table of Contents](#table-of-contents)
-  - [1. Overview](#1-overview)
-    - [Starship Prompt Gating (Updated 2025-10-08)](#starship-prompt-gating-updated-2025-10-08)
-  - [2. Implementation Framework](#2-implementation-framework)
-    - [2.1 Priority Color Coding](#21-priority-color-coding)
-    - [2.2 Progress Status Indicators](#22-progress-status-indicators)
-    - [2.3 Task Numbering System](#23-task-numbering-system)
-  - [3. Implementation Task Matrix](#3-implementation-task-matrix)
-  - [4. Enhanced Dependency Management](#4-enhanced-dependency-management)
-  - [5. Detailed Task Breakdown](#5-detailed-task-breakdown)
-    - [5.1 Phase 1: Immediate Actions](#51-phase-1-immediate-actions)
-      - [5.1.1 Load Order Organization ✅ Completed](#511-load-order-organization--completed)
-      - [Load Order Subtasks](#load-order-subtasks)
-      - [Resources Required](#resources-required)
-      - [5.1.2 Configuration Stability Testing](#512-configuration-stability-testing)
-      - [Configuration Stability Subtasks](#configuration-stability-subtasks)
-      - [Resources Required](#resources-required-1)
-      - [5.1.3 Performance Baseline Documentation](#513-performance-baseline-documentation)
-      - [Performance Baseline Subtasks](#performance-baseline-subtasks)
-      - [Resources Required](#resources-required-2)
-    - [5.2 Phase 2: Short Term Implementation](#52-phase-2-short-term-implementation)
-      - [5.2.1 Automated Log Rotation System](#521-automated-log-rotation-system)
-      - [Log Rotation Subtasks](#log-rotation-subtasks)
-      - [Technical Specifications:](#technical-specifications)
-      - [Resources Required](#resources-required-3)
-      - [5.2.2 Documentation Enhancement](#522-documentation-enhancement)
-      - [Documentation Enhancement Subtasks](#documentation-enhancement-subtasks)
-      - [Documentation Areas:](#documentation-areas)
-      - [5.2.3 Performance Optimization Review](#523-performance-optimization-review)
-      - [Performance Optimization Review Subtasks](#performance-optimization-review-subtasks)
-      - [Focus Areas:](#focus-areas)
-    - [5.3 Phase 3: Medium Term Enhancements](#53-phase-3-medium-term-enhancements)
-      - [5.3.1 Plugin Loading Optimization](#531-plugin-loading-optimization)
-      - [Plugin Loading Optimization Subtasks](#plugin-loading-optimization-subtasks)
-      - [Optimization Targets:](#optimization-targets)
-      - [5.3.2 Enhanced Error Reporting](#532-enhanced-error-reporting)
-      - [Enhanced Error Reporting Subtasks](#enhanced-error-reporting-subtasks)
-      - [Error Categories:](#error-categories)
-      - [5.3.3 Configuration Validation Framework](#533-configuration-validation-framework)
-      - [Configuration Validation Subtasks](#configuration-validation-subtasks)
-      - [Validation Types:](#validation-types)
-  - [6. Implementation Timeline](#6-implementation-timeline)
-    - [6.1 Week 1: Foundation](#61-week-1-foundation)
-    - [6.2 Week 2-3: Enhancement](#62-week-2-3-enhancement)
-    - [6.3 Week 4-8: Advanced Features](#63-week-4-8-advanced-features)
-  - [7. Implementation Milestones](#7-implementation-milestones)
-    - [Milestone 1: Foundation Complete (End of Week 1)](#milestone-1-foundation-complete-end-of-week-1)
-      - [Success Criteria:](#success-criteria)
-    - [Milestone 2: Enhancement Complete (End of Week 3)](#milestone-2-enhancement-complete-end-of-week-3)
-      - [Success Criteria:](#success-criteria-1)
-    - [Milestone 3: Optimization Complete (End of Week 8)](#milestone-3-optimization-complete-end-of-week-8)
-      - [Success Criteria:](#success-criteria-2)
-  - [8. Resource Allocation](#8-resource-allocation)
-    - [8.1 Team Structure](#81-team-structure)
-    - [8.2 Resource Scaling Options](#82-resource-scaling-options)
-      - [Minimum Viable Team (1 person)](#minimum-viable-team-1-person)
-      - [Optimal Team (3-4 people)](#optimal-team-3-4-people)
-      - [Accelerated Team (5-6 people)](#accelerated-team-5-6-people)
-    - [8.3 Technical Resources](#83-technical-resources)
-  - [9. Risk Management](#9-risk-management)
-    - [9.1 Risk Assessment Matrix](#91-risk-assessment-matrix)
-    - [9.2 Enhanced Risk Mitigation](#92-enhanced-risk-mitigation)
-      - [Risk: Configuration Breakage](#risk-configuration-breakage)
-      - [Risk: Performance Regression](#risk-performance-regression)
-      - [Risk: Team Bandwidth Constraints](#risk-team-bandwidth-constraints)
-    - [9.3 Contingency Planning](#93-contingency-planning)
-      - [Scenario 1: Critical Functionality Breakage](#scenario-1-critical-functionality-breakage)
-      - [Scenario 2: Performance Degradation](#scenario-2-performance-degradation)
-      - [Scenario 3: Resource Constraints](#scenario-3-resource-constraints)
-  - [10. Quality Assurance Strategy](#10-quality-assurance-strategy)
-    - [10.1 Testing Framework](#101-testing-framework)
-    - [10.2 Quality Gates](#102-quality-gates)
-      - [Pre-Implementation Gates:](#pre-implementation-gates)
-      - [Post-Implementation Gates:](#post-implementation-gates)
-      - [Phase Transition Gates:](#phase-transition-gates)
-  - [11. Success Metrics](#11-success-metrics)
-    - [11.1 Phase 1 Success Criteria](#111-phase-1-success-criteria)
-      - [Specific Measurements:](#specific-measurements)
-    - [11.2 Phase 2 Success Criteria](#112-phase-2-success-criteria)
-      - [Specific Measurements:](#specific-measurements-1)
-    - [11.3 Phase 3 Success Criteria](#113-phase-3-success-criteria)
-      - [Specific Measurements:](#specific-measurements-2)
-  - [12. Budget and Resource Planning](#12-budget-and-resource-planning)
-    - [12.1 Estimated Costs](#121-estimated-costs)
-    - [12.2 Resource Justification](#122-resource-justification)
-      - [Return on Investment:](#return-on-investment)
-      - [Cost-Benefit Analysis:](#cost-benefit-analysis)
-  - [13. Monitoring and Control](#13-monitoring-and-control)
-    - [13.1 Progress Tracking](#131-progress-tracking)
-    - [13.2 Change Management](#132-change-management)
-      - [Change Control Process:](#change-control-process)
-      - [Emergency Change Process:](#emergency-change-process)
-  - [14. Communication Strategy](#14-communication-strategy)
-    - [14.1 Stakeholder Communication](#141-stakeholder-communication)
-    - [14.2 Progress Reporting](#142-progress-reporting)
-      - [Daily Updates:](#daily-updates)
-      - [Weekly Reviews:](#weekly-reviews)
-      - [Monthly Assessments:](#monthly-assessments)
-  - [Conclusion](#conclusion)
-      - [Key Success Factors:](#key-success-factors)
-      - [Critical Success Metrics:](#critical-success-metrics)
-  - [Navigation](#navigation)
+<details>
+<summary>Click to expand</summary>
+
+- [1. Overview](#1-overview)
+  - [1.1. Starship Prompt Gating (Updated 2025-10-08)](#11-starship-prompt-gating-updated-2025-10-08)
+- [2. Implementation Framework](#2-implementation-framework)
+  - [2.1. Priority Color Coding](#21-priority-color-coding)
+  - [2.2. Progress Status Indicators](#22-progress-status-indicators)
+  - [2.3. Task Numbering System](#23-task-numbering-system)
+- [3. Implementation Task Matrix](#3-implementation-task-matrix)
+- [4. Enhanced Dependency Management](#4-enhanced-dependency-management)
+- [5. Detailed Task Breakdown](#5-detailed-task-breakdown)
+  - [5.1. Phase 1: Immediate Actions](#51-phase-1-immediate-actions)
+    - [5.1.1. Load Order Organization ✅ Completed](#511-load-order-organization-completed)
+    - [5.1.2. Load Order Subtasks](#512-load-order-subtasks)
+    - [5.1.3. Resources Required](#513-resources-required)
+    - [5.1.4. Configuration Stability Testing](#514-configuration-stability-testing)
+    - [5.1.5. Configuration Stability Subtasks](#515-configuration-stability-subtasks)
+    - [5.1.6. Resources Required](#516-resources-required)
+    - [5.1.7. Performance Baseline Documentation](#517-performance-baseline-documentation)
+    - [5.1.8. Performance Baseline Subtasks](#518-performance-baseline-subtasks)
+    - [5.1.9. Resources Required](#519-resources-required)
+  - [5.2. Phase 2: Short Term Implementation](#52-phase-2-short-term-implementation)
+    - [5.2.1. Automated Log Rotation System](#521-automated-log-rotation-system)
+    - [5.2.2. Log Rotation Subtasks](#522-log-rotation-subtasks)
+    - [5.2.3. Technical Specifications:](#523-technical-specifications)
+    - [5.2.4. Resources Required](#524-resources-required)
+    - [5.2.5. Documentation Enhancement](#525-documentation-enhancement)
+    - [5.2.6. Documentation Enhancement Subtasks](#526-documentation-enhancement-subtasks)
+    - [5.2.7. Documentation Areas:](#527-documentation-areas)
+    - [5.2.8. Performance Optimization Review](#528-performance-optimization-review)
+    - [5.2.9. Performance Optimization Review Subtasks](#529-performance-optimization-review-subtasks)
+    - [5.2.10. Focus Areas:](#5210-focus-areas)
+  - [5.3. Phase 3: Medium Term Enhancements](#53-phase-3-medium-term-enhancements)
+    - [5.3.1. Plugin Loading Optimization](#531-plugin-loading-optimization)
+    - [5.3.2. Plugin Loading Optimization Subtasks](#532-plugin-loading-optimization-subtasks)
+    - [5.3.3. Optimization Targets:](#533-optimization-targets)
+    - [5.3.4. Enhanced Error Reporting](#534-enhanced-error-reporting)
+    - [5.3.5. Enhanced Error Reporting Subtasks](#535-enhanced-error-reporting-subtasks)
+    - [5.3.6. Error Categories:](#536-error-categories)
+    - [5.3.7. Configuration Validation Framework](#537-configuration-validation-framework)
+    - [5.3.8. Configuration Validation Subtasks](#538-configuration-validation-subtasks)
+    - [5.3.9. Validation Types:](#539-validation-types)
+- [6. Implementation Timeline](#6-implementation-timeline)
+  - [6.1. Week 1: Foundation](#61-week-1-foundation)
+  - [6.2. Week 2-3: Enhancement](#62-week-2-3-enhancement)
+  - [6.3. Week 4-8: Advanced Features](#63-week-4-8-advanced-features)
+- [7. Implementation Milestones](#7-implementation-milestones)
+  - [7.1. Milestone 1: Foundation Complete (End of Week 1)](#71-milestone-1-foundation-complete-end-of-week-1)
+    - [7.1.1. Success Criteria:](#711-success-criteria)
+  - [7.2. Milestone 2: Enhancement Complete (End of Week 3)](#72-milestone-2-enhancement-complete-end-of-week-3)
+    - [7.2.1. Success Criteria:](#721-success-criteria)
+  - [7.3. Milestone 3: Optimization Complete (End of Week 8)](#73-milestone-3-optimization-complete-end-of-week-8)
+    - [7.3.1. Success Criteria:](#731-success-criteria)
+- [8. Resource Allocation](#8-resource-allocation)
+  - [8.1. Team Structure](#81-team-structure)
+  - [8.2. Resource Scaling Options](#82-resource-scaling-options)
+    - [8.2.1. Minimum Viable Team (1 person)](#821-minimum-viable-team-1-person)
+    - [8.2.2. Optimal Team (3-4 people)](#822-optimal-team-3-4-people)
+    - [8.2.3. Accelerated Team (5-6 people)](#823-accelerated-team-5-6-people)
+  - [8.3. Technical Resources](#83-technical-resources)
+- [9. Risk Management](#9-risk-management)
+  - [9.1. Risk Assessment Matrix](#91-risk-assessment-matrix)
+  - [9.2. Enhanced Risk Mitigation](#92-enhanced-risk-mitigation)
+    - [9.2.1. Risk: Configuration Breakage](#921-risk-configuration-breakage)
+    - [9.2.2. Risk: Performance Regression](#922-risk-performance-regression)
+    - [9.2.3. Risk: Team Bandwidth Constraints](#923-risk-team-bandwidth-constraints)
+  - [9.3. Contingency Planning](#93-contingency-planning)
+    - [9.3.1. Scenario 1: Critical Functionality Breakage](#931-scenario-1-critical-functionality-breakage)
+    - [9.3.2. Scenario 2: Performance Degradation](#932-scenario-2-performance-degradation)
+    - [9.3.3. Scenario 3: Resource Constraints](#933-scenario-3-resource-constraints)
+- [10. Quality Assurance Strategy](#10-quality-assurance-strategy)
+  - [10.1. Testing Framework](#101-testing-framework)
+  - [10.2. Quality Gates](#102-quality-gates)
+    - [10.2.1. Pre-Implementation Gates:](#1021-pre-implementation-gates)
+    - [10.2.2. Post-Implementation Gates:](#1022-post-implementation-gates)
+    - [10.2.3. Phase Transition Gates:](#1023-phase-transition-gates)
+- [11. Success Metrics](#11-success-metrics)
+  - [11.1. Phase 1 Success Criteria](#111-phase-1-success-criteria)
+    - [11.1.1. Specific Measurements:](#1111-specific-measurements)
+  - [11.2. Phase 2 Success Criteria](#112-phase-2-success-criteria)
+    - [11.2.1. Specific Measurements:](#1121-specific-measurements)
+  - [11.3. Phase 3 Success Criteria](#113-phase-3-success-criteria)
+    - [11.3.1. Specific Measurements:](#1131-specific-measurements)
+- [12. Budget and Resource Planning](#12-budget-and-resource-planning)
+  - [12.1. Estimated Costs](#121-estimated-costs)
+  - [12.2. Resource Justification](#122-resource-justification)
+    - [12.2.1. Return on Investment:](#1221-return-on-investment)
+    - [12.2.2. Cost-Benefit Analysis:](#1222-cost-benefit-analysis)
+- [13. Monitoring and Control](#13-monitoring-and-control)
+  - [13.1. Progress Tracking](#131-progress-tracking)
+  - [13.2. Change Management](#132-change-management)
+    - [13.2.1. Change Control Process:](#1321-change-control-process)
+    - [13.2.2. Emergency Change Process:](#1322-emergency-change-process)
+- [14. Communication Strategy](#14-communication-strategy)
+  - [14.1. Stakeholder Communication](#141-stakeholder-communication)
+  - [14.2. Progress Reporting](#142-progress-reporting)
+    - [14.2.1. Daily Updates:](#1421-daily-updates)
+    - [14.2.2. Weekly Reviews:](#1422-weekly-reviews)
+    - [14.2.3. Monthly Assessments:](#1423-monthly-assessments)
+- [15. Conclusion](#15-conclusion)
+    - [15.1. Key Success Factors:](#151-key-success-factors)
+    - [15.2. Critical Success Metrics:](#152-critical-success-metrics)
+
+</details>
+
+---
 
 
 ## 1. Overview
 
 This document provides a detailed, comprehensive implementation plan for executing the Next Steps identified in the current configuration state assessment. The plan includes hierarchical task organization, priority coding, progress tracking, enhanced dependency management, and detailed execution strategies with quality assurance checkpoints.
 
-### Starship Prompt Gating (Updated 2025-10-08)
+### 1.1. Starship Prompt Gating (Updated 2025-10-08)
 
 Active logic (file: `/.zshrc.d.00/520-prompt-starship.zsh`):
 
@@ -156,7 +156,7 @@ Planned follow-up (if needed): optional fast flag for immediate override even wh
 
 ## 2. Implementation Framework
 
-### 2.1 Priority Color Coding
+### 2.1. Priority Color Coding
 
 - 🔴 **Critical** - Must be completed immediately (blocks other work)
 - 🟡 **High** - Complete within 1 week (enables next phase)
@@ -164,7 +164,7 @@ Planned follow-up (if needed): optional fast flag for immediate override even wh
 - 🔵 **Low** - Complete within 1-2 months (nice-to-have enhancements)
 
 
-### 2.2 Progress Status Indicators
+### 2.2. Progress Status Indicators
 
 - ⏳ **Pending** - Not yet started
 - 🔄 **In Progress** - Currently being worked on
@@ -174,7 +174,7 @@ Planned follow-up (if needed): optional fast flag for immediate override even wh
 - ⚠️ **At Risk** - Behind schedule or experiencing issues
 
 
-### 2.3 Task Numbering System
+### 2.3. Task Numbering System
 
 - **Phase 1:** Immediate Actions (100-199)
 - **Phase 2:** Short Term (200-299)
@@ -214,11 +214,11 @@ Planned follow-up (if needed): optional fast flag for immediate override even wh
 
 ## 5. Detailed Task Breakdown
 
-### 5.1 Phase 1: Immediate Actions
+### 5.1. Phase 1: Immediate Actions
 
-#### 5.1.1 Load Order Organization ✅ Completed
+#### 5.1.1. Load Order Organization ✅ Completed
 
-#### Load Order Subtasks
+#### 5.1.2. Load Order Subtasks
 
 - 1.1.1 Verify all `.zshrc.d.00/` files renamed to 400- range ✅
 - 1.1.2 Verify all `.zshrc.d/` files renamed to 400- range ✅
@@ -227,7 +227,7 @@ Planned follow-up (if needed): optional fast flag for immediate override even wh
 - 1.1.5 Validate no functionality regressions ✅
 
 
-#### Resources Required
+#### 5.1.3. Resources Required
 
 - File system access
 - Text editor for documentation updates
@@ -237,9 +237,9 @@ Planned follow-up (if needed): optional fast flag for immediate override even wh
 **Risk Assessment:** Low - File operations only
 **Rollback Plan:** Git revert if issues discovered
 
-#### 5.1.2 Configuration Stability Testing
+#### 5.1.4. Configuration Stability Testing
 
-#### Configuration Stability Subtasks
+#### 5.1.5. Configuration Stability Subtasks
 
 - 1.2.1 Syntax validation of all configuration files
 - 1.2.2 Plugin loading verification
@@ -249,7 +249,7 @@ Planned follow-up (if needed): optional fast flag for immediate override even wh
 - 1.2.6 Cross-platform compatibility testing
 
 
-#### Resources Required
+#### 5.1.6. Resources Required
 
 - Test environment
 - Multiple terminal emulators
@@ -260,9 +260,9 @@ Planned follow-up (if needed): optional fast flag for immediate override even wh
 **Risk Assessment:** Medium - May discover functional issues
 **Rollback Plan:** Use layered backup system
 
-#### 5.1.3 Performance Baseline Documentation
+#### 5.1.7. Performance Baseline Documentation
 
-#### Performance Baseline Subtasks
+#### 5.1.8. Performance Baseline Subtasks
 
 - 1.3.1 Capture current startup timing metrics
 - 1.3.2 Document plugin load times by category
@@ -271,7 +271,7 @@ Planned follow-up (if needed): optional fast flag for immediate override even wh
 - 1.3.5 Document measurement methodology
 
 
-#### Resources Required
+#### 5.1.9. Resources Required
 
 - Performance monitoring tools
 - Timing analysis scripts
@@ -282,11 +282,11 @@ Planned follow-up (if needed): optional fast flag for immediate override even wh
 **Risk Assessment:** Low - Read-only analysis
 **Rollback Plan:** N/A - Documentation only
 
-### 5.2 Phase 2: Short Term Implementation
+### 5.2. Phase 2: Short Term Implementation
 
-#### 5.2.1 Automated Log Rotation System
+#### 5.2.1. Automated Log Rotation System
 
-#### Log Rotation Subtasks
+#### 5.2.2. Log Rotation Subtasks
 
 - 2.1.1 Design log rotation architecture
 - 2.1.2 Implement rotation logic in `025-log-rotation.zsh`
@@ -297,7 +297,7 @@ Planned follow-up (if needed): optional fast flag for immediate override even wh
 - 2.1.7 Implement rotation monitoring and alerts
 
 
-#### Technical Specifications:
+#### 5.2.3. Technical Specifications:
 
 - **Retention Period:** 30 days for active logs
 - **Compression:** 7+ days for compressed logs
@@ -306,7 +306,7 @@ Planned follow-up (if needed): optional fast flag for immediate override even wh
 - **Alert Threshold:** >1GB total log size
 
 
-#### Resources Required
+#### 5.2.4. Resources Required
 
 - Shell scripting expertise
 - File system management knowledge
@@ -314,9 +314,9 @@ Planned follow-up (if needed): optional fast flag for immediate override even wh
 - Monitoring tools
 
 
-#### 5.2.2 Documentation Enhancement
+#### 5.2.5. Documentation Enhancement
 
-#### Documentation Enhancement Subtasks
+#### 5.2.6. Documentation Enhancement Subtasks
 
 - 2.2.1 Audit existing documentation for completeness
 - 2.2.2 Identify gaps in segment library documentation
@@ -327,7 +327,7 @@ Planned follow-up (if needed): optional fast flag for immediate override even wh
 - 2.2.7 Add API documentation for key functions
 
 
-#### Documentation Areas:
+#### 5.2.7. Documentation Areas:
 
 - **Segment Library:** Advanced timing features, APIs, integration examples
 - **Test Framework:** Directory structure, execution patterns, contribution guidelines
@@ -335,9 +335,9 @@ Planned follow-up (if needed): optional fast flag for immediate override even wh
 - **API Documentation:** Function signatures, parameters, examples
 
 
-#### 5.2.3 Performance Optimization Review
+#### 5.2.8. Performance Optimization Review
 
-#### Performance Optimization Review Subtasks
+#### 5.2.9. Performance Optimization Review Subtasks
 
 - 2.3.1 Analyze current plugin loading bottlenecks
 - 2.3.2 Identify caching optimization opportunities
@@ -348,7 +348,7 @@ Planned follow-up (if needed): optional fast flag for immediate override even wh
 - 2.3.7 Document current performance characteristics
 
 
-#### Focus Areas:
+#### 5.2.10. Focus Areas:
 
 - **Plugin Loading:** Largest performance bottleneck (800-1200ms)
 - **Cache Strategy:** zgenom cache effectiveness
@@ -356,11 +356,11 @@ Planned follow-up (if needed): optional fast flag for immediate override even wh
 - **Memory Usage:** Plugin memory consumption patterns
 
 
-### 5.3 Phase 3: Medium Term Enhancements
+### 5.3. Phase 3: Medium Term Enhancements
 
-#### 5.3.1 Plugin Loading Optimization
+#### 5.3.1. Plugin Loading Optimization
 
-#### Plugin Loading Optimization Subtasks
+#### 5.3.2. Plugin Loading Optimization Subtasks
 
 - 3.1.1 Implement intelligent plugin deferral
 - 3.1.2 Add plugin load time prediction
@@ -372,7 +372,7 @@ Planned follow-up (if needed): optional fast flag for immediate override even wh
 - 3.1.8 Document optimization strategies
 
 
-#### Optimization Targets:
+#### 5.3.3. Optimization Targets:
 
 - **Startup Time:** Reduce from 1.5s to 1.2s (20% improvement)
 - **Plugin Load Time:** < 500ms for core plugins
@@ -380,9 +380,9 @@ Planned follow-up (if needed): optional fast flag for immediate override even wh
 - **Cache Efficiency:** >98% cache hit rate
 
 
-#### 5.3.2 Enhanced Error Reporting
+#### 5.3.4. Enhanced Error Reporting
 
-#### Enhanced Error Reporting Subtasks
+#### 5.3.5. Enhanced Error Reporting Subtasks
 
 - 3.2.1 Design structured error reporting system
 - 3.2.2 Implement error context capture
@@ -393,7 +393,7 @@ Planned follow-up (if needed): optional fast flag for immediate override even wh
 - 3.2.7 Test error reporting effectiveness
 
 
-#### Error Categories:
+#### 5.3.6. Error Categories:
 
 - **Plugin Failures:** Load errors, dependency issues
 - **Configuration Errors:** Syntax, naming, structure
@@ -401,9 +401,9 @@ Planned follow-up (if needed): optional fast flag for immediate override even wh
 - **Performance Issues:** Bottlenecks, regressions
 
 
-#### 5.3.3 Configuration Validation Framework
+#### 5.3.7. Configuration Validation Framework
 
-#### Configuration Validation Subtasks
+#### 5.3.8. Configuration Validation Subtasks
 
 - 3.3.1 Design validation architecture
 - 3.3.2 Implement syntax checking for all .zsh files
@@ -414,7 +414,7 @@ Planned follow-up (if needed): optional fast flag for immediate override even wh
 - 3.3.7 Add automated validation triggers
 
 
-#### Validation Types:
+#### 5.3.9. Validation Types:
 
 - **Syntax Validation:** ZSH syntax checking
 - **Structure Validation:** File organization compliance
@@ -425,7 +425,7 @@ Planned follow-up (if needed): optional fast flag for immediate override even wh
 
 ## 6. Implementation Timeline
 
-### 6.1 Week 1: Foundation
+### 6.1. Week 1: Foundation
 
 ```
 Day 1-2: Phase 1.1-1.2 (Load order + stability testing)
@@ -433,14 +433,14 @@ Day 3-4: Phase 1.3 (Performance baseline)
 Day 5-7: Phase 2.1 (Log rotation system)
 ```
 
-### 6.2 Week 2-3: Enhancement
+### 6.2. Week 2-3: Enhancement
 
 ```
 Day 8-12: Phase 2.2 (Documentation enhancement)
 Day 13-21: Phase 2.3 (Performance optimization review)
 ```
 
-### 6.3 Week 4-8: Advanced Features
+### 6.3. Week 4-8: Advanced Features
 
 ```
 Day 22-35: Phase 3.1 (Plugin loading optimization)
@@ -450,7 +450,7 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 
 ## 7. Implementation Milestones
 
-### Milestone 1: Foundation Complete (End of Week 1)
+### 7.1. Milestone 1: Foundation Complete (End of Week 1)
 
 - [ ] All Phase 1 tasks completed
 - [ ] Configuration stability validated
@@ -458,7 +458,7 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 - [ ] Go/No-Go decision point for Phase 2
 
 
-#### Success Criteria:
+#### 7.1.1. Success Criteria:
 
 - Zero configuration conflicts
 - All functionality tests passing
@@ -466,7 +466,7 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 - Security validation complete
 
 
-### Milestone 2: Enhancement Complete (End of Week 3)
+### 7.2. Milestone 2: Enhancement Complete (End of Week 3)
 
 - [ ] All Phase 2 tasks completed
 - [ ] Log management automated
@@ -475,7 +475,7 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 - [ ] Go/No-Go decision point for Phase 3
 
 
-#### Success Criteria:
+#### 7.2.1. Success Criteria:
 
 - Automated log rotation functional
 - Complete documentation requirements defined
@@ -483,7 +483,7 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 - Quality gates passed
 
 
-### Milestone 3: Optimization Complete (End of Week 8)
+### 7.3. Milestone 3: Optimization Complete (End of Week 8)
 
 - [ ] All Phase 3 tasks completed
 - [ ] Performance improvements achieved
@@ -492,7 +492,7 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 - [ ] Final project review and sign-off
 
 
-#### Success Criteria:
+#### 7.3.1. Success Criteria:
 
 - 20% startup time improvement achieved
 - Structured error reporting implemented
@@ -502,7 +502,7 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 
 ## 8. Resource Allocation
 
-### 8.1 Team Structure
+### 8.1. Team Structure
 
 | Role | Responsibilities | Team Size | Time Commitment | Skills Required |
 |------|------------------|-----------|-----------------|----------------|
@@ -512,9 +512,9 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 | **Documentation Team** | Documentation writing, maintenance | 1 | 40% | Technical writing, documentation tools |
 | **Performance Team** | Optimization, monitoring, analysis | 1-2 | 70% | Performance analysis, optimization |
 
-### 8.2 Resource Scaling Options
+### 8.2. Resource Scaling Options
 
-#### Minimum Viable Team (1 person)
+#### 8.2.1. Minimum Viable Team (1 person)
 
 - **Timeline**: 8-10 weeks
 - **Scope**: Critical and High priority tasks only
@@ -522,7 +522,7 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 - **Cost**: Significantly reduced
 
 
-#### Optimal Team (3-4 people)
+#### 8.2.2. Optimal Team (3-4 people)
 
 - **Timeline**: 4-8 weeks
 - **Scope**: Full implementation
@@ -530,7 +530,7 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 - **Cost**: Standard budget
 
 
-#### Accelerated Team (5-6 people)
+#### 8.2.3. Accelerated Team (5-6 people)
 
 - **Timeline**: 3-4 weeks
 - **Scope**: Full implementation with parallel tracks
@@ -538,7 +538,7 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 - **Cost**: Premium budget
 
 
-### 8.3 Technical Resources
+### 8.3. Technical Resources
 
 | Resource Type | Quantity | Purpose | Availability | Cost Impact |
 |---------------|----------|---------|--------------|-------------|
@@ -549,7 +549,7 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 
 ## 9. Risk Management
 
-### 9.1 Risk Assessment Matrix
+### 9.1. Risk Assessment Matrix
 
 | Risk | Probability | Impact | Mitigation Strategy | Owner |
 |-------|-------------|--------|-------------------|-------|
@@ -559,9 +559,9 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 | **Technical Dependencies** | Low | Medium | Early identification, alternative planning | Development Team |
 | **Testing Coverage** | Medium | High | Comprehensive test suites, multiple environments | QA Team |
 
-### 9.2 Enhanced Risk Mitigation
+### 9.2. Enhanced Risk Mitigation
 
-#### Risk: Configuration Breakage
+#### 9.2.1. Risk: Configuration Breakage
 
 - **Mitigation**: Implement feature flags for each major change
 - **Rollback Strategy**: One-command rollback to previous stable state
@@ -569,7 +569,7 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 - **Monitoring**: Real-time configuration health checks
 
 
-#### Risk: Performance Regression
+#### 9.2.2. Risk: Performance Regression
 
 - **Mitigation**: Performance benchmarks before each change
 - **Rollback Strategy**: Automated performance regression detection
@@ -577,7 +577,7 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 - **Monitoring**: Continuous performance monitoring with alerts
 
 
-#### Risk: Team Bandwidth Constraints
+#### 9.2.3. Risk: Team Bandwidth Constraints
 
 - **Mitigation**: Clear task prioritization and dependency management
 - **Rollback Strategy**: Scope reduction with critical path preservation
@@ -585,9 +585,9 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 - **Monitoring**: Weekly resource utilization reviews
 
 
-### 9.3 Contingency Planning
+### 9.3. Contingency Planning
 
-#### Scenario 1: Critical Functionality Breakage
+#### 9.3.1. Scenario 1: Critical Functionality Breakage
 
 - Immediate rollback to previous stable version
 - Emergency fix development with hotfix process
@@ -595,7 +595,7 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 - Enhanced testing before redeployment
 
 
-#### Scenario 2: Performance Degradation
+#### 9.3.2. Scenario 2: Performance Degradation
 
 - Performance optimization sprint with dedicated resources
 - Alternative implementation approaches
@@ -603,7 +603,7 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 - Gradual rollout with performance monitoring
 
 
-#### Scenario 3: Resource Constraints
+#### 9.3.3. Scenario 3: Resource Constraints
 
 - Scope reduction and prioritization
 - Extended timeline with clear milestones
@@ -613,7 +613,7 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 
 ## 10. Quality Assurance Strategy
 
-### 10.1 Testing Framework
+### 10.1. Testing Framework
 
 | Test Type | Coverage | Frequency | Automation | Tools |
 |-----------|----------|-----------|------------|-------|
@@ -623,9 +623,9 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 | **Regression Tests** | Existing functionality | Every change | ✅ Full | Automated test suite |
 | **Security Tests** | Vulnerability assessment | Every release | 🔄 Partial | Security scanning tools |
 
-### 10.2 Quality Gates
+### 10.2. Quality Gates
 
-#### Pre-Implementation Gates:
+#### 10.2.1. Pre-Implementation Gates:
 
 - [ ] Code review completion with sign-off
 - [ ] Test coverage verification (>90%)
@@ -634,7 +634,7 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 - [ ] Performance baseline established
 
 
-#### Post-Implementation Gates:
+#### 10.2.2. Post-Implementation Gates:
 
 - [ ] Functionality testing with all scenarios
 - [ ] Performance validation against baseline
@@ -643,7 +643,7 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 - [ ] Rollback plan tested and validated
 
 
-#### Phase Transition Gates:
+#### 10.2.3. Phase Transition Gates:
 
 - [ ] All phase tasks completed
 - [ ] Quality gates passed
@@ -654,7 +654,7 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 
 ## 11. Success Metrics
 
-### 11.1 Phase 1 Success Criteria
+### 11.1. Phase 1 Success Criteria
 
 - ✅ **Zero configuration conflicts** - No duplicate files or naming issues
 - ✅ **Stable functionality** - All features working as expected
@@ -662,7 +662,7 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 - ✅ **Quality assurance** - All tests passing with >90% coverage
 
 
-#### Specific Measurements:
+#### 11.1.1. Specific Measurements:
 
 - Zero syntax errors across all .zsh files (validated by `zsh -n`)
 - Startup time < 2.0 seconds (measured by `time zsh -i -c exit`)
@@ -670,7 +670,7 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 - Performance baseline captured with <5% variance across 5 runs
 
 
-### 11.2 Phase 2 Success Criteria
+### 11.2. Phase 2 Success Criteria
 
 - ✅ **Automated log management** - No manual intervention required
 - ✅ **Complete documentation** - All features properly documented
@@ -678,7 +678,7 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 - ✅ **Testing framework** - Comprehensive test coverage established
 
 
-#### Specific Measurements:
+#### 11.2.1. Specific Measurements:
 
 - Log files automatically rotated with <30 days retention
 - Documentation coverage >95% for all features
@@ -686,7 +686,7 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 - Test suite with >90% code coverage
 
 
-### 11.3 Phase 3 Success Criteria
+### 11.3. Phase 3 Success Criteria
 
 - ✅ **20% performance improvement** - Measurable startup time reduction
 - ✅ **Enhanced error reporting** - Better debugging and user experience
@@ -694,7 +694,7 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 - ✅ **Maintainability** - Improved code organization and documentation
 
 
-#### Specific Measurements:
+#### 11.3.1. Specific Measurements:
 
 - Startup time reduced from 1.5s to 1.2s (20% improvement)
 - Structured error reporting implemented with categorization
@@ -704,7 +704,7 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 
 ## 12. Budget and Resource Planning
 
-### 12.1 Estimated Costs
+### 12.1. Estimated Costs
 
 | Category | Phase 1 | Phase 2 | Phase 3 | Total | Notes |
 |----------|---------|---------|---------|-------|-------|
@@ -715,9 +715,9 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 | **Contingency** | $900 | $1,280 | $2,020 | $4,200 | 15% of total project cost |
 | **Total** | $9,900 | $14,080 | $19,220 | $43,200 | |
 
-### 12.2 Resource Justification
+### 12.2. Resource Justification
 
-#### Return on Investment:
+#### 12.2.1. Return on Investment:
 
 - **Performance Improvement:** 20% faster startup time = 52 hours/year saved
 - **Maintenance Reduction:** Automated log management = 4 hours/month saved
@@ -725,7 +725,7 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 - **User Experience:** Better debugging and troubleshooting = improved productivity
 
 
-#### Cost-Benefit Analysis:
+#### 12.2.2. Cost-Benefit Analysis:
 
 - **Total Investment:** $43,200
 - **Annual Savings:** ~$25,000 (based on time savings and reduced maintenance)
@@ -735,7 +735,7 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 
 ## 13. Monitoring and Control
 
-### 13.1 Progress Tracking
+### 13.1. Progress Tracking
 
 | Metric | Target | Measurement Method | Frequency | Owner |
 |--------|--------|-------------------|-----------|-------|
@@ -745,9 +745,9 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 | **Documentation** | 100% coverage | Documentation audit | Per milestone | Documentation Team |
 | **User Satisfaction** | >90% positive | Feedback surveys | Per release | Project Lead |
 
-### 13.2 Change Management
+### 13.2. Change Management
 
-#### Change Control Process:
+#### 13.2.1. Change Control Process:
 
 1. **Change Request** - Identify need for modification
 2. **Impact Assessment** - Evaluate scope and risk
@@ -757,7 +757,7 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 6. **Documentation** - Update all relevant documentation
 
 
-#### Emergency Change Process:
+#### 13.2.2. Emergency Change Process:
 
 1. **Immediate Assessment** - Critical issue identification
 2. **Rapid Development** - Emergency fix implementation
@@ -768,7 +768,7 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 
 ## 14. Communication Strategy
 
-### 14.1 Stakeholder Communication
+### 14.1. Stakeholder Communication
 
 | Stakeholder | Update Frequency | Communication Method | Content Focus | Owner |
 |-------------|------------------|---------------------|---------------|-------|
@@ -777,9 +777,9 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 | **End Users** | Bi-weekly | Release notes | New features, improvements | Documentation Team |
 | **Contributors** | Monthly | Newsletter | Contribution opportunities, updates | Documentation Team |
 
-### 14.2 Progress Reporting
+### 14.2. Progress Reporting
 
-#### Daily Updates:
+#### 14.2.1. Daily Updates:
 
 - Task completion status
 - Blocker identification and resolution
@@ -787,7 +787,7 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 - Risk status changes
 
 
-#### Weekly Reviews:
+#### 14.2.2. Weekly Reviews:
 
 - Milestone achievement
 - Risk status updates
@@ -795,7 +795,7 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 - Quality gate results
 
 
-#### Monthly Assessments:
+#### 14.2.3. Monthly Assessments:
 
 - Overall progress toward goals
 - Team performance metrics
@@ -803,11 +803,11 @@ Day 43-56: Phase 3.3 (Configuration validation framework)
 - Budget utilization
 
 
-## Conclusion
+## 15. Conclusion
 
 This enhanced implementation plan provides a structured approach to improving the ZSH configuration system while maintaining its excellent architecture and security foundation. The phased approach with quality gates ensures manageable progress with clear milestones and comprehensive risk mitigation strategies.
 
-#### Key Success Factors:
+#### 15.1. Key Success Factors:
 
 - **Phased Implementation** - Controlled progress with validation at each step
 - **Enhanced Risk Management** - Comprehensive mitigation strategies with specific actions
@@ -816,7 +816,7 @@ This enhanced implementation plan provides a structured approach to improving th
 - **Stakeholder Communication** - Regular updates and transparency with clear reporting
 
 
-#### Critical Success Metrics:
+#### 15.2. Critical Success Metrics:
 
 - Zero configuration conflicts and stability issues
 - 20% performance improvement in startup time
@@ -829,13 +829,8 @@ The plan positions the configuration for continued excellence while addressing c
 
 ---
 
-## Navigation
-
-- [Previous](../../README.md) - Documentation index
-- [Next](../../000-index.md) - Main documentation index
-- [Top](#top) - Back to top
-
+**Navigation:** [Top ↑](#zsh-configuration-next-steps-implementation-plan)
 
 ---
 
-*This enhanced implementation plan provides a comprehensive roadmap for systematically improving the ZSH configuration system. The structured approach with quality gates, enhanced risk management, and resource scaling options ensures quality, manages risk, and delivers measurable improvements to functionality, performance, and maintainability.*
+*Last updated: 2025-10-13*

@@ -1,6 +1,26 @@
-# 060 - Risk Assessment
+# - Risk Assessment
 
-## Top
+## Table of Contents
+
+<details>
+<summary>Click to expand</summary>
+
+- [1. Top](#1-top)
+- [2. Scope & objectives](#2-scope-objectives)
+- [3. Risk matrix (example)](#3-risk-matrix-example)
+- [4. Detailed mitigations & runbooks](#4-detailed-mitigations-runbooks)
+- [5. Risk acceptance & prioritization](#5-risk-acceptance-prioritization)
+- [6. Post-incident analysis](#6-post-incident-analysis)
+- [7. Reporting & ownership](#7-reporting-ownership)
+- [8. Acceptance criteria](#8-acceptance-criteria)
+- [9. Related](#9-related)
+
+</details>
+
+---
+
+
+## 1. Top
 
 Status: Draft
 
@@ -8,13 +28,13 @@ Last updated: 2025-10-07
 
 This risk assessment captures known and anticipated risks for the ZSH REDESIGN project, assigns mitigations, and documents rollback and emergency procedures. The goal is to ensure the redesign deploys safely and has clear recovery paths for high-impact failures.
 
-## Scope & objectives
+## 2. Scope & objectives
 
 - Scope: configuration switching, plugin loading, prompt and widget health, symlink operations, user-facing performance regressions, and data privacy (history storage).
 - Objectives: identify top risks, define mitigations and acceptance criteria, and provide clear rollback procedures.
 
 
-## Risk matrix (example)
+## 3. Risk matrix (example)
 
 | ID | Risk | Likelihood | Impact | Mitigation | Owner |
 |---:|---|---:|---:|---|---|
@@ -24,7 +44,7 @@ This risk assessment captures known and anticipated risks for the ZSH REDESIGN p
 | R4 | Sensitive data leaked via history or telemetry | Low | High | Gate telemetry; implement history filters; document privacy controls for Atuin | Security Lead |
 | R5 | Zgenom cache corruption causing plugin load failures | Low | Medium | Rebuild caches on promote/switch events; provide `zgenom clean` helper in tooling | Maintainer |
 
-## Detailed mitigations & runbooks
+## 4. Detailed mitigations & runbooks
 
 1. Prompt duplication / widget errors (R1)
 
@@ -78,14 +98,14 @@ readlink .zshrc.d.active.backup 2>/dev/null | xargs -I{} ln -sf {} .zshrc.d.acti
   - Provide a guide to scrub sensitive entries from Atuin or `.zsh_history` and rotate any leaked tokens
 
 
-## Risk acceptance & prioritization
+## 5. Risk acceptance & prioritization
 
 - High impact (blocker) risks must have automated mitigations and a documented rollback
 - Medium impact risks require monitoring and clear remediation plans
 - Low impact risks should be logged and scheduled for backlog remediation
 
 
-## Post-incident analysis
+## 6. Post-incident analysis
 
 - For any incident triggered by a redesign promotion, create a post-mortem with the following structure:
   - Summary of event
@@ -95,20 +115,28 @@ readlink .zshrc.d.active.backup 2>/dev/null | xargs -I{} ln -sf {} .zshrc.d.acti
   - Follow-up items and owners
 
 
-## Reporting & ownership
+## 7. Reporting & ownership
 
 - Each risk entry should be owned by a team or maintainer with a person assigned for escalation
 - Maintain a short living risk register file (e.g., `docs/400-redesign/RISKS.md`) that is updated as risks change
 
 
-## Acceptance criteria
+## 8. Acceptance criteria
 
 - Risk matrix exists for top risks with assigned mitigation strategies
 - Rollback runbook is present and tested manually at least once per release cycle
 - CI detects regressions in startup performance and blocks promotion when thresholds are exceeded
 
 
-## Related
+## 9. Related
 
 - See `040-implementation-guide.md` for emergency scripts and `070-maintenance-guide.md` for scheduled checks and diagnostics
 - Return to [Redesign Index](../000-index.md) or [000-index](../000-index.md)
+
+---
+
+**Navigation:** [← Testing Framework](400-redesign/050-testing-framework.md) | [Top ↑](#risk-assessment) | [Maintenance Guide →](400-redesign/070-maintenance-guide.md)
+
+---
+
+*Last updated: 2025-10-13*

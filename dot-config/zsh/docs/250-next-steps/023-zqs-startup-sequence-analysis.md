@@ -1,10 +1,36 @@
 # ZSH Quickstart Kit (ZQS) - Complete Startup Sequence Analysis
 
-**Date**: 2025-10-07
-**Purpose**: Verify complete ZSH startup sequence and identify when helper functions are available
-**Source**: [Official zsh-quickstart-kit repository](https://github.com/unixorn/zsh-quickstart-kit)
+## Table of Contents
+
+<details>
+<summary>Click to expand</summary>
+
+- [1. Executive Summary](#1-executive-summary)
+- [2. Complete Startup Sequence](#2-complete-startup-sequence)
+  - [2.1. Scenario A: Normal Interactive Shell Startup (init.zsh exists)](#21-scenario-a-normal-interactive-shell-startup-initzsh-exists)
+  - [2.2. Scenario B: Plugin Cache Regeneration (`zgenom save` triggered)](#22-scenario-b-plugin-cache-regeneration-zgenom-save-triggered)
+- [3. The Problem Explained](#3-the-problem-explained)
+  - [3.1. Why `.zshrc.add-plugins.d/` files can call `zf::debug` but not `zf::add_segment`](#31-why-zshrcadd-pluginsd-files-can-call-zfdebug-but-not-zfadd_segment)
+- [4. Execution Context Difference](#4-execution-context-difference)
+  - [4.1. Normal Startup (Scenario A)](#41-normal-startup-scenario-a)
+  - [4.2. During zgenom save (Scenario B)](#42-during-zgenom-save-scenario-b)
+- [5. Why This Happens](#5-why-this-happens)
+- [6. Recommended Fix](#6-recommended-fix)
+  - [6.1. Option 1: Source segment management before loading plugins (Modifies upstream file)](#61-option-1-source-segment-management-before-loading-plugins-modifies-upstream-file)
+  - [6.2. Option 2: Add defensive guards to plugin files (RECOMMENDED)](#62-option-2-add-defensive-guards-to-plugin-files-recommended)
+- [7. ZQS Design Patterns](#7-zqs-design-patterns)
+- [8. Implementation Plan](#8-implementation-plan)
+  - [8.1. Step 1: Add defensive guard to all plugin files](#81-step-1-add-defensive-guard-to-all-plugin-files)
+  - [8.2. Step 2: Test](#82-step-2-test)
+  - [8.3. Step 3: Verify plugins loaded](#83-step-3-verify-plugins-loaded)
+- [9. Conclusion](#9-conclusion)
+- [10. FAQ](#10-faq)
+  - [10.1. Why is nvm not in my PATH?](#101-why-is-nvm-not-in-my-path)
+
+</details>
 
 ---
+
 
 ## 1. Executive Summary
 
@@ -21,7 +47,7 @@
 
 ## 2. Complete Startup Sequence
 
-### 2.1 Scenario A: Normal Interactive Shell Startup (init.zsh exists)
+### 2.1. Scenario A: Normal Interactive Shell Startup (init.zsh exists)
 
 ```zsh
 1. ZSH loads .zshenv (ALWAYS, for all shells)
@@ -54,7 +80,7 @@
 
 ---
 
-### 2.2 Scenario B: Plugin Cache Regeneration (`zgenom save` triggered)
+### 2.2. Scenario B: Plugin Cache Regeneration (`zgenom save` triggered)
 
 ```zsh
 1. ZSH loads .zshenv (ALWAYS)
@@ -90,7 +116,7 @@
 
 ## 3. The Problem Explained
 
-### 3.1 Why `.zshrc.add-plugins.d/` files can call `zf::debug` but not `zf::add_segment`
+### 3.1. Why `.zshrc.add-plugins.d/` files can call `zf::debug` but not `zf::add_segment`
 
 **Call Stack During `zgenom save`**:
 
@@ -121,7 +147,7 @@
 
 ## 4. Execution Context Difference
 
-### 4.1 Normal Startup (Scenario A)
+### 4.1. Normal Startup (Scenario A)
 
 ```zsh
 Shell Process
@@ -135,7 +161,7 @@ Shell Process
 
 **Result**: All functions available in same shell context ✅
 
-### 4.2 During zgenom save (Scenario B)
+### 4.2. During zgenom save (Scenario B)
 
 ```zsh
 Shell Process
@@ -174,7 +200,7 @@ Shell Process
 
 ## 6. Recommended Fix
 
-### 6.1  Option 1: Source segment management before loading plugins (Modifies upstream file)
+### 6.1. Option 1: Source segment management before loading plugins (Modifies upstream file)
 
 **Location**: `.zgen-setup` line 144
 
@@ -203,7 +229,7 @@ fi
 
 ---
 
-### 6.2 Option 2: Add defensive guards to plugin files (RECOMMENDED)
+### 6.2. Option 2: Add defensive guards to plugin files (RECOMMENDED)
 
 **Location**: Each file in `.zshrc.add-plugins.d/`
 
@@ -255,7 +281,7 @@ Based on official source code review:
 
 ## 8. Implementation Plan
 
-### 8.1 Step 1: Add defensive guard to all plugin files
+### 8.1. Step 1: Add defensive guard to all plugin files
 
 Add after header comments, before any function calls:
 
@@ -265,7 +291,7 @@ Add after header comments, before any function calls:
 typeset -f zf::add_segment >/dev/null 2>&1 || zf::add_segment() { : }
 ```
 
-### 8.2 Step 2: Test
+### 8.2. Step 2: Test
 
 ```zsh
 # Remove all caches
@@ -284,7 +310,7 @@ zgenom save
 zgenom list | wc -l  # Should show >0
 ```
 
-### 8.3 Step 3: Verify plugins loaded
+### 8.3. Step 3: Verify plugins loaded
 
 ```zsh
 zgenom list  # Should show actual plugins, not empty arrays
@@ -308,7 +334,7 @@ The fix is simple, maintainable, and follows ZSH best practices.
 
 ## 10. FAQ
 
-### 10.1 Why is nvm not in my PATH?
+### 10.1. Why is nvm not in my PATH?
 
 Short answer: nvm is implemented as a shell function that only exists after its initialization; this repo intentionally defers (lazy) initialization so nvm may not be available in early or nested execution contexts (for example during `zgenom save`).
 
@@ -346,3 +372,9 @@ typeset -f nvm >/dev/null 2>&1 || { [ -s "${NVM_DIR:-$HOME/.nvm}/nvm.sh" ] && so
 If you'd like, I can add one or more defensive guards to the affected plugin fragments or add a small diagnostic script under tests/runtime/ to validate nvm init behavior across phases.
 
 ---
+
+**Navigation:** [Top ↑](#zsh-quickstart-kit-zqs-complete-startup-sequence-analysis)
+
+---
+
+*Last updated: 2025-10-13*

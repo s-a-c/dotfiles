@@ -1,6 +1,32 @@
-# 110 - Productivity Features
+# - Productivity Features
 
-## Top
+## Table of Contents
+
+<details>
+<summary>Click to expand</summary>
+
+- [1. Top](#1-top)
+- [2. Purpose](#2-purpose)
+- [3. Key integrations](#3-key-integrations)
+- [4. Feature guards and opt-ins](#4-feature-guards-and-opt-ins)
+- [5. FZF workflows and examples](#5-fzf-workflows-and-examples)
+  - [5.1. 1) History search and re-run](#51-1-history-search-and-re-run)
+  - [5.2. 2) Project file finder with preview](#52-2-project-file-finder-with-preview)
+  - [5.3. 3) Commit selection helper](#53-3-commit-selection-helper)
+- [6. zoxide examples](#6-zoxide-examples)
+- [7. Keybindings and recommended aliases](#7-keybindings-and-recommended-aliases)
+- [8. Performance & deferred loading](#8-performance-deferred-loading)
+- [9. Troubleshooting](#9-troubleshooting)
+- [10. Acceptance criteria](#10-acceptance-criteria)
+- [11. Smoke test (manual)](#11-smoke-test-manual)
+- [12. Related](#12-related)
+
+</details>
+
+---
+
+
+## 1. Top
 
 Status: Draft
 
@@ -8,11 +34,11 @@ Last updated: 2025-10-07
 
 This document describes productivity-oriented features included in the configuration: fuzzy-finding integrations, navigation helpers, shell UX enhancements, and performance-minded loading patterns. The goal is to provide pragmatic examples you can copy into your personal configuration and clear guidance for enabling/disabling features safely.
 
-## Purpose
+## 2. Purpose
 
 Productivity features accelerate common developer tasks while keeping startup time low. All integrations are guarded behind presence checks and opt-in environment variables so users without a given tool are unaffected.
 
-## Key integrations
+## 3. Key integrations
 
 - FZF — fuzzy-finding for files, buffers, history and commands
 - zoxide — smart directory jumping
@@ -21,7 +47,7 @@ Productivity features accelerate common developer tasks while keeping startup ti
 - small helper functions and sensible aliases for common workflows
 
 
-## Feature guards and opt-ins
+## 4. Feature guards and opt-ins
 
 To avoid hard failures, most features are enabled only when the tool is present and an opt-in variable (where appropriate) is set.
 
@@ -35,9 +61,9 @@ fi
 
 This pattern keeps the configuration robust in minimal environments and reduces surprises for users who intentionally run a minimal setup.
 
-## FZF workflows and examples
+## 5. FZF workflows and examples
 
-### 1) History search and re-run
+### 5.1. 1) History search and re-run
 
 A compact, safe way to search history and re-run the selected entry:
 
@@ -57,7 +83,7 @@ Notes:
 - The pipeline is intentionally guarded to avoid running empty selections
 
 
-### 2) Project file finder with preview
+### 5.2. 2) Project file finder with preview
 
 Use `bat` as a previewer when available to speed up file triage:
 
@@ -65,7 +91,7 @@ Use `bat` as a previewer when available to speed up file triage:
 fzf --height=40% --reverse --preview 'bat --style=numbers --color=always --line-range :200 {}' --bind 'enter:execute(nvim {})'
 ```
 
-### 3) Commit selection helper
+### 5.3. 3) Commit selection helper
 
 Quickly find and open changed files from `git`:
 
@@ -73,7 +99,7 @@ Quickly find and open changed files from `git`:
 git status --porcelain | fzf --nth 2.. --preview 'git diff --color=always -- {}' --bind 'enter:execute(nvim {})'
 ```
 
-## zoxide examples
+## 6. zoxide examples
 
 - Jump to most used directory:
 
@@ -89,7 +115,7 @@ z
 zoxide query -l | fzf --preview 'ls -la {}' | xargs -I{} z {}
 ```
 
-## Keybindings and recommended aliases
+## 7. Keybindings and recommended aliases
 
 - Suggested default keybindings (documented here, enable with guard if you ship them):
 
@@ -114,7 +140,7 @@ Notes on keybindings:
 - Provide `ZSH_CONFIG_DISABLE_DEFAULT_KEYBINDINGS=1` to opt out
 
 
-## Performance & deferred loading
+## 8. Performance & deferred loading
 
 To keep shell startup snappy:
 
@@ -138,7 +164,7 @@ alias fzf='zf::lazy::fzf'
 
 This ensures that users who don't use `fzf` during a session don't pay the cost of initializing its bindings.
 
-## Troubleshooting
+## 9. Troubleshooting
 
 - Symptom: FZF preview or bindings not working
 
@@ -152,7 +178,7 @@ This ensures that users who don't use `fzf` during a session don't pay the cost 
   - Rebuild the database with `zoxide import` if necessary
 
 
-## Acceptance criteria
+## 10. Acceptance criteria
 
 - Examples for the principal workflows (history, file finder, git file chooser) exist
 - Guards and opt-ins are demonstrated clearly so users can disable features
@@ -160,7 +186,7 @@ This ensures that users who don't use `fzf` during a session don't pay the cost 
 - Troubleshooting checklist present for common failure modes
 
 
-## Smoke test (manual)
+## 11. Smoke test (manual)
 
 A minimal smoke test that asserts core productivity integrations are present and load without error:
 
@@ -176,6 +202,14 @@ command -v zoxide >/dev/null 2>&1 && echo "zoxide: OK" || echo "zoxide: missing"
 python -c 'print("smoke")' >/dev/null 2>&1 && echo "python: OK" || true
 ```
 
-## Related
+## 12. Related
 
 - Return to [README](README.md) or [000-index](000-index.md)
+
+---
+
+**Navigation:** [← Development Tools](100-development-tools.md) | [Top ↑](#productivity-features) | [Terminal Integration →](120-terminal-integration.md)
+
+---
+
+*Last updated: 2025-10-13*

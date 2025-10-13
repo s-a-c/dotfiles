@@ -1,35 +1,90 @@
-# 1. ZSH REDESIGN Implementation Plan
-
-## Top
-
+# ZSH REDESIGN Implementation Plan
 
 ## Table of Contents
 
-1. [Project Overview](#1-project-overview)
-2. [Current State Analysis](#2-current-state-analysis)
-   1. [Existing Symlink Structure](#21-existing-symlink-structure)
-   2. [Current Configuration Files](#22-current-configuration-files)
-3. [Layered Development Strategy](#3-layered-development-strategy)
-   1. [File/Folder Duplication System](#31-filefolder-duplication-system)
-   2. [Symlink Architecture Design](#32-symlink-architecture-design)
-   3. [Configuration Switching Mechanism](#33-configuration-switching-mechanism)
-4. [Tests Folder Comprehensive Reorganization](#4-tests-folder-comprehensive-reorganization)
-   1. [Current State Audit](#41-current-state-audit)
-   2. [Test Cleanup Strategy](#42-test-cleanup-strategy)
-   3. [New Test Structure Design](#43-new-test-structure-design)
-   4. [Test Modernization Plan](#44-test-modernization-plan)
-5. [Pre-Implementation Analysis](#5-pre-implementation-analysis)
-   1. [Clarifying Questions & Recommendations](#51-clarifying-questions--recommendations)
-   2. [Risk Assessment](#52-risk-assessment)
-   3. [Implementation Sequence](#53-implementation-sequence)
-6. [Final Implementation Commands](#6-final-implementation-commands)
-   1. [Initial Setup Commands](#61-initial-setup-commands)
-   2. [Switching Scripts Installation](#62-switching-scripts-installation)
-   3. [Validation Commands](#63-validation-commands)
-7. [Success Criteria & Validation](#7-success-criteria--validation)
-   1. [Functional Success Criteria](#71-functional-success-criteria)
-   2. [Technical Success Criteria](#72-technical-success-criteria)
-   3. [Documentation Success Criteria](#73-documentation-success-criteria)
+<details>
+<summary>Click to expand</summary>
+
+- [1. Project Overview](#1-project-overview)
+- [2. Current State Analysis](#2-current-state-analysis)
+  - [2.1. Existing Symlink Structure](#21-existing-symlink-structure)
+  - [2.2. Current Configuration Files](#22-current-configuration-files)
+    - [2.2.1. Pre-Plugin Phase (.zshrc.pre-plugins.d.00/):](#221-pre-plugin-phase-zshrcpre-pluginsd00)
+    - [2.2.2. Plugin Definition Phase (.zshrc.add-plugins.d.00/):](#222-plugin-definition-phase-zshrcadd-pluginsd00)
+    - [2.2.3. Post-Plugin Phase (.zshrc.d.00/):](#223-post-plugin-phase-zshrcd00)
+- [3. Layered Development Strategy](#3-layered-development-strategy)
+  - [3.1. File/Folder Duplication System](#31-filefolder-duplication-system)
+    - [3.1.1. Core Configuration Files to Duplicate](#311-core-configuration-files-to-duplicate)
+    - [3.1.2. Files to Remain Shared](#312-files-to-remain-shared)
+    - [3.1.3. Zgenom Cache Handling Strategy](#313-zgenom-cache-handling-strategy)
+    - [3.1.4. Separate Cache Directories:](#314-separate-cache-directories)
+    - [3.1.5. Cache Management:](#315-cache-management)
+  - [3.2. Symlink Architecture Design](#32-symlink-architecture-design)
+    - [3.2.1. Recommended Symlink Chain Structure](#321-recommended-symlink-chain-structure)
+    - [3.2.2. Option A: Intermediate Pointer (Recommended)](#322-option-a-intermediate-pointer-recommended)
+    - [3.2.3. Advantages:](#323-advantages)
+    - [3.2.4. ZDOTDIR Resolution with Symlinks](#324-zdotdir-resolution-with-symlinks)
+    - [3.2.5. Zgenom Integration with Symlinks](#325-zgenom-integration-with-symlinks)
+  - [3.3. Configuration Switching Mechanism](#33-configuration-switching-mechanism)
+    - [3.3.1. Activation/Deactivation Commands](#331-activationdeactivation-commands)
+    - [3.3.2. Switch to Development Configuration:](#332-switch-to-development-configuration)
+    - [3.3.3. Switch to Stable Configuration:](#333-switch-to-stable-configuration)
+    - [3.3.4. Pre-Switch Validation](#334-pre-switch-validation)
+    - [3.3.5. Post-Switch Verification](#335-post-switch-verification)
+    - [3.3.6. Emergency Rollback Procedures](#336-emergency-rollback-procedures)
+    - [3.3.7. Emergency Rollback Script:](#337-emergency-rollback-script)
+- [4. Tests Folder Comprehensive Reorganization](#4-tests-folder-comprehensive-reorganization)
+  - [4.1. Current State Audit](#41-current-state-audit)
+    - [4.1.1. Existing Test Categories](#411-existing-test-categories)
+    - [4.1.2. Root Level Tests (Legacy):](#412-root-level-tests-legacy)
+    - [4.1.3. Organized Test Categories:](#413-organized-test-categories)
+    - [4.1.4. Test Status Assessment](#414-test-status-assessment)
+  - [4.2. Test Cleanup Strategy](#42-test-cleanup-strategy)
+    - [4.2.1. Tests to Archive](#421-tests-to-archive)
+    - [4.2.2. Obsolete Tests:](#422-obsolete-tests)
+    - [4.2.3. Archive Location:](#423-archive-location)
+    - [4.2.4. Tests to Modernize](#424-tests-to-modernize)
+    - [4.2.5. Priority Updates:](#425-priority-updates)
+  - [4.3. New Test Structure Design](#43-new-test-structure-design)
+    - [4.3.1. Reorganized Directory Hierarchy](#431-reorganized-directory-hierarchy)
+    - [4.3.2. Test Naming Convention](#432-test-naming-convention)
+  - [4.4. Test Modernization Plan](#44-test-modernization-plan)
+    - [4.4.1. Configuration Switching Tests](#441-configuration-switching-tests)
+    - [4.4.2. Symlink Integrity Tests](#442-symlink-integrity-tests)
+- [5. Pre-Implementation Analysis](#5-pre-implementation-analysis)
+  - [5.1. Clarifying Questions & Recommendations](#51-clarifying-questions-recommendations)
+    - [5.1.1. Development Version Strategy](#511-development-version-strategy)
+    - [5.1.2. Conflict Resolution Strategy:](#512-conflict-resolution-strategy)
+    - [5.1.3. Symlink Chain Design](#513-symlink-chain-design)
+    - [5.1.4. Shared vs. Duplicated Files](#514-shared-vs-duplicated-files)
+    - [5.1.5. Shared Files:](#515-shared-files)
+    - [5.1.6. Duplicated Files:](#516-duplicated-files)
+    - [5.1.7. Tests Folder Organization](#517-tests-folder-organization)
+  - [5.2. Risk Assessment](#52-risk-assessment)
+    - [5.2.1. High-Risk Areas](#521-high-risk-areas)
+    - [5.2.2. Symlink Risks:](#522-symlink-risks)
+    - [5.2.3. Configuration Switching Risks:](#523-configuration-switching-risks)
+    - [5.2.4. Performance Risks:](#524-performance-risks)
+    - [5.2.5. Medium-Risk Areas](#525-medium-risk-areas)
+    - [5.2.6. Plugin Cache Corruption:](#526-plugin-cache-corruption)
+    - [5.2.7. Test Migration Issues:](#527-test-migration-issues)
+  - [5.3. Implementation Sequence](#53-implementation-sequence)
+    - [5.3.1. Phase 1: Infrastructure Setup (Days 1-2)](#531-phase-1-infrastructure-setup-days-1-2)
+    - [5.3.2. Phase 2: Testing Framework (Days 3-4)](#532-phase-2-testing-framework-days-3-4)
+    - [5.3.3. Phase 3: Validation & Documentation (Day 5)](#533-phase-3-validation-documentation-day-5)
+- [6. Final Implementation Commands](#6-final-implementation-commands)
+  - [6.1. Initial Setup Commands](#61-initial-setup-commands)
+  - [6.2. Switching Scripts Installation](#62-switching-scripts-installation)
+  - [6.3. Validation Commands](#63-validation-commands)
+- [7. Success Criteria & Validation](#7-success-criteria-validation)
+  - [7.1. Functional Success Criteria](#71-functional-success-criteria)
+  - [7.2. Technical Success Criteria](#72-technical-success-criteria)
+  - [7.3. Documentation Success Criteria](#73-documentation-success-criteria)
+- [8. Conclusion](#8-conclusion)
+
+</details>
+
+---
 
 
 ## 1. Project Overview
@@ -38,7 +93,7 @@ This document provides a detailed implementation plan for the ZSH REDESIGN proje
 
 ## 2. Current State Analysis
 
-### 2.1 Existing Symlink Structure
+### 2.1. Existing Symlink Structure
 
 The current configuration uses a sophisticated symlink architecture:
 
@@ -49,9 +104,9 @@ The current configuration uses a sophisticated symlink architecture:
 .zshrc.d → .zshrc.d.live → .zshrc.d.00
 ```
 
-### 2.2 Current Configuration Files
+### 2.2. Current Configuration Files
 
-#### Pre-Plugin Phase (.zshrc.pre-plugins.d.00/):
+#### 2.2.1. Pre-Plugin Phase (.zshrc.pre-plugins.d.00/):
 
 - `000-layer-set-marker.zsh` - Layer system initialization
 - `010-shell-safety-nounset.zsh` - Security and safety setup
@@ -61,7 +116,7 @@ The current configuration uses a sophisticated symlink architecture:
 - `030-segment-management.zsh` - Performance monitoring
 
 
-#### Plugin Definition Phase (.zshrc.add-plugins.d.00/):
+#### 2.2.2. Plugin Definition Phase (.zshrc.add-plugins.d.00/):
 
 - `100-perf-core.zsh` - Performance utilities
 - `110-dev-php.zsh` - PHP development (Herd, Composer)
@@ -76,7 +131,7 @@ The current configuration uses a sophisticated symlink architecture:
 - `195-optional-brew-abbr.zsh` - Homebrew aliases
 
 
-#### Post-Plugin Phase (.zshrc.d.00/):
+#### 2.2.3. Post-Plugin Phase (.zshrc.d.00/):
 
 - `330-completions.zsh` - Tab completion setup
 - `335-completion-styles.zsh` - Completion styling and behavior
@@ -92,9 +147,9 @@ The current configuration uses a sophisticated symlink architecture:
 
 ## 3. Layered Development Strategy
 
-### 3.1 File/Folder Duplication System
+### 3.1. File/Folder Duplication System
 
-#### Core Configuration Files to Duplicate
+#### 3.1.1. Core Configuration Files to Duplicate
 
 | Source Path | Target Path | Copy Type | Permissions | Special Handling |
 |-------------|-------------|-----------|-------------|------------------|
@@ -103,7 +158,7 @@ The current configuration uses a sophisticated symlink architecture:
 | `.zshrc.add-plugins.d.00/` | `.zshrc.add-plugins.d.dev/` | Full copy | Preserve | Plugin definitions |
 | `.zshrc.d.00/` | `.zshrc.d.dev/` | Full copy | Preserve | Post-plugin setup |
 
-#### Files to Remain Shared
+#### 3.1.2. Files to Remain Shared
 
 | File | Reason | Sharing Strategy |
 |------|--------|------------------|
@@ -114,26 +169,26 @@ The current configuration uses a sophisticated symlink architecture:
 | `.zgenom/` | Plugin cache | Separate per config |
 | `.zsh_history` | Command history | Separate per config |
 
-#### Zgenom Cache Handling Strategy
+#### 3.1.3. Zgenom Cache Handling Strategy
 
-#### Separate Cache Directories:
+#### 3.1.4. Separate Cache Directories:
 
 - `.zgenom.00/` for stable configuration
 - `.zgenom.dev/` for development configuration
 
 
-#### Cache Management:
+#### 3.1.5. Cache Management:
 
 - Each configuration maintains its own plugin state
 - Cache isolation prevents cross-contamination
 - Allows independent plugin testing and validation
 
 
-### 3.2 Symlink Architecture Design
+### 3.2. Symlink Architecture Design
 
-#### Recommended Symlink Chain Structure
+#### 3.2.1. Recommended Symlink Chain Structure
 
-#### Option A: Intermediate Pointer (Recommended)
+#### 3.2.2. Option A: Intermediate Pointer (Recommended)
 
 ```bash
 .zshenv → .zshenv.active → .zshenv.00/.dev
@@ -142,7 +197,7 @@ The current configuration uses a sophisticated symlink architecture:
 .zshrc.d → .zshrc.d.active → .zshrc.d.00/.dev
 ```
 
-#### Advantages:
+#### 3.2.3. Advantages:
 
 - Clear separation of concerns
 - Easy switching with single pointer change
@@ -150,7 +205,7 @@ The current configuration uses a sophisticated symlink architecture:
 - Simple rollback mechanism
 
 
-#### ZDOTDIR Resolution with Symlinks
+#### 3.2.4. ZDOTDIR Resolution with Symlinks
 
 The current ZDOTDIR setup in `.zshenv` handles symlinks correctly:
 
@@ -167,7 +222,7 @@ if [[ -n "${ZDOTDIR:-}" && -d "${ZDOTDIR}" ]]; then
 fi
 ```
 
-#### Zgenom Integration with Symlinks
+#### 3.2.5. Zgenom Integration with Symlinks
 
 Zgenom's change detection works correctly with symlinked directories:
 
@@ -176,11 +231,11 @@ Zgenom's change detection works correctly with symlinked directories:
 - Automatic cache regeneration on configuration changes
 
 
-### 3.3 Configuration Switching Mechanism
+### 3.3. Configuration Switching Mechanism
 
-#### Activation/Deactivation Commands
+#### 3.3.1. Activation/Deactivation Commands
 
-#### Switch to Development Configuration:
+#### 3.3.2. Switch to Development Configuration:
 
 ```bash
 
@@ -216,7 +271,7 @@ echo "Switched to development configuration"
 echo "Run 'exec zsh' to apply changes"
 ```
 
-#### Switch to Stable Configuration:
+#### 3.3.3. Switch to Stable Configuration:
 
 ```bash
 
@@ -245,7 +300,7 @@ echo "Switched to stable configuration"
 echo "Run 'exec zsh' to apply changes"
 ```
 
-#### Pre-Switch Validation
+#### 3.3.4. Pre-Switch Validation
 
 ```bash
 
@@ -282,7 +337,7 @@ else
 fi
 ```
 
-#### Post-Switch Verification
+#### 3.3.5. Post-Switch Verification
 
 ```bash
 
@@ -320,9 +375,9 @@ else
 fi
 ```
 
-#### Emergency Rollback Procedures
+#### 3.3.6. Emergency Rollback Procedures
 
-#### Emergency Rollback Script:
+#### 3.3.7. Emergency Rollback Script:
 
 ```bash
 
@@ -350,18 +405,18 @@ echo "Run 'exec zsh' to restore stable configuration"
 
 ## 4. Tests Folder Comprehensive Reorganization
 
-### 4.1 Current State Audit
+### 4.1. Current State Audit
 
-#### Existing Test Categories
+#### 4.1.1. Existing Test Categories
 
-#### Root Level Tests (Legacy):
+#### 4.1.2. Root Level Tests (Legacy):
 
 - `test_*.zsh` - Various functionality tests
 - `test_*.sh` - Shell compatibility tests
 - `run-all-tests*.zsh` - Test runners
 
 
-#### Organized Test Categories:
+#### 4.1.3. Organized Test Categories:
 
 - `tests/unit/` - Individual module tests
 - `tests/integration/` - Cross-module interaction tests
@@ -370,7 +425,7 @@ echo "Run 'exec zsh' to restore stable configuration"
 - `tests/startup/` - Startup sequence tests
 
 
-#### Test Status Assessment
+#### 4.1.4. Test Status Assessment
 
 | Test Category | Working | Broken | Obsolete | Needs Update |
 |---------------|---------|--------|----------|--------------|
@@ -379,18 +434,18 @@ echo "Run 'exec zsh' to restore stable configuration"
 | Performance tests | 80% | 10% | 10% | 20% |
 | Security tests | 90% | 5% | 5% | 15% |
 
-### 4.2 Test Cleanup Strategy
+### 4.2. Test Cleanup Strategy
 
-#### Tests to Archive
+#### 4.2.1. Tests to Archive
 
-#### Obsolete Tests:
+#### 4.2.2. Obsolete Tests:
 
 - `test-zqs-migration.sh` - Migration completed
 - `test-starship-debug.*` - Debugging resolved
 - `test-hang-diagnosis.bash` - Issue fixed
 
 
-#### Archive Location:
+#### 4.2.3. Archive Location:
 
 ```
 tests/archive/
@@ -402,18 +457,18 @@ tests/archive/
     └── pre-redesign-tests/
 ```
 
-#### Tests to Modernize
+#### 4.2.4. Tests to Modernize
 
-#### Priority Updates:
+#### 4.2.5. Priority Updates:
 
 1. `tests/unit/core/` - Update for new module structure
 2. `tests/integration/` - Add layered configuration tests
 3. `tests/performance/` - Update for new monitoring system
 
 
-### 4.3 New Test Structure Design
+### 4.3. New Test Structure Design
 
-#### Reorganized Directory Hierarchy
+#### 4.3.1. Reorganized Directory Hierarchy
 
 ```
 tests/
@@ -459,7 +514,7 @@ tests/
     └── legacy/
 ```
 
-#### Test Naming Convention
+#### 4.3.2. Test Naming Convention
 
 **Format:** `XXX-YY-name.test.zsh`
 
@@ -471,9 +526,9 @@ tests/
 
 **Example:** `100-perf-core.test.zsh` tests the `100-perf-core.zsh` module
 
-### 4.4 Test Modernization Plan
+### 4.4. Test Modernization Plan
 
-#### Configuration Switching Tests
+#### 4.4.1. Configuration Switching Tests
 
 ```bash
 
@@ -510,7 +565,7 @@ tests/
 }
 ```
 
-#### Symlink Integrity Tests
+#### 4.4.2. Symlink Integrity Tests
 
 ```bash
 
@@ -542,9 +597,9 @@ tests/
 
 ## 5. Pre-Implementation Analysis
 
-### 5.1 Clarifying Questions & Recommendations
+### 5.1. Clarifying Questions & Recommendations
 
-#### Development Version Strategy
+#### 5.1.1. Development Version Strategy
 
 **Recommendation:** Full Copy Approach
 
@@ -554,14 +609,14 @@ tests/
 - Reduces risk of unintended cross-contamination
 
 
-#### Conflict Resolution Strategy:
+#### 5.1.2. Conflict Resolution Strategy:
 
 - Use git-based tracking for configuration changes
 - Implement periodic sync from `.00` to `.dev` for baseline updates
 - Document all `.dev` modifications for easy backporting
 
 
-#### Symlink Chain Design
+#### 5.1.3. Symlink Chain Design
 
 **Recommendation:** Intermediate Pointer Approach
 
@@ -571,9 +626,9 @@ tests/
 - Enables easy rollback and validation
 
 
-#### Shared vs. Duplicated Files
+#### 5.1.4. Shared vs. Duplicated Files
 
-#### Shared Files:
+#### 5.1.5. Shared Files:
 
 - `.zshenv.local` - User-specific environment
 - `.zshrc.local` - User-specific configuration
@@ -581,7 +636,7 @@ tests/
 - `.p10k.zsh` - Prompt configuration
 
 
-#### Duplicated Files:
+#### 5.1.6. Duplicated Files:
 
 - All modular configuration files
 - Performance monitoring settings
@@ -589,7 +644,7 @@ tests/
 - Post-plugin setup
 
 
-#### Tests Folder Organization
+#### 5.1.7. Tests Folder Organization
 
 **Recommendation:** Phase-Based Organization
 
@@ -598,11 +653,11 @@ tests/
 - Mirrors the modular architecture for easy maintenance
 
 
-### 5.2 Risk Assessment
+### 5.2. Risk Assessment
 
-#### High-Risk Areas
+#### 5.2.1. High-Risk Areas
 
-#### Symlink Risks:
+#### 5.2.2. Symlink Risks:
 
 - **Risk:** Circular symlink references
 - **Mitigation:** Pre-switch validation scripts
@@ -610,7 +665,7 @@ tests/
 - **Probability:** Low
 
 
-#### Configuration Switching Risks:
+#### 5.2.3. Configuration Switching Risks:
 
 - **Risk:** Incomplete switch leaving inconsistent state
 - **Mitigation:** Atomic switching with verification
@@ -618,7 +673,7 @@ tests/
 - **Probability:** Medium
 
 
-#### Performance Risks:
+#### 5.2.4. Performance Risks:
 
 - **Risk:** Additional symlink resolution overhead
 - **Mitigation:** Performance benchmarking
@@ -626,9 +681,9 @@ tests/
 - **Probability:** Low
 
 
-#### Medium-Risk Areas
+#### 5.2.5. Medium-Risk Areas
 
-#### Plugin Cache Corruption:
+#### 5.2.6. Plugin Cache Corruption:
 
 - **Risk:** Zgenom cache corruption during switch
 - **Mitigation:** Cache clearing on switch
@@ -636,7 +691,7 @@ tests/
 - **Probability:** Medium
 
 
-#### Test Migration Issues:
+#### 5.2.7. Test Migration Issues:
 
 - **Risk:** Broken tests after reorganization
 - **Mitigation:** Comprehensive test validation
@@ -644,9 +699,9 @@ tests/
 - **Probability:** Medium
 
 
-### 5.3 Implementation Sequence
+### 5.3. Implementation Sequence
 
-#### Phase 1: Infrastructure Setup (Days 1-2)
+#### 5.3.1. Phase 1: Infrastructure Setup (Days 1-2)
 
 1. Create `.dev` configuration copies
 2. Implement symlink switching mechanism
@@ -654,7 +709,7 @@ tests/
 4. Set up emergency rollback procedures
 
 
-#### Phase 2: Testing Framework (Days 3-4)
+#### 5.3.2. Phase 2: Testing Framework (Days 3-4)
 
 1. Reorganize tests folder structure
 2. Create configuration switching tests
@@ -662,7 +717,7 @@ tests/
 4. Update existing tests for new structure
 
 
-#### Phase 3: Validation & Documentation (Day 5)
+#### 5.3.3. Phase 3: Validation & Documentation (Day 5)
 
 1. Comprehensive testing of switching mechanism
 2. Performance benchmarking
@@ -672,7 +727,7 @@ tests/
 
 ## 6. Final Implementation Commands
 
-### 6.1 Initial Setup Commands
+### 6.1. Initial Setup Commands
 
 ```bash
 
@@ -702,7 +757,7 @@ ln -sf .zshrc.d.active .zshrc.d
 mkdir -p .zgenom.00 .zgenom.dev
 ```
 
-### 6.2 Switching Scripts Installation
+### 6.2. Switching Scripts Installation
 
 ```bash
 
@@ -763,7 +818,7 @@ EOF
 chmod +x bin/switch-to-dev.sh bin/switch-to-stable.sh
 ```
 
-### 6.3 Validation Commands
+### 6.3. Validation Commands
 
 ```bash
 
@@ -788,7 +843,7 @@ ls -la .zshenv* .zshrc.*.d*
 
 ## 7. Success Criteria & Validation
 
-### 7.1 Functional Success Criteria
+### 7.1. Functional Success Criteria
 
 - ✅ Both `.00` and `.dev` configurations load successfully
 - ✅ Configuration switching works without shell restart
@@ -797,7 +852,7 @@ ls -la .zshenv* .zshrc.*.d*
 - ✅ All existing functionality preserved in stable configuration
 
 
-### 7.2 Technical Success Criteria
+### 7.2. Technical Success Criteria
 
 - ✅ Symlink integrity maintained across all switches
 - ✅ Zgenom cache isolation working correctly
@@ -806,7 +861,7 @@ ls -la .zshenv* .zshrc.*.d*
 - ✅ Test framework validates new architecture
 
 
-### 7.3 Documentation Success Criteria
+### 7.3. Documentation Success Criteria
 
 - ✅ All switching procedures documented
 - ✅ Emergency procedures clearly outlined
@@ -815,7 +870,7 @@ ls -la .zshenv* .zshrc.*.d*
 - ✅ Maintenance procedures established
 
 
-## Conclusion
+## 8. Conclusion
 
 This implementation plan provides a comprehensive, safe, and systematic approach to implementing the ZSH REDESIGN layered development system. The plan prioritizes system stability, enables parallel development, and maintains all existing functionality while providing a clear path for future enhancements.
 
@@ -823,13 +878,8 @@ The intermediate pointer symlink approach provides the best balance of safety, f
 
 ---
 
-## Navigation
-
-- [Previous](000-index.md) - Redesign documentation index
-- [Next](020-symlink-architecture.md) - Symlink architecture analysis
-- [Top](#top) - Back to top
-
+**Navigation:** [← Master Index](400-redesign/000-index.md) | [Top ↑](#zsh-redesign-implementation-plan) | [Symlink Architecture →](400-redesign/020-symlink-architecture.md)
 
 ---
 
-*Compliant with `/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md` v(checksum)*
+*Last updated: 2025-10-13*

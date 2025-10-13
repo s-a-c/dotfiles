@@ -128,6 +128,59 @@ zf::now_ms() {
   fi
 }
 
+# Early interactive guard: suppress global-creation warnings during vendor bootstrap,
+# enable extended globbing, and predeclare ZF-owned globals.
+if [[ -o interactive ]]; then
+  # Temporarily suppress WARN_CREATE_GLOBAL during vendor-managed bootstrap
+  setopt no_warn_create_global
+
+  # Ensure extended globbing is available for scripts that rely on it
+  setopt extendedglob
+
+  # Predeclare ZF-owned globals to avoid "created globally in function" noise
+  typeset -g __ZF_COMPINIT_DONE=
+  typeset -g _ZF_CARAPACE_STYLES_DONE=
+  typeset -g _ZF_CARAPACE_STYLES=
+  typeset -g _ZF_CARAPACE_STYLE_MODE=
+  typeset -g _ZF_BOB_PATH=
+  typeset -g _ZF_BOB_ALIAS_CLEARED=
+  typeset -g _ZF_BOB_ENV_SOURCED=
+  typeset -g _ZF_NVIM_BIND_SHIM=
+  typeset -g _ZF_NVIM_HELPERS_DONE=
+  typeset -g _ZF_NVIM_VENV_ALIAS=
+  typeset -g _ZF_TERMINAL_INTEGRATION_DONE=
+  typeset -g _ZF_SEGMENT_CAPTURE_LOADED=
+  typeset -g _ZF_SEGMENT_CAPTURE=
+  typeset -g _ZF_ATUIN=
+  typeset -g _ZF_ATUIN_KEYBINDS=
+
+  # Predeclare recurring non-ZF globals to suppress vendor bootstrap warnings
+  typeset -g have_lsd=
+  typeset -g fzfver=
+  typeset -ga items=()
+  typeset -ga ndirs=()
+  typeset -g ndir=
+  typeset -g entry=
+  typeset -ga ZSH_AUTOSUGGEST_STRATEGY=()
+  typeset -g ATUIN_HISTORY_ID=
+  typeset -g __zoxide_result=
+  typeset -g FZF_DEFAULT_OPTS=
+  typeset -g _fzf_base=
+  typeset -g __fzf_completion_options=
+  typeset -g __fzf_key_bindings_options=
+  typeset -g _zqs_fragment=
+  typeset -g svalue=
+  typeset -g _herd_nvm_dir=
+  typeset -g STARSHIP_SESSION_KEY=
+  typeset -g VIRTUAL_ENV_DISABLE_PROMPT=
+  typeset -g CARAPACE_COLORS=
+  typeset -g _cfg_root=
+  typeset -g _user_styles_file=
+  typeset -g _mode=
+  typeset -g BOB_CONFIG=
+  typeset -g _bob_env_file=
+fi
+
 # Fallback segment timing (when segment-lib not available)
 typeset -gA _ZF_SEGMENT_START
 zf::segment_fallback() {
@@ -605,12 +658,12 @@ fi
 
 # fzf integration can reference FZF_PATH very early; provide a lightweight default
 if [[ -z "${FZF_PATH-}" ]]; then
-    if [[ -d "${HOME}/.fzf" ]]; then
-        export FZF_PATH="${HOME}/.fzf"
-    elif [[ -d "/opt/homebrew/opt/fzf" ]]; then
+    if [[ -d "/opt/homebrew/opt/fzf" ]]; then
         export FZF_PATH="/opt/homebrew/opt/fzf"
     elif [[ -d "/usr/local/opt/fzf" ]]; then
         export FZF_PATH="/usr/local/opt/fzf"
+    elif [[ -d "${HOME}/.fzf" ]]; then
+    export FZF_PATH="${HOME}/.fzf"
     else
         export FZF_PATH=""
     fi

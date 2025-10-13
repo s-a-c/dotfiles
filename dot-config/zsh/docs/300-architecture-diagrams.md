@@ -1,12 +1,50 @@
 # Architecture Diagrams
 
-## Overview
+## Table of Contents
+
+<details>
+<summary>Click to expand</summary>
+
+- [1. Overview](#1-overview)
+- [2. System Architecture Diagram](#2-system-architecture-diagram)
+  - [2.1. **High-Level Architecture**](#21-high-level-architecture)
+- [3. Loading Phase Architecture](#3-loading-phase-architecture)
+  - [3.1. **Three-Phase Loading System**](#31-three-phase-loading-system)
+- [4. Security Architecture](#4-security-architecture)
+  - [4.1. **Nounset Safety System**](#41-nounset-safety-system)
+- [5. Performance Monitoring Architecture](#5-performance-monitoring-architecture)
+  - [5.1. **Segment Monitoring System**](#51-segment-monitoring-system)
+- [6. Plugin Management Architecture](#6-plugin-management-architecture)
+  - [6.1. **zgenom Integration**](#61-zgenom-integration)
+- [7. Layered Configuration Architecture](#7-layered-configuration-architecture)
+  - [7.1. **Symlink Versioning System**](#71-symlink-versioning-system)
+- [8. Terminal Integration Architecture](#8-terminal-integration-architecture)
+  - [8.1. **Multi-Terminal Support**](#81-multi-terminal-support)
+- [9. Development Tool Integration](#9-development-tool-integration)
+  - [9.1. **Multi-Language Development Environment**](#91-multi-language-development-environment)
+- [10. Error Handling Architecture](#10-error-handling-architecture)
+  - [10.1. **Multi-Layer Error Protection**](#101-multi-layer-error-protection)
+- [11. Configuration Flow Architecture](#11-configuration-flow-architecture)
+  - [11.1. **Complete Startup Sequence**](#111-complete-startup-sequence)
+- [12. Assessment Diagrams](#12-assessment-diagrams)
+  - [12.1. **Current State Assessment**](#121-current-state-assessment)
+  - [12.2. **Issue Severity Matrix**](#122-issue-severity-matrix)
+- [13. Color Palette Reference](#13-color-palette-reference)
+  - [13.1. **High-Contrast Colorblind-Accessible Palette**](#131-high-contrast-colorblind-accessible-palette)
+  - [13.2. **WCAG AA Accessibility Features**](#132-wcag-aa-accessibility-features)
+
+</details>
+
+---
+
+
+## 1. Overview
 
 This document contains visual representations of the ZSH configuration architecture using Mermaid diagrams. All diagrams use colorblind-accessible color palettes (blue/orange) and high contrast ratios for readability.
 
-## System Architecture Diagram
+## 2. System Architecture Diagram
 
-### **High-Level Architecture**
+### 2.1. **High-Level Architecture**
 
 ```mermaid
 %%{init: { 'theme': 'base', 'themeVariables': {
@@ -110,9 +148,9 @@ graph TB
     class V localConfig
 ```
 
-## Loading Phase Architecture
+## 3. Loading Phase Architecture
 
-### **Three-Phase Loading System**
+### 3.1. **Three-Phase Loading System**
 
 ```mermaid
 %%{init: { 'theme': 'base', 'themeVariables': {
@@ -165,9 +203,9 @@ graph LR
     class I,J,K,L phase3
 ```
 
-## Security Architecture
+## 4. Security Architecture
 
-### **Nounset Safety System**
+### 4.1. **Nounset Safety System**
 
 ```mermaid
 %%{init: { 'theme': 'base', 'themeVariables': {
@@ -209,9 +247,9 @@ graph TD
     class E,F,G recovery
 ```
 
-## Performance Monitoring Architecture
+## 5. Performance Monitoring Architecture
 
-### **Segment Monitoring System**
+### 5.1. **Segment Monitoring System**
 
 ```mermaid
 %%{init: { 'theme': 'base', 'themeVariables': {
@@ -254,9 +292,9 @@ graph TD
     class G analysis
 ```
 
-## Plugin Management Architecture
+## 6. Plugin Management Architecture
 
-### **zgenom Integration**
+### 6.1. **zgenom Integration**
 
 ```mermaid
 %%{init: { 'theme': 'base', 'themeVariables': {
@@ -299,9 +337,9 @@ graph TD
     class E,F,G categories
 ```
 
-## Layered Configuration Architecture
+## 7. Layered Configuration Architecture
 
-### **Symlink Versioning System**
+### 7.1. **Symlink Versioning System**
 
 ```mermaid
 %%{init: { 'theme': 'base', 'themeVariables': {
@@ -358,9 +396,9 @@ graph LR
     class G,H,I backup
 ```
 
-## Terminal Integration Architecture
+## 8. Terminal Integration Architecture
 
-### **Multi-Terminal Support**
+### 8.1. **Multi-Terminal Support**
 
 ```mermaid
 %%{init: { 'theme': 'base', 'themeVariables': {
@@ -413,9 +451,9 @@ graph TD
     class K,L optimization
 ```
 
-## Development Tool Integration
+## 9. Development Tool Integration
 
-### **Multi-Language Development Environment**
+### 9.1. **Multi-Language Development Environment**
 
 ```mermaid
 %%{init: { 'theme': 'base', 'themeVariables': {
@@ -475,9 +513,9 @@ graph TD
     class Q workflow
 ```
 
-## Error Handling Architecture
+## 10. Error Handling Architecture
 
-### **Multi-Layer Error Protection**
+### 10.1. **Multi-Layer Error Protection**
 
 ```mermaid
 %%{init: { 'theme': 'base', 'themeVariables': {
@@ -525,9 +563,9 @@ graph TD
     class F,G,H,I,J recovery
 ```
 
-## Configuration Flow Architecture
+## 11. Configuration Flow Architecture
 
-### **Complete Startup Sequence**
+### 11.1. **Complete Startup Sequence**
 
 ```mermaid
 %%{init: { 'theme': 'base', 'themeVariables': {
@@ -592,9 +630,9 @@ graph TD
     class O,P,Q,R,S phase4
 ```
 
-## Assessment Diagrams
+## 12. Assessment Diagrams
 
-### **Current State Assessment**
+### 12.1. **Current State Assessment**
 
 ```mermaid
 %%{init: { 'theme': 'base', 'themeVariables': {
@@ -639,7 +677,7 @@ graph TD
     class F,G issues
 ```
 
-### **Issue Severity Matrix**
+### 12.2. **Issue Severity Matrix**
 
 ```mermaid
 %%{init: { 'theme': 'base', 'themeVariables': {
@@ -687,9 +725,9 @@ graph TD
     class C minor
 ```
 
-## Color Palette Reference
+## 13. Color Palette Reference
 
-### **High-Contrast Colorblind-Accessible Palette**
+### 13.1. **High-Contrast Colorblind-Accessible Palette**
 
 | Color | Hex Code | Contrast Ratio | Usage |
 |-------|----------|----------------|-------|
@@ -700,7 +738,7 @@ graph TD
 | **Red** | `#b71c1c` | 8.1:1 | Critical issues, errors |
 | **Amber** | `#bf360c` | 6.3:1 | Performance monitoring, warnings |
 
-### **WCAG AA Accessibility Features**
+### 13.2. **WCAG AA Accessibility Features**
 
 - **High contrast ratios** (5.8:1 - 8.1:1) exceeding WCAG AA standards
 - **Blue/orange palette** avoids red/green confusion for colorblind users
@@ -709,6 +747,12 @@ graph TD
 - **Tested color combinations** ensure readability for visually impaired users
 
 
+*These architecture diagrams provide visual understanding of the ZSH configuration system. The colorblind-accessible palette ensures readability for all users while maintaining clear visual communication of system relationships and data flow.*
+
 ---
 
-*These architecture diagrams provide visual understanding of the ZSH configuration system. The colorblind-accessible palette ensures readability for all users while maintaining clear visual communication of system relationships and data flow.*
+**Navigation:** [← Naming Convention Analysis](230-naming-convention-analysis.md) | [Top ↑](#architecture-diagrams) | [Flow Diagrams →](310-flow-diagrams.md)
+
+---
+
+*Last updated: 2025-10-13*

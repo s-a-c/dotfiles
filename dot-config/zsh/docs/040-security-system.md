@@ -1,12 +1,87 @@
 # Security Verification & Integrity System
 
-## Overview
+## Table of Contents
+
+<details>
+<summary>Click to expand</summary>
+
+- [1. Overview](#1-overview)
+- [2. Core Security Challenges](#2-core-security-challenges)
+  - [2.1. **The Nounset Problem**](#21-the-nounset-problem)
+  - [2.2. **Plugin Integrity Issues**](#22-plugin-integrity-issues)
+- [3. Security Architecture](#3-security-architecture)
+  - [3.1. **Multi-Layer Protection Strategy**](#31-multi-layer-protection-strategy)
+- [4. Component Analysis](#4-component-analysis)
+  - [4.1. **1. Early Variable Guards** (`.zshenv`)](#41-1-early-variable-guards-zshenv)
+    - [4.1.1. Implementation:](#411-implementation)
+    - [4.1.2. Critical Variables Protected:](#412-critical-variables-protected)
+  - [4.2. **2. Option Snapshotting** (`010-shell-safety-nounset.zsh`)](#42-2-option-snapshotting-010-shell-safety-nounsetzsh)
+    - [4.2.1. Benefits:](#421-benefits)
+  - [4.3. **3. Plugin Compatibility Mode** (`010-shell-safety-nounset.zsh`)](#43-3-plugin-compatibility-mode-010-shell-safety-nounsetzsh)
+  - [4.4. **4. Controlled Nounset Re-enablement** (`020-delayed-nounset-activation.zsh`)](#44-4-controlled-nounset-re-enablement-020-delayed-nounset-activationzsh)
+  - [4.5. **5. Error Recovery & Debug Policy** (`.zshenv`)](#45-5-error-recovery-debug-policy-zshenv)
+    - [4.5.1. Debug Policy System:](#451-debug-policy-system)
+- [5. Path Security System](#5-path-security-system)
+  - [5.1. **Path Normalization & Deduplication**](#51-path-normalization-deduplication)
+    - [5.1.1. Security Benefits:](#511-security-benefits)
+  - [5.2. **Directory Validation**](#52-directory-validation)
+    - [5.2.1. Safe PATH Management:](#521-safe-path-management)
+- [6. Plugin Integrity Verification](#6-plugin-integrity-verification)
+  - [6.1. **Plugin Loading Safety**](#61-plugin-loading-safety)
+    - [6.1.1. Safe Plugin Loading Pattern:](#611-safe-plugin-loading-pattern)
+    - [6.1.2. Benefits:](#612-benefits)
+  - [6.2. **Command Existence Checking**](#62-command-existence-checking)
+    - [6.2.1. Safe Command Detection:](#621-safe-command-detection)
+- [7. Environment Sanitization](#7-environment-sanitization)
+  - [7.1. **SSH Security**](#71-ssh-security)
+    - [7.1.1. SSH Agent Management:](#711-ssh-agent-management)
+    - [7.1.2. Security Features:](#712-security-features)
+  - [7.2. **Terminal Environment Detection**](#72-terminal-environment-detection)
+    - [7.2.1. Secure Terminal Detection:](#721-secure-terminal-detection)
+    - [7.2.2. Security Benefits:](#722-security-benefits)
+- [8. XDG Security Compliance](#8-xdg-security-compliance)
+  - [8.1. **XDG Base Directory Specification**](#81-xdg-base-directory-specification)
+    - [8.1.1. Implementation:](#811-implementation)
+    - [8.1.2. Security Benefits:](#812-security-benefits)
+  - [8.2. **Cache Security**](#82-cache-security)
+    - [8.2.1. Cache Directory Management:](#821-cache-directory-management)
+    - [8.2.2. Security Features:](#822-security-features)
+- [9. Error Handling & Recovery](#9-error-handling-recovery)
+  - [9.1. **Debug Integration**](#91-debug-integration)
+    - [9.1.1. Comprehensive Debug System:](#911-comprehensive-debug-system)
+    - [9.1.2. Features:](#912-features)
+  - [9.2. **Emergency Fallbacks**](#92-emergency-fallbacks)
+    - [9.2.1. Startup Failure Recovery:](#921-startup-failure-recovery)
+    - [9.2.2. Benefits:](#922-benefits)
+- [10. Performance Impact](#10-performance-impact)
+  - [10.1. **Security Overhead**](#101-security-overhead)
+    - [10.1.1. Minimal Performance Cost:](#1011-minimal-performance-cost)
+    - [10.1.2. Optimization Strategies:](#1012-optimization-strategies)
+- [11. Assessment](#11-assessment)
+  - [11.1. **Strengths**](#111-strengths)
+  - [11.2. **Areas for Improvement**](#112-areas-for-improvement)
+  - [11.3. **Security Best Practices Implemented**](#113-security-best-practices-implemented)
+- [12. Usage Guidelines](#12-usage-guidelines)
+  - [12.1. **For Users**](#121-for-users)
+  - [12.2. **For Developers**](#122-for-developers)
+- [13. Troubleshooting](#13-troubleshooting)
+  - [13.1. **Common Security Issues**](#131-common-security-issues)
+    - [13.1.1. Nounset Errors:](#1311-nounset-errors)
+    - [13.1.2. Plugin Loading Failures:](#1312-plugin-loading-failures)
+    - [13.1.3. PATH Issues:](#1313-path-issues)
+
+</details>
+
+---
+
+
+## 1. Overview
 
 The ZSH configuration implements a comprehensive security and integrity system designed to protect against common shell initialization failures while maintaining compatibility with Oh-My-Zsh and zgenom ecosystems.
 
-## Core Security Challenges
+## 2. Core Security Challenges
 
-### **The Nounset Problem**
+### 2.1. **The Nounset Problem**
 
 **Issue:** ZSH's `set -u` (nounset) option causes "parameter not set" errors when variables are undefined, breaking many plugins:
 
@@ -21,7 +96,7 @@ ${var:-default}       # ❌ "var: parameter not set" (even with default!)
 
 **Impact:** Complete shell initialization failure, plugin loading errors, and poor user experience.
 
-### **Plugin Integrity Issues**
+### 2.2. **Plugin Integrity Issues**
 
 **Problem:** Third-party plugins may:
 
@@ -31,9 +106,9 @@ ${var:-default}       # ❌ "var: parameter not set" (even with default!)
 - Create unexpected side effects
 
 
-## Security Architecture
+## 3. Security Architecture
 
-### **Multi-Layer Protection Strategy**
+### 3.1. **Multi-Layer Protection Strategy**
 
 ```mermaid
 graph TD
@@ -47,13 +122,13 @@ graph TD
     style E fill:#e8f5e8
 ```
 
-## Component Analysis
+## 4. Component Analysis
 
-### **1. Early Variable Guards** (`.zshenv`)
+### 4.1. **1. Early Variable Guards** (`.zshenv`)
 
 **Purpose:** Prevent nounset errors before they can occur
 
-#### Implementation:
+#### 4.1.1. Implementation:
 ```bash
 
 # Guard oh-my-zsh root variable
@@ -73,7 +148,7 @@ if ! (( ${+ZSH_CUSTOM} )); then
 fi
 ```
 
-#### Critical Variables Protected:
+#### 4.1.2. Critical Variables Protected:
 
 - `ZSH` - Oh-My-Zsh root directory
 - `ZSH_CUSTOM` - Oh-My-Zsh custom directory
@@ -82,7 +157,7 @@ fi
 - `plugins` - Plugin array
 
 
-### **2. Option Snapshotting** (`010-shell-safety-nounset.zsh`)
+### 4.2. **2. Option Snapshotting** (`010-shell-safety-nounset.zsh`)
 
 **Purpose:** Track original shell option states for potential restoration
 
@@ -97,14 +172,14 @@ for __opt in nounset errexit pipefail; do
 done
 ```
 
-#### Benefits:
+#### 4.2.1. Benefits:
 
 - Preserves user preferences
 - Enables clean restoration
 - Supports debugging
 
 
-### **3. Plugin Compatibility Mode** (`010-shell-safety-nounset.zsh`)
+### 4.3. **3. Plugin Compatibility Mode** (`010-shell-safety-nounset.zsh`)
 
 **Problem:** Oh-My-Zsh and zgenom have fundamental nounset incompatibilities:
 
@@ -136,7 +211,7 @@ fi
 
 **Rationale:** Oh-My-Zsh and zgenom plugins are not designed for nounset compatibility and would require extensive rewriting to support it.
 
-### **4. Controlled Nounset Re-enablement** (`020-delayed-nounset-activation.zsh`)
+### 4.4. **4. Controlled Nounset Re-enablement** (`020-delayed-nounset-activation.zsh`)
 
 **Purpose:** Allow safe nounset activation after environment stabilization
 
@@ -155,9 +230,9 @@ zf::enable_nounset_safe() {
 
 **Usage:** Called after all plugins are loaded and environment is stable.
 
-### **5. Error Recovery & Debug Policy** (`.zshenv`)
+### 4.5. **5. Error Recovery & Debug Policy** (`.zshenv`)
 
-#### Debug Policy System:
+#### 4.5.1. Debug Policy System:
 ```bash
 zf::apply_debug_policy() {
     export ZSH_DEBUG="${ZSH_DEBUG:-0}"
@@ -174,9 +249,9 @@ zf::reset_debug_policy() {
 }
 ```
 
-## Path Security System
+## 5. Path Security System
 
-### **Path Normalization & Deduplication**
+### 5.1. **Path Normalization & Deduplication**
 
 **Implementation:** (`030-segment-management.zsh` and `.zshenv`)
 
@@ -202,7 +277,7 @@ zf::path_dedupe() {
 }
 ```
 
-#### Security Benefits:
+#### 5.1.1. Security Benefits:
 
 - **Prevents duplicate entries** that waste time
 - **Maintains path order** (first occurrence preserved)
@@ -210,9 +285,9 @@ zf::path_dedupe() {
 - **Safe operation** even with corrupted PATH
 
 
-### **Directory Validation**
+### 5.2. **Directory Validation**
 
-#### Safe PATH Management:
+#### 5.2.1. Safe PATH Management:
 ```bash
 zf::path_append() {
     for ARG in "$@"; do
@@ -229,11 +304,11 @@ zf::path_prepend() {
 }
 ```
 
-## Plugin Integrity Verification
+## 6. Plugin Integrity Verification
 
-### **Plugin Loading Safety**
+### 6.1. **Plugin Loading Safety**
 
-#### Safe Plugin Loading Pattern:
+#### 6.1.1. Safe Plugin Loading Pattern:
 ```bash
 
 # Only proceed if zgenom function exists
@@ -246,7 +321,7 @@ else
 fi
 ```
 
-#### Benefits:
+#### 6.1.2. Benefits:
 
 - **Graceful degradation** when plugins fail
 - **Debug logging** for troubleshooting
@@ -254,9 +329,9 @@ fi
 - **Clear error messages** for users
 
 
-### **Command Existence Checking**
+### 6.2. **Command Existence Checking**
 
-#### Safe Command Detection:
+#### 6.2.1. Safe Command Detection:
 ```bash
 zf::has_command() {
     local cmd="$1"
@@ -277,11 +352,11 @@ zf::has_command() {
 }
 ```
 
-## Environment Sanitization
+## 7. Environment Sanitization
 
-### **SSH Security**
+### 7.1. **SSH Security**
 
-#### SSH Agent Management:
+#### 7.1.1. SSH Agent Management:
 ```bash
 
 # 1Password SSH agent integration
@@ -299,7 +374,7 @@ else
 fi
 ```
 
-#### Security Features:
+#### 7.1.2. Security Features:
 
 - **Platform-specific paths** for SSH sockets
 - **Permission checking** before setting SSH_AUTH_SOCK
@@ -307,9 +382,9 @@ fi
 - **User notification** when expected services unavailable
 
 
-### **Terminal Environment Detection**
+### 7.2. **Terminal Environment Detection**
 
-#### Secure Terminal Detection:
+#### 7.2.1. Secure Terminal Detection:
 ```bash
 
 # Heuristic: only set TERM_PROGRAM if missing/invalid
@@ -319,18 +394,18 @@ if [[ -z ${TERM_PROGRAM:-} || ${TERM_PROGRAM} == unknown || ${TERM_PROGRAM} == z
 fi
 ```
 
-#### Security Benefits:
+#### 7.2.2. Security Benefits:
 
 - **Non-destructive** - doesn't override existing values
 - **Validation** - checks for invalid values
 - **Conservative** - only sets when clearly needed
 
 
-## XDG Security Compliance
+## 8. XDG Security Compliance
 
-### **XDG Base Directory Specification**
+### 8.1. **XDG Base Directory Specification**
 
-#### Implementation:
+#### 8.1.1. Implementation:
 ```bash
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-${HOME}/.cache}"
@@ -340,7 +415,7 @@ export XDG_BIN_HOME="${XDG_BIN_HOME:-${HOME}/.local/bin}"
 mkdir -p "${XDG_CONFIG_HOME}" "${XDG_CACHE_HOME}" "${XDG_DATA_HOME}" "${XDG_STATE_HOME}" "${XDG_BIN_HOME}" 2>/dev/null || true
 ```
 
-#### Security Benefits:
+#### 8.1.2. Security Benefits:
 
 - **Standardized paths** across systems
 - **Safe fallbacks** when environment variables unset
@@ -348,16 +423,16 @@ mkdir -p "${XDG_CONFIG_HOME}" "${XDG_CACHE_HOME}" "${XDG_DATA_HOME}" "${XDG_STAT
 - **Silent failure** doesn't break startup
 
 
-### **Cache Security**
+### 8.2. **Cache Security**
 
-#### Cache Directory Management:
+#### 8.2.1. Cache Directory Management:
 ```bash
 export ZSH_CACHE_DIR="${ZSH_CACHE_DIR:-${XDG_CACHE_HOME:-${HOME/.cache}/zsh}}"
 export ZSH_LOG_DIR="${ZSH_LOG_DIR:-${ZSH_CACHE_DIR}/logs}"
 mkdir -p "$ZSH_CACHE_DIR" "$ZSH_LOG_DIR" 2>/dev/null || true
 ```
 
-#### Security Features:
+#### 8.2.2. Security Features:
 
 - **Localized caching** within user home
 - **XDG compliance** uses standard cache locations
@@ -365,11 +440,11 @@ mkdir -p "$ZSH_CACHE_DIR" "$ZSH_LOG_DIR" 2>/dev/null || true
 - **Log isolation** keeps logs separate from cache
 
 
-## Error Handling & Recovery
+## 9. Error Handling & Recovery
 
-### **Debug Integration**
+### 9.1. **Debug Integration**
 
-#### Comprehensive Debug System:
+#### 9.1.1. Comprehensive Debug System:
 ```bash
 zf::debug() {
     # Emit only when debugging is enabled
@@ -382,7 +457,7 @@ zf::debug() {
 }
 ```
 
-#### Features:
+#### 9.1.2. Features:
 
 - **Conditional output** - only active when ZSH_DEBUG=1
 - **Dual output** - stderr for user, file for logging
@@ -390,9 +465,9 @@ zf::debug() {
 - **Consistent format** - easy parsing and filtering
 
 
-### **Emergency Fallbacks**
+### 9.2. **Emergency Fallbacks**
 
-#### Startup Failure Recovery:
+#### 9.2.1. Startup Failure Recovery:
 ```bash
 
 # FALLBACK: Simple PATH setup
@@ -403,18 +478,18 @@ fi
 export PATH
 ```
 
-#### Benefits:
+#### 9.2.2. Benefits:
 
 - **Guaranteed PATH** even in corrupted environments
 - **Safe defaults** for common system paths
 - **Non-destructive** - doesn't override existing PATH
 
 
-## Performance Impact
+## 10. Performance Impact
 
-### **Security Overhead**
+### 10.1. **Security Overhead**
 
-#### Minimal Performance Cost:
+#### 10.1.1. Minimal Performance Cost:
 
 - **Variable guards:** < 10ms
 - **Path deduplication:** < 50ms
@@ -422,7 +497,7 @@ export PATH
 - **Debug logging:** < 5ms (when disabled)
 
 
-#### Optimization Strategies:
+#### 10.1.2. Optimization Strategies:
 
 - **Early returns** when security checks pass
 - **Caching** for repeated operations
@@ -430,9 +505,9 @@ export PATH
 - **Lazy evaluation** for expensive operations
 
 
-## Assessment
+## 11. Assessment
 
-### **Strengths**
+### 11.1. **Strengths**
 
 - ✅ **Comprehensive nounset protection**
 - ✅ **Robust plugin loading verification**
@@ -441,14 +516,14 @@ export PATH
 - ✅ **Graceful error handling**
 
 
-### **Areas for Improvement**
+### 11.2. **Areas for Improvement**
 
 - ⚠️ **Oh-My-Zsh compatibility** requires disabling nounset
 - ⚠️ **Plugin ecosystem** has inconsistent error handling
 - ⚠️ **Debug logging** could be more structured
 
 
-### **Security Best Practices Implemented**
+### 11.3. **Security Best Practices Implemented**
 
 - ✅ **Defense in depth** - multiple protection layers
 - ✅ **Fail-safe defaults** - works even with corrupted environment
@@ -457,9 +532,9 @@ export PATH
 - ✅ **Audit trail** - comprehensive logging for security events
 
 
-## Usage Guidelines
+## 12. Usage Guidelines
 
-### **For Users**
+### 12.1. **For Users**
 
 ```bash
 
@@ -476,7 +551,7 @@ export ZSH_PERF_TRACK=1
 export ZSH_CACHE_DIR="/custom/cache/path"
 ```
 
-### **For Developers**
+### 12.2. **For Developers**
 
 ```bash
 
@@ -495,11 +570,11 @@ zf::path_prepend "/custom/bin"
 zf::debug "# [module] Operation description"
 ```
 
-## Troubleshooting
+## 13. Troubleshooting
 
-### **Common Security Issues**
+### 13.1. **Common Security Issues**
 
-#### 1. Nounset Errors:
+#### 13.1.1. Nounset Errors:
 ```bash
 
 # Check if nounset is causing issues
@@ -511,7 +586,7 @@ set -o | grep nounset
 set +o nounset
 ```
 
-#### 2. Plugin Loading Failures:
+#### 13.1.2. Plugin Loading Failures:
 ```bash
 
 # Check zgenom status
@@ -523,7 +598,7 @@ ls -la ${ZDOTDIR}/.zgenom/
 tail -f ${ZSH_LOG_DIR}/zsh-debug.log
 ```
 
-#### 3. PATH Issues:
+#### 13.1.3. PATH Issues:
 ```bash
 
 # Check for duplicates
@@ -535,6 +610,13 @@ echo "$PATH" | tr ':' '\n' | sort | uniq -d
 echo "$PATH" | tr ':' '\n' | while read dir; do [[ -d "$dir" ]] && echo "OK: $dir" || echo "MISSING: $dir"; done
 ```
 
----
 
 *The security system provides robust protection against common shell initialization failures while maintaining compatibility with the broader ZSH ecosystem. The multi-layer approach ensures reliability even when individual components fail.*
+
+---
+
+**Navigation:** [← Activation Flow](030-activation-flow.md) | [Top ↑](#security-verification-integrity-system) | [Performance Monitoring →](050-performance-monitoring.md)
+
+---
+
+*Last updated: 2025-10-13*

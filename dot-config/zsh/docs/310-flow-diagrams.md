@@ -1,12 +1,49 @@
 # Flow Diagrams
 
-## Overview
+## Table of Contents
+
+<details>
+<summary>Click to expand</summary>
+
+- [1. Overview](#1-overview)
+- [2. Startup Flow Diagram](#2-startup-flow-diagram)
+  - [2.1. **Complete Startup Sequence**](#21-complete-startup-sequence)
+- [3. Error Handling Flow](#3-error-handling-flow)
+  - [3.1. **Plugin Loading Error Recovery**](#31-plugin-loading-error-recovery)
+- [4. Security Flow](#4-security-flow)
+  - [4.1. **Nounset Protection Flow**](#41-nounset-protection-flow)
+- [5. Performance Monitoring Flow](#5-performance-monitoring-flow)
+  - [5.1. **Segment Timing Flow**](#51-segment-timing-flow)
+- [6. Plugin Loading Flow](#6-plugin-loading-flow)
+  - [6.1. **zgenom Plugin Loading Process**](#61-zgenom-plugin-loading-process)
+- [7. Terminal Integration Flow](#7-terminal-integration-flow)
+  - [7.1. **Multi-Terminal Detection Process**](#71-multi-terminal-detection-process)
+- [8. Configuration Validation Flow](#8-configuration-validation-flow)
+  - [8.1. **Configuration Health Check**](#81-configuration-health-check)
+- [9. Development Tool Integration Flow](#9-development-tool-integration-flow)
+  - [9.1. **Multi-Language Development Setup**](#91-multi-language-development-setup)
+- [10. Error Recovery Flow](#10-error-recovery-flow)
+  - [10.1. **Multi-Level Error Recovery**](#101-multi-level-error-recovery)
+- [11. Integration Flow](#11-integration-flow)
+  - [11.1. **External Tool Integration Process**](#111-external-tool-integration-process)
+- [12. Maintenance Flow](#12-maintenance-flow)
+  - [12.1. **Configuration Maintenance Process**](#121-configuration-maintenance-process)
+- [13. Color Legend](#13-color-legend)
+  - [13.1. **Flow Diagram Color Scheme**](#131-flow-diagram-color-scheme)
+  - [13.2. **Flow Status Indicators**](#132-flow-status-indicators)
+
+</details>
+
+---
+
+
+## 1. Overview
 
 This document contains detailed flow diagrams showing the ZSH configuration processes, error handling flows, and integration patterns. All diagrams use colorblind-accessible palettes and maintain consistency with the architecture diagrams.
 
-## Startup Flow Diagram
+## 2. Startup Flow Diagram
 
-### **Complete Startup Sequence**
+### 2.1. **Complete Startup Sequence**
 
 ```mermaid
 %%{init: { 'theme': 'base', 'themeVariables': {
@@ -72,9 +109,9 @@ flowchart TD
     class Y,Z postplugin
 ```
 
-## Error Handling Flow
+## 3. Error Handling Flow
 
-### **Plugin Loading Error Recovery**
+### 3.1. **Plugin Loading Error Recovery**
 
 ```mermaid
 %%{init: { 'theme': 'base', 'themeVariables': {
@@ -127,9 +164,9 @@ flowchart TD
     class J warning
 ```
 
-## Security Flow
+## 4. Security Flow
 
-### **Nounset Protection Flow**
+### 4.1. **Nounset Protection Flow**
 
 ```mermaid
 %%{init: { 'theme': 'base', 'themeVariables': {
@@ -176,9 +213,9 @@ flowchart TD
     class E,F,G,H,I,J compatibility
 ```
 
-## Performance Monitoring Flow
+## 5. Performance Monitoring Flow
 
-### **Segment Timing Flow**
+### 5.1. **Segment Timing Flow**
 
 ```mermaid
 %%{init: { 'theme': 'base', 'themeVariables': {
@@ -225,9 +262,9 @@ flowchart TD
     class K,L,M,N,O,P,Q,R,S,T,U,V,W,X analysis
 ```
 
-## Plugin Loading Flow
+## 6. Plugin Loading Flow
 
-### **zgenom Plugin Loading Process**
+### 6.1. **zgenom Plugin Loading Process**
 
 ```mermaid
 %%{init: { 'theme': 'base', 'themeVariables': {
@@ -282,9 +319,9 @@ flowchart TD
     class K,L success
 ```
 
-## Terminal Integration Flow
+## 7. Terminal Integration Flow
 
-### **Multi-Terminal Detection Process**
+### 7.1. **Multi-Terminal Detection Process**
 
 ```mermaid
 %%{init: { 'theme': 'base', 'themeVariables': {
@@ -340,9 +377,9 @@ flowchart TD
     class K,L detection
 ```
 
-## Configuration Validation Flow
+## 8. Configuration Validation Flow
 
-### **Configuration Health Check**
+### 8.1. **Configuration Health Check**
 
 ```mermaid
 %%{init: { 'theme': 'base', 'themeVariables': {
@@ -400,9 +437,9 @@ flowchart TD
     class P success
 ```
 
-## Development Tool Integration Flow
+## 9. Development Tool Integration Flow
 
-### **Multi-Language Development Setup**
+### 9.1. **Multi-Language Development Setup**
 
 ```mermaid
 %%{init: { 'theme': 'base', 'themeVariables': {
@@ -451,9 +488,9 @@ flowchart TD
     class J,K tools
 ```
 
-## Error Recovery Flow
+## 10. Error Recovery Flow
 
-### **Multi-Level Error Recovery**
+### 10.1. **Multi-Level Error Recovery**
 
 ```mermaid
 %%{init: { 'theme': 'base', 'themeVariables': {
@@ -513,9 +550,9 @@ flowchart TD
     class K critical
 ```
 
-## Integration Flow
+## 11. Integration Flow
 
-### **External Tool Integration Process**
+### 11.1. **External Tool Integration Process**
 
 ```mermaid
 %%{init: { 'theme': 'base', 'themeVariables': {
@@ -570,9 +607,9 @@ flowchart TD
     class K integration
 ```
 
-## Maintenance Flow
+## 12. Maintenance Flow
 
-### **Configuration Maintenance Process**
+### 12.1. **Configuration Maintenance Process**
 
 ```mermaid
 %%{init: { 'theme': 'base', 'themeVariables': {
@@ -640,9 +677,9 @@ flowchart TD
     class End deployment
 ```
 
-## Color Legend
+## 13. Color Legend
 
-### **Flow Diagram Color Scheme**
+### 13.1. **Flow Diagram Color Scheme**
 
 | Color | Hex Code | Usage |
 |-------|----------|-------|
@@ -653,7 +690,7 @@ flowchart TD
 | **Red** | `#b71c1c` | Critical errors, failures |
 | **Amber** | `#bf360c` | Performance monitoring, warnings |
 
-### **Flow Status Indicators**
+### 13.2. **Flow Status Indicators**
 
 - **✅ Success Path** - Green outline, normal operation
 - **⚠️ Warning Path** - Orange outline, degraded functionality
@@ -661,6 +698,12 @@ flowchart TD
 - **🔄 Loop/Retry** - Blue outline, iterative processes
 
 
+*These flow diagrams illustrate the complex processes within the ZSH configuration system, from startup sequences through error recovery and maintenance procedures. The visual representation helps understand the relationships between different components and the flow of execution through various phases.*
+
 ---
 
-*These flow diagrams illustrate the complex processes within the ZSH configuration system, from startup sequences through error recovery and maintenance procedures. The visual representation helps understand the relationships between different components and the flow of execution through various phases.*
+**Navigation:** [← Architecture Diagrams](300-architecture-diagrams.md) | [Top ↑](#flow-diagrams) | [Master Index →](400-redesign/000-index.md)
+
+---
+
+*Last updated: 2025-10-13*

@@ -1,6 +1,25 @@
-# 140 - Completion System
+# - Completion System
 
-## Top
+## Table of Contents
+
+<details>
+<summary>Click to expand</summary>
+
+- [1. Top](#1-top)
+- [2. Overview](#2-overview)
+- [3. Carapace integration (guarded)](#3-carapace-integration-guarded)
+- [4. Loading order & fallbacks](#4-loading-order-fallbacks)
+- [5. Example custom completion snippet](#5-example-custom-completion-snippet)
+- [6. Troubleshooting](#6-troubleshooting)
+- [7. Acceptance criteria](#7-acceptance-criteria)
+- [8. Related](#8-related)
+
+</details>
+
+---
+
+
+## 1. Top
 
 Status: Draft
 
@@ -8,7 +27,7 @@ Last updated: 2025-10-07
 
 This document describes how the configuration handles tab completion, Carapace integration, and completion loading order to maximise responsiveness and correctness.
 
-## Overview
+## 2. Overview
 
 Completion pipeline responsibilities:
 
@@ -17,7 +36,7 @@ Completion pipeline responsibilities:
 - Offer examples for authoring small, local completion definitions
 
 
-## Carapace integration (guarded)
+## 3. Carapace integration (guarded)
 
 - Only enable Carapace when the tool is present and when the user has opted in (example env guard: `ZSH_CONFIG_ENABLE_CARAPACE=1`).
 
@@ -30,13 +49,13 @@ if command -v carapace >/dev/null 2>&1 && [[ "${ZSH_CONFIG_ENABLE_CARAPACE:-0}" 
 fi
 ```
 
-## Loading order & fallbacks
+## 4. Loading order & fallbacks
 
 - Prefer lightweight native `compinit` when Carapace is absent
 - When Carapace is active, ensure its initialization occurs early enough to register high-level completions but deferred to avoid startup slowdown
 
 
-## Example custom completion snippet
+## 5. Example custom completion snippet
 
 ```bash
 
@@ -48,7 +67,7 @@ _mycmd() {
 compdef _mycmd mycmd
 ```
 
-## Troubleshooting
+## 6. Troubleshooting
 
 - Symptom: Completion suggestions missing for an installed tool
 
@@ -56,13 +75,21 @@ compdef _mycmd mycmd
   - Confirm `fpath` contains directories with completion definitions
 
 
-## Acceptance criteria
+## 7. Acceptance criteria
 
 - Clear guidance for enabling Carapace and defensively falling back to `compinit`
 - Example custom completion included
 - Troubleshooting checklist for users
 
 
-## Related
+## 8. Related
 
 - Return to [README](README.md) or [000-index](000-index.md)
+
+---
+
+**Navigation:** [← History Management](130-history-management.md) | [Top ↑](#completion-system) | [Troubleshooting Startup Warnings →](150-troubleshooting-startup-warnings.md)
+
+---
+
+*Last updated: 2025-10-13*

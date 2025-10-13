@@ -1,12 +1,49 @@
 # ZSH Configuration Overview
 
-## System Overview
+## Table of Contents
+
+<details>
+<summary>Click to expand</summary>
+
+- [1. System Overview](#1-system-overview)
+- [2. Core Architecture](#2-core-architecture)
+  - [2.1. **Three-Phase Loading System**](#21-three-phase-loading-system)
+  - [2.2. **Standardized Naming Convention**](#22-standardized-naming-convention)
+- [3. Key Features](#3-key-features)
+  - [3.1. 🔧 **Plugin Management**](#31-plugin-management)
+  - [3.2. 🔒 **Security & Safety**](#32-security-safety)
+  - [3.3. ⚡ **Performance Monitoring**](#33-performance-monitoring)
+  - [3.4. 🏗️ **Layered Configuration System**](#34-layered-configuration-system)
+- [4. Integration Ecosystem](#4-integration-ecosystem)
+  - [4.1. **Development Tools**](#41-development-tools)
+  - [4.2. **Terminal Support**](#42-terminal-support)
+- [5. Configuration Philosophy](#5-configuration-philosophy)
+  - [5.1. **Feature-Driven Design**](#51-feature-driven-design)
+  - [5.2. **Environment Adaptability**](#52-environment-adaptability)
+  - [5.3. **Developer Experience**](#53-developer-experience)
+- [6. File Structure Summary](#6-file-structure-summary)
+- [7. Current State Assessment](#7-current-state-assessment)
+  - [7.1. ✅ **Strengths**](#71-strengths)
+  - [7.2. ⚠️ **Issues Identified**](#72-issues-identified)
+  - [7.3. 📈 **Performance**](#73-performance)
+- [8. Getting Started](#8-getting-started)
+  - [8.1. For New Users](#81-for-new-users)
+  - [8.2. For Contributors](#82-for-contributors)
+  - [8.3. For Troubleshooting](#83-for-troubleshooting)
+- [9. Next Steps](#9-next-steps)
+
+</details>
+
+---
+
+
+## 1. System Overview
 
 The `/Users/s-a-c/dotfiles/dot-config/zsh/` directory contains a sophisticated ZSH configuration based on [zsh-quickstart-kit](https://github.com/unixorn/zsh-quickstart-kit) with extensive customizations for performance, security, and developer productivity.
 
-## Core Architecture
+## 2. Core Architecture
 
-### **Three-Phase Loading System**
+### 2.1. **Three-Phase Loading System**
 
 The configuration implements a modular architecture with three distinct phases:
 
@@ -29,7 +66,7 @@ The configuration implements a modular architecture with three distinct phases:
    - Environment-specific configurations
 
 
-### **Standardized Naming Convention**
+### 2.2. **Standardized Naming Convention**
 
 All configuration modules follow the `XX_YY-name.zsh` pattern:
 
@@ -38,9 +75,9 @@ All configuration modules follow the `XX_YY-name.zsh` pattern:
 - **name**: Descriptive module name
 
 
-## Key Features
+## 3. Key Features
 
-### 🔧 **Plugin Management**
+### 3.1. 🔧 **Plugin Management**
 
 - **zgenom** as the primary plugin manager
 - **Automatic cache reset** when plugin definitions change
@@ -48,7 +85,7 @@ All configuration modules follow the `XX_YY-name.zsh` pattern:
 - **Plugin integrity verification**
 
 
-### 🔒 **Security & Safety**
+### 3.2. 🔒 **Security & Safety**
 
 - **Nounset safety system** - Prevents "parameter not set" errors
 - **Path normalization** and deduplication
@@ -56,7 +93,7 @@ All configuration modules follow the `XX_YY-name.zsh` pattern:
 - **Plugin integrity verification**
 
 
-### ⚡ **Performance Monitoring**
+### 3.3. ⚡ **Performance Monitoring**
 
 - **_zf*segment system** for comprehensive timing
 - **Multi-source millisecond timing** (python/node/perl/date)
@@ -64,7 +101,7 @@ All configuration modules follow the `XX_YY-name.zsh` pattern:
 - **Startup time optimization** (~1.8s target)
 
 
-### 🏗️ **Layered Configuration System**
+### 3.4. 🏗️ **Layered Configuration System**
 
 - **Symlink-based versioning**
 - **Environment-specific configurations**
@@ -72,9 +109,9 @@ All configuration modules follow the `XX_YY-name.zsh` pattern:
 - **Live vs. stable version management**
 
 
-## Integration Ecosystem
+## 4. Integration Ecosystem
 
-### **Development Tools**
+### 4.1. **Development Tools**
 
 - **Atuin** - Shell history synchronization
 - **FZF** - Fuzzy file finder integration
@@ -87,7 +124,7 @@ All configuration modules follow the `XX_YY-name.zsh` pattern:
 - **Go** - Cloud-native programming language
 
 
-### **Terminal Support**
+### 4.2. **Terminal Support**
 
 - **Alacritty** - Cross-platform GPU-accelerated terminal
 - **Apple Terminal** - macOS built-in terminal
@@ -98,9 +135,9 @@ All configuration modules follow the `XX_YY-name.zsh` pattern:
 - **WezTerm** - Cross-platform terminal emulator
 
 
-## Configuration Philosophy
+## 5. Configuration Philosophy
 
-### **Feature-Driven Design**
+### 5.1. **Feature-Driven Design**
 
 The configuration prioritizes features over rigid structure, allowing users to:
 
@@ -109,7 +146,7 @@ The configuration prioritizes features over rigid structure, allowing users to:
 - Maintain personal configurations without forking
 
 
-### **Environment Adaptability**
+### 5.2. **Environment Adaptability**
 
 - **Terminal detection** and optimization
 - **Platform-specific** configurations (macOS/Linux)
@@ -117,7 +154,7 @@ The configuration prioritizes features over rigid structure, allowing users to:
 - **SSH session** awareness
 
 
-### **Developer Experience**
+### 5.3. **Developer Experience**
 
 - **Comprehensive debugging** capabilities
 - **Performance profiling** tools
@@ -125,7 +162,7 @@ The configuration prioritizes features over rigid structure, allowing users to:
 - **Extensive customization** options
 
 
-## File Structure Summary
+## 6. File Structure Summary
 
 ```bash
 /Users/s-a-c/dotfiles/dot-config/zsh/
@@ -168,9 +205,9 @@ The configuration prioritizes features over rigid structure, allowing users to:
 └── docs/                      # This documentation
 ```
 
-## Current State Assessment
+## 7. Current State Assessment
 
-### ✅ **Strengths**
+### 7.1. ✅ **Strengths**
 
 - **Sophisticated modular architecture**
 - **Comprehensive performance monitoring**
@@ -179,30 +216,30 @@ The configuration prioritizes features over rigid structure, allowing users to:
 - **Clear documentation structure**
 
 
-### ⚠️ **Issues Identified**
+### 7.2. ⚠️ **Issues Identified**
 
 - **Duplicate filename**: `195-optional-brew-abbr.zsh` exists in both `.zshrc.add-plugins.d/` and `.zshrc.d/`
 - **Layered system complexity** may confuse new users
 - **Extensive configuration** has learning curve
 
 
-### 📈 **Performance**
+### 7.3. 📈 **Performance**
 
 - **Startup time**: Optimized for ~1.8s target
 - **Plugin loading**: Efficient with zgenom caching
 - **Memory usage**: Monitored through segment system
 
 
-## Getting Started
+## 8. Getting Started
 
-### For New Users
+### 8.1. For New Users
 
 1. Review this overview to understand system capabilities
 2. Check environment variables in `.zshenv` for customization options
 3. Explore feature toggles in `.zshrc` for personalization
 
 
-### For Contributors
+### 8.2. For Contributors
 
 1. Follow the `XX_YY-name.zsh` naming convention
 2. Use `zf::segment` for performance monitoring
@@ -210,7 +247,7 @@ The configuration prioritizes features over rigid structure, allowing users to:
 4. Document new modules with proper headers
 
 
-### For Troubleshooting
+### 8.3. For Troubleshooting
 
 1. Enable debug mode: `export ZSH_DEBUG=1`
 2. Check performance logs: `export ZSH_PERF_TRACK=1`
@@ -218,7 +255,7 @@ The configuration prioritizes features over rigid structure, allowing users to:
 4. Use the `zqs` command for configuration management
 
 
-## Next Steps
+## 9. Next Steps
 
 - Read **[020-architecture.md](020-architecture.md)** for detailed architectural information
 - Review **[030-activation-flow.md](030-activation-flow.md)** for startup sequence details
@@ -226,6 +263,12 @@ The configuration prioritizes features over rigid structure, allowing users to:
 - Examine **[220-improvement-recommendations.md](220-improvement-recommendations.md)** for optimization opportunities
 
 
+*This overview provides a high-level understanding of the zsh configuration system. For detailed technical information, refer to the specific documentation sections listed above.*
+
 ---
 
-*This overview provides a high-level understanding of the zsh configuration system. For detailed technical information, refer to the specific documentation sections listed above.*
+**Navigation:** [← Master Index](000-index.md) | [Top ↑](#zsh-configuration-overview) | [Architecture →](020-architecture.md)
+
+---
+
+*Last updated: 2025-10-13*

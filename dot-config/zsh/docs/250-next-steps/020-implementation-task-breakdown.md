@@ -1,6 +1,100 @@
 # ZSH Configuration Redesign - Implementation Task Breakdown
 
-## Document Information
+## Table of Contents
+
+<details>
+<summary>Click to expand</summary>
+
+- [1. Document Information](#1-document-information)
+- [2. Task Management Conventions](#2-task-management-conventions)
+- [3. Phase 1: Immediate Actions (Foundation)](#3-phase-1-immediate-actions-foundation)
+  - [3.1. Load Order Organization ✅ COMPLETED](#31-load-order-organization-completed)
+  - [3.2. Configuration Stability Testing](#32-configuration-stability-testing)
+    - [3.2.1. Syntax Validation](#321-syntax-validation)
+    - [3.2.2. Plugin Loading Verification](#322-plugin-loading-verification)
+    - [3.2.3. Terminal Integration Testing](#323-terminal-integration-testing)
+    - [3.2.4. Performance Regression Testing](#324-performance-regression-testing)
+    - [3.2.5. Security Feature Validation](#325-security-feature-validation)
+    - [3.2.6. Cross-Platform Compatibility Testing](#326-cross-platform-compatibility-testing)
+  - [3.3. Performance Baseline Documentation](#33-performance-baseline-documentation)
+    - [3.3.1. Capture Current Startup Timing Metrics](#331-capture-current-startup-timing-metrics)
+    - [3.3.2. Document Plugin Load Times by Category](#332-document-plugin-load-times-by-category)
+    - [3.3.3. Establish Memory Usage Baselines](#333-establish-memory-usage-baselines)
+    - [3.3.4. Create Performance Regression Test Suite](#334-create-performance-regression-test-suite)
+    - [3.3.5. Document Measurement Methodology](#335-document-measurement-methodology)
+- [4. Phase 1 Milestone: Foundation Complete](#4-phase-1-milestone-foundation-complete)
+  - [4.1. Success Criteria Checklist](#41-success-criteria-checklist)
+  - [4.2. Deliverables Summary](#42-deliverables-summary)
+- [5. Phase 2: Short Term Implementation (Enhancement)](#5-phase-2-short-term-implementation-enhancement)
+  - [5.1. Automated Log Rotation System](#51-automated-log-rotation-system)
+    - [5.1.1. Design Log Rotation Architecture](#511-design-log-rotation-architecture)
+    - [5.1.2. Implement Rotation Logic](#512-implement-rotation-logic)
+    - [5.1.3. Add Log Compression](#513-add-log-compression)
+    - [5.1.4. Create Log Retention Policies](#514-create-log-retention-policies)
+    - [5.1.5. Test with Large Log Volumes](#515-test-with-large-log-volumes)
+    - [5.1.6. Update Documentation](#516-update-documentation)
+    - [5.1.7. Implement Monitoring and Alerts](#517-implement-monitoring-and-alerts)
+  - [5.2. Documentation Enhancement](#52-documentation-enhancement)
+    - [5.2.1. Audit Existing Documentation](#521-audit-existing-documentation)
+    - [5.2.2. Segment Library Documentation](#522-segment-library-documentation)
+    - [5.2.3. Test Framework Documentation](#523-test-framework-documentation)
+    - [5.2.4. Bin Scripts Usage Guide](#524-bin-scripts-usage-guide)
+    - [5.2.5. Update Inline Code Documentation](#525-update-inline-code-documentation)
+    - [5.2.6. Create Contributor Onboarding](#526-create-contributor-onboarding)
+    - [5.2.7. API Documentation](#527-api-documentation)
+  - [5.3. Performance Optimization Review](#53-performance-optimization-review)
+    - [5.3.1. Analyze Plugin Loading Bottlenecks](#531-analyze-plugin-loading-bottlenecks)
+    - [5.3.2. Identify Caching Opportunities](#532-identify-caching-opportunities)
+    - [5.3.3. Review Deferred Loading](#533-review-deferred-loading)
+    - [5.3.4. Assess Async Loading Potential](#534-assess-async-loading-potential)
+    - [5.3.5. Create Optimization Roadmap](#535-create-optimization-roadmap)
+    - [5.3.6. Establish Performance Testing Framework](#536-establish-performance-testing-framework)
+    - [5.3.7. Document Performance Characteristics](#537-document-performance-characteristics)
+- [6. Phase 2 Milestone: Enhancement Complete](#6-phase-2-milestone-enhancement-complete)
+  - [6.1. Success Criteria Checklist](#61-success-criteria-checklist)
+  - [6.2. Deliverables Summary](#62-deliverables-summary)
+- [7. Phase 3: Medium Term Enhancements (Optimization)](#7-phase-3-medium-term-enhancements-optimization)
+  - [7.1. Plugin Loading Optimization](#71-plugin-loading-optimization)
+    - [7.1.1. Implement Intelligent Plugin Deferral](#711-implement-intelligent-plugin-deferral)
+    - [7.1.2. Add Plugin Load Time Prediction](#712-add-plugin-load-time-prediction)
+    - [7.1.3. Optimize Plugin Initialization Order](#713-optimize-plugin-initialization-order)
+    - [7.1.4. Create Plugin Dependency Resolver](#714-create-plugin-dependency-resolver)
+    - [7.1.5. Implement Lazy Loading](#715-implement-lazy-loading)
+    - [7.1.6. Add Plugin Performance Scoring](#716-add-plugin-performance-scoring)
+    - [7.1.7. Test Optimization Effectiveness](#717-test-optimization-effectiveness)
+    - [7.1.8. Document Optimization Strategies](#718-document-optimization-strategies)
+  - [7.2. Enhanced Error Reporting](#72-enhanced-error-reporting)
+    - [7.2.1. Design Error Reporting System](#721-design-error-reporting-system)
+    - [7.2.2. Implement Error Context Capture](#722-implement-error-context-capture)
+    - [7.2.3. Create Error Categorization](#723-create-error-categorization)
+    - [7.2.4. Add User-Friendly Error Messages](#724-add-user-friendly-error-messages)
+    - [7.2.5. Implement Error Dashboard](#725-implement-error-dashboard)
+    - [7.2.6. Create Troubleshooting Guides](#726-create-troubleshooting-guides)
+    - [7.2.7. Test Error Reporting](#727-test-error-reporting)
+  - [7.3. Configuration Validation Framework](#73-configuration-validation-framework)
+    - [7.3.1. Design Validation Architecture](#731-design-validation-architecture)
+    - [7.3.2. Implement Syntax Checking](#732-implement-syntax-checking)
+    - [7.3.3. Create Naming Convention Validator](#733-create-naming-convention-validator)
+    - [7.3.4. Add Dependency Verification](#734-add-dependency-verification)
+    - [7.3.5. Implement Performance Impact Assessment](#735-implement-performance-impact-assessment)
+    - [7.3.6. Create Validation Reporting](#736-create-validation-reporting)
+    - [7.3.7. Add Automated Validation Triggers](#737-add-automated-validation-triggers)
+- [8. Phase 3 Milestone: Optimization Complete](#8-phase-3-milestone-optimization-complete)
+  - [8.1. Success Criteria Checklist](#81-success-criteria-checklist)
+  - [8.2. Deliverables Summary](#82-deliverables-summary)
+- [9. Implementation Notes](#9-implementation-notes)
+  - [9.1. Design Principles Compliance](#91-design-principles-compliance)
+  - [9.2. Testing Requirements](#92-testing-requirements)
+  - [9.3. Documentation Requirements](#93-documentation-requirements)
+- [10. Progress Tracking](#10-progress-tracking)
+  - [10.1. Phase Completion Status](#101-phase-completion-status)
+
+</details>
+
+---
+
+
+## 1. Document Information
 
 - **Created**: 2025-10-07
 - **Based On**: `900-next-steps-implementation-plan.md`
@@ -8,7 +102,7 @@
 - **Status**: Active Implementation
 
 
-## Task Management Conventions
+## 2. Task Management Conventions
 
 - **Task States**:
   - `[ ]` NOT_STARTED - Task not yet begun
@@ -23,9 +117,9 @@
   - 🔵 Low - Complete within 1-2 months (nice-to-have)
 
 
-## Phase 1: Immediate Actions (Foundation)
+## 3. Phase 1: Immediate Actions (Foundation)
 
-### 1.1 Load Order Organization ✅ COMPLETED
+### 3.1. Load Order Organization ✅ COMPLETED
 
 **Priority**: 🔴 Critical | **Estimated Time**: 2 hours | **Status**: ✅ Complete
 
@@ -41,11 +135,11 @@
 
 ---
 
-### 1.2 Configuration Stability Testing
+### 3.2. Configuration Stability Testing
 
 **Priority**: 🔴 Critical | **Estimated Time**: 4 hours | **Status**: [ ] Pending
 
-#### 1.2.1 Syntax Validation
+#### 3.2.1. Syntax Validation
 
 **Estimated Time**: 30 minutes
 
@@ -63,7 +157,7 @@ for f in .zshrc.{pre-plugins,add-plugins,d}/*.zsh; do
 done
 ```
 
-#### 1.2.2 Plugin Loading Verification
+#### 3.2.2. Plugin Loading Verification
 
 **Estimated Time**: 45 minutes
 
@@ -79,7 +173,7 @@ done
 zsh -i -c 'zgenom list | wc -l'
 ```
 
-#### 1.2.3 Terminal Integration Testing
+#### 3.2.3. Terminal Integration Testing
 
 **Estimated Time**: 45 minutes
 
@@ -93,7 +187,7 @@ zsh -i -c 'zgenom list | wc -l'
 
 **Success Criteria**: All terminals start without errors, prompt renders correctly
 
-#### 1.2.4 Performance Regression Testing
+#### 3.2.4. Performance Regression Testing
 
 **Estimated Time**: 30 minutes
 
@@ -108,7 +202,7 @@ zsh -i -c 'zgenom list | wc -l'
 for i in {1..5}; do time zsh -i -c exit; done
 ```
 
-#### 1.2.5 Security Feature Validation
+#### 3.2.5. Security Feature Validation
 
 **Estimated Time**: 30 minutes
 
@@ -121,7 +215,7 @@ for i in {1..5}; do time zsh -i -c exit; done
 
 **Success Criteria**: All security features operational, no warnings
 
-#### 1.2.6 Cross-Platform Compatibility Testing
+#### 3.2.6. Cross-Platform Compatibility Testing
 
 **Estimated Time**: 45 minutes
 
@@ -137,11 +231,11 @@ for i in {1..5}; do time zsh -i -c exit; done
 
 ---
 
-### 1.3 Performance Baseline Documentation
+### 3.3. Performance Baseline Documentation
 
 **Priority**: 🔴 Critical | **Estimated Time**: 3 hours | **Status**: [ ] Pending
 
-#### 1.3.1 Capture Current Startup Timing Metrics
+#### 3.3.1. Capture Current Startup Timing Metrics
 
 **Estimated Time**: 45 minutes
 
@@ -157,7 +251,7 @@ for i in {1..5}; do time zsh -i -c exit; done
 bin/zsh-performance-baseline
 ```
 
-#### 1.3.2 Document Plugin Load Times by Category
+#### 3.3.2. Document Plugin Load Times by Category
 
 **Estimated Time**: 60 minutes
 
@@ -171,7 +265,7 @@ bin/zsh-performance-baseline
 
 **Deliverables**: Plugin timing breakdown table
 
-#### 1.3.3 Establish Memory Usage Baselines
+#### 3.3.3. Establish Memory Usage Baselines
 
 **Estimated Time**: 30 minutes
 
@@ -187,7 +281,7 @@ bin/zsh-performance-baseline
 ps -o rss,vsz -p $$
 ```
 
-#### 1.3.4 Create Performance Regression Test Suite
+#### 3.3.4. Create Performance Regression Test Suite
 
 **Estimated Time**: 45 minutes
 
@@ -200,7 +294,7 @@ ps -o rss,vsz -p $$
 
 **Deliverables**: `tests/performance/regression-suite.zsh`
 
-#### 1.3.5 Document Measurement Methodology
+#### 3.3.5. Document Measurement Methodology
 
 **Estimated Time**: 30 minutes
 
@@ -216,12 +310,12 @@ ps -o rss,vsz -p $$
 
 ---
 
-## Phase 1 Milestone: Foundation Complete
+## 4. Phase 1 Milestone: Foundation Complete
 
 **Target**: End of Week 1
 **Go/No-Go Decision Point**: All Phase 1 tasks must be complete before proceeding to Phase 2
 
-### Success Criteria Checklist
+### 4.1. Success Criteria Checklist
 
 - [ ] Zero configuration conflicts detected
 - [ ] All functionality tests passing (100%)
@@ -231,7 +325,7 @@ ps -o rss,vsz -p $$
 - [ ] Baseline artifacts saved to repository
 
 
-### Deliverables Summary
+### 4.2. Deliverables Summary
 
 1. Configuration stability test report
 2. Performance baseline documentation
@@ -243,13 +337,13 @@ ps -o rss,vsz -p $$
 
 ---
 
-## Phase 2: Short Term Implementation (Enhancement)
+## 5. Phase 2: Short Term Implementation (Enhancement)
 
-### 2.1 Automated Log Rotation System
+### 5.1. Automated Log Rotation System
 
 **Priority**: 🟡 High | **Estimated Time**: 8 hours | **Status**: [ ] Pending
 
-#### 2.1.1 Design Log Rotation Architecture
+#### 5.1.1. Design Log Rotation Architecture
 
 **Estimated Time**: 90 minutes
 
@@ -262,7 +356,7 @@ ps -o rss,vsz -p $$
 
 **Deliverables**: Log rotation architecture document
 
-#### 2.1.2 Implement Rotation Logic
+#### 5.1.2. Implement Rotation Logic
 
 **Estimated Time**: 2 hours
 
@@ -280,7 +374,7 @@ ps -o rss,vsz -p $$
 - Rotation schedule: On startup + daily cron
 
 
-#### 2.1.3 Add Log Compression
+#### 5.1.3. Add Log Compression
 
 **Estimated Time**: 90 minutes
 
@@ -291,7 +385,7 @@ ps -o rss,vsz -p $$
 - [ ] Test compression/decompression cycle
 
 
-#### 2.1.4 Create Log Retention Policies
+#### 5.1.4. Create Log Retention Policies
 
 **Estimated Time**: 60 minutes
 
@@ -302,7 +396,7 @@ ps -o rss,vsz -p $$
 - [ ] Document retention policy
 
 
-#### 2.1.5 Test with Large Log Volumes
+#### 5.1.5. Test with Large Log Volumes
 
 **Estimated Time**: 90 minutes
 
@@ -313,7 +407,7 @@ ps -o rss,vsz -p $$
 - [ ] Measure performance impact
 
 
-#### 2.1.6 Update Documentation
+#### 5.1.6. Update Documentation
 
 **Estimated Time**: 60 minutes
 
@@ -324,7 +418,7 @@ ps -o rss,vsz -p $$
 - [ ] Update module documentation
 
 
-#### 2.1.7 Implement Monitoring and Alerts
+#### 5.1.7. Implement Monitoring and Alerts
 
 **Estimated Time**: 90 minutes
 
@@ -340,11 +434,11 @@ ps -o rss,vsz -p $$
 
 ---
 
-### 2.2 Documentation Enhancement
+### 5.2. Documentation Enhancement
 
 **Priority**: 🟡 High | **Estimated Time**: 6 hours | **Status**: [ ] Pending
 
-#### 2.2.1 Audit Existing Documentation
+#### 5.2.1. Audit Existing Documentation
 
 **Estimated Time**: 90 minutes
 
@@ -355,7 +449,7 @@ ps -o rss,vsz -p $$
 - [ ] Prioritize documentation needs
 
 
-#### 2.2.2 Segment Library Documentation
+#### 5.2.2. Segment Library Documentation
 
 **Estimated Time**: 2 hours
 
@@ -368,7 +462,7 @@ ps -o rss,vsz -p $$
 
 **Deliverables**: `docs/segment-library-reference.md`
 
-#### 2.2.3 Test Framework Documentation
+#### 5.2.3. Test Framework Documentation
 
 **Estimated Time**: 90 minutes
 
@@ -381,7 +475,7 @@ ps -o rss,vsz -p $$
 
 **Deliverables**: `docs/testing-guide.md`
 
-#### 2.2.4 Bin Scripts Usage Guide
+#### 5.2.4. Bin Scripts Usage Guide
 
 **Estimated Time**: 60 minutes
 
@@ -394,7 +488,7 @@ ps -o rss,vsz -p $$
 
 **Deliverables**: `docs/bin-scripts-reference.md`
 
-#### 2.2.5 Update Inline Code Documentation
+#### 5.2.5. Update Inline Code Documentation
 
 **Estimated Time**: 90 minutes
 
@@ -405,7 +499,7 @@ ps -o rss,vsz -p $$
 - [ ] Ensure consistent documentation style
 
 
-#### 2.2.6 Create Contributor Onboarding
+#### 5.2.6. Create Contributor Onboarding
 
 **Estimated Time**: 60 minutes
 
@@ -418,7 +512,7 @@ ps -o rss,vsz -p $$
 
 **Deliverables**: `CONTRIBUTING.md`
 
-#### 2.2.7 API Documentation
+#### 5.2.7. API Documentation
 
 **Estimated Time**: 60 minutes
 
@@ -434,11 +528,11 @@ ps -o rss,vsz -p $$
 
 ---
 
-### 2.3 Performance Optimization Review
+### 5.3. Performance Optimization Review
 
 **Priority**: 🟡 High | **Estimated Time**: 12 hours | **Status**: [ ] Pending
 
-#### 2.3.1 Analyze Plugin Loading Bottlenecks
+#### 5.3.1. Analyze Plugin Loading Bottlenecks
 
 **Estimated Time**: 3 hours
 
@@ -451,7 +545,7 @@ ps -o rss,vsz -p $$
 
 **Tools**: zprof, custom timing scripts
 
-#### 2.3.2 Identify Caching Opportunities
+#### 5.3.2. Identify Caching Opportunities
 
 **Estimated Time**: 2 hours
 
@@ -462,7 +556,7 @@ ps -o rss,vsz -p $$
 - [ ] Document caching recommendations
 
 
-#### 2.3.3 Review Deferred Loading
+#### 5.3.3. Review Deferred Loading
 
 **Estimated Time**: 2 hours
 
@@ -473,7 +567,7 @@ ps -o rss,vsz -p $$
 - [ ] Create deferred loading guide
 
 
-#### 2.3.4 Assess Async Loading Potential
+#### 5.3.4. Assess Async Loading Potential
 
 **Estimated Time**: 2 hours
 
@@ -484,7 +578,7 @@ ps -o rss,vsz -p $$
 - [ ] Document async recommendations
 
 
-#### 2.3.5 Create Optimization Roadmap
+#### 5.3.5. Create Optimization Roadmap
 
 **Estimated Time**: 90 minutes
 
@@ -497,7 +591,7 @@ ps -o rss,vsz -p $$
 
 **Deliverables**: `docs/performance-optimization-roadmap.md`
 
-#### 2.3.6 Establish Performance Testing Framework
+#### 5.3.6. Establish Performance Testing Framework
 
 **Estimated Time**: 90 minutes
 
@@ -508,7 +602,7 @@ ps -o rss,vsz -p $$
 - [ ] Document testing procedures
 
 
-#### 2.3.7 Document Performance Characteristics
+#### 5.3.7. Document Performance Characteristics
 
 **Estimated Time**: 60 minutes
 
@@ -524,12 +618,12 @@ ps -o rss,vsz -p $$
 
 ---
 
-## Phase 2 Milestone: Enhancement Complete
+## 6. Phase 2 Milestone: Enhancement Complete
 
 **Target**: End of Week 3
 **Go/No-Go Decision Point**: All Phase 2 tasks must be complete before proceeding to Phase 3
 
-### Success Criteria Checklist
+### 6.1. Success Criteria Checklist
 
 - [ ] Automated log rotation functional and tested
 - [ ] Complete documentation requirements defined
@@ -538,7 +632,7 @@ ps -o rss,vsz -p $$
 - [ ] Documentation coverage >95%
 
 
-### Deliverables Summary
+### 6.2. Deliverables Summary
 
 1. Automated log rotation system
 2. Comprehensive documentation suite
@@ -550,13 +644,13 @@ ps -o rss,vsz -p $$
 
 ---
 
-## Phase 3: Medium Term Enhancements (Optimization)
+## 7. Phase 3: Medium Term Enhancements (Optimization)
 
-### 3.1 Plugin Loading Optimization
+### 7.1. Plugin Loading Optimization
 
 **Priority**: 🟢 Medium | **Estimated Time**: 16 hours | **Status**: [ ] Pending
 
-#### 3.1.1 Implement Intelligent Plugin Deferral
+#### 7.1.1. Implement Intelligent Plugin Deferral
 
 **Estimated Time**: 3 hours
 
@@ -569,7 +663,7 @@ ps -o rss,vsz -p $$
 
 **Target**: Reduce startup time by 15-20%
 
-#### 3.1.2 Add Plugin Load Time Prediction
+#### 7.1.2. Add Plugin Load Time Prediction
 
 **Estimated Time**: 2 hours
 
@@ -580,7 +674,7 @@ ps -o rss,vsz -p $$
 - [ ] Document prediction system
 
 
-#### 3.1.3 Optimize Plugin Initialization Order
+#### 7.1.3. Optimize Plugin Initialization Order
 
 **Estimated Time**: 2 hours
 
@@ -591,7 +685,7 @@ ps -o rss,vsz -p $$
 - [ ] Document load order rationale
 
 
-#### 3.1.4 Create Plugin Dependency Resolver
+#### 7.1.4. Create Plugin Dependency Resolver
 
 **Estimated Time**: 3 hours
 
@@ -602,7 +696,7 @@ ps -o rss,vsz -p $$
 - [ ] Document dependency system
 
 
-#### 3.1.5 Implement Lazy Loading
+#### 7.1.5. Implement Lazy Loading
 
 **Estimated Time**: 3 hours
 
@@ -613,7 +707,7 @@ ps -o rss,vsz -p $$
 - [ ] Document lazy loading
 
 
-#### 3.1.6 Add Plugin Performance Scoring
+#### 7.1.6. Add Plugin Performance Scoring
 
 **Estimated Time**: 2 hours
 
@@ -624,7 +718,7 @@ ps -o rss,vsz -p $$
 - [ ] Document scoring system
 
 
-#### 3.1.7 Test Optimization Effectiveness
+#### 7.1.7. Test Optimization Effectiveness
 
 **Estimated Time**: 90 minutes
 
@@ -635,7 +729,7 @@ ps -o rss,vsz -p $$
 - [ ] Document test results
 
 
-#### 3.1.8 Document Optimization Strategies
+#### 7.1.8. Document Optimization Strategies
 
 **Estimated Time**: 90 minutes
 
@@ -651,11 +745,11 @@ ps -o rss,vsz -p $$
 
 ---
 
-### 3.2 Enhanced Error Reporting
+### 7.2. Enhanced Error Reporting
 
 **Priority**: 🟢 Medium | **Estimated Time**: 10 hours | **Status**: [ ] Pending
 
-#### 3.2.1 Design Error Reporting System
+#### 7.2.1. Design Error Reporting System
 
 **Estimated Time**: 2 hours
 
@@ -668,7 +762,7 @@ ps -o rss,vsz -p $$
 
 **Error Categories**: Plugin failures, configuration errors, environment errors, performance issues
 
-#### 3.2.2 Implement Error Context Capture
+#### 7.2.2. Implement Error Context Capture
 
 **Estimated Time**: 2 hours
 
@@ -679,7 +773,7 @@ ps -o rss,vsz -p $$
 - [ ] Test context capture
 
 
-#### 3.2.3 Create Error Categorization
+#### 7.2.3. Create Error Categorization
 
 **Estimated Time**: 90 minutes
 
@@ -690,7 +784,7 @@ ps -o rss,vsz -p $$
 - [ ] Document error categories
 
 
-#### 3.2.4 Add User-Friendly Error Messages
+#### 7.2.4. Add User-Friendly Error Messages
 
 **Estimated Time**: 2 hours
 
@@ -701,7 +795,7 @@ ps -o rss,vsz -p $$
 - [ ] Test error messages
 
 
-#### 3.2.5 Implement Error Dashboard
+#### 7.2.5. Implement Error Dashboard
 
 **Estimated Time**: 2 hours
 
@@ -712,7 +806,7 @@ ps -o rss,vsz -p $$
 - [ ] Test dashboard functionality
 
 
-#### 3.2.6 Create Troubleshooting Guides
+#### 7.2.6. Create Troubleshooting Guides
 
 **Estimated Time**: 90 minutes
 
@@ -725,7 +819,7 @@ ps -o rss,vsz -p $$
 
 **Deliverables**: `docs/troubleshooting-guide.md`
 
-#### 3.2.7 Test Error Reporting
+#### 7.2.7. Test Error Reporting
 
 **Estimated Time**: 60 minutes
 
@@ -741,11 +835,11 @@ ps -o rss,vsz -p $$
 
 ---
 
-### 3.3 Configuration Validation Framework
+### 7.3. Configuration Validation Framework
 
 **Priority**: 🟢 Medium | **Estimated Time**: 14 hours | **Status**: [ ] Pending
 
-#### 3.3.1 Design Validation Architecture
+#### 7.3.1. Design Validation Architecture
 
 **Estimated Time**: 2 hours
 
@@ -758,7 +852,7 @@ ps -o rss,vsz -p $$
 
 **Validation Types**: Syntax, structure, dependencies, performance, security
 
-#### 3.3.2 Implement Syntax Checking
+#### 7.3.2. Implement Syntax Checking
 
 **Estimated Time**: 2 hours
 
@@ -769,7 +863,7 @@ ps -o rss,vsz -p $$
 - [ ] Test syntax validation
 
 
-#### 3.3.3 Create Naming Convention Validator
+#### 7.3.3. Create Naming Convention Validator
 
 **Estimated Time**: 2 hours
 
@@ -780,7 +874,7 @@ ps -o rss,vsz -p $$
 - [ ] Test naming validation
 
 
-#### 3.3.4 Add Dependency Verification
+#### 7.3.4. Add Dependency Verification
 
 **Estimated Time**: 2 hours
 
@@ -791,7 +885,7 @@ ps -o rss,vsz -p $$
 - [ ] Test dependency validation
 
 
-#### 3.3.5 Implement Performance Impact Assessment
+#### 7.3.5. Implement Performance Impact Assessment
 
 **Estimated Time**: 2 hours
 
@@ -802,7 +896,7 @@ ps -o rss,vsz -p $$
 - [ ] Test performance validation
 
 
-#### 3.3.6 Create Validation Reporting
+#### 7.3.6. Create Validation Reporting
 
 **Estimated Time**: 2 hours
 
@@ -813,7 +907,7 @@ ps -o rss,vsz -p $$
 - [ ] Test reporting system
 
 
-#### 3.3.7 Add Automated Validation Triggers
+#### 7.3.7. Add Automated Validation Triggers
 
 **Estimated Time**: 2 hours
 
@@ -829,12 +923,12 @@ ps -o rss,vsz -p $$
 
 ---
 
-## Phase 3 Milestone: Optimization Complete
+## 8. Phase 3 Milestone: Optimization Complete
 
 **Target**: End of Week 8
 **Go/No-Go Decision Point**: Final project review and sign-off
 
-### Success Criteria Checklist
+### 8.1. Success Criteria Checklist
 
 - [ ] 20% startup time improvement achieved (1.5s → 1.2s)
 - [ ] Structured error reporting implemented and tested
@@ -844,7 +938,7 @@ ps -o rss,vsz -p $$
 - [ ] Documentation complete and reviewed
 
 
-### Deliverables Summary
+### 8.2. Deliverables Summary
 
 1. Optimized plugin loading system
 2. Enhanced error reporting system
@@ -856,9 +950,9 @@ ps -o rss,vsz -p $$
 
 ---
 
-## Implementation Notes
+## 9. Implementation Notes
 
-### Design Principles Compliance
+### 9.1. Design Principles Compliance
 
 All implementation work must adhere to:
 
@@ -870,7 +964,7 @@ All implementation work must adhere to:
 6. **Auto-detection**: Leverage zsh-quickstart-kit's built-in change detection
 
 
-### Testing Requirements
+### 9.2. Testing Requirements
 
 Each phase must include:
 
@@ -881,7 +975,7 @@ Each phase must include:
 - Security validation tests
 
 
-### Documentation Requirements
+### 9.3. Documentation Requirements
 
 Each deliverable must include:
 
@@ -894,30 +988,23 @@ Each deliverable must include:
 
 ---
 
-## Progress Tracking
+## 10. Progress Tracking
 
 **Last Updated**: 2025-10-07
 **Current Phase**: Phase 1 - Foundation
 **Current Task**: 1.2 Configuration Stability Testing
 **Overall Progress**: 11% (1 of 9 major tasks complete)
 
-### Phase Completion Status
+### 10.1. Phase Completion Status
 
 - Phase 1: 33% (1 of 3 tasks complete)
 - Phase 2: 0% (0 of 3 tasks complete)
 - Phase 3: 0% (0 of 3 tasks complete)
 
+---
+
+**Navigation:** [Top ↑](#zsh-configuration-redesign-implementation-task-breakdown)
 
 ---
 
-## Navigation
-
-- [Previous](010-next-steps-implementation-plan.md) - Implementation plan
-- [Next](../../README.md) - Documentation index
-- [Top](#zsh-configuration-redesign---implementation-task-breakdown) - Back to top
-
-
----
-
-*This task breakdown provides a detailed, actionable roadmap for implementing the ZSH configuration improvements. Each task is scoped to approximately 20 minutes of meaningful work for a professional developer, with clear deliverables and success criteria.*
-
+*Last updated: 2025-10-13*

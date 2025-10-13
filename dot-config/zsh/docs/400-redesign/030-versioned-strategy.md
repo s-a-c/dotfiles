@@ -1,49 +1,57 @@
-# 4. ZSH REDESIGN - Final Implementation Guide
-
-## Top
+# ZSH REDESIGN - Final Implementation Guide
 
 ## Table of Contents
 
-- [4. ZSH REDESIGN - Final Implementation Guide](#4-zsh-redesign---final-implementation-guide)
-  - [Top](#top)
-  - [Table of Contents](#table-of-contents)
-  - [1. Executive Summary](#1-executive-summary)
-  - [2. Architecture Overview](#2-architecture-overview)
-    - [2.1 Final Architecture Design](#21-final-architecture-design)
-    - [2.2 Configuration Lifecycle](#22-configuration-lifecycle)
-  - [3. Implementation Phases](#3-implementation-phases)
-    - [3.1 Phase 1: Infrastructure Setup (Day 1)](#31-phase-1-infrastructure-setup-day-1)
-      - [1.1 Create Development Configuration](#11-create-development-configuration)
-      - [1.2 Create .active Symlink Pointers](#12-create-active-symlink-pointers)
-      - [1.3 Update Main Symlinks](#13-update-main-symlinks)
-      - [1.4 Initialize Version Tracking](#14-initialize-version-tracking)
-    - [3.2 Phase 2: Management Scripts (Day 1-2)](#32-phase-2-management-scripts-day-1-2)
-      - [2.1 Create bin Directory](#21-create-bin-directory)
-      - [2.2 Core Management Scripts](#22-core-management-scripts)
-      - [2.3 Make Scripts Executable](#23-make-scripts-executable)
-    - [3.3 Phase 3: Testing Framework (Day 2)](#33-phase-3-testing-framework-day-2)
-      - [3.1 Create Test Structure](#31-create-test-structure)
-      - [3.2 Create Test Suite](#32-create-test-suite)
-      - [tests/switching/config-switching.test.zsh](#testsswitchingconfig-switchingtestzsh)
-    - [3.4 Phase 4: Zgenom Integration (Day 2)](#34-phase-4-zgenom-integration-day-2)
-      - [4.1 Update Zgenom Configuration](#41-update-zgenom-configuration)
-      - [4.2 Create Zgenom Init Scripts](#42-create-zgenom-init-scripts)
-    - [3.5 Phase 5: Validation \& Documentation (Day 3)](#35-phase-5-validation--documentation-day-3)
-      - [5.1 Comprehensive Testing](#51-comprehensive-testing)
-      - [5.2 Performance Benchmarking](#52-performance-benchmarking)
-  - [4. Deployment Workflow](#4-deployment-workflow)
-    - [4.1 Standard Development Cycle](#41-standard-development-cycle)
-    - [4.2 Emergency Procedures](#42-emergency-procedures)
-  - [5. Success Criteria](#5-success-criteria)
-    - [5.1 Functional Requirements](#51-functional-requirements)
-    - [5.2 Technical Requirements](#52-technical-requirements)
-    - [5.3 Operational Requirements](#53-operational-requirements)
-  - [6. Maintenance Guidelines](#6-maintenance-guidelines)
-    - [6.1 Regular Maintenance](#61-regular-maintenance)
-    - [6.2 Configuration Hygiene](#62-configuration-hygiene)
-    - [6.3 Backup Strategy](#63-backup-strategy)
-  - [Conclusion](#conclusion)
-  - [Navigation](#navigation)
+<details>
+<summary>Click to expand</summary>
+
+- [1. Executive Summary](#1-executive-summary)
+- [2. Architecture Overview](#2-architecture-overview)
+  - [2.1. Final Architecture Design](#21-final-architecture-design)
+  - [2.2. Configuration Lifecycle](#22-configuration-lifecycle)
+- [3. Implementation Phases](#3-implementation-phases)
+  - [3.1. Phase 1: Infrastructure Setup (Day 1)](#31-phase-1-infrastructure-setup-day-1)
+    - [3.1.1. Create Development Configuration](#311-create-development-configuration)
+    - [3.1.2. Create .active Symlink Pointers](#312-create-active-symlink-pointers)
+    - [3.1.3. Update Main Symlinks](#313-update-main-symlinks)
+    - [3.1.4. Initialize Version Tracking](#314-initialize-version-tracking)
+- [4. Components](#4-components)
+- [5. Testing Status](#5-testing-status)
+- [6. Deployment Notes](#6-deployment-notes)
+- [7. Purpose](#7-purpose)
+- [8. Testing Status](#8-testing-status)
+  - [8.1. Phase 2: Management Scripts (Day 1-2)](#81-phase-2-management-scripts-day-1-2)
+    - [8.1.1. Create bin Directory](#811-create-bin-directory)
+    - [8.1.2. Core Management Scripts](#812-core-management-scripts)
+- [9. Promotion Details](#9-promotion-details)
+- [10. Components](#10-components)
+    - [10.1. Make Scripts Executable](#101-make-scripts-executable)
+  - [10.1. Phase 3: Testing Framework (Day 2)](#101-phase-3-testing-framework-day-2)
+    - [10.1.1. Create Test Structure](#1011-create-test-structure)
+    - [10.1.2. Create Test Suite](#1012-create-test-suite)
+    - [10.1.3. tests/switching/config-switching.test.zsh](#1013-testsswitchingconfig-switchingtestzsh)
+  - [10.2. Phase 4: Zgenom Integration (Day 2)](#102-phase-4-zgenom-integration-day-2)
+    - [10.2.1. Update Zgenom Configuration](#1021-update-zgenom-configuration)
+    - [10.2.2. Create Zgenom Init Scripts](#1022-create-zgenom-init-scripts)
+  - [10.3. Phase 5: Validation & Documentation (Day 3)](#103-phase-5-validation-documentation-day-3)
+    - [10.3.1. Comprehensive Testing](#1031-comprehensive-testing)
+    - [10.3.2. Performance Benchmarking](#1032-performance-benchmarking)
+- [11. Deployment Workflow](#11-deployment-workflow)
+  - [11.1. Standard Development Cycle](#111-standard-development-cycle)
+  - [11.2. Emergency Procedures](#112-emergency-procedures)
+- [12. Success Criteria](#12-success-criteria)
+  - [12.1. Functional Requirements](#121-functional-requirements)
+  - [12.2. Technical Requirements](#122-technical-requirements)
+  - [12.3. Operational Requirements](#123-operational-requirements)
+- [13. Maintenance Guidelines](#13-maintenance-guidelines)
+  - [13.1. Regular Maintenance](#131-regular-maintenance)
+  - [13.2. Configuration Hygiene](#132-configuration-hygiene)
+  - [13.3. Backup Strategy](#133-backup-strategy)
+- [14. Conclusion](#14-conclusion)
+
+</details>
+
+---
 
 
 ## 1. Executive Summary
@@ -52,7 +60,7 @@ This guide consolidates the complete ZSH REDESIGN implementation strategy, incor
 
 ## 2. Architecture Overview
 
-### 2.1 Final Architecture Design
+### 2.1. Final Architecture Design
 
 ```text
 .zshenv → .zshenv.active → .zshenv.00/.01/.02/.dev
@@ -65,7 +73,7 @@ This guide consolidates the complete ZSH REDESIGN implementation strategy, incor
 └── plugins/ (shared across all configurations)
 ```
 
-### 2.2 Configuration Lifecycle
+### 2.2. Configuration Lifecycle
 
 ```text
 Development (.dev) → Staging (.01) → Production (.00) → Archive (.02+)
@@ -73,9 +81,9 @@ Development (.dev) → Staging (.01) → Production (.00) → Archive (.02+)
 
 ## 3. Implementation Phases
 
-### 3.1 Phase 1: Infrastructure Setup (Day 1)
+### 3.1. Phase 1: Infrastructure Setup (Day 1)
 
-#### 1.1 Create Development Configuration
+#### 3.1.1. Create Development Configuration
 
 ```bash
 #!/bin/bash
@@ -103,7 +111,7 @@ cp -a .zshrc.d.00 .zshrc.d.dev
 echo "✅ Development configuration created"
 ```
 
-#### 1.2 Create .active Symlink Pointers
+#### 3.1.2. Create .active Symlink Pointers
 
 ```bash
 #!/bin/bash
@@ -124,7 +132,7 @@ ln -sf .zshrc.d.00 .zshrc.d.active
 echo "✅ .active pointers created"
 ```
 
-#### 1.3 Update Main Symlinks
+#### 3.1.3. Update Main Symlinks
 
 ```bash
 #!/bin/bash
@@ -152,7 +160,7 @@ mv .zshrc.d.new .zshrc.d
 echo "✅ Main symlinks updated"
 ```
 
-#### 1.4 Initialize Version Tracking
+#### 3.1.4. Initialize Version Tracking
 
 ```bash
 #!/bin/bash
@@ -172,7 +180,7 @@ cat > .version.00.md << EOF
 **Source:** Original stable configuration
 **Status:** Active
 
-## Components
+## 4. Components
 
 - Environment: .zshenv.00
 - Pre-plugins: .zshrc.pre-plugins.d.00/
@@ -180,14 +188,14 @@ cat > .version.00.md << EOF
 - Post-plugins: .zshrc.d.00/
 
 
-## Testing Status
+## 5. Testing Status
 
 - Syntax validation: ✅ Passed
 - Functionality test: ✅ Passed
 - Performance baseline: ✅ Established
 
 
-## Deployment Notes
+## 6. Deployment Notes
 
 - Default configuration
 - Rollback target for new deployments
@@ -203,14 +211,14 @@ cat > .version.dev.md << EOF
 **Source:** Clone of .zshenv.00
 **Status:** Development
 
-## Purpose
+## 7. Purpose
 
 - Experimental changes and new features
 - Safe testing environment
 - Isolated from production configurations
 
 
-## Testing Status
+## 8. Testing Status
 
 - Pending development
 
@@ -219,16 +227,16 @@ EOF
 echo "✅ Version tracking initialized"
 ```
 
-### 3.2 Phase 2: Management Scripts (Day 1-2)
+### 8.1. Phase 2: Management Scripts (Day 1-2)
 
-#### 2.1 Create bin Directory
+#### 8.1.1. Create bin Directory
 
 ```bash
 mkdir -p bin
 chmod 755 bin
 ```
 
-#### 2.2 Core Management Scripts
+#### 8.1.2. Core Management Scripts
 
 ##### bin/switch-to-config.sh
 
@@ -318,7 +326,7 @@ cat > ".version.${TARGET_VERSION}.md" << EOF
 **Source:** Promoted from ${SOURCE_VERSION}
 **Status:** $([ "$TARGET_VERSION" = "00" ] && echo "Active" || echo "Ready")
 
-## Promotion Details
+## 9. Promotion Details
 
 - Source version: ${SOURCE_VERSION}
 - Target version: ${TARGET_VERSION}
@@ -326,7 +334,7 @@ cat > ".version.${TARGET_VERSION}.md" << EOF
 - Promotion reason: $([ "$TARGET_VERSION" = "00" ] && echo "Production deployment" || echo "Staging deployment")
 
 
-## Components
+## 10. Components
 
 - Environment: .zshenv.${TARGET_VERSION}
 - Pre-plugins: .zshrc.pre-plugins.d.${TARGET_VERSION}/
@@ -339,15 +347,15 @@ echo "✅ Configuration promoted successfully"
 echo "💡 Use './bin/switch-to-config.sh ${TARGET_VERSION}' to activate"
 ```
 
-#### 2.3 Make Scripts Executable
+#### 10.1. Make Scripts Executable
 
 ```bash
 chmod +x bin/*.sh
 ```
 
-### 3.3 Phase 3: Testing Framework (Day 2)
+### 10.1. Phase 3: Testing Framework (Day 2)
 
-#### 3.1 Create Test Structure
+#### 10.1.1. Create Test Structure
 
 ```bash
 # Create comprehensive test structure
@@ -355,9 +363,9 @@ chmod +x bin/*.sh
 mkdir -p tests/{unit/{pre-plugins,add-plugins,post-plugins},integration,performance,security,switching,fixtures,helpers}
 ```
 
-#### 3.2 Create Test Suite
+#### 10.1.2. Create Test Suite
 
-#### tests/switching/config-switching.test.zsh
+#### 10.1.3. tests/switching/config-switching.test.zsh
 
 ```bash
 #!/usr/bin/env zsh
@@ -394,9 +402,9 @@ mkdir -p tests/{unit/{pre-plugins,add-plugins,post-plugins},integration,performa
 }
 ```
 
-### 3.4 Phase 4: Zgenom Integration (Day 2)
+### 10.2. Phase 4: Zgenom Integration (Day 2)
 
-#### 4.1 Update Zgenom Configuration
+#### 10.2.1. Update Zgenom Configuration
 
 Since `.zgenom` is vendored, update the configuration to handle multiple versions:
 
@@ -407,7 +415,7 @@ export ZSH_CONFIG_MODE="${ZSH_CONFIG_MODE:-00}"
 export ZGENOM_INIT_FILE="${ZDOTDIR}/.zgenom.init.${ZSH_CONFIG_MODE}"
 ```
 
-#### 4.2 Create Zgenom Init Scripts
+#### 10.2.2. Create Zgenom Init Scripts
 
 ```bash
 # Create configuration-specific init scripts
@@ -415,9 +423,9 @@ export ZGENOM_INIT_FILE="${ZDOTDIR}/.zgenom.init.${ZSH_CONFIG_MODE}"
 touch .zgenom.init.00 .zgenom.init.dev
 ```
 
-### 3.5 Phase 5: Validation & Documentation (Day 3)
+### 10.3. Phase 5: Validation & Documentation (Day 3)
 
-#### 5.1 Comprehensive Testing
+#### 10.3.1. Comprehensive Testing
 
 ```bash
 #!/bin/bash
@@ -457,7 +465,7 @@ done
 echo "✅ All validation tests passed"
 ```
 
-#### 5.2 Performance Benchmarking
+#### 10.3.2. Performance Benchmarking
 
 ```bash
 #!/bin/bash
@@ -484,51 +492,51 @@ done
 echo "✅ Performance benchmarking completed"
 ```
 
-## 4. Deployment Workflow
+## 11. Deployment Workflow
 
-### 4.1 Standard Development Cycle
+### 11.1. Standard Development Cycle
 
 ```bash
-# 1. Start development work
+# Start development work
 
 ./bin/switch-to-config.sh dev
 exec zsh
 
-# 2. Make changes to .dev configuration
+# Make changes to .dev configuration
 
 # Edit files in .zshrc.*.d.dev/
 
-# 3. Test development configuration
+# Test development configuration
 
 ./bin/validate-config.sh dev
 ./tests/run-all-tests.sh
 
-# 4. Promote to staging when ready
+# Promote to staging when ready
 
 ./bin/promote-config.sh dev 01
 
-# 5. Test staging configuration
+# Test staging configuration
 
 ./bin/switch-to-config.sh 01
 ./bin/validate-config.sh 01
 ./tests/run-all-tests.sh
 
-# 6. Deploy to production
+# Deploy to production
 
 ./bin/switch-to-config.sh 00  # Switch back to current stable
 ./bin/promote-config.sh 01 00  # Promote staging to production
 
-# 7. Archive old production (optional)
+# Archive old production (optional)
 
 ./bin/promote-config.sh 00 02
 
-# 8. Switch to new production
+# Switch to new production
 
 ./bin/switch-to-config.sh 00
 exec zsh
 ```
 
-### 4.2 Emergency Procedures
+### 11.2. Emergency Procedures
 
 ```bash
 # Quick rollback to previous stable
@@ -547,9 +555,9 @@ exec zsh
 exec zsh
 ```
 
-## 5. Success Criteria
+## 12. Success Criteria
 
-### 5.1 Functional Requirements
+### 12.1. Functional Requirements
 
 - ✅ Both `.00` and `.dev` configurations load successfully
 - ✅ Configuration switching works without shell restart
@@ -558,7 +566,7 @@ exec zsh
 - ✅ All existing functionality preserved in stable configuration
 
 
-### 5.2 Technical Requirements
+### 12.2. Technical Requirements
 
 - ✅ Symlink integrity maintained across all switches
 - ✅ Zgenom cache works correctly with shared plugins
@@ -567,7 +575,7 @@ exec zsh
 - ✅ Test framework validates new architecture
 
 
-### 5.3 Operational Requirements
+### 12.3. Operational Requirements
 
 - ✅ Clear documentation for all procedures
 - ✅ Emergency procedures documented and tested
@@ -576,9 +584,9 @@ exec zsh
 - ✅ Rollback procedures validated
 
 
-## 6. Maintenance Guidelines
+## 13. Maintenance Guidelines
 
-### 6.1 Regular Maintenance
+### 13.1. Regular Maintenance
 
 1. **Weekly**: Validate all configurations
 2. **Monthly**: Performance benchmarking
@@ -586,7 +594,7 @@ exec zsh
 4. **As needed**: Promote tested changes
 
 
-### 6.2 Configuration Hygiene
+### 13.2. Configuration Hygiene
 
 1. Keep `.dev` configuration clean
 2. Regularly sync improvements from `.dev` to `.00`
@@ -594,7 +602,7 @@ exec zsh
 4. Update documentation with each change
 
 
-### 6.3 Backup Strategy
+### 13.3. Backup Strategy
 
 1. Regular backups of all configuration versions
 2. Git tracking of configuration changes
@@ -602,7 +610,7 @@ exec zsh
 4. Emergency rollback procedures tested regularly
 
 
-## Conclusion
+## 14. Conclusion
 
 This implementation guide provides a comprehensive, production-ready approach to the ZSH REDESIGN project. The versioned configuration management strategy ensures safe deployment, easy rollback, and comprehensive change tracking while maintaining the simplicity and reliability of your existing setup.
 
@@ -610,13 +618,8 @@ The approach leverages your proven `.live` symlink pattern while adding enterpri
 
 ---
 
-## Navigation
-
-- [Previous](030-versioned-strategy.md) - Versioned configuration strategy
-- [Next](../000-index.md) - Back to main documentation index
-- [Top](#top) - Back to top
-
+**Navigation:** [← Symlink Architecture](400-redesign/020-symlink-architecture.md) | [Top ↑](#zsh-redesign-final-implementation-guide) | [Implementation Guide →](400-redesign/040-implementation-guide.md)
 
 ---
 
-*Compliant with [`/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md`](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v[checksum]*
+*Last updated: 2025-10-13*

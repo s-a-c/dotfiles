@@ -1,5 +1,19 @@
 # Top
 
+## Table of Contents
+
+<details>
+<summary>Click to expand</summary>
+
+
+</details>
+
+---
+
+
+---
+
+
 # Reports Index
 
 This folder contains automated reports produced by the documentation maintenance tooling.
@@ -17,3 +31,10 @@ Quick checks:
 - [Previous](../000-index.md) - Back to main documentation index
 - [Top](#top)
 
+---
+
+**Navigation:** [Top ↑](#top)
+
+---
+
+*Last updated: 2025-10-13*

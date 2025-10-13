@@ -1,4 +1,18 @@
-# 050 - Testing Framework
+# - Testing Framework
+
+## Table of Contents
+
+<details>
+<summary>Click to expand</summary>
+
+
+</details>
+
+---
+
+
+---
+
 
   "generated": "2025-10-07T22:33:46.434742Z",
   "files_scanned": [
@@ -1745,3 +1759,11 @@
         },
         {
           "text": "000-index",
+
+---
+
+**Navigation:** [← Implementation Guide](400-redesign/040-implementation-guide.md) | [Top ↑](#testing-framework) | [Risk Assessment →](400-redesign/060-risk-assessment.md)
+
+---
+
+*Last updated: 2025-10-13*

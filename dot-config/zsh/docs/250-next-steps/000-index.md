@@ -1,11 +1,24 @@
-# 250 - Next Steps
+# - Next Steps
 
-## Top
+## Table of Contents
+
+<details>
+<summary>Click to expand</summary>
+
+- [1. Top](#1-top)
+- [2. Contents](#2-contents)
+
+</details>
+
+---
+
+
+## 1. Top
 
 
 This folder contains planning and implementation items for the next work phases. Use this index to find implementation plans, task breakdowns and performance baselines.
 
-## Contents
+## 2. Contents
 
 - [010-next-steps-implementation-plan.md](010-next-steps-implementation-plan.md) - Implementation roadmap and acceptance criteria
 - [020-implementation-task-breakdown.md](020-implementation-task-breakdown.md) - Task breakdown for implementation
@@ -16,7 +29,8 @@ This folder contains planning and implementation items for the next work phases.
 - [021-task-1.2-findings.md](021-task-1.2-findings.md) - Task 1.2 findings and resolutions
 
 
+**Navigation:** [Top ↑](#next-steps)
+
 ---
 
-- [Previous](../README.md) - Documentation root
-- [Top](#top)
+*Last updated: 2025-10-13*

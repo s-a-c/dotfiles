@@ -1,12 +1,103 @@
 # Naming Convention Analysis
 
-## Overview
+## Table of Contents
+
+<details>
+<summary>Click to expand</summary>
+
+- [1. Overview](#1-overview)
+- [2. Naming Convention Standard](#2-naming-convention-standard)
+  - [2.1. **Format Specification**](#21-format-specification)
+    - [2.1.1. Examples:](#211-examples)
+  - [2.2. **Load Order Guidelines**](#22-load-order-guidelines)
+    - [2.2.1. Reserved Ranges:](#221-reserved-ranges)
+    - [2.2.2. Category Naming:](#222-category-naming)
+- [3. Compliance Assessment](#3-compliance-assessment)
+  - [3.1. **Overall Compliance Score: 95%**](#31-overall-compliance-score-95)
+  - [3.2. **Detailed File Analysis**](#32-detailed-file-analysis)
+    - [3.2.1. **Pre-Plugin Phase** (`.zshrc.pre-plugins.d/`)](#321-pre-plugin-phase-zshrcpre-pluginsd)
+    - [3.2.2. **Plugin Definition Phase** (`.zshrc.add-plugins.d/`)](#322-plugin-definition-phase-zshrcadd-pluginsd)
+    - [3.2.3. **Post-Plugin Phase** (`.zshrc.d/`)](#323-post-plugin-phase-zshrcd)
+- [4. Issue Analysis](#4-issue-analysis)
+  - [4.1. **🔴 Critical Issue: Duplicate Filename**](#41-critical-issue-duplicate-filename)
+    - [4.1.1. Analysis:](#411-analysis)
+    - [4.1.2. Recommended Resolution:](#412-recommended-resolution)
+  - [4.2. **🟡 Load Order Issues**](#42-load-order-issues)
+    - [4.2.1. **1. Large Gaps in Numbering**](#421-1-large-gaps-in-numbering)
+    - [4.2.2. Current Gaps:](#422-current-gaps)
+    - [4.2.3. Impact:](#423-impact)
+    - [4.2.4. **2. Functional Misplacement**](#424-2-functional-misplacement)
+    - [4.2.5. Analysis:](#425-analysis)
+    - [4.2.6. **3. Category Naming Inconsistencies**](#426-3-category-naming-inconsistencies)
+    - [4.2.7. Minor Inconsistencies:](#427-minor-inconsistencies)
+- [5. Load Order Logic Assessment](#5-load-order-logic-assessment)
+  - [5.1. **Pre-Plugin Phase Logic**](#51-pre-plugin-phase-logic)
+    - [5.1.1. Current Ordering:](#511-current-ordering)
+  - [5.2. **Plugin Phase Logic**](#52-plugin-phase-logic)
+    - [5.2.1. Current Ordering:](#521-current-ordering)
+  - [5.3. **Post-Plugin Phase Logic**](#53-post-plugin-phase-logic)
+    - [5.3.1. Current Ordering:](#531-current-ordering)
+- [6. Category Naming Analysis](#6-category-naming-analysis)
+  - [6.1. **Category Effectiveness**](#61-category-effectiveness)
+    - [6.1.1. **✅ Well-Designed Categories**](#611-well-designed-categories)
+    - [6.1.2. Performance Category (`perf-*`):](#612-performance-category-perf)
+    - [6.1.3. Development Categories (`dev-*`):](#613-development-categories-dev)
+    - [6.1.4. Productivity Categories:](#614-productivity-categories)
+    - [6.1.5. **⚠️ Areas for Improvement**](#615-areas-for-improvement)
+    - [6.1.6. Optional Category (`optional-*`):](#616-optional-category-optional)
+    - [6.1.7. Terminal Integration:](#617-terminal-integration)
+  - [6.2. **Naming Pattern Consistency**](#62-naming-pattern-consistency)
+    - [6.2.1. Hyphenation Patterns:](#621-hyphenation-patterns)
+    - [6.2.2. Abbreviation Usage:](#622-abbreviation-usage)
+- [7. Recommendations](#7-recommendations)
+  - [7.1. **High Priority Fixes**](#71-high-priority-fixes)
+    - [7.1.1. **1. Resolve Duplicate Filename**](#711-1-resolve-duplicate-filename)
+    - [7.1.2. Immediate Action Required:](#712-immediate-action-required)
+    - [7.1.3. **2. Fix Load Order Gaps**](#713-2-fix-load-order-gaps)
+    - [7.1.4. Proposed New Structure for `.zshrc.d/`:](#714-proposed-new-structure-for-zshrcd)
+    - [7.1.5. Benefits:](#715-benefits)
+  - [7.2. **Medium Priority Improvements**](#72-medium-priority-improvements)
+    - [7.2.1. **3. Enhance Category Names**](#721-3-enhance-category-names)
+    - [7.2.2. Proposed Improvements:](#722-proposed-improvements)
+    - [7.2.3. **4. Implement Naming Validation**](#723-4-implement-naming-validation)
+    - [7.2.4. Automated Validation:](#724-automated-validation)
+  - [7.3. **Low Priority Enhancements**](#73-low-priority-enhancements)
+    - [7.3.1. **5. Load Order Optimization**](#731-5-load-order-optimization)
+    - [7.3.2. Optimization Opportunities:](#732-optimization-opportunities)
+- [8. Implementation Guidelines](#8-implementation-guidelines)
+  - [8.1. **Adding New Modules**](#81-adding-new-modules)
+    - [8.1.1. Process:](#811-process)
+    - [8.1.2. Example:](#812-example)
+  - [8.2. **Renaming Existing Modules**](#82-renaming-existing-modules)
+    - [8.2.1. Process:](#821-process)
+  - [8.3. **Validation Tools**](#83-validation-tools)
+    - [8.3.1. Manual Validation Checklist:](#831-manual-validation-checklist)
+    - [8.3.2. Automated Validation:](#832-automated-validation)
+- [9. Best Practices](#9-best-practices)
+  - [9.1. **Load Order Best Practices**](#91-load-order-best-practices)
+    - [9.1.1. Dependency Management:](#911-dependency-management)
+    - [9.1.2. Numbering Strategy:](#912-numbering-strategy)
+  - [9.2. **Category Naming Best Practices**](#92-category-naming-best-practices)
+    - [9.2.1. Clarity:](#921-clarity)
+    - [9.2.2. Maintainability:](#922-maintainability)
+- [10. Assessment Summary](#10-assessment-summary)
+  - [10.1. **Current State: Excellent with Minor Issues**](#101-current-state-excellent-with-minor-issues)
+    - [10.1.1. Strengths:](#1011-strengths)
+    - [10.1.2. Areas for Improvement:](#1012-areas-for-improvement)
+  - [10.2. **Expected Outcomes After Fixes**](#102-expected-outcomes-after-fixes)
+
+</details>
+
+---
+
+
+## 1. Overview
 
 This document analyzes the adherence to the standardized `XX_YY-name.zsh` naming convention across all configuration directories. The analysis includes compliance assessment, issue identification, and recommendations for maintaining consistent naming standards.
 
-## Naming Convention Standard
+## 2. Naming Convention Standard
 
-### **Format Specification**
+### 2.1. **Format Specification**
 
 **Standard Format:** `XX_YY-name.zsh`
 
@@ -16,7 +107,7 @@ This document analyzes the adherence to the standardized `XX_YY-name.zsh` naming
 - **Extension**: Always `.zsh`
 
 
-#### Examples:
+#### 2.1.1. Examples:
 ```bash
 ✅ 010-shell-safety-nounset.zsh     # Load order 010, shell safety category
 ✅ 100-perf-core.zsh               # Load order 100, performance core category
@@ -26,9 +117,9 @@ This document analyzes the adherence to the standardized `XX_YY-name.zsh` naming
 ❌ safety-shell.zsh                # Wrong separator position
 ```
 
-### **Load Order Guidelines**
+### 2.2. **Load Order Guidelines**
 
-#### Reserved Ranges:
+#### 2.2.1. Reserved Ranges:
 
 - **000-099**: Pre-plugin setup and core systems
 - **100-199**: Plugin definitions and core tools
@@ -36,7 +127,7 @@ This document analyzes the adherence to the standardized `XX_YY-name.zsh` naming
 - **300-999**: Post-plugin setup and terminal integration
 
 
-#### Category Naming:
+#### 2.2.2. Category Naming:
 
 - **perf-**: Performance and optimization tools
 - **dev-**: Development environment and tools
@@ -46,9 +137,9 @@ This document analyzes the adherence to the standardized `XX_YY-name.zsh` naming
 - **terminal-**: Terminal-specific integrations
 
 
-## Compliance Assessment
+## 3. Compliance Assessment
 
-### **Overall Compliance Score: 95%**
+### 3.1. **Overall Compliance Score: 95%**
 
 | Directory | Files | Compliant | Non-Compliant | Compliance Rate |
 |-----------|-------|-----------|---------------|-----------------|
@@ -57,9 +148,9 @@ This document analyzes the adherence to the standardized `XX_YY-name.zsh` naming
 | `.zshrc.d/` | 11 | 10 | 1 | **91%** |
 | **Total** | **28** | **27** | **1** | **96%** |
 
-### **Detailed File Analysis**
+### 3.2. **Detailed File Analysis**
 
-#### **Pre-Plugin Phase** (`.zshrc.pre-plugins.d/`)
+#### 3.2.1. **Pre-Plugin Phase** (`.zshrc.pre-plugins.d/`)
 
 | Filename | Load Order | Category | Status | Notes |
 |----------|------------|----------|--------|-------|
@@ -73,7 +164,7 @@ This document analyzes the adherence to the standardized `XX_YY-name.zsh` naming
 **Compliance:** 100% ✅
 **Load Order Logic:** Perfect sequential ordering
 
-#### **Plugin Definition Phase** (`.zshrc.add-plugins.d/`)
+#### 3.2.2. **Plugin Definition Phase** (`.zshrc.add-plugins.d/`)
 
 | Filename | Load Order | Category | Status | Notes |
 |----------|------------|----------|--------|-------|
@@ -92,7 +183,7 @@ This document analyzes the adherence to the standardized `XX_YY-name.zsh` naming
 **Compliance:** 100% ✅
 **Load Order Logic:** Excellent grouping by functionality
 
-#### **Post-Plugin Phase** (`.zshrc.d/`)
+#### 3.2.3. **Post-Plugin Phase** (`.zshrc.d/`)
 
 | Filename | Load Order | Category | Status | Notes |
 |----------|------------|----------|--------|-------|
@@ -111,20 +202,20 @@ This document analyzes the adherence to the standardized `XX_YY-name.zsh` naming
 **Compliance:** 91% ⚠️ (1 duplicate issue)
 **Load Order Logic:** Good, but with gaps and organizational issues
 
-## Issue Analysis
+## 4. Issue Analysis
 
-### **🔴 Critical Issue: Duplicate Filename**
+### 4.1. **🔴 Critical Issue: Duplicate Filename**
 
 **Problem:** `195-optional-brew-abbr.zsh` exists in both `.zshrc.add-plugins.d/` and `.zshrc.d/`
 
-#### Analysis:
+#### 4.1.1. Analysis:
 
 - **File sizes differ:** Indicates different content or modification times
 - **Wrong phase:** Homebrew aliases should be in plugin definition phase, not post-plugin
 - **Maintenance burden:** Two files to maintain for same functionality
 
 
-#### Recommended Resolution:
+#### 4.1.2. Recommended Resolution:
 
 1. **Compare contents** of both files
 2. **Determine authoritative version** based on functionality
@@ -132,51 +223,51 @@ This document analyzes the adherence to the standardized `XX_YY-name.zsh` naming
 4. **Remove from post-plugin phase** (`.zshrc.d/`)
 
 
-### **🟡 Load Order Issues**
+### 4.2. **🟡 Load Order Issues**
 
-#### **1. Large Gaps in Numbering**
+#### 4.2.1. **1. Large Gaps in Numbering**
 
 **Problem:** Inconsistent numbering gaps in `.zshrc.d/`
 
-#### Current Gaps:
+#### 4.2.2. Current Gaps:
 
 - **115 → 195:** 80-number gap
 - **195 → 300:** 105-number gap
 - **345 → 999:** Remaining range unused
 
 
-#### Impact:
+#### 4.2.3. Impact:
 
 - **Limited extensibility** - No room for new modules in some ranges
 - **Confusing organization** - Unclear where to add new features
 - **Maintenance difficulty** - Hard to insert modules in appropriate locations
 
 
-#### **2. Functional Misplacement**
+#### 4.2.4. **2. Functional Misplacement**
 
 **Problem:** `195-optional-brew-abbr.zsh` in post-plugin phase
 
-#### Analysis:
+#### 4.2.5. Analysis:
 
 - **Should be in plugin phase** - Homebrew aliases are plugin-like functionality
 - **Post-plugin phase** should be for terminal integration and environment setup
 - **Creates confusion** about phase responsibilities
 
 
-#### **3. Category Naming Inconsistencies**
+#### 4.2.6. **3. Category Naming Inconsistencies**
 
-#### Minor Inconsistencies:
+#### 4.2.7. Minor Inconsistencies:
 
 - **Mixed separators:** Some use single hyphens, some use multiple
 - **Category clarity:** Some category names could be more descriptive
 - **Feature vs. tool:** Inconsistent distinction between tools and features
 
 
-## Load Order Logic Assessment
+## 5. Load Order Logic Assessment
 
-### **Pre-Plugin Phase Logic**
+### 5.1. **Pre-Plugin Phase Logic**
 
-#### Current Ordering:
+#### 5.1.1. Current Ordering:
 ```bash
 000-layer-set-marker.zsh          # Layer system setup
 010-shell-safety-nounset.zsh      # Security initialization
@@ -193,9 +284,9 @@ This document analyzes the adherence to the standardized `XX_YY-name.zsh` naming
 - **Clear progression** from basic to advanced
 
 
-### **Plugin Phase Logic**
+### 5.2. **Plugin Phase Logic**
 
-#### Current Ordering:
+#### 5.2.1. Current Ordering:
 ```bash
 100-perf-core.zsh                 # Performance foundation
 110-dev-php.zsh                   # PHP development
@@ -217,9 +308,9 @@ This document analyzes the adherence to the standardized `XX_YY-name.zsh` naming
 - **Category separation** clear
 
 
-### **Post-Plugin Phase Logic**
+### 5.3. **Post-Plugin Phase Logic**
 
-#### Current Ordering:
+#### 5.3.1. Current Ordering:
 ```bash
 100-terminal-integration.zsh      # Terminal setup
 110-starship-prompt.zsh           # Prompt configuration
@@ -241,19 +332,19 @@ This document analyzes the adherence to the standardized `XX_YY-name.zsh` naming
 - **Large gaps limit extensibility**
 
 
-## Category Naming Analysis
+## 6. Category Naming Analysis
 
-### **Category Effectiveness**
+### 6.1. **Category Effectiveness**
 
-#### **✅ Well-Designed Categories**
+#### 6.1.1. **✅ Well-Designed Categories**
 
-#### Performance Category (`perf-*`):
+#### 6.1.2. Performance Category (`perf-*`):
 
 - `100-perf-core.zsh` - Clear, descriptive
 - Establishes performance foundation
 
 
-#### Development Categories (`dev-*`):
+#### 6.1.3. Development Categories (`dev-*`):
 
 - `110-dev-php.zsh` - Specific language/tool
 - `120-dev-node.zsh` - Clear technology focus
@@ -261,49 +352,49 @@ This document analyzes the adherence to the standardized `XX_YY-name.zsh` naming
 - `136-dev-python-uv.zsh` - Specific tool (uv)
 
 
-#### Productivity Categories:
+#### 6.1.4. Productivity Categories:
 
 - `150-productivity-nav.zsh` - Navigation focus
 - `160-productivity-fzf.zsh` - Specific tool integration
 
 
-#### **⚠️ Areas for Improvement**
+#### 6.1.5. **⚠️ Areas for Improvement**
 
-#### Optional Category (`optional-*`):
+#### 6.1.6. Optional Category (`optional-*`):
 
 - `180-optional-autopair.zsh` - Clear optional nature
 - `190-optional-abbr.zsh` - Clear optional nature
 - `195-optional-brew-abbr.zsh` - Could be more specific
 
 
-#### Terminal Integration:
+#### 6.1.7. Terminal Integration:
 
 - `100-terminal-integration.zsh` - Very clear purpose
 
 
-### **Naming Pattern Consistency**
+### 6.2. **Naming Pattern Consistency**
 
-#### Hyphenation Patterns:
+#### 6.2.1. Hyphenation Patterns:
 
 - **Single hyphens:** `dev-php`, `dev-node` ✅
 - **Multiple hyphens:** `shell-safety`, `neovim-environment` ✅
 - **Consistency:** Generally good across files
 
 
-#### Abbreviation Usage:
+#### 6.2.2. Abbreviation Usage:
 
 - **FZF:** Used consistently as `fzf`
 - **Neovim:** Used consistently as `neovim`
 - **GitHub:** Used as `github` (not `gh` or `git-hub`)
 
 
-## Recommendations
+## 7. Recommendations
 
-### **High Priority Fixes**
+### 7.1. **High Priority Fixes**
 
-#### **1. Resolve Duplicate Filename**
+#### 7.1.1. **1. Resolve Duplicate Filename**
 
-#### Immediate Action Required:
+#### 7.1.2. Immediate Action Required:
 ```bash
 
 # Compare the two files
@@ -318,9 +409,9 @@ diff .zshrc.add-plugins.d/195-optional-brew-abbr.zsh .zshrc.d/195-optional-brew-
 
 ```
 
-#### **2. Fix Load Order Gaps**
+#### 7.1.3. **2. Fix Load Order Gaps**
 
-#### Proposed New Structure for `.zshrc.d/`:
+#### 7.1.4. Proposed New Structure for `.zshrc.d/`:
 ```bash
 100-terminal-integration.zsh      # Terminal setup
 110-starship-prompt.zsh           # Prompt configuration
@@ -334,27 +425,27 @@ diff .zshrc.add-plugins.d/195-optional-brew-abbr.zsh .zshrc.d/195-optional-brew-
 165-neovim-helpers.zsh            # Neovim utilities (moved from 345)
 ```
 
-#### Benefits:
+#### 7.1.5. Benefits:
 
 - **Better organization** - Related features grouped together
 - **Room for expansion** - Numbers available in each logical group
 - **Clearer progression** - From basic to advanced features
 
 
-### **Medium Priority Improvements**
+### 7.2. **Medium Priority Improvements**
 
-#### **3. Enhance Category Names**
+#### 7.2.1. **3. Enhance Category Names**
 
-#### Proposed Improvements:
+#### 7.2.2. Proposed Improvements:
 
 - `dev-systems` → `dev-rust-go` (more specific)
 - `productivity-nav` → `productivity-navigation` (more descriptive)
 - `optional-brew-abbr` → `optional-homebrew` (more standard name)
 
 
-#### **4. Implement Naming Validation**
+#### 7.2.3. **4. Implement Naming Validation**
 
-#### Automated Validation:
+#### 7.2.4. Automated Validation:
 ```bash
 zf::validate_naming_convention() {
     local errors=0
@@ -372,22 +463,22 @@ zf::validate_naming_convention() {
 }
 ```
 
-### **Low Priority Enhancements**
+### 7.3. **Low Priority Enhancements**
 
-#### **5. Load Order Optimization**
+#### 7.3.1. **5. Load Order Optimization**
 
-#### Optimization Opportunities:
+#### 7.3.2. Optimization Opportunities:
 
 - **Group related functionality** in contiguous ranges
 - **Reserve ranges** for future features
 - **Document load order rationale** in module headers
 
 
-## Implementation Guidelines
+## 8. Implementation Guidelines
 
-### **Adding New Modules**
+### 8.1. **Adding New Modules**
 
-#### Process:
+#### 8.1.1. Process:
 
 1. **Choose appropriate load order** based on dependencies
 2. **Select descriptive category** name
@@ -395,7 +486,7 @@ zf::validate_naming_convention() {
 4. **Validate with naming check** before committing
 
 
-#### Example:
+#### 8.1.2. Example:
 ```bash
 
 # New module for Docker integration
@@ -410,9 +501,9 @@ zf::validate_naming_convention() {
 
 ```
 
-### **Renaming Existing Modules**
+### 8.2. **Renaming Existing Modules**
 
-#### Process:
+#### 8.2.1. Process:
 
 1. **Identify module to rename**
 2. **Choose new name** following conventions
@@ -421,9 +512,9 @@ zf::validate_naming_convention() {
 5. **Test** to ensure no broken dependencies
 
 
-### **Validation Tools**
+### 8.3. **Validation Tools**
 
-#### Manual Validation Checklist:
+#### 8.3.1. Manual Validation Checklist:
 
 - [ ] **Format:** `XX_YY-name.zsh` pattern followed
 - [ ] **Load order:** Appropriate for dependencies
@@ -432,7 +523,7 @@ zf::validate_naming_convention() {
 - [ ] **Documentation:** Header includes naming rationale
 
 
-#### Automated Validation:
+#### 8.3.2. Automated Validation:
 ```bash
 
 # Check all naming conventions
@@ -442,45 +533,45 @@ find . -name "*.zsh" -not -name ".zshrc" -not -name ".zshenv" | \
     grep -v '^[0-9]\{2\}-[a-z-]\+$' && echo "❌ Naming violations found"
 ```
 
-## Best Practices
+## 9. Best Practices
 
-### **Load Order Best Practices**
+### 9.1. **Load Order Best Practices**
 
-#### Dependency Management:
+#### 9.1.1. Dependency Management:
 
 - **Load dependencies first** - Core before specific
 - **Group related features** - Keep similar functionality together
 - **Reserve ranges** - Leave room for future additions
 
 
-#### Numbering Strategy:
+#### 9.1.2. Numbering Strategy:
 
 - **Use all ranges** - Don't skip entire ranges unnecessarily
 - **Logical grouping** - 100-199 for plugins, 300-399 for integrations
 - **Future-proof** - Leave gaps for new modules
 
 
-### **Category Naming Best Practices**
+### 9.2. **Category Naming Best Practices**
 
-#### Clarity:
+#### 9.2.1. Clarity:
 
 - **Be specific** - `dev-node` better than `dev-js`
 - **Use standard names** - `homebrew` not `brew` or `home-brew`
 - **Consistent terminology** - Use same terms across modules
 
 
-#### Maintainability:
+#### 9.2.2. Maintainability:
 
 - **Descriptive categories** - `productivity-navigation` better than `productivity-nav`
 - **Logical grouping** - Related tools in same category
 - **Future-proof names** - Avoid overly specific category names
 
 
-## Assessment Summary
+## 10. Assessment Summary
 
-### **Current State: Excellent with Minor Issues**
+### 10.1. **Current State: Excellent with Minor Issues**
 
-#### Strengths:
+#### 10.1.1. Strengths:
 
 - ✅ **95% compliance rate** across all modules
 - ✅ **Logical load order** in most phases
@@ -488,20 +579,27 @@ find . -name "*.zsh" -not -name ".zshrc" -not -name ".zshenv" | \
 - ✅ **Consistent format** across directories
 
 
-#### Areas for Improvement:
+#### 10.1.2. Areas for Improvement:
 
 - ⚠️ **Duplicate filename** issue needs resolution
 - ⚠️ **Load order gaps** should be addressed
 - ⚠️ **Category specificity** could be enhanced
 
 
-### **Expected Outcomes After Fixes**
+### 10.2. **Expected Outcomes After Fixes**
 
 **Compliance Target:** 100%
 **Maintainability:** Significantly improved
 **Extensibility:** Enhanced with better organization
 **Contributor Experience:** Much clearer guidelines
 
----
 
 *The naming convention analysis shows excellent adherence to standards with only minor issues to resolve. The duplicate filename is the primary concern, followed by organizational improvements for better maintainability and extensibility.*
+
+---
+
+**Navigation:** [← Improvement Recommendations](220-improvement-recommendations.md) | [Top ↑](#naming-convention-analysis) | [Architecture Diagrams →](300-architecture-diagrams.md)
+
+---
+
+*Last updated: 2025-10-13*
