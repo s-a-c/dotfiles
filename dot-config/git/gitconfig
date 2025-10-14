@@ -86,3 +86,5 @@ autoSetupRemote = true
 [gitbutler]
 	gitbutlerCommitter = 1
 	aiModelProvider = anthropic
+[fetch]
+	prune = true
