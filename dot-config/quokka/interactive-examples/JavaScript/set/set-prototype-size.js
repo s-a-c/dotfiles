@@ -7,4 +7,8 @@ set1.add('forty two');
 set1.add(object1);
 
 console.log(set1.size);
+<<<<<<< HEAD
 // expected output: 3
+=======
+// expected output: 3
+>>>>>>> origin/develop

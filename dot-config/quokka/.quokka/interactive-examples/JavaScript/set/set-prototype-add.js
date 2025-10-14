@@ -8,4 +8,8 @@ for (let item of set1) {
   console.log(item);
   // expected output: 42
   // expected output: 13
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/develop

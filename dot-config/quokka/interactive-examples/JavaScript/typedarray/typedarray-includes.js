@@ -5,4 +5,8 @@ console.log(uint8.includes(20));
 
 // check from position 3
 console.log(uint8.includes(20, 3));
+<<<<<<< HEAD
 // expected output: false
+=======
+// expected output: false
+>>>>>>> origin/develop

@@ -14,11 +14,19 @@ ZDOTDIR="${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}"
 # Clear completion dumps using ZSH_COMPDUMP from .zshenv
 if [[ -n "$ZSH_COMPDUMP" ]]; then
     rm -f "${ZSH_COMPDUMP}"* 2>/dev/null
+<<<<<<< HEAD
         zf::debug "✅ Completion dumps cleared (${ZSH_COMPDUMP}*)"
 else
     # Fallback to ZDOTDIR if ZSH_COMPDUMP not set
     rm -f "${ZDOTDIR}"/.zcompdump* 2>/dev/null
         zf::debug "✅ Completion dumps cleared (${ZDOTDIR}/.zcompdump*)"
+=======
+        zsh_debug_echo "✅ Completion dumps cleared (${ZSH_COMPDUMP}*)"
+else
+    # Fallback to ZDOTDIR if ZSH_COMPDUMP not set
+    rm -f "${ZDOTDIR}"/.zcompdump* 2>/dev/null
+        zsh_debug_echo "✅ Completion dumps cleared (${ZDOTDIR}/.zcompdump*)"
+>>>>>>> origin/develop
 fi
 
 # Clear compiled Zsh files using ZDOTDIR
@@ -29,12 +37,20 @@ echo "✅ Zsh compiled files cleared"
 if [[ -n "$ZGEN_DIR" && -d "$ZGEN_DIR" ]]; then
     rm -f "${ZGEN_DIR}/sources.zsh" 2>/dev/null
     rm -rf "${ZGEN_DIR}"/**/**.zwc 2>/dev/null
+<<<<<<< HEAD
         zf::debug "✅ Zgenom caches cleared (${ZGEN_DIR})"
+=======
+        zsh_debug_echo "✅ Zgenom caches cleared (${ZGEN_DIR})"
+>>>>>>> origin/develop
 else
     # Fallback to ZDOTDIR/.zgenom
     rm -f "${ZDOTDIR}/.zgenom/sources.zsh" 2>/dev/null
     rm -rf "${ZDOTDIR}/.zgenom"/**/**.zwc 2>/dev/null
+<<<<<<< HEAD
         zf::debug "✅ Zgenom caches cleared (${ZDOTDIR}/.zgenom)"
+=======
+        zsh_debug_echo "✅ Zgenom caches cleared (${ZDOTDIR}/.zgenom)"
+>>>>>>> origin/develop
 fi
 
 # Clear .ng system files and caches using ZDOTDIR
@@ -58,6 +74,7 @@ echo "✅ NG functions unloaded from memory"
 # Clear any plugin manager caches using has_command from .zshenv if available
 if declare -f has_command >/dev/null 2>&1; then
     if has_command zgenom; then
+<<<<<<< HEAD
             zf::debug "🔄 Resetting zgenom..."
         zgenom reset >/dev/null 2>&1
             zf::debug "✅ Zgenom reset complete"
@@ -67,6 +84,17 @@ else
             zf::debug "🔄 Resetting zgenom..."
         zgenom reset >/dev/null 2>&1
             zf::debug "✅ Zgenom reset complete"
+=======
+            zsh_debug_echo "🔄 Resetting zgenom..."
+        zgenom reset >/dev/null 2>&1
+            zsh_debug_echo "✅ Zgenom reset complete"
+    fi
+else
+    if command -v zgenom >/dev/null 2>&1; then
+            zsh_debug_echo "🔄 Resetting zgenom..."
+        zgenom reset >/dev/null 2>&1
+            zsh_debug_echo "✅ Zgenom reset complete"
+>>>>>>> origin/develop
     fi
 fi
 

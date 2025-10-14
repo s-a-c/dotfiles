@@ -43,7 +43,11 @@ return [
     | or the servers endpoint above.
     |
     */
+<<<<<<< HEAD
     'default_server' => 'free',
+=======
+    'default_server' => 'eu-1',
+>>>>>>> origin/develop
 
     /*
     |--------------------------------------------------------------------------

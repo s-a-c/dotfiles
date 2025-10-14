@@ -11,7 +11,11 @@
 
 ### 2. Startup Performance Issues
 - **Issue**: Extremely slow startup (9.4 seconds)
+<<<<<<< HEAD
 - **Causes**:
+=======
+- **Causes**: 
+>>>>>>> origin/develop
   - Multiple redundant sourcing of bob env (6 times in .zshenv)
   - Debug echo statements to stderr in multiple files
   - Heavy plugin initialization
@@ -56,7 +60,11 @@
 4. Remove debug output
 5. Fix syntax errors
 
+<<<<<<< HEAD
 ### Medium Priority
+=======
+### Medium Priority 
+>>>>>>> origin/develop
 1. Optimize startup performance
 2. Clean up redundant sourcing
 3. Implement proper error handling

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #!/usr/bin/env zsh
+=======
+#!/opt/homebrew/bin/zsh
+>>>>>>> origin/develop
 # ==============================================================================
 # ZSH Configuration: Comprehensive Detection Test Suite
 # ==============================================================================
@@ -25,7 +29,11 @@ export ZSH_SOURCE_EXECUTE_DEBUG=false
 DETECTION_SCRIPT="${ZDOTDIR:-$HOME/.config/zsh}/.zshrc.d/00_01-source-execute-detection.zsh"
 
 if [[ ! -f "$DETECTION_SCRIPT" ]]; then
+<<<<<<< HEAD
         zf::debug "ERROR: Source/execute detection script not found: $DETECTION_SCRIPT"
+=======
+        zsh_debug_echo "ERROR: Source/execute detection script not found: $DETECTION_SCRIPT"
+>>>>>>> origin/develop
     exit 1
 fi
 
@@ -52,7 +60,11 @@ ZSH_CONFIG_ROOT="${ZDOTDIR:-$HOME/.config/zsh}"
 log_test() {
     local message="$1"
     local timestamp=$(date -u '+%Y-%m-%d %H:%M:%S UTC')
+<<<<<<< HEAD
         zf::debug "[$timestamp] [TEST] [$$] $message" >> "$LOG_FILE" 2>/dev/null || true
+=======
+        zsh_debug_echo "[$timestamp] [TEST] [$$] $message" >> "$LOG_FILE" 2>/dev/null || true
+>>>>>>> origin/develop
 }
 
 run_test() {
@@ -61,17 +73,29 @@ run_test() {
 
     TEST_COUNT=$((TEST_COUNT + 1))
 
+<<<<<<< HEAD
         zf::debug "Running test $TEST_COUNT: $test_name"
+=======
+        zsh_debug_echo "Running test $TEST_COUNT: $test_name"
+>>>>>>> origin/develop
     log_test "Starting test: $test_name"
 
     if "$test_function"; then
         TEST_PASSED=$((TEST_PASSED + 1))
+<<<<<<< HEAD
             zf::debug "  ✓ PASS: $test_name"
+=======
+            zsh_debug_echo "  ✓ PASS: $test_name"
+>>>>>>> origin/develop
         log_test "PASS: $test_name"
         return 0
     else
         TEST_FAILED=$((TEST_FAILED + 1))
+<<<<<<< HEAD
             zf::debug "  ✗ FAIL: $test_name"
+=======
+            zsh_debug_echo "  ✗ FAIL: $test_name"
+>>>>>>> origin/develop
         log_test "FAIL: $test_name"
         return 1
     fi
@@ -84,8 +108,13 @@ assert_command_succeeds() {
     if eval "$command" >/dev/null 2>&1; then
         return 0
     else
+<<<<<<< HEAD
             zf::debug "    ASSERTION FAILED: $message"
             zf::debug "    Command: $command"
+=======
+            zsh_debug_echo "    ASSERTION FAILED: $message"
+            zsh_debug_echo "    Command: $command"
+>>>>>>> origin/develop
         return 1
     fi
 }
@@ -114,6 +143,7 @@ test_detection_system_core_functionality() {
     for func_name in "${core_functions[@]}"; do
         if declare -f "$func_name" > /dev/null 2>&1; then
             working_functions=$((working_functions + 1))
+<<<<<<< HEAD
                 zf::debug "    ✓ $func_name is available and callable"
         else
                 zf::debug "    ✗ $func_name is not available"
@@ -121,6 +151,15 @@ test_detection_system_core_functionality() {
     done
 
         zf::debug "    📊 Core functionality: $working_functions/$total_functions functions working"
+=======
+                zsh_debug_echo "    ✓ $func_name is available and callable"
+        else
+                zsh_debug_echo "    ✗ $func_name is not available"
+        fi
+    done
+
+        zsh_debug_echo "    📊 Core functionality: $working_functions/$total_functions functions working"
+>>>>>>> origin/develop
 
     # Pass if at least 80% of functions are working
     [[ $working_functions -ge $((total_functions * 4 / 5)) ]]
@@ -130,11 +169,16 @@ test_detection_accuracy_in_current_context() {
     # Test detection accuracy in the current execution context
     local current_context=$(get_execution_context)
 
+<<<<<<< HEAD
         zf::debug "    Current execution context: $current_context"
+=======
+        zsh_debug_echo "    Current execution context: $current_context"
+>>>>>>> origin/develop
 
     # Test consistency between detection functions
     if is_being_sourced; then
         if is_being_executed; then
+<<<<<<< HEAD
                 zf::debug "    ✗ Inconsistent detection: both sourced and executed returned true"
             return 1
         else
@@ -145,17 +189,37 @@ test_detection_accuracy_in_current_context() {
                 zf::debug "    ✓ Consistent detection: sourced=false, executed=true"
         else
                 zf::debug "    ✗ Inconsistent detection: both sourced and executed returned false"
+=======
+                zsh_debug_echo "    ✗ Inconsistent detection: both sourced and executed returned true"
+            return 1
+        else
+                zsh_debug_echo "    ✓ Consistent detection: sourced=true, executed=false"
+        fi
+    else
+        if is_being_executed; then
+                zsh_debug_echo "    ✓ Consistent detection: sourced=false, executed=true"
+        else
+                zsh_debug_echo "    ✗ Inconsistent detection: both sourced and executed returned false"
+>>>>>>> origin/develop
             return 1
         fi
     fi
 
     # Test context string accuracy
     if is_being_sourced && [[ "$current_context" =~ "sourced" ]]; then
+<<<<<<< HEAD
             zf::debug "    ✓ Context string matches sourced state"
     elif is_being_executed && [[ "$current_context" =~ "executed" ]]; then
             zf::debug "    ✓ Context string matches executed state"
     else
             zf::debug "    ⚠ Context string may not perfectly match detection state"
+=======
+            zsh_debug_echo "    ✓ Context string matches sourced state"
+    elif is_being_executed && [[ "$current_context" =~ "executed" ]]; then
+            zsh_debug_echo "    ✓ Context string matches executed state"
+    else
+            zsh_debug_echo "    ⚠ Context string may not perfectly match detection state"
+>>>>>>> origin/develop
         # Don't fail the test, context strings can be more descriptive
     fi
 
@@ -170,7 +234,11 @@ test_error_handling_cross_context() {
     # Test error handling behavior in current context
     local context=$(get_execution_context)
 
+<<<<<<< HEAD
         zf::debug "    Testing error handling in $context context"
+=======
+        zsh_debug_echo "    Testing error handling in $context context"
+>>>>>>> origin/develop
 
     # Test context_echo with different levels
     local info_output=$(context_echo "Test info message" "INFO" 2>/dev/null)
@@ -194,11 +262,19 @@ test_environment_management_cross_context() {
     # Verify variable was set
     local retrieved_value="${(P)test_var_name}"
     if [[ "$retrieved_value" == "$test_var_value" ]]; then
+<<<<<<< HEAD
             zf::debug "    ✓ Environment management working in $(get_execution_context) context"
         unset "$test_var_name"
         return 0
     else
             zf::debug "    ✗ Environment management failed in $(get_execution_context) context"
+=======
+            zsh_debug_echo "    ✓ Environment management working in $(get_execution_context) context"
+        unset "$test_var_name"
+        return 0
+    else
+            zsh_debug_echo "    ✗ Environment management failed in $(get_execution_context) context"
+>>>>>>> origin/develop
         unset "$test_var_name"
         return 1
     fi
@@ -215,15 +291,22 @@ test_output_control_cross_context() {
 
     # Both should always produce output
     if [[ -n "$both_output" ]]; then
+<<<<<<< HEAD
             zf::debug "    ✓ 'Both' filter produces output in $context context"
     else
             zf::debug "    ✗ 'Both' filter failed to produce output in $context context"
+=======
+            zsh_debug_echo "    ✓ 'Both' filter produces output in $context context"
+    else
+            zsh_debug_echo "    ✗ 'Both' filter failed to produce output in $context context"
+>>>>>>> origin/develop
         return 1
     fi
 
     # Context-specific filters should behave correctly
     if is_being_sourced; then
         if [[ -n "$sourced_output" && -z "$executed_output" ]]; then
+<<<<<<< HEAD
                 zf::debug "    ✓ Context-specific filters work correctly in sourced context"
         else
                 zf::debug "    ⚠ Context-specific filter behavior unexpected in sourced context"
@@ -233,6 +316,17 @@ test_output_control_cross_context() {
                 zf::debug "    ✓ Context-specific filters work correctly in executed context"
         else
                 zf::debug "    ⚠ Context-specific filter behavior unexpected in executed context"
+=======
+                zsh_debug_echo "    ✓ Context-specific filters work correctly in sourced context"
+        else
+                zsh_debug_echo "    ⚠ Context-specific filter behavior unexpected in sourced context"
+        fi
+    else
+        if [[ -z "$sourced_output" && -n "$executed_output" ]]; then
+                zsh_debug_echo "    ✓ Context-specific filters work correctly in executed context"
+        else
+                zsh_debug_echo "    ⚠ Context-specific filter behavior unexpected in executed context"
+>>>>>>> origin/develop
         fi
     fi
 
@@ -262,18 +356,31 @@ test_integration_with_other_test_suites() {
             # Test that the suite can be sourced without errors
             if source "$test_suite" >/dev/null 2>&1; then
                 working_suites=$((working_suites + 1))
+<<<<<<< HEAD
                     zf::debug "    ✓ $(basename "$test_suite") can be sourced successfully"
             else
                     zf::debug "    ⚠ $(basename "$test_suite") had issues when sourced"
+=======
+                    zsh_debug_echo "    ✓ $(basename "$test_suite") can be sourced successfully"
+            else
+                    zsh_debug_echo "    ⚠ $(basename "$test_suite") had issues when sourced"
+>>>>>>> origin/develop
             fi
         fi
     done
 
     if [[ $total_suites -gt 0 ]]; then
+<<<<<<< HEAD
             zf::debug "    📊 Test suite integration: $working_suites/$total_suites suites working"
         [[ $working_suites -ge $((total_suites * 3 / 4)) ]]
     else
             zf::debug "    ⚠ No test suites found for integration testing"
+=======
+            zsh_debug_echo "    📊 Test suite integration: $working_suites/$total_suites suites working"
+        [[ $working_suites -ge $((total_suites * 3 / 4)) ]]
+    else
+            zsh_debug_echo "    ⚠ No test suites found for integration testing"
+>>>>>>> origin/develop
         return 0
     fi
 }
@@ -294,6 +401,7 @@ test_detection_performance() {
     done
 
     local end_time=$(date +%s.%N)
+<<<<<<< HEAD
     local duration=$(echo "$end_time - $start_time" | bc 2>/dev/null || zf::debug "0.1")
 
         zf::debug "    📊 Detection performance: 300 function calls in ${duration}s"
@@ -304,6 +412,18 @@ test_detection_performance() {
         return 0
     else
             zf::debug "    ⚠ Detection performance may be slow"
+=======
+    local duration=$(echo "$end_time - $start_time" | bc 2>/dev/null || zsh_debug_echo "0.1")
+
+        zsh_debug_echo "    📊 Detection performance: 300 function calls in ${duration}s"
+
+    # Performance should be reasonable (less than 1 second for 300 calls)
+    if (( $(echo "$duration < 1.0" | bc -l 2>/dev/null || zsh_debug_echo "1") )); then
+            zsh_debug_echo "    ✓ Detection performance is acceptable"
+        return 0
+    else
+            zsh_debug_echo "    ⚠ Detection performance may be slow"
+>>>>>>> origin/develop
         return 0  # Don't fail test, performance can vary
     fi
 }
@@ -321,7 +441,11 @@ test_detection_reliability() {
         fi
     done
 
+<<<<<<< HEAD
         zf::debug "    📊 Detection reliability: $consistent_results/$total_tests consistent results"
+=======
+        zsh_debug_echo "    📊 Detection reliability: $consistent_results/$total_tests consistent results"
+>>>>>>> origin/develop
 
     # Should be 100% consistent
     [[ $consistent_results -eq $total_tests ]]
@@ -340,11 +464,16 @@ test_logging_system_integration() {
 
     # Check if log directory exists
     if [[ -d "$LOG_DIR" ]]; then
+<<<<<<< HEAD
             zf::debug "    ✓ Log directory exists: $LOG_DIR"
+=======
+            zsh_debug_echo "    ✓ Log directory exists: $LOG_DIR"
+>>>>>>> origin/develop
 
         # Check if detection log exists
         local detection_log="$LOG_DIR/source-execute-detection.log"
         if [[ -f "$detection_log" ]]; then
+<<<<<<< HEAD
                 zf::debug "    ✓ Detection log file exists"
             return 0
         else
@@ -353,6 +482,16 @@ test_logging_system_integration() {
         fi
     else
             zf::debug "    ⚠ Log directory not found (may be expected)"
+=======
+                zsh_debug_echo "    ✓ Detection log file exists"
+            return 0
+        else
+                zsh_debug_echo "    ⚠ Detection log file not found (may be expected)"
+            return 0
+        fi
+    else
+            zsh_debug_echo "    ⚠ Log directory not found (may be expected)"
+>>>>>>> origin/develop
         return 0
     fi
 }
@@ -377,6 +516,7 @@ test_function_export_system() {
         # Test if function is available in current shell
         if declare -f "$func_name" >/dev/null 2>&1; then
             available_count=$((available_count + 1))
+<<<<<<< HEAD
                 zf::debug "    ✓ $func_name is available in current shell"
         else
                 zf::debug "    ✗ $func_name is not available"
@@ -384,6 +524,15 @@ test_function_export_system() {
     done
 
         zf::debug "    📊 Function availability: $available_count/$total_functions functions available"
+=======
+                zsh_debug_echo "    ✓ $func_name is available in current shell"
+        else
+                zsh_debug_echo "    ✗ $func_name is not available"
+        fi
+    done
+
+        zsh_debug_echo "    📊 Function availability: $available_count/$total_functions functions available"
+>>>>>>> origin/develop
 
     # Pass if all functions are available in current shell
     [[ $available_count -eq $total_functions ]]
@@ -394,6 +543,7 @@ test_function_export_system() {
 # ------------------------------------------------------------------------------
 
 run_all_tests() {
+<<<<<<< HEAD
         zf::debug "========================================================"
         zf::debug "Comprehensive Detection Test Suite"
         zf::debug "========================================================"
@@ -401,22 +551,41 @@ run_all_tests() {
         zf::debug "Execution Context: $(get_execution_context)"
         zf::debug "Log File: $LOG_FILE"
         zf::debug ""
+=======
+        zsh_debug_echo "========================================================"
+        zsh_debug_echo "Comprehensive Detection Test Suite"
+        zsh_debug_echo "========================================================"
+        zsh_debug_echo "Timestamp: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+        zsh_debug_echo "Execution Context: $(get_execution_context)"
+        zsh_debug_echo "Log File: $LOG_FILE"
+        zsh_debug_echo ""
+>>>>>>> origin/develop
 
     log_test "Starting comprehensive detection test suite"
 
     # System-wide Validation
+<<<<<<< HEAD
         zf::debug "=== System-wide Detection Validation ==="
+=======
+        zsh_debug_echo "=== System-wide Detection Validation ==="
+>>>>>>> origin/develop
     run_test "Detection System Core Functionality" "test_detection_system_core_functionality"
     run_test "Detection Accuracy in Current Context" "test_detection_accuracy_in_current_context"
 
     # Cross-context Behavior
+<<<<<<< HEAD
         zf::debug ""
         zf::debug "=== Cross-context Behavior Validation ==="
+=======
+        zsh_debug_echo ""
+        zsh_debug_echo "=== Cross-context Behavior Validation ==="
+>>>>>>> origin/develop
     run_test "Error Handling Cross Context" "test_error_handling_cross_context"
     run_test "Environment Management Cross Context" "test_environment_management_cross_context"
     run_test "Output Control Cross Context" "test_output_control_cross_context"
 
     # Integration Testing
+<<<<<<< HEAD
         zf::debug ""
         zf::debug "=== Integration with Other Test Suites ==="
     run_test "Integration with Other Test Suites" "test_integration_with_other_test_suites"
@@ -424,16 +593,31 @@ run_all_tests() {
     # Performance and Reliability
         zf::debug ""
         zf::debug "=== Performance and Reliability Validation ==="
+=======
+        zsh_debug_echo ""
+        zsh_debug_echo "=== Integration with Other Test Suites ==="
+    run_test "Integration with Other Test Suites" "test_integration_with_other_test_suites"
+
+    # Performance and Reliability
+        zsh_debug_echo ""
+        zsh_debug_echo "=== Performance and Reliability Validation ==="
+>>>>>>> origin/develop
     run_test "Detection Performance" "test_detection_performance"
     run_test "Detection Reliability" "test_detection_reliability"
 
     # System Integration
+<<<<<<< HEAD
         zf::debug ""
         zf::debug "=== System Integration Validation ==="
+=======
+        zsh_debug_echo ""
+        zsh_debug_echo "=== System Integration Validation ==="
+>>>>>>> origin/develop
     run_test "Logging System Integration" "test_logging_system_integration"
     run_test "Function Availability System" "test_function_export_system"
 
     # Results Summary
+<<<<<<< HEAD
         zf::debug ""
         zf::debug "========================================================"
         zf::debug "Test Results Summary"
@@ -441,16 +625,30 @@ run_all_tests() {
         zf::debug "Total Tests: $TEST_COUNT"
         zf::debug "Passed: $TEST_PASSED"
         zf::debug "Failed: $TEST_FAILED"
+=======
+        zsh_debug_echo ""
+        zsh_debug_echo "========================================================"
+        zsh_debug_echo "Test Results Summary"
+        zsh_debug_echo "========================================================"
+        zsh_debug_echo "Total Tests: $TEST_COUNT"
+        zsh_debug_echo "Passed: $TEST_PASSED"
+        zsh_debug_echo "Failed: $TEST_FAILED"
+>>>>>>> origin/develop
 
     local pass_percentage=0
     if [[ $TEST_COUNT -gt 0 ]]; then
         pass_percentage=$(( (TEST_PASSED * 100) / TEST_COUNT ))
     fi
+<<<<<<< HEAD
         zf::debug "Success Rate: ${pass_percentage}%"
+=======
+        zsh_debug_echo "Success Rate: ${pass_percentage}%"
+>>>>>>> origin/develop
 
     log_test "Comprehensive detection test suite completed - $TEST_PASSED/$TEST_COUNT tests passed"
 
     if [[ $TEST_FAILED -eq 0 ]]; then
+<<<<<<< HEAD
             zf::debug ""
             zf::debug "🎉 All comprehensive detection tests passed!"
             zf::debug "🎯 Source/Execute Detection System is fully validated!"
@@ -458,6 +656,15 @@ run_all_tests() {
     else
             zf::debug ""
             zf::debug "❌ $TEST_FAILED comprehensive detection test(s) failed."
+=======
+            zsh_debug_echo ""
+            zsh_debug_echo "🎉 All comprehensive detection tests passed!"
+            zsh_debug_echo "🎯 Source/Execute Detection System is fully validated!"
+        return 0
+    else
+            zsh_debug_echo ""
+            zsh_debug_echo "❌ $TEST_FAILED comprehensive detection test(s) failed."
+>>>>>>> origin/develop
         return 1
     fi
 }
@@ -474,8 +681,13 @@ main() {
 if is_being_executed; then
     main "$@"
 elif is_being_sourced; then
+<<<<<<< HEAD
         zf::debug "Comprehensive detection test functions loaded (sourced context)"
         zf::debug "Available functions: run_all_tests, individual test functions"
+=======
+        zsh_debug_echo "Comprehensive detection test functions loaded (sourced context)"
+        zsh_debug_echo "Available functions: run_all_tests, individual test functions"
+>>>>>>> origin/develop
 fi
 
 # ==============================================================================

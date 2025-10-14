@@ -13,7 +13,11 @@ This document evaluates security aspects of the current ZSH configuration, ident
 - Validates directory existence before PATH modifications
 - Implements path deduplication to prevent PATH pollution
 
+<<<<<<< HEAD
 #### 2. **Environment Isolation**
+=======
+#### 2. **Environment Isolation**  
+>>>>>>> origin/develop
 - Uses XDG Base Directory specification for config isolation
 - Separates cache, data, and configuration directories
 - Proper use of `ZDOTDIR` for configuration containment
@@ -39,7 +43,11 @@ This document evaluates security aspects of the current ZSH configuration, ident
 eval "$(ssh-agent -s)"
 ```
 
+<<<<<<< HEAD
 **Risk**:
+=======
+**Risk**: 
+>>>>>>> origin/develop
 - Spawns new SSH agent on every shell startup
 - Multiple agents can lead to key management confusion
 - No validation of SSH agent status before spawning new one
@@ -49,14 +57,22 @@ eval "$(ssh-agent -s)"
 # Secure SSH agent management
 _setup_ssh_agent() {
     local agent_env="${ZSH_CACHE_DIR}/ssh-agent-env"
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     # Check if agent is already running
     if [[ -f "$agent_env" ]]; then
         source "$agent_env" > /dev/null
         # Verify agent is accessible
         ssh-add -l >/dev/null 2>&1 || rm -f "$agent_env"
     fi
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     # Start agent only if needed
     if [[ ! -f "$agent_env" ]]; then
         ssh-agent -s > "$agent_env"
@@ -96,21 +112,36 @@ export GIT_AUTHOR_NAME="$(git config --get user.name)"
 _secure_plugin_load() {
     local plugin="$1" expected_hash="$2"
     local plugin_path="${ZGEN_DIR}/${plugin}"
+<<<<<<< HEAD
 
     # Verify plugin directory exists and has expected content
     [[ -d "$plugin_path" ]] || return 1
 
+=======
+    
+    # Verify plugin directory exists and has expected content
+    [[ -d "$plugin_path" ]] || return 1
+    
+>>>>>>> origin/develop
     # Optional: Verify git commit hash for critical plugins
     if [[ -n "$expected_hash" ]]; then
         pushd "$plugin_path" >/dev/null
         local current_hash=$(git rev-parse HEAD)
         [[ "$current_hash" = "$expected_hash" ]] || {
+<<<<<<< HEAD
                 zsh_debug_echo "Warning: Plugin $plugin hash mismatch"
+=======
+                zsh_debug_echo "Warning: Plugin $plugin hash mismatch" 
+>>>>>>> origin/develop
             return 1
         }
         popd >/dev/null
     fi
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     zgenom load "$plugin"
 }
 ```
@@ -125,7 +156,11 @@ _secure_plugin_load() {
 _sanitize_env() {
     # Remove potentially sensitive variables from history
     export HISTIGNORE="${HISTIGNORE}:*API_KEY*:*TOKEN*:*PASSWORD*:*SECRET*"
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     # Validate PATH entries
     local clean_path=()
     local IFS=':'
@@ -166,19 +201,31 @@ _sanitize_env() {
 _secure_ssh_setup() {
     local agent_info="${XDG_RUNTIME_DIR:-/tmp}/ssh-agent-info"
     local max_age=3600  # 1 hour
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     # Function to start SSH agent securely
     _start_ssh_agent() {
         ssh-agent -s > "$agent_info"
         chmod 600 "$agent_info"
         source "$agent_info" > /dev/null
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/develop
         # Add keys with timeout
         for key in ~/.ssh/id_rsa ~/.ssh/id_ed25519; do
             [[ -f "$key" ]] && ssh-add -t "$max_age" "$key" 2>/dev/null
         done
     }
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     # Check existing agent
     if [[ -f "$agent_info" ]]; then
         source "$agent_info" > /dev/null
@@ -204,6 +251,7 @@ declare -A TRUSTED_PLUGINS=(
 _verify_plugin_integrity() {
     local plugin="$1" expected_version="$2"
     local plugin_path="${ZGEN_DIR}/${plugin}"
+<<<<<<< HEAD
 
     [[ -d "$plugin_path" ]] || {
             zsh_debug_echo "Security: Plugin directory not found: $plugin"
@@ -216,18 +264,40 @@ _verify_plugin_integrity() {
         return 1
     }
 
+=======
+    
+    [[ -d "$plugin_path" ]] || {
+            zsh_debug_echo "Security: Plugin directory not found: $plugin" 
+        return 1
+    }
+    
+    # Check if plugin is in trusted list
+    [[ -n "${TRUSTED_PLUGINS[$plugin]}" ]] || {
+            zsh_debug_echo "Security: Untrusted plugin: $plugin" 
+        return 1
+    }
+    
+>>>>>>> origin/develop
     # Verify git repository state
     if [[ -d "$plugin_path/.git" ]]; then
         pushd "$plugin_path" >/dev/null
         local current_ref=$(git describe --tags --exact-match 2>/dev/null || git rev-parse --short HEAD)
         [[ "$current_ref" == "$expected_version" ]] || {
+<<<<<<< HEAD
                 zsh_debug_echo "Security: Plugin version mismatch: $plugin ($current_ref != $expected_version)"
+=======
+                zsh_debug_echo "Security: Plugin version mismatch: $plugin ($current_ref != $expected_version)" 
+>>>>>>> origin/develop
             popd >/dev/null
             return 1
         }
         popd >/dev/null
     fi
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     return 0
 }
 ```
@@ -238,25 +308,42 @@ _verify_plugin_integrity() {
 _sanitize_environment() {
     # Remove sensitive data from history
     export HISTIGNORE="${HISTIGNORE}:*API_KEY*:*TOKEN*:*SECRET*:*PASSWORD*:export *KEY*:export *TOKEN*"
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     # Validate PATH security
     local secure_path=()
     local IFS=':'
     for path_dir in $PATH; do
         # Skip non-existent directories
         [[ -d "$path_dir" ]] || continue
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/develop
         # Check directory permissions (not world-writable)
         local perms=$(stat -f "%p" "$path_dir" 2>/dev/null)
         if [[ -n "$perms" ]] && (( (perms & 0002) == 0 )); then
             secure_path+=("$path_dir")
         else
+<<<<<<< HEAD
                 zsh_debug_echo "Security: Skipping insecure PATH entry: $path_dir"
         fi
     done
 
     export PATH="${(j.:.)secure_path}"
 
+=======
+                zsh_debug_echo "Security: Skipping insecure PATH entry: $path_dir" 
+        fi
+    done
+    
+    export PATH="${(j.:.)secure_path}"
+    
+>>>>>>> origin/develop
     # Set secure umask
     umask 0022
 }
@@ -269,6 +356,7 @@ _sanitize_environment() {
 # ~/.zshrc.d/00_00-secure-helpers.zsh
 _secure_source() {
     local file="$1"
+<<<<<<< HEAD
 
     # Validate input
     [[ -n "$file" ]] || {
@@ -295,11 +383,40 @@ _secure_source() {
         return 1
     fi
 
+=======
+    
+    # Validate input
+    [[ -n "$file" ]] || {
+            zsh_debug_echo "Error: No file specified for sourcing" 
+        return 1
+    }
+    
+    # Check file exists and is readable
+    [[ -r "$file" ]] || {
+            zsh_debug_echo "Error: File not readable: $file" 
+        return 1
+    }
+    
+    # Verify file is not world-writable
+    [[ ! -w "$file" ]] 2>/dev/null || {
+            zsh_debug_echo "Security: Refusing to source world-writable file: $file" 
+        return 1
+    }
+    
+    # Check file ownership (optional, for paranoid security)
+    local file_owner=$(stat -f "%u" "$file" 2>/dev/null)
+    if [[ "$file_owner" != "$(id -u)" ]] && [[ "$(id -u)" != "0" ]]; then
+            zsh_debug_echo "Security: File not owned by current user: $file" 
+        return 1
+    fi
+    
+>>>>>>> origin/develop
     source "$file"
 }
 
 _secure_add_to_path() {
     local path_entry="$1" position="${2:-append}"
+<<<<<<< HEAD
 
     # Validate input
     [[ -n "$path_entry" ]] || return 1
@@ -311,11 +428,28 @@ _secure_add_to_path() {
         return 1
     }
 
+=======
+    
+    # Validate input
+    [[ -n "$path_entry" ]] || return 1
+    [[ -d "$path_entry" ]] || return 1
+    
+    # Security check: not world-writable
+    [[ ! -w "$path_entry" ]] 2>/dev/null || {
+            zsh_debug_echo "Security: Refusing to add world-writable directory to PATH: $path_entry" 
+        return 1
+    }
+    
+>>>>>>> origin/develop
     # Check if already in PATH
     case ":$PATH:" in
         *":$path_entry:"*) return 0 ;;
     esac
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     case "$position" in
         prepend) export PATH="$path_entry:$PATH" ;;
         append) export PATH="$PATH:$path_entry" ;;
@@ -331,11 +465,19 @@ _apply_macos_defaults_securely() {
     local defaults_applied="${ZSH_CACHE_DIR}/macos-defaults-applied"
     local config_checksum="${ZSH_CACHE_DIR}/macos-defaults-checksum"
     local current_config="${ZDOTDIR}/.zshrc.Darwin.d/100-macos-defaults.zsh"
+<<<<<<< HEAD
 
     # Calculate current configuration checksum
     local current_sum
     current_sum=$(shasum -a 256 "$current_config" 2>/dev/null | cut -d' ' -f1)
 
+=======
+    
+    # Calculate current configuration checksum
+    local current_sum
+    current_sum=$(shasum -a 256 "$current_config" 2>/dev/null | cut -d' ' -f1)
+    
+>>>>>>> origin/develop
     # Check if we need to reapply defaults
     local should_apply=false
     if [[ ! -f "$defaults_applied" ]] || [[ ! -f "$config_checksum" ]]; then
@@ -343,6 +485,7 @@ _apply_macos_defaults_securely() {
     elif [[ "$current_sum" != "$(cat "$config_checksum" 2>/dev/null)" ]]; then
         should_apply=true
     fi
+<<<<<<< HEAD
 
     if [[ "$should_apply" == "true" ]]; then
             zsh_debug_echo "Applying macOS defaults (secure mode)..."
@@ -354,12 +497,29 @@ _apply_macos_defaults_securely() {
         defaults write com.apple.finder ShowAllFiles -bool true || ((errors++))
         defaults write com.apple.finder ShowPathbar -bool true || ((errors++))
 
+=======
+    
+    if [[ "$should_apply" == "true" ]]; then
+            zsh_debug_echo "Applying macOS defaults (secure mode)..."
+        
+        # Apply defaults with error checking
+        local errors=0
+        
+        # Example secure defaults application
+        defaults write com.apple.finder ShowAllFiles -bool true || ((errors++))
+        defaults write com.apple.finder ShowPathbar -bool true || ((errors++))
+        
+>>>>>>> origin/develop
         if (( errors == 0 )); then
             touch "$defaults_applied"
                 zsh_debug_echo "$current_sum" > "$config_checksum"
                 zsh_debug_echo "macOS defaults applied successfully."
         else
+<<<<<<< HEAD
                 zsh_debug_echo "Error: Failed to apply some macOS defaults ($errors errors)"
+=======
+                zsh_debug_echo "Error: Failed to apply some macOS defaults ($errors errors)" 
+>>>>>>> origin/develop
             return 1
         fi
     fi
@@ -373,6 +533,7 @@ _apply_macos_defaults_securely() {
 # ~/.zshrc.d/90-security/40-command-security.zsh
 _secure_eval() {
     local command="$1"
+<<<<<<< HEAD
 
     # Validate command doesn't contain suspicious patterns
     case "$command" in
@@ -385,6 +546,20 @@ _secure_eval() {
     # Log command execution for audit
         zsh_debug_echo "[$(date '+%Y-%m-%d %H:%M:%S')] EVAL: $command" >> "${ZSH_CACHE_DIR}/command-audit.log"
 
+=======
+    
+    # Validate command doesn't contain suspicious patterns
+    case "$command" in
+        *'$(rm '*|*'`rm '*|*';rm '*|*'&&rm '*|*'||rm '*)
+                zsh_debug_echo "Security: Potentially dangerous command blocked" 
+            return 1
+            ;;
+    esac
+    
+    # Log command execution for audit
+        zsh_debug_echo "[$(date '+%Y-%m-%d %H:%M:%S')] EVAL: $command" >> "${ZSH_CACHE_DIR}/command-audit.log"
+    
+>>>>>>> origin/develop
     eval "$command"
 }
 
@@ -397,23 +572,36 @@ alias eval='_secure_eval'
 # ~/.zshrc.d/90-security/50-file-permissions.zsh
 _validate_config_permissions() {
     local issues=()
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     # Check ZSH configuration directories
     for dir in "$ZDOTDIR" "${ZDOTDIR}/.zshrc.d" "${ZDOTDIR}/.zshrc.Darwin.d"; do
         if [[ -d "$dir" ]]; then
             # Check directory is not world-writable
             [[ ! -w "$dir" ]] 2>/dev/null || issues+=("World-writable directory: $dir")
+<<<<<<< HEAD
 
             # Check configuration files
             find "$dir" -name "*.zsh" -type f | while read -r file; do
                 [[ ! -w "$file" ]] 2>/dev/null || issues+=("World-writable file: $file")
 
+=======
+            
+            # Check configuration files
+            find "$dir" -name "*.zsh" -type f | while read -r file; do
+                [[ ! -w "$file" ]] 2>/dev/null || issues+=("World-writable file: $file")
+                
+>>>>>>> origin/develop
                 # Check file ownership
                 local owner=$(stat -f "%u" "$file" 2>/dev/null)
                 [[ "$owner" == "$(id -u)" ]] || issues+=("File not owned by user: $file")
             done
         fi
     done
+<<<<<<< HEAD
 
     # Report issues
     if (( ${#issues[@]} > 0 )); then
@@ -422,6 +610,16 @@ _validate_config_permissions() {
         return 1
     fi
 
+=======
+    
+    # Report issues
+    if (( ${#issues[@]} > 0 )); then
+            zsh_debug_echo "Security issues found:" 
+        printf "  - %s\n" "${issues[@]}" >&2
+        return 1
+    fi
+    
+>>>>>>> origin/develop
     return 0
 }
 ```
@@ -433,7 +631,11 @@ _validate_config_permissions() {
 # ~/.zshrc.d/99-finalization/99-security-check.zsh
 _security_startup_check() {
     local warnings=()
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     # Check for insecure PATH entries
     local IFS=':'
     for path_dir in $PATH; do
@@ -441,15 +643,26 @@ _security_startup_check() {
             warnings+=("Insecure PATH entry: $path_dir (world-writable)")
         fi
     done
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     # Check for suspicious environment variables
     env | grep -i 'password\|secret\|token\|key' | grep -v 'SSH_AUTH_SOCK\|GPG_AGENT_INFO' && {
         warnings+=("Potentially sensitive environment variables detected")
     }
+<<<<<<< HEAD
 
     # Report warnings
     if (( ${#warnings[@]} > 0 )); then
             zsh_debug_echo "⚠️  Security warnings detected:"
+=======
+    
+    # Report warnings
+    if (( ${#warnings[@]} > 0 )); then
+            zsh_debug_echo "⚠️  Security warnings detected:" 
+>>>>>>> origin/develop
         printf "  - %s\n" "${warnings[@]}" >&2
     fi
 }
@@ -483,7 +696,11 @@ _security_startup_check() {
 #### ❌ Security Improvements Needed
 - [ ] SSH agent security hardening
 - [ ] Plugin integrity verification
+<<<<<<< HEAD
 - [ ] Environment variable sanitization
+=======
+- [ ] Environment variable sanitization  
+>>>>>>> origin/develop
 - [ ] Command execution auditing
 - [ ] File permission validation
 - [ ] Input validation for helper functions

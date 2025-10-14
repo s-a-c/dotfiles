@@ -7,4 +7,8 @@ console.log(set1.has(5));
 // expected output: true
 
 console.log(set1.has(6));
+<<<<<<< HEAD
 // expected output: false
+=======
+// expected output: false
+>>>>>>> origin/develop

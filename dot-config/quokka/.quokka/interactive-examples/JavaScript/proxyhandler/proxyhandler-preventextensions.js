@@ -18,4 +18,8 @@ console.log(monster1.canEvolve);
 Object.preventExtensions(proxy1);
 
 console.log(monster1.canEvolve);
+<<<<<<< HEAD
 // expected output: false
+=======
+// expected output: false
+>>>>>>> origin/develop

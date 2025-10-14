@@ -26,4 +26,8 @@ console.log(Object.isExtensible(proxy1));
 // expected output: false
 
 console.log(monster1.canEvolve);
+<<<<<<< HEAD
 // expected output: false
+=======
+// expected output: false
+>>>>>>> origin/develop

@@ -9,4 +9,8 @@ console.log(korean.minimize().baseName);
 // expected output: "ko"
 
 console.log(arabic.minimize().baseName);
+<<<<<<< HEAD
 // expected output: "ar"
+=======
+// expected output: "ar"
+>>>>>>> origin/develop

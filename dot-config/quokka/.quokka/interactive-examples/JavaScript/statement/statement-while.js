@@ -5,4 +5,8 @@ while (n < 3) {
 }
 
 console.log(n);
+<<<<<<< HEAD
 // expected output: 3
+=======
+// expected output: 3
+>>>>>>> origin/develop

@@ -77,4 +77,8 @@
 - [ ] Update dispatch calls to use `queue()` for mail and notifications
 - [ ] Add or update tests to assert that Mailables and Notifications are queued correctly
 - [ ] Update documentation with implementation and usage examples for queues
+<<<<<<< HEAD
 - [ ] Schedule queue workers for mailables and notifications (every 5 minutes)
+=======
+- [ ] Schedule queue workers for mailables and notifications (every 5 minutes)
+>>>>>>> origin/develop

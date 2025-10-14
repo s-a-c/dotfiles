@@ -9,4 +9,8 @@ try {
 } catch (err) {
   console.log(err);
   // expected output: RangeError: invalid language tag: EN_US
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/develop

@@ -18,4 +18,8 @@ console.log(Object.getPrototypeOf(proxy1) === monsterPrototype);
 // expected output: true
 
 console.log(Object.getPrototypeOf(proxy1).eyeCount);
+<<<<<<< HEAD
 // expected output: 2
+=======
+// expected output: 2
+>>>>>>> origin/develop

@@ -16,5 +16,9 @@ if [ -e /Applications/ ]; then
 fi
 
 # Fallback: might be a headless system
+<<<<<<< HEAD
 echo "$@" | less
+=======
+echo "$@" | less 
+>>>>>>> origin/develop
 exit 0

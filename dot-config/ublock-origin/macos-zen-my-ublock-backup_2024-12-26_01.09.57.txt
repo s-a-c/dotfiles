@@ -38,4 +38,8 @@
   "urlFilteringString": "",
   "hostnameSwitchesString": "no-large-media: behind-the-scene false\nno-csp-reports: * true",
   "userFilters": ""
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/develop

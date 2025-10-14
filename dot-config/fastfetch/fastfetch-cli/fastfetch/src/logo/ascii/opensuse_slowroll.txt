@@ -17,4 +17,8 @@ QQ6       'QQ6              ]QQ        QQf
     ?QQQQQWQaaaaaaajQWQP?        aQQP'
       ?QQQQP????????^'        saWQP?
         ^?QQQgaaa._    __aaaQQQP?'
+<<<<<<< HEAD
             '^?QWQQQQQQQQ@??^'
+=======
+            '^?QWQQQQQQQQ@??^'
+>>>>>>> origin/develop

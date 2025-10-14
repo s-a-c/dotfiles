@@ -130,3 +130,7 @@ do
 			;;
 	esac
 done
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/develop

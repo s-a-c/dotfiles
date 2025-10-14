@@ -16,4 +16,8 @@
  | 9. Documentation Update           | Sync docs/guides with actual implementation      | 2025-04-27    | Pending|
  | 10. Final Review & Merge          | Code review, adjustments, and merge to main      | 2025-04-28    | Pending|
 | 11. Active Team Persistence        | Persist and maintain `current_team_id` on users, relations, and tests | 2025-04-29    | Done   |
+<<<<<<< HEAD
 | 12. Queueing Mailables & Notifications | Implement queueable Mailables & Notifications with separate queues | 2025-04-30    | Pending |
+=======
+| 12. Queueing Mailables & Notifications | Implement queueable Mailables & Notifications with separate queues | 2025-04-30    | Pending |
+>>>>>>> origin/develop

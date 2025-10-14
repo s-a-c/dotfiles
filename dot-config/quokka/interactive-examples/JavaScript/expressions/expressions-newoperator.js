@@ -7,4 +7,8 @@ function Car(make, model, year) {
 var car1 = new Car('Eagle', 'Talon TSi', 1993);
 
 console.log(car1.make);
+<<<<<<< HEAD
 // expected output: "Eagle"
+=======
+// expected output: "Eagle"
+>>>>>>> origin/develop

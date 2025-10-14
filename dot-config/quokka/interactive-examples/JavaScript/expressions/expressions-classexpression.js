@@ -9,4 +9,8 @@ var Rectangle = class {
 }
 
 console.log(new Rectangle(5,8).area());
+<<<<<<< HEAD
 // expected output: 40
+=======
+// expected output: 40
+>>>>>>> origin/develop

@@ -33,6 +33,7 @@ exit 3 unless feed_text && feed_text.length >= 20
 
 xml = Document.new(feed_text)
 
+<<<<<<< HEAD
 def remove_html_comments(input)
   previous = nil
   while input != previous
@@ -40,6 +41,15 @@ def remove_html_comments(input)
     input = input.gsub!(/<!--[^>]*-->/, "")
   end
   input
+=======
+def remove_html_comments(input)  
+  previous = nil  
+  while input != previous  
+    previous = input  
+    input = input.gsub!(/<!--[^>]*-->/, "")
+  end  
+  input  
+>>>>>>> origin/develop
 end
 
 xml.elements.each("//item") do |item|

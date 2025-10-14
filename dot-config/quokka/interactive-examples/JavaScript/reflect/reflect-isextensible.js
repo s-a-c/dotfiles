@@ -11,4 +11,8 @@ console.log(Reflect.isExtensible(object1));
 const object2 = Object.seal({});
 
 console.log(Reflect.isExtensible(object2));
+<<<<<<< HEAD
 // expected output: false
+=======
+// expected output: false
+>>>>>>> origin/develop

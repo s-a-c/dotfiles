@@ -5,4 +5,8 @@ eArr.next();
 eArr.next();
 
 console.log(eArr.next().value);
+<<<<<<< HEAD
 // expected output: Array [2, 30]
+=======
+// expected output: Array [2, 30]
+>>>>>>> origin/develop

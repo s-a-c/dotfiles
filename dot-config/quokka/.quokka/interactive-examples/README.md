@@ -9,4 +9,8 @@ quickly launch and run reference snippets.
 
 If you're interested in contributing to this project, great! Please create a pull request.
 Please note that all snippets need to be curated to ensure that they do not cause undesired
+<<<<<<< HEAD
 runtime side-effects.
+=======
+runtime side-effects.
+>>>>>>> origin/develop

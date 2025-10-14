@@ -9,8 +9,13 @@
 _original_pwd="$PWD"
 
 # Create test log directory with UTC timestamp (required by user rules)
+<<<<<<< HEAD
 _test_date=$(date '+%Y-%m-%d' 2>/dev/null || zf::debug "unknown")
 _test_timestamp=$(date '+%Y%m%d_%H%M%S' 2>/dev/null || zf::debug "unknown")
+=======
+_test_date=$(date '+%Y-%m-%d' 2>/dev/null || zsh_debug_echo "unknown")
+_test_timestamp=$(date '+%Y%m%d_%H%M%S' 2>/dev/null || zsh_debug_echo "unknown")
+>>>>>>> origin/develop
 _test_log_dir="$HOME/.config/zsh/logs/${_test_date}"
 [[ ! -d "$_test_log_dir" ]] && mkdir -p "$_test_log_dir"
 _test_log_file="${_test_log_dir}/test-plugin-loading-simple_${_test_timestamp}.log"
@@ -21,8 +26,13 @@ _tests_failed=0
 
 # Function to log messages with timestamp (required by user rules)
 _log_test() {
+<<<<<<< HEAD
         zf::debug "[$(date '+%Y-%m-%d %H:%M:%S')] $*" >> "$_test_log_file" 2>&1
         zf::debug "$*"
+=======
+        zsh_debug_echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" >> "$_test_log_file" 2>&1
+        zsh_debug_echo "$*"
+>>>>>>> origin/develop
 }
 
 # Test assertion function

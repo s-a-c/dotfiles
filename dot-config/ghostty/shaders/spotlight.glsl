@@ -39,4 +39,8 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 
     // Final color output
     fragColor = vec4(spotlightEffect, texColor.a);
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/develop

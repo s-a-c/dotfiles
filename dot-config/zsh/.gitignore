@@ -1,5 +1,6 @@
 .crush//.env/
 .zgenom/
+<<<<<<< HEAD
 # Ignore files named '2' that might be created by mistaken stderr redirections
 2
 .clinerules/byterover-rules.md
@@ -10,3 +11,5 @@
 .kiro/steering/byterover-rules.md
 .qoder/rules/byterover-rules.md
 .augment/rules/byterover-rules.md
+=======
+>>>>>>> origin/develop

@@ -5,4 +5,8 @@ const view = new DataView(buffer);
 view.setInt16(1, 32767); // (max signed 16-bit integer)
 
 console.log(view.getInt16(1));
+<<<<<<< HEAD
 // expected output: 32767
+=======
+// expected output: 32767
+>>>>>>> origin/develop

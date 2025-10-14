@@ -9,4 +9,8 @@ set1.forEach(function(point){
 });
 
 console.log(set1.size);
+<<<<<<< HEAD
 // expected output: 1
+=======
+// expected output: 1
+>>>>>>> origin/develop

@@ -8,4 +8,8 @@ console.log(`${options1.locale}, ${options1.style}, ${options1.numeric}`);
 // expected output: "en, narrow, always"
 
 console.log(`${options2.locale}, ${options2.style}, ${options2.numeric}`);
+<<<<<<< HEAD
 // expected output: "es, long, auto"
+=======
+// expected output: "es, long, auto"
+>>>>>>> origin/develop

@@ -8,4 +8,8 @@ console.log(x);
 x = (2, 3);
 
 console.log(x);
+<<<<<<< HEAD
 // expected output: 3
+=======
+// expected output: 3
+>>>>>>> origin/develop

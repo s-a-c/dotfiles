@@ -10,4 +10,8 @@ console.log(str.slice(-4));
 // expected output: "dog."
 
 console.log(str.slice(-9, -5));
+<<<<<<< HEAD
 // expected output: "lazy"
+=======
+// expected output: "lazy"
+>>>>>>> origin/develop

@@ -11,4 +11,8 @@ console.log(new Intl.DateTimeFormat('en-GB').format(date));
 
 // Include a fallback language, in this case Indonesian
 console.log(new Intl.DateTimeFormat(['ban', 'id']).format(date));
+<<<<<<< HEAD
 // expected output: "20/12/2012"
+=======
+// expected output: "20/12/2012"
+>>>>>>> origin/develop

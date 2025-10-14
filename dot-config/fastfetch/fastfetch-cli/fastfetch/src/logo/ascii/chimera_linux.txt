@@ -15,4 +15,8 @@ ${c2}OOOOOOOOOd,     ${c1}`'''`     ${c4}.coooooooo
 ${c2}OOOOOOOOOOOOdc,.    ${c4}..,coooooooooooo
 ${c2}OOOOOOOOOOOOOOOO'  ${c4}.oooooooooooooooo
 ${c2}OOOOOOOOOOOOOOOO'  ${c4}.oooooooooooooooo
+<<<<<<< HEAD
 ${c2}OOOOOOOOOOOOOOOO'  ${c4}.oooooooooooooooo
+=======
+${c2}OOOOOOOOOOOOOOOO'  ${c4}.oooooooooooooooo
+>>>>>>> origin/develop

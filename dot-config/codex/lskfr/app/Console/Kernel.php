@@ -20,13 +20,21 @@ class Kernel extends ConsoleKernel
             ->hourly()
             ->description('Purge expired OAuth tokens')
             ->appendOutputTo(storage_path('logs/passport-purge.log'));
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/develop
         // Prune old Telescope entries daily
         $schedule->command('telescope:prune --hours=48')
             ->daily()
             ->description('Prune old Telescope entries')
             ->appendOutputTo(storage_path('logs/telescope-prune.log'));
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/develop
         /**
          * Run application health checks every minute.
          *

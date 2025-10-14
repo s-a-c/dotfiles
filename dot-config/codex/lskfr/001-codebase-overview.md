@@ -19,7 +19,11 @@
 
  ### 2.1 Backend (`app/`)
  - `Console/`: Custom Artisan commands.
+<<<<<<< HEAD
  - `Http/Controllers/`:
+=======
+ - `Http/Controllers/`: 
+>>>>>>> origin/develop
    - `Auth/`: Authentication flows.
    - `Settings/`: Profile and password screens.
    - `Controller.php`: Base controller.
@@ -33,7 +37,11 @@
  - `api.php`: API endpoints.
 
  ### 2.3 Frontend
+<<<<<<< HEAD
  - `resources/js/`:
+=======
+ - `resources/js/`: 
+>>>>>>> origin/develop
    - `pages/`: `auth/`, `settings/` React pages (Inertia & Livewire).
    - `components/`: Shared UI bits (TypeScript).
  - `resources/views/`: Blade templates and Livewire views.
@@ -82,7 +90,11 @@
  2. Peek at `resources/js/pages/` if React is more your style.
  3. Run `php artisan migrate --seed` then `npm run dev` and marvel.
 
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> origin/develop
  ## 7. Dependency Summary 🧩
 
  ### 7.1 Composer Dependencies (Backend) 🐘
@@ -228,4 +240,8 @@
   🔴 @tailwindcss/oxide-linux-x64-gnu: Tailwind CSS OXIDE engine for Linux.
   🔴 lightningcss-linux-x64-gnu: LightningCSS native binary for CSS minification.
 
+<<<<<<< HEAD
  *The end. Now go caffeinate and explore.*
+=======
+ *The end. Now go caffeinate and explore.*
+>>>>>>> origin/develop

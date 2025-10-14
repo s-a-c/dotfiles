@@ -14,4 +14,8 @@ const handler1 = {
 const proxy1 = new Proxy(monster1, handler1);
 
 console.log(Object.getOwnPropertyDescriptor(proxy1, 'eyeCount').value);
+<<<<<<< HEAD
 // expected output: 5
+=======
+// expected output: 5
+>>>>>>> origin/develop

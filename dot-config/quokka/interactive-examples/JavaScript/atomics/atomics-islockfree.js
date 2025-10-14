@@ -4,4 +4,8 @@ console.log(Atomics.isLockFree(3));
 
 console.log(Atomics.isLockFree(4));
 // 4 is one of the BYTES_PER_ELEMENT values
+<<<<<<< HEAD
 // expected output: true
+=======
+// expected output: true
+>>>>>>> origin/develop

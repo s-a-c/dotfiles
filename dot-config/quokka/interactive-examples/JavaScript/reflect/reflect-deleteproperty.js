@@ -11,4 +11,8 @@ var array1 = [1, 2, 3, 4, 5];
 Reflect.deleteProperty(array1, '3');
 
 console.log(array1);
+<<<<<<< HEAD
 // expected output: Array [1, 2, 3, , 5]
+=======
+// expected output: Array [1, 2, 3, , 5]
+>>>>>>> origin/develop

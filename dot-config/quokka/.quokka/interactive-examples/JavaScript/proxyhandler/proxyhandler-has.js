@@ -20,4 +20,8 @@ console.log('_secret' in proxy1);
 // expected output: false
 
 console.log('_secret' in monster1);
+<<<<<<< HEAD
 // expected output: true
+=======
+// expected output: true
+>>>>>>> origin/develop

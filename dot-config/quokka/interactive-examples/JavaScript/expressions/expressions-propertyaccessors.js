@@ -8,4 +8,8 @@ console.log(person.firstname);
 person = {'firstname': 'John', 'lastname': 'Doe'}
 
 console.log(person['lastname']);
+<<<<<<< HEAD
 // expected output: "Doe"
+=======
+// expected output: "Doe"
+>>>>>>> origin/develop

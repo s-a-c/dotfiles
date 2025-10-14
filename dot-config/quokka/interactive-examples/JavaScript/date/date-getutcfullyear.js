@@ -5,4 +5,8 @@ console.log(date1.getUTCFullYear());
 // expected output: 1975
 
 console.log(date2.getUTCFullYear());
+<<<<<<< HEAD
 // expected output: 1976
+=======
+// expected output: 1976
+>>>>>>> origin/develop

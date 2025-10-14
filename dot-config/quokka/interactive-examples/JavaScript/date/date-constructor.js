@@ -8,4 +8,8 @@ console.log(date1 === date2);
 // expected output: false;
 
 console.log(date1 - date2);
+<<<<<<< HEAD
 // expected output: 0
+=======
+// expected output: 0
+>>>>>>> origin/develop

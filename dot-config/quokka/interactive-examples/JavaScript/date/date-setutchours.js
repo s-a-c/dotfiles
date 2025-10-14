@@ -9,4 +9,8 @@ console.log(event.getUTCHours());
 event.setUTCHours(23);
 
 console.log(event.toUTCString());
+<<<<<<< HEAD
 // expected output: Wed, 20 Aug 1975 23:15:30 GMT
+=======
+// expected output: Wed, 20 Aug 1975 23:15:30 GMT
+>>>>>>> origin/develop

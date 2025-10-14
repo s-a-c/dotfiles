@@ -19,4 +19,8 @@ console.log(globalRegex.lastIndex);
 // expected output: 9
 
 console.log(globalRegex.test(str));
+<<<<<<< HEAD
 // expected output: false
+=======
+// expected output: false
+>>>>>>> origin/develop

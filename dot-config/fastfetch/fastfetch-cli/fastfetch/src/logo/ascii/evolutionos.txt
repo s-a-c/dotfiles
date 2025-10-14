@@ -18,4 +18,8 @@
          cWMMMMMMMMMMMMMMMMMMMMMMWd
             :KWMMMMMMMMMMMMMMWXo.
                 .cdO0KK00xl'
+<<<<<<< HEAD
                      ..
+=======
+                     ..
+>>>>>>> origin/develop

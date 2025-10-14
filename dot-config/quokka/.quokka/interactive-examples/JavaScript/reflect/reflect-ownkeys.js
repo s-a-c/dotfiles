@@ -9,4 +9,8 @@ console.log(Reflect.ownKeys(object1));
 // expected output: Array ["property1", "property2"]
 
 console.log(Reflect.ownKeys(array1));
+<<<<<<< HEAD
 // expected output: Array ["length"]
+=======
+// expected output: Array ["length"]
+>>>>>>> origin/develop

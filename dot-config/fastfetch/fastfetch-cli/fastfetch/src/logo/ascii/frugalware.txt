@@ -20,4 +20,8 @@
        ``.-/+oosysssssssssssssssssssssss
                ``.:/+osyysssssssssssssh.
                         `-:/+osyyssssyo
+<<<<<<< HEAD
                                 .-:+++`
+=======
+                                .-:+++`
+>>>>>>> origin/develop

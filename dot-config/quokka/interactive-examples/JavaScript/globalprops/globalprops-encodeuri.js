@@ -8,4 +8,8 @@ try {
   // expected output: "https://mozilla.org/?x=шеллы"
 } catch(e) { // catches a malformed URI
   console.error(e);
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/develop

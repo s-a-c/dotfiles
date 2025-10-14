@@ -16,4 +16,8 @@ for (let key of Object.keys(proxy1)) {
   console.log(key);
   // expected output: "_age"
   // expected output: "eyeCount"
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/develop

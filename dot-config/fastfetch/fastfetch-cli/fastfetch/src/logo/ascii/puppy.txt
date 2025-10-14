@@ -15,4 +15,8 @@
     :mMMMMMMMMMMMmddNMMMMMMMMmh/
       /dMMMMMMMMMMMMMMMMMMNdy/`
         .+hNMMMMMMMMMNmdhs/.
+<<<<<<< HEAD
             .:/+ooo+/:-.
+=======
+            .:/+ooo+/:-.
+>>>>>>> origin/develop

@@ -9,4 +9,8 @@ console.log(object1.property1);
 
 delete object1.property1; // cannot delete when sealed
 console.log(object1.property1);
+<<<<<<< HEAD
 // expected output: 33
+=======
+// expected output: 33
+>>>>>>> origin/develop

@@ -10,4 +10,8 @@
  'XM0.           ,OMMK'    OMMM7'              .XMK
    *WMO:.    .;xNMMk'       NNNMKl.          .xWMx
      ^ONMMNXMMMKx;          V  'xNMWKkxllox0NMWk'
+<<<<<<< HEAD
          '''''                    ':dOOXXKOxl'
+=======
+         '''''                    ':dOOXXKOxl'
+>>>>>>> origin/develop

@@ -18,4 +18,8 @@
 <key>StandardOutPath</key>
 <string>/Users/s-a-c/.vscode-insiders/cli/tunnel-service.log</string>
 </dict>
+<<<<<<< HEAD
 </plist>
+=======
+</plist>
+>>>>>>> origin/develop

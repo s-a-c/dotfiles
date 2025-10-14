@@ -9,4 +9,8 @@ var c = {};
 var object2 = {a: a, b: b, c: c};
 
 console.log(object2.b);
+<<<<<<< HEAD
 // expected output: 42
+=======
+// expected output: 42
+>>>>>>> origin/develop

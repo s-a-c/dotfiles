@@ -17,4 +17,8 @@ ossy${c2}NMMMNy${c1}MM${c2}h${c1}sssssssssssssshmmmh${c1}ssssssso
     .ossssssssssssssssss${c2}dMMMNyy${c1}ssso.
       -+sssssssssssssssss${c2}yy${c1}sss+-
         `:+ssssssssssssssssss+:`
+<<<<<<< HEAD
             .-\+oossssoo+/-.
+=======
+            .-\+oossssoo+/-.
+>>>>>>> origin/develop

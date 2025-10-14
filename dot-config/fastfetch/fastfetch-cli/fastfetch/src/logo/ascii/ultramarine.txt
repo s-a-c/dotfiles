@@ -17,4 +17,8 @@ oNWWWW${c2}MMMMMMMMMMMMMMMMMMMMMMMMMMMM${c1}WWWNNo
     .dNW${c2}MMMMMMMMMMMMMMMMMMMMMMMM${c1}WNd.
       .cKW${c2}MMMMMMMMMMMMMMMMMMMM${c1}WKc.
          'oOXWWW${c2}MMMMMMMM${c1}WWWXOl.
+<<<<<<< HEAD
              ;lkXNNNNNNXkl'
+=======
+             ;lkXNNNNNNXkl'
+>>>>>>> origin/develop

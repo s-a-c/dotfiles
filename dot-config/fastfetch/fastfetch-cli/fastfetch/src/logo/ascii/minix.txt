@@ -14,4 +14,8 @@ $2   -sdhyo+:-`                -/syymm:
     //oydNMMMMydMMNysNMMmsMMMMMNyo/`
        ../-yNMMy--/::/-.sMMmos+.`
            -+oyhNsooo+omy/```
+<<<<<<< HEAD
               `::ohdmds-`
+=======
+              `::ohdmds-`
+>>>>>>> origin/develop

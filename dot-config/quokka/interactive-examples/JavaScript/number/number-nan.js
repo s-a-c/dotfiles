@@ -9,4 +9,8 @@ function clean(x) {
 }
 
 console.log(clean(Number.NaN));
+<<<<<<< HEAD
 // expected output: 0
+=======
+// expected output: 0
+>>>>>>> origin/develop

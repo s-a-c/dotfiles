@@ -7,4 +7,8 @@ console.log(weakmap1.delete(object1));
 // expected output: true
 
 console.log(weakmap1.has(object1));
+<<<<<<< HEAD
 // expected output: false
+=======
+// expected output: false
+>>>>>>> origin/develop

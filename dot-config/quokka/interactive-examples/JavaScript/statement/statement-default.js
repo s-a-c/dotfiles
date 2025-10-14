@@ -9,4 +9,8 @@ switch(expr) {
   default:
     console.log('Sorry, we are out of ' + expr + '.');
     // expected output: "Sorry, we are out of Pears."
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/develop

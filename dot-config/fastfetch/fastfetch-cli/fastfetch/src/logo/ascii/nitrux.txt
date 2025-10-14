@@ -15,4 +15,8 @@
 `/s+:+oooossso/.`
 `//+sssssso:.
 `+syyyy+:`
+<<<<<<< HEAD
 :+s+-
+=======
+:+s+-
+>>>>>>> origin/develop

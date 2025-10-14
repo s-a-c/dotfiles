@@ -6,4 +6,8 @@ console.log(map1.delete('bar'));
 // (true indicates successful removal)
 
 console.log(map1.has('bar'));
+<<<<<<< HEAD
 // expected result: false
+=======
+// expected result: false
+>>>>>>> origin/develop

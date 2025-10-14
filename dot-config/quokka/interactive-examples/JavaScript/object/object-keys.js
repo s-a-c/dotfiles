@@ -5,4 +5,8 @@ const object1 = {
 };
 
 console.log(Object.keys(object1));
+<<<<<<< HEAD
 // expected output: Array ["a", "b", "c"]
+=======
+// expected output: Array ["a", "b", "c"]
+>>>>>>> origin/develop

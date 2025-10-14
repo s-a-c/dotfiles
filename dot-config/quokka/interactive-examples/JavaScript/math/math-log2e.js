@@ -3,4 +3,8 @@ function getLog2e() {
 }
 
 console.log(getLog2e());
+<<<<<<< HEAD
 // expected output: 1.4426950408889634
+=======
+// expected output: 1.4426950408889634
+>>>>>>> origin/develop

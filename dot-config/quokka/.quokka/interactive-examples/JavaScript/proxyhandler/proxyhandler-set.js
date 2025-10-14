@@ -18,4 +18,8 @@ proxy1.eyeCount = 1;
 // expected output: "Monsters must have an even number of eyes"
 
 console.log(proxy1.eyeCount);
+<<<<<<< HEAD
 // expected output: 4
+=======
+// expected output: 4
+>>>>>>> origin/develop

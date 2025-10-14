@@ -51,17 +51,29 @@ __direnv_nvm_use_node(){
     local NVM_PATH=$(find_up .nvm/nvm.sh)
     NVM_PATH="${NVM_PATH/\/nvm.sh/}"
     local NODE_VERSION=$(< .nvmrc)
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     # if the version id is an alias cat the file for the version
     if [ -f "$NVM_PATH/alias/$NODE_VERSION" ]; then
       NODE_VERSION=$(< $NVM_PATH/alias/$NODE_VERSION)
     fi
 
+<<<<<<< HEAD
     # remove 'v' prefix for direnv
     NODE_VERSION="${NODE_VERSION/v/}"
     export NODE_VERSIONS="${NVM_PATH}/versions/node"
     export NODE_VERSION_PREFIX="v"
 
+=======
+    # remove 'v' prefix for direnv 
+    NODE_VERSION="${NODE_VERSION/v/}" 
+    export NODE_VERSIONS="${NVM_PATH}/versions/node"
+    export NODE_VERSION_PREFIX="v"
+    
+>>>>>>> origin/develop
 
     if [ "$nvmrc_node_version" = "N/A" ]; then
       _log warn "Installing missing node version"
@@ -83,7 +95,11 @@ _log() {
   local msg=$*
   local color_normal
   local color_success
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> origin/develop
   color_normal=$(tput sgr0;)
   color_error=$(tput setaf 1;)
   color_success=$(tput bold; tput setaf 2;)
@@ -152,7 +168,11 @@ function getLatestVersion(){
     echo -n "$CUR_VERSION" > $CONFIG_FILE
   fi
 
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> origin/develop
   # if [ "$NEW_VERSION" != "$CUR_VERSION" ]; then
   if [ "$NEW_VERSION" != "$CUR_VERSION" ]; then
     _log info "Updating helper to latest version $NEW_VERSION"
@@ -188,18 +208,30 @@ __check_for_update(){
   local ARGS="$@"
   SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
   local CONFIG_FILE="$SCRIPT_DIR/.helpers-version"
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> origin/develop
   # if there is no version file create it with the latest release
   if [ ! -f $CONFIG_FILE ]; then
     getLatestVersion $CONFIG_FILE
   else
     # we have a version so see if we need to check (we'll check every 24h)
     local CHECK_FOR_UPDATE=$(comparedate $CONFIG_FILE)
+<<<<<<< HEAD
 
     if [ ! -z "$CHECK_FOR_UPDATE" ];then
       _log info "Checking for update..."
       local NEW_VERSION=$(getLatestVersion $CONFIG_FILE)
 
+=======
+    
+    if [ ! -z "$CHECK_FOR_UPDATE" ];then
+      _log info "Checking for update..."
+      local NEW_VERSION=$(getLatestVersion $CONFIG_FILE)
+      
+>>>>>>> origin/develop
       # if getLatestVersion returns a new version (var isn't empty)
       if [ ! -z "$NEW_VERSION" ];then
         _log success "Updated to latest version"
@@ -287,7 +319,11 @@ layout_stencil(){
     fi
   fi
 
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> origin/develop
 }
 
 layout_envkey(){
@@ -297,7 +333,11 @@ layout_envkey(){
   fi
   _log "Using EnvKey"
   eval "$(envkey-source)"
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> origin/develop
 }
 
 layout_shopify(){
@@ -344,7 +384,11 @@ layout_project(){
     layout_envkey
   fi
 
+<<<<<<< HEAD
   # if we have a package json do some node project detection
+=======
+  # if we have a package json do some node project detection 
+>>>>>>> origin/develop
   if [[ -f "package.json" ]]; then
     # set some env vars that might be useful
     # package version
@@ -372,7 +416,11 @@ layout_project(){
       layout_meteor
     fi
   fi
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> origin/develop
   # detect shopify themekit
   if [[ -f "config.yml" && ! -z "$(grep -Fs "theme_id:" config.yml)" ]]; then
     layout_shopify
@@ -389,6 +437,7 @@ main(){
 ORIG_DIRENV_LOG_FORMAT="${DIRENV_LOG_FORMAT-direnv: %s}"
 DIRENV_LOG_FORMAT="%s"
 cat << "EOF"
+<<<<<<< HEAD
     __         __
    / /_  ___  / /___  ___  __________
   / __ \/ _ \/ / __ \/ _ \/ ___/ ___/
@@ -401,6 +450,20 @@ cat << "EOF"
               \__,_/ .___/\__,_/\__,_/\__/\___/\__,_(_)
                   /_/
 
+=======
+    __         __                                       
+   / /_  ___  / /___  ___  __________                   
+  / __ \/ _ \/ / __ \/ _ \/ ___/ ___/                   
+ / / / /  __/ / /_/ /  __/ /  (__  )                    
+/_/ /_/\___/_/ .___/\___/_/  /____/                     
+            /_/                  __      __           __
+                __  ______  ____/ /___ _/ /____  ____/ /
+               / / / / __ \/ __  / __ `/ __/ _ \/ __  / 
+              / /_/ / /_/ / /_/ / /_/ / /_/  __/ /_/ /  
+              \__,_/ .___/\__,_/\__,_/\__/\___/\__,_(_) 
+                  /_/                                   
+                  
+>>>>>>> origin/develop
                           Time to reload your shell!
 
 EOF
@@ -410,4 +473,8 @@ DIRENV_LOG_FORMAT=$ORIG_DIRENV_LOG_FORMAT
   fi
 }
 
+<<<<<<< HEAD
 main
+=======
+main
+>>>>>>> origin/develop

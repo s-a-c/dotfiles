@@ -8,4 +8,8 @@ console.log(x = y + 1); // 3 + 1
 // expected output: 4
 
 console.log(x = x * y); // 4 * 3
+<<<<<<< HEAD
 // expected output: 12
+=======
+// expected output: 12
+>>>>>>> origin/develop

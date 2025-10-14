@@ -23,9 +23,15 @@ safe_compinit() {
             compinit
         fi
         export _COMPINIT_DONE=1
+<<<<<<< HEAD
             zf::debug "✅ compinit initialized"
     else
             zf::debug "⚠️ compinit already initialized, skipping"
+=======
+            zsh_debug_echo "✅ compinit initialized"
+    else
+            zsh_debug_echo "⚠️ compinit already initialized, skipping"
+>>>>>>> origin/develop
     fi
 }
 
@@ -33,7 +39,11 @@ safe_compinit() {
 echo "✓ Testing current minimal shell..."
 MINIMAL_TEST=$(/opt/homebrew/bin/zsh -i -c 'echo "MINIMAL_WORKS"; exit 0' 2>/dev/null)
 if [[ "$MINIMAL_TEST" != *"MINIMAL_WORKS"* ]]; then
+<<<<<<< HEAD
         zf::debug "❌ Minimal shell not working. Please run diagnose-early-exit.zsh first."
+=======
+        zsh_debug_echo "❌ Minimal shell not working. Please run diagnose-early-exit.zsh first."
+>>>>>>> origin/develop
     exit 1
 fi
 echo "✅ Minimal shell confirmed working"
@@ -106,9 +116,15 @@ safe_compinit
 # Add zgenom setup using paths from .zshenv
 if [[ -f "$ZGEN_SOURCE/zgenom.zsh" ]]; then
     source "$ZGEN_SOURCE/zgenom.zsh"
+<<<<<<< HEAD
         zf::debug "✅ zgenom framework loaded"
 else
         zf::debug "❌ zgenom not found at $ZGEN_SOURCE"
+=======
+        zsh_debug_echo "✅ zgenom framework loaded"
+else
+        zsh_debug_echo "❌ zgenom not found at $ZGEN_SOURCE"
+>>>>>>> origin/develop
 fi
 
 PS1='[STEP2] %n@%m %1~ %# '
@@ -145,7 +161,11 @@ if [[ -f "$ZGEN_SOURCE/zgenom.zsh" ]]; then
     source "$ZGEN_SOURCE/zgenom.zsh"
 
     if ! zgenom saved; then
+<<<<<<< HEAD
             zf::debug "Loading essential plugins..."
+=======
+            zsh_debug_echo "Loading essential plugins..."
+>>>>>>> origin/develop
 
         # Framework
         zgenom oh-my-zsh
@@ -162,7 +182,11 @@ if [[ -f "$ZGEN_SOURCE/zgenom.zsh" ]]; then
         zgenom save
     fi
 
+<<<<<<< HEAD
         zf::debug "✅ Essential plugins loaded"
+=======
+        zsh_debug_echo "✅ Essential plugins loaded"
+>>>>>>> origin/develop
 fi
 
 PS1='[STEP3] %n@%m %1~ %# '
@@ -199,7 +223,11 @@ if [[ -f "$ZGEN_SOURCE/zgenom.zsh" ]]; then
     source "$ZGEN_SOURCE/zgenom.zsh"
 
     if ! zgenom saved; then
+<<<<<<< HEAD
             zf::debug "Loading with syntax highlighting..."
+=======
+            zsh_debug_echo "Loading with syntax highlighting..."
+>>>>>>> origin/develop
 
         zgenom oh-my-zsh
 
@@ -225,7 +253,11 @@ if [[ -f "$ZGEN_SOURCE/zgenom.zsh" ]]; then
     bindkey "$terminfo[kcuu1]" history-substring-search-up
     bindkey "$terminfo[kcud1]" history-substring-search-down
 
+<<<<<<< HEAD
         zf::debug "✅ Syntax highlighting and history search loaded"
+=======
+        zsh_debug_echo "✅ Syntax highlighting and history search loaded"
+>>>>>>> origin/develop
 fi
 
 PS1='[STEP4] %n@%m %1~ %# '
@@ -262,7 +294,11 @@ if [[ -f "$ZGEN_SOURCE/zgenom.zsh" ]]; then
     source "$ZGEN_SOURCE/zgenom.zsh"
 
     if ! zgenom saved; then
+<<<<<<< HEAD
             zf::debug "Loading with k plugin..."
+=======
+            zsh_debug_echo "Loading with k plugin..."
+>>>>>>> origin/develop
 
         zgenom oh-my-zsh
         zgenom load zdharma-continuum/fast-syntax-highlighting
@@ -285,7 +321,11 @@ if [[ -f "$ZGEN_SOURCE/zgenom.zsh" ]]; then
     bindkey "$terminfo[kcuu1]" history-substring-search-up
     bindkey "$terminfo[kcud1]" history-substring-search-down
 
+<<<<<<< HEAD
         zf::debug "✅ K plugin loaded for enhanced directory listings"
+=======
+        zsh_debug_echo "✅ K plugin loaded for enhanced directory listings"
+>>>>>>> origin/develop
 fi
 
 PS1='[STEP5] %n@%m %1~ %# '
@@ -303,9 +343,15 @@ test_step() {
     local step=$1
     local config_file=~/.zshrc.step${step}
 
+<<<<<<< HEAD
         zf::debug "Testing Step $step..."
     if [[ ! -f "$config_file" ]]; then
             zf::debug "❌ Config file $config_file not found"
+=======
+        zsh_debug_echo "Testing Step $step..."
+    if [[ ! -f "$config_file" ]]; then
+            zsh_debug_echo "❌ Config file $config_file not found"
+>>>>>>> origin/develop
         return 1
     fi
 
@@ -316,11 +362,19 @@ test_step() {
     local result=$(/opt/homebrew/bin/zsh -i -c "echo 'STEP${step}_SUCCESS'; exit 0" 2>/dev/null)
 
     if [[ "$result" == *"STEP${step}_SUCCESS"* ]]; then
+<<<<<<< HEAD
             zf::debug "✅ Step $step works!"
         return 0
     else
             zf::debug "❌ Step $step failed!"
             zf::debug "Debug output:"
+=======
+            zsh_debug_echo "✅ Step $step works!"
+        return 0
+    else
+            zsh_debug_echo "❌ Step $step failed!"
+            zsh_debug_echo "Debug output:"
+>>>>>>> origin/develop
         /opt/homebrew/bin/zsh -i -c "echo 'Test'; exit 0"
         return 1
     fi
@@ -328,6 +382,7 @@ test_step() {
 
 # Test each step
 for step in 1 2 3 4 5; do
+<<<<<<< HEAD
         zf::debug "----------------------------------------"
     test_step $step
     if [[ $? -ne 0 ]]; then
@@ -337,6 +392,17 @@ for step in 1 2 3 4 5; do
         exit 1
     fi
         zf::debug ""
+=======
+        zsh_debug_echo "----------------------------------------"
+    test_step $step
+    if [[ $? -ne 0 ]]; then
+            zsh_debug_echo "🛑 Step $step failed - this is where the problem occurs!"
+            zsh_debug_echo "Use: cp ~/.zshrc.step$((step-1)) ~/.zshrc"
+            zsh_debug_echo "To restore to the last working configuration."
+        exit 1
+    fi
+        zsh_debug_echo ""
+>>>>>>> origin/develop
 done
 
 echo "🎉 All steps passed! Your configuration is fully working."

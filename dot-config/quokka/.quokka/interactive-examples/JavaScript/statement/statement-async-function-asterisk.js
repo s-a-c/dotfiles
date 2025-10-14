@@ -16,4 +16,8 @@ async function printRandoms() {
   }
 }
 
+<<<<<<< HEAD
 printRandoms();
+=======
+printRandoms();
+>>>>>>> origin/develop

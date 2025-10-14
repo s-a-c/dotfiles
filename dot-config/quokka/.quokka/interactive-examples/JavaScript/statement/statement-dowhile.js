@@ -7,4 +7,8 @@ do {
 } while (i < 5);
 
 console.log(result);
+<<<<<<< HEAD
 // expected result: "12345"
+=======
+// expected result: "12345"
+>>>>>>> origin/develop

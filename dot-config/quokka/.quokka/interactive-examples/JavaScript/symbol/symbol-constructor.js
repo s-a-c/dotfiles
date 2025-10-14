@@ -9,4 +9,8 @@ console.log(symbol3.toString());
 // expected output: "Symbol(foo)"
 
 console.log(Symbol('foo') === Symbol('foo'));
+<<<<<<< HEAD
 // expected output: false
+=======
+// expected output: false
+>>>>>>> origin/develop

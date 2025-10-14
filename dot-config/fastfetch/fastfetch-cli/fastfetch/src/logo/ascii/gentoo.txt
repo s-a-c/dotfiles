@@ -15,4 +15,8 @@
 yM$2MNNNNNNNmmmmmNNMmhs+/$1-`
 /h$2MMNNNNNNNNMNdhs++/$1-`
 `/$2ohdmmddhys+++/:$1.`
+<<<<<<< HEAD
   `-//////:--.
+=======
+  `-//////:--.
+>>>>>>> origin/develop

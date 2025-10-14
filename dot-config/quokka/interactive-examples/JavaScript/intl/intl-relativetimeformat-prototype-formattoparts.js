@@ -8,4 +8,8 @@ console.log(parts[1].value);
 // expected output: "10"
 
 console.log(parts[2].value);
+<<<<<<< HEAD
 // expected output: " seconds"
+=======
+// expected output: " seconds"
+>>>>>>> origin/develop

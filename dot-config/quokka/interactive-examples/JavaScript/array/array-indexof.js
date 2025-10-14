@@ -8,4 +8,8 @@ console.log(beasts.indexOf('bison', 2));
 // expected output: 4
 
 console.log(beasts.indexOf('giraffe'));
+<<<<<<< HEAD
 // expected output: -1
+=======
+// expected output: -1
+>>>>>>> origin/develop

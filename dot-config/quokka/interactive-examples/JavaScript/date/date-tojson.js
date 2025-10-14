@@ -6,4 +6,8 @@ console.log(jsonDate);
 // expected output: 1975-08-19T23:15:30.000Z
 
 console.log(new Date(jsonDate).toUTCString());
+<<<<<<< HEAD
 // expected output: Tue, 19 Aug 1975 23:15:30 GMT
+=======
+// expected output: Tue, 19 Aug 1975 23:15:30 GMT
+>>>>>>> origin/develop

@@ -9,4 +9,8 @@ ${c1}MMM         ${c2}dMM dMM   MMy  ${c1}dMMMMy dMM  dMM dMM dMM    dMMMMMMM
 ${c2} dMMy       MMy MMy  MMy     ${c1}dMMy MM  MMy MMy  MMy    dMM
 ${c2}dMMy       dMM dMM  dMM ${c1}dMM  MMy dMMMMMy dMM  dMM     MMy   MM
 ${c2}MMMMMMMMMM MMy MMy  MMy ${c1}dMMMyyy MMy     MMy  MMy      dMMMMMMy
+<<<<<<< HEAD
 ${c2}                                ${c1}dy
+=======
+${c2}                                ${c1}dy
+>>>>>>> origin/develop

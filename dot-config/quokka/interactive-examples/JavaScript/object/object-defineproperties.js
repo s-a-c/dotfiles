@@ -9,4 +9,8 @@ Object.defineProperties(object1, {
 });
 
 console.log(object1.property1);
+<<<<<<< HEAD
 // expected output: 42
+=======
+// expected output: 42
+>>>>>>> origin/develop

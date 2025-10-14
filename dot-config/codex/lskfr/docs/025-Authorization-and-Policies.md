@@ -180,4 +180,8 @@
 8. References
    - [Laravel Authorization](https://laravel.com/docs/authorization)
    - [Gates & Policies](https://laravel.com/docs/authorization#gates)
+<<<<<<< HEAD
    - [Spatie Laravel Permission](https://github.com/spatie/laravel-permission#readme)
+=======
+   - [Spatie Laravel Permission](https://github.com/spatie/laravel-permission#readme)
+>>>>>>> origin/develop

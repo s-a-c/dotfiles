@@ -15,4 +15,8 @@ wWW${c2}N${c1}WWWWw
    wWWWWWWWWWWWWWWWw
     wWWWWWWWWWWWWWWWw
        WWWWWWWWWWWWWw
+<<<<<<< HEAD
            wWWWWWWWw
+=======
+           wWWWWWWWw
+>>>>>>> origin/develop

@@ -9,4 +9,8 @@ console.log(korean.maximize().baseName);
 // expected output: "ko-Kore-KR"
 
 console.log(arabic.maximize().baseName);
+<<<<<<< HEAD
 // expected output: "ar-Arab-EG"
+=======
+// expected output: "ar-Arab-EG"
+>>>>>>> origin/develop

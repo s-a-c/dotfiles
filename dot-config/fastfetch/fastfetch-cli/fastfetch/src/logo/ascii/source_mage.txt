@@ -18,4 +18,8 @@
                  sMMMMMMMMMmmo
                  `NMMMMMMMMMd:
                   -dMMMMMMMMMo
+<<<<<<< HEAD
                     -shmNMMms.
+=======
+                    -shmNMMms.
+>>>>>>> origin/develop

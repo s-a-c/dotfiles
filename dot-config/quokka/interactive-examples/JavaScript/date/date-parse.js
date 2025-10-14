@@ -5,4 +5,8 @@ console.log(unixTimeZero);
 // expected output: 0
 
 console.log(javaScriptRelease);
+<<<<<<< HEAD
 // expected output: 818035920000
+=======
+// expected output: 818035920000
+>>>>>>> origin/develop

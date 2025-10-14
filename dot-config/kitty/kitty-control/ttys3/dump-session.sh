@@ -10,3 +10,7 @@ kitty @ ls | ${CFG_DIR}/kitty-convert-dump.py > ${CFG_DIR}/session.conf
 echo "kitty session dumped"
 
 echo; read -r -p "Press Enter to exit"; echo ""
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/develop

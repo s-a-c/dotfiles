@@ -9,4 +9,8 @@ console.log(event.getUTCMonth());
 event.setUTCMonth(11);
 
 console.log(event.toUTCString());
+<<<<<<< HEAD
 // expected output: Wed, 01 Dec 1976 02:15:30 GMT
+=======
+// expected output: Wed, 01 Dec 1976 02:15:30 GMT
+>>>>>>> origin/develop

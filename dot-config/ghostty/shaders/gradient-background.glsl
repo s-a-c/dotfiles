@@ -22,4 +22,8 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
 
     // Apply terminal's alpha to control overall opacity
     fragColor = vec4(blendedColor, terminalColor.a);
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/develop

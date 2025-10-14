@@ -9,4 +9,8 @@ console.log(new Intl.NumberFormat('ja-JP', { style: 'currency', currency: 'JPY' 
 
 // limit to three significant digits
 console.log(new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(number));
+<<<<<<< HEAD
 // expected output: "1,23,000"
+=======
+// expected output: "1,23,000"
+>>>>>>> origin/develop

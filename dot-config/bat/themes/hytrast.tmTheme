@@ -32,7 +32,11 @@
             <dict>
                 <key>foreground</key>
                 <string>#00E000</string>
+<<<<<<< HEAD
 
+=======
+                
+>>>>>>> origin/develop
             </dict>
         </dict>
         <dict>
@@ -44,7 +48,11 @@
             <dict>
                 <key>foreground</key>
                 <string>#FF7CC9</string>
+<<<<<<< HEAD
 
+=======
+                
+>>>>>>> origin/develop
             </dict>
         </dict>
         <dict>
@@ -67,7 +75,11 @@
             <dict>
                 <key>foreground</key>
                 <string>#00D0D0</string>
+<<<<<<< HEAD
 
+=======
+                
+>>>>>>> origin/develop
             </dict>
         </dict>
         <dict>
@@ -88,7 +100,11 @@
             <string>variable</string>
             <key>settings</key>
             <dict>
+<<<<<<< HEAD
 
+=======
+                
+>>>>>>> origin/develop
                 <key>foreground</key>
                 <string>#F8F8F2</string>
             </dict>
@@ -155,7 +171,11 @@
             <string>entity.other.inherited-class</string>
             <key>settings</key>
             <dict>
+<<<<<<< HEAD
 
+=======
+                
+>>>>>>> origin/develop
                 <key>foreground</key>
                 <string>#A6E22E</string>
             </dict>
@@ -169,7 +189,11 @@
             <dict>
                 <key>foreground</key>
                 <string>#FFAE65</string>
+<<<<<<< HEAD
 
+=======
+                
+>>>>>>> origin/develop
             </dict>
         </dict>
         <dict>
@@ -292,7 +316,11 @@
                 <string>#79ABFF</string>
             </dict>
         </dict>
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/develop
 
     </array>
     <key>uuid</key>
@@ -302,4 +330,8 @@
     <key>semanticClass</key>
     <string>theme.dark.korokai</string>
 </dict>
+<<<<<<< HEAD
 </plist>
+=======
+</plist>
+>>>>>>> origin/develop

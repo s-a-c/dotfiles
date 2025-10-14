@@ -9,4 +9,8 @@ Dog.prototype.toString = function dogToString() {
 }
 
 console.log(dog1.toString());
+<<<<<<< HEAD
 // expected output: "Gabby"
+=======
+// expected output: "Gabby"
+>>>>>>> origin/develop

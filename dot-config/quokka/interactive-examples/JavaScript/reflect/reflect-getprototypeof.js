@@ -8,4 +8,8 @@ console.log(proto1);
 // expected output: [object Object]
 
 console.log(Reflect.getPrototypeOf(proto1));
+<<<<<<< HEAD
 // expected output: null
+=======
+// expected output: null
+>>>>>>> origin/develop

@@ -8,4 +8,8 @@ console.log(weakmap1.get(object1));
 // expected output: 42
 
 console.log(weakmap1.get(object2));
+<<<<<<< HEAD
 // expected output: undefined
+=======
+// expected output: undefined
+>>>>>>> origin/develop

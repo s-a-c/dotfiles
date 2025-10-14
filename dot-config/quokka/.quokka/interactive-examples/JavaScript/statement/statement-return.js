@@ -9,4 +9,8 @@ console.log(getRectArea(3, 4));
 // expected output: 12
 
 console.log(getRectArea(-3, 4));
+<<<<<<< HEAD
 // expected output: 0
+=======
+// expected output: 0
+>>>>>>> origin/develop

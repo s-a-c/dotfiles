@@ -31,6 +31,10 @@ next:
         ffStrbufInit(&user->clientIp);
         user->loginTime = (uint64_t) n.ut_time * 1000;
     }
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     return NULL;
 }

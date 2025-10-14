@@ -7,4 +7,8 @@ for (const property in object) {
 // expected output:
 // "a: 1"
 // "b: 2"
+<<<<<<< HEAD
 // "c: 3"
+=======
+// "c: 3"
+>>>>>>> origin/develop

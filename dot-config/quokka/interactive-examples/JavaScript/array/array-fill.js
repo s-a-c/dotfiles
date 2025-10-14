@@ -9,4 +9,8 @@ console.log(array1.fill(5, 1));
 // expected output: [1, 5, 5, 5]
 
 console.log(array1.fill(6));
+<<<<<<< HEAD
 // expected output: [6, 6, 6, 6]
+=======
+// expected output: [6, 6, 6, 6]
+>>>>>>> origin/develop

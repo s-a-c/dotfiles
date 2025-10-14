@@ -55,3 +55,7 @@ def handle_result(args, data, target_window_id, boss, extra_cli_args, *a):
         # boss.open_url(f'https://www.google.com/search?q=define:{word}')
         # set_primary_selection(word)
         set_clipboard_string(word)
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/develop

@@ -8,4 +8,8 @@ if (Reflect.defineProperty(object1, 'property1', {value: 42})) {
 }
 
 console.log(object1.property1);
+<<<<<<< HEAD
 // expected output: 42
+=======
+// expected output: 42
+>>>>>>> origin/develop

@@ -6,4 +6,8 @@ console.log(regex1.global);
 var regex2 = new RegExp('bar', 'i');
 
 console.log(regex2.global);
+<<<<<<< HEAD
 // expected output: false
+=======
+// expected output: false
+>>>>>>> origin/develop

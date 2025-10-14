@@ -270,6 +270,7 @@ dist/
 dot-config/lmstudio/server-logs/
 dot-config/zsh/.zgenom
 dot-config/zsh/.zqs-zgenom
+<<<<<<< HEAD
 # Ignore generated or local-only directories (symlink-heavy)
 .trunk/
 
@@ -306,3 +307,5 @@ dot-config/rovodev/
 # Use negation to keep any specific numeric name tracked, e.g.:
 # !/2
 # ...existing code...
+=======
+>>>>>>> origin/develop

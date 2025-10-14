@@ -120,4 +120,8 @@ View an Asciiville animation with:
 	asciisplash -c 1 -a -i
 128.53s user 83.15s system 38% cpu 9:03.87s total
 current_ruby:2: command not found: chruby
+<<<<<<< HEAD
 current_ruby:3: command not found: chruby
+=======
+current_ruby:3: command not found: chruby
+>>>>>>> origin/develop

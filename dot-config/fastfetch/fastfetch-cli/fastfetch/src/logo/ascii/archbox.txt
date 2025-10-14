@@ -16,4 +16,8 @@
  /:::+`hhhhoos`     `hhhhhhhhhhhhhhhhhs+`
     `--/:`   /:     `hhhhhhhhhhhho/-
              -/:.   `hhhhhhs+:-`
+<<<<<<< HEAD
                 ::::/ho/-`
+=======
+                ::::/ho/-`
+>>>>>>> origin/develop

@@ -8,4 +8,8 @@ const array1 = ['duck', 'duck', 'duck'];
 Reflect.set(array1, 2, 'goose');
 
 console.log(array1[2]);
+<<<<<<< HEAD
 // expected output: "goose"
+=======
+// expected output: "goose"
+>>>>>>> origin/develop

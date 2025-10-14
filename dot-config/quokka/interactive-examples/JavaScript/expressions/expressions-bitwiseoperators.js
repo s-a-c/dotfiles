@@ -8,4 +8,8 @@ console.log(5 & 13 & 3); // 0101 & 1101 & 0011 = 0001
 // expected output: 1;
 
 console.log(5 | 13); // 0101 | 1101 = 1101
+<<<<<<< HEAD
 // expected output: 13
+=======
+// expected output: 13
+>>>>>>> origin/develop

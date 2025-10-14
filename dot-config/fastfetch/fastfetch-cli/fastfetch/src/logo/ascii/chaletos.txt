@@ -17,4 +17,8 @@
      oNNs-                    :yMm/
       .+mMdo:`            `:smMd/`
          -ohNNmhsoo++osshmNNh+.
+<<<<<<< HEAD
             `./+syyhhyys+:``
+=======
+            `./+syyhhyys+:``
+>>>>>>> origin/develop

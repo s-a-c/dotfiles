@@ -6,3 +6,4 @@
 --ignore=\.idea
 --ignore=\.git
 --ignore=vendor
+--ignore=\node_modules

@@ -12,4 +12,8 @@ ${c1}###${c2}(${c3}ooo           oo${c2}((${c1}###${c3}o
 ${c1}###${c2}(${c3}ooo             ooo${c2}((${c1}###
 ${c1}################${c2}(${c3}oo    oo${c2}((((${c3}o
 ${c2}(((((((((((((((((${c3}ooo     ooooo
+<<<<<<< HEAD
   oooooooooooooooooo        o
+=======
+  oooooooooooooooooo        o
+>>>>>>> origin/develop

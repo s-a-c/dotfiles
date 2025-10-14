@@ -9,4 +9,8 @@ var obj = {
 }
 
 console.log(obj.latest);
+<<<<<<< HEAD
 // expected output: "c"
+=======
+// expected output: "c"
+>>>>>>> origin/develop

@@ -9,4 +9,8 @@ console.log(map1.size);
 map1.clear();
 
 console.log(map1.size);
+<<<<<<< HEAD
 // expected output: 0
+=======
+// expected output: 0
+>>>>>>> origin/develop

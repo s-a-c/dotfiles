@@ -8,4 +8,8 @@ console.log(weakmap1.has(object1));
 // expected output: true
 
 console.log(weakmap1.has(object2));
+<<<<<<< HEAD
 // expected output: false
+=======
+// expected output: false
+>>>>>>> origin/develop

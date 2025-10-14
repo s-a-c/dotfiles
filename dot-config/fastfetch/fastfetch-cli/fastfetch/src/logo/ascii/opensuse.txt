@@ -15,4 +15,8 @@ dKK$1KKKKKKKKKK;.;oOKx,..$2^$1..;kKKK0.$2  dKd
     l0Ko.                    .c00l'
      'l0Kk:.              .;xK0l'
         'lkK0xl:;,,,,;:ldO0kl'
+<<<<<<< HEAD
             '^:ldxkkkkxdl:^'
+=======
+            '^:ldxkkkkxdl:^'
+>>>>>>> origin/develop

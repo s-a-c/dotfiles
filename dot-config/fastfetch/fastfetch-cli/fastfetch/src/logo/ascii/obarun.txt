@@ -16,4 +16,8 @@ cooooooo:           ,;co;
 ,ooooooool;       ,:loc
  cooooooooooooloooooc
   ;ooooooooooooool;
+<<<<<<< HEAD
     ;looooooolc;
+=======
+    ;looooooolc;
+>>>>>>> origin/develop

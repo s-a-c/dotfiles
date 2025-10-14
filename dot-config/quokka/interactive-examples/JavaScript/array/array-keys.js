@@ -7,4 +7,8 @@ for (const key of iterator) {
 
 // expected output: 0
 // expected output: 1
+<<<<<<< HEAD
 // expected output: 2
+=======
+// expected output: 2
+>>>>>>> origin/develop

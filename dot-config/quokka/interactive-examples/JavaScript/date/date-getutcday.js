@@ -7,4 +7,8 @@ console.log(date1.getUTCDay());
 
 // Wednesday
 console.log(date2.getUTCDay());
+<<<<<<< HEAD
 // expected output: 3
+=======
+// expected output: 3
+>>>>>>> origin/develop

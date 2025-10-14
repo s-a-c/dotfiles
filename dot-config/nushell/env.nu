@@ -101,3 +101,7 @@ $env.NU_PLUGIN_DIRS = [
 # source ($nu.default-config-dir | path join 'custom.nu')
 
 source ($nu.default-config-dir | path join 'env_overrides.nu')
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/develop

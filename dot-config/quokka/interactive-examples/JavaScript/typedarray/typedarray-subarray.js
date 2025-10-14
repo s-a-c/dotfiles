@@ -4,4 +4,8 @@ console.log(uint8.subarray(1, 3));
 // expected output: Uint8Array [20, 30]
 
 console.log(uint8.subarray(1));
+<<<<<<< HEAD
 // expected output: Uint8Array [20, 30, 40, 50]
+=======
+// expected output: Uint8Array [20, 30, 40, 50]
+>>>>>>> origin/develop

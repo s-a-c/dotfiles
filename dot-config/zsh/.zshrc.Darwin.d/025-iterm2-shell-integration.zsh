@@ -6,6 +6,7 @@
 # Load Order: 025 - macOS UI integrations (after basic prompt, before UI enhancements)
 
 [[ "$ZSH_DEBUG" == "1" ]] && {
+<<<<<<< HEAD
         zf::debug "# ++++++ $0 ++++++++++++++++++++++++++++++++++++"
     zf::debug "# [iterm2-shell-integration] Starting iTerm2 shell integration (macOS)"
 }
@@ -13,6 +14,14 @@
 # Only proceed if this is an interactive shell, we're on macOS, and running in iTerm2
 # This prevents conflicts with other terminals like Warp, Terminal.app, etc.
 if [[ -o interactive ]] && [[ "$(uname -s)" == "Darwin" ]] && [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
+=======
+        zsh_debug_echo "# ++++++ $0 ++++++++++++++++++++++++++++++++++++"
+    zsh_debug_echo "# [iterm2-shell-integration] Starting iTerm2 shell integration (macOS)"
+}
+
+# Only proceed if this is an interactive shell and we're on macOS
+if [[ -o interactive ]] && [[ "$(uname -s)" == "Darwin" ]]; then
+>>>>>>> origin/develop
     # Check if iTerm2 integration should be enabled
     # Skip if already installed, or if terminal is incompatible
     if [ "${ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX-}""$TERM" != "tmux-256color" -a \
@@ -147,6 +156,7 @@ if [[ -o interactive ]] && [[ "$(uname -s)" == "Darwin" ]] && [[ "$TERM_PROGRAM"
         iterm2_print_state_data
         printf "\033]1337;ShellIntegrationVersion=14;shell=zsh\007"
 
+<<<<<<< HEAD
         zf::debug "# [iterm2-shell-integration] iTerm2 integration initialized (macOS)"
     else
         zf::debug "# [iterm2-shell-integration] Skipping - not compatible or already installed"
@@ -160,3 +170,14 @@ else
 fi
 
 zf::debug "# [iterm2-shell-integration] iTerm2 shell integration complete (macOS)"
+=======
+        zsh_debug_echo "# [iterm2-shell-integration] iTerm2 integration initialized (macOS)"
+    else
+        zsh_debug_echo "# [iterm2-shell-integration] Skipping - not compatible or already installed"
+    fi
+else
+    zsh_debug_echo "# [iterm2-shell-integration] Skipping - non-interactive shell or not macOS"
+fi
+
+zsh_debug_echo "# [iterm2-shell-integration] iTerm2 shell integration complete (macOS)"
+>>>>>>> origin/develop

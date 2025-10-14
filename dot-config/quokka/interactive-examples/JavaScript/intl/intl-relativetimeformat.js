@@ -9,4 +9,8 @@ console.log(rtf1.format(-1, 'day'));
 var rtf2 = new Intl.RelativeTimeFormat('es', { numeric: 'auto' });
 
 console.log(rtf2.format(2, 'day'));
+<<<<<<< HEAD
 //expected output: "pasado mañana"
+=======
+//expected output: "pasado mañana"
+>>>>>>> origin/develop

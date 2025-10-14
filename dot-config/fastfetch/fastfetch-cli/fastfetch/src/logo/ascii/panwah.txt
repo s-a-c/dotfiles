@@ -18,4 +18,8 @@ WWWWWWW${c1}AAA${c2}WWWW   WWWWWWWWWWWWWWWWWWWWWWWWWWW
     ${c1}AAA${c2}WWWWW${c1}OOOOOOOOOOO${c2}WWWWWWWWWWW${c1}AAA${c2}WWWWWW
           ${c1}OOOO${c3}GGGGGGG${c1}OOOO${c2}WWWWWWWWWW${c1}AAA${c2}WWWW
            ${c1}OOO${c3}GGGGGGG${c1}OOO${c2}WWWWWWWWWWWW${c1}AAA${c2}W
+<<<<<<< HEAD
              ${c1}OOOOOOOOO
+=======
+             ${c1}OOOOOOOOO
+>>>>>>> origin/develop

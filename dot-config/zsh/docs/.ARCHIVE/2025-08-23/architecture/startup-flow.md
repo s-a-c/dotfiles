@@ -183,6 +183,7 @@ Your ZSH setup uses a highly modular structure with directory-based configuratio
 ```mermaid
 flowchart TD
     A[Shell Invocation] --> B{Session Type}
+<<<<<<< HEAD
 
     B -->|All Sessions| C[/etc/zshenv]
     C --> D[~/.zshenv]
@@ -195,11 +196,26 @@ flowchart TD
 
     G -->|Interactive| H[~/.zshrc]
 
+=======
+    
+    B -->|All Sessions| C[/etc/zshenv]
+    C --> D[~/.zshenv]
+    
+    D -->|Login Session| E[/etc/zprofile]
+    E -->|Login Session| F[~/.zprofile]
+    
+    D -->|Interactive| G[/etc/zshrc]
+    F -->|Login Session| G
+    
+    G -->|Interactive| H[~/.zshrc]
+    
+>>>>>>> origin/develop
     H -->|Interactive| I[Pre-plugins]
     I --> J[zgenom setup]
     J --> K[Core Configuration]
     K --> L[OS-specific Config]
     L --> M[Finalization]
+<<<<<<< HEAD
 
     D -->|Login Session| N[/etc/zlogin]
     M -->|Login Session| N
@@ -208,6 +224,16 @@ flowchart TD
     B -->|Script| P[Script Execution]
     D --> P
 
+=======
+    
+    D -->|Login Session| N[/etc/zlogin]
+    M -->|Login Session| N
+    N -->|Login Session| O[~/.zlogin]
+    
+    B -->|Script| P[Script Execution]
+    D --> P
+    
+>>>>>>> origin/develop
     Q[Shell Exit] -->|Login Session| R[~/.zlogout]
     R -->|Login Session| S[/etc/zlogout]
 ```
@@ -219,6 +245,7 @@ flowchart TD
     A[~/.zshenv] -->|Core Environment| B[XDG Base Directories]
     B --> C[ZDOTDIR Configuration]
     C --> D[zgenom Setup]
+<<<<<<< HEAD
 
     E[~/.zshrc] -->|Interactive Config| F[Pre-plugins Directory]
     F --> G[zgenom Plugin Loading]
@@ -228,6 +255,17 @@ flowchart TD
     J --> K[Custom Plugins]
     K --> L[Prompt Configuration]
 
+=======
+    
+    E[~/.zshrc] -->|Interactive Config| F[Pre-plugins Directory]
+    F --> G[zgenom Plugin Loading]
+    G --> H[Core Configuration]
+    
+    I[~/.zgen-setup] -->|Plugin Management| J[Core Plugins]
+    J --> K[Custom Plugins]
+    K --> L[Prompt Configuration]
+    
+>>>>>>> origin/develop
     H --> M[OS-Specific Config]
     M --> N[PATH Deduplication]
     N --> O[Completion Finalization]

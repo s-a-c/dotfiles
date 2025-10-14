@@ -8,4 +8,8 @@ console.log(Math.log1p(-1));
 // expected output: -Infinity
 
 console.log(Math.log1p(-2));
+<<<<<<< HEAD
 // expected output: NaN
+=======
+// expected output: NaN
+>>>>>>> origin/develop

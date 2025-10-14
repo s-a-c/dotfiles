@@ -3,4 +3,8 @@ function canMakeHTTPRequest() {
 }
 
 console.log(canMakeHTTPRequest());
+<<<<<<< HEAD
 // expected output: false
+=======
+// expected output: false
+>>>>>>> origin/develop

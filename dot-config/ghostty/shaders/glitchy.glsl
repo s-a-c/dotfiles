@@ -26,10 +26,17 @@ float gnoise(vec3 x)
     // grid
     vec3 p = floor(x);
     vec3 w = fract(x);
+<<<<<<< HEAD
 
     // quintic interpolant
     vec3 u = w * w * w * (w * (w * 6. - 15.) + 10.);
 
+=======
+    
+    // quintic interpolant
+    vec3 u = w * w * w * (w * (w * 6. - 15.) + 10.);
+    
+>>>>>>> origin/develop
     // gradients
     vec3 ga = hash33(p + vec3(0., 0., 0.));
     vec3 gb = hash33(p + vec3(1., 0., 0.));
@@ -39,7 +46,11 @@ float gnoise(vec3 x)
     vec3 gf = hash33(p + vec3(1., 0., 1.));
     vec3 gg = hash33(p + vec3(0., 1., 1.));
     vec3 gh = hash33(p + vec3(1., 1., 1.));
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     // projections
     float va = dot(ga, w - vec3(0., 0., 0.));
     float vb = dot(gb, w - vec3(1., 0., 0.));
@@ -49,6 +60,7 @@ float gnoise(vec3 x)
     float vf = dot(gf, w - vec3(1., 0., 1.));
     float vg = dot(gg, w - vec3(0., 1., 1.));
     float vh = dot(gh, w - vec3(1., 1., 1.));
+<<<<<<< HEAD
 
     // interpolation
     float gNoise = va + u.x * (vb - va) +
@@ -59,13 +71,29 @@ float gnoise(vec3 x)
            		u.z * u.x * (va - vb - ve + vf) +
            		u.x * u.y * u.z * (-va + vb + vc - vd + ve - vf - vg + vh);
 
+=======
+	
+    // interpolation
+    float gNoise = va + u.x * (vb - va) + 
+           		u.y * (vc - va) + 
+           		u.z * (ve - va) + 
+           		u.x * u.y * (va - vb - vc + vd) + 
+           		u.y * u.z * (va - vc - ve + vg) + 
+           		u.z * u.x * (va - vb - ve + vf) + 
+           		u.x * u.y * u.z * (-va + vb + vc - vd + ve - vf - vg + vh);
+    
+>>>>>>> origin/develop
     return 2. * gNoise;
 }
 
 // gradient noise in range [0, 1]
 float gnoise01(vec3 x)
 {
+<<<<<<< HEAD
 	return .5 + .5 * gnoise(x);
+=======
+	return .5 + .5 * gnoise(x);   
+>>>>>>> origin/develop
 }
 
 // warp uvs for the crt effect
@@ -85,9 +113,15 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
     vec2 uv = fragCoord / iResolution.xy;
     float t = iTime;
+<<<<<<< HEAD
 
     // smoothed interval for which the glitch gets triggered
     float glitchAmount = SS(DURATION * .001, DURATION * AMT, mod(t, DURATION));
+=======
+    
+    // smoothed interval for which the glitch gets triggered
+    float glitchAmount = SS(DURATION * .001, DURATION * AMT, mod(t, DURATION));  
+>>>>>>> origin/develop
 	float displayNoise = 0.;
     vec3 col = vec3(0.);
     vec2 eps = vec2(5. / iResolution.x, 0.);
@@ -106,7 +140,11 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     col.r += textureLod(iChannel0, st + eps + distortion, 0.).r;
     col.g += textureLod(iChannel0, st, 0.).g;
     col.b += textureLod(iChannel0, st - eps - distortion, 0.).b;
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     // white noise + scanlines
     displayNoise = 0.2 * clamp(displayNoise, 0., 1.);
     col += (.15 + .65 * glitchAmount) * (hash33(vec3(fragCoord, mod(float(iFrame),

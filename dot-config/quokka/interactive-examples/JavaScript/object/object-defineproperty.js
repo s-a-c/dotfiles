@@ -9,4 +9,8 @@ object1.property1 = 77;
 // throws an error in strict mode
 
 console.log(object1.property1);
+<<<<<<< HEAD
 // expected output: 42
+=======
+// expected output: 42
+>>>>>>> origin/develop

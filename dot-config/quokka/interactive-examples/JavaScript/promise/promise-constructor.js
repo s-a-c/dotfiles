@@ -10,4 +10,8 @@ promise1.then(function(value) {
 });
 
 console.log(promise1);
+<<<<<<< HEAD
 // expected output: [object Promise]
+=======
+// expected output: [object Promise]
+>>>>>>> origin/develop

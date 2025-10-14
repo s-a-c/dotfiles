@@ -16,4 +16,8 @@
      '-MMMM$1.-MMMMMMMMMMMMMMM-.$2MMMM-'
        '.-MMMM$1``--:::::--``$2MMMM-.'
             '-MMMMMMMMMMMMM-'
+<<<<<<< HEAD
                ``-:::::-``
+=======
+               ``-:::::-``
+>>>>>>> origin/develop

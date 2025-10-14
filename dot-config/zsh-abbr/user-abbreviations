@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 abbr -g "...."="cd ../../.."
 abbr -g "..."="cd ../.."
 abbr -g ".."="cd .."
@@ -58,6 +59,13 @@ abbr -g "path"="echo \$PATH | tr \":\" \"\n\""
 abbr -g "S"="| sort"
 abbr -g "T"="| tail"
 abbr -g "vaf"="nvim \$(fzf)"
+=======
+abbr -g "G"="| grep"
+abbr -g "H"="| head"
+abbr -g "L"="| less"
+abbr -g "S"="| sort"
+abbr -g "T"="| tail"
+>>>>>>> origin/develop
 abbr -g "W"="| wc -l"
 abbr "..."="cd ../.."
 abbr ".."="cd .."

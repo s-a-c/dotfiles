@@ -2,7 +2,11 @@
 // License = Attribution-NonCommercial-ShareAlike (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US)
 
 // "Just snow"
+<<<<<<< HEAD
 // Simple (but not cheap) snow made from multiple parallax layers with randomly positioned
+=======
+// Simple (but not cheap) snow made from multiple parallax layers with randomly positioned 
+>>>>>>> origin/develop
 // flakes and directions. Also includes a DoF effect. Pan around with mouse.
 
 #define LIGHT_SNOW // Comment this out for a blizzard
@@ -35,12 +39,20 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 		vec3 mp = (31415.9 + m) / fract(p * m);
 		vec3 r = fract(mp);
 		vec2 s = abs(mod(q, 1.0) - 0.5 + 0.9 * r.xy - 0.45);
+<<<<<<< HEAD
 		s += 0.01 * abs(2.0 * fract(10.0 * q.yx) - 1.0);
+=======
+		s += 0.01 * abs(2.0 * fract(10.0 * q.yx) - 1.0); 
+>>>>>>> origin/develop
 		float d = 0.6 * max(s.x - s.y, s.x + s.y) + max(s.x, s.y) - 0.01;
 		float edge = 0.005 + 0.05 * min(0.5 * abs(fi - 5.0 - dof), 1.0);
 		acc += vec3(smoothstep(edge, -edge, d) * (r.x / (1.0 + 0.02 * fi * DEPTH)));
 	}
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> origin/develop
 	// Sample the terminal screen texture including alpha channel
 	vec4 terminalColor = texture(iChannel0, uv);
 

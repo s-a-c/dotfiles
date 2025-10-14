@@ -8,4 +8,8 @@ console.log(max);
 const min = Math.min.apply(null, numbers);
 
 console.log(min);
+<<<<<<< HEAD
 // expected output: 2
+=======
+// expected output: 2
+>>>>>>> origin/develop

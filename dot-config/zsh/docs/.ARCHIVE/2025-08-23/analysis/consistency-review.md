@@ -31,7 +31,11 @@ This document analyzes the consistency patterns, standards adherence, and potent
 ```zsh
 # Inconsistent patterns found:
 export VAR="value"              # Direct export
+<<<<<<< HEAD
 VAR="value" && export VAR       # Conditional export
+=======
+VAR="value" && export VAR       # Conditional export  
+>>>>>>> origin/develop
 [[ -z "$VAR" ]] && export VAR="value"  # Default setting
 ```
 
@@ -103,7 +107,11 @@ fi
    # Current mixed usage:
    local arr=("item1" "item2")     # Good
    local arr=(item1 item2)         # Inconsistent
+<<<<<<< HEAD
 
+=======
+   
+>>>>>>> origin/develop
    # Standardize on quoted elements
    ```
 
@@ -112,7 +120,11 @@ fi
    # Some functions don't check return codes
    command_that_might_fail
    next_command
+<<<<<<< HEAD
 
+=======
+   
+>>>>>>> origin/develop
    # Should be:
    command_that_might_fail || return 1
    ```
@@ -123,7 +135,11 @@ fi
 
 #### 1. **FZF Configuration Duplication**
 - **Location 1**: Pre-plugins FZF setup
+<<<<<<< HEAD
 - **Location 2**: Development tools FZF configuration
+=======
+- **Location 2**: Development tools FZF configuration  
+>>>>>>> origin/develop
 - **Location 3**: Oh-My-Zsh FZF plugin
 
 **Impact**: Potential conflicts, increased load time
@@ -133,7 +149,11 @@ fi
 ```zsh
 # Found in multiple files:
 - Git author name/email exports
+<<<<<<< HEAD
 - Git alias configurations
+=======
+- Git alias configurations  
+>>>>>>> origin/develop
 - Git-related tool setups
 ```
 
@@ -142,7 +162,11 @@ fi
 #### 3. **Development Tool Path Setup**
 Multiple files adding to PATH for same tools:
 - Bun paths in 2 locations
+<<<<<<< HEAD
 - Go paths in 2 locations
+=======
+- Go paths in 2 locations  
+>>>>>>> origin/develop
 - Node/NPM paths across 3 files
 
 ### 🎯 Consolidation Opportunities
@@ -181,7 +205,11 @@ _safe_source() {
 _add_to_path() {
     local path_entry="$1" position="${2:-append}"
     [[ -d "$path_entry" ]] || return 1
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     case "$position" in
         prepend) path=("$path_entry" "${path[@]}");;
         append) path+=("$path_entry");;
@@ -198,7 +226,11 @@ _add_to_path() {
 - [ ] Standardize on `export VAR="${VAR:-default}"` pattern
 - [ ] Create validation for required variables
 
+<<<<<<< HEAD
 #### 2. **Path Management Consolidation**
+=======
+#### 2. **Path Management Consolidation**  
+>>>>>>> origin/develop
 - [ ] Create centralized path management system
 - [ ] Migrate all path modifications to use helpers
 - [ ] Implement path deduplication
@@ -216,12 +248,21 @@ _add_to_path() {
 _function_name() {
     local arg1="$1" arg2="$2"
     [[ -z "$arg1" ]] && {
+<<<<<<< HEAD
             zsh_debug_echo "Error: Missing required argument"
         return 1
     }
 
     # Function logic
 
+=======
+            zsh_debug_echo "Error: Missing required argument" 
+        return 1
+    }
+    
+    # Function logic
+    
+>>>>>>> origin/develop
     return 0
 }
 ```
@@ -243,26 +284,42 @@ Create `~/.zshrc.d/00_99-validation.zsh`:
 ```zsh
 _validate_configuration() {
     local errors=()
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     # Check required directories
     local required_dirs=("$ZSH_CACHE_DIR" "$ZSH_DATA_DIR")
     for dir in "${required_dirs[@]}"; do
         [[ -d "$dir" ]] || errors+=("Missing directory: $dir")
     done
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     # Check required commands
     local required_commands=(git zsh)
     for cmd in "${required_commands[@]}"; do
         command -v "$cmd" >/dev/null || errors+=("Missing command: $cmd")
     done
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     # Report errors
     if (( ${#errors[@]} > 0 )); then
         printf "Configuration validation errors:\n"
         printf "  - %s\n" "${errors[@]}"
         return 1
     fi
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     return 0
 }
 ```
@@ -277,6 +334,7 @@ Create linting script for configuration files:
 
 check_file() {
     local file="$1"
+<<<<<<< HEAD
 
     # Check header presence
     head -1 "$file" | grep -q "^#.*=.*=" ||
@@ -286,6 +344,17 @@ check_file() {
     grep -n "^[a-z_]*(" "$file" | grep -v "^_" &&
             zsh_debug_echo "Warning: $file has functions not prefixed with underscore"
 
+=======
+    
+    # Check header presence
+    head -1 "$file" | grep -q "^#.*=.*=" || 
+            zsh_debug_echo "Warning: $file missing standard header"
+    
+    # Check function naming
+    grep -n "^[a-z_]*(" "$file" | grep -v "^_" &&
+            zsh_debug_echo "Warning: $file has functions not prefixed with underscore"
+        
+>>>>>>> origin/develop
     # Check variable quoting
     grep -n 'export [A-Z_]*=[^"]' "$file" &&
             zsh_debug_echo "Warning: $file has unquoted variable exports"
@@ -295,7 +364,11 @@ check_file() {
 #### 2. **Configuration Template System**
 Create templates for common configuration patterns:
 - Tool integration template
+<<<<<<< HEAD
 - Environment setup template
+=======
+- Environment setup template  
+>>>>>>> origin/develop
 - Plugin configuration template
 - macOS-specific template
 
@@ -324,11 +397,19 @@ Create templates for common configuration patterns:
 
 ### ✅ Immediate Actions (This Week)
 - [ ] Create standardized helper function library
+<<<<<<< HEAD
 - [ ] Audit and fix environment variable patterns
 - [ ] Consolidate duplicate FZF configurations
 - [ ] Standardize path management across all files
 
 ### 📅 Short-term Goals (Next 2 Weeks)
+=======
+- [ ] Audit and fix environment variable patterns  
+- [ ] Consolidate duplicate FZF configurations
+- [ ] Standardize path management across all files
+
+### 📅 Short-term Goals (Next 2 Weeks)  
+>>>>>>> origin/develop
 - [ ] Implement configuration validation system
 - [ ] Create automated consistency checking
 - [ ] Standardize documentation headers
@@ -336,7 +417,11 @@ Create templates for common configuration patterns:
 
 ### 🎯 Long-term Objectives (Next Month)
 - [ ] Achieve 90% consistency score
+<<<<<<< HEAD
 - [ ] Complete template system implementation
+=======
+- [ ] Complete template system implementation  
+>>>>>>> origin/develop
 - [ ] Full automation of consistency checking
 - [ ] Documentation and maintenance guides
 

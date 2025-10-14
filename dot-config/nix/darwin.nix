@@ -49,3 +49,7 @@
     darwinPackages = self.darwinConfigurations."StandAloneComplexs-MacBook-Pro".pkgs;
   };
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/develop

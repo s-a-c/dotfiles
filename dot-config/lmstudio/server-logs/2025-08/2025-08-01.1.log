@@ -8610,16 +8610,28 @@
 }
 [2025-08-01 07:44:01][INFO][LM STUDIO SERVER] Success! HTTP server listening on port 1234
 [2025-08-01 07:44:01][WARN][LM STUDIO SERVER] Server accepting connections from the local network. Only use this if you know what you are doing!
+<<<<<<< HEAD
 [2025-08-01 07:44:01][INFO]
+=======
+[2025-08-01 07:44:01][INFO] 
+>>>>>>> origin/develop
 [2025-08-01 07:44:01][INFO][LM STUDIO SERVER] Supported endpoints:
 [2025-08-01 07:44:01][INFO][LM STUDIO SERVER] ->	GET  http://169.254.43.27:1234/v1/models
 [2025-08-01 07:44:01][INFO][LM STUDIO SERVER] ->	POST http://169.254.43.27:1234/v1/chat/completions
 [2025-08-01 07:44:01][INFO][LM STUDIO SERVER] ->	POST http://169.254.43.27:1234/v1/completions
 [2025-08-01 07:44:01][INFO][LM STUDIO SERVER] ->	POST http://169.254.43.27:1234/v1/embeddings
+<<<<<<< HEAD
 [2025-08-01 07:44:01][INFO]
+=======
+[2025-08-01 07:44:01][INFO] 
+>>>>>>> origin/develop
 [2025-08-01 07:44:01][INFO][LM STUDIO SERVER] Logs are saved into /Users/s-a-c/.lmstudio/server-logs
 [2025-08-01 07:44:01][INFO] Server started.
 [2025-08-01 07:44:01][INFO] Just-in-time model loading active.
 [2025-08-01 07:53:04][INFO][Plugin(lmstudio/js-code-sandbox)] stdout: [Tools Prvdr.] Register with LM Studio
 
 [2025-08-01 07:53:04][INFO][Plugin(lmstudio/rag-v1)] stdout: [PromptPreprocessor] Register with LM Studio
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/develop

@@ -7,6 +7,7 @@
 
 FAILURES=()
 
+<<<<<<< HEAD
 # Use zf::debug from .zshenv if available
 if declare -f zf::debug >/dev/null 2>&1; then
     zf::debug "# [health-check] Starting health check with .zshenv integration"
@@ -19,6 +20,20 @@ else
             zf::debug "# ++++++ $0 ++++++++++++++++++++++++++++++++++++"
         if [[ -f "${ZDOTDIR:-$HOME}/2" ]] || [[ -f "${ZDOTDIR:-$HOME}/3" ]]; then
                 zf::debug "Warning: Numbered files detected - check for redirection typos"
+=======
+# Use zsh_debug_echo from .zshenv if available
+if declare -f zsh_debug_echo >/dev/null 2>&1; then
+    zsh_debug_echo "# [health-check] Starting health check with .zshenv integration"
+    # Check for numbered files using ZDOTDIR
+    if [[ -f "${ZDOTDIR}/2" ]] || [[ -f "${ZDOTDIR}/3" ]]; then
+        zsh_debug_echo "Warning: Numbered files detected - check for redirection typos"
+    fi
+else
+    [[ "$ZSH_DEBUG" == "1" ]] && {
+            zsh_debug_echo "# ++++++ $0 ++++++++++++++++++++++++++++++++++++"
+        if [[ -f "${ZDOTDIR:-$HOME}/2" ]] || [[ -f "${ZDOTDIR:-$HOME}/3" ]]; then
+                zsh_debug_echo "Warning: Numbered files detected - check for redirection typos"
+>>>>>>> origin/develop
         fi
     }
 fi
@@ -33,15 +48,22 @@ ZDOTDIR="${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}"
 for file in "${ZDOTDIR}"/{.zshenv,.zshrc} "${ZDOTDIR}"/.zshrc.d/*.zsh; do
     if [[ -f "$file" ]]; then
         if zsh -n "$file" 2>/dev/null; then
+<<<<<<< HEAD
                 zf::debug "✅ $file - Syntax OK"
         else
                 zf::debug "❌ $file - Syntax Error"; FAILURES+="syntax:$file"
+=======
+                zsh_debug_echo "✅ $file - Syntax OK"
+        else
+                zsh_debug_echo "❌ $file - Syntax Error"; FAILURES+="syntax:$file"
+>>>>>>> origin/develop
         fi
     fi
 done
 
 # Check for exposed credentials using ZDOTDIR
 if grep -r "sk-" "${ZDOTDIR}/" --exclude-dir=.env 2>/dev/null; then
+<<<<<<< HEAD
         zf::debug "⚠️  Possible exposed API keys found!"; FAILURES+="secrets"
 else
         zf::debug "✅ No exposed API keys detected"
@@ -52,24 +74,51 @@ if     zf::debug $PATH | grep -q "/usr/bin"; then
         zf::debug "✅ System PATH includes /usr/bin"
 else
         zf::debug "❌ System PATH missing /usr/bin"; FAILURES+="path:usrbin"
+=======
+        zsh_debug_echo "⚠️  Possible exposed API keys found!"; FAILURES+="secrets"
+else
+        zsh_debug_echo "✅ No exposed API keys detected"
+fi
+
+# Check PATH sanity
+if     zsh_debug_echo $PATH | grep -q "/usr/bin"; then
+        zsh_debug_echo "✅ System PATH includes /usr/bin"
+else
+        zsh_debug_echo "❌ System PATH missing /usr/bin"; FAILURES+="path:usrbin"
+>>>>>>> origin/develop
 fi
 
 # Check zgenom setup using ZGEN_DIR from .zshenv
 if [[ -n "$ZGEN_DIR" && -d "$ZGEN_DIR" ]]; then
+<<<<<<< HEAD
         zf::debug "✅ zgenom directory exists: $ZGEN_DIR"
 else
         zf::debug "⚠️  zgenom directory not found at ${ZGEN_DIR:-'(not set)'}"; FAILURES+="zgenom:missing"
+=======
+        zsh_debug_echo "✅ zgenom directory exists: $ZGEN_DIR"
+else
+        zsh_debug_echo "⚠️  zgenom directory not found at ${ZGEN_DIR:-'(not set)'}"; FAILURES+="zgenom:missing"
+>>>>>>> origin/develop
 fi
 
 # Check ZSH_COMPDUMP from .zshenv
 if [[ -n "$ZSH_COMPDUMP" ]]; then
     if [[ -f "$ZSH_COMPDUMP" ]]; then
+<<<<<<< HEAD
             zf::debug "✅ Completion dump exists: $ZSH_COMPDUMP"
     else
             zf::debug "⚠️  Completion dump missing: $ZSH_COMPDUMP"; FAILURES+="completion:missing"
     fi
 else
         zf::debug "⚠️  ZSH_COMPDUMP not set"; FAILURES+="completion:notset"
+=======
+            zsh_debug_echo "✅ Completion dump exists: $ZSH_COMPDUMP"
+    else
+            zsh_debug_echo "⚠️  Completion dump missing: $ZSH_COMPDUMP"; FAILURES+="completion:missing"
+    fi
+else
+        zsh_debug_echo "⚠️  ZSH_COMPDUMP not set"; FAILURES+="completion:notset"
+>>>>>>> origin/develop
 fi
 
 # Check startup time (single run heuristic)
@@ -78,17 +127,30 @@ echo "⏱️  Startup time: $startup_time"
 
 # Use safe_date from .zshenv if available
 if declare -f safe_date >/dev/null 2>&1; then
+<<<<<<< HEAD
         zf::debug "✅ safe_date function available"
         zf::debug "📅 Current time: $(safe_date)"
 else
         zf::debug "⚠️  safe_date function not available"; FAILURES+="functions:safe_date"
+=======
+        zsh_debug_echo "✅ safe_date function available"
+        zsh_debug_echo "📅 Current time: $(safe_date)"
+else
+        zsh_debug_echo "⚠️  safe_date function not available"; FAILURES+="functions:safe_date"
+>>>>>>> origin/develop
 fi
 
 # Summary
 if [[ ${#FAILURES} -eq 0 ]]; then
+<<<<<<< HEAD
         zf::debug "🎉 All health checks passed!"
 else
         zf::debug "❌ Health check failures: ${FAILURES[*]}"
+=======
+        zsh_debug_echo "🎉 All health checks passed!"
+else
+        zsh_debug_echo "❌ Health check failures: ${FAILURES[*]}"
+>>>>>>> origin/develop
     exit 1
 fi
 

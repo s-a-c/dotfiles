@@ -20,4 +20,8 @@
        `.cccccccccccccccccccccc.`
           ``.cccccccccccccc.``
               `.cccccccc.`
+<<<<<<< HEAD
                  `....`
+=======
+                 `....`
+>>>>>>> origin/develop

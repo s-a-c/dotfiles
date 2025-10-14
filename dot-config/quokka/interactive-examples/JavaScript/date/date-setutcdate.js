@@ -6,4 +6,8 @@ console.log(event.getUTCDate());
 event.setUTCDate(19);
 
 console.log(event.getUTCDate());
+<<<<<<< HEAD
 // expected output: 19
+=======
+// expected output: 19
+>>>>>>> origin/develop

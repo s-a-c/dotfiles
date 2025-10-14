@@ -13,4 +13,8 @@ ${c5} osssssssssssssssssssssssss`
 ${c5} `syyyyyyyyyyyyyyyyyyyyyyyyys`
 ${c6}  `ossssssssssssssssssssssss
 ${c6}    :ooooooooooooooooooo+.
+<<<<<<< HEAD
 ${c6}     `:++oo+/:-  -:/+o+/-
+=======
+${c6}     `:++oo+/:-  -:/+o+/-
+>>>>>>> origin/develop

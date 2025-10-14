@@ -8,4 +8,8 @@ console.log(regex2.ignoreCase);
 // expected output: true
 
 console.log(regex2.test('Football'));
+<<<<<<< HEAD
 // expected output: true
+=======
+// expected output: true
+>>>>>>> origin/develop

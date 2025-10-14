@@ -1,7 +1,10 @@
 #
 # If Google 2FA Authentication is enabled, create an App password for NeoMutt
 # See https://security.google.com/settings/security/apppasswords
+<<<<<<< HEAD
 # yqvd quxb qrus upih
+=======
+>>>>>>> origin/develop
 #
 # To use an encrypted password with NeoMutt, follow the guide at:
 # https://www.xmodulo.com/mutt-email-client-encrypted-passwords.html
@@ -11,8 +14,13 @@
 # Set your name, email address, and credentials
 # If Google 2FA is enabled, use the App password created from above URL
 #
+<<<<<<< HEAD
 set realname="Embrace S0ul"
 set imap_user=embrace.s0ul@gmail.com
+=======
+set realname="Firstname Lastname"
+set imap_user=youraccount@gmail.com
+>>>>>>> origin/develop
 set imap_pass="`gpg --batch -q --decrypt ~/.config/neomutt/gmail.gpg`"
 set from=$imap_user
 set smtp_url=smtps://$imap_user@smtp.gmail.com:465
@@ -26,7 +34,11 @@ set postponed="+[Gmail]/Drafts"
 # https://www.neomutt.org/guide/reference search sleep_time for additional info
 set sleep_time=0 # be faster
 set beep=no # no beep sound
+<<<<<<< HEAD
 set editor="nvim -c 'set tw=74' -c 'set wrap'"
+=======
+set editor="/usr/bin/vim -c 'set tw=74' -c 'set wrap'"
+>>>>>>> origin/develop
 auto_view text/html
 set sort=reverse-date   # default sorting by date
 # When sorting by threads, this variable controls how threads are sorted
@@ -60,7 +72,11 @@ bind index,pager \CB sidebar-toggle-visible       # Ctrl-b to toggle visibility 
 set smtp_authenticators="gssapi:login"
 
 account-hook $folder " \
+<<<<<<< HEAD
     set imap_user=embrace.s0ul@gmail.com ; \
+=======
+    set imap_user=youraccount@gmail.com ; \
+>>>>>>> origin/develop
     set from=$imap_user \
     imap_pass='`gpg --batch -q --decrypt ~/.config/neomutt/gmail.gpg`' \
     smtp_url=smtps://$imap_user@smtp.gmail.com:465 \

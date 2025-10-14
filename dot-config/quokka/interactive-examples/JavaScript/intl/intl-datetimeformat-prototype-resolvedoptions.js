@@ -8,4 +8,8 @@ console.log(options1.calendar);
 // expected output: "gregory"
 
 console.log(options1.numberingSystem);
+<<<<<<< HEAD
 // expected output: "latn"
+=======
+// expected output: "latn"
+>>>>>>> origin/develop

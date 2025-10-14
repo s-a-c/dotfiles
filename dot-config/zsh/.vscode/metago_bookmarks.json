@@ -2,6 +2,10 @@
     "documents": {},
     "history": {
         "history": [],
+<<<<<<< HEAD
         "index": -1
+=======
+        "index": null
+>>>>>>> origin/develop
     }
 }

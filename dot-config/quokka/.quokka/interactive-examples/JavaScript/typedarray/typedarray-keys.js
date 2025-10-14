@@ -5,4 +5,8 @@ keys.next();
 keys.next();
 
 console.log(keys.next().value);
+<<<<<<< HEAD
 // expected output: 2
+=======
+// expected output: 2
+>>>>>>> origin/develop

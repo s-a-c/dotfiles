@@ -14,4 +14,8 @@ $3;MMMMMMMMMMMMMMMMMMMMMMMM:
   'XMMMMMMMMMMMMMMMMMMMMMMMMK.
     $5kMMMMMMMMMMMMMMMMMMMMMMd
      ;KMMMMMMMWXXWMMMMMMMk.
+<<<<<<< HEAD
        "cooc*"    "*coo'"
+=======
+       "cooc*"    "*coo'"
+>>>>>>> origin/develop

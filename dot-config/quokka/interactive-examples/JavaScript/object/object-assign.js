@@ -7,4 +7,8 @@ console.log(target);
 // expected output: Object { a: 1, b: 4, c: 5 }
 
 console.log(returnedTarget);
+<<<<<<< HEAD
 // expected output: Object { a: 1, b: 4, c: 5 }
+=======
+// expected output: Object { a: 1, b: 4, c: 5 }
+>>>>>>> origin/develop

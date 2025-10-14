@@ -10,4 +10,8 @@ console.log(chars[8]);
 
 var strCopy = str.split();
 console.log(strCopy);
+<<<<<<< HEAD
 // expected output: Array ["The quick brown fox jumps over the lazy dog."]
+=======
+// expected output: Array ["The quick brown fox jumps over the lazy dog."]
+>>>>>>> origin/develop

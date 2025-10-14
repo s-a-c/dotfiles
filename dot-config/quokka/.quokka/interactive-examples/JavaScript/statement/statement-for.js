@@ -5,4 +5,8 @@ for (var i = 0; i < 9; i++) {
 }
 
 console.log(str);
+<<<<<<< HEAD
 // expected output: "012345678"
+=======
+// expected output: "012345678"
+>>>>>>> origin/develop

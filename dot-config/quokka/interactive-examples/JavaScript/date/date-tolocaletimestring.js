@@ -8,4 +8,8 @@ console.log(event.toLocaleTimeString('it-IT'));
 // expected output: 01:15:30
 
 console.log(event.toLocaleTimeString('ar-EG'));
+<<<<<<< HEAD
 // expected output: ١٢:١٥:٣٠ ص
+=======
+// expected output: ١٢:١٥:٣٠ ص
+>>>>>>> origin/develop

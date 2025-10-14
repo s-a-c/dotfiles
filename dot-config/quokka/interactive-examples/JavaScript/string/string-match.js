@@ -3,4 +3,8 @@ var regex = /[A-Z]/g;
 var found = paragraph.match(regex);
 
 console.log(found);
+<<<<<<< HEAD
 // expected output: Array ["T", "I"]
+=======
+// expected output: Array ["T", "I"]
+>>>>>>> origin/develop

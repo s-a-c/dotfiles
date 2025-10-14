@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #!/usr/bin/env zsh
+=======
+#!/opt/homebrew/bin/zsh
+>>>>>>> origin/develop
 # ==============================================================================
 # ZSH Configuration: Environment Context Test Suite
 # ==============================================================================
@@ -25,7 +29,11 @@ export ZSH_SOURCE_EXECUTE_DEBUG=false
 DETECTION_SCRIPT="${ZDOTDIR:-$HOME/.config/zsh}/.zshrc.d/00_01-source-execute-detection.zsh"
 
 if [[ ! -f "$DETECTION_SCRIPT" ]]; then
+<<<<<<< HEAD
         zf::debug "ERROR: Source/execute detection script not found: $DETECTION_SCRIPT"
+=======
+        zsh_debug_echo "ERROR: Source/execute detection script not found: $DETECTION_SCRIPT"
+>>>>>>> origin/develop
     exit 1
 fi
 
@@ -49,7 +57,11 @@ mkdir -p "$LOG_DIR" 2>/dev/null || true
 log_test() {
     local message="$1"
     local timestamp=$(date -u '+%Y-%m-%d %H:%M:%S UTC')
+<<<<<<< HEAD
         zf::debug "[$timestamp] [TEST] [$$] $message" >> "$LOG_FILE" 2>/dev/null || true
+=======
+        zsh_debug_echo "[$timestamp] [TEST] [$$] $message" >> "$LOG_FILE" 2>/dev/null || true
+>>>>>>> origin/develop
 }
 
 run_test() {
@@ -58,17 +70,29 @@ run_test() {
 
     TEST_COUNT=$((TEST_COUNT + 1))
 
+<<<<<<< HEAD
         zf::debug "Running test $TEST_COUNT: $test_name"
+=======
+        zsh_debug_echo "Running test $TEST_COUNT: $test_name"
+>>>>>>> origin/develop
     log_test "Starting test: $test_name"
 
     if "$test_function"; then
         TEST_PASSED=$((TEST_PASSED + 1))
+<<<<<<< HEAD
             zf::debug "  ✓ PASS: $test_name"
+=======
+            zsh_debug_echo "  ✓ PASS: $test_name"
+>>>>>>> origin/develop
         log_test "PASS: $test_name"
         return 0
     else
         TEST_FAILED=$((TEST_FAILED + 1))
+<<<<<<< HEAD
             zf::debug "  ✗ FAIL: $test_name"
+=======
+            zsh_debug_echo "  ✗ FAIL: $test_name"
+>>>>>>> origin/develop
         log_test "FAIL: $test_name"
         return 1
     fi
@@ -82,9 +106,15 @@ assert_equals() {
     if [[ "$expected" == "$actual" ]]; then
         return 0
     else
+<<<<<<< HEAD
             zf::debug "    ASSERTION FAILED: $message"
             zf::debug "    Expected: '$expected'"
             zf::debug "    Actual: '$actual'"
+=======
+            zsh_debug_echo "    ASSERTION FAILED: $message"
+            zsh_debug_echo "    Expected: '$expected'"
+            zsh_debug_echo "    Actual: '$actual'"
+>>>>>>> origin/develop
         return 1
     fi
 }
@@ -95,7 +125,11 @@ assert_function_exists() {
     if declare -f "$function_name" > /dev/null; then
         return 0
     else
+<<<<<<< HEAD
             zf::debug "    ASSERTION FAILED: Function '$function_name' should exist"
+=======
+            zsh_debug_echo "    ASSERTION FAILED: Function '$function_name' should exist"
+>>>>>>> origin/develop
         return 1
     fi
 }
@@ -173,7 +207,11 @@ test_safe_export_error_handling() {
     if is_being_sourced; then
         error_output=$(safe_export "" "value" 2>&1 || true)
         [[ "$error_output" =~ "Variable name required" ]] || {
+<<<<<<< HEAD
                 zf::debug "    WARNING: Expected error message not found"
+=======
+                zsh_debug_echo "    WARNING: Expected error message not found"
+>>>>>>> origin/develop
             return 0  # Don't fail test, error handling might vary
         }
     fi
@@ -229,7 +267,11 @@ test_context_cleanup_with_invalid_function() {
         # Should handle error gracefully
         local error_output=$(context_cleanup "$invalid_function_name" 2>&1 || true)
         [[ "$error_output" =~ "not found" ]] || {
+<<<<<<< HEAD
                 zf::debug "    WARNING: Expected error message not found"
+=======
+                zsh_debug_echo "    WARNING: Expected error message not found"
+>>>>>>> origin/develop
             return 0  # Don't fail test, error handling might vary
         }
     fi
@@ -258,12 +300,20 @@ test_environment_operation_logging() {
             unset "$test_var_name"
             return 0
         else
+<<<<<<< HEAD
                 zf::debug "    WARNING: Environment operation not found in log"
+=======
+                zsh_debug_echo "    WARNING: Environment operation not found in log"
+>>>>>>> origin/develop
             unset "$test_var_name"
             return 0  # Don't fail test, logging might be conditional
         fi
     else
+<<<<<<< HEAD
             zf::debug "    WARNING: Detection log file not found"
+=======
+            zsh_debug_echo "    WARNING: Detection log file not found"
+>>>>>>> origin/develop
         unset "$test_var_name"
         return 0  # Don't fail test, logging setup might vary
     fi
@@ -277,11 +327,19 @@ test_environment_context_awareness() {
     # Test that environment functions are context-aware
     local context=$(get_execution_context)
 
+<<<<<<< HEAD
         zf::debug "  Testing in context: $context"
 
     # Test that context information is available to environment functions
     [[ -n "$context" ]] || {
             zf::debug "    ASSERTION FAILED: Context should not be empty"
+=======
+        zsh_debug_echo "  Testing in context: $context"
+
+    # Test that context information is available to environment functions
+    [[ -n "$context" ]] || {
+            zsh_debug_echo "    ASSERTION FAILED: Context should not be empty"
+>>>>>>> origin/develop
         return 1
     }
 
@@ -322,6 +380,7 @@ test_variable_scope_behavior() {
 # ------------------------------------------------------------------------------
 
 run_all_tests() {
+<<<<<<< HEAD
         zf::debug "========================================================"
         zf::debug "Environment Context Test Suite"
         zf::debug "========================================================"
@@ -329,11 +388,24 @@ run_all_tests() {
         zf::debug "Execution Context: $(get_execution_context)"
         zf::debug "Log File: $LOG_FILE"
         zf::debug ""
+=======
+        zsh_debug_echo "========================================================"
+        zsh_debug_echo "Environment Context Test Suite"
+        zsh_debug_echo "========================================================"
+        zsh_debug_echo "Timestamp: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+        zsh_debug_echo "Execution Context: $(get_execution_context)"
+        zsh_debug_echo "Log File: $LOG_FILE"
+        zsh_debug_echo ""
+>>>>>>> origin/develop
 
     log_test "Starting environment context test suite"
 
     # Function Existence Tests
+<<<<<<< HEAD
         zf::debug "=== Environment Function Tests ==="
+=======
+        zsh_debug_echo "=== Environment Function Tests ==="
+>>>>>>> origin/develop
     run_test "Environment Functions Exist" "test_environment_functions_exist"
     run_test "Safe Export Global Scope" "test_safe_export_global_scope"
     run_test "Safe Export Local Scope" "test_safe_export_local_scope"
@@ -341,13 +413,19 @@ run_all_tests() {
     run_test "Safe Export Error Handling" "test_safe_export_error_handling"
 
     # Cleanup Tests
+<<<<<<< HEAD
         zf::debug ""
         zf::debug "=== Context Cleanup Tests ==="
+=======
+        zsh_debug_echo ""
+        zsh_debug_echo "=== Context Cleanup Tests ==="
+>>>>>>> origin/develop
     run_test "Context Cleanup Function Exists" "test_context_cleanup_function_exists"
     run_test "Context Cleanup with Valid Function" "test_context_cleanup_with_valid_function"
     run_test "Context Cleanup with Invalid Function" "test_context_cleanup_with_invalid_function"
 
     # Logging Tests
+<<<<<<< HEAD
         zf::debug ""
         zf::debug "=== Environment Logging Tests ==="
     run_test "Environment Operation Logging" "test_environment_operation_logging"
@@ -355,10 +433,20 @@ run_all_tests() {
     # Context Awareness Tests
         zf::debug ""
         zf::debug "=== Context Awareness Tests ==="
+=======
+        zsh_debug_echo ""
+        zsh_debug_echo "=== Environment Logging Tests ==="
+    run_test "Environment Operation Logging" "test_environment_operation_logging"
+
+    # Context Awareness Tests
+        zsh_debug_echo ""
+        zsh_debug_echo "=== Context Awareness Tests ==="
+>>>>>>> origin/develop
     run_test "Environment Context Awareness" "test_environment_context_awareness"
     run_test "Environment Integration with Detection" "test_environment_integration_with_detection"
 
     # Variable Scope Tests
+<<<<<<< HEAD
         zf::debug ""
         zf::debug "=== Variable Scope Tests ==="
     run_test "Variable Scope Behavior" "test_variable_scope_behavior"
@@ -371,22 +459,49 @@ run_all_tests() {
         zf::debug "Total Tests: $TEST_COUNT"
         zf::debug "Passed: $TEST_PASSED"
         zf::debug "Failed: $TEST_FAILED"
+=======
+        zsh_debug_echo ""
+        zsh_debug_echo "=== Variable Scope Tests ==="
+    run_test "Variable Scope Behavior" "test_variable_scope_behavior"
+
+    # Results Summary
+        zsh_debug_echo ""
+        zsh_debug_echo "========================================================"
+        zsh_debug_echo "Test Results Summary"
+        zsh_debug_echo "========================================================"
+        zsh_debug_echo "Total Tests: $TEST_COUNT"
+        zsh_debug_echo "Passed: $TEST_PASSED"
+        zsh_debug_echo "Failed: $TEST_FAILED"
+>>>>>>> origin/develop
 
     local pass_percentage=0
     if [[ $TEST_COUNT -gt 0 ]]; then
         pass_percentage=$(( (TEST_PASSED * 100) / TEST_COUNT ))
     fi
+<<<<<<< HEAD
         zf::debug "Success Rate: ${pass_percentage}%"
+=======
+        zsh_debug_echo "Success Rate: ${pass_percentage}%"
+>>>>>>> origin/develop
 
     log_test "Environment context test suite completed - $TEST_PASSED/$TEST_COUNT tests passed"
 
     if [[ $TEST_FAILED -eq 0 ]]; then
+<<<<<<< HEAD
             zf::debug ""
             zf::debug "🎉 All environment context tests passed!"
         return 0
     else
             zf::debug ""
             zf::debug "❌ $TEST_FAILED environment context test(s) failed."
+=======
+            zsh_debug_echo ""
+            zsh_debug_echo "🎉 All environment context tests passed!"
+        return 0
+    else
+            zsh_debug_echo ""
+            zsh_debug_echo "❌ $TEST_FAILED environment context test(s) failed."
+>>>>>>> origin/develop
         return 1
     fi
 }
@@ -403,8 +518,13 @@ main() {
 if is_being_executed; then
     main "$@"
 elif is_being_sourced; then
+<<<<<<< HEAD
         zf::debug "Environment context test functions loaded (sourced context)"
         zf::debug "Available functions: run_all_tests, individual test functions"
+=======
+        zsh_debug_echo "Environment context test functions loaded (sourced context)"
+        zsh_debug_echo "Available functions: run_all_tests, individual test functions"
+>>>>>>> origin/develop
 fi
 
 # ==============================================================================

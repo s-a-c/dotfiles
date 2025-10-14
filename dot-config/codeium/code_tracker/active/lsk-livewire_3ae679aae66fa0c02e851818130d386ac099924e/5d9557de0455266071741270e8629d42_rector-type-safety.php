@@ -83,6 +83,7 @@ return static function (RectorConfig $rectorConfig): void {
 ÆÊ ÊÑ
 ÑÔ ÔÕ
 ÕÖ Öê
+<<<<<<< HEAD
 êˆ
  ˆ
 ‰
@@ -105,3 +106,13 @@ return static function (RectorConfig $rectorConfig): void {
 šÇ 
 ÇÎ 
 ÎÑ "(3ae679aae66fa0c02e851818130d386ac099924e2<file:///Users/s-a-c/Herd/lsk-livewire/rector-type-safety.php:%file:///Users/s-a-c/Herd/lsk-livewire
+=======
+êˆ ˆ‰
+‰‹ ‹§
+§È ÈÉ
+ÉÍ 
+Íš 
+šÇ 
+ÇÎ 
+ÎÑ "(3ae679aae66fa0c02e851818130d386ac099924e2<file:///Users/s-a-c/Herd/lsk-livewire/rector-type-safety.php:%file:///Users/s-a-c/Herd/lsk-livewire
+>>>>>>> origin/develop

@@ -8,4 +8,8 @@ for (var i = 0; i < 10; i++) {
 }
 
 console.log(text);
+<<<<<<< HEAD
 // expected output: "012456789"
+=======
+// expected output: "012456789"
+>>>>>>> origin/develop

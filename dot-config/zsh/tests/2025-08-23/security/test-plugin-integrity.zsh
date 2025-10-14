@@ -38,7 +38,11 @@ log_test() {
     local level="$1"
     local message="$2"
     local timestamp="$(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+<<<<<<< HEAD
         zf::debug "[$timestamp] [$level] $message" | tee -a "$TEST_LOG_FILE" 2>/dev/null || zf::debug "[$timestamp] [$level] $message"
+=======
+        zsh_debug_echo "[$timestamp] [$level] $message" | tee -a "$TEST_LOG_FILE" 2>/dev/null || zsh_debug_echo "[$timestamp] [$level] $message"
+>>>>>>> origin/develop
 }
 
 setup_test_environment() {
@@ -50,6 +54,7 @@ setup_test_environment() {
 
     # Create mock plugin directories for 040-testing
     mkdir -p "mock-plugins/trusted-plugin"
+<<<<<<< HEAD
         zf::debug '# Trusted test plugin' > "mock-plugins/trusted-plugin/plugin.zsh"
         zf::debug 'echo "Loading trusted plugin"' >> "mock-plugins/trusted-plugin/plugin.zsh"
 
@@ -60,6 +65,18 @@ setup_test_environment() {
     mkdir -p "mock-plugins/tampered-plugin"
         zf::debug '# Original tampered plugin' > "mock-plugins/tampered-plugin/plugin.zsh"
         zf::debug 'echo "Loading original plugin"' >> "mock-plugins/tampered-plugin/plugin.zsh"
+=======
+        zsh_debug_echo '# Trusted test plugin' > "mock-plugins/trusted-plugin/plugin.zsh"
+        zsh_debug_echo 'echo "Loading trusted plugin"' >> "mock-plugins/trusted-plugin/plugin.zsh"
+
+    mkdir -p "mock-plugins/untrusted-plugin"
+        zsh_debug_echo '# Untrusted test plugin' > "mock-plugins/untrusted-plugin/plugin.zsh"
+        zsh_debug_echo 'echo "Loading untrusted plugin"' >> "mock-plugins/untrusted-plugin/plugin.zsh"
+
+    mkdir -p "mock-plugins/tampered-plugin"
+        zsh_debug_echo '# Original tampered plugin' > "mock-plugins/tampered-plugin/plugin.zsh"
+        zsh_debug_echo 'echo "Loading original plugin"' >> "mock-plugins/tampered-plugin/plugin.zsh"
+>>>>>>> origin/develop
 
     # Set up test environment variables
     export ZSH_PLUGIN_REGISTRY_DIR="$TEST_DIR/security/plugin-registry"
@@ -105,12 +122,20 @@ run_test() {
         test_results[$test_count]="PASS"
         ((passed_count++))
         log_test "PASS" "Test $test_count: $test_name - PASSED"
+<<<<<<< HEAD
             zf::debug "✅ Test $test_count: $test_name - PASSED"
+=======
+            zsh_debug_echo "✅ Test $test_count: $test_name - PASSED"
+>>>>>>> origin/develop
     else
         test_results[$test_count]="FAIL"
         ((failed_count++))
         log_test "FAIL" "Test $test_count: $test_name - FAILED"
+<<<<<<< HEAD
             zf::debug "❌ Test $test_count: $test_name - FAILED"
+=======
+            zsh_debug_echo "❌ Test $test_count: $test_name - FAILED"
+>>>>>>> origin/develop
     fi
 }
 
@@ -140,7 +165,11 @@ test_registry_creation() {
         fi
 
         local plugin_count
+<<<<<<< HEAD
         plugin_count="$(jq -r '.plugins | keys | length' "$registry_file" 2>/dev/null || zf::debug "0")"
+=======
+        plugin_count="$(jq -r '.plugins | keys | length' "$registry_file" 2>/dev/null || zsh_debug_echo "0")"
+>>>>>>> origin/develop
 
         if [[ "$plugin_count" -lt 1 ]]; then
             log_test "ERROR" "Registry contains no plugins: $plugin_count"
@@ -241,8 +270,13 @@ test_plugin_tampering_detection() {
     fi
 
     # Tamper with the plugin
+<<<<<<< HEAD
         zf::debug '# MALICIOUS CODE ADDED' >> "$plugin_path/plugin.zsh"
         zf::debug 'rm -rf $HOME 2>/dev/null || true' >> "$plugin_path/plugin.zsh"
+=======
+        zsh_debug_echo '# MALICIOUS CODE ADDED' >> "$plugin_path/plugin.zsh"
+        zsh_debug_echo 'rm -rf $HOME 2>/dev/null || true' >> "$plugin_path/plugin.zsh"
+>>>>>>> origin/develop
 
     # Second verification should detect tampering
     if _verify_plugin_integrity "$plugin_name" "$plugin_path" 2>/dev/null; then
@@ -322,7 +356,11 @@ test_hash_generation_caching() {
     fi
 
     # Modify plugin and verify hash changes
+<<<<<<< HEAD
         zf::debug '# Additional content' >> "$plugin_path/plugin.zsh"
+=======
+        zsh_debug_echo '# Additional content' >> "$plugin_path/plugin.zsh"
+>>>>>>> origin/develop
     local hash3="$(_get_plugin_hash "$plugin_path")"
 
     if [[ "$hash1" == "$hash3" ]]; then
@@ -355,20 +393,34 @@ test_logging_audit_trail() {
 
     # Check for expected log entries
     local log_content
+<<<<<<< HEAD
     log_content="$(cat "$ZSH_PLUGIN_SECURITY_LOG" 2>/dev/null || zf::debug "")"
 
     if !     zf::debug "$log_content" | grep -q "VERIFIED:"; then
+=======
+    log_content="$(cat "$ZSH_PLUGIN_SECURITY_LOG" 2>/dev/null || zsh_debug_echo "")"
+
+    if !     zsh_debug_echo "$log_content" | grep -q "VERIFIED:"; then
+>>>>>>> origin/develop
         log_test "ERROR" "Verification not logged"
         return 1
     fi
 
+<<<<<<< HEAD
     if !     zf::debug "$log_content" | grep -q "ALLOWED:"; then
+=======
+    if !     zsh_debug_echo "$log_content" | grep -q "ALLOWED:"; then
+>>>>>>> origin/develop
         log_test "ERROR" "Warning not logged"
         return 1
     fi
 
     # Check UTC timestamp format
+<<<<<<< HEAD
     if !     zf::debug "$log_content" | grep -q "\[.*UTC\]"; then
+=======
+    if !     zsh_debug_echo "$log_content" | grep -q "\[.*UTC\]"; then
+>>>>>>> origin/develop
         log_test "ERROR" "Log entries missing UTC timestamps"
         return 1
     fi
@@ -408,21 +460,33 @@ test_security_status_functions() {
 
     # Test status function
     local status_output
+<<<<<<< HEAD
     status_output="$(_plugin_security_status 2>/dev/null || zf::debug "status_failed")"
+=======
+    status_output="$(_plugin_security_status 2>/dev/null || zsh_debug_echo "status_failed")"
+>>>>>>> origin/develop
 
     if [[ "$status_output" == "status_failed" ]]; then
         log_test "ERROR" "Security status function failed"
         return 1
     fi
 
+<<<<<<< HEAD
     if !     zf::debug "$status_output" | grep -q "Plugin Security Status"; then
+=======
+    if !     zsh_debug_echo "$status_output" | grep -q "Plugin Security Status"; then
+>>>>>>> origin/develop
         log_test "ERROR" "Status output missing expected content"
         return 1
     fi
 
     # Test registry update function
     local update_output
+<<<<<<< HEAD
     update_output="$(_plugin_security_update_registry 2>/dev/null || zf::debug "update_failed")"
+=======
+    update_output="$(_plugin_security_update_registry 2>/dev/null || zsh_debug_echo "update_failed")"
+>>>>>>> origin/develop
 
     if [[ "$update_output" == "update_failed" ]]; then
         log_test "ERROR" "Registry update function failed"
@@ -452,18 +516,30 @@ test_error_handling() {
         backup_content="$(cat "$registry_file" 2>/dev/null)"
 
         # Corrupt the registry
+<<<<<<< HEAD
             zf::debug "invalid json content" > "$registry_file"
+=======
+            zsh_debug_echo "invalid json content" > "$registry_file"
+>>>>>>> origin/develop
 
         # Should handle corruption gracefully
         if ! _verify_plugin_integrity "test/plugin" "$TEST_DIR/mock-plugins/trusted-plugin" 2>/dev/null; then
             log_test "ERROR" "Should handle corrupted registry gracefully"
             # Restore registry
+<<<<<<< HEAD
                 zf::debug "$backup_content" > "$registry_file"
+=======
+                zsh_debug_echo "$backup_content" > "$registry_file"
+>>>>>>> origin/develop
             return 1
         fi
 
         # Restore registry
+<<<<<<< HEAD
             zf::debug "$backup_content" > "$registry_file"
+=======
+            zsh_debug_echo "$backup_content" > "$registry_file"
+>>>>>>> origin/develop
     fi
 
     log_test "INFO" "Error handling and resilience test successful"
@@ -473,15 +549,26 @@ test_error_handling() {
 # Main Test Execution
 main() {
     log_test "INFO" "Starting $TEST_NAME test suite"
+<<<<<<< HEAD
         zf::debug "🔒 Starting $TEST_NAME Test Suite"
         zf::debug "📁 Test Directory: $TEST_DIR"
         zf::debug "📋 Test Log: $TEST_LOG_FILE"
         zf::debug ""
+=======
+        zsh_debug_echo "🔒 Starting $TEST_NAME Test Suite"
+        zsh_debug_echo "📁 Test Directory: $TEST_DIR"
+        zsh_debug_echo "📋 Test Log: $TEST_LOG_FILE"
+        zsh_debug_echo ""
+>>>>>>> origin/develop
 
     # Setup test environment
     if ! setup_test_environment; then
         log_test "ERROR" "Failed to setup test environment"
+<<<<<<< HEAD
             zf::debug "❌ Failed to setup test environment"
+=======
+            zsh_debug_echo "❌ Failed to setup test environment"
+>>>>>>> origin/develop
         return 1
     fi
 
@@ -498,34 +585,59 @@ main() {
     run_test "Error Handling and Resilience" test_error_handling
 
     # Test Summary
+<<<<<<< HEAD
         zf::debug ""
         zf::debug "🔒 $TEST_NAME Test Results:"
         zf::debug "✅ Passed: $passed_count"
         zf::debug "❌ Failed: $failed_count"
         zf::debug "📊 Total:  $test_count"
         zf::debug ""
+=======
+        zsh_debug_echo ""
+        zsh_debug_echo "🔒 $TEST_NAME Test Results:"
+        zsh_debug_echo "✅ Passed: $passed_count"
+        zsh_debug_echo "❌ Failed: $failed_count"
+        zsh_debug_echo "📊 Total:  $test_count"
+        zsh_debug_echo ""
+>>>>>>> origin/develop
 
     local success_rate=0
     if [[ $test_count -gt 0 ]]; then
         success_rate=$(( (passed_count * 100) / test_count ))
     fi
 
+<<<<<<< HEAD
         zf::debug "📈 Success Rate: $success_rate%"
+=======
+        zsh_debug_echo "📈 Success Rate: $success_rate%"
+>>>>>>> origin/develop
 
     log_test "INFO" "$TEST_NAME test suite completed: $passed_count/$test_count tests passed ($success_rate%)"
 
     if [[ $failed_count -eq 0 ]]; then
+<<<<<<< HEAD
             zf::debug "🎉 All tests passed! Plugin integrity verification system is working correctly."
         log_test "INFO" "All tests passed - system ready for production use"
         return 0
     else
             zf::debug "⚠️  Some tests failed. Please review the logs and fix issues before deployment."
+=======
+            zsh_debug_echo "🎉 All tests passed! Plugin integrity verification system is working correctly."
+        log_test "INFO" "All tests passed - system ready for production use"
+        return 0
+    else
+            zsh_debug_echo "⚠️  Some tests failed. Please review the logs and fix issues before deployment."
+>>>>>>> origin/develop
         log_test "WARN" "$failed_count tests failed - system needs attention before production use"
         return 1
     fi
 }
 
 # Execute main function only if script is run directly
+<<<<<<< HEAD
 if [[ "${(%):-%N}" == "$0" ]]; then
+=======
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+>>>>>>> origin/develop
     main "$@"
 fi

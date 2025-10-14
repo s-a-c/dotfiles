@@ -15,4 +15,8 @@ cMM;        dMMW'
   OMMc   ...
    xMMx
     ;XMN:
+<<<<<<< HEAD
       ,.
+=======
+      ,.
+>>>>>>> origin/develop

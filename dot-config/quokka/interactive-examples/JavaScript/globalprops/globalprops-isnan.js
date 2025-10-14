@@ -9,4 +9,8 @@ console.log(milliseconds('100F'));
 // expected output: "Not a Number!"
 
 console.log(milliseconds('0.0314E+2'));
+<<<<<<< HEAD
 // expected output: 3140
+=======
+// expected output: 3140
+>>>>>>> origin/develop

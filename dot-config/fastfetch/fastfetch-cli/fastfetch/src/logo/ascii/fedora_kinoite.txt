@@ -15,4 +15,8 @@ $1looooooo$2          :::;' ';:;.
 $1looooooo$2          :::     :::
 $1cooooooo$2          .::'   '::.
 $1 .ooooc $2            ::, ,::
+<<<<<<< HEAD
                       ''''
+=======
+                      ''''
+>>>>>>> origin/develop

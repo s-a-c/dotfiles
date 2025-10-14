@@ -1,3 +1,7 @@
 exit
 use laravel_package_dev
+<<<<<<< HEAD
 use laravel
+=======
+use laravel
+>>>>>>> origin/develop

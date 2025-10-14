@@ -9,4 +9,8 @@ language.current = 'EN';
 language.current = 'FA';
 
 console.log(language.log);
+<<<<<<< HEAD
 // expected output: Array ["EN", "FA"]
+=======
+// expected output: Array ["EN", "FA"]
+>>>>>>> origin/develop

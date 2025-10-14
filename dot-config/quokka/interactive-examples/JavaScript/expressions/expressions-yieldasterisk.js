@@ -9,4 +9,8 @@ function* func2() {
 const iterator = func2();
 
 console.log(iterator.next().value);
+<<<<<<< HEAD
 // expected output: 42
+=======
+// expected output: 42
+>>>>>>> origin/develop

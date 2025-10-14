@@ -5,4 +5,8 @@ var obj = {
 }
 
 console.log(obj.foo());
+<<<<<<< HEAD
 // expected output: "bar"
+=======
+// expected output: "bar"
+>>>>>>> origin/develop

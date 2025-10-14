@@ -11,4 +11,8 @@ ${c1}MM ${c2}EEEE     ${c3}M1MM1uazzEn ${c2}EEEE  MME
                 MM1MMMM ${c2}EEE ${c1}
                      MMMMM
                           MMM
+<<<<<<< HEAD
                               M
+=======
+                              M
+>>>>>>> origin/develop

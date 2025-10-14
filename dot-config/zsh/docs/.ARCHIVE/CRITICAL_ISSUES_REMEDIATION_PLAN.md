@@ -1,7 +1,12 @@
 # Critical ZSH Startup Issues Remediation Plan
 
+<<<<<<< HEAD
 **Generated:** 2025-08-26
 **Status:** ACTIVE - Addressing Critical Startup Failures
+=======
+**Generated:** 2025-08-26  
+**Status:** ACTIVE - Addressing Critical Startup Failures  
+>>>>>>> origin/develop
 **Priority:** P0 - Shell startup time 4.945s is unacceptable
 
 ## 🚨 CRITICAL ISSUES IDENTIFIED
@@ -67,7 +72,11 @@ Warning: Could not restore original directory: /Users/s-a-c/dotfiles/dot-config/
 - **Action:** Create safe_date() wrapper function for cross-platform compatibility
 
 ### TASK-CRIT-07: Fix Git Command Path Issues
+<<<<<<< HEAD
 - **Priority:** P0
+=======
+- **Priority:** P0  
+>>>>>>> origin/develop
 - **Owner:** System
 - **Due:** Immediate
 - **Action:** Ensure git is available before lazy wrapper initialization
@@ -98,16 +107,26 @@ The files named "2" and "3" that were found in the directory are typically creat
    ```bash
    # WRONG - creates file named "2"
    command > 2
+<<<<<<< HEAD
 
+=======
+   
+>>>>>>> origin/develop
    # CORRECT - redirects to stderr
    command >&2
    ```
 
 2. **Variable expansion errors:**
    ```bash
+<<<<<<< HEAD
    # WRONG - if $FILE is empty, creates file named "2"
    command > $FILE 2>&1
 
+=======
+   # WRONG - if $FILE is empty, creates file named "2"  
+   command > $FILE 2>&1
+   
+>>>>>>> origin/develop
    # CORRECT - quote variables
    command > "${FILE}" 2>&1
    ```
@@ -116,9 +135,15 @@ The files named "2" and "3" that were found in the directory are typically creat
    ```bash
    # WRONG - missing &
        zsh_debug_echo "error" > 2
+<<<<<<< HEAD
 
    # CORRECT
        zsh_debug_echo "error"
+=======
+   
+   # CORRECT
+       zsh_debug_echo "error" 
+>>>>>>> origin/develop
    ```
 
 ## 📊 PERFORMANCE IMPACT
@@ -136,7 +161,11 @@ The files named "2" and "3" that were found in the directory are typically creat
 ## 🚀 SUCCESS CRITERIA
 
 - [ ] Zero "date: illegal time format" errors
+<<<<<<< HEAD
 - [ ] Zero "command not found: git" errors
+=======
+- [ ] Zero "command not found: git" errors  
+>>>>>>> origin/develop
 - [ ] Zero "compinit: function definition file not found" errors
 - [ ] No numbered files created during startup
 - [ ] Startup time <2.0s

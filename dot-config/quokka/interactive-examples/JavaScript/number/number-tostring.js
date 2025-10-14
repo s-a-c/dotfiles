@@ -9,4 +9,8 @@ console.log(hexColour(233));
 // expected output: "e9"
 
 console.log(hexColour('11'));
+<<<<<<< HEAD
 // expected output: "b"
+=======
+// expected output: "b"
+>>>>>>> origin/develop

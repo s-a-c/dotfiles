@@ -18,4 +18,8 @@ ${c1} dMMMMMMd.....'...xMMMx...''....dMMMMMMx
 ${c1}    kMMMMWOoc:coOkolllokOoc:coOWMMMMO
 ${c1}         .MMMMMMMMl${c2}...${c1}lNMMMMMMM.
 ${c1}            KMMMMMMX${c2}l${c1}KMMMMMMX
+<<<<<<< HEAD
 ${c1}               .MMMMMMMMM.
+=======
+${c1}               .MMMMMMMMM.
+>>>>>>> origin/develop

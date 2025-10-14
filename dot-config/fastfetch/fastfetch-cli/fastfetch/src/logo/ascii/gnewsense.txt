@@ -9,4 +9,8 @@ ollllllh          +llllllllllll+          hllllllo
  `cllllh.           ohllllllho           .hllllc'
     ochllc.            ++++            .cllhco
        `+occooo+.                .+ooocco+'
+<<<<<<< HEAD
               `+oo++++      ++++oo+'
+=======
+              `+oo++++      ++++oo+'
+>>>>>>> origin/develop

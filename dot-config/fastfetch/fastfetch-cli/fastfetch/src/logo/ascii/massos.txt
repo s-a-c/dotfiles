@@ -15,4 +15,8 @@
 :MMMMMMMN:MMMMMMMM-MMMMMMMMs
  dMMMMMMN:MMMMMMMM-MMMMMMMMs
  `yNMMMMN:MMMMMMMM-MMMMMMMMs
+<<<<<<< HEAD
    `:+oss.ssssssss.ssssssss/
+=======
+   `:+oss.ssssssss.ssssssss/
+>>>>>>> origin/develop

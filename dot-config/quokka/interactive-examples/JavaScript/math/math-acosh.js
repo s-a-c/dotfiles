@@ -8,4 +8,8 @@ console.log(Math.acosh(2));
 // expected output: 1.3169578969248166
 
 console.log(Math.acosh(2.5));
+<<<<<<< HEAD
 // expected output: 1.566799236972411
+=======
+// expected output: 1.566799236972411
+>>>>>>> origin/develop

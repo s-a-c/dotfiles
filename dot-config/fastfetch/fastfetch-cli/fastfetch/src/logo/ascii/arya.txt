@@ -12,4 +12,8 @@ ${c1}     +yyyyyys :yyyyyy/${c2}-yyyyyy+
 ${c1}   .oyyyyyyo. :yyyyyy/${c2}-yyyyyy+ ---------
 ${c1}  .syyyyyy+`  :yyyyyy/${c2}-yyyyy+-+syyyyyyyy
 ${c1} -syyyyyy/    :yyyyyy/${c2}-yyys:.syyyyyyyyyy
+<<<<<<< HEAD
 ${c1}:syyyyyy/     :yyyyyy/${c2}-yyo.:syyyyyyyyyyy
+=======
+${c1}:syyyyyy/     :yyyyyy/${c2}-yyo.:syyyyyyyyyyy
+>>>>>>> origin/develop

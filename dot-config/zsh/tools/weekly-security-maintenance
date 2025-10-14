@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #!/usr/bin/env zsh
+=======
+#!/opt/homebrew/bin/zsh
+>>>>>>> origin/develop
 # ==============================================================================
 # ZSH Configuration: Weekly Security Maintenance Script
 # ==============================================================================

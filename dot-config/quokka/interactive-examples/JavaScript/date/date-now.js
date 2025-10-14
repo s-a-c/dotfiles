@@ -9,4 +9,8 @@ setTimeout(() => {
 
   console.log(`seconds elapsed = ${Math.floor(millis/1000)}`);
   // expected output : seconds elapsed = 2
+<<<<<<< HEAD
 }, 2000);
+=======
+}, 2000);
+>>>>>>> origin/develop

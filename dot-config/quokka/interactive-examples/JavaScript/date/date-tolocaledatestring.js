@@ -11,4 +11,8 @@ console.log(event.toLocaleDateString('ar-EG', options));
 // expected output: الخميس، ٢٠ ديسمبر، ٢٠١٢
 
 console.log(event.toLocaleDateString('ko-KR', options));
+<<<<<<< HEAD
 // expected output: 2012년 12월 20일 목요일
+=======
+// expected output: 2012년 12월 20일 목요일
+>>>>>>> origin/develop

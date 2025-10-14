@@ -1,4 +1,5 @@
 #################################################
+<<<<<<< HEAD
 # This file is a sample of some things you
 # can do with this leader key setup. It's active
 # right now! Set leader_key below and try it! The
@@ -6,6 +7,15 @@
 # then falls back to this sample.toml. If you
 # want different profile names, you can add it
 # to the list in ~/.hammerspoon/init.lua.
+=======
+# This file is a sample of some things you 
+# can do with this leader key setup. It's active
+# right now! Set leader_key below and try it! The 
+# lua prioritizes home.toml, then work.toml,
+# then falls back to this sample.toml. If you
+# want different profile names, you can add it
+# to the list in ~/.hammerspoon/init.lua. 
+>>>>>>> origin/develop
 #################################################
 
 # settings
@@ -97,4 +107,8 @@ r = "reload" # reserved for reloading your hammerspoon config (helpful when auto
 # the hs: prefix as an escape hatch to run any
 # hammerspoon command you want.
 [z]
+<<<<<<< HEAD
 z = "hs:hs.alert('Hello, world!')"
+=======
+z = "hs:hs.alert('Hello, world!')"
+>>>>>>> origin/develop

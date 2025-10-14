@@ -8,4 +8,8 @@ const last4Digits = fullNumber.slice(-4);
 const maskedNumber = last4Digits.padStart(fullNumber.length, '*');
 
 console.log(maskedNumber);
+<<<<<<< HEAD
 // expected output: "************5581"
+=======
+// expected output: "************5581"
+>>>>>>> origin/develop

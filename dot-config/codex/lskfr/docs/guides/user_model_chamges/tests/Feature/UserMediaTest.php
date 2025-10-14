@@ -15,7 +15,11 @@ class UserMediaTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/develop
         // Configure the media disk for testing
         Storage::fake('media');
     }
@@ -32,12 +36,21 @@ class UserMediaTest extends TestCase
     public function test_user_can_upload_avatar_media()
     {
         $user = User::factory()->create();
+<<<<<<< HEAD
 
         $file = UploadedFile::fake()->image('avatar.jpg');
 
         $user->addMedia($file)
             ->toMediaCollection('avatar');
 
+=======
+        
+        $file = UploadedFile::fake()->image('avatar.jpg');
+        
+        $user->addMedia($file)
+            ->toMediaCollection('avatar');
+            
+>>>>>>> origin/develop
         $this->assertTrue($user->hasMedia('avatar'));
         $this->assertNotNull($user->getFirstMediaUrl('avatar'));
         $this->assertEquals($user->getFirstMediaUrl('avatar'), $user->avatar_url);
@@ -46,6 +59,7 @@ class UserMediaTest extends TestCase
     public function test_user_can_upload_animated_gif_avatar()
     {
         $user = User::factory()->create();
+<<<<<<< HEAD
 
         $file = UploadedFile::fake()->image('avatar.gif');
 
@@ -55,6 +69,17 @@ class UserMediaTest extends TestCase
         $this->assertTrue($user->hasMedia('avatar'));
         $this->assertNotNull($user->getFirstMediaUrl('avatar'));
 
+=======
+        
+        $file = UploadedFile::fake()->image('avatar.gif');
+        
+        $user->addMedia($file)
+            ->toMediaCollection('avatar');
+            
+        $this->assertTrue($user->hasMedia('avatar'));
+        $this->assertNotNull($user->getFirstMediaUrl('avatar'));
+        
+>>>>>>> origin/develop
         // Check that the media has the correct mime type
         $media = $user->getFirstMedia('avatar');
         $this->assertEquals('image/gif', $media->mime_type);
@@ -65,12 +90,21 @@ class UserMediaTest extends TestCase
         $user = User::factory()->create([
             'avatar' => 'https://example.com/avatar.jpg',
         ]);
+<<<<<<< HEAD
 
         $file = UploadedFile::fake()->image('new-avatar.jpg');
 
         $user->addMedia($file)
             ->toMediaCollection('avatar');
 
+=======
+        
+        $file = UploadedFile::fake()->image('new-avatar.jpg');
+        
+        $user->addMedia($file)
+            ->toMediaCollection('avatar');
+            
+>>>>>>> origin/develop
         // The avatar_url should return the media URL, not the avatar field
         $this->assertNotEquals('https://example.com/avatar.jpg', $user->avatar_url);
         $this->assertEquals($user->getFirstMediaUrl('avatar'), $user->avatar_url);
@@ -79,12 +113,21 @@ class UserMediaTest extends TestCase
     public function test_user_can_get_avatar_thumbnail()
     {
         $user = User::factory()->create();
+<<<<<<< HEAD
 
         $file = UploadedFile::fake()->image('avatar.jpg');
 
         $user->addMedia($file)
             ->toMediaCollection('avatar');
 
+=======
+        
+        $file = UploadedFile::fake()->image('avatar.jpg');
+        
+        $user->addMedia($file)
+            ->toMediaCollection('avatar');
+            
+>>>>>>> origin/develop
         $this->assertNotNull($user->avatar_thumb_url);
         $this->assertStringContainsString('thumb', $user->avatar_thumb_url);
     }
@@ -94,6 +137,7 @@ class UserMediaTest extends TestCase
         $user = User::factory()->create([
             'avatar' => 'https://example.com/avatar.jpg',
         ]);
+<<<<<<< HEAD
 
         $file = UploadedFile::fake()->image('avatar.jpg');
 
@@ -106,6 +150,20 @@ class UserMediaTest extends TestCase
         // Clear the media
         $user->clearMediaCollection('avatar');
 
+=======
+        
+        $file = UploadedFile::fake()->image('avatar.jpg');
+        
+        $user->addMedia($file)
+            ->toMediaCollection('avatar');
+            
+        // Initially, avatar_url should be the media URL
+        $this->assertEquals($user->getFirstMediaUrl('avatar'), $user->avatar_url);
+        
+        // Clear the media
+        $user->clearMediaCollection('avatar');
+        
+>>>>>>> origin/develop
         // Now avatar_url should fall back to the avatar field
         $this->assertEquals('https://example.com/avatar.jpg', $user->avatar_url);
     }

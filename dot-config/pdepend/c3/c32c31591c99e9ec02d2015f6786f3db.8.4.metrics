@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 a:2:{s:4:"hash";N;s:4:"data";a:4:{s:11:"3cxwxxxrdtu";a:5:{s:3:"loc";i:71;s:4:"cloc";i:19;s:4:"eloc";i:43;s:4:"lloc";i:17;s:5:"ncloc";i:52;}s:38:"3cxwxxxrdtu-9qpy8089r5k-00-mmwajevkgvk";a:5:{s:3:"loc";i:7;s:4:"cloc";i:0;s:4:"eloc";i:6;s:4:"lloc";i:1;s:5:"ncloc";i:7;}s:38:"3cxwxxxrdtu-9qpy8089r5k-00-o2xutuvos1w";a:5:{s:3:"loc";i:7;s:4:"cloc";i:0;s:4:"eloc";i:6;s:4:"lloc";i:1;s:5:"ncloc";i:7;}s:26:"3cxwxxxrdtu-9qpy8089r5k-00";a:5:{s:3:"loc";i:55;s:4:"cloc";i:19;s:4:"eloc";i:12;s:4:"lloc";i:2;s:5:"ncloc";i:36;}}}
+=======
+a:2:{s:4:"hash";N;s:4:"data";a:4:{s:11:"3cxwxxxrdtu";a:5:{s:3:"loc";i:71;s:4:"cloc";i:19;s:4:"eloc";i:43;s:4:"lloc";i:17;s:5:"ncloc";i:52;}s:38:"3cxwxxxrdtu-9qpy8089r5k-00-mmwajevkgvk";a:5:{s:3:"loc";i:7;s:4:"cloc";i:0;s:4:"eloc";i:6;s:4:"lloc";i:1;s:5:"ncloc";i:7;}s:38:"3cxwxxxrdtu-9qpy8089r5k-00-o2xutuvos1w";a:5:{s:3:"loc";i:7;s:4:"cloc";i:0;s:4:"eloc";i:6;s:4:"lloc";i:1;s:5:"ncloc";i:7;}s:26:"3cxwxxxrdtu-9qpy8089r5k-00";a:5:{s:3:"loc";i:55;s:4:"cloc";i:19;s:4:"eloc";i:12;s:4:"lloc";i:2;s:5:"ncloc";i:36;}}}
+>>>>>>> origin/develop

@@ -8,4 +8,8 @@ console.log(getBaseLog(2, 8));
 
 // 5 x 5 x 5 x 5 = 625
 console.log(getBaseLog(5, 625));
+<<<<<<< HEAD
 // expected output: 4
+=======
+// expected output: 4
+>>>>>>> origin/develop

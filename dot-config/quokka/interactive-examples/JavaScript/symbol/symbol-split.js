@@ -10,4 +10,8 @@ class Split1 {
 }
 
 console.log('foobar'.split(new Split1('foo')));
+<<<<<<< HEAD
 // expected output: "foo/bar"
+=======
+// expected output: "foo/bar"
+>>>>>>> origin/develop

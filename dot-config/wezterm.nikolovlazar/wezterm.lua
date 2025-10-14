@@ -4,6 +4,7 @@ local commands = require 'commands'
 local config = wezterm.config_builder()
 -- Set the color scheme depending on the system setting
 function get_appearance()
+<<<<<<< HEAD
     if wezterm.gui then
         return wezterm.gui.get_appearance()
     end
@@ -16,6 +17,20 @@ function scheme_for_appearance(appearance)
     else
         return 'Modus-Operandi'
     end
+=======
+  if wezterm.gui then
+    return wezterm.gui.get_appearance()
+  end
+  return 'Dark'
+end
+
+function scheme_for_appearance(appearance)
+  if appearance:find 'Dark' then
+    return 'Modus-Vivendi'
+  else
+    return 'Modus-Operandi'
+  end
+>>>>>>> origin/develop
 end
 
 config.automatically_reload_config = true
@@ -24,6 +39,7 @@ config.check_for_updates = true
 
 -- Font settings
 config.font_size = 16
+<<<<<<< HEAD
 config.line_height = 1.2
 config.font = wezterm.font_with_fallback {
     {
@@ -56,6 +72,40 @@ config.font_rules = {
             italic = true,
         }),
     },
+=======
+config.line_height = 1.4
+config.font = wezterm.font_with_fallback {
+  {
+    family = 'Dank Mono',
+    harfbuzz_features = {
+      'calt',
+      'ss01',
+      'ss02',
+      'ss03',
+      'ss04',
+      'ss05',
+      'ss06',
+      'ss07',
+      'ss08',
+      'ss09',
+      'liga',
+    },
+  },
+  { family = 'Symbols Nerd Font Mono' },
+}
+config.font_rules = {
+  {
+    font = wezterm.font('Dank Mono', {
+      bold = true,
+    }),
+  },
+  {
+    italic = true,
+    font = wezterm.font('Dank Mono', {
+      italic = true,
+    }),
+  },
+>>>>>>> origin/develop
 }
 
 -- Colors
@@ -66,10 +116,17 @@ config.cursor_blink_rate = 300
 -- config.window_decorations = 'RESIZE'
 config.hide_tab_bar_if_only_one_tab = true
 config.window_padding = {
+<<<<<<< HEAD
     left = 0,
     right = 0,
     top = 0,
     bottom = 0,
+=======
+  left = 0,
+  right = 0,
+  top = 0,
+  bottom = 0,
+>>>>>>> origin/develop
 }
 config.macos_window_background_blur = 40
 
@@ -106,7 +163,11 @@ config.native_macos_fullscreen_mode = false
 
 -- Custom commands
 wezterm.on('augment-command-palette', function()
+<<<<<<< HEAD
     return commands
+=======
+  return commands
+>>>>>>> origin/develop
 end)
 
 return config

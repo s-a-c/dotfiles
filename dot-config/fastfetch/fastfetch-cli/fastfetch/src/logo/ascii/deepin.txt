@@ -15,4 +15,8 @@
     ,dxxxxxxxxxxxxxxxxxxl.     'o,
       ,dkkkkkkkkkkkkko;.    .;o;
         .;okkkkkdl;.    .,cl:.
+<<<<<<< HEAD
             .,:cccccccc:,.
+=======
+            .,:cccccccc:,.
+>>>>>>> origin/develop

@@ -16,4 +16,8 @@ cccccc;$2dNMWXXXWM0:$1;cccccccccccccc:,
 cccccccc;$2.:odl:.$1;cccccccccccccc:,.
 ccccccccccccccccccccccccccccc:'.
 :ccccccccccccccccccccccc:;,..
+<<<<<<< HEAD
  ':cccccccccccccccc::;,.
+=======
+ ':cccccccccccccccc::;,.
+>>>>>>> origin/develop

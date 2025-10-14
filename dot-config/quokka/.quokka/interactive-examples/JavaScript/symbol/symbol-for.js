@@ -7,4 +7,8 @@ console.log(Symbol('bar') === Symbol('bar'));
 const symbol1 = Symbol.for('foo');
 
 console.log(symbol1.toString());
+<<<<<<< HEAD
 // expected output: "Symbol(foo)"
+=======
+// expected output: "Symbol(foo)"
+>>>>>>> origin/develop

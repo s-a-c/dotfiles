@@ -8,4 +8,8 @@ console.log(uint8.indexOf(20, 3));
 // expected output: -1
 
 console.log(uint8.indexOf(51));
+<<<<<<< HEAD
 // expected output: -1
+=======
+// expected output: -1
+>>>>>>> origin/develop

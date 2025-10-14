@@ -249,3 +249,7 @@ fastfetch (2.7.1) jammy; urgency=medium
   * Initial release.
 
  -- Carter Li <zhangsongcui@live.cn>  Tue, 06 Feb 2024 15:01:11 +0800
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/develop

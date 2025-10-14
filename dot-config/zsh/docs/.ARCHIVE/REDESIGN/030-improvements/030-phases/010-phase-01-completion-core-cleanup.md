@@ -86,7 +86,11 @@ jj squash -r @ -m "refactor(completion): stub early init (deprecation log)"
 # tests/completion/test-single-compinit.zsh (skeleton)
 #!/usr/bin/env zsh
 set -euo pipefail
+<<<<<<< HEAD
 TRACE_FILE=${TMPDIR:-/tmp}/compinit-trace.$$
+=======
+TRACE_FILE=${TMPDIR:-/tmp}/compinit-trace.$$ 
+>>>>>>> origin/develop
 PS4='+TRACE+ %N:%i ' ZDOTDIR="$HOME/.config/zsh" zsh -xic 'echo READY' &> $TRACE_FILE || true
 grep -c 'compinit' $TRACE_FILE | read COUNT
 if [[ $COUNT -ne 1 ]]; then

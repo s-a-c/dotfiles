@@ -6,4 +6,8 @@ console.log(date1.getTimezoneOffset());
 // (eg -120). NOT the timezone offset of the date object.
 
 console.log(date1.getTimezoneOffset() === date2.getTimezoneOffset());
+<<<<<<< HEAD
 // expected output: true
+=======
+// expected output: true
+>>>>>>> origin/develop

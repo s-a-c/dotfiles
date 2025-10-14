@@ -12,4 +12,8 @@
        +mMNNNNNNNNMMMMMMMMMMMs
      .hNMMNNNNMMMMMMMMMMMMMMMd
    .oNNNNNNNNNNMMMMMMMMMMMMMMMo
+<<<<<<< HEAD
 `:+syyssoo++++ooooossssssssssso:
+=======
+`:+syyssoo++++ooooossssssssssso:
+>>>>>>> origin/develop

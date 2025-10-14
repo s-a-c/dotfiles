@@ -7,4 +7,8 @@ console.log(num);
 // expected output: 42
 
 console.log(typeof num);
+<<<<<<< HEAD
 // expected output: "number"
+=======
+// expected output: "number"
+>>>>>>> origin/develop

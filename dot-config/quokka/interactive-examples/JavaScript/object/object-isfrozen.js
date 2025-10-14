@@ -8,4 +8,8 @@ console.log(Object.isFrozen(object1));
 Object.freeze(object1);
 
 console.log(Object.isFrozen(object1));
+<<<<<<< HEAD
 // expected output: true
+=======
+// expected output: true
+>>>>>>> origin/develop

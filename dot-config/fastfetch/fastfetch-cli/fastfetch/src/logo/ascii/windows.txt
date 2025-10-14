@@ -13,4 +13,8 @@ $3 ;:::::::::t33V$4 ;EEEttttt::::t3
 $3 E::::::::zt33L$4 @EEEtttt::::z3F
 $3{3=*^```"*4E3)$4 ;EEEtttt:::::tZ`
 $3             `$4 :EEEEtttt::::z7
+<<<<<<< HEAD
                  "VEzjt:;;z>*`
+=======
+                 "VEzjt:;;z>*`
+>>>>>>> origin/develop

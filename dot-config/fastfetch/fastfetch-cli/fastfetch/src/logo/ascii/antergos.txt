@@ -16,4 +16,8 @@ dmmmdddddddhhhyso${c1}++++++${c2}shhhhhddddddmmmmh
 -dmmmdddddddhhys${c1}o++++o${c2}shhhhdddddddmmmmd-
 .smmmmddddddddhhhhhhhhhdddddddddmmmms.
    `+ydmmmdddddddddddddddddddmmmmdy/.
+<<<<<<< HEAD
       `.:+ooyyddddddddddddyyso+:.`
+=======
+      `.:+ooyyddddddddddddyyso+:.`
+>>>>>>> origin/develop

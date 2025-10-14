@@ -9,4 +9,8 @@ MyNumberType.prototype.valueOf = function() {
 const object1 = new MyNumberType(4);
 
 console.log(object1 + 3);
+<<<<<<< HEAD
 // expected output: 7
+=======
+// expected output: 7
+>>>>>>> origin/develop

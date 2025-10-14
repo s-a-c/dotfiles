@@ -13,4 +13,8 @@ KKKKKKS. .SSAA..
      .OK.      .ASSSSSSSO...=A.SSA.
        .K      ..SSSASSSS.. ..SSA.
                  .SSS.AAKAKSSKA.
+<<<<<<< HEAD
                     .SSS....S..
+=======
+                    .SSS....S..
+>>>>>>> origin/develop

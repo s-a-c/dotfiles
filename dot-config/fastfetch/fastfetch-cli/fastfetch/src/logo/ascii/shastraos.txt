@@ -16,4 +16,8 @@
   .';:codxxl   lxo
 cd.           'xo
 :o,         'ld
+<<<<<<< HEAD
  .oc'...';lo
+=======
+ .oc'...';lo
+>>>>>>> origin/develop

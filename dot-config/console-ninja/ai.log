@@ -12,4 +12,8 @@
   "description": "Application runtime errors and log locations. The logLocations property provides a list of files and line numbers within those files where logs are available, this information can be used to get logs via runtime logs tool.",
   "errors": [],
   "logLocations": []
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/develop

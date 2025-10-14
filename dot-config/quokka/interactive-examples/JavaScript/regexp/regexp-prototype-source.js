@@ -8,4 +8,8 @@ console.log(new RegExp().source);
 
 console.log(new RegExp('\n').source === '\\n');
 // expected output: true (starting with ES5)
+<<<<<<< HEAD
 // (due to escaping)
+=======
+// (due to escaping)
+>>>>>>> origin/develop

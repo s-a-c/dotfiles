@@ -8,4 +8,8 @@ console.log(Math.tanh(Infinity));
 // expected output: 1
 
 console.log(Math.tanh(1));
+<<<<<<< HEAD
 // expected output: 0.7615941559557649
+=======
+// expected output: 0.7615941559557649
+>>>>>>> origin/develop

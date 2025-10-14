@@ -5,4 +5,8 @@ var options1 = { localeMatcher: 'lookup' };
 
 console.log(Intl.Collator.supportedLocalesOf(locales1, options1));
 // expected output: Array ["id-u-co-pinyin", "de-ID"]
+<<<<<<< HEAD
 // (Note: the exact output may be browser-dependent)
+=======
+// (Note: the exact output may be browser-dependent)
+>>>>>>> origin/develop

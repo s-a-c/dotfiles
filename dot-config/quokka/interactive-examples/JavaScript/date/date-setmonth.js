@@ -7,4 +7,8 @@ console.log(event.getMonth());
 
 console.log(event);
 // Sat Apr 19 1975 23:15:30 GMT+0100 (CET)
+<<<<<<< HEAD
 // (note: your timezone may vary)
+=======
+// (note: your timezone may vary)
+>>>>>>> origin/develop

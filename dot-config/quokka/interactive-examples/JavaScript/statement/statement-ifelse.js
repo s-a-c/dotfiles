@@ -7,4 +7,8 @@ function testNum(a) {
 }
 
 console.log(testNum(-5));
+<<<<<<< HEAD
 // expected output: "NOT positive"
+=======
+// expected output: "NOT positive"
+>>>>>>> origin/develop

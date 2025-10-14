@@ -17,4 +17,8 @@ $1'ooooooooool                         $2coooo.
        $2.coooooc,..      $1coooooooooo.
          $2.:ooooooolc:. $1.ooooooooooo'
            $2.':loooooo;  $1,oooooooooc
+<<<<<<< HEAD
                $2..';::c'  $1.;loooo:'
+=======
+               $2..';::c'  $1.;loooo:'
+>>>>>>> origin/develop

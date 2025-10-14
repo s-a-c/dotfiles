@@ -5,4 +5,8 @@ const object1 = {
 };
 
 console.log(Object.values(object1));
+<<<<<<< HEAD
 // expected output: Array ["somestring", 42, false]
+=======
+// expected output: Array ["somestring", 42, false]
+>>>>>>> origin/develop

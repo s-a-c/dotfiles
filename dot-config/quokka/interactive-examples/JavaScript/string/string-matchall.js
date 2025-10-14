@@ -7,4 +7,8 @@ console.log(array[0]);
 // expected output: Array ["test1", "e", "st1", "1"]
 
 console.log(array[1]);
+<<<<<<< HEAD
 // expected output: Array ["test2", "e", "st2", "2"]
+=======
+// expected output: Array ["test2", "e", "st2", "2"]
+>>>>>>> origin/develop

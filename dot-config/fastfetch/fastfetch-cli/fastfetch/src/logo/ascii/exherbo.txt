@@ -19,4 +19,8 @@ KX  '0XdKMMK;.xMMMk, .0MMMMMXx;  ...
         :XMNxl,';:lodxkOO000Oxc. .oWMMo
           'dXMMXkl;,.        .,o0MMNo'
              ':d0XWMMMMWNNNNMMMNOl'
+<<<<<<< HEAD
                    ':okKXWNKkl'
+=======
+                   ':okKXWNKkl'
+>>>>>>> origin/develop

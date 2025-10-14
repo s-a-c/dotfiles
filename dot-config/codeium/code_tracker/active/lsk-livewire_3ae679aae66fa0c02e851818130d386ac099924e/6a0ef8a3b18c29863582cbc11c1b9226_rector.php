@@ -89,9 +89,13 @@ return static function (RectorConfig $rectorConfig): void {
         App\Rules\Rector\UseEnumInsteadOfConstantsRector::class,
     ]);
 };
+<<<<<<< HEAD
 ¶
  ¶
 ã
+=======
+¶ ¶ã
+>>>>>>> origin/develop
 ãè 
 èî 
 îÔ Ô
@@ -100,4 +104,8 @@ return static function (RectorConfig $rectorConfig): void {
 êî 
 îß 
 ßü üÌ
+<<<<<<< HEAD
 Ìç "(3ae679aae66fa0c02e851818130d386ac099924e20file:///Users/s-a-c/Herd/lsk-livewire/rector.php:%file:///Users/s-a-c/Herd/lsk-livewire
+=======
+Ìç "(3ae679aae66fa0c02e851818130d386ac099924e20file:///Users/s-a-c/Herd/lsk-livewire/rector.php:%file:///Users/s-a-c/Herd/lsk-livewire
+>>>>>>> origin/develop

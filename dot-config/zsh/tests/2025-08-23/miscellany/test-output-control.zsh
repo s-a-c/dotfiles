@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #!/usr/bin/env zsh
+=======
+#!/opt/homebrew/bin/zsh
+>>>>>>> origin/develop
 # ==============================================================================
 # ZSH Configuration: Output Control Test Suite
 # ==============================================================================
@@ -25,7 +29,11 @@ export ZSH_SOURCE_EXECUTE_DEBUG=false
 DETECTION_SCRIPT="${ZDOTDIR:-$HOME/.config/zsh}/.zshrc.d/00_01-source-execute-detection.zsh"
 
 if [[ ! -f "$DETECTION_SCRIPT" ]]; then
+<<<<<<< HEAD
     zf::debug "ERROR: Source/execute detection script not found: $DETECTION_SCRIPT"
+=======
+        zsh_debug_echo "ERROR: Source/execute detection script not found: $DETECTION_SCRIPT"
+>>>>>>> origin/develop
     exit 1
 fi
 
@@ -49,7 +57,11 @@ mkdir -p "$LOG_DIR" 2>/dev/null || true
 log_test() {
     local message="$1"
     local timestamp=$(date -u '+%Y-%m-%d %H:%M:%S UTC')
+<<<<<<< HEAD
     zf::debug "[$timestamp] [TEST] [$$] $message" >>"$LOG_FILE" 2>/dev/null || true
+=======
+        zsh_debug_echo "[$timestamp] [TEST] [$$] $message" >> "$LOG_FILE" 2>/dev/null || true
+>>>>>>> origin/develop
 }
 
 run_test() {
@@ -58,17 +70,29 @@ run_test() {
 
     TEST_COUNT=$((TEST_COUNT + 1))
 
+<<<<<<< HEAD
     zf::debug "Running test $TEST_COUNT: $test_name"
+=======
+        zsh_debug_echo "Running test $TEST_COUNT: $test_name"
+>>>>>>> origin/develop
     log_test "Starting test: $test_name"
 
     if "$test_function"; then
         TEST_PASSED=$((TEST_PASSED + 1))
+<<<<<<< HEAD
         zf::debug "  ✓ PASS: $test_name"
+=======
+            zsh_debug_echo "  ✓ PASS: $test_name"
+>>>>>>> origin/develop
         log_test "PASS: $test_name"
         return 0
     else
         TEST_FAILED=$((TEST_FAILED + 1))
+<<<<<<< HEAD
         zf::debug "  ✗ FAIL: $test_name"
+=======
+            zsh_debug_echo "  ✗ FAIL: $test_name"
+>>>>>>> origin/develop
         log_test "FAIL: $test_name"
         return 1
     fi
@@ -82,9 +106,15 @@ assert_contains() {
     if [[ "$haystack" =~ "$needle" ]]; then
         return 0
     else
+<<<<<<< HEAD
         zf::debug "    ASSERTION FAILED: $message"
         zf::debug "    Haystack: '$haystack'"
         zf::debug "    Needle: '$needle'"
+=======
+            zsh_debug_echo "    ASSERTION FAILED: $message"
+            zsh_debug_echo "    Haystack: '$haystack'"
+            zsh_debug_echo "    Needle: '$needle'"
+>>>>>>> origin/develop
         return 1
     fi
 }
@@ -92,10 +122,17 @@ assert_contains() {
 assert_function_exists() {
     local function_name="$1"
 
+<<<<<<< HEAD
     if declare -f "$function_name" >/dev/null; then
         return 0
     else
         zf::debug "    ASSERTION FAILED: Function '$function_name' should exist"
+=======
+    if declare -f "$function_name" > /dev/null; then
+        return 0
+    else
+            zsh_debug_echo "    ASSERTION FAILED: Function '$function_name' should exist"
+>>>>>>> origin/develop
         return 1
     fi
 }
@@ -106,7 +143,11 @@ assert_function_exists() {
 
 test_output_control_functions_exist() {
     assert_function_exists "context_echo" &&
+<<<<<<< HEAD
         assert_function_exists "conditional_output"
+=======
+    assert_function_exists "conditional_output"
+>>>>>>> origin/develop
 }
 
 test_context_echo_info_level() {
@@ -144,7 +185,11 @@ test_context_echo_debug_mode() {
 
     # Should contain debug formatting
     assert_contains "$output" "INFO" "Debug output should contain level" &&
+<<<<<<< HEAD
         assert_contains "$output" "$context" "Debug output should contain context"
+=======
+    assert_contains "$output" "$context" "Debug output should contain context"
+>>>>>>> origin/develop
 
     # Restore original debug setting
     export ZSH_SOURCE_EXECUTE_DEBUG="$original_debug"
@@ -172,7 +217,11 @@ test_conditional_output_sourced_filter() {
     else
         # When executed, should be empty
         [[ -z "$output" ]] || {
+<<<<<<< HEAD
             zf::debug "    ASSERTION FAILED: Sourced filter should not output when executed"
+=======
+                zsh_debug_echo "    ASSERTION FAILED: Sourced filter should not output when executed"
+>>>>>>> origin/develop
             return 1
         }
     fi
@@ -188,7 +237,11 @@ test_conditional_output_executed_filter() {
     else
         # When sourced, should be empty
         [[ -z "$output" ]] || {
+<<<<<<< HEAD
             zf::debug "    ASSERTION FAILED: Executed filter should not output when sourced"
+=======
+                zsh_debug_echo "    ASSERTION FAILED: Executed filter should not output when sourced"
+>>>>>>> origin/develop
             return 1
         }
     fi
@@ -220,12 +273,21 @@ test_context_echo_logging() {
         if grep -q "$test_message" "$detection_log" 2>/dev/null; then
             return 0
         else
+<<<<<<< HEAD
             zf::debug "    WARNING: Message not found in detection log (may be expected)"
             return 0 # Don't fail test, logging might be conditional
         fi
     else
         zf::debug "    WARNING: Detection log file not found"
         return 0 # Don't fail test, logging setup might vary
+=======
+                zsh_debug_echo "    WARNING: Message not found in detection log (may be expected)"
+            return 0  # Don't fail test, logging might be conditional
+        fi
+    else
+            zsh_debug_echo "    WARNING: Detection log file not found"
+        return 0  # Don't fail test, logging setup might vary
+>>>>>>> origin/develop
     fi
 }
 
@@ -265,21 +327,36 @@ test_output_context_awareness() {
 
     # Test that context information is available
     [[ -n "$context" ]] || {
+<<<<<<< HEAD
         zf::debug "    ASSERTION FAILED: Context should not be empty"
         return 1
     }
 
     zf::debug "  Current context: $context"
+=======
+            zsh_debug_echo "    ASSERTION FAILED: Context should not be empty"
+        return 1
+    }
+
+        zsh_debug_echo "  Current context: $context"
+>>>>>>> origin/develop
     return 0
 }
 
 test_output_integration_with_detection() {
     # Test integration between output functions and detection system
     assert_function_exists "is_being_sourced" &&
+<<<<<<< HEAD
         assert_function_exists "is_being_executed" &&
         assert_function_exists "get_execution_context" &&
         assert_function_exists "context_echo" &&
         assert_function_exists "conditional_output"
+=======
+    assert_function_exists "is_being_executed" &&
+    assert_function_exists "get_execution_context" &&
+    assert_function_exists "context_echo" &&
+    assert_function_exists "conditional_output"
+>>>>>>> origin/develop
 }
 
 # ------------------------------------------------------------------------------
@@ -287,6 +364,7 @@ test_output_integration_with_detection() {
 # ------------------------------------------------------------------------------
 
 run_all_tests() {
+<<<<<<< HEAD
     zf::debug "========================================================"
     zf::debug "Output Control Test Suite"
     zf::debug "========================================================"
@@ -294,10 +372,20 @@ run_all_tests() {
     zf::debug "Execution Context: $(get_execution_context)"
     zf::debug "Log File: $LOG_FILE"
     zf::debug ""
+=======
+        zsh_debug_echo "========================================================"
+        zsh_debug_echo "Output Control Test Suite"
+        zsh_debug_echo "========================================================"
+        zsh_debug_echo "Timestamp: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+        zsh_debug_echo "Execution Context: $(get_execution_context)"
+        zsh_debug_echo "Log File: $LOG_FILE"
+        zsh_debug_echo ""
+>>>>>>> origin/develop
 
     log_test "Starting output control test suite"
 
     # Function Existence Tests
+<<<<<<< HEAD
     zf::debug "=== Output Control Function Tests ==="
     run_test "Output Control Functions Exist" "test_output_control_functions_exist"
     run_test "Context     zf::debug INFO Level" "test_context_echo_info_level"
@@ -308,12 +396,25 @@ run_all_tests() {
     # Conditional Output Tests
     zf::debug ""
     zf::debug "=== Conditional Output Tests ==="
+=======
+        zsh_debug_echo "=== Output Control Function Tests ==="
+    run_test "Output Control Functions Exist" "test_output_control_functions_exist"
+    run_test "Context     zsh_debug_echo INFO Level" "test_context_echo_info_level"
+    run_test "Context     zsh_debug_echo WARN Level" "test_context_echo_warn_level"
+    run_test "Context     zsh_debug_echo ERROR Level" "test_context_echo_error_level"
+    run_test "Context     zsh_debug_echo Debug Mode" "test_context_echo_debug_mode"
+
+    # Conditional Output Tests
+        zsh_debug_echo ""
+        zsh_debug_echo "=== Conditional Output Tests ==="
+>>>>>>> origin/develop
     run_test "Conditional Output Both" "test_conditional_output_both"
     run_test "Conditional Output Sourced Filter" "test_conditional_output_sourced_filter"
     run_test "Conditional Output Executed Filter" "test_conditional_output_executed_filter"
     run_test "Conditional Output Default Behavior" "test_conditional_output_default_behavior"
 
     # Logging Tests
+<<<<<<< HEAD
     zf::debug ""
     zf::debug "=== Output Logging Tests ==="
     run_test "Context     zf::debug Logging" "test_context_echo_logging"
@@ -326,10 +427,25 @@ run_all_tests() {
     # Context Awareness Tests
     zf::debug ""
     zf::debug "=== Context Awareness Tests ==="
+=======
+        zsh_debug_echo ""
+        zsh_debug_echo "=== Output Logging Tests ==="
+    run_test "Context     zsh_debug_echo Logging" "test_context_echo_logging"
+
+    # Stream Routing Tests
+        zsh_debug_echo ""
+        zsh_debug_echo "=== Output Stream Tests ==="
+    run_test "Output Stream Routing" "test_output_stream_routing"
+
+    # Context Awareness Tests
+        zsh_debug_echo ""
+        zsh_debug_echo "=== Context Awareness Tests ==="
+>>>>>>> origin/develop
     run_test "Output Context Awareness" "test_output_context_awareness"
     run_test "Output Integration with Detection" "test_output_integration_with_detection"
 
     # Results Summary
+<<<<<<< HEAD
     zf::debug ""
     zf::debug "========================================================"
     zf::debug "Test Results Summary"
@@ -343,16 +459,40 @@ run_all_tests() {
         pass_percentage=$(((TEST_PASSED * 100) / TEST_COUNT))
     fi
     zf::debug "Success Rate: ${pass_percentage}%"
+=======
+        zsh_debug_echo ""
+        zsh_debug_echo "========================================================"
+        zsh_debug_echo "Test Results Summary"
+        zsh_debug_echo "========================================================"
+        zsh_debug_echo "Total Tests: $TEST_COUNT"
+        zsh_debug_echo "Passed: $TEST_PASSED"
+        zsh_debug_echo "Failed: $TEST_FAILED"
+
+    local pass_percentage=0
+    if [[ $TEST_COUNT -gt 0 ]]; then
+        pass_percentage=$(( (TEST_PASSED * 100) / TEST_COUNT ))
+    fi
+        zsh_debug_echo "Success Rate: ${pass_percentage}%"
+>>>>>>> origin/develop
 
     log_test "Output control test suite completed - $TEST_PASSED/$TEST_COUNT tests passed"
 
     if [[ $TEST_FAILED -eq 0 ]]; then
+<<<<<<< HEAD
         zf::debug ""
         zf::debug "🎉 All output control tests passed!"
         return 0
     else
         zf::debug ""
         zf::debug "❌ $TEST_FAILED output control test(s) failed."
+=======
+            zsh_debug_echo ""
+            zsh_debug_echo "🎉 All output control tests passed!"
+        return 0
+    else
+            zsh_debug_echo ""
+            zsh_debug_echo "❌ $TEST_FAILED output control test(s) failed."
+>>>>>>> origin/develop
         return 1
     fi
 }
@@ -369,8 +509,13 @@ main() {
 if is_being_executed; then
     main "$@"
 elif is_being_sourced; then
+<<<<<<< HEAD
     zf::debug "Output control test functions loaded (sourced context)"
     zf::debug "Available functions: run_all_tests, individual test functions"
+=======
+        zsh_debug_echo "Output control test functions loaded (sourced context)"
+        zsh_debug_echo "Available functions: run_all_tests, individual test functions"
+>>>>>>> origin/develop
 fi
 
 # ==============================================================================

@@ -21,7 +21,11 @@ The ZSH configuration follows a phased loading architecture with clear separatio
 
 **Categories**:
 - `00_*` - Core system functionality (helpers, environment, PATH, completion)
+<<<<<<< HEAD
 - `10_*` - Development tools and external integrations
+=======
+- `10_*` - Development tools and external integrations  
+>>>>>>> origin/develop
 - `20_*` - Plugin management and integration
 - `30_*` - User interface (prompt, aliases, keybindings, styling)
 - `90_*` - Finalization and cleanup
@@ -93,7 +97,11 @@ The ZSH configuration follows a phased loading architecture with clear separatio
 
 1. **Pre-Plugin Phase** (`.zshrc.pre-plugins.d/`)
    - Early environment setup
+<<<<<<< HEAD
    - Security initialization
+=======
+   - Security initialization  
+>>>>>>> origin/develop
    - Tool-specific pre-configurations
    - Plugin integrity verification
    - *Loaded via `load-shell-fragments` before plugin system*

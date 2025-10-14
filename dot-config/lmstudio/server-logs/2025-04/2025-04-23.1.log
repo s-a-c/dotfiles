@@ -16564,13 +16564,21 @@
   "object": "list"
 }
 [2025-04-23 19:35:04][INFO][LM STUDIO SERVER] Success! HTTP server listening on port 1234
+<<<<<<< HEAD
 [2025-04-23 19:35:04][INFO]
+=======
+[2025-04-23 19:35:04][INFO] 
+>>>>>>> origin/develop
 [2025-04-23 19:35:04][INFO][LM STUDIO SERVER] Supported endpoints:
 [2025-04-23 19:35:04][INFO][LM STUDIO SERVER] ->	GET  http://localhost:1234/v1/models
 [2025-04-23 19:35:04][INFO][LM STUDIO SERVER] ->	POST http://localhost:1234/v1/chat/completions
 [2025-04-23 19:35:04][INFO][LM STUDIO SERVER] ->	POST http://localhost:1234/v1/completions
 [2025-04-23 19:35:04][INFO][LM STUDIO SERVER] ->	POST http://localhost:1234/v1/embeddings
+<<<<<<< HEAD
 [2025-04-23 19:35:04][INFO]
+=======
+[2025-04-23 19:35:04][INFO] 
+>>>>>>> origin/develop
 [2025-04-23 19:35:04][INFO][LM STUDIO SERVER] Logs are saved into /Users/s-a-c/.lmstudio/server-logs
 [2025-04-23 19:35:04][INFO] Server started.
 [2025-04-23 19:35:04][INFO] Just-in-time model loading active.
@@ -17259,13 +17267,21 @@
   "object": "list"
 }
 [2025-04-23 20:27:30][INFO][LM STUDIO SERVER] Success! HTTP server listening on port 1234
+<<<<<<< HEAD
 [2025-04-23 20:27:30][INFO]
+=======
+[2025-04-23 20:27:30][INFO] 
+>>>>>>> origin/develop
 [2025-04-23 20:27:30][INFO][LM STUDIO SERVER] Supported endpoints:
 [2025-04-23 20:27:30][INFO][LM STUDIO SERVER] ->	GET  http://localhost:1234/v1/models
 [2025-04-23 20:27:30][INFO][LM STUDIO SERVER] ->	POST http://localhost:1234/v1/chat/completions
 [2025-04-23 20:27:30][INFO][LM STUDIO SERVER] ->	POST http://localhost:1234/v1/completions
 [2025-04-23 20:27:30][INFO][LM STUDIO SERVER] ->	POST http://localhost:1234/v1/embeddings
+<<<<<<< HEAD
 [2025-04-23 20:27:30][INFO]
+=======
+[2025-04-23 20:27:30][INFO] 
+>>>>>>> origin/develop
 [2025-04-23 20:27:30][INFO][LM STUDIO SERVER] Logs are saved into /Users/s-a-c/.lmstudio/server-logs
 [2025-04-23 20:27:30][INFO] Server started.
 [2025-04-23 20:27:30][INFO] Just-in-time model loading active.

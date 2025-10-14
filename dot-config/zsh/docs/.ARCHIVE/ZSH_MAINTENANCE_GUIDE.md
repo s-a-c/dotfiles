@@ -218,7 +218,11 @@ echo "
 - Check for new plugin updates
 - Review error logs
 
+<<<<<<< HEAD
 #### Monthly
+=======
+#### Monthly  
+>>>>>>> origin/develop
 - Run health check script
 - Clean plugin cache: `zgenom reset`
 - Update core plugins: `zgenom update`

@@ -9,7 +9,11 @@ Generated: 2025-08-18 23:24 UTC
 ### 1.1. Command Safety Functions
 ```zsh
 command_exists()          # Check if a command exists safely
+<<<<<<< HEAD
 safe_uname()             # Safe wrapper for uname command
+=======
+safe_uname()             # Safe wrapper for uname command  
+>>>>>>> origin/develop
 safe_sed()               # Safe wrapper for sed command
 ```
 
@@ -23,7 +27,11 @@ _path_prepend()          # Prepend directory to PATH (deduped)
 ### 1.3. Field Management Functions
 ```zsh
 _field_append()          # Append to colon-separated field
+<<<<<<< HEAD
 _field_prepend()         # Prepend to colon-separated field
+=======
+_field_prepend()         # Prepend to colon-separated field  
+>>>>>>> origin/develop
 _field_remove()          # Remove from colon-separated field
 _field_has()             # Check if field contains value
 _field_list()            # List all values in field
@@ -50,7 +58,11 @@ safe_source()            # Safe file sourcing
 env_default()            # Set environment variable defaults
 ```
 
+<<<<<<< HEAD
 #### 05-completion-prep.zsh
+=======
+#### 05-completion-prep.zsh  
+>>>>>>> origin/develop
 ```zsh
 prepare_completion_system()    # Initialize completion system
 completion_cache_cleanup()     # Clean up completion caches
@@ -62,7 +74,11 @@ ensure_fpath_setup()          # Ensure fpath is properly configured
 ```zsh
 validate_shell_environment()  # Validate shell setup
 optimize_startup_sequence()   # Optimize shell startup
+<<<<<<< HEAD
 configure_plugin_environment() # Configure plugin loading environment
+=======
+configure_plugin_environment() # Configure plugin loading environment  
+>>>>>>> origin/develop
 finalize_pre_plugin_setup()   # Finalize pre-plugin configuration
 ```
 
@@ -73,7 +89,11 @@ finalize_pre_plugin_setup()   # Finalize pre-plugin configuration
 # No active functions (configuration only)
 ```
 
+<<<<<<< HEAD
 #### 21-plugin-optimization.zsh
+=======
+#### 21-plugin-optimization.zsh  
+>>>>>>> origin/develop
 ```zsh
 defer_plugin()                # Defer plugin loading until first use
 is_plugin_loaded()           # Check if plugin is already loaded
@@ -82,7 +102,11 @@ start_plugin_timer()         # Start timing plugin load
 end_plugin_timer()           # End timing and record performance
 plugin_performance_report()  # Generate plugin performance report
 cache_plugin_completions()   # Cache plugin completion data
+<<<<<<< HEAD
 clear_plugin_caches()        # Clear all plugin caches
+=======
+clear_plugin_caches()        # Clear all plugin caches  
+>>>>>>> origin/develop
 check_plugin_conflicts()     # Check for plugin conflicts
 load_plugin_dependencies()   # Load plugin dependencies
 enhanced_plugin_load()       # Enhanced plugin loading with features
@@ -105,7 +129,11 @@ setup_nvm_lazy_loading()     # Set up NVM lazy loading
 #### 04-functions-core.zsh ⭐ **ACTIVE FUNCTIONS**
 ```zsh
 path_validate()          # Validate and clean PATH entries
+<<<<<<< HEAD
 dir_exists()             # Quick directory existence check
+=======
+dir_exists()             # Quick directory existence check  
+>>>>>>> origin/develop
 command_exists()         # Command existence check with caching
 safe_source()            # Safe file sourcing with error handling
 env_default()            # Environment variable default setting
@@ -120,7 +148,11 @@ time_function()          # Performance timing utility
 
 ### 3.2. Development Tools (10_)
 
+<<<<<<< HEAD
 #### 10-development-tools.zsh
+=======
+#### 10-development-tools.zsh  
+>>>>>>> origin/develop
 ```zsh
 setup_development_environment() # Set up development tools
 ```
@@ -128,7 +160,11 @@ setup_development_environment() # Set up development tools
 #### 12-tool-environments.zsh
 ```zsh
 configure_node_environment()     # Configure Node.js ecosystem
+<<<<<<< HEAD
 configure_python_environment()   # Configure Python development
+=======
+configure_python_environment()   # Configure Python development  
+>>>>>>> origin/develop
 configure_rust_environment()     # Configure Rust development
 configure_go_environment()       # Configure Go development
 configure_docker_environment()   # Configure Docker
@@ -153,7 +189,11 @@ configure_mcp_environment()      # Configure MCP AugmentCode
 ```
 
 #### 13-git-vcs-config.zsh
+<<<<<<< HEAD
 ```zsh
+=======
+```zsh  
+>>>>>>> origin/develop
 git_config_setup()       # Configure Git settings
 git_aliases_setup()      # Set up Git aliases
 configure_git_workflow() # Configure Git workflow
@@ -199,7 +239,11 @@ load_all_lazy_plugins()         # Load all lazy plugins (debugging)
 
 # Lazy loading functions (auto-generated)
 lazy_load_sysadmin_util()       # Load skx/sysadmin-util on demand
+<<<<<<< HEAD
 lazy_load_git_extras()          # Load unixorn/git-extra-commands on demand
+=======
+lazy_load_git_extras()          # Load unixorn/git-extra-commands on demand  
+>>>>>>> origin/develop
 lazy_load_python_plugin()       # Load ohmyzsh python plugin on demand
 lazy_load_docker_plugin()       # Load ohmyzsh docker plugin on demand
 lazy_load_node_plugin()         # Load ohmyzsh node plugin on demand
@@ -217,6 +261,7 @@ setup_prompt_customization()   # Set up prompt customizations
 prompt_performance_optimization() # Optimize prompt performance
 ```
 
+<<<<<<< HEAD
 #### 33-ui-enhancements.zsh ⭐ **UI FUNCTIONS**
 ```zsh
 # All custom command functions are DISABLED to prevent conflicts:
@@ -224,6 +269,15 @@ prompt_performance_optimization() # Optimize prompt performance
 # mkcd()                # DISABLED - Create and enter directory
 # ff()                  # DISABLED - Enhanced file finding
 # fd()                  # DISABLED - Enhanced directory finding
+=======
+#### 33-ui-enhancements.zsh ⭐ **UI FUNCTIONS** 
+```zsh
+# All custom command functions are DISABLED to prevent conflicts:
+# cds()                 # DISABLED - Smart cd with ls  
+# mkcd()                # DISABLED - Create and enter directory
+# ff()                  # DISABLED - Enhanced file finding
+# fd()                  # DISABLED - Enhanced directory finding  
+>>>>>>> origin/develop
 # psgrep()              # DISABLED - Process finding
 # killps()              # DISABLED - Process killing
 # extract()             # DISABLED - Archive extraction
@@ -233,7 +287,11 @@ prompt_performance_optimization() # Optimize prompt performance
 ```zsh
 # Additional UI customization functions (mostly DISABLED)
 # cds2()                # DISABLED - Alternative cd with ls
+<<<<<<< HEAD
 # mkcd()                # DISABLED - Duplicate create/enter directory
+=======
+# mkcd()                # DISABLED - Duplicate create/enter directory 
+>>>>>>> origin/develop
 # ff()                  # DISABLED - Duplicate file finding
 # fd()                  # DISABLED - Duplicate directory finding
 # extract()             # DISABLED - Duplicate archive extraction
@@ -244,7 +302,11 @@ prompt_performance_optimization() # Optimize prompt performance
 #### 99-splash.zsh
 ```zsh
 display_welcome_message()      # Display welcome message
+<<<<<<< HEAD
 show_system_info()            # Show system information
+=======
+show_system_info()            # Show system information  
+>>>>>>> origin/develop
 display_configuration_status() # Show configuration status
 ```
 
@@ -253,7 +315,11 @@ display_configuration_status() # Show configuration status
 ### 4.1. ✅ **ACTIVE FUNCTIONS** (Safe to use)
 - **PATH Management**: `_path_prepend()`, `_path_append()`, `_path_remove()` (.zshenv)
 - **Core Utilities**: `path_validate()`, `dir_exists()`, `command_exists()`, `safe_source()`, `env_default()` (04-functions-core.zsh)
+<<<<<<< HEAD
 - **Plugin Management**: All functions in `21-plugin-optimization.zsh` and `24-deferred.zsh`
+=======
+- **Plugin Management**: All functions in `21-plugin-optimization.zsh` and `24-deferred.zsh`  
+>>>>>>> origin/develop
 - **Tool Configuration**: All functions in `12-tool-environments.zsh`
 - **Field Management**: All `_field_*()` functions (.zshenv)
 
@@ -273,9 +339,15 @@ display_configuration_status() # Show configuration status
 - **Command wrappers**: All disabled to prevent system command conflicts
 - **Plugin functions**: Centralized in dedicated plugin files
 
+<<<<<<< HEAD
 ### 5.2. 🔧 **Performance Optimization**
 - **Lazy loading**: Heavy plugins loaded on-demand via `24-deferred.zsh`
 - **Caching**: Command existence cached in `_command_cache`
+=======
+### 5.2. 🔧 **Performance Optimization**  
+- **Lazy loading**: Heavy plugins loaded on-demand via `24-deferred.zsh`
+- **Caching**: Command existence cached in `_command_cache` 
+>>>>>>> origin/develop
 - **Timing**: Plugin load times monitored via timer functions
 
 ### 5.3. 🛡️ **Conflict Prevention**
@@ -289,7 +361,11 @@ display_configuration_status() # Show configuration status
 ```zsh
 # Use the PATH functions from .zshenv
 _path_prepend /new/directory
+<<<<<<< HEAD
 _path_append /another/directory
+=======
+_path_append /another/directory  
+>>>>>>> origin/develop
 _path_remove /old/directory
 
 # Use core utility functions
@@ -302,11 +378,19 @@ load_lazy_plugin docker-plugin
 ```
 
 ### 6.2. ❌ **Avoid**
+<<<<<<< HEAD
 ```zsh
 # Don't redefine PATH functions
 function _path_prepend() { ... }  # WRONG - already defined in .zshenv
 
 # Don't create command wrappers
+=======
+```zsh  
+# Don't redefine PATH functions
+function _path_prepend() { ... }  # WRONG - already defined in .zshenv
+
+# Don't create command wrappers  
+>>>>>>> origin/develop
 function fd() { find . -name "*$1*"; }  # WRONG - conflicts with fd command
 
 # Don't load heavy plugins directly

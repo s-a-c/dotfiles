@@ -8,4 +8,8 @@ const sliced = new Int32Array(buffer.slice(4,12));
 // produces Int32Array [42, 0]
 
 console.log(sliced[0]);
+<<<<<<< HEAD
 // expected output: 42
+=======
+// expected output: 42
+>>>>>>> origin/develop

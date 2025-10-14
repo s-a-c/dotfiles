@@ -7,4 +7,8 @@ console.log(paragraph.search(regex));
 // expected output: 43
 
 console.log(paragraph[paragraph.search(regex)]);
+<<<<<<< HEAD
 // expected output: "."
+=======
+// expected output: "."
+>>>>>>> origin/develop

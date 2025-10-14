@@ -3,7 +3,11 @@
 
 url="$1"
 title="$2"
+<<<<<<< HEAD
 title=$(echo "$title" | sed -e 's/ (matches.*$//')
+=======
+title=$(echo "$title" | sed -e 's/ (matches.*$//') 
+>>>>>>> origin/develop
 # tags="$3"
 # feed="$4"
 

@@ -6,7 +6,11 @@ __charm_debug()
 {
     local file="$BASH_COMP_DEBUG_FILE"
     if [[ -n ${file} ]]; then
+<<<<<<< HEAD
             zf::debug "$*" >> "${file}"
+=======
+            zsh_debug_echo "$*" >> "${file}"
+>>>>>>> origin/develop
     fi
 }
 

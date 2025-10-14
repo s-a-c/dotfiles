@@ -15,4 +15,8 @@ yMMMMMMMMMMMMMMMMNNh.
    `sNMMMMMNmmho.
     `+mMMMMMMMy.
       .yNMMMm+`
+<<<<<<< HEAD
        `:yd+.
+=======
+       `:yd+.
+>>>>>>> origin/develop

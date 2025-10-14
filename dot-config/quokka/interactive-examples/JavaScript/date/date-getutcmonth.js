@@ -7,4 +7,8 @@ console.log(date1.getUTCMonth());
 
 // January
 console.log(date2.getUTCMonth());
+<<<<<<< HEAD
 // expected output: 0
+=======
+// expected output: 0
+>>>>>>> origin/develop

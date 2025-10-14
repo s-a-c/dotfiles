@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 {"Target":"laravel.test","LocalPath":"/Users/s-a-c/Herd/sail-example-app/vendor/laravel/sail/runtimes/8.3","DockerfilePath":"/Users/s-a-c/Herd/sail-example-app/vendor/laravel/sail/runtimes/8.3/Dockerfile"}
+=======
+{"Target":"laravel.test","LocalPath":"/Users/s-a-c/Herd/sail-example-app/vendor/laravel/sail/runtimes/8.3","DockerfilePath":"/Users/s-a-c/Herd/sail-example-app/vendor/laravel/sail/runtimes/8.3/Dockerfile"}
+>>>>>>> origin/develop

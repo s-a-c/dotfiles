@@ -17,4 +17,8 @@ const fluffy = new Pet("Fluffy", 3);
 
 // STEP 2: Print the vet's information.
 
+<<<<<<< HEAD
 // STEP 3: Send fluffy for an annual checkup and get the cost.
+=======
+// STEP 3: Send fluffy for an annual checkup and get the cost.
+>>>>>>> origin/develop

@@ -9,4 +9,8 @@ console.log(weakmap1.get(object1));
 //expected output: "foo"
 
 console.log(weakmap1.get(object2));
+<<<<<<< HEAD
 //expected output: "bar"
+=======
+//expected output: "bar"
+>>>>>>> origin/develop

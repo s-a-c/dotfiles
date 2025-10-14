@@ -9,4 +9,8 @@ numeric[Symbol.isConcatSpreadable] = false;
 alphaNumeric = alpha.concat(numeric);
 
 console.log(alphaNumeric);
+<<<<<<< HEAD
 // expected output: Array ["a", "b", "c", Array [1, 2, 3]]
+=======
+// expected output: Array ["a", "b", "c", Array [1, 2, 3]]
+>>>>>>> origin/develop

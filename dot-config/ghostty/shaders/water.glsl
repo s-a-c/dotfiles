@@ -32,4 +32,8 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     // give transparent pixels a color
     if ( fragColor.a == 0.0 ) fragColor=vec4(1.0,1.0,1.0,1.0);
     fragColor *= vec4(color, 1.0);
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/develop

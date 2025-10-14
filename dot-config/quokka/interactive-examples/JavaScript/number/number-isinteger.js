@@ -9,4 +9,8 @@ console.log(fits(5, 10));
 // expected output: "Fits!"
 
 console.log(fits(5, 11));
+<<<<<<< HEAD
 // expected output: "Does NOT fit!"
+=======
+// expected output: "Does NOT fit!"
+>>>>>>> origin/develop

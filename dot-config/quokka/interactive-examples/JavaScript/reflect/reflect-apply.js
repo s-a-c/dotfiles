@@ -8,4 +8,8 @@ console.log(Reflect.apply(RegExp.prototype.exec, /ab/, ['confabulation']).index)
 // expected output: 4
 
 console.log(Reflect.apply(''.charAt, 'ponies', [3]));
+<<<<<<< HEAD
 // expected output: "i"
+=======
+// expected output: "i"
+>>>>>>> origin/develop

@@ -5,4 +5,8 @@ console.log(event.toString());
 // (note: your timezone may vary)
 
 console.log(event.toDateString());
+<<<<<<< HEAD
 // expected output: Wed Jul 28 1993
+=======
+// expected output: Wed Jul 28 1993
+>>>>>>> origin/develop

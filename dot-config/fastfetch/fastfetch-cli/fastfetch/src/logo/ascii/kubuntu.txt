@@ -17,4 +17,8 @@ oyyyyysos$2dy$1yyyyyyyyyyyyyyyyyy$2dMMMMy$1syyyo
     -syyyyyyyyy$2dMMMy$1syyy$2dMMMy$1syyyys-
       -oyyyyyyy$2dMMy$1yyyyyysosyyyyo-
         ./oyyyyyyyyyyyyyyyyyyo/.
+<<<<<<< HEAD
            `.:/oosyyyysso/:.`
+=======
+           `.:/oosyyyysso/:.`
+>>>>>>> origin/develop

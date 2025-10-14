@@ -16,4 +16,8 @@ ${c1}       K00XNW${c2}      WX0xdooooooddddddd
                       WXOxdoooooodddd
                          WXOxdddddddd
                                NX0ddd
+<<<<<<< HEAD
                                  WN0d
+=======
+                                 WN0d
+>>>>>>> origin/develop

@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 {"version":"8.3","nts":false,"stable":true,"extension_directory":"\/Users\/s-a-c\/.config\/turso-client-php","php_ini":"\/Users\/s-a-c\/Library\/Application Support\/Herd\/config\/php\/83\/php.ini","cert_store_location":"\/Users\/s-a-c\/.config\/turso-client-php\/certs"}
+=======
+{"version":"8.3","nts":false,"stable":true,"extension_directory":"\/Users\/s-a-c\/.config\/turso-client-php","php_ini":"\/Users\/s-a-c\/Library\/Application Support\/Herd\/config\/php\/83\/php.ini","cert_store_location":"\/Users\/s-a-c\/.config\/turso-client-php\/certs"}
+>>>>>>> origin/develop

@@ -15,4 +15,8 @@ ${c1}  .:ccccccccllllllllo${c3}O0000000OOO,
 ${c1}    ,:ccccccccclllcd${c3}0000OOOOOOl.
 ${c1}      '::ccccccccc${c3}dOOOOOOOkx:.
 ${c1}        ..,::cccc${c3}xOOOkkko;.
+<<<<<<< HEAD
 ${c1}            ..,:${c3}dOkxl:.
+=======
+${c1}            ..,:${c3}dOkxl:.
+>>>>>>> origin/develop

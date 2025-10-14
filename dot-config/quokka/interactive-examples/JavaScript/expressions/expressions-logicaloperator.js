@@ -8,4 +8,8 @@ console.log(a > 0 || b > 0);
 // expected output: true
 
 console.log(!(a > 0 || b > 0));
+<<<<<<< HEAD
 // expected output: false
+=======
+// expected output: false
+>>>>>>> origin/develop

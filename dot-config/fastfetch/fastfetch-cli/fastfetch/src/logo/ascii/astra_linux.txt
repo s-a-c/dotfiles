@@ -19,4 +19,8 @@ ${c1}       aA${c2}/${c1}a${c2}\\\\\\${c1}Aa${c2}\\/${c1}AA${c2}\\\\\\\\\\${c1}A
 ${c1}       aA${c2}/${c1}aA${c2}\\\\/${c1}aAa  aAa${c2}\\\\\\${c1}Aa${c2}\\${c1}Aa
 ${c1}      aA${c2}/\\${c1}A${c2}\\/${c1}Aa        aA${c2}\\\\${c1}A${c2}\\\\${c1}Aa
 ${c1}      A${c2}|/${c1}aaAa            aAaa${c2}\\|${c1}A
+<<<<<<< HEAD
 ${c1}     aAaa                    aaAa
+=======
+${c1}     aAaa                    aaAa
+>>>>>>> origin/develop

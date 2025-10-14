@@ -8,4 +8,8 @@ console.log(regex2);
 // expected output: /\w+/
 
 console.log(regex1 === regex2);
+<<<<<<< HEAD
 // expected output: false
+=======
+// expected output: false
+>>>>>>> origin/develop

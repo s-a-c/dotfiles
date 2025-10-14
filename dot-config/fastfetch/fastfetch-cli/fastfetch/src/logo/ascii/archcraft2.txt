@@ -17,4 +17,8 @@
     +ooooooooos.          .=sooooooo+-
   .+osossos+-`              `-+osososs+.
  :sss+=-:`                     `:-=+ssss:
+<<<<<<< HEAD
 :=-:`                                `-=+:
+=======
+:=-:`                                `-=+:
+>>>>>>> origin/develop

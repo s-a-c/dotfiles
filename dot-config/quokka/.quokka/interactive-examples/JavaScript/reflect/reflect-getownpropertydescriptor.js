@@ -9,4 +9,8 @@ console.log(Reflect.getOwnPropertyDescriptor(object1, 'property2'));
 // expected output: undefined
 
 console.log(Reflect.getOwnPropertyDescriptor(object1, 'property1').writable);
+<<<<<<< HEAD
 // expected output: true
+=======
+// expected output: true
+>>>>>>> origin/develop

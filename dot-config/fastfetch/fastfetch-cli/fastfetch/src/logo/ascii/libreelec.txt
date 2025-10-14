@@ -17,4 +17,8 @@ ${c4}    -+ooooooooooo+:  ${c5}:+ooooooooooo+-
 ${c4}      -+oooooooooo+:${c5}:+oooooooooo+-
 ${c4}        -+oooooo+:    ${c5}:+oooooo+-
 ${c4}          -+oo+:        ${c5}:+oo+-
+<<<<<<< HEAD
 ${c4}            ..            ${c5}..
+=======
+${c4}            ..            ${c5}..
+>>>>>>> origin/develop

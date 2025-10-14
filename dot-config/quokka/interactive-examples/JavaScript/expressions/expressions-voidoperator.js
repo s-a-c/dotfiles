@@ -9,4 +9,8 @@ try {
 catch(e) {
   console.log(e);
   // expected output: ReferenceError: test is not defined
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/develop

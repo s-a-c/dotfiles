@@ -10,4 +10,8 @@ console.log(b);
 [a, b, ...rest] = [10, 20, 30, 40, 50];
 
 console.log(rest);
+<<<<<<< HEAD
 // expected output: [30,40,50]
+=======
+// expected output: [30,40,50]
+>>>>>>> origin/develop

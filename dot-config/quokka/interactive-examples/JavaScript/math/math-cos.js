@@ -9,4 +9,8 @@ console.log(getCircleX(2, 10));
 // expected output: -4.161468365471424
 
 console.log(getCircleX(Math.PI, 10));
+<<<<<<< HEAD
 // expected output: -10
+=======
+// expected output: -10
+>>>>>>> origin/develop

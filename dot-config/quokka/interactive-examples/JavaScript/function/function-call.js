@@ -9,4 +9,8 @@ function Food(name, price) {
 }
 
 console.log(new Food('cheese', 5).name);
+<<<<<<< HEAD
 // expected output: "cheese"
+=======
+// expected output: "cheese"
+>>>>>>> origin/develop

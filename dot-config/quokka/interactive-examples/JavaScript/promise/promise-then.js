@@ -5,4 +5,8 @@ var promise1 = new Promise(function(resolve, reject) {
 promise1.then(function(value) {
   console.log(value);
   // expected output: "Success!"
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> origin/develop

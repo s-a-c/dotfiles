@@ -9,4 +9,8 @@ console.log(typedArray1);
 // expected output: Int8Array [32, 0, 0, 0, 0, 0, 0, 0]
 
 console.log(typedArray2);
+<<<<<<< HEAD
 // expected output: Int8Array [32, 42, 0, 0, 0, 0, 0, 0]
+=======
+// expected output: Int8Array [32, 42, 0, 0, 0, 0, 0, 0]
+>>>>>>> origin/develop

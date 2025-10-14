@@ -8610,13 +8610,21 @@
 }
 [2025-06-05 10:00:22][INFO] Server stopped.
 [2025-06-05 10:02:06][INFO][LM STUDIO SERVER] Success! HTTP server listening on port 1234
+<<<<<<< HEAD
 [2025-06-05 10:02:06][INFO]
+=======
+[2025-06-05 10:02:06][INFO] 
+>>>>>>> origin/develop
 [2025-06-05 10:02:06][INFO][LM STUDIO SERVER] Supported endpoints:
 [2025-06-05 10:02:06][INFO][LM STUDIO SERVER] ->	GET  http://localhost:1234/v1/models
 [2025-06-05 10:02:06][INFO][LM STUDIO SERVER] ->	POST http://localhost:1234/v1/chat/completions
 [2025-06-05 10:02:06][INFO][LM STUDIO SERVER] ->	POST http://localhost:1234/v1/completions
 [2025-06-05 10:02:06][INFO][LM STUDIO SERVER] ->	POST http://localhost:1234/v1/embeddings
+<<<<<<< HEAD
 [2025-06-05 10:02:06][INFO]
+=======
+[2025-06-05 10:02:06][INFO] 
+>>>>>>> origin/develop
 [2025-06-05 10:02:06][INFO][LM STUDIO SERVER] Logs are saved into /Users/s-a-c/.lmstudio/server-logs
 [2025-06-05 10:02:06][INFO] Server started.
 [2025-06-05 10:02:06][INFO] Just-in-time model loading active.
@@ -22856,23 +22864,39 @@
   "object": "list"
 }
 [2025-06-05 21:45:00][INFO][LM STUDIO SERVER] Success! HTTP server listening on port 1234
+<<<<<<< HEAD
 [2025-06-05 21:45:00][INFO]
+=======
+[2025-06-05 21:45:00][INFO] 
+>>>>>>> origin/develop
 [2025-06-05 21:45:00][INFO][LM STUDIO SERVER] Supported endpoints:
 [2025-06-05 21:45:00][INFO][LM STUDIO SERVER] ->	GET  http://localhost:1234/v1/models
 [2025-06-05 21:45:00][INFO][LM STUDIO SERVER] ->	POST http://localhost:1234/v1/chat/completions
 [2025-06-05 21:45:00][INFO][LM STUDIO SERVER] ->	POST http://localhost:1234/v1/completions
 [2025-06-05 21:45:00][INFO][LM STUDIO SERVER] ->	POST http://localhost:1234/v1/embeddings
+<<<<<<< HEAD
 [2025-06-05 21:45:00][INFO]
 [2025-06-05 21:45:00][INFO][LM STUDIO SERVER] Logs are saved into /Users/s-a-c/.lmstudio/server-logs
 [2025-06-05 21:45:05][INFO][LM STUDIO SERVER] Success! HTTP server listening on port 1234
 [2025-06-05 21:45:05][WARN][LM STUDIO SERVER] Server accepting connections from the local network. Only use this if you know what you are doing!
 [2025-06-05 21:45:05][INFO]
+=======
+[2025-06-05 21:45:00][INFO] 
+[2025-06-05 21:45:00][INFO][LM STUDIO SERVER] Logs are saved into /Users/s-a-c/.lmstudio/server-logs
+[2025-06-05 21:45:05][INFO][LM STUDIO SERVER] Success! HTTP server listening on port 1234
+[2025-06-05 21:45:05][WARN][LM STUDIO SERVER] Server accepting connections from the local network. Only use this if you know what you are doing!
+[2025-06-05 21:45:05][INFO] 
+>>>>>>> origin/develop
 [2025-06-05 21:45:05][INFO][LM STUDIO SERVER] Supported endpoints:
 [2025-06-05 21:45:05][INFO][LM STUDIO SERVER] ->	GET  http://192.168.0.108:1234/v1/models
 [2025-06-05 21:45:05][INFO][LM STUDIO SERVER] ->	POST http://192.168.0.108:1234/v1/chat/completions
 [2025-06-05 21:45:05][INFO][LM STUDIO SERVER] ->	POST http://192.168.0.108:1234/v1/completions
 [2025-06-05 21:45:05][INFO][LM STUDIO SERVER] ->	POST http://192.168.0.108:1234/v1/embeddings
+<<<<<<< HEAD
 [2025-06-05 21:45:05][INFO]
+=======
+[2025-06-05 21:45:05][INFO] 
+>>>>>>> origin/develop
 [2025-06-05 21:45:05][INFO][LM STUDIO SERVER] Logs are saved into /Users/s-a-c/.lmstudio/server-logs
 [2025-06-05 21:45:29][INFO] Returning {
   "data": [
@@ -22932,13 +22956,21 @@
 [2025-06-05 21:46:34][INFO] Server stopped.
 [2025-06-05 21:46:40][INFO][LM STUDIO SERVER] Success! HTTP server listening on port 1234
 [2025-06-05 21:46:40][WARN][LM STUDIO SERVER] Server accepting connections from the local network. Only use this if you know what you are doing!
+<<<<<<< HEAD
 [2025-06-05 21:46:40][INFO]
+=======
+[2025-06-05 21:46:40][INFO] 
+>>>>>>> origin/develop
 [2025-06-05 21:46:40][INFO][LM STUDIO SERVER] Supported endpoints:
 [2025-06-05 21:46:40][INFO][LM STUDIO SERVER] ->	GET  http://192.168.0.108:1234/v1/models
 [2025-06-05 21:46:40][INFO][LM STUDIO SERVER] ->	POST http://192.168.0.108:1234/v1/chat/completions
 [2025-06-05 21:46:40][INFO][LM STUDIO SERVER] ->	POST http://192.168.0.108:1234/v1/completions
 [2025-06-05 21:46:40][INFO][LM STUDIO SERVER] ->	POST http://192.168.0.108:1234/v1/embeddings
+<<<<<<< HEAD
 [2025-06-05 21:46:40][INFO]
+=======
+[2025-06-05 21:46:40][INFO] 
+>>>>>>> origin/develop
 [2025-06-05 21:46:40][INFO][LM STUDIO SERVER] Logs are saved into /Users/s-a-c/.lmstudio/server-logs
 [2025-06-05 21:46:40][INFO] Server started.
 [2025-06-05 21:46:40][INFO] Just-in-time model loading active.

@@ -16,4 +16,8 @@ $2       .oossssso-````/ossssss+`
   `/ossssso+/:-        -:/+osssso+-
  `+sso+:-`                 `.-/+oso:
 `++:.                           `-/+/
+<<<<<<< HEAD
 .`                                 `/
+=======
+.`                                 `/
+>>>>>>> origin/develop

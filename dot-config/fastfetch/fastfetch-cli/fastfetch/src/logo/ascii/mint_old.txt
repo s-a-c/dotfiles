@@ -13,4 +13,8 @@ ddddMMh  $2dMM   :hNMNMNhNMNMNh: $1`NMm
     -dMNs-$2``-::::-------.``    $1dMM
     `/dMNmy+/:-------------:/yMMM
       ./ydNMMMMMMMMMMMMMMMMMMMMM
+<<<<<<< HEAD
           .MMMMMMMMMMMMMMMMMMM
+=======
+          .MMMMMMMMMMMMMMMMMMM
+>>>>>>> origin/develop

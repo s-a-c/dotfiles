@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #!/usr/bin/env zsh
+=======
+#!/opt/homebrew/bin/zsh
+>>>>>>> origin/develop
 #=============================================================================
 # File: test-git-cache.zsh
 # Purpose: 2.3.2 Dedicated test for git configuration caching functionality
@@ -36,12 +40,21 @@ log_test() {
 
     if [[ "$test_status" == "PASS" ]]; then
         passed_count=$((passed_count + 1))
+<<<<<<< HEAD
             zf::debug "✅ Test $test_count: $test_name - PASSED"
         [[ -n "$details" ]] &&     zf::debug "   Details: $details"
     else
         failed_count=$((failed_count + 1))
             zf::debug "❌ Test $test_count: $test_name - FAILED"
         [[ -n "$details" ]] &&     zf::debug "   Error: $details"
+=======
+            zsh_debug_echo "✅ Test $test_count: $test_name - PASSED"
+        [[ -n "$details" ]] &&     zsh_debug_echo "   Details: $details"
+    else
+        failed_count=$((failed_count + 1))
+            zsh_debug_echo "❌ Test $test_count: $test_name - FAILED"
+        [[ -n "$details" ]] &&     zsh_debug_echo "   Error: $details"
+>>>>>>> origin/develop
     fi
 
     test_results+=("$test_count: $test_name - $test_status")
@@ -151,7 +164,11 @@ test_cache_timestamp_validation() {
     # Get cache file timestamp
     local cache_timestamp
     if command -v stat >/dev/null 2>&1; then
+<<<<<<< HEAD
         cache_timestamp=$(stat -f %m "$cache_file" 2>/dev/null || zf::debug "0")
+=======
+        cache_timestamp=$(stat -f %m "$cache_file" 2>/dev/null || zsh_debug_echo "0")
+>>>>>>> origin/develop
         local current_timestamp=$(date +%s)
         local age_seconds=$((current_timestamp - cache_timestamp))
         local age_minutes=$((age_seconds / 60))
@@ -183,7 +200,11 @@ test_cache_refresh_functionality() {
     fi
 
     # Get original timestamp
+<<<<<<< HEAD
     local original_timestamp=$(stat -f %m "$cache_file" 2>/dev/null || zf::debug "0")
+=======
+    local original_timestamp=$(stat -f %m "$cache_file" 2>/dev/null || zsh_debug_echo "0")
+>>>>>>> origin/develop
 
     # Wait a moment to ensure timestamp difference
     sleep 1
@@ -192,7 +213,11 @@ test_cache_refresh_functionality() {
     git-refresh-config >/dev/null 2>&1
 
     # Get new timestamp
+<<<<<<< HEAD
     local new_timestamp=$(stat -f %m "$cache_file" 2>/dev/null || zf::debug "0")
+=======
+    local new_timestamp=$(stat -f %m "$cache_file" 2>/dev/null || zsh_debug_echo "0")
+>>>>>>> origin/develop
 
     if [[ "$new_timestamp" -gt "$original_timestamp" ]]; then
         log_test "Cache refresh functionality" "PASS" "Cache file timestamp updated after refresh"
@@ -268,6 +293,7 @@ test_git_command_trigger_patterns() {
 
 # ******* Main Test Execution
 main() {
+<<<<<<< HEAD
         zf::debug "=============================================================================="
         zf::debug "Git Configuration Caching Test Suite"
         zf::debug "Started: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
@@ -287,6 +313,27 @@ main() {
     # Run all tests
         zf::debug "🧪 Running git cache functionality tests..."
         zf::debug ""
+=======
+        zsh_debug_echo "=============================================================================="
+        zsh_debug_echo "Git Configuration Caching Test Suite"
+        zsh_debug_echo "Started: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+        zsh_debug_echo "=============================================================================="
+        zsh_debug_echo ""
+
+    # Load the git caching system
+    if [[ -f "$config_base/.zshrc.pre-plugins.d/05-lazy-git-config.zsh" ]]; then
+            zsh_debug_echo "Loading git caching system..."
+        source "$config_base/.zshrc.pre-plugins.d/05-lazy-git-config.zsh"
+            zsh_debug_echo ""
+    else
+            zsh_debug_echo "❌ Git caching system not found at expected location"
+            zsh_debug_echo ""
+    fi
+
+    # Run all tests
+        zsh_debug_echo "🧪 Running git cache functionality tests..."
+        zsh_debug_echo ""
+>>>>>>> origin/develop
 
     test_git_cache_file_location
     test_git_config_wrapper_loaded
@@ -299,6 +346,7 @@ main() {
     test_environment_variable_export
     test_git_command_trigger_patterns
 
+<<<<<<< HEAD
         zf::debug ""
         zf::debug "=============================================================================="
         zf::debug "Test Results Summary"
@@ -326,6 +374,35 @@ main() {
         zf::debug "=============================================================================="
         zf::debug "Git cache test completed at $(date -u +%Y-%m-%dT%H:%M:%SZ)"
         zf::debug "=============================================================================="
+=======
+        zsh_debug_echo ""
+        zsh_debug_echo "=============================================================================="
+        zsh_debug_echo "Test Results Summary"
+        zsh_debug_echo "=============================================================================="
+        zsh_debug_echo "Total Tests: $test_count"
+        zsh_debug_echo "Passed: $passed_count"
+        zsh_debug_echo "Failed: $failed_count"
+        zsh_debug_echo "Success Rate: $(( (passed_count * 100) / test_count ))%"
+        zsh_debug_echo ""
+
+    if [[ $failed_count -gt 0 ]]; then
+            zsh_debug_echo "❌ Some tests failed. Review the details above."
+            zsh_debug_echo ""
+            zsh_debug_echo "Failed Tests:"
+        for result in "${test_results[@]}"; do
+            if [[ "$result" == *"FAILED"* ]]; then
+                    zsh_debug_echo "  - $result"
+            fi
+        done
+    else
+            zsh_debug_echo "✅ All tests passed! Git caching system is working correctly."
+    fi
+
+        zsh_debug_echo ""
+        zsh_debug_echo "=============================================================================="
+        zsh_debug_echo "Git cache test completed at $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+        zsh_debug_echo "=============================================================================="
+>>>>>>> origin/develop
 
     # Return appropriate exit code
     [[ $failed_count -eq 0 ]] && return 0 || return 1
@@ -338,7 +415,11 @@ main() {
 
 # ******* Working Directory Restoration
 if ! cd "$original_cwd" 2>/dev/null; then
+<<<<<<< HEAD
         zf::debug "⚠️  Warning: Could not restore original directory: $original_cwd"
+=======
+        zsh_debug_echo "⚠️  Warning: Could not restore original directory: $original_cwd"
+>>>>>>> origin/develop
     exit_code=1
 fi
 

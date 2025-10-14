@@ -14,4 +14,8 @@ yyyyyyyyyyyyyyyy  oyyyyyyyyy  syyyy
 yyyyyyyyyyyyyyyy  syyyyyyyyy  syyyy
 yyyyyyyyyyyyyyyy              yyyyy
 yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
+<<<<<<< HEAD
 yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
+=======
+yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
+>>>>>>> origin/develop

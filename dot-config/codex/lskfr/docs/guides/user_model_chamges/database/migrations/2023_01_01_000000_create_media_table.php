@@ -10,7 +10,11 @@ return new class extends Migration
     {
         Schema::create('media', function (Blueprint $table) {
             $table->id();
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> origin/develop
             $table->morphs('model');
             $table->uuid('uuid')->nullable()->unique();
             $table->string('collection_name');
@@ -25,7 +29,11 @@ return new class extends Migration
             $table->json('generated_conversions')->nullable();
             $table->json('responsive_images')->nullable();
             $table->unsignedInteger('order_column')->nullable()->index();
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> origin/develop
             $table->timestamps();
         });
     }

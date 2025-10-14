@@ -18,4 +18,8 @@
     'xKXXXXK0kdl:.     $2.ok; $1.cdk0KKXXXKx'
    'xKK0koc,..         $2'c, $1    ..,cok0KKk,
   ,xko:'.             $2.. $1           .':okx;
+<<<<<<< HEAD
  .,'.                                   .',.
+=======
+ .,'.                                   .',.
+>>>>>>> origin/develop

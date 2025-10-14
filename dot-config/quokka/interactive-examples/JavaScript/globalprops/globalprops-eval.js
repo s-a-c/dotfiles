@@ -8,4 +8,8 @@ console.log(eval('2 + 2') === eval('4'));
 // expected output: true
 
 console.log(eval('2 + 2') === eval(new String('2 + 2')));
+<<<<<<< HEAD
 // expected output: false
+=======
+// expected output: false
+>>>>>>> origin/develop

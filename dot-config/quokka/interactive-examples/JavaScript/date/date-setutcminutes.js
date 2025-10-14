@@ -6,4 +6,8 @@ console.log(date1.getUTCMinutes());
 date1.setUTCMinutes(25);
 
 console.log(date1.getUTCMinutes());
+<<<<<<< HEAD
 // expected output: 25
+=======
+// expected output: 25
+>>>>>>> origin/develop

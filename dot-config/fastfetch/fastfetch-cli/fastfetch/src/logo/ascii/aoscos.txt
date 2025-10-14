@@ -14,4 +14,8 @@ ${c4}^MMM@@@@@@@@@@@MP" ${c3},ggppww__
      ${c3}_gBNNNNNNNNNNNNNNNNNP"
  ${c3}_wNNNNNNNNNNNNNNNNNNNM^
  ${c3}""Y^^MNNNNNNNNNNNNP`
+<<<<<<< HEAD
          ${c3}`"""""""
+=======
+         ${c3}`"""""""
+>>>>>>> origin/develop

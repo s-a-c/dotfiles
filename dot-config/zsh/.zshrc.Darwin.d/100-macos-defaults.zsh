@@ -1,9 +1,16 @@
 
 [[ "$ZSH_DEBUG" == "1" ]] && {
+<<<<<<< HEAD
         zf::debug "# ++++++ $0 ++++++++++++++++++++++++++++++++++++"
     # Add this check to detect errant file creation:
     if [[ -f "${ZDOTDIR:-$HOME}/2" ]] || [[ -f "${ZDOTDIR:-$HOME}/3" ]]; then
             zf::debug "Warning: Numbered files detected - check for redirection typos"
+=======
+        zsh_debug_echo "# ++++++ $0 ++++++++++++++++++++++++++++++++++++"
+    # Add this check to detect errant file creation:
+    if [[ -f "${ZDOTDIR:-$HOME}/2" ]] || [[ -f "${ZDOTDIR:-$HOME}/3" ]]; then
+            zsh_debug_echo "Warning: Numbered files detected - check for redirection typos"
+>>>>>>> origin/develop
     fi
 }
 

@@ -7,4 +7,8 @@ console.log(months);
 months.splice(4, 1, 'May');
 // replaces 1 element at index 4
 console.log(months);
+<<<<<<< HEAD
 // expected output: Array ["Jan", "Feb", "March", "April", "May"]
+=======
+// expected output: Array ["Jan", "Feb", "March", "April", "May"]
+>>>>>>> origin/develop

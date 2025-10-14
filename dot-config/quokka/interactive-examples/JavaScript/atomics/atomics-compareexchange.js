@@ -9,4 +9,8 @@ console.log(Atomics.load(uint8, 0));
 
 Atomics.compareExchange(uint8, 0, 5, 4); // returns 2
 console.log(Atomics.load(uint8, 0));
+<<<<<<< HEAD
 // expected output: 2
+=======
+// expected output: 2
+>>>>>>> origin/develop

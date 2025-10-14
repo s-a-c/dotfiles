@@ -17,4 +17,8 @@ oss$2yNMMMNyMMh$1sssssssssssssshmmmhssssssso
     .ossssssssssssssssss$2dMMMNy$1sssso.
      -+sssssssssssssssss$2yyy$1ssss+-
        `:+ssssssssssssssssss+:´
+<<<<<<< HEAD
            --+oossssssoo+--
+=======
+           --+oossssssoo+--
+>>>>>>> origin/develop

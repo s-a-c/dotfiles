@@ -8,4 +8,8 @@ console.log(event.getFullYear());
 event.setFullYear(0);
 
 console.log(event.getFullYear());
+<<<<<<< HEAD
 // expected output: 0
+=======
+// expected output: 0
+>>>>>>> origin/develop

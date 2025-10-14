@@ -7,4 +7,8 @@ console.log(calcAngle(6, 10));
 // expected output: 0.6435011087932844
 
 console.log(calcAngle(5, 3));
+<<<<<<< HEAD
 // expected output: NaN
+=======
+// expected output: NaN
+>>>>>>> origin/develop

@@ -142,6 +142,7 @@ behaviour, open an issue or a draft PR and tag me for review. Small changes to
 `.zshenv` and early startup code can affect non-interactive services — test with
 a clean shell session.
 
+<<<<<<< HEAD
 ## Maintenance: Cleaning Ephemeral Artifacts
 
 A helper script `tools/clean-zsh-refactor.sh` performs safe cleanup of generated metrics and log artifacts. It is dry-run by default.
@@ -187,8 +188,14 @@ Safety guards:
 
 Please prefer this script over ad‑hoc `rm -rf` to avoid accidental loss of tracked data.
 
+=======
+>>>>>>> origin/develop
 Policy acknowledgement
 ----------------------
 Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v<checksum>
 
+<<<<<<< HEAD
 END
+=======
+END
+>>>>>>> origin/develop

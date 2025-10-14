@@ -9,4 +9,8 @@ console.log(auto instanceof Car);
 // expected output: true
 
 console.log(auto instanceof Object);
+<<<<<<< HEAD
 // expected output: true
+=======
+// expected output: true
+>>>>>>> origin/develop

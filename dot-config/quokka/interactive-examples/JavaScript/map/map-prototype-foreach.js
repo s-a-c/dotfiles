@@ -7,4 +7,8 @@ new Map([['foo', 3], ['bar', {}], ['baz', undefined]])
 
 // expected output: "m[foo] = 3"
 // expected output: "m[bar] = [object Object]"
+<<<<<<< HEAD
 // expected output: "m[baz] = undefined"
+=======
+// expected output: "m[baz] = undefined"
+>>>>>>> origin/develop

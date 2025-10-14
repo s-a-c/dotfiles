@@ -12,4 +12,8 @@ console.log(first + ' and ' + second + ' can' +
 var oldWord = 'mañana';
 var newWord = oldWord.normalize('NFD');
 console.log('The word did ' + ((oldWord != newWord)? '' : 'not ') + 'change.');
+<<<<<<< HEAD
 // expected output: "The word did change."
+=======
+// expected output: "The word did change."
+>>>>>>> origin/develop

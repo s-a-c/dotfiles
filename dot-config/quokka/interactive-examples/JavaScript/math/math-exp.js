@@ -8,4 +8,8 @@ console.log(Math.exp(-1));
 // expected output: 0.36787944117144233
 
 console.log(Math.exp(2));
+<<<<<<< HEAD
 // expected output: 7.38905609893065
+=======
+// expected output: 7.38905609893065
+>>>>>>> origin/develop

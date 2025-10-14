@@ -8,4 +8,8 @@ for (let entry of iterator1) {
   console.log(entry);
   // expected output: [42, 42]
   // expected output: ["forty two", "forty two"]
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/develop

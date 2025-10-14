@@ -18,4 +18,8 @@ oOO                                           OOo
       oO                                OOo
          oOO                         OOo
              oOO                 OOo
+<<<<<<< HEAD
                  ooo OOO OOO ooo
+=======
+                 ooo OOO OOO ooo
+>>>>>>> origin/develop

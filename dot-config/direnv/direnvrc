@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 source ~/.config/direnv/helpers.sh
+=======
+source ~/.config/direnv/helpers.sh
+>>>>>>> origin/develop

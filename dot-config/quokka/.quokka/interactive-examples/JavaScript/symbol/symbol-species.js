@@ -9,4 +9,8 @@ console.log(mapped instanceof Array1);
 // expected output: false
 
 console.log(mapped instanceof Array);
+<<<<<<< HEAD
 // expected output: true
+=======
+// expected output: true
+>>>>>>> origin/develop

@@ -6,4 +6,8 @@ console.log(multiply(5, 2));
 // expected output: 10
 
 console.log(multiply(5));
+<<<<<<< HEAD
 // expected output: 5
+=======
+// expected output: 5
+>>>>>>> origin/develop

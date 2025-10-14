@@ -8,4 +8,8 @@ ${c2} SSS   AAA  W   W  AAA
 S     A   A W   W A   A
  SSS  AAAAA W W W AAAAA
     S A   A WW WW A   A
+<<<<<<< HEAD
  SSS  A   A W   W A   A
+=======
+ SSS  A   A W   W A   A
+>>>>>>> origin/develop

@@ -65,4 +65,8 @@ zsh -n /path/to/file.zsh
 ### Testing
 - Test syntax with `zsh -n filename.zsh`
 - Verify functionality by sourcing in a new shell
+<<<<<<< HEAD
 - Check that completions work correctly
+=======
+- Check that completions work correctly
+>>>>>>> origin/develop

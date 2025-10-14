@@ -1,2 +1,6 @@
 *.toml
+<<<<<<< HEAD
 !sample.toml
+=======
+!sample.toml
+>>>>>>> origin/develop

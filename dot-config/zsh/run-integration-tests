@@ -1,0 +1,551 @@
+#!/opt/homebrew/bin/zsh
+# ==============================================================================
+# ZSH Configuration: Comprehensive Integration Test Runner
+# ==============================================================================
+# Purpose: Comprehensive integration 040-testing system that validates all ZSH
+#          configuration components working together seamlessly, including
+#          cross-system functionality, component interactions, and end-to-end
+#          workflows with detailed reporting and CI/CD compatibility.
+#
+# Author: ZSH Configuration Management System
+# Created: 2025-08-21
+# Version: 1.0
+# Usage: ./run-integration-tests [options]
+# Dependencies: All ZSH configuration components, test suites
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 0. CONFIGURATION AND SETUP
+# ------------------------------------------------------------------------------
+
+# Script configuration
+SCRIPT_VERSION="1.0.0"
+ZDOTDIR="${ZDOTDIR:-$HOME/.config/zsh}"
+
+# Integration 040-testing configuration
+INTEGRATION_LOG_DIR="$ZDOTDIR/logs/integration"
+INTEGRATION_LOG_FILE="$INTEGRATION_LOG_DIR/integration-tests-$(date -u '+%Y-%m-%d_%H-%M-%S').log"
+INTEGRATION_REPORT_FILE="$INTEGRATION_LOG_DIR/integration-report-$(date -u '+%Y-%m-%d_%H-%M-%S').html"
+
+# Create integration log directory
+mkdir -p "$INTEGRATION_LOG_DIR" 2>/dev/null || true
+
+# Test configuration
+TOTAL_TESTS=0
+PASSED_TESTS=0
+FAILED_TESTS=0
+SKIPPED_TESTS=0
+
+# ------------------------------------------------------------------------------
+# 1. UTILITY FUNCTIONS
+# ------------------------------------------------------------------------------
+
+# 1.1. Logging and output functions
+log_info() {
+    local message="$1"
+    local timestamp=$(date -u '+%Y-%m-%d %H:%M:%S UTC')
+        zsh_debug_echo "[$timestamp] [INFO] $message" | tee -a "$INTEGRATION_LOG_FILE"
+}
+
+log_result() {
+    local message="$1"
+        zsh_debug_echo "$message" | tee -a "$INTEGRATION_LOG_FILE"
+}
+
+log_test() {
+    local test_name="$1"
+    local test_status="$2"
+    local details="$3"
+    local timestamp=$(date -u '+%Y-%m-%d %H:%M:%S UTC')
+
+    TOTAL_TESTS=$((TOTAL_TESTS + 1))
+
+    case "$test_status" in
+        "PASS")
+            PASSED_TESTS=$((PASSED_TESTS + 1))
+                zsh_debug_echo "  ✓ PASS: $test_name" | tee -a "$INTEGRATION_LOG_FILE"
+            ;;
+        "FAIL")
+            FAILED_TESTS=$((FAILED_TESTS + 1))
+                zsh_debug_echo "  ✗ FAIL: $test_name" | tee -a "$INTEGRATION_LOG_FILE"
+            [[ -n "$details" ]] &&     zsh_debug_echo "    Details: $details" | tee -a "$INTEGRATION_LOG_FILE"
+            ;;
+        "SKIP")
+            SKIPPED_TESTS=$((SKIPPED_TESTS + 1))
+                zsh_debug_echo "  ⚠ SKIP: $test_name" | tee -a "$INTEGRATION_LOG_FILE"
+            [[ -n "$details" ]] &&     zsh_debug_echo "    Reason: $details" | tee -a "$INTEGRATION_LOG_FILE"
+            ;;
+    esac
+}
+
+# 1.2. Test execution functions
+run_test_suite() {
+    local test_file="$1"
+    local test_name="$2"
+
+    log_info "Running test suite: $test_name"
+
+    if [[ ! -f "$test_file" ]]; then
+        log_test "$test_name" "SKIP" "Test file not found: $test_file"
+        return 1
+    fi
+
+    if [[ ! -x "$test_file" ]]; then
+        log_test "$test_name" "SKIP" "Test file not executable: $test_file"
+        return 1
+    fi
+
+    # Run the test suite and capture output
+    local test_output
+    local test_exit_code
+
+    test_output=$(timeout 60 "$test_file" 2>&1)
+    test_exit_code=$?
+
+    if [[ $test_exit_code -eq 0 ]]; then
+        # Extract pass/fail information from test output
+        local test_summary=$(echo "$test_output" | grep -E "(Success Rate|Total Tests|Passed|Failed)" | tail -4)
+        log_test "$test_name" "PASS" "$test_summary"
+        return 0
+    else
+        local error_info=$(echo "$test_output" | tail -5)
+        log_test "$test_name" "FAIL" "Exit code: $test_exit_code, Error: $error_info"
+        return 1
+    fi
+}
+
+# ------------------------------------------------------------------------------
+# 2. COMPONENT INTEGRATION TESTS
+# ------------------------------------------------------------------------------
+
+# 2.1. Core system integration test
+test_core_system_integration() {
+    log_info "Testing core system integration..."
+
+    # Test that all core components load without conflicts
+    local core_test_script=$(mktemp)
+    cat > "$core_test_script" << 'EOF'
+#!/opt/homebrew/bin/zsh
+export ZSH_DEBUG=0
+export ZDOTDIR="${ZDOTDIR:-$HOME/.config/zsh}"
+
+# Load core components in order
+source "$ZDOTDIR/.zshrc.d/00_01-source-execute-detection.zsh" || exit 1
+source "$ZDOTDIR/.zshrc.d/00_00-standard-helpers.zsh" || exit 2
+source "$ZDOTDIR/.zshrc.d/00_01-environment.zsh" || exit 3
+source "$ZDOTDIR/.zshrc.d/00_02-path-system.zsh" || exit 4
+
+# Test that key functions are available
+declare -f context_echo >/dev/null || exit 5
+declare -f is_being_executed >/dev/null || exit 6
+declare -f safe_exit >/dev/null || exit 7
+
+echo "Core system integration successful"
+exit 0
+EOF
+
+    chmod +x "$core_test_script"
+
+    if timeout 10 "$core_test_script" >/dev/null 2>&1; then
+        log_test "Core System Integration" "PASS" "All core components loaded successfully"
+        rm -f "$core_test_script"
+        return 0
+    else
+        local exit_code=$?
+        log_test "Core System Integration" "FAIL" "Core component loading failed with exit code: $exit_code"
+        rm -f "$core_test_script"
+        return 1
+    fi
+}
+
+# 2.2. Security system integration test
+test_security_system_integration() {
+    log_info "Testing security system integration..."
+
+    # Test that all security components work together
+    local security_test_script=$(mktemp)
+    cat > "$security_test_script" << 'EOF'
+#!/opt/homebrew/bin/zsh
+export ZSH_DEBUG=0
+export ZSH_SECURITY_TESTING=true
+export ZSH_ENV_SANITIZATION_TESTING=true
+export ZDOTDIR="${ZDOTDIR:-$HOME/.config/zsh}"
+
+# Load core components first
+source "$ZDOTDIR/.zshrc.d/00_01-source-execute-detection.zsh" || exit 1
+source "$ZDOTDIR/.zshrc.d/00_00-standard-helpers.zsh" || exit 2
+
+# Load security components
+source "$ZDOTDIR/.zshrc.d/00_08-environment-sanitization.zsh" || exit 3
+source "$ZDOTDIR/.zshrc.d/00_99-security-check.zsh" || exit 4
+
+# Test that security functions are available
+declare -f _sanitize_environment >/dev/null || exit 5
+declare -f _run_security_audit >/dev/null || exit 6
+
+# Test security functions work
+_sanitize_environment >/dev/null 2>&1 || exit 7
+_run_security_audit >/dev/null 2>&1 || exit 8
+
+echo "Security system integration successful"
+exit 0
+EOF
+
+    chmod +x "$security_test_script"
+
+    if timeout 15 "$security_test_script" >/dev/null 2>&1; then
+        log_test "Security System Integration" "PASS" "All security components integrated successfully"
+        rm -f "$security_test_script"
+        return 0
+    else
+        local exit_code=$?
+        log_test "Security System Integration" "FAIL" "Security integration failed with exit code: $exit_code"
+        rm -f "$security_test_script"
+        return 1
+    fi
+}
+
+# 2.3. Performance system integration test
+test_performance_system_integration() {
+    log_info "Testing performance system integration..."
+
+    # Test that performance monitoring works with the full system
+    if [[ -f "$ZDOTDIR/zsh-profile-startup" ]]; then
+        local perf_result
+        perf_result=$(timeout 20 "$ZDOTDIR/zsh-profile-startup" -i 3 -w 1 2>&1)
+        local perf_exit_code=$?
+
+        if [[ $perf_exit_code -eq 0 ]] &&     zsh_debug_echo "$perf_result" | grep -q "Performance Statistics:"; then
+            local avg_time=$(echo "$perf_result" | grep "Average:" | awk '{print $2}' | sed 's/ms//')
+            log_test "Performance System Integration" "PASS" "Performance monitoring working, average startup: ${avg_time}ms"
+            return 0
+        else
+            log_test "Performance System Integration" "FAIL" "Performance monitoring failed"
+            return 1
+        fi
+    else
+        log_test "Performance System Integration" "SKIP" "Performance profiler not found"
+        return 1
+    fi
+}
+
+# ------------------------------------------------------------------------------
+# 3. END-TO-END WORKFLOW TESTS
+# ------------------------------------------------------------------------------
+
+# 3.1. Full shell startup workflow test
+test_full_startup_workflow() {
+    log_info "Testing full shell startup workflow..."
+
+    # Test complete shell startup with all components
+    local startup_test_script=$(mktemp)
+    cat > "$startup_test_script" << 'EOF'
+#!/opt/homebrew/bin/zsh
+export ZDOTDIR="${ZDOTDIR:-$HOME/.config/zsh}"
+
+# Source the main .zshrc
+source "$ZDOTDIR/.zshrc" || exit 1
+
+# Test that key functionality is available
+command -v ls >/dev/null || exit 2
+[[ -n "$PATH" ]] || exit 3
+[[ -n "$ZDOTDIR" ]] || exit 4
+
+# Test that aliases work
+alias ll >/dev/null 2>&1 || exit 5
+
+# Test that functions are available
+declare -f help >/dev/null 2>&1 || exit 6
+
+echo "Full startup workflow successful"
+exit 0
+EOF
+
+    chmod +x "$startup_test_script"
+
+    local startup_time_start=$(date +%s.%N 2>/dev/null || date +%s)
+    if timeout 30 "$startup_test_script" >/dev/null 2>&1; then
+        local startup_time_end=$(date +%s.%N 2>/dev/null || date +%s)
+        local startup_duration
+        if command -v bc >/dev/null 2>&1; then
+            startup_duration=$(echo "scale=3; ($startup_time_end - $startup_time_start) * 1000" | bc 2>/dev/null || zsh_debug_echo "unknown")
+        else
+            startup_duration="<100"
+        fi
+
+        log_test "Full Startup Workflow" "PASS" "Complete shell startup successful in ${startup_duration}ms"
+        rm -f "$startup_test_script"
+        return 0
+    else
+        local exit_code=$?
+        log_test "Full Startup Workflow" "FAIL" "Shell startup failed with exit code: $exit_code"
+        rm -f "$startup_test_script"
+        return 1
+    fi
+}
+
+# 3.2. Interactive shell workflow test
+test_interactive_workflow() {
+    log_info "Testing interactive shell workflow..."
+
+    # Test interactive shell features
+    local interactive_test_script=$(mktemp)
+    cat > "$interactive_test_script" << 'EOF'
+#!/opt/homebrew/bin/zsh
+export ZDOTDIR="${ZDOTDIR:-$HOME/.config/zsh}"
+
+# Test interactive shell startup
+echo 'echo "Interactive test successful"; exit 0' | timeout 10 zsh -i 2>/dev/null
+EOF
+
+    chmod +x "$interactive_test_script"
+
+    if "$interactive_test_script" | grep -q "Interactive test successful"; then
+        log_test "Interactive Workflow" "PASS" "Interactive shell features working"
+        rm -f "$interactive_test_script"
+        return 0
+    else
+        log_test "Interactive Workflow" "FAIL" "Interactive shell features not working"
+        rm -f "$interactive_test_script"
+        return 1
+    fi
+}
+
+# ------------------------------------------------------------------------------
+# 4. CROSS-SYSTEM COMPATIBILITY TESTS
+# ------------------------------------------------------------------------------
+
+# 4.1. Test suite compatibility test
+test_suite_compatibility() {
+    log_info "Testing test suite compatibility..."
+
+    local test_suites=(
+        "$ZDOTDIR/tests/test-config-validation.zsh:Configuration Validation"
+        "$ZDOTDIR/tests/test-startup-time.zsh:Performance Monitoring"
+        "$ZDOTDIR/tests/test-security-audit.zsh:Security Audit"
+    )
+
+    local compatible_suites=0
+    local total_suites=${#test_suites[@]}
+
+    for suite_info in "${test_suites[@]}"; do
+        local suite_file="${suite_info%:*}"
+        local suite_name="${suite_info#*:}"
+
+        if [[ -f "$suite_file" && -x "$suite_file" ]]; then
+            compatible_suites=$((compatible_suites + 1))
+        fi
+    done
+
+    if [[ $compatible_suites -eq $total_suites ]]; then
+        log_test "Test Suite Compatibility" "PASS" "All $total_suites test suites are compatible"
+        return 0
+    else
+        log_test "Test Suite Compatibility" "FAIL" "Only $compatible_suites/$total_suites test suites are compatible"
+        return 1
+    fi
+}
+
+# ------------------------------------------------------------------------------
+# 5. MAIN INTEGRATION TEST EXECUTION
+# ------------------------------------------------------------------------------
+
+# 5.1. Run all integration tests
+run_all_integration_tests() {
+    log_result "========================================================"
+    log_result "ZSH Configuration Integration Test Suite"
+    log_result "========================================================"
+    log_result "Version: $SCRIPT_VERSION"
+    log_result "Timestamp: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+    log_result "ZDOTDIR: $ZDOTDIR"
+    log_result "Log File: $INTEGRATION_LOG_FILE"
+    log_result ""
+
+    # Component Integration Tests
+    log_result "=== Component Integration Tests ==="
+    test_core_system_integration
+    test_security_system_integration
+    test_performance_system_integration
+
+    # End-to-End Workflow Tests
+    log_result ""
+    log_result "=== End-to-End Workflow Tests ==="
+    test_full_startup_workflow
+    test_interactive_workflow
+
+    # Cross-System Compatibility Tests
+    log_result ""
+    log_result "=== Cross-System Compatibility Tests ==="
+    test_suite_compatibility
+
+    # Individual Test Suite Execution
+    log_result ""
+    log_result "=== Individual Test Suite Execution ==="
+    run_test_suite "$ZDOTDIR/tests/test-config-validation.zsh" "Configuration Validation Suite"
+    run_test_suite "$ZDOTDIR/tests/test-startup-time.zsh" "Performance Monitoring Suite"
+    run_test_suite "$ZDOTDIR/tests/test-security-audit.zsh" "Security Audit Suite"
+
+    # Results Summary
+    log_result ""
+    log_result "========================================================"
+    log_result "Integration Test Results Summary"
+    log_result "========================================================"
+    log_result "Total Tests: $TOTAL_TESTS"
+    log_result "Passed: $PASSED_TESTS"
+    log_result "Failed: $FAILED_TESTS"
+    log_result "Skipped: $SKIPPED_TESTS"
+
+    local pass_percentage=0
+    if [[ $TOTAL_TESTS -gt 0 ]]; then
+        pass_percentage=$(( (PASSED_TESTS * 100) / TOTAL_TESTS ))
+    fi
+    log_result "Success Rate: ${pass_percentage}%"
+
+    # Generate HTML report
+    generate_html_report
+
+    log_result ""
+    log_result "Integration test report: $INTEGRATION_REPORT_FILE"
+    log_result "========================================================"
+
+    if [[ $FAILED_TESTS -eq 0 ]]; then
+        log_result ""
+        log_result "🎉 All integration tests passed!"
+        return 0
+    else
+        log_result ""
+        log_result "❌ $FAILED_TESTS integration test(s) failed."
+        return 1
+    fi
+}
+
+# 5.2. Generate HTML report
+generate_html_report() {
+    cat > "$INTEGRATION_REPORT_FILE" << EOF
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ZSH Configuration Integration Test Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .header { background-color: #f0f0f0; padding: 20px; border-radius: 5px; }
+        .summary { background-color: #e8f5e8; padding: 15px; margin: 20px 0; border-radius: 5px; }
+        .pass { color: green; }
+        .fail { color: red; }
+        .skip { color: orange; }
+        .test-results { margin: 20px 0; }
+        .test-item { margin: 10px 0; padding: 10px; border-left: 4px solid #ccc; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>ZSH Configuration Integration Test Report</h1>
+        <p><strong>Generated:</strong> $(date -u '+%Y-%m-%d %H:%M:%S UTC')</p>
+        <p><strong>Version:</strong> $SCRIPT_VERSION</p>
+        <p><strong>ZDOTDIR:</strong> $ZDOTDIR</p>
+    </div>
+
+    <div class="summary">
+        <h2>Test Summary</h2>
+        <p><strong>Total Tests:</strong> $TOTAL_TESTS</p>
+        <p><strong class="pass">Passed:</strong> $PASSED_TESTS</p>
+        <p><strong class="fail">Failed:</strong> $FAILED_TESTS</p>
+        <p><strong class="skip">Skipped:</strong> $SKIPPED_TESTS</p>
+        <p><strong>Success Rate:</strong> $(( (PASSED_TESTS * 100) / TOTAL_TESTS ))%</p>
+    </div>
+
+    <div class="test-results">
+        <h2>Detailed Results</h2>
+        <p>See log file for detailed test results: <code>$INTEGRATION_LOG_FILE</code></p>
+    </div>
+</body>
+</html>
+EOF
+}
+
+# ------------------------------------------------------------------------------
+# 6. MAIN EXECUTION FUNCTIONS
+# ------------------------------------------------------------------------------
+
+# 6.1. Display help
+show_help() {
+    cat << EOF
+ZSH Configuration Integration Test Runner v$SCRIPT_VERSION
+
+USAGE:
+    $0 [OPTIONS]
+
+OPTIONS:
+    -h, --help              Show this help message
+    -v, --version           Show version information
+    -q, --quiet             Quiet mode (minimal output)
+    -d, --debug             Enable debug logging
+
+DESCRIPTION:
+    Runs comprehensive integration tests for the ZSH configuration system,
+    validating that all components work together seamlessly.
+
+OUTPUT:
+    Results are logged to: $INTEGRATION_LOG_FILE
+    HTML report generated: $INTEGRATION_REPORT_FILE
+
+EOF
+}
+
+# 6.2. Main function
+main() {
+    local quiet_mode=false
+    local debug_mode=false
+
+    # Parse command line arguments
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            -h|--help)
+                show_help
+                exit 0
+                ;;
+            -v|--version)
+                    zsh_debug_echo "ZSH Configuration Integration Test Runner v$SCRIPT_VERSION"
+                exit 0
+                ;;
+            -q|--quiet)
+                quiet_mode=true
+                shift
+                ;;
+            -d|--debug)
+                debug_mode=true
+                shift
+                ;;
+            *)
+                    zsh_debug_echo "Unknown option: $1"
+                    zsh_debug_echo "Use -h or --help for usage information"
+                exit 1
+                ;;
+        esac
+    done
+
+    # Set debug mode
+    if $debug_mode; then
+        export ZSH_DEBUG=1
+    fi
+
+    # Run integration tests
+    if $quiet_mode; then
+        run_all_integration_tests >/dev/null
+    else
+        run_all_integration_tests
+    fi
+}
+
+# ------------------------------------------------------------------------------
+# 7. SCRIPT EXECUTION
+# ------------------------------------------------------------------------------
+
+# Execute main function if script is run directly
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]] || [[ "${(%):-%N}" == *"run-integration-tests"* ]]; then
+    main "$@"
+fi
+
+# ==============================================================================
+# END: ZSH Configuration Integration Test Runner
+# ==============================================================================

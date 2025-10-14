@@ -14,4 +14,8 @@ $2     :M+
            :Ms
             :Ms
              :Ms
+<<<<<<< HEAD
               :Ms
+=======
+              :Ms
+>>>>>>> origin/develop

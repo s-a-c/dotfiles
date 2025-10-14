@@ -14,4 +14,8 @@ ooooooooooooooooo$2ll$1ooooooooooo$2ll$1oo'
            lll
            lll
           ;ll,
+<<<<<<< HEAD
           .l:
+=======
+          .l:
+>>>>>>> origin/develop

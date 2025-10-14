@@ -17,4 +17,8 @@ ${c2}   .+hMMMMMMMMMMMMM${c4}hh${c3}MMMMMMMMMMMMMms:
 ${c2}      `:smMMMMMMMMM${c4}hh${c3}MMMMMMMMMNh+.
 ${c2}          .+hMMMMMM${c4}hh${c3}MMMMMMdo:
 ${c2}             `:smMM${c4}yy${c3}MMNy/`
+<<<<<<< HEAD
                  ${c2}.- ${c4}`${c3}:.
+=======
+                 ${c2}.- ${c4}`${c3}:.
+>>>>>>> origin/develop

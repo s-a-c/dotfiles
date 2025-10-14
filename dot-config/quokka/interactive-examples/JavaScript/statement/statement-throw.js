@@ -10,4 +10,8 @@ try {
 catch(e) {
   console.error(e);
   // expected output: "Parameter is not a number!"
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/develop

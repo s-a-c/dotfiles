@@ -8,4 +8,8 @@ console.log(animals);
 
 animals.push('chickens', 'cats', 'dogs');
 console.log(animals);
+<<<<<<< HEAD
 // expected output: Array ["pigs", "goats", "sheep", "cows", "chickens", "cats", "dogs"]
+=======
+// expected output: Array ["pigs", "goats", "sheep", "cows", "chickens", "cats", "dogs"]
+>>>>>>> origin/develop

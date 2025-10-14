@@ -9,4 +9,8 @@ console.log(calcAngleDegrees(10, 10));
 //expected output: 45
 
 console.log(calcAngleDegrees(0, 10));
+<<<<<<< HEAD
 //expected output: 90
+=======
+//expected output: 90
+>>>>>>> origin/develop

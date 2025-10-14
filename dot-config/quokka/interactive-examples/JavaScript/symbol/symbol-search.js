@@ -8,4 +8,8 @@ class Search1 {
 }
 
 console.log('foobar'.search(new Search1('bar')));
+<<<<<<< HEAD
 // expected output: 3
+=======
+// expected output: 3
+>>>>>>> origin/develop

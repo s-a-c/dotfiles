@@ -6,4 +6,8 @@ console.log(bigint.toLocaleString('de-DE'));
 
 // request a currency format
 console.log(bigint.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' }));
+<<<<<<< HEAD
 // expected output: "€123.456.789.123.456.789,00"
+=======
+// expected output: "€123.456.789.123.456.789,00"
+>>>>>>> origin/develop

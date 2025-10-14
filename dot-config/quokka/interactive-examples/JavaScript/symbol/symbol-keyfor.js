@@ -9,4 +9,8 @@ console.log(Symbol.keyFor(localSym));
 // expected output: undefined
 
 console.log(Symbol.keyFor(Symbol.iterator));
+<<<<<<< HEAD
 // expected output: undefined
+=======
+// expected output: undefined
+>>>>>>> origin/develop

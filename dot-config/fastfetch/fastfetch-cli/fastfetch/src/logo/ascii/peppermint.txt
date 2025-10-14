@@ -18,4 +18,8 @@ ${c1}   PP${c2}MMMMMMM${c1}PPPPPPP${c2}MMMMMM${c1}PPPPPPPPPPPP
 ${c1}     PP${c2}MMMM${c1}PPPPPPPPP${c2}MMMMMMM${c1}PPPPPPPP
 ${c1}       PP${c2}MM${c1}PPPPPPPP${c2}MMMMMMMMMM${c1}PPPP
 ${c1}         PPPPPPPPPP${c2}MMMMMMMM${c1}PPPP
+<<<<<<< HEAD
 ${c1}             PPPPPPPPPPPPPP
+=======
+${c1}             PPPPPPPPPPPPPP
+>>>>>>> origin/develop

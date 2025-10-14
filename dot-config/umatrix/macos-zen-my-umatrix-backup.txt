@@ -281,4 +281,8 @@
     "framePlaceholderBackground": "default",
     "suspendTabsUntilReady": false
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/develop

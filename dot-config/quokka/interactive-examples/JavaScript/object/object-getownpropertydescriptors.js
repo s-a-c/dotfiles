@@ -8,4 +8,8 @@ console.log(descriptors1.property1.writable);
 // expected output: true
 
 console.log(descriptors1.property1.value);
+<<<<<<< HEAD
 // expected output: 42
+=======
+// expected output: 42
+>>>>>>> origin/develop

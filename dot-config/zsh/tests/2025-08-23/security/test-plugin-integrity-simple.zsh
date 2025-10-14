@@ -29,8 +29,13 @@ log_test() {
     local level="$1"
     local message="$2"
     local timestamp="$(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+<<<<<<< HEAD
         zf::debug "[$timestamp] [$level] $message" >> "$TEST_LOG_FILE" 2>/dev/null || true
         zf::debug "[$timestamp] [$level] $message"
+=======
+        zsh_debug_echo "[$timestamp] [$level] $message" >> "$TEST_LOG_FILE" 2>/dev/null || true
+        zsh_debug_echo "[$timestamp] [$level] $message"
+>>>>>>> origin/develop
 }
 
 setup_test_environment() {
@@ -42,10 +47,17 @@ setup_test_environment() {
 
     # Create mock plugin directories for 040-testing
     mkdir -p "mock-plugins/trusted-plugin"
+<<<<<<< HEAD
         zf::debug '# Trusted test plugin' > "mock-plugins/trusted-plugin/plugin.zsh"
 
     mkdir -p "mock-plugins/untrusted-plugin"
         zf::debug '# Untrusted test plugin' > "mock-plugins/untrusted-plugin/plugin.zsh"
+=======
+        zsh_debug_echo '# Trusted test plugin' > "mock-plugins/trusted-plugin/plugin.zsh"
+
+    mkdir -p "mock-plugins/untrusted-plugin"
+        zsh_debug_echo '# Untrusted test plugin' > "mock-plugins/untrusted-plugin/plugin.zsh"
+>>>>>>> origin/develop
 
     # Set up test environment variables
     export ZSH_PLUGIN_REGISTRY_DIR="$TEST_DIR/security/plugin-registry"
@@ -89,16 +101,28 @@ run_test() {
 
     ((test_count++))
     log_test "INFO" "Running test $test_count: $test_name"
+<<<<<<< HEAD
         zf::debug "🔍 Test $test_count: $test_name"
+=======
+        zsh_debug_echo "🔍 Test $test_count: $test_name"
+>>>>>>> origin/develop
 
     if timeout 30 $test_function; then
         ((passed_count++))
         log_test "PASS" "Test $test_count: $test_name - PASSED"
+<<<<<<< HEAD
             zf::debug "✅ Test $test_count: $test_name - PASSED"
     else
         ((failed_count++))
         log_test "FAIL" "Test $test_count: $test_name - FAILED"
             zf::debug "❌ Test $test_count: $test_name - FAILED"
+=======
+            zsh_debug_echo "✅ Test $test_count: $test_name - PASSED"
+    else
+        ((failed_count++))
+        log_test "FAIL" "Test $test_count: $test_name - FAILED"
+            zsh_debug_echo "❌ Test $test_count: $test_name - FAILED"
+>>>>>>> origin/develop
     fi
 }
 
@@ -177,7 +201,11 @@ test_hash_generation() {
     local plugin_path="$TEST_DIR/mock-plugins/trusted-plugin"
 
     # Generate hash
+<<<<<<< HEAD
     local hash1="$(_get_plugin_hash "$plugin_path" 2>/dev/null || zf::debug "failed")"
+=======
+    local hash1="$(_get_plugin_hash "$plugin_path" 2>/dev/null || zsh_debug_echo "failed")"
+>>>>>>> origin/develop
 
     if [[ "$hash1" == "directory_not_found" || "$hash1" == "hash_failed" || "$hash1" == "failed" ]]; then
         log_test "ERROR" "Hash generation failed: $hash1"
@@ -185,7 +213,11 @@ test_hash_generation() {
     fi
 
     # Generate hash again - should be identical
+<<<<<<< HEAD
     local hash2="$(_get_plugin_hash "$plugin_path" 2>/dev/null || zf::debug "failed")"
+=======
+    local hash2="$(_get_plugin_hash "$plugin_path" 2>/dev/null || zsh_debug_echo "failed")"
+>>>>>>> origin/develop
 
     if [[ "$hash1" != "$hash2" ]]; then
         log_test "ERROR" "Hash generation not consistent"
@@ -232,15 +264,26 @@ test_security_functions() {
 # Main Test Execution
 main() {
     log_test "INFO" "Starting $TEST_NAME test suite"
+<<<<<<< HEAD
         zf::debug "🔒 Starting $TEST_NAME Test Suite"
         zf::debug "📁 Test Directory: $TEST_DIR"
         zf::debug "📋 Test Log: $TEST_LOG_FILE"
         zf::debug ""
+=======
+        zsh_debug_echo "🔒 Starting $TEST_NAME Test Suite"
+        zsh_debug_echo "📁 Test Directory: $TEST_DIR"
+        zsh_debug_echo "📋 Test Log: $TEST_LOG_FILE"
+        zsh_debug_echo ""
+>>>>>>> origin/develop
 
     # Setup test environment
     if ! setup_test_environment; then
         log_test "ERROR" "Failed to setup test environment"
+<<<<<<< HEAD
             zf::debug "❌ Failed to setup test environment"
+=======
+            zsh_debug_echo "❌ Failed to setup test environment"
+>>>>>>> origin/develop
         return 1
     fi
 
@@ -253,34 +296,59 @@ main() {
     run_test "Security Functions" test_security_functions
 
     # Test Summary
+<<<<<<< HEAD
         zf::debug ""
         zf::debug "🔒 $TEST_NAME Test Results:"
         zf::debug "✅ Passed: $passed_count"
         zf::debug "❌ Failed: $failed_count"
         zf::debug "📊 Total:  $test_count"
         zf::debug ""
+=======
+        zsh_debug_echo ""
+        zsh_debug_echo "🔒 $TEST_NAME Test Results:"
+        zsh_debug_echo "✅ Passed: $passed_count"
+        zsh_debug_echo "❌ Failed: $failed_count"
+        zsh_debug_echo "📊 Total:  $test_count"
+        zsh_debug_echo ""
+>>>>>>> origin/develop
 
     local success_rate=0
     if [[ $test_count -gt 0 ]]; then
         success_rate=$(( (passed_count * 100) / test_count ))
     fi
 
+<<<<<<< HEAD
         zf::debug "📈 Success Rate: $success_rate%"
+=======
+        zsh_debug_echo "📈 Success Rate: $success_rate%"
+>>>>>>> origin/develop
 
     log_test "INFO" "$TEST_NAME test suite completed: $passed_count/$test_count tests passed ($success_rate%)"
 
     if [[ $failed_count -eq 0 ]]; then
+<<<<<<< HEAD
             zf::debug "🎉 All simplified tests passed! Core plugin integrity verification is working."
         log_test "INFO" "All tests passed - core functionality validated"
         return 0
     else
             zf::debug "⚠️  Some tests failed. Please review the logs."
+=======
+            zsh_debug_echo "🎉 All simplified tests passed! Core plugin integrity verification is working."
+        log_test "INFO" "All tests passed - core functionality validated"
+        return 0
+    else
+            zsh_debug_echo "⚠️  Some tests failed. Please review the logs."
+>>>>>>> origin/develop
         log_test "WARN" "$failed_count tests failed - core functionality needs attention"
         return 1
     fi
 }
 
 # Execute main function only if script is run directly
+<<<<<<< HEAD
 if [[ "${(%):-%N}" == "$0" ]]; then
+=======
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+>>>>>>> origin/develop
     main "$@"
 fi

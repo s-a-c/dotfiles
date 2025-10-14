@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #!/usr/bin/env zsh
+=======
+#!/opt/homebrew/bin/zsh
+>>>>>>> origin/develop
 # Context-Aware Configuration: Git Repositories
 # Automatically loaded when entering Git repository directories
 
@@ -7,9 +11,15 @@ export PROJECT_TYPE="git"
 
 # Get repository information
 if command -v git >/dev/null 2>&1; then
+<<<<<<< HEAD
     export GIT_REPO_NAME=$(basename "$(git rev-parse --show-toplevel 2>/dev/null)" 2>/dev/null || zf::debug "unknown")
     export GIT_BRANCH=$(git branch --show-current 2>/dev/null || zf::debug "unknown")
     export GIT_REMOTE_URL=$(git remote get-url origin 2>/dev/null || zf::debug "none")
+=======
+    export GIT_REPO_NAME=$(basename "$(git rev-parse --show-toplevel 2>/dev/null)" 2>/dev/null || zsh_debug_echo "unknown")
+    export GIT_BRANCH=$(git branch --show-current 2>/dev/null || zsh_debug_echo "unknown")
+    export GIT_REMOTE_URL=$(git remote get-url origin 2>/dev/null || zsh_debug_echo "none")
+>>>>>>> origin/develop
 fi
 
 # Enhanced Git aliases for repository context
@@ -34,8 +44,13 @@ alias gst="git stash"
 alias gstp="git stash pop"
 
 # Repository-specific shortcuts
+<<<<<<< HEAD
 alias root="cd \$(git rev-parse --show-toplevel 2>/dev/null || zf::debug .)"
 alias main="git checkout \$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@' || zf::debug 'main')"
+=======
+alias root="cd \$(git rev-parse --show-toplevel 2>/dev/null || zsh_debug_echo .)"
+alias main="git checkout \$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@' || zsh_debug_echo 'main')"
+>>>>>>> origin/develop
 
 # Branch management
 alias branches="git branch -a"

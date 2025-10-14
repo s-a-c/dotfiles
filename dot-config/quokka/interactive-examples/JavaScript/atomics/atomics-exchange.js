@@ -8,4 +8,8 @@ console.log(Atomics.load(uint8, 0));
 
 Atomics.exchange(uint8, 0, 2); // returns 5
 console.log(Atomics.load(uint8, 0));
+<<<<<<< HEAD
 // expected output: 2
+=======
+// expected output: 2
+>>>>>>> origin/develop

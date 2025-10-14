@@ -8,4 +8,8 @@ console.log(sum(...numbers));
 // expected output: 6
 
 console.log(sum.apply(null, numbers));
+<<<<<<< HEAD
 // expected output: 6
+=======
+// expected output: 6
+>>>>>>> origin/develop

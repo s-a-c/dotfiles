@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 #!/usr/bin/env zsh
+=======
+>>>>>>> origin/develop
 # Safe Minimal Completion Initialization
 # Replaces problematic completion systems
 # UPDATED: Consistent with .zshenv configuration
@@ -29,8 +32,14 @@ if autoload -Uz compinit 2>/dev/null; then
         bashcompinit 2>/dev/null
     fi
 
+<<<<<<< HEAD
     # Use zf::debug from .zshenv if available
     if declare -f zf::debug >/dev/null 2>&1; then
         zf::debug "# [safe-completion-init] Initialized with $compdump_file"
+=======
+    # Use zsh_debug_echo from .zshenv if available
+    if declare -f zsh_debug_echo >/dev/null 2>&1; then
+        zsh_debug_echo "# [safe-completion-init] Initialized with $compdump_file"
+>>>>>>> origin/develop
     fi
 fi

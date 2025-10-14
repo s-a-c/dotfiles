@@ -6,4 +6,8 @@ console.log(Reflect.isExtensible(object1));
 Reflect.preventExtensions(object1);
 
 console.log(Reflect.isExtensible(object1));
+<<<<<<< HEAD
 // expected output: false
+=======
+// expected output: false
+>>>>>>> origin/develop

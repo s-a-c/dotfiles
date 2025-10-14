@@ -18,13 +18,21 @@ spoon.Hammerflow.loadFirstValidTomlFile({
 
 -- optionally register custom functions.
 -- registerFunctions takes 1 or more tables.
+<<<<<<< HEAD
 -- each table contains functions that can be
+=======
+-- each table contains functions that can be 
+>>>>>>> origin/develop
 -- called from your toml config using the
 -- function: prefix, e.g.
 --   h = "function:hi"
 local fileFuncs = require("files.lua")
 spoon.Hammerflow.registerFunctions(
+<<<<<<< HEAD
     fileFuncs,
+=======
+    fileFuncs, 
+>>>>>>> origin/develop
     { ["hi"] = function() hs.alert("hi") end }
 )
 
@@ -44,4 +52,8 @@ end
 All available options are demonstrated in [sample.toml](./sample.toml). I will create proper documentation soon.
 
 ## Quick start
+<<<<<<< HEAD
 See [Hammerflow.dev](https://hammerflow.dev) for the quick start information.
+=======
+See [Hammerflow.dev](https://hammerflow.dev) for the quick start information.
+>>>>>>> origin/develop

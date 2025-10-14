@@ -20,4 +20,8 @@ ${c1}  .cooc'                ${c3}.llllcoooooooooooooo.
                    .coooooooooooop.
                   .cooooooooooop.
                   .cooooooooop.
+<<<<<<< HEAD
                    .cooooop'
+=======
+                   .cooooop'
+>>>>>>> origin/develop

@@ -17,4 +17,8 @@
    oollXMKXoxl;.
      ':. .: .'
               ..
+<<<<<<< HEAD
                 .
+=======
+                .
+>>>>>>> origin/develop

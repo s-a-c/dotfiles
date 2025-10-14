@@ -92,4 +92,8 @@ class TeamInvitationController
         return redirect()->route('home')
             ->with('status', 'You have joined the team ' . $team->name . '.');
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/develop

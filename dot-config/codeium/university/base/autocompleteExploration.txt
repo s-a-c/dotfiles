@@ -104,7 +104,11 @@ const fluffy = new Pet('Fluffy', 3);
 if () {
     // STEP 2: Register fluffy to stay in a private room for X days
     // and store the room details.
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     if(room){
         // STEP 3: Print the area of fluffy's room.
     }

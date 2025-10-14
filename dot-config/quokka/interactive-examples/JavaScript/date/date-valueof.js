@@ -6,4 +6,8 @@ console.log(date1.valueOf());
 const date2 = new Date('02 Feb 1996 03:04:05 GMT');
 
 console.log(date2.valueOf());
+<<<<<<< HEAD
 // expected output: 823230245000
+=======
+// expected output: 823230245000
+>>>>>>> origin/develop

@@ -5,4 +5,8 @@ console.log(date1.getUTCHours());
 // expected output: 12
 
 console.log(date2.getUTCHours());
+<<<<<<< HEAD
 // expected output: 10
+=======
+// expected output: 10
+>>>>>>> origin/develop

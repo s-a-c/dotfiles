@@ -18,4 +18,8 @@ ${c1}xxxxxxx${c3}xxx${c1}xxxrrrrrrrr${c3}aaaaaa${c2}aaaaaayyyy ${c1}yyyyyyyyyyyy
        ${c1}xxxxxxrrrrrrr ${c2}aaaaaa  ${c1}aaaayyyyyyyyyyyy
           ${c1}xxxrrrrrr ${c2}raaa  ${c1}aaaaaaayyyyyyyyy
               ${c1}rrrr ${c2}rr  ${c1}aaaaaaaaaayyyyyy
+<<<<<<< HEAD
                  ${c2}r   ${c1}aaaaaaaaaa
+=======
+                 ${c2}r   ${c1}aaaaaaaaaa
+>>>>>>> origin/develop

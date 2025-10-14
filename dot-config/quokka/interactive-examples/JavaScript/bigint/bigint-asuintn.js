@@ -10,4 +10,8 @@ check64bit(2n ** 64n);
 // expected output: "Number doesn't fit in unsigned 64-bit integer!"
 
 check64bit(2n ** 32n);
+<<<<<<< HEAD
 // expected output: 4294967296
+=======
+// expected output: 4294967296
+>>>>>>> origin/develop

@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 {"Target":"php","LocalPath":"/Users/s-a-c/Herd/fam-a-lam/docker/php","DockerfilePath":"/Users/s-a-c/Herd/fam-a-lam/docker/php/Dockerfile"}
+=======
+{"Target":"php","LocalPath":"/Users/s-a-c/Herd/fam-a-lam/docker/php","DockerfilePath":"/Users/s-a-c/Herd/fam-a-lam/docker/php/Dockerfile"}
+>>>>>>> origin/develop

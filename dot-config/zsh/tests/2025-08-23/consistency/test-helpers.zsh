@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #!/usr/bin/env zsh
+=======
+#!/opt/homebrew/bin/zsh
+>>>>>>> origin/develop
 # ==============================================================================
 # ZSH Configuration: Standard Helpers Test Suite
 # ==============================================================================
@@ -28,7 +32,11 @@ export ZSH_DEBUG="0"             # Suppress debug output during tests
 DETECTION_SCRIPT="${ZDOTDIR:-$HOME/.config/zsh}/.zshrc.d/00_01-source-execute-detection.zsh"
 
 if [[ ! -f "$DETECTION_SCRIPT" ]]; then
+<<<<<<< HEAD
         zf::debug "ERROR: Source/execute detection script not found: $DETECTION_SCRIPT"
+=======
+        zsh_debug_echo "ERROR: Source/execute detection script not found: $DETECTION_SCRIPT"
+>>>>>>> origin/develop
     exit 1
 fi
 
@@ -47,7 +55,11 @@ declare -i TESTS_FAILED=0
 # 1.3. Test utilities
 test_start() {
     local test_name="$1"
+<<<<<<< HEAD
         zf::debug "Running: $test_name"
+=======
+        zsh_debug_echo "Running: $test_name"
+>>>>>>> origin/develop
     ((TESTS_RUN++))
 }
 
@@ -72,10 +84,17 @@ ORIGINAL_PWD="$(pwd)"
 HELPER_LIB=".zshrc.d/00_00-standard-helpers.zsh"
 
 if ! source "$HELPER_LIB" 2>/dev/null; then
+<<<<<<< HEAD
         zf::debug "FATAL: Cannot load helper library for testing"
         zf::debug "Current directory: $(pwd)"
         zf::debug "Helper library path: $HELPER_LIB"
         zf::debug "File exists: $(test -f "$HELPER_LIB" &&     zf::debug 'YES' || zf::debug 'NO')"
+=======
+        zsh_debug_echo "FATAL: Cannot load helper library for testing"
+        zsh_debug_echo "Current directory: $(pwd)"
+        zsh_debug_echo "Helper library path: $HELPER_LIB"
+        zsh_debug_echo "File exists: $(test -f "$HELPER_LIB" &&     zsh_debug_echo 'YES' || zsh_debug_echo 'NO')"
+>>>>>>> origin/develop
     exit 1
 fi
 
@@ -143,7 +162,11 @@ test_existence_functions() {
 
     test_start "Existence Functions - File Detection"
     local test_file="/tmp/test-readable-file-$$"
+<<<<<<< HEAD
         zf::debug "test" > "$test_file"
+=======
+        zsh_debug_echo "test" > "$test_file"
+>>>>>>> origin/develop
     chmod 644 "$test_file"
 
     if has_readable_file "$test_file" && ! has_readable_file "/nonexistent/file/12345"; then
@@ -286,7 +309,11 @@ test_path_functions() {
 test_safe_operations() {
     test_start "Safe Operations - Safe Source (Success)"
     local test_source_file="/tmp/test-source-$$"
+<<<<<<< HEAD
         zf::debug "export ZSH_TEST_SOURCED_VAR='sourced_value'" > "$test_source_file"
+=======
+        zsh_debug_echo "export ZSH_TEST_SOURCED_VAR='sourced_value'" > "$test_source_file"
+>>>>>>> origin/develop
 
     safe_source "$test_source_file"
     if [[ "$ZSH_TEST_SOURCED_VAR" == "sourced_value" ]]; then
@@ -307,7 +334,11 @@ test_safe_operations() {
     fi
 
     test_start "Safe Operations - Safe Execute"
+<<<<<<< HEAD
     if safe_execute "5" "echo test"     zf::debug "test_message" >/dev/null; then
+=======
+    if safe_execute "5" "echo test"     zsh_debug_echo "test_message" >/dev/null; then
+>>>>>>> origin/develop
         test_pass "Safe Execute"
     else
         test_fail "Safe Execute" "Failed to execute simple command"
@@ -320,10 +351,17 @@ test_safe_operations() {
 #!/usr/bin/env zsh
 ATTEMPTS_FILE="/tmp/retry-attempts-$$"
 if [[ ! -f "$ATTEMPTS_FILE" ]]; then
+<<<<<<< HEAD
         zf::debug "1" > "$ATTEMPTS_FILE"
     exit 1
 elif [[ "$(cat "$ATTEMPTS_FILE")" == "1" ]]; then
         zf::debug "2" > "$ATTEMPTS_FILE"
+=======
+        zsh_debug_echo "1" > "$ATTEMPTS_FILE"
+    exit 1
+elif [[ "$(cat "$ATTEMPTS_FILE")" == "1" ]]; then
+        zsh_debug_echo "2" > "$ATTEMPTS_FILE"
+>>>>>>> origin/develop
     exit 1
 else
     rm -f "$ATTEMPTS_FILE"
@@ -461,6 +499,7 @@ test_integration() {
 #=============================================================================
 
 main() {
+<<<<<<< HEAD
         zf::debug "========================================================"
         zf::debug "ZSH Standard Helpers Library Test Suite"
         zf::debug "========================================================"
@@ -468,6 +507,15 @@ main() {
         zf::debug "Execution Context: $(get_execution_context)"
         zf::debug "Helper Library Version: ${ZSH_HELPERS_VERSION:-unknown}"
         zf::debug ""
+=======
+        zsh_debug_echo "========================================================"
+        zsh_debug_echo "ZSH Standard Helpers Library Test Suite"
+        zsh_debug_echo "========================================================"
+        zsh_debug_echo "Timestamp: $(utc_timestamp)"
+        zsh_debug_echo "Execution Context: $(get_execution_context)"
+        zsh_debug_echo "Helper Library Version: ${ZSH_HELPERS_VERSION:-unknown}"
+        zsh_debug_echo ""
+>>>>>>> origin/develop
 
     # Run all test categories
     test_core_utilities
@@ -484,6 +532,7 @@ main() {
 
     # Display results
     echo
+<<<<<<< HEAD
         zf::debug "=== Test Results Summary ==="
     for result in "${TEST_RESULTS[@]}"; do
             zf::debug "$result"
@@ -501,6 +550,25 @@ main() {
     else
         local pass_rate=$(( TESTS_PASSED * 100 / TESTS_RUN ))
             zf::debug "❌ $TESTS_FAILED test(s) failed (${pass_rate}% pass rate)"
+=======
+        zsh_debug_echo "=== Test Results Summary ==="
+    for result in "${TEST_RESULTS[@]}"; do
+            zsh_debug_echo "$result"
+    done
+
+    echo
+        zsh_debug_echo "=== Test Statistics ==="
+        zsh_debug_echo "Total Tests: $TESTS_RUN"
+        zsh_debug_echo "Passed: $TESTS_PASSED"
+        zsh_debug_echo "Failed: $TESTS_FAILED"
+
+    if (( TESTS_FAILED == 0 )); then
+            zsh_debug_echo "✅ All tests passed!"
+        return 0
+    else
+        local pass_rate=$(( TESTS_PASSED * 100 / TESTS_RUN ))
+            zsh_debug_echo "❌ $TESTS_FAILED test(s) failed (${pass_rate}% pass rate)"
+>>>>>>> origin/develop
         return 1
     fi
 }
@@ -513,7 +581,13 @@ main() {
 if is_being_executed; then
     main "$@"
 elif is_being_sourced; then
+<<<<<<< HEAD
         zf::debug "Standard helpers test functions loaded (sourced context)"
         zf::debug "Available functions: main, test_*, individual test categories"
         zf::debug "Current execution context: $(get_execution_context)"
+=======
+        zsh_debug_echo "Standard helpers test functions loaded (sourced context)"
+        zsh_debug_echo "Available functions: main, test_*, individual test categories"
+        zsh_debug_echo "Current execution context: $(get_execution_context)"
+>>>>>>> origin/develop
 fi

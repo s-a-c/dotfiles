@@ -8,4 +8,8 @@ console.log(Math.clz32(4));
 
 // 00000000000000000000001111101000
 console.log(Math.clz32(1000));
+<<<<<<< HEAD
 // expected output: 22
+=======
+// expected output: 22
+>>>>>>> origin/develop

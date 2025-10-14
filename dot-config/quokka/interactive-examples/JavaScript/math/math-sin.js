@@ -9,4 +9,8 @@ console.log(getCircleY(2, 10));
 // expected output: 9.092974268256818
 
 console.log(getCircleY(Math.PI, 10));
+<<<<<<< HEAD
 // expected output: 1.2246467991473533e-15
+=======
+// expected output: 1.2246467991473533e-15
+>>>>>>> origin/develop

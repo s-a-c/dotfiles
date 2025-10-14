@@ -11,4 +11,8 @@ try {
   console.log(error);
   // expected output: "Error: Invalid value used in weak set" in Chrome
   // expected output: "TypeError: WeakSet value must be an object, got the number 1" in Firefox
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/develop

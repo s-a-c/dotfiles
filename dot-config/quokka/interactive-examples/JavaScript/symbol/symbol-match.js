@@ -9,4 +9,8 @@ console.log('/foo/'.startsWith(regexp1));
 // expected output: true
 
 console.log('/baz/'.endsWith(regexp1));
+<<<<<<< HEAD
 // expected output: false
+=======
+// expected output: false
+>>>>>>> origin/develop

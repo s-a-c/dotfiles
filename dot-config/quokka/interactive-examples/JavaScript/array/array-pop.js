@@ -9,4 +9,8 @@ console.log(plants);
 plants.pop();
 
 console.log(plants);
+<<<<<<< HEAD
 // expected output: Array ["broccoli", "cauliflower", "cabbage"]
+=======
+// expected output: Array ["broccoli", "cauliflower", "cabbage"]
+>>>>>>> origin/develop

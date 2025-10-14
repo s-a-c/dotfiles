@@ -9,4 +9,8 @@ event.setDate(32);
 // Only 31 days in August!
 
 console.log(event.getDate());
+<<<<<<< HEAD
 // expected output: 1
+=======
+// expected output: 1
+>>>>>>> origin/develop

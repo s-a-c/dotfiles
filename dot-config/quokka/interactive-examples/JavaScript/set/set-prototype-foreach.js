@@ -6,4 +6,8 @@ new Set(['foo', 'bar', undefined]).forEach(logSetElements);
 
 // expected output: "s[foo] = foo"
 // expected output: "s[bar] = bar"
+<<<<<<< HEAD
 // expected output: "s[undefined] = undefined"
+=======
+// expected output: "s[undefined] = undefined"
+>>>>>>> origin/develop

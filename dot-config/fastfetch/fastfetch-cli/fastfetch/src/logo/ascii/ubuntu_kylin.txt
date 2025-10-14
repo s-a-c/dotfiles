@@ -17,4 +17,8 @@ iiI$2QWQWWtyQQ$1|i|$2$WWWWWQWk$1||i|i|ii||i|ii|i
     -<|i|ii|ii|i|$2TTTTTT$1|]$2QQWWWC$1|ii>`
       -<|i|ii|i|ii|i|i|ii3$2TTT$1t|i>`
          ~<|ii|ii|iiiii|i|||i>~
+<<<<<<< HEAD
             -~~<|ii|i||i>~~`
+=======
+            -~~<|ii|i||i>~~`
+>>>>>>> origin/develop

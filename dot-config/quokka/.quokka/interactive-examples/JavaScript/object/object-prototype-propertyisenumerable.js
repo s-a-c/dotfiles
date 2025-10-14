@@ -10,4 +10,8 @@ console.log(array1.propertyIsEnumerable(0));
 // expected output: true
 
 console.log(array1.propertyIsEnumerable('length'));
+<<<<<<< HEAD
 // expected output: false
+=======
+// expected output: false
+>>>>>>> origin/develop

@@ -6,4 +6,8 @@ for (const element of array1) {
 
 // expected output: "a"
 // expected output: "b"
+<<<<<<< HEAD
 // expected output: "c"
+=======
+// expected output: "c"
+>>>>>>> origin/develop

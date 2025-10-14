@@ -9,4 +9,8 @@ console.log(iterator1.next().value);
 // expected output: "foo"
 
 console.log(iterator1.next().value);
+<<<<<<< HEAD
 // expected output: "bar"
+=======
+// expected output: "bar"
+>>>>>>> origin/develop

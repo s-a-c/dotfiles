@@ -39,8 +39,13 @@ TEST_SSH_DIR="/tmp/ssh-security-test-$$"
 source "/Users/s-a-c/.config/zsh/.zshrc.pre-plugins.d/03-secure-ssh-agent.zsh"
 
 test_secure_ssh_implementation() {
+<<<<<<< HEAD
         zf::debug -e "${YELLOW}=== Secure SSH Agent Implementation Test Suite ===${NC}"
         zf::debug "Testing actual secure SSH agent implementation..."
+=======
+        zsh_debug_echo -e "${YELLOW}=== Secure SSH Agent Implementation Test Suite ===${NC}"
+        zsh_debug_echo "Testing actual secure SSH agent implementation..."
+>>>>>>> origin/develop
     echo
 
     # Setup isolated test environment
@@ -52,6 +57,7 @@ test_secure_ssh_implementation() {
     # but ensure proper cleanup
 
     # Test 1: Environment validation
+<<<<<<< HEAD
         zf::debug -e "${YELLOW}Test 1: Environment validation${NC}"
     if test_environment_validation; then
         TEST_RESULTS+=("✓ Environment validation: PASS")
@@ -59,10 +65,20 @@ test_secure_ssh_implementation() {
     else
         TEST_RESULTS+=("✗ Environment validation: FAIL")
             zf::debug -e "${RED}✗ FAIL: Environment validation failed${NC}"
+=======
+        zsh_debug_echo -e "${YELLOW}Test 1: Environment validation${NC}"
+    if test_environment_validation; then
+        TEST_RESULTS+=("✓ Environment validation: PASS")
+            zsh_debug_echo -e "${GREEN}✓ PASS: Environment validation works${NC}"
+    else
+        TEST_RESULTS+=("✗ Environment validation: FAIL")
+            zsh_debug_echo -e "${RED}✗ FAIL: Environment validation failed${NC}"
+>>>>>>> origin/develop
     fi
     echo
 
     # Test 2: Agent creation and validation
+<<<<<<< HEAD
         zf::debug -e "${YELLOW}Test 2: Agent creation and validation${NC}"
     if test_agent_creation; then
         TEST_RESULTS+=("✓ Agent creation: PASS")
@@ -70,10 +86,20 @@ test_secure_ssh_implementation() {
     else
         TEST_RESULTS+=("✗ Agent creation: FAIL")
             zf::debug -e "${RED}✗ FAIL: Agent creation failed${NC}"
+=======
+        zsh_debug_echo -e "${YELLOW}Test 2: Agent creation and validation${NC}"
+    if test_agent_creation; then
+        TEST_RESULTS+=("✓ Agent creation: PASS")
+            zsh_debug_echo -e "${GREEN}✓ PASS: Agent created and validated${NC}"
+    else
+        TEST_RESULTS+=("✗ Agent creation: FAIL")
+            zsh_debug_echo -e "${RED}✗ FAIL: Agent creation failed${NC}"
+>>>>>>> origin/develop
     fi
     echo
 
     # Test 3: Environment file security
+<<<<<<< HEAD
         zf::debug -e "${YELLOW}Test 3: Environment file security${NC}"
     if test_environment_file_security; then
         TEST_RESULTS+=("✓ File security: PASS")
@@ -81,10 +107,20 @@ test_secure_ssh_implementation() {
     else
         TEST_RESULTS+=("✗ File security: FAIL")
             zf::debug -e "${RED}✗ FAIL: Environment file permissions insecure${NC}"
+=======
+        zsh_debug_echo -e "${YELLOW}Test 3: Environment file security${NC}"
+    if test_environment_file_security; then
+        TEST_RESULTS+=("✓ File security: PASS")
+            zsh_debug_echo -e "${GREEN}✓ PASS: Environment file properly secured${NC}"
+    else
+        TEST_RESULTS+=("✗ File security: FAIL")
+            zsh_debug_echo -e "${RED}✗ FAIL: Environment file permissions insecure${NC}"
+>>>>>>> origin/develop
     fi
     echo
 
     # Test 4: Agent reuse functionality
+<<<<<<< HEAD
         zf::debug -e "${YELLOW}Test 4: Agent reuse functionality${NC}"
     if test_agent_reuse_logic; then
         TEST_RESULTS+=("✓ Agent reuse: PASS")
@@ -92,10 +128,20 @@ test_secure_ssh_implementation() {
     else
         TEST_RESULTS+=("✗ Agent reuse: FAIL")
             zf::debug -e "${RED}✗ FAIL: Agent reuse logic failed${NC}"
+=======
+        zsh_debug_echo -e "${YELLOW}Test 4: Agent reuse functionality${NC}"
+    if test_agent_reuse_logic; then
+        TEST_RESULTS+=("✓ Agent reuse: PASS")
+            zsh_debug_echo -e "${GREEN}✓ PASS: Agent reuse works correctly${NC}"
+    else
+        TEST_RESULTS+=("✗ Agent reuse: FAIL")
+            zsh_debug_echo -e "${RED}✗ FAIL: Agent reuse logic failed${NC}"
+>>>>>>> origin/develop
     fi
     echo
 
     # Test 5: Lock file mechanism
+<<<<<<< HEAD
         zf::debug -e "${YELLOW}Test 5: Lock file race condition prevention${NC}"
     if test_lock_file_mechanism; then
         TEST_RESULTS+=("✓ Lock mechanism: PASS")
@@ -103,10 +149,20 @@ test_secure_ssh_implementation() {
     else
         TEST_RESULTS+=("✗ Lock mechanism: FAIL")
             zf::debug -e "${RED}✗ FAIL: Lock mechanism failed${NC}"
+=======
+        zsh_debug_echo -e "${YELLOW}Test 5: Lock file race condition prevention${NC}"
+    if test_lock_file_mechanism; then
+        TEST_RESULTS+=("✓ Lock mechanism: PASS")
+            zsh_debug_echo -e "${GREEN}✓ PASS: Lock prevents race conditions${NC}"
+    else
+        TEST_RESULTS+=("✗ Lock mechanism: FAIL")
+            zsh_debug_echo -e "${RED}✗ FAIL: Lock mechanism failed${NC}"
+>>>>>>> origin/develop
     fi
     echo
 
     # Test 6: Agent output validation
+<<<<<<< HEAD
         zf::debug -e "${YELLOW}Test 6: Agent output validation${NC}"
     if test_agent_output_validation; then
         TEST_RESULTS+=("✓ Output validation: PASS")
@@ -114,6 +170,15 @@ test_secure_ssh_implementation() {
     else
         TEST_RESULTS+=("✗ Output validation: FAIL")
             zf::debug -e "${RED}✗ FAIL: Agent output validation failed${NC}"
+=======
+        zsh_debug_echo -e "${YELLOW}Test 6: Agent output validation${NC}"
+    if test_agent_output_validation; then
+        TEST_RESULTS+=("✓ Output validation: PASS")
+            zsh_debug_echo -e "${GREEN}✓ PASS: Agent output validation works${NC}"
+    else
+        TEST_RESULTS+=("✗ Output validation: FAIL")
+            zsh_debug_echo -e "${RED}✗ FAIL: Agent output validation failed${NC}"
+>>>>>>> origin/develop
     fi
     echo
 
@@ -131,7 +196,11 @@ test_environment_validation() {
     if _validate_ssh_environment; then
         return 0
     else
+<<<<<<< HEAD
             zf::debug "Environment validation failed"
+=======
+            zsh_debug_echo "Environment validation failed"
+>>>>>>> origin/develop
         return 1
     fi
 }
@@ -208,7 +277,11 @@ test_environment_file_security() {
     if [[ "$perms" == "600" ]]; then
         return 0
     else
+<<<<<<< HEAD
             zf::debug "Expected permissions 600, got $perms"
+=======
+            zsh_debug_echo "Expected permissions 600, got $perms"
+>>>>>>> origin/develop
         return 1
     fi
 }
@@ -311,12 +384,20 @@ EOF
 }
 
 print_test_summary() {
+<<<<<<< HEAD
         zf::debug -e "${YELLOW}=== Test Results Summary ===${NC}"
+=======
+        zsh_debug_echo -e "${YELLOW}=== Test Results Summary ===${NC}"
+>>>>>>> origin/develop
     local pass_count=0
     local total_count=${#TEST_RESULTS[@]}
 
     for result in "${TEST_RESULTS[@]}"; do
+<<<<<<< HEAD
             zf::debug "$result"
+=======
+            zsh_debug_echo "$result"
+>>>>>>> origin/develop
         if [[ "$result" == *"PASS" ]]; then
             ((pass_count++))
         fi
@@ -324,6 +405,7 @@ print_test_summary() {
 
     echo
     if [[ $pass_count -eq $total_count ]]; then
+<<<<<<< HEAD
             zf::debug -e "${GREEN}All tests passed! ($pass_count/$total_count)${NC}"
             zf::debug -e "${GREEN}Secure SSH agent implementation is working correctly.${NC}"
             zf::debug "# [test-secure-ssh] SUCCESS: All tests passed"
@@ -332,6 +414,16 @@ print_test_summary() {
             zf::debug -e "${RED}Some tests failed. ($pass_count/$total_count passed)${NC}"
             zf::debug -e "${YELLOW}Review the secure SSH agent implementation.${NC}"
             zf::debug "# [test-secure-ssh] FAILURE: $((total_count - pass_count)) tests failed"
+=======
+            zsh_debug_echo -e "${GREEN}All tests passed! ($pass_count/$total_count)${NC}"
+            zsh_debug_echo -e "${GREEN}Secure SSH agent implementation is working correctly.${NC}"
+            zsh_debug_echo "# [test-secure-ssh] SUCCESS: All tests passed"
+        return 0
+    else
+            zsh_debug_echo -e "${RED}Some tests failed. ($pass_count/$total_count passed)${NC}"
+            zsh_debug_echo -e "${YELLOW}Review the secure SSH agent implementation.${NC}"
+            zsh_debug_echo "# [test-secure-ssh] FAILURE: $((total_count - pass_count)) tests failed"
+>>>>>>> origin/develop
         return 1
     fi
 }
@@ -344,6 +436,7 @@ cleanup_test_environment() {
     unset TEST_SSH_DIR TEST_RESULTS
     unset RED GREEN YELLOW NC
 
+<<<<<<< HEAD
         zf::debug "# [test-secure-ssh] Test environment cleaned up"
 }
 
@@ -356,4 +449,18 @@ if [[ "${(%):-%N}" == "$0" ]] || [[ "$1" == "test" ]]; then
 else
         zf::debug "Secure SSH Agent Test Functions:"
         zf::debug "  test_secure_ssh_implementation - Run full test suite"
+=======
+        zsh_debug_echo "# [test-secure-ssh] Test environment cleaned up"
+}
+
+# Main execution
+if [[ "${BASH_SOURCE[0]:-${(%):-%x}}" == "${0}" ]] || [[ "$1" == "test" ]]; then
+    test_secure_ssh_implementation
+    test_result=$?
+        zsh_debug_echo "# [test-secure-ssh] Test suite completed at $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+    exit $test_result
+else
+        zsh_debug_echo "Secure SSH Agent Test Functions:"
+        zsh_debug_echo "  test_secure_ssh_implementation - Run full test suite"
+>>>>>>> origin/develop
 fi

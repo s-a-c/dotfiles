@@ -7,4 +7,8 @@ console.log(uint8.join(''));
 // expected output: "1020304050"
 
 console.log(uint8.join('-'));
+<<<<<<< HEAD
 // expected output: "10-20-30-40-50"
+=======
+// expected output: "10-20-30-40-50"
+>>>>>>> origin/develop

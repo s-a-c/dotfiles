@@ -9,4 +9,8 @@ console.log(circumference('4.567abcdefgh'));
 // expected output: 28.695307297889173
 
 console.log(circumference('abcdefgh'));
+<<<<<<< HEAD
 // expected output: NaN
+=======
+// expected output: NaN
+>>>>>>> origin/develop

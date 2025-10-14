@@ -12,7 +12,11 @@
 #
 #   for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}; done
 
+<<<<<<< HEAD
 zf::debug "# ++++++ $0 ++++++++++++++++++++++++++++++++++++"
+=======
+zsh_debug_echo "# ++++++ $0 ++++++++++++++++++++++++++++++++++++"
+>>>>>>> origin/develop
 
 # Temporarily change options.
 'builtin' 'local' '-a' 'p10k_config_opts'

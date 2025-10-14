@@ -9,4 +9,8 @@ console.log(options1.numberingSystem);
 // expected output: "latn"
 
 console.log(options1.style);
+<<<<<<< HEAD
 // "decimal"
+=======
+// "decimal"
+>>>>>>> origin/develop

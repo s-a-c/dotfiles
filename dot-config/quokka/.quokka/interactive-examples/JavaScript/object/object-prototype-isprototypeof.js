@@ -9,4 +9,8 @@ console.log(object1.prototype.isPrototypeOf(object3));
 // expected output: true
 
 console.log(object2.prototype.isPrototypeOf(object3));
+<<<<<<< HEAD
 // expected output: true
+=======
+// expected output: true
+>>>>>>> origin/develop

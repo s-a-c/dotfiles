@@ -492,4 +492,8 @@ trait HasUserTracking
 é]Ç^ Ç^Ê^
 Ê^Ë^ Ë^Ì^
 Ì^‘u ‘u’u
+<<<<<<< HEAD
 ’u·z "(3ae679aae66fa0c02e851818130d386ac099924e2Kfile:///Users/s-a-c/Herd/lsk-livewire/app/Models/Traits/HasUserTracking.php:%file:///Users/s-a-c/Herd/lsk-livewire
+=======
+’u·z "(3ae679aae66fa0c02e851818130d386ac099924e2Kfile:///Users/s-a-c/Herd/lsk-livewire/app/Models/Traits/HasUserTracking.php:%file:///Users/s-a-c/Herd/lsk-livewire
+>>>>>>> origin/develop

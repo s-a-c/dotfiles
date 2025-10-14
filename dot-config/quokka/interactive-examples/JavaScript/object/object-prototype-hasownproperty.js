@@ -8,4 +8,8 @@ console.log(object1.hasOwnProperty('toString'));
 // expected output: false
 
 console.log(object1.hasOwnProperty('hasOwnProperty'));
+<<<<<<< HEAD
 // expected output: false
+=======
+// expected output: false
+>>>>>>> origin/develop

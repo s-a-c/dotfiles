@@ -1,8 +1,14 @@
 # Bin Directory Consistency Analysis
 
+<<<<<<< HEAD
 **Generated:** August 27, 2025
 **Purpose:** Validate consistency of utility scripts with core configuration
 **Files Analyzed:** 18 scripts in `bin/` directory
+=======
+**Generated:** August 27, 2025  
+**Purpose:** Validate consistency of utility scripts with core configuration  
+**Files Analyzed:** 18 scripts in `bin/` directory  
+>>>>>>> origin/develop
 
 ## ✅ Overall Assessment: EXCELLENT CONSISTENCY
 
@@ -96,14 +102,22 @@ Your `bin/` directory demonstrates **excellent consistency** with core configura
 Every script properly sources `.zshenv` before execution:
 ```bash
 # Consistent pattern across all scripts:
+<<<<<<< HEAD
 [[ -f "${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}/.zshenv" ]] &&
+=======
+[[ -f "${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}/.zshenv" ]] && 
+>>>>>>> origin/develop
     source "${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}/.zshenv"
 ```
 
 ### 2. **Consistent Variable References**
 Scripts use established variables without redefinition:
 - `ZDOTDIR` - Configuration directory
+<<<<<<< HEAD
 - `ZSH_LOG_DIR` - Logging directory
+=======
+- `ZSH_LOG_DIR` - Logging directory  
+>>>>>>> origin/develop
 - `ZSH_CACHE_DIR` - Cache directory
 - `XDG_*` variables - XDG compliance
 
@@ -126,7 +140,11 @@ Scripts properly integrate with established systems:
 ### Example 1: `debug-startup.zsh`
 ```bash
 # Proper .zshenv sourcing
+<<<<<<< HEAD
 [[ -f "${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}/.zshenv" ]] &&
+=======
+[[ -f "${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}/.zshenv" ]] && 
+>>>>>>> origin/develop
     source "${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}/.zshenv"
 
 # Use of established variables
@@ -140,7 +158,11 @@ mkdir -p "$(dirname "$DEBUG_LOG")"
 ### Example 2: `consistency-checker.zsh`
 ```bash
 # Environment consistency
+<<<<<<< HEAD
 [[ -f "${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}/.zshenv" ]] &&
+=======
+[[ -f "${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}/.zshenv" ]] && 
+>>>>>>> origin/develop
     source "${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}/.zshenv"
 
 # Proper variable usage
@@ -199,10 +221,17 @@ fi
 
 ## 📋 Validation Summary
 
+<<<<<<< HEAD
 ✅ **18/18 scripts** demonstrate excellent consistency
 ✅ **0 issues** found requiring fixes
 ✅ **100% compliance** with `.zshenv` patterns
 ✅ **Perfect integration** with core configuration architecture
+=======
+✅ **18/18 scripts** demonstrate excellent consistency  
+✅ **0 issues** found requiring fixes  
+✅ **100% compliance** with `.zshenv` patterns  
+✅ **Perfect integration** with core configuration architecture  
+>>>>>>> origin/develop
 
 Your `bin/` directory serves as an **exemplar of configuration consistency** and should be used as a reference for any future script development.
 

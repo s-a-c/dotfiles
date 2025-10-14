@@ -17,4 +17,8 @@ hdddyo+ohddyosdddddddddho+oydddy++ohdddh
     +dddddddddddddddddddddddddddddd+
      /dddddddddddddddddddddddddddd/
       :dddddddddddddddddddddddddd:
+<<<<<<< HEAD
        .hddddddddddddddddddddddh.
+=======
+       .hddddddddddddddddddddddh.
+>>>>>>> origin/develop

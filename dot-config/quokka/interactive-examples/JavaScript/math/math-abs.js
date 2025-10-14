@@ -9,4 +9,8 @@ console.log(difference(5, 3));
 // expected output: 2
 
 console.log(difference(1.23456, 7.89012));
+<<<<<<< HEAD
 // expected output: 6.6555599999999995
+=======
+// expected output: 6.6555599999999995
+>>>>>>> origin/develop

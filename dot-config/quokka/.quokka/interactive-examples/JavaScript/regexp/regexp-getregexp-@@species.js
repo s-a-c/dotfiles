@@ -8,4 +8,8 @@ class MyRegExp extends RegExp {
 const regex1 = new MyRegExp('foo','g');
 
 console.log(regex1.test('football'));
+<<<<<<< HEAD
 // expected output: true
+=======
+// expected output: true
+>>>>>>> origin/develop

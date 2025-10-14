@@ -10,4 +10,8 @@
   ,ddddooooollllllccccccl'
     cxxxdddddooooollllc;
       ,dxxxxxddddddol.
+<<<<<<< HEAD
           .';::,.
+=======
+          .';::,.
+>>>>>>> origin/develop

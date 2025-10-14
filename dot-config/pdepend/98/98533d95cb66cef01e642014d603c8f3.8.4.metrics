@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 a:2:{s:4:"hash";N;s:4:"data";a:2:{s:38:"8myrmg9tqpg-9qpy8089r5k-00-mmwajevkgvk";a:2:{s:3:"ccn";i:1;s:4:"ccn2";i:1;}s:38:"8myrmg9tqpg-9qpy8089r5k-00-o2xutuvos1w";a:2:{s:3:"ccn";i:1;s:4:"ccn2";i:1;}}}
+=======
+a:2:{s:4:"hash";N;s:4:"data";a:2:{s:38:"8myrmg9tqpg-9qpy8089r5k-00-mmwajevkgvk";a:2:{s:3:"ccn";i:1;s:4:"ccn2";i:1;}s:38:"8myrmg9tqpg-9qpy8089r5k-00-o2xutuvos1w";a:2:{s:3:"ccn";i:1;s:4:"ccn2";i:1;}}}
+>>>>>>> origin/develop

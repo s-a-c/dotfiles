@@ -17,4 +17,8 @@ ${c4}GGGGGGGG${c3}WWWWWWWWWWW
 ${c4}GG${c3}WWWWWWWWWWWWWWWW
  WWWWWWWWWWWWWWWW
       WWWWWWWWWW
+<<<<<<< HEAD
           WWW
+=======
+          WWW
+>>>>>>> origin/develop

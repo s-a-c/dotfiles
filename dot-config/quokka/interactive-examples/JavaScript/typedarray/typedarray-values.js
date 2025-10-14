@@ -4,5 +4,10 @@ const array1 = uint8.values();
 array1.next();
 array1.next();
 
+<<<<<<< HEAD
 console.log(array1.next().value);
 // expected output: 30
+=======
+console.log(array1.next().value); 
+// expected output: 30
+>>>>>>> origin/develop

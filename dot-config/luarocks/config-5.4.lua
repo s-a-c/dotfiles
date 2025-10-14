@@ -186,3 +186,7 @@ variables = {
 }
 web_browser = "open"
 wrapper_suffix = ""
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/develop

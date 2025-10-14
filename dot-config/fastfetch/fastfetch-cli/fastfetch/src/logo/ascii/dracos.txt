@@ -10,4 +10,8 @@
       -oyyy+         +-   :yyyyyo-
         `:sy:        `.    `/yyyyys:
            ./o/.`           .oyyso+oo:`
+<<<<<<< HEAD
               :+oo+//::::///:-.`     `.`
+=======
+              :+oo+//::::///:-.`     `.`
+>>>>>>> origin/develop

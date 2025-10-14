@@ -5,4 +5,8 @@ function sum(previousValue, currentValue) {
 }
 
 console.log(uint8.reduce(sum));
+<<<<<<< HEAD
 // expected output: 6
+=======
+// expected output: 6
+>>>>>>> origin/develop

@@ -6,4 +6,8 @@ console.log(date1.toLocaleString('ar-EG'));
 const number1 = 123456.789;
 
 console.log(number1.toLocaleString('de-DE'));
+<<<<<<< HEAD
 // expected output: "123.456,789"
+=======
+// expected output: "123.456,789"
+>>>>>>> origin/develop

@@ -24,4 +24,8 @@ h-  `+ymMMMMMMMM--M+hMMN/    +MMMMy   -h
     :y: `yMMM`       `+NMMMMMMNo`:y:
       /s+`.omy      /NMMMMMNh/.+s:
         .+oo:-.     /mdhs+::oo+.
+<<<<<<< HEAD
             -/o+++++++++++/-
+=======
+            -/o+++++++++++/-
+>>>>>>> origin/develop

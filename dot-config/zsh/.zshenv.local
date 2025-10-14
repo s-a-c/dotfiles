@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #!/usr/bin/env zsh
 # .zshenv.local - Local environment overrides
 # This file is sourced by .zshenv and runs before .zshrc
@@ -94,3 +95,25 @@ if [[ "${DEBUG_LOAD_FRAGMENTS:-0}" == "1" ]]; then
 fi
 
 export ZF_DISABLE_AUTO_UPDATES=0
+=======
+# Localized zgenom configuration (zsh/.zshenv.local)
+#
+# Purpose:
+# - Centralize ZGEN/zgenom variables for a localized install under $ZDOTDIR
+# - Keep values idempotent and safe to source multiple times
+# - Intended to be sourced from .zshenv early in startup:
+#     [[ -f "${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}/.zshenv.local" ]] && source "${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}/.zshenv.local"
+#
+# Usage:
+# - Add the single-line source above to the very top of your .zshenv (if not present).
+# - This file only sets defaults when the variable is not already defined, so you
+#   may override any value earlier (e.g. in an environment or CI).
+#
+# Notes:
+# - This config chooses the "localized" approach: zgenom source + plugin storage
+#   live under $ZDOTDIR (self-contained dotfiles tree).
+# - We intentionally default ZGEN_AUTOLOAD_COMPINIT=0 to avoid compinit races during
+#   debugging. Change to 1 when your completion environment is stable.
+
+# End of file
+>>>>>>> origin/develop

@@ -9,4 +9,8 @@ console.log(weakset1.has(object1));
 weakset1.delete(object1);
 
 console.log(weakset1.has(object1));
+<<<<<<< HEAD
 // expected output: false
+=======
+// expected output: false
+>>>>>>> origin/develop

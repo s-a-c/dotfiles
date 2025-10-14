@@ -9,4 +9,8 @@ console.log(regex1.lastIndex);
 regex1.test(str1);
 
 console.log(regex1.lastIndex);
+<<<<<<< HEAD
 // expected output: 19
+=======
+// expected output: 19
+>>>>>>> origin/develop

@@ -17,4 +17,8 @@ $2            -```````````
     `:ossssssyysssssssssssssssso:`
       `:+ssssssssssssssssssss+-
          `-/+ssssssssssso+/-`
+<<<<<<< HEAD
               `.-----..`
+=======
+              `.-----..`
+>>>>>>> origin/develop

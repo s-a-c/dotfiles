@@ -15,4 +15,8 @@ const monster1 = {};
 const proxy1 = new Proxy(monster1, handler1);
 
 console.log(proxy1._secret = 'easily scared');
+<<<<<<< HEAD
 // expected output: Error: Invalid attempt to define private "_secret" property
+=======
+// expected output: Error: Invalid attempt to define private "_secret" property
+>>>>>>> origin/develop

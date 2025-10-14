@@ -8,4 +8,8 @@ console.log(Math.ceil(7.004));
 // expected output: 8
 
 console.log(Math.ceil(-7.004));
+<<<<<<< HEAD
 // expected output: -7
+=======
+// expected output: -7
+>>>>>>> origin/develop

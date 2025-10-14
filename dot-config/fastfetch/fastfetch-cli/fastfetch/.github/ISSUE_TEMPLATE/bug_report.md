@@ -65,6 +65,7 @@ If you cannot do the instructions above, please upload the core dump file:
 
 Use `time fastfetch --stat` to show time usage for each module.
 
+<<<<<<< HEAD
 ## If an image or logo didn't show
 
 <!-- Please make sure your terminal supports the image protocol you used. Note that GNOME Terminal doesn't support any image protocols. -->
@@ -78,3 +79,18 @@ Use `time fastfetch --stat` to show time usage for each module.
 
 * The bug is reproducible with a clean shell configuration (i.e. `fastfetch` is the only line in `.zshrc` or `~/.config/fish/config.fish`):
 * Does `sleep 1` before running `fastfetch` work?
+=======
+## If an image or logo didn't show 
+
+<!-- Please make sure your terminal supports the image protocol you used. Note that GNOME Terminal doesn't support any image protocols. -->
+
+* The image protocol you used: 
+* The terminal you used: 
+* Upload the image file here, or paste the image URL: 
+* Does it work with `--logo-width {WIDTH} --logo-height {HEIGHT}`? 
+
+## If fastfetch behaves incorrectly on shell startup
+
+* The bug is reproducible with a clean shell configuration (i.e. `fastfetch` is the only line in `.zshrc` or `~/.config/fish/config.fish`): 
+* Does `sleep 1` before running `fastfetch` work? 
+>>>>>>> origin/develop

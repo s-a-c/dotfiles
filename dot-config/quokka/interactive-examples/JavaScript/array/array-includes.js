@@ -9,4 +9,8 @@ console.log(pets.includes('cat'));
 // expected output: true
 
 console.log(pets.includes('at'));
+<<<<<<< HEAD
 // expected output: false
+=======
+// expected output: false
+>>>>>>> origin/develop

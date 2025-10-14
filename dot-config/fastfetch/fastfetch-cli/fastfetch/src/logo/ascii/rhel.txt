@@ -15,4 +15,8 @@ MMMMMMMMMMM.                     MMMM
       MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM:
          MMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
             `MMMMMMMMMMMMMMMMMMMMMMMM:
+<<<<<<< HEAD
                 ``MMMMMMMMMMMMMMMMM'
+=======
+                ``MMMMMMMMMMMMMMMMM'
+>>>>>>> origin/develop

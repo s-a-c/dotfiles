@@ -98,4 +98,8 @@ class TeamController extends Controller
         return redirect()->route('teams.index')
             ->with('status', 'Team deleted.');
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/develop

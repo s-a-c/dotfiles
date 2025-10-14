@@ -1,8 +1,14 @@
 # Git Configuration Caching System Documentation
 
+<<<<<<< HEAD
 **Document Created**: 2025-08-20
 **Author**: Configuration Management System
 **Version**: 1.0
+=======
+**Document Created**: 2025-08-20  
+**Author**: Configuration Management System  
+**Version**: 1.0  
+>>>>>>> origin/develop
 **Implementation**: Task 2.3 - Performance Git Caching
 
 ## 1. Overview
@@ -56,7 +62,11 @@ The Git Configuration Caching System is a performance optimization that eliminat
 The following git commands trigger cache loading:
 - `git commit`
 - `git log`
+<<<<<<< HEAD
 - `git show`
+=======
+- `git show` 
+>>>>>>> origin/develop
 - `git config`
 
 All other git commands bypass the cache system for optimal performance.

@@ -8,4 +8,8 @@ const object1 = {
 };
 
 console.log(+object1);
+<<<<<<< HEAD
 // expected output: 42
+=======
+// expected output: 42
+>>>>>>> origin/develop

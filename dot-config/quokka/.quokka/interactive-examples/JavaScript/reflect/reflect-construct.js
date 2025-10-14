@@ -10,4 +10,8 @@ console.log(object2.sum);
 // expected output: 6
 
 console.log(object1.sum);
+<<<<<<< HEAD
 // expected output: 6
+=======
+// expected output: 6
+>>>>>>> origin/develop

@@ -9,4 +9,8 @@ console.log('reversed:', reversed);
 /* Careful: reverse is destructive. It also changes
 the original array */
 console.log('array1:', array1);
+<<<<<<< HEAD
 // expected output: "array1:" Array ["three", "two", "one"]
+=======
+// expected output: "array1:" Array ["three", "two", "one"]
+>>>>>>> origin/develop

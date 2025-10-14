@@ -14,4 +14,8 @@ MMMMMMh.            `oNMMd:    `/mMMMMMM
 MMMMm/                -hMd-      `sNMMMM
 MMNs`                   -          :dMMM
 Mm:                                 `oMM
+<<<<<<< HEAD
 MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+=======
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+>>>>>>> origin/develop

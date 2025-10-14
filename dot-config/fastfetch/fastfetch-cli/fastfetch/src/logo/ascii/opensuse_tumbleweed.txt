@@ -18,4 +18,8 @@
                       coc   .oo         lo,
                        .oo, .oo      .:oo
                          .oooooc,,,:lol
+<<<<<<< HEAD
                               ,clc'
+=======
+                              ,clc'
+>>>>>>> origin/develop

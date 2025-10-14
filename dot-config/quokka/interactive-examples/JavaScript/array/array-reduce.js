@@ -7,4 +7,8 @@ console.log(array1.reduce(reducer));
 
 // 5 + 1 + 2 + 3 + 4
 console.log(array1.reduce(reducer, 5));
+<<<<<<< HEAD
 // expected output: 15
+=======
+// expected output: 15
+>>>>>>> origin/develop

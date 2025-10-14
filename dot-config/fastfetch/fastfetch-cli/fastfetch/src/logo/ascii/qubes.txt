@@ -18,4 +18,8 @@
      `.:///////////sssssssssssssso:.
          .-:///////ssssssssssssssssss/`
             `.:////ssss+/+ssssssssssss.
+<<<<<<< HEAD
                 `--//-    `-/osssso/.
+=======
+                `--//-    `-/osssso/.
+>>>>>>> origin/develop

@@ -18,3 +18,8 @@ highlight article "https?://[^ ]+" color10 default underline
 highlight article "\\[[0-9]+\\]" color10 default bold
 highlight article "\\[image\\ [0-9]+\\]" color10 default bold
 highlight feedlist "^─.*$" color6 color0 bold
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> origin/develop

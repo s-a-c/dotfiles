@@ -8,4 +8,8 @@ console.log(Math.cosh(-1));
 // expected output: 1.543080634815244 (approximately)
 
 console.log(Math.cosh(2));
+<<<<<<< HEAD
 // expected output: 3.7621956910836314
+=======
+// expected output: 3.7621956910836314
+>>>>>>> origin/develop

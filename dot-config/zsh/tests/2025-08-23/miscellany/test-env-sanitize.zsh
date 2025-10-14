@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #!/usr/bin/env zsh
+=======
+#!/opt/homebrew/bin/zsh
+>>>>>>> origin/develop
 # ==============================================================================
 # ZSH Configuration: Environment Sanitization Test Suite
 # ==============================================================================
@@ -26,7 +30,11 @@ export ZSH_DEBUG=false
 DETECTION_SCRIPT="${ZDOTDIR:-$HOME/.config/zsh}/.zshrc.d/00_01-source-execute-detection.zsh"
 
 if [[ ! -f "$DETECTION_SCRIPT" ]]; then
+<<<<<<< HEAD
     zf::debug "ERROR: Source/execute detection script not found: $DETECTION_SCRIPT"
+=======
+        zsh_debug_echo "ERROR: Source/execute detection script not found: $DETECTION_SCRIPT"
+>>>>>>> origin/develop
     exit 1
 fi
 
@@ -37,7 +45,11 @@ source "$DETECTION_SCRIPT"
 SANITIZATION_SCRIPT="${ZDOTDIR:-$HOME/.config/zsh}/.zshrc.d/00_08-environment-sanitization.zsh"
 
 if [[ ! -f "$SANITIZATION_SCRIPT" ]]; then
+<<<<<<< HEAD
     zf::debug "ERROR: Environment sanitization script not found: $SANITIZATION_SCRIPT"
+=======
+        zsh_debug_echo "ERROR: Environment sanitization script not found: $SANITIZATION_SCRIPT"
+>>>>>>> origin/develop
     exit 1
 fi
 
@@ -61,7 +73,11 @@ mkdir -p "$LOG_DIR" 2>/dev/null || true
 log_test() {
     local message="$1"
     local timestamp=$(date -u '+%Y-%m-%d %H:%M:%S UTC')
+<<<<<<< HEAD
     zf::debug "[$timestamp] [TEST] [$$] $message" >>"$LOG_FILE" 2>/dev/null || true
+=======
+        zsh_debug_echo "[$timestamp] [TEST] [$$] $message" >> "$LOG_FILE" 2>/dev/null || true
+>>>>>>> origin/develop
 }
 
 run_test() {
@@ -70,17 +86,29 @@ run_test() {
 
     TEST_COUNT=$((TEST_COUNT + 1))
 
+<<<<<<< HEAD
     zf::debug "Running test $TEST_COUNT: $test_name"
+=======
+        zsh_debug_echo "Running test $TEST_COUNT: $test_name"
+>>>>>>> origin/develop
     log_test "Starting test: $test_name"
 
     if "$test_function"; then
         TEST_PASSED=$((TEST_PASSED + 1))
+<<<<<<< HEAD
         zf::debug "  ✓ PASS: $test_name"
+=======
+            zsh_debug_echo "  ✓ PASS: $test_name"
+>>>>>>> origin/develop
         log_test "PASS: $test_name"
         return 0
     else
         TEST_FAILED=$((TEST_FAILED + 1))
+<<<<<<< HEAD
         zf::debug "  ✗ FAIL: $test_name"
+=======
+            zsh_debug_echo "  ✗ FAIL: $test_name"
+>>>>>>> origin/develop
         log_test "FAIL: $test_name"
         return 1
     fi
@@ -89,10 +117,17 @@ run_test() {
 assert_function_exists() {
     local function_name="$1"
 
+<<<<<<< HEAD
     if declare -f "$function_name" >/dev/null; then
         return 0
     else
         zf::debug "    ASSERTION FAILED: Function '$function_name' should exist"
+=======
+    if declare -f "$function_name" > /dev/null; then
+        return 0
+    else
+            zsh_debug_echo "    ASSERTION FAILED: Function '$function_name' should exist"
+>>>>>>> origin/develop
         return 1
     fi
 }
@@ -103,10 +138,17 @@ assert_function_exists() {
 
 test_sanitization_functions_exist() {
     assert_function_exists "_sanitize_environment" &&
+<<<<<<< HEAD
         assert_function_exists "_sanitize_sensitive_variables" &&
         assert_function_exists "_validate_path_security" &&
         assert_function_exists "_enforce_secure_umask" &&
         assert_function_exists "_is_sensitive_variable"
+=======
+    assert_function_exists "_sanitize_sensitive_variables" &&
+    assert_function_exists "_validate_path_security" &&
+    assert_function_exists "_enforce_secure_umask" &&
+    assert_function_exists "_is_sensitive_variable"
+>>>>>>> origin/develop
 }
 
 test_sensitive_variable_detection() {
@@ -125,7 +167,11 @@ test_sensitive_variable_detection() {
     local sensitive_var
     for sensitive_var in "${test_vars[@]}"; do
         if ! _is_sensitive_variable "$sensitive_var"; then
+<<<<<<< HEAD
             zf::debug "    ASSERTION FAILED: '$sensitive_var' should be detected as sensitive"
+=======
+                zsh_debug_echo "    ASSERTION FAILED: '$sensitive_var' should be detected as sensitive"
+>>>>>>> origin/develop
             return 1
         fi
     done
@@ -134,12 +180,20 @@ test_sensitive_variable_detection() {
     local safe_var
     for safe_var in "${safe_vars[@]}"; do
         if _is_sensitive_variable "$safe_var"; then
+<<<<<<< HEAD
             zf::debug "    ASSERTION FAILED: '$safe_var' should not be detected as sensitive"
+=======
+                zsh_debug_echo "    ASSERTION FAILED: '$safe_var' should not be detected as sensitive"
+>>>>>>> origin/develop
             return 1
         fi
     done
 
+<<<<<<< HEAD
     zf::debug "    ✓ Sensitive variable detection working correctly"
+=======
+        zsh_debug_echo "    ✓ Sensitive variable detection working correctly"
+>>>>>>> origin/develop
     return 0
 }
 
@@ -154,25 +208,41 @@ test_sensitive_variable_sanitization() {
 
     # Check that sensitive variables were removed
     if [[ -n "${TEST_SECRET_KEY:-}" ]]; then
+<<<<<<< HEAD
         zf::debug "    ASSERTION FAILED: TEST_SECRET_KEY should have been sanitized"
+=======
+            zsh_debug_echo "    ASSERTION FAILED: TEST_SECRET_KEY should have been sanitized"
+>>>>>>> origin/develop
         return 1
     fi
 
     if [[ -n "${TEST_API_PASSWORD:-}" ]]; then
+<<<<<<< HEAD
         zf::debug "    ASSERTION FAILED: TEST_API_PASSWORD should have been sanitized"
+=======
+            zsh_debug_echo "    ASSERTION FAILED: TEST_API_PASSWORD should have been sanitized"
+>>>>>>> origin/develop
         return 1
     fi
 
     # Check that safe variables were preserved
     if [[ -z "${TEST_SAFE_CONFIG:-}" ]]; then
+<<<<<<< HEAD
         zf::debug "    ASSERTION FAILED: TEST_SAFE_CONFIG should have been preserved"
+=======
+            zsh_debug_echo "    ASSERTION FAILED: TEST_SAFE_CONFIG should have been preserved"
+>>>>>>> origin/develop
         return 1
     fi
 
     # Clean up
     unset TEST_SAFE_CONFIG
 
+<<<<<<< HEAD
     zf::debug "    ✓ Sensitive variable sanitization working correctly"
+=======
+        zsh_debug_echo "    ✓ Sensitive variable sanitization working correctly"
+>>>>>>> origin/develop
     return 0
 }
 
@@ -188,7 +258,11 @@ test_path_security_validation() {
     export PATH="/usr/bin:/bin:/usr/sbin:/sbin"
 
     if ! _validate_path_security >/dev/null 2>&1; then
+<<<<<<< HEAD
         zf::debug "    ASSERTION FAILED: Secure PATH should pass validation"
+=======
+            zsh_debug_echo "    ASSERTION FAILED: Secure PATH should pass validation"
+>>>>>>> origin/develop
         export PATH="$original_path"
         return 1
     fi
@@ -197,7 +271,11 @@ test_path_security_validation() {
     export PATH="/usr/bin:.:$PATH"
 
     if _validate_path_security >/dev/null 2>&1; then
+<<<<<<< HEAD
         zf::debug "    ASSERTION FAILED: Insecure PATH with relative entry should fail validation"
+=======
+            zsh_debug_echo "    ASSERTION FAILED: Insecure PATH with relative entry should fail validation"
+>>>>>>> origin/develop
         export PATH="$original_path"
         return 1
     fi
@@ -205,7 +283,11 @@ test_path_security_validation() {
     # Restore original PATH
     export PATH="$original_path"
 
+<<<<<<< HEAD
     zf::debug "    ✓ PATH security validation working correctly"
+=======
+        zsh_debug_echo "    ✓ PATH security validation working correctly"
+>>>>>>> origin/develop
     return 0
 }
 
@@ -226,7 +308,11 @@ test_umask_enforcement() {
     # Check that umask was corrected
     local new_umask=$(umask)
     if [[ "$new_umask" != "022" ]]; then
+<<<<<<< HEAD
         zf::debug "    ASSERTION FAILED: Umask should be set to 022, got $new_umask"
+=======
+            zsh_debug_echo "    ASSERTION FAILED: Umask should be set to 022, got $new_umask"
+>>>>>>> origin/develop
         umask "$original_umask"
         return 1
     fi
@@ -234,7 +320,11 @@ test_umask_enforcement() {
     # Restore original umask
     umask "$original_umask"
 
+<<<<<<< HEAD
     zf::debug "    ✓ Umask enforcement working correctly"
+=======
+        zsh_debug_echo "    ✓ Umask enforcement working correctly"
+>>>>>>> origin/develop
     return 0
 }
 
@@ -245,11 +335,19 @@ test_umask_enforcement() {
 test_shell_security_validation() {
     # Test shell security validation function
     if ! _validate_shell_security >/dev/null 2>&1; then
+<<<<<<< HEAD
         zf::debug "    WARNING: Shell security validation found issues (may be expected)"
         # Don't fail the test as some issues might be environmental
     fi
 
     zf::debug "    ✓ Shell security validation function working"
+=======
+            zsh_debug_echo "    WARNING: Shell security validation found issues (may be expected)"
+        # Don't fail the test as some issues might be environmental
+    fi
+
+        zsh_debug_echo "    ✓ Shell security validation function working"
+>>>>>>> origin/develop
     return 0
 }
 
@@ -278,19 +376,31 @@ test_comprehensive_sanitization() {
 
     # Check sensitive variable was removed
     if [[ -n "${TEST_COMPREHENSIVE_SECRET:-}" ]]; then
+<<<<<<< HEAD
         zf::debug "    ASSERTION FAILED: Sensitive variable not sanitized"
+=======
+            zsh_debug_echo "    ASSERTION FAILED: Sensitive variable not sanitized"
+>>>>>>> origin/develop
         test_passed=false
     fi
 
     # Check safe variable was preserved
     if [[ -z "${TEST_COMPREHENSIVE_SAFE:-}" ]]; then
+<<<<<<< HEAD
         zf::debug "    ASSERTION FAILED: Safe variable was incorrectly removed"
+=======
+            zsh_debug_echo "    ASSERTION FAILED: Safe variable was incorrectly removed"
+>>>>>>> origin/develop
         test_passed=false
     fi
 
     # Check umask was secured
     if [[ "$(umask)" != "022" ]]; then
+<<<<<<< HEAD
         zf::debug "    ASSERTION FAILED: Umask not properly secured"
+=======
+            zsh_debug_echo "    ASSERTION FAILED: Umask not properly secured"
+>>>>>>> origin/develop
         test_passed=false
     fi
 
@@ -300,7 +410,11 @@ test_comprehensive_sanitization() {
     umask "$original_umask"
 
     if $test_passed; then
+<<<<<<< HEAD
         zf::debug "    ✓ Comprehensive sanitization working correctly"
+=======
+            zsh_debug_echo "    ✓ Comprehensive sanitization working correctly"
+>>>>>>> origin/develop
         return 0
     else
         return 1
@@ -323,11 +437,16 @@ test_sanitization_performance() {
     local end_time=$(date +%s.%N 2>/dev/null || date +%s)
     local duration
     if command -v bc >/dev/null 2>&1; then
+<<<<<<< HEAD
         duration=$(echo "$end_time - $start_time" | bc 2>/dev/null || zf::debug "0.1")
+=======
+        duration=$(echo "$end_time - $start_time" | bc 2>/dev/null || zsh_debug_echo "0.1")
+>>>>>>> origin/develop
     else
         duration="<0.1"
     fi
 
+<<<<<<< HEAD
     zf::debug "    📊 Sanitization performance: 5 runs in ${duration}s"
 
     # Performance should be reasonable (less than 1 second for 5 runs)
@@ -341,6 +460,21 @@ test_sanitization_performance() {
         fi
     else
         zf::debug "    ✓ Sanitization performance test completed"
+=======
+        zsh_debug_echo "    📊 Sanitization performance: 5 runs in ${duration}s"
+
+    # Performance should be reasonable (less than 1 second for 5 runs)
+    if command -v bc >/dev/null 2>&1; then
+        if (( $(echo "$duration < 1.0" | bc -l 2>/dev/null || zsh_debug_echo "1") )); then
+                zsh_debug_echo "    ✓ Sanitization performance is acceptable"
+            return 0
+        else
+                zsh_debug_echo "    ⚠ Sanitization performance may be slow"
+            return 0  # Don't fail test, performance can vary
+        fi
+    else
+            zsh_debug_echo "    ✓ Sanitization performance test completed"
+>>>>>>> origin/develop
         return 0
     fi
 }
@@ -350,6 +484,7 @@ test_sanitization_performance() {
 # ------------------------------------------------------------------------------
 
 run_all_tests() {
+<<<<<<< HEAD
     zf::debug "========================================================"
     zf::debug "Environment Sanitization Test Suite"
     zf::debug "========================================================"
@@ -357,23 +492,42 @@ run_all_tests() {
     zf::debug "Execution Context: $(get_execution_context)"
     zf::debug "Sanitization Version: ${ZSH_ENV_SANITIZATION_VERSION:-unknown}"
     zf::debug ""
+=======
+        zsh_debug_echo "========================================================"
+        zsh_debug_echo "Environment Sanitization Test Suite"
+        zsh_debug_echo "========================================================"
+        zsh_debug_echo "Timestamp: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+        zsh_debug_echo "Execution Context: $(get_execution_context)"
+        zsh_debug_echo "Sanitization Version: ${ZSH_ENV_SANITIZATION_VERSION:-unknown}"
+        zsh_debug_echo ""
+>>>>>>> origin/develop
 
     log_test "Starting environment sanitization test suite"
 
     # Function Existence Tests
+<<<<<<< HEAD
     zf::debug "=== Sanitization Function Tests ==="
+=======
+        zsh_debug_echo "=== Sanitization Function Tests ==="
+>>>>>>> origin/develop
     run_test "Sanitization Functions Exist" "test_sanitization_functions_exist"
     run_test "Sensitive Variable Detection" "test_sensitive_variable_detection"
     run_test "Sensitive Variable Sanitization" "test_sensitive_variable_sanitization"
 
     # Security Validation Tests
+<<<<<<< HEAD
     zf::debug ""
     zf::debug "=== Security Validation Tests ==="
+=======
+        zsh_debug_echo ""
+        zsh_debug_echo "=== Security Validation Tests ==="
+>>>>>>> origin/develop
     run_test "PATH Security Validation" "test_path_security_validation"
     run_test "Umask Enforcement" "test_umask_enforcement"
     run_test "Shell Security Validation" "test_shell_security_validation"
 
     # Comprehensive Tests
+<<<<<<< HEAD
     zf::debug ""
     zf::debug "=== Comprehensive Sanitization Tests ==="
     run_test "Comprehensive Sanitization" "test_comprehensive_sanitization"
@@ -397,16 +551,50 @@ run_all_tests() {
         pass_percentage=$(((TEST_PASSED * 100) / TEST_COUNT))
     fi
     zf::debug "Success Rate: ${pass_percentage}%"
+=======
+        zsh_debug_echo ""
+        zsh_debug_echo "=== Comprehensive Sanitization Tests ==="
+    run_test "Comprehensive Sanitization" "test_comprehensive_sanitization"
+
+    # Performance Tests
+        zsh_debug_echo ""
+        zsh_debug_echo "=== Performance Tests ==="
+    run_test "Sanitization Performance" "test_sanitization_performance"
+
+    # Results Summary
+        zsh_debug_echo ""
+        zsh_debug_echo "========================================================"
+        zsh_debug_echo "Test Results Summary"
+        zsh_debug_echo "========================================================"
+        zsh_debug_echo "Total Tests: $TEST_COUNT"
+        zsh_debug_echo "Passed: $TEST_PASSED"
+        zsh_debug_echo "Failed: $TEST_FAILED"
+
+    local pass_percentage=0
+    if [[ $TEST_COUNT -gt 0 ]]; then
+        pass_percentage=$(( (TEST_PASSED * 100) / TEST_COUNT ))
+    fi
+        zsh_debug_echo "Success Rate: ${pass_percentage}%"
+>>>>>>> origin/develop
 
     log_test "Environment sanitization test suite completed - $TEST_PASSED/$TEST_COUNT tests passed"
 
     if [[ $TEST_FAILED -eq 0 ]]; then
+<<<<<<< HEAD
         zf::debug ""
         zf::debug "🎉 All environment sanitization tests passed!"
         return 0
     else
         zf::debug ""
         zf::debug "❌ $TEST_FAILED environment sanitization test(s) failed."
+=======
+            zsh_debug_echo ""
+            zsh_debug_echo "🎉 All environment sanitization tests passed!"
+        return 0
+    else
+            zsh_debug_echo ""
+            zsh_debug_echo "❌ $TEST_FAILED environment sanitization test(s) failed."
+>>>>>>> origin/develop
         return 1
     fi
 }
@@ -423,8 +611,13 @@ main() {
 if is_being_executed; then
     main "$@"
 elif is_being_sourced; then
+<<<<<<< HEAD
     zf::debug "Environment sanitization test functions loaded (sourced context)"
     zf::debug "Available functions: run_all_tests, individual test functions"
+=======
+        zsh_debug_echo "Environment sanitization test functions loaded (sourced context)"
+        zsh_debug_echo "Available functions: run_all_tests, individual test functions"
+>>>>>>> origin/develop
 fi
 
 # ==============================================================================

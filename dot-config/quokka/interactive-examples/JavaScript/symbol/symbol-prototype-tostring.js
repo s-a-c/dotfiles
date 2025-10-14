@@ -8,4 +8,8 @@ console.log(Symbol.for('foo').toString());
 // expected output: "Symbol(foo)"
 
 // console.log(Symbol('foo') + 'bar');
+<<<<<<< HEAD
 // expected output: Error: Can't convert symbol to string
+=======
+// expected output: Error: Can't convert symbol to string
+>>>>>>> origin/develop

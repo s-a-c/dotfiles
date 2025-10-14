@@ -16,4 +16,8 @@ $4<QDD ++++++++++++  $3++++++++++++ GFD>
      $3KKSSA. VKKK $2LJ $1KKKV .4SSKK
               $2<><><><>
                $2'MKKM'
+<<<<<<< HEAD
                  $2''
+=======
+                 $2''
+>>>>>>> origin/develop

@@ -4,4 +4,8 @@ console.log(uint8.lastIndexOf(50, 5));
 // expected output: 4
 
 console.log(uint8.lastIndexOf(50, 3));
+<<<<<<< HEAD
 // expected output: 3
+=======
+// expected output: 3
+>>>>>>> origin/develop

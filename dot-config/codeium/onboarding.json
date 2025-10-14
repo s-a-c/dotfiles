@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 {"items":[{"actionType":"ONBOARDING_ACTION_TYPE_COMMAND","completed":true},{"actionType":"ONBOARDING_ACTION_TYPE_CHAT"},{"actionType":"ONBOARDING_ACTION_TYPE_AUTOCOMPLETE","completed":true}]}
+=======
+{"items":[{"actionType":"ONBOARDING_ACTION_TYPE_COMMAND","completed":true},{"actionType":"ONBOARDING_ACTION_TYPE_CHAT"},{"actionType":"ONBOARDING_ACTION_TYPE_AUTOCOMPLETE","completed":true}]}
+>>>>>>> origin/develop

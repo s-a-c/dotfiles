@@ -9,4 +9,8 @@ if ('make' in car === false) {
 }
 
 console.log(car.make);
+<<<<<<< HEAD
 // expected output: "Suzuki"
+=======
+// expected output: "Suzuki"
+>>>>>>> origin/develop

@@ -9,4 +9,8 @@ function func1(a, b, c) {
   // expected output: 3
 }
 
+<<<<<<< HEAD
 func1(1, 2, 3);
+=======
+func1(1, 2, 3);
+>>>>>>> origin/develop

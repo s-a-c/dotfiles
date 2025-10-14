@@ -10,4 +10,8 @@ console.log(x);
 // expected output: 2
 
 console.log(y);
+<<<<<<< HEAD
 // expected output: 1
+=======
+// expected output: 1
+>>>>>>> origin/develop

@@ -8,4 +8,8 @@ if (x === 1) {
 }
 
 console.log(x);
+<<<<<<< HEAD
 // expected output: 2
+=======
+// expected output: 2
+>>>>>>> origin/develop

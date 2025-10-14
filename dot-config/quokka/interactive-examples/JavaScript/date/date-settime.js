@@ -7,4 +7,8 @@ console.log(event1);
 
 console.log(event2);
 // expected output: Thu Jul 01 1999 00:00:00 GMT+0200 (CEST)
+<<<<<<< HEAD
 // (note: your timezone may vary)
+=======
+// (note: your timezone may vary)
+>>>>>>> origin/develop

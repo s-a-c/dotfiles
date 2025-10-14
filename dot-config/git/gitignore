@@ -1,3 +1,4 @@
+<<<<<<< HEAD
  # -*- mode: gitignore; -*-
 
 # ============================================================================
@@ -270,3 +271,33 @@ dist/
 dot-config/lmstudio/server-logs/
 dot-config/zsh/.zgenom
 dot-config/zsh/.zqs-zgenom
+=======
+/.phpunit.cache
+/node_modules
+/public/build
+/public/hot
+/public/storage
+/reports
+/storage/*.key
+/storage/pail
+/vendor
+.env
+.env.backup
+.env.production
+.phpactor.json
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+/auth.json
+/.fleet
+/.idea
+/.nova
+/.vscode
+/.zed
+
+**/caddy
+frankenphp
+frankenphp-worker.php
+>>>>>>> origin/develop

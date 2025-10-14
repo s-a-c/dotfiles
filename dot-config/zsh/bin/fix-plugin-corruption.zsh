@@ -7,14 +7,22 @@ echo "🔧 Fixing zgenom plugin path corruption..."
 echo "📂 Removing corrupted zgenom cache..."
 if [[ -d ~/.config/zsh/.zgenom ]]; then
     rm -rf ~/.config/zsh/.zgenom
+<<<<<<< HEAD
         zf::debug "✅ Corrupted zgenom cache removed"
+=======
+        zsh_debug_echo "✅ Corrupted zgenom cache removed"
+>>>>>>> origin/develop
 fi
 
 # Step 2: Remove any stale zgenom source installations
 echo "📂 Cleaning zgenom source installations..."
 if [[ -d ~/.config/zsh/.zqs-zgenom ]]; then
     rm -rf ~/.config/zsh/.zqs-zgenom
+<<<<<<< HEAD
         zf::debug "✅ Zgenom source cleaned"
+=======
+        zsh_debug_echo "✅ Zgenom source cleaned"
+>>>>>>> origin/develop
 fi
 
 # Step 3: Fix the zgen-setup file to prevent the plugin corruption
@@ -26,7 +34,11 @@ ZGEN_SETUP_BACKUP="${ZGEN_SETUP_PATH}.backup.$(date +%Y%m%d_%H%M%S)"
 
 if [[ -f "$ZGEN_SETUP_PATH" ]]; then
     cp "$ZGEN_SETUP_PATH" "$ZGEN_SETUP_BACKUP"
+<<<<<<< HEAD
         zf::debug "✅ Backed up original .zgen-setup to $ZGEN_SETUP_BACKUP"
+=======
+        zsh_debug_echo "✅ Backed up original .zgen-setup to $ZGEN_SETUP_BACKUP"
+>>>>>>> origin/develop
 
     # Create a minimal .zgen-setup that loads only essential, working plugins
     cat > "$ZGEN_SETUP_PATH" << 'EOF'
@@ -59,7 +71,11 @@ if [[ ! -f "$ZGENOM_SOURCE_FILE" ]] ; then
 fi
 
 if [[ ! -f "$ZGENOM_SOURCE_FILE" ]] ; then
+<<<<<<< HEAD
       zf::debug "Can't find zgenom.zsh"
+=======
+      zsh_debug_echo "Can't find zgenom.zsh"
+>>>>>>> origin/develop
 else
   source "$ZGENOM_SOURCE_FILE"
 fi
@@ -67,7 +83,11 @@ fi
 unset ZGENOM_PARENT_DIR ZGENOM_SOURCE_FILE
 
 load-minimal-plugin-list() {
+<<<<<<< HEAD
       zf::debug "Creating minimal zgenom configuration..."
+=======
+      zsh_debug_echo "Creating minimal zgenom configuration..."
+>>>>>>> origin/develop
   ZGEN_LOADED=()
   ZGEN_COMPLETIONS=()
 
@@ -116,18 +136,30 @@ if [[ $(uname | grep -ci -e Darwin -e BSD) = 1 ]]; then
   # macOS version
   get_file_modification_time() {
     modified_time=$(stat -f %m "$1" 2> /dev/null) || modified_time=0
+<<<<<<< HEAD
         zf::debug "${modified_time}"
+=======
+        zsh_debug_echo "${modified_time}"
+>>>>>>> origin/develop
   }
 elif [[ $(uname | grep -ci Linux) = 1 ]]; then
   # Linux version
   get_file_modification_time() {
     modified_time=$(stat -c %Y "$1" 2> /dev/null) || modified_time=0
+<<<<<<< HEAD
         zf::debug "${modified_time}"
+=======
+        zsh_debug_echo "${modified_time}"
+>>>>>>> origin/develop
   }
 else
   # Unknown OS - fallback
   get_file_modification_time() {
+<<<<<<< HEAD
         zf::debug "0"
+=======
+        zsh_debug_echo "0"
+>>>>>>> origin/develop
   }
 fi
 
@@ -135,9 +167,15 @@ fi
 setup-zgen-repos
 EOF
 
+<<<<<<< HEAD
         zf::debug "✅ Created minimal .zgen-setup configuration"
 else
         zf::debug "❌ Could not find .zgen-setup file at $ZGEN_SETUP_PATH"
+=======
+        zsh_debug_echo "✅ Created minimal .zgen-setup configuration"
+else
+        zsh_debug_echo "❌ Could not find .zgen-setup file at $ZGEN_SETUP_PATH"
+>>>>>>> origin/develop
 fi
 
 # Step 4: Create a clean shell startup test
@@ -146,11 +184,19 @@ TEST_OUTPUT=$(/opt/homebrew/bin/zsh -i -c 'echo "SUCCESS: Shell started and beca
 TEST_EXIT_CODE=$?
 
 if [[ $TEST_EXIT_CODE -eq 0 ]]; then
+<<<<<<< HEAD
         zf::debug "✅ Clean shell startup test passed"
         zf::debug "🎯 Your shell should now work properly!"
 else
         zf::debug "❌ Shell startup test failed with exit code: $TEST_EXIT_CODE"
         zf::debug "Output: $TEST_OUTPUT"
+=======
+        zsh_debug_echo "✅ Clean shell startup test passed"
+        zsh_debug_echo "🎯 Your shell should now work properly!"
+else
+        zsh_debug_echo "❌ Shell startup test failed with exit code: $TEST_EXIT_CODE"
+        zsh_debug_echo "Output: $TEST_OUTPUT"
+>>>>>>> origin/develop
 fi
 
 echo ""

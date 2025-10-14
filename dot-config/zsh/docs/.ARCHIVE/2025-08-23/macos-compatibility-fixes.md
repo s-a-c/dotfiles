@@ -1,7 +1,12 @@
 # macOS Compatibility Fixes
 
+<<<<<<< HEAD
 > **Critical fixes for optimal ZSH configuration on macOS with Homebrew**
 > Implemented: August 20, 2025
+=======
+> **Critical fixes for optimal ZSH configuration on macOS with Homebrew**  
+> Implemented: August 20, 2025  
+>>>>>>> origin/develop
 > Status: ✅ Production Ready
 
 ## 📋 Table of Contents
@@ -349,6 +354,11 @@ These fixes are designed to be:
 
 ---
 
+<<<<<<< HEAD
 **Implementation Status**: ✅ **PRODUCTION READY**
 **Last Updated**: August 20, 2025
+=======
+**Implementation Status**: ✅ **PRODUCTION READY**  
+**Last Updated**: August 20, 2025  
+>>>>>>> origin/develop
 **Tested On**: macOS 14+ with Homebrew 4+

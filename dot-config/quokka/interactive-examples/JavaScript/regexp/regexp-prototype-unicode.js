@@ -11,4 +11,8 @@ console.log(regex1.source);
 // expected output: "a"
 
 console.log(regex2.source);
+<<<<<<< HEAD
 // expected output: "a"
+=======
+// expected output: "a"
+>>>>>>> origin/develop

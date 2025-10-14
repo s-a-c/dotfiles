@@ -4,4 +4,8 @@ console.log(event.toString());
 // (note: your timezone may vary)
 
 console.log(event.toISOString());
+<<<<<<< HEAD
 // expected output: 2011-10-05T14:48:00.000Z
+=======
+// expected output: 2011-10-05T14:48:00.000Z
+>>>>>>> origin/develop

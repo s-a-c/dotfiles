@@ -20,4 +20,8 @@ s:  yNm+`   .smNd+.
           /my`
            .sy`
              .+:
+<<<<<<< HEAD
                 `
+=======
+                `
+>>>>>>> origin/develop

@@ -6,4 +6,8 @@ console.log(str1.endsWith('best', 17));
 const str2 = 'Is this a question';
 
 console.log(str2.endsWith('?'));
+<<<<<<< HEAD
 // expected output: false
+=======
+// expected output: false
+>>>>>>> origin/develop

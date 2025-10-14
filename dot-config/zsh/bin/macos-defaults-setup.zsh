@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #!/usr/bin/env zsh
+=======
+#!/opt/homebrew/bin/zsh
+>>>>>>> origin/develop
 #=============================================================================
 # File: macos-defaults-setup.zsh
 # Purpose: 1.1 Configure macOS system defaults in a deferred, non-startup manner
@@ -23,23 +27,37 @@ export ORIGINAL_CWD="$(pwd)"
 # 1.3 Comprehensive Logging Setup
 _setup_logging() {
     # Use macOS-compatible date format instead of GNU format
+<<<<<<< HEAD
     local log_date=$(date +%Y-%m-%d 2>/dev/null || zf::debug "unknown")
     local log_time=$(date +%H-%M-%S 2>/dev/null || zf::debug "unknown")
+=======
+    local log_date=$(date +%Y-%m-%d 2>/dev/null || zsh_debug_echo "unknown")
+    local log_time=$(date +%H-%M-%S 2>/dev/null || zsh_debug_echo "unknown")
+>>>>>>> origin/develop
     export LOG_DIR="/Users/s-a-c/.config/zsh/logs/$log_date"
     export LOG_FILE="$LOG_DIR/macos-defaults-setup_$log_time.log"
 
     # Create log directory
     mkdir -p "$LOG_DIR"
 
+<<<<<<< HEAD
     zf::debug "==============================================================================  "
     zf::debug "macOS Defaults Setup Script Execution"
     zf::debug "Started: $(date +%Y-%m-%dT%H:%M:%SZ)"
     zf::debug "Log file: $LOG_FILE"
     zf::debug "=============================================================================="
+=======
+        zsh_debug_echo "==============================================================================  "
+        zsh_debug_echo "macOS Defaults Setup Script Execution"
+        zsh_debug_echo "Started: $(date +%Y-%m-%dT%H:%M:%SZ)"
+        zsh_debug_echo "Log file: $LOG_FILE"
+        zsh_debug_echo "=============================================================================="
+>>>>>>> origin/develop
 }
 
 # 1.4 macOS System Defaults Configuration
 _apply_macos_defaults() {
+<<<<<<< HEAD
     zf::debug ""
     zf::debug "🍎 Applying macOS system defaults..."
 
@@ -48,6 +66,16 @@ _apply_macos_defaults() {
     defaults read >"${ZDOTDIR:-$HOME}/saved_macos_defaults.plist"
 
     zf::debug "⚙️  Setting macOS defaults..."
+=======
+        zsh_debug_echo ""
+        zsh_debug_echo "🍎 Applying macOS system defaults..."
+
+    # Export current defaults for backup/comparison
+        zsh_debug_echo "📥 Backing up current defaults..."
+    defaults read > "${ZDOTDIR:-$HOME}/saved_macos_defaults.plist"
+
+        zsh_debug_echo "⚙️  Setting macOS defaults..."
+>>>>>>> origin/develop
 
     # Global settings
     defaults write -g NSWindowShouldDragOnGesture YES
@@ -110,6 +138,7 @@ _apply_macos_defaults() {
     defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
 
     # Fix for MX Master 3S (requires sudo - skip if not available)
+<<<<<<< HEAD
     zf::debug "🖱️  Applying MX Master 3S Bluetooth fix (requires sudo)..."
     if sudo -n true 2>/dev/null; then
         sudo defaults write /Library/Preferences/com.apple.airport.bt.plist bluetoothCoexMgmt Hybrid
@@ -119,30 +148,59 @@ _apply_macos_defaults() {
     fi
 
     zf::debug "✅ macOS defaults configuration complete!"
+=======
+        zsh_debug_echo "🖱️  Applying MX Master 3S Bluetooth fix (requires sudo)..."
+    if sudo -n true 2>/dev/null; then
+        sudo defaults write /Library/Preferences/com.apple.airport.bt.plist bluetoothCoexMgmt Hybrid
+            zsh_debug_echo "   ✅ MX Master 3S fix applied successfully"
+    else
+            zsh_debug_echo "   ⚠️  Skipping MX Master 3S fix - sudo not available or requires password"
+    fi
+
+        zsh_debug_echo "✅ macOS defaults configuration complete!"
+>>>>>>> origin/develop
 }
 
 # 1.5 Cleanup and Working Directory Restoration
 _cleanup() {
+<<<<<<< HEAD
     zf::debug ""
     zf::debug "🧹 Cleaning up..."
+=======
+        zsh_debug_echo ""
+        zsh_debug_echo "🧹 Cleaning up..."
+>>>>>>> origin/develop
 
     # Restore original working directory
     if [[ -n "$ORIGINAL_CWD" ]]; then
         cd "$ORIGINAL_CWD" || {
+<<<<<<< HEAD
             zf::debug "⚠️  Warning: Could not restore original directory: $ORIGINAL_CWD"
+=======
+                zsh_debug_echo "⚠️  Warning: Could not restore original directory: $ORIGINAL_CWD"
+>>>>>>> origin/develop
             exit 1
         }
     fi
 
+<<<<<<< HEAD
     zf::debug "✅ macOS defaults setup completed successfully at $(date +%Y-%m-%dT%H:%M:%SZ)"
     zf::debug "=============================================================================="
+=======
+        zsh_debug_echo "✅ macOS defaults setup completed successfully at $(date +%Y-%m-%dT%H:%M:%SZ)"
+        zsh_debug_echo "=============================================================================="
+>>>>>>> origin/develop
 }
 
 # 1.6 Main execution function
 main() {
     # Verify we're on macOS
     if [[ "$(uname)" != "Darwin" ]]; then
+<<<<<<< HEAD
         zf::debug "❌ Error: This script is only for macOS systems"
+=======
+            zsh_debug_echo "❌ Error: This script is only for macOS systems"
+>>>>>>> origin/develop
         exit 1
     fi
 

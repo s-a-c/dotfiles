@@ -12,4 +12,8 @@ class formatDate extends Date {
 }
 
 console.log(new formatDate('August 19, 1975 23:15:30').getFormattedDate());
+<<<<<<< HEAD
 // expected output: "19-Aug-1975"
+=======
+// expected output: "19-Aug-1975"
+>>>>>>> origin/develop

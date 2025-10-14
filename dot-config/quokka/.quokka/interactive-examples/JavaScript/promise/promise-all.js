@@ -7,4 +7,8 @@ var promise3 = new Promise(function(resolve, reject) {
 Promise.all([promise1, promise2, promise3]).then(function(values) {
   console.log(values);
 });
+<<<<<<< HEAD
 // expected output: Array [3, 42, "foo"]
+=======
+// expected output: Array [3, 42, "foo"]
+>>>>>>> origin/develop

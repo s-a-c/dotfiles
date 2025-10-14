@@ -52,7 +52,11 @@
  user who initiates the creation (the inviter). No orphaned teams allowed.
 
  #### 3.1.2 Rationale
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> origin/develop
  - Ensures organizational structure remains intact.
  - Prevents orphaned teams wandering aimlessly in the void.
 
@@ -145,7 +149,11 @@
  - **Super-admin**: A user with the highest privileges, capable of creating
    root-level teams.
  - **allow_subteams**: A boolean flag controlling subteam creation rights.
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> origin/develop
  ## 9. Implementation Plan
 
  ### 9.1 Plan Document

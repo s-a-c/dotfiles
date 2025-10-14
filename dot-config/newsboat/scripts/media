@@ -3,5 +3,11 @@
 if type "mpv" > /dev/null; then
 	mpv "$@" &> /dev/null &
 else
+<<<<<<< HEAD
 	echo "$@" | less
 fi
+=======
+	echo "$@" | less 
+fi
+
+>>>>>>> origin/develop

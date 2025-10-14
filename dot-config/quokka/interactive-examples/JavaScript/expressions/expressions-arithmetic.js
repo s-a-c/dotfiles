@@ -8,4 +8,8 @@ console.log(4 * 3 / 2); // 12 / 2
 
 // Number remainder and exponential
 console.log(11 % 3 ** 2); // 11 % 9
+<<<<<<< HEAD
 // expected output: 2
+=======
+// expected output: 2
+>>>>>>> origin/develop

@@ -17,9 +17,15 @@ echo -e "\n3. What load-shell-fragments actually loads (non-recursive):"
 for item in $(/bin/ls -A "$BASEDIR/.zshrc.pre-plugins.d/")
 do
     if [ -r "$BASEDIR/.zshrc.pre-plugins.d/$item" ]; then
+<<<<<<< HEAD
             zf::debug "Would load: $item"
     else
             zf::debug "Cannot read: $item"
+=======
+            zsh_debug_echo "Would load: $item"
+    else
+            zsh_debug_echo "Cannot read: $item"
+>>>>>>> origin/develop
     fi
 done
 
@@ -34,8 +40,14 @@ echo -e "\nWhat load-shell-fragments actually loads:"
 for item in $(/bin/ls -A "$BASEDIR/.zshrc.d/")
 do
     if [ -r "$BASEDIR/.zshrc.d/$item" ]; then
+<<<<<<< HEAD
             zf::debug "Would load: $item"
     else
             zf::debug "Cannot read: $item"
+=======
+            zsh_debug_echo "Would load: $item"
+    else
+            zsh_debug_echo "Cannot read: $item"
+>>>>>>> origin/develop
     fi
 done

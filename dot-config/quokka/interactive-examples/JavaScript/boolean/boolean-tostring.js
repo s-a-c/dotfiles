@@ -6,4 +6,8 @@ console.log(flag1.toString());
 const flag2 = new Boolean(1);
 
 console.log(flag2.toString());
+<<<<<<< HEAD
 // expected output: "true"
+=======
+// expected output: "true"
+>>>>>>> origin/develop

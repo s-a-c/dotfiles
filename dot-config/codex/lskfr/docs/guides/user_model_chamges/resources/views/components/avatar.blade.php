@@ -12,9 +12,15 @@
 
 <div {{ $attributes->merge(['class' => "relative inline-block {$sizeClasses}"]) }}>
     @if ($user->avatar_url)
+<<<<<<< HEAD
         <img
             src="{{ $user->avatar_url }}"
             alt="{{ $user->name }}"
+=======
+        <img 
+            src="{{ $user->avatar_url }}" 
+            alt="{{ $user->name }}" 
+>>>>>>> origin/develop
             class="rounded-full object-cover w-full h-full"
             onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&size=256&background=random';"
         >

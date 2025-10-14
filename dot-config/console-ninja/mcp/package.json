@@ -1,5 +1,9 @@
 {
   "name": "console-ninja-mcp-server",
+<<<<<<< HEAD
   "version": "1.0.484",
+=======
+  "version": "1.0.460",
+>>>>>>> origin/develop
   "main": "./index.js"
 }

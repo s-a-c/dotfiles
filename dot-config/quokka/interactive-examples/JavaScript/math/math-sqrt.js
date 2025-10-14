@@ -9,4 +9,8 @@ console.log(calcHypotenuse(5, 12));
 // expected output: 13
 
 console.log(calcHypotenuse(0, 0));
+<<<<<<< HEAD
 // expected output: 0
+=======
+// expected output: 0
+>>>>>>> origin/develop

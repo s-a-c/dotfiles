@@ -7,4 +7,8 @@ Promise.allSettled(promises).
 
 // expected output:
 // "fulfilled"
+<<<<<<< HEAD
 // "rejected"
+=======
+// "rejected"
+>>>>>>> origin/develop

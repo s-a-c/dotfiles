@@ -401,7 +401,11 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
   	// Sample the terminal screen texture including alpha channel
   	vec4 terminalColor = texture(iChannel0, uv);
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> origin/develop
   	// Combine the matrix effect with the terminal color
   	// vec3 blendedColor = terminalColor.rgb + col;
 

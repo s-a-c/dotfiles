@@ -5,4 +5,8 @@ class Array1 {
 }
 
 console.log([] instanceof Array1);
+<<<<<<< HEAD
 // expected output: true
+=======
+// expected output: true
+>>>>>>> origin/develop

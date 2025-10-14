@@ -15,4 +15,8 @@ ${c3}        `:o+++ ${c1}`ohhhhhhhhyo++os:
 ${c3}          .o:${c1}`.syhhhhhhh/${c3}.oo++o`
 ${c1}              /osyyyyyyo${c3}++ooo+++/
 ${c1}                  ````` ${c3}+oo+++o:
+<<<<<<< HEAD
 ${c3}                         `oo++.
+=======
+${c3}                         `oo++.
+>>>>>>> origin/develop

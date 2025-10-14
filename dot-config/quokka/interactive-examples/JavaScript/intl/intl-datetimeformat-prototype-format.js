@@ -11,4 +11,8 @@ var dateTimeFormat2 = new Intl.DateTimeFormat('en-GB', options1);
 console.log(dateTimeFormat2.format(date1));
 
 var dateTimeFormat3 = new Intl.DateTimeFormat('en-US', options1);
+<<<<<<< HEAD
 console.log(dateTimeFormat3.format(date1));
+=======
+console.log(dateTimeFormat3.format(date1));
+>>>>>>> origin/develop

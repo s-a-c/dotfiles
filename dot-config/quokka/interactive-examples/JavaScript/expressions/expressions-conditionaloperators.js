@@ -9,4 +9,8 @@ console.log(getFee(false));
 // expected output: "$10.00"
 
 console.log(getFee(1));
+<<<<<<< HEAD
 // expected output: "$2.00"
+=======
+// expected output: "$2.00"
+>>>>>>> origin/develop

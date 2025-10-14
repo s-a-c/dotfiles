@@ -24,4 +24,8 @@ async function doFetch(url) {
   return Number(text);
 }
 
+<<<<<<< HEAD
 getFromList();
+=======
+getFromList();
+>>>>>>> origin/develop

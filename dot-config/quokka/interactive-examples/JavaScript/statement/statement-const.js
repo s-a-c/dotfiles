@@ -9,4 +9,8 @@ try {
 }
 
 console.log(number);
+<<<<<<< HEAD
 // expected output: 42
+=======
+// expected output: 42
+>>>>>>> origin/develop

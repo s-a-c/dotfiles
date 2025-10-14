@@ -10,4 +10,8 @@ for (let val of foo()) {
 }
 
 console.log(str);
+<<<<<<< HEAD
 // expected output: "abc"
+=======
+// expected output: "abc"
+>>>>>>> origin/develop

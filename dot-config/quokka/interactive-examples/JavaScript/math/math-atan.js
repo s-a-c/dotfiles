@@ -7,4 +7,8 @@ console.log(calcAngle(8, 10));
 // expected output: 0.6747409422235527
 
 console.log(calcAngle(5, 3));
+<<<<<<< HEAD
 // expected output: 1.0303768265243125
+=======
+// expected output: 1.0303768265243125
+>>>>>>> origin/develop

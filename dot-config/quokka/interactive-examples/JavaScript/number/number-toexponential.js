@@ -9,4 +9,8 @@ console.log(expo('123456'));
 // expected output: "1.23456e+5"
 
 console.log(expo('oink'));
+<<<<<<< HEAD
 // expected output: "NaN"
+=======
+// expected output: "NaN"
+>>>>>>> origin/develop

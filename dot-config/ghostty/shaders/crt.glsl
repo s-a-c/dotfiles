@@ -307,4 +307,8 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 
   // Linear to SRGB for output.
   fragColor.rgb = ToSrgb(fragColor.rgb);
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/develop

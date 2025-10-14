@@ -8,4 +8,8 @@ console.log(x);
 // expected output: 9007199254740992
 
 console.log(x === y);
+<<<<<<< HEAD
 // expected output: true
+=======
+// expected output: true
+>>>>>>> origin/develop

@@ -1,4 +1,5 @@
 # ZSH Configuration Redesign – Consolidated Refactor Plan
+<<<<<<< HEAD
 <!-- TOC -->
 - [1. Executive Summary](#1-executive-summary)
 - [2. New Structure (Target)](#2-new-structure-target)
@@ -24,6 +25,8 @@
 - [22. Monitoring & Alert Thresholds](#22-monitoring--alert-thresholds)
 - [Appendix A: Dry-Run Promotion Checker](#appendix-a-dry-run-promotion-checker)
 <!-- /TOC -->
+=======
+>>>>>>> origin/develop
 Date: 2025-08-29
 Status: Planning Phase Complete (Implementation Pending)
 
@@ -149,6 +152,7 @@ Refinements backlog (deferred): zcompile pass, plugin diff alert tool, JSON sche
 ## 10. Action Checklist (Abbreviated)
 | Step | Done? |
 |------|-------|
+<<<<<<< HEAD
 | Baseline metrics captured (Phase 1) | ⬜ |
 | Backup created & locked (Phase 2) | ⬜ |
 | Redesign skeleton created (Phase 3) | ⬜ |
@@ -162,6 +166,18 @@ Refinements backlog (deferred): zcompile pass, plugin diff alert tool, JSON sche
 | CI/CD workflows operational (Phase 10) | ⬜ |
 | Enhancements implemented (Phase 11) | ⬜ |
 | Maintenance automation active (Phase 12) | ⬜ |
+=======
+| Baseline metrics captured | ⬜ |
+| Backup created & locked | ⬜ |
+| Redesign skeleton created | ⬜ |
+| Phase 1 migration | ⬜ |
+| Phase 2 migration | ⬜ |
+| Async modules integrated | ⬜ |
+| Performance benchmark A/B | ⬜ |
+| Threshold met (≥20%) | ⬜ |
+| Promotion executed | ⬜ |
+| Diff & metrics reports stored | ⬜ |
+>>>>>>> origin/develop
 | Rollback simulation passed | ⬜ |
 
 ---
@@ -187,6 +203,7 @@ Proceed to implementation once stakeholders confirm:
 - 20% performance target appropriate
 - Async security deferral acceptable from risk perspective
 
+<<<<<<< HEAD
 ## 14. Git Workflow & TDD Summary (New)
 A standardized Git + TDD process underpins all refactor phases to ensure atomic, test-driven, evidence-backed changes.
 
@@ -319,3 +336,7 @@ Usage:
 tools/dry-run-promotion-check.zsh [--no-perf] [--expect-modules 11] [--verbose]
 ```
 Integrate into CI prior to merge of promotion branch.
+=======
+---
+This document complements the deeper analysis (analysis.md) and operational plan (implementation-plan.md). Update sections 5–7 with actual measured values during implementation.
+>>>>>>> origin/develop

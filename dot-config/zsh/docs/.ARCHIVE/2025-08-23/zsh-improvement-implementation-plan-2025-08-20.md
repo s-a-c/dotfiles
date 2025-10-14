@@ -14,7 +14,11 @@ This document provides a comprehensive implementation plan for improving the ZSH
 
 This implementation plan consolidates recommendations from multiple analysis documents:
 - `performance-analysis.md` - Startup time optimization and bottleneck removal
+<<<<<<< HEAD
 - `security-considerations.md` - Security hardening and vulnerability mitigation
+=======
+- `security-considerations.md` - Security hardening and vulnerability mitigation  
+>>>>>>> origin/develop
 - `consistency-review.md` - Code standardization and quality improvements
 - `improvement-recommendations.md` - Comprehensive enhancement roadmap
 
@@ -404,7 +408,11 @@ This comprehensive implementation plan provides a structured approach to transfo
 - **Fixed ZSH Compatibility**: Removed invalid `export -f` syntax (bash-specific)
 - **Corrected Function Export**: Updated to use ZSH-native function availability
 - **Enhanced Robustness**: 5-method detection algorithm with fallback mechanisms
+<<<<<<< HEAD
 - **Proper Shebang**: All scripts use `#!/usr/bin/env zsh` as specified
+=======
+- **Proper Shebang**: All scripts use `#!/opt/homebrew/bin/zsh` as specified
+>>>>>>> origin/develop
 
 ### 8.2. Verification Results
 

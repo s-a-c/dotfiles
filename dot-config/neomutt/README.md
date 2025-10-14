@@ -284,3 +284,7 @@ Asciiville by viewing the files in `/usr/share/asciiville/neomutt/`. If you
 want to use the Asciiville NeoMutt setup files rather than your previously
 configured setup, move the existing `$HOME/.config/neomutt/` folder aside
 and rerun `ascinit`.
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/develop

@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 {"version":"0.6.0","laravelPath":"/Applications/TweakPHP.app/Contents/Resources/public/laravel","php":"/Users/s-a-c/Library/Application Support/Herd/bin/php","theme":"dracula","editorFontSize":15,"editorWordWrap":"on","layout":"vertical","output":"code"}
+=======
+{"version":"0.6.0","laravelPath":"/Applications/TweakPHP.app/Contents/Resources/public/laravel","php":"/Users/s-a-c/Library/Application Support/Herd/bin/php","theme":"dracula","editorFontSize":15,"editorWordWrap":"on","layout":"vertical","output":"code"}
+>>>>>>> origin/develop

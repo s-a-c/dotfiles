@@ -2,7 +2,40 @@ if [ -z "$SHELL" ]; then
     SHELL="$(which bash)"
 fi
 
+<<<<<<< HEAD
 set -o emacs
+=======
+
+## [carapace]    ## Carapace shell integration for Bash. This must be at the top of your bashrc!
+export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense' # optional
+builtin source <(carapace _carapace)
+
+## [fzf]    ## Fzf shell integration for Bash. This must be the top of your bashrc!
+[ -f ~/.fzf.bash ] && builtin source ~/.fzf.bash
+
+## [fzf-tab]    ## Fzf-tab shell integration for Bash. This must be the top of your bashrc!
+[ -f ~/.fzf-tab.bash ] && builtin source ~/.fzf-tab.bash
+
+## [ghostty]    ## Ghostty shell integration for Bash. This must be at the top of your bashrc!
+[ -n "${GHOSTTY_RESOURCES_DIR}" ] && builtin source "${GHOSTTY_RESOURCES_DIR}/shell-integration/bash/ghostty.bash"
+
+## [starship]    ## Starship shell integration for Bash. This must be the top of your bashrc!
+eval "$(starship init bash)"
+
+## [zoxide]    ## Zoxide shell integration for Bash. This must be the top of your bashrc!
+eval "$(zoxide init bash)"
+
+
+export HISTCONTROL=ignoredups:ignorespace
+export HISTFILE=~/.bash_history
+export HISTFILESIZE=120000
+export HISTIGNORE="ls:ll:cd:pwd:exit:mc:history:clear"
+export HISTSIZE=100000
+export HISTTIMEFORMAT="%F %T "
+export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND ;} history -a"
+
+bind '"\e[3~": delete-char'
+>>>>>>> origin/develop
 
 shopt -s autocd
 shopt -s assoc_expand_once
@@ -32,7 +65,11 @@ shopt -u failglob
 shopt -s force_fignore
 shopt -s globasciiranges
 shopt -s globskipdots
+<<<<<<< HEAD
 shopt -s globstar
+=======
+shopt -u globstar
+>>>>>>> origin/develop
 shopt -u gnu_errfmt
 shopt -s histappend
 shopt -s histreedit
@@ -61,6 +98,7 @@ shopt -u shift_verbose
 shopt -s sourcepath
 shopt -u varredir_close
 shopt -u xpg_echo
+<<<<<<< HEAD
 
 export PATH="opt/homebrew/bin:$PATH"
 
@@ -113,11 +151,31 @@ source "$HOME/.local/share/bash-completion/completions/deno.bash"
 
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:$HOME/.lmstudio/bin"
+=======
+# Source the Lazyman shell initialization for aliases and nvims selector
+# shellcheck source=.config/nvim-Lazyman/.lazymanrc
+[ -f ~/.config/nvim-Lazyman/.lazymanrc ] && source ~/.config/nvim-Lazyman/.lazymanrc
+# Source the Lazyman .nvimsbind for nvims key binding
+# shellcheck source=.config/nvim-Lazyman/.nvimsbind
+[ -f ~/.config/nvim-Lazyman/.nvimsbind ] && source ~/.config/nvim-Lazyman/.nvimsbind
+. "/Users/s-a-c/.local/share/cargo/env"
+
+
+PATH=~/.console-ninja/.bin:$PATH
+. "$HOME/.atuin/bin/env"
+
+[[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
+eval "$(atuin init bash)"
+source /Users/s-a-c/.local/share/bash-completion/completions/deno.bash
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/s-a-c/.lmstudio/bin"
+>>>>>>> origin/develop
 
 # --- github copilot cli ---
 eval "$(gh copilot alias -- bash)"
 
 function nvimvenv {
+<<<<<<< HEAD
     if [[ -e "$VIRTUAL_ENV" && -f "$VIRTUAL_ENV/bin/activate" ]]; then
         source "$VIRTUAL_ENV/bin/activate"
         command nvim "$@"
@@ -125,10 +183,20 @@ function nvimvenv {
     else
         command nvim "$@"
     fi
+=======
+  if [[ -e "$VIRTUAL_ENV" && -f "$VIRTUAL_ENV/bin/activate" ]]; then
+    source "$VIRTUAL_ENV/bin/activate"
+    command nvim "$@"
+    deactivate
+  else
+    command nvim "$@"
+  fi
+>>>>>>> origin/develop
 }
 
 alias nvim=nvimvenv
 
+<<<<<<< HEAD
 eval "$(uv --generate-shell-completion bash)"
 
 eval "$(uvx --generate-shell-completion bash)"
@@ -155,3 +223,11 @@ export PATH="$PATH:/Users/s-a-c/.lmstudio/bin"
 
 
 PATH=~/.console-ninja/.bin:$PATH
+=======
+
+eval "$(uv generate-shell-completion bash)"
+
+
+eval "$(uvx generate-shell-completion bash)"
+
+>>>>>>> origin/develop

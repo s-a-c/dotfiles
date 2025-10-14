@@ -8,4 +8,8 @@ console.log(descriptor1.configurable);
 // expected output: true
 
 console.log(descriptor1.value);
+<<<<<<< HEAD
 // expected output: 42
+=======
+// expected output: 42
+>>>>>>> origin/develop

@@ -8,4 +8,8 @@ console.log(Math.log2(1));
 // expected output: 0
 
 console.log(Math.log2(0));
+<<<<<<< HEAD
 // expected output: -Infinity
+=======
+// expected output: -Infinity
+>>>>>>> origin/develop

@@ -96,7 +96,11 @@ class PetHotel {
             console.log(`Room ${index + 1} - Type: ${room.type}, Dimensions: ${room.length}x${room.width}`);
         });
     }
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     bookOutHotel(): number {
         let reservedCount = 0;
         for (const room of this.rooms) {
@@ -108,4 +112,8 @@ class PetHotel {
         }
         return reservedCount;
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/develop

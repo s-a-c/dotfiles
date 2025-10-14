@@ -9,4 +9,8 @@ try {
 } catch (e) {
   console.log(e);
   // Expected output: TypeError: Cannot define property property1, object is not extensible
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/develop

@@ -9,4 +9,8 @@ console.log(int8.some(isNegative));
 // expected output: true
 
 console.log(positives.some(isNegative));
+<<<<<<< HEAD
 // expected output: false
+=======
+// expected output: false
+>>>>>>> origin/develop

@@ -17,4 +17,8 @@ console.log(Reflect.setPrototypeOf(proxy1, monsterProto));
 // expected output: false
 
 console.log(monster1.geneticallyModified);
+<<<<<<< HEAD
 // expected output: true
+=======
+// expected output: true
+>>>>>>> origin/develop

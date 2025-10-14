@@ -8,4 +8,8 @@ console.log(Math.imul(0xffffffff, 5));
 // expected output: -5
 
 console.log(Math.imul(0xfffffffe, 5));
+<<<<<<< HEAD
 // expected output: -10
+=======
+// expected output: -10
+>>>>>>> origin/develop

@@ -4,4 +4,8 @@ ${c1}      /${c2}ossssssso${c3}:
 ${c1}    /${c2}ssssssssssso${c3}+
 ${c1}  /${c2}ssssssssssssssso${c3}+
 ${c1}//${c2}osssssssssssssso${c3}+-
+<<<<<<< HEAD
  `+++++++++++++++-`
+=======
+ `+++++++++++++++-`
+>>>>>>> origin/develop

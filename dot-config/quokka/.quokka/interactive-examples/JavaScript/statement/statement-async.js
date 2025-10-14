@@ -13,4 +13,8 @@ async function asyncCall() {
   // expected output: 'resolved'
 }
 
+<<<<<<< HEAD
 asyncCall();
+=======
+asyncCall();
+>>>>>>> origin/develop

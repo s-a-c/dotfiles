@@ -37,6 +37,7 @@ graph TB
     A --> F[📁 .zshrc.Darwin.d/]
     A --> G[📁 docs/]
     A --> H[📁 zgenom/]
+<<<<<<< HEAD
 
     C --> C1[00-fzf-setup.zsh]
     C --> C2[01-completion-init.zsh]
@@ -44,21 +45,40 @@ graph TB
 
     D --> D1[010-add-plugins.zsh]
 
+=======
+    
+    C --> C1[00-fzf-setup.zsh]
+    C --> C2[01-completion-init.zsh]
+    C --> C3[02-nvm-npm-fix.zsh]
+    
+    D --> D1[010-add-plugins.zsh]
+    
+>>>>>>> origin/develop
     E --> E1[📊 00_]
     E --> E2[🛠️ 10_]
     E --> E3[🔌 20_]
     E --> E4[🎨 30_]
     E --> E5[🎯 90_/]
+<<<<<<< HEAD
 
     F --> F1[100-macos-defaults.zsh]
 
+=======
+    
+    F --> F1[100-macos-defaults.zsh]
+    
+>>>>>>> origin/develop
     E1 --> E1A[01-environment.zsh]
     E1 --> E1B[02-path-system.zsh]
     E1 --> E1C[03-options.zsh]
     E1 --> E1D[04-functions-core.zsh]
     E1 --> E1E[05-completion-finalization.zsh]
     E1 --> E1F[07-utility-functions.zsh]
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     %% Styling
     classDef main fill:#e17055,stroke:#d63031,stroke-width:3px,color:#fff
     classDef prePlugin fill:#74b9ff,stroke:#0984e3,stroke-width:2px,color:#fff
@@ -67,7 +87,11 @@ graph TB
     classDef os fill:#a29bfe,stroke:#6c5ce7,stroke-width:2px,color:#fff
     classDef docs fill:#fd79a8,stroke:#e84393,stroke-width:2px,color:#fff
     classDef system fill:#636e72,stroke:#2d3436,stroke-width:2px,color:#fff
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     class A,B main
     class C,C1,C2,C3 prePlugin
     class D,D1,H plugin
@@ -102,7 +126,11 @@ graph TB
 
 #### 00_ (6 files)
 - Environment variables and core settings
+<<<<<<< HEAD
 - PATH management and system paths
+=======
+- PATH management and system paths  
+>>>>>>> origin/develop
 - ZSH options and behavior configuration
 - Core utility functions
 - Completion system finalization
@@ -114,7 +142,11 @@ graph TB
 - Version control configurations
 - Tool-specific optimizations
 
+<<<<<<< HEAD
 #### 20_ (4 files)
+=======
+#### 20_ (4 files) 
+>>>>>>> origin/develop
 - Plugin-specific configurations
 - Plugin integration settings
 - Performance optimizations

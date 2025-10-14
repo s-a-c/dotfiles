@@ -14,4 +14,8 @@ ${c2}  +MMMMMMMNho:.`  `.:ohNMMMMMMNo ${c1}`yyyyys
 ${c2}   -hMMMMMMMMNNNmmNNNMMMMMMMMh-  ${c1}`yyyyys
 ${c2}     :yNMMMMMMMMMMMMMMMMMMNy:`   ${c1}`yyyyys
 ${c2}       .:sdNMMMMMMMMMMNds/.      ${c1}`yyyyyo
+<<<<<<< HEAD
 ${c2}           `.:/++++/:.`           ${c1}:oys+.
+=======
+${c2}           `.:/++++/:.`           ${c1}:oys+.
+>>>>>>> origin/develop

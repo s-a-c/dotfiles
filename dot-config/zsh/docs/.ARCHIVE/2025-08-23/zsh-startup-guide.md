@@ -64,7 +64,11 @@ The execution order depends on the shell type and context:
 ### `.zshenv`
 - **Purpose**: Environment variables and settings needed by all shells
 - **When**: Always executed first, regardless of shell type
+<<<<<<< HEAD
 - **Use for**:
+=======
+- **Use for**: 
+>>>>>>> origin/develop
   - `PATH` modifications
   - Essential environment variables
   - System-wide settings
@@ -113,6 +117,7 @@ The execution order depends on the shell type and context:
 ```mermaid
 flowchart TD
     A[Zsh Shell Started] --> B{Shell Type?}
+<<<<<<< HEAD
 
     B -->|Login| C[Execute .zshenv]
     B -->|Non-Login| D[Execute .zshenv]
@@ -136,6 +141,31 @@ flowchart TD
     M --> P[Shell Ready]
     N --> Q[Shell Ready]
 
+=======
+    
+    B -->|Login| C[Execute .zshenv]
+    B -->|Non-Login| D[Execute .zshenv]
+    
+    C --> E{Interactive?}
+    D --> F{Interactive?}
+    
+    E -->|Yes| G[Execute .zprofile]
+    E -->|No| H[Execute .zprofile]
+    
+    F -->|Yes| I[Execute .zshrc]
+    F -->|No| J[Shell Ready]
+    
+    G --> K[Execute .zshrc]
+    H --> L[Execute .zlogin]
+    
+    K --> M[Execute .zlogin]
+    I --> N[Shell Ready]
+    
+    L --> O[Shell Ready]
+    M --> P[Shell Ready]
+    N --> Q[Shell Ready]
+    
+>>>>>>> origin/develop
     style A fill:#2d3748,stroke:#4a5568,stroke-width:2px,color:#fff
     style B fill:#2b6cb0,stroke:#3182ce,stroke-width:2px,color:#fff
     style E fill:#2b6cb0,stroke:#3182ce,stroke-width:2px,color:#fff
@@ -165,19 +195,31 @@ flowchart LR
         C[.zshrc<br/>Interactive Setup]
         D[.zlogin<br/>Final Login Setup]
     end
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     subgraph "Content Types"
         E[PATH & Environment<br/>Variables]
         F[Login Messages<br/>One-time Tasks]
         G[Aliases, Functions<br/>Prompt, Plugins]
         H[Welcome Messages<br/>Final Tasks]
     end
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     A --> E
     B --> F
     C --> G
     D --> H
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     style A fill:#2d5a27,stroke:#38a169,stroke-width:3px,color:#fff
     style B fill:#744210,stroke:#d69e2e,stroke-width:3px,color:#fff
     style C fill:#9c2c20,stroke:#e53e3e,stroke-width:3px,color:#fff
@@ -210,7 +252,11 @@ For complex configurations, consider organizing files in directories:
 ```
 ~/.config/zsh/
 ├── .zshenv
+<<<<<<< HEAD
 ├── .zprofile
+=======
+├── .zprofile  
+>>>>>>> origin/develop
 ├── .zshrc
 ├── pre-plugins.d/
 │   ├── 001-paths.zsh
@@ -319,7 +365,11 @@ export EDITOR="nvim"
 # PATH modifications for all shells
 ```
 
+<<<<<<< HEAD
 #### 2. Login Setup (`.zprofile`)
+=======
+#### 2. Login Setup (`.zprofile`) 
+>>>>>>> origin/develop
 ```bash
 # Keep the same - login-specific setup
 # One-time login tasks
@@ -340,7 +390,11 @@ Instead of customizing `.zshrc` directly, use:
 ```
 ~/.config/zsh/
 ├── dot-zshrc.pre-plugins.d/    # Before plugin loading
+<<<<<<< HEAD
 ├── dot-zshrc.add-plugins.d/    # Plugin definitions
+=======
+├── dot-zshrc.add-plugins.d/    # Plugin definitions  
+>>>>>>> origin/develop
 └── dot-zshrc.d/                # After plugin loading
 ```
 
@@ -360,7 +414,11 @@ flowchart TD
     D --> E[Generate plugin cache]
     E --> F[Load post-plugins.d]
     F --> G[Source .zshrc.local if exists]
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     style A fill:#1a202c,stroke:#2d3748,stroke-width:3px,color:#fff
     style B fill:#2d5a27,stroke:#38a169,stroke-width:2px,color:#fff
     style C fill:#744210,stroke:#d69e2e,stroke-width:2px,color:#fff
@@ -413,7 +471,11 @@ If migrating from standard zsh to zsh-quickstart-kit:
 1. **Keep** `.zshenv` and `.zprofile` unchanged
 2. **Split** your `.zshrc` into:
    - Pre-plugin setup → `pre-plugins.d/`
+<<<<<<< HEAD
    - Plugin loading → `add-plugins.d/`
+=======
+   - Plugin loading → `add-plugins.d/` 
+>>>>>>> origin/develop
    - Post-plugin customizations → `dot-zshrc.d/`
 3. **Use** `.zshrc.local` for simple personal additions
 4. **Test** the new setup incrementally
@@ -443,7 +505,11 @@ If migrating from standard zsh to zsh-quickstart-kit:
 - [Zsh Benchmark](https://github.com/romkatv/zsh-bench) - Benchmark zsh and its plugins
 - [Zsh Performance Analysis](https://blog.jonlu.ca/posts/speeding-up-zsh) - Guide to optimizing zsh startup time
 
+<<<<<<< HEAD
 ### Best Practices Guides
+=======
+### Best Practices Guides  
+>>>>>>> origin/develop
 - [XDG Base Directory Specification](https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html) - Standard for organizing configuration files
 - [Dotfiles Best Practices](https://dotfiles.github.io/) - Community guide to dotfiles management
 

@@ -4,4 +4,8 @@ console.log(result);
 // expected output: 2.7755575615628914e-17
 
 console.log(result < Number.EPSILON);
+<<<<<<< HEAD
 // expected output: true
+=======
+// expected output: true
+>>>>>>> origin/develop

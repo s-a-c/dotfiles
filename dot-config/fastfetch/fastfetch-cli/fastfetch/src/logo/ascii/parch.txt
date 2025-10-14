@@ -22,4 +22,8 @@
       :ddddddoooolllllccc
         ;ddooooolllllcc.
            :ooollllc.
+<<<<<<< HEAD
                c'
+=======
+               c'
+>>>>>>> origin/develop

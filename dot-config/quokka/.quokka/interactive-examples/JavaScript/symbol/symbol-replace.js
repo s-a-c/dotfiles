@@ -8,4 +8,8 @@ class Replace1 {
 }
 
 console.log('foo'.replace(new Replace1('bar')));
+<<<<<<< HEAD
 // expected output: "s/foo/bar/g"
+=======
+// expected output: "s/foo/bar/g"
+>>>>>>> origin/develop

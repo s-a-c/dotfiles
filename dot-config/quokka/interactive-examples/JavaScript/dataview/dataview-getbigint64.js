@@ -8,4 +8,8 @@ const view = new DataView(buffer);
 view.setBigInt64(1, max);
 
 console.log(view.getBigInt64(1));
+<<<<<<< HEAD
 // expected output: 9223372036854775807
+=======
+// expected output: 9223372036854775807
+>>>>>>> origin/develop

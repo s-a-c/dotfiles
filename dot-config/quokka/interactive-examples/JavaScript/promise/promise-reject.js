@@ -7,4 +7,8 @@ function rejected(result) {
 }
 
 Promise.reject(new Error('fail')).then(resolved, rejected);
+<<<<<<< HEAD
 // expected output: Error: fail
+=======
+// expected output: Error: fail
+>>>>>>> origin/develop

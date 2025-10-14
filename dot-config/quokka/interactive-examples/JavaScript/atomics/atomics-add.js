@@ -8,4 +8,8 @@ console.log(Atomics.add(uint8, 0, 2));
 // expected output: 7
 
 console.log(Atomics.load(uint8, 0));
+<<<<<<< HEAD
 // expected output: 9
+=======
+// expected output: 9
+>>>>>>> origin/develop

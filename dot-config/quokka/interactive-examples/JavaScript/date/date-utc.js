@@ -5,4 +5,8 @@ console.log(utcDate1.toUTCString());
 // expected output: Fri, 02 Feb 1996 03:04:05 GMT
 
 console.log(utcDate2.toUTCString());
+<<<<<<< HEAD
 // expected output: Sun, 31 Dec 1899 00:00:00 GMT
+=======
+// expected output: Sun, 31 Dec 1899 00:00:00 GMT
+>>>>>>> origin/develop

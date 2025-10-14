@@ -16,4 +16,8 @@ ${c3} .X.       oMMMMW.                      l.
   dMk:..;xWMMMMW,
    kMMMMMMMMMMX.
     :XMMMMMMK:
+<<<<<<< HEAD
       ':MM:"      Made in Brazil
+=======
+      ':MM:"      Made in Brazil
+>>>>>>> origin/develop

@@ -14,4 +14,8 @@ const handler1 = {
 const proxy1 = new Proxy(monster1, handler1);
 
 console.log(new proxy1('fierce').disposition);
+<<<<<<< HEAD
 // expected output: "fierce"
+=======
+// expected output: "fierce"
+>>>>>>> origin/develop

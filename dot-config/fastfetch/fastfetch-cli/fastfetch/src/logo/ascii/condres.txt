@@ -14,4 +14,8 @@ ${c2}/hhddddddddy${c1}-syyyyyys+${c3}ooooo++++++++++++:
 ${c2}/hhhddddddddy${c1}-+yyyy+${c3}/ooooo+++++++++++++:
 ${c2}/hhhhhdddddhhy${c1}./yo:${c3}+oooooo+++++++++++++/
 ${c2}/hhhhhhhhhhhhhy${c1}:-.${c3}+sooooo+++++++++++///:
+<<<<<<< HEAD
 ${c2}:sssssssssssso++${c1}${c3}`:/:--------.````````
+=======
+${c2}:sssssssssssso++${c1}${c3}`:/:--------.````````
+>>>>>>> origin/develop

@@ -5,4 +5,8 @@ const view = new DataView(buffer);
 view.setInt8(1, 127); // (max signed 8-bit integer)
 
 console.log(view.getInt8(1));
+<<<<<<< HEAD
 // expected output: 127
+=======
+// expected output: 127
+>>>>>>> origin/develop

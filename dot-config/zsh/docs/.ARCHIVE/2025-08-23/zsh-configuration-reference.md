@@ -1,7 +1,12 @@
 # Zsh Configuration Reference
 
+<<<<<<< HEAD
 > **Comprehensive documentation of all active Zsh configuration scripts and folders**
 > Generated: 2025-08-18T20:51:14Z
+=======
+> **Comprehensive documentation of all active Zsh configuration scripts and folders**  
+> Generated: 2025-08-18T20:51:14Z  
+>>>>>>> origin/develop
 > ZDOTDIR: `/Users/s-a-c/.config/zsh`
 
 ## 📋 Table of Contents
@@ -68,7 +73,11 @@ The Zsh configuration loads in the following order:
 
 ```
 ├── 00_           # Core system setup
+<<<<<<< HEAD
 ├── 10_          # Tool configurations
+=======
+├── 10_          # Tool configurations  
+>>>>>>> origin/develop
 ├── 20_        # Plugin preparation
 ├── 30_             # UI and theme setup
 └── 90_/       # Pre-plugin finalization
@@ -80,7 +89,11 @@ The Zsh configuration loads in the following order:
 - Plugin manager initialization
 - Theme preparation
 
+<<<<<<< HEAD
 ### 2. `.zshrc.d/` (Post-Plugin Configuration)
+=======
+### 2. `.zshrc.d/` (Post-Plugin Configuration) 
+>>>>>>> origin/develop
 **38 scripts** loaded after plugins are initialized.
 
 ```
@@ -162,7 +175,11 @@ Located in `zsh-quickstart-kit/` directory providing:
 - **`completions/`** - Custom completion scripts
 - **`tests/`** - Configuration testing scripts
   - `test_config.zsh`
+<<<<<<< HEAD
   - `test-loading.zsh`
+=======
+  - `test-loading.zsh` 
+>>>>>>> origin/develop
   - `test-recursive-loading.zsh`
 
 ### System Files

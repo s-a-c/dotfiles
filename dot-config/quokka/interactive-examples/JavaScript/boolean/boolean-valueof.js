@@ -6,4 +6,8 @@ console.log(x.valueOf());
 const y = new Boolean("Mozilla");
 
 console.log(y.valueOf());
+<<<<<<< HEAD
 // expected output: true
+=======
+// expected output: true
+>>>>>>> origin/develop

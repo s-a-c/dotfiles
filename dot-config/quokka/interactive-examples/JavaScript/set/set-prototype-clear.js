@@ -8,4 +8,8 @@ console.log(set1.size);
 set1.clear();
 
 console.log(set1.size);
+<<<<<<< HEAD
 // expected output: 0
+=======
+// expected output: 0
+>>>>>>> origin/develop

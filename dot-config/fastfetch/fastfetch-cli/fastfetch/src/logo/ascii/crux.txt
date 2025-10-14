@@ -15,4 +15,8 @@ xx$2dx$1kxxOKN$3WMMWN$10xdoxo::c
 $2xOkkO$10oo$3odOW$2WW$1XkdodOxc:l
 $2dkkkxkkk$3OKX$2NNNX0Oxx$1xc:cd
  $2odxxdx$3xllo$2dddooxx$1dc:ldo
+<<<<<<< HEAD
    $2lodd$1dolccc$2ccox$1xoloo
+=======
+   $2lodd$1dolccc$2ccox$1xoloo
+>>>>>>> origin/develop

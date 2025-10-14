@@ -9,4 +9,8 @@ console.log('2016-01-02'.split(new RegExp1('-')));
 // expected output: Array ["(2016)", "(01)", "(02)"]
 
 console.log('2016-01-02'.split(new RegExp('-')));
+<<<<<<< HEAD
 // expected output: Array ["2016", "01", "02"]
+=======
+// expected output: Array ["2016", "01", "02"]
+>>>>>>> origin/develop

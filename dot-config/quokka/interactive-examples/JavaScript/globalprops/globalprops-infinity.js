@@ -6,4 +6,8 @@ if (maxNumber === Infinity) {
 }
 
 console.log(1 / maxNumber);
+<<<<<<< HEAD
 // expected output: 0
+=======
+// expected output: 0
+>>>>>>> origin/develop

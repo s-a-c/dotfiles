@@ -14,4 +14,8 @@ $3;                        :
   'X                        K.
     $5k                      d
      ;K       WXXW       k.
+<<<<<<< HEAD
        "cooc*"    "*coo'"
+=======
+       "cooc*"    "*coo'"
+>>>>>>> origin/develop

@@ -9,4 +9,8 @@ console.log(deCollator.compare('z', 'ä') > 0);
 // expected output: true
 
 console.log(svCollator.compare('z', 'ä') > 0);
+<<<<<<< HEAD
 // expected output: true
+=======
+// expected output: true
+>>>>>>> origin/develop

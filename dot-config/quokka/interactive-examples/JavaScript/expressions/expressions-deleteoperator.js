@@ -9,4 +9,8 @@ console.log(Employee.firstname);
 delete Employee.firstname;
 
 console.log(Employee.firstname);
+<<<<<<< HEAD
 // expected output: undefined
+=======
+// expected output: undefined
+>>>>>>> origin/develop

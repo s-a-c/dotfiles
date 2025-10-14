@@ -1,5 +1,9 @@
 // sligltly modified version of https://www.shadertoy.com/view/DsVSDV
+<<<<<<< HEAD
 // The only changes are done in the mainImage function
+=======
+// The only changes are done in the mainImage function 
+>>>>>>> origin/develop
 // Ive added comments on what to modify
 // works really well with most colorschemes
 
@@ -32,13 +36,21 @@ float innerGear(vec2 p, float dir){
     d = min(d,d2);
     d2 = abs(length(p)-0.499)-0.005;
     d = min(d,d2);
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     p = DF(p,7.);
     p-=vec2(0.43);
     p*=Rot(deg45);
     d2 = B(p,vec2(0.01,0.04));
     d = min(d,d2);
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     return d;
 }
 
@@ -46,18 +58,31 @@ vec3 pattern1(vec2 p, vec3 col, float dir){
     vec2 prevP = p;
     float size = 0.499;
     float thick = 0.15;
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     p+=vec2(size);
     float d = abs(length(p)-size)-thick;
     d = max(d,innerGear(p,dir));
     col = mix(col,vec3(1.),S(d,0.0));
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     p = prevP;
     p-=vec2(size);
     d = abs(length(p)-size)-thick;
     d = max(d,innerGear(p,dir));
+<<<<<<< HEAD
     col = mix(col,vec3(1.),S(d,0.0));
 
+=======
+    col = mix(col,vec3(1.),S(d,0.0));  
+    
+>>>>>>> origin/develop
     return col;
 }
 
@@ -68,10 +93,17 @@ vec3 pattern2(vec2 p, vec3 col, float dir){
     float thick = 0.15;
     float thift = 0.0;
     float speed = 0.3;
+<<<<<<< HEAD
 
     p-=vec2(size,0.);
     float d = B(p,vec2(size,thick));
 
+=======
+    
+    p-=vec2(size,0.);
+    float d = B(p,vec2(size,thick));
+    
+>>>>>>> origin/develop
     p.x+=thift;
     p.x-=iTime*speed*dir;
     p.x=mod(p.x,0.08)-0.04;
@@ -81,20 +113,33 @@ vec3 pattern2(vec2 p, vec3 col, float dir){
     //d = min(B(p,vec2(1.,0.1)),d);
     p.y=abs(p.y)-0.079;
     d = min(B(p,vec2(1.,0.02)),d);
+<<<<<<< HEAD
 
     p = prevP;
     p-=vec2(0.0,size);
     float d2 = B(p,vec2(thick,size));
 
+=======
+    
+    p = prevP;
+    p-=vec2(0.0,size);
+    float d2 = B(p,vec2(thick,size));
+    
+>>>>>>> origin/develop
     p.y+=thift;
     p.y+=iTime*speed*dir;
     p.y=mod(p.y,0.08)-0.04;
     d2 = max(d2,B(p,vec2(thick,0.011)));
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     p = prevP;
     d2 = max(-(abs(p.x)-0.1),d2);
     d2 = min(B(p,vec2(0.005,1.)),d2);
     p.x=abs(p.x)-0.079;
+<<<<<<< HEAD
     d2 = min(B(p,vec2(0.02,1.)),d2);
 
     d = min(d,d2);
@@ -103,15 +148,30 @@ vec3 pattern2(vec2 p, vec3 col, float dir){
     p+=vec2(0.0,size);
     d2 = B(p,vec2(thick,size));
 
+=======
+    d2 = min(B(p,vec2(0.02,1.)),d2);    
+    
+    d = min(d,d2);
+    
+    p = prevP;
+    p+=vec2(0.0,size);
+    d2 = B(p,vec2(thick,size));
+    
+>>>>>>> origin/develop
     p.y+=thift;
     p.y-=iTime*speed*dir;
     p.y=mod(p.y,0.08)-0.04;
     d2 = max(d2,B(p,vec2(thick,0.011)));
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/develop
     p = prevP;
     d2 = max(-(abs(p.x)-0.1),d2);
     d2 = min(B(p,vec2(0.005,1.)),d2);
     p.x=abs(p.x)-0.079;
+<<<<<<< HEAD
     d2 = min(B(p,vec2(0.02,1.)),d2);
 
     d = min(d,d2);
@@ -120,15 +180,30 @@ vec3 pattern2(vec2 p, vec3 col, float dir){
     p+=vec2(size,0.0);
     d2 = B(p,vec2(size,thick));
 
+=======
+    d2 = min(B(p,vec2(0.02,1.)),d2);   
+    
+    d = min(d,d2);
+    
+    p = prevP;
+    p+=vec2(size,0.0);
+    d2 = B(p,vec2(size,thick));
+    
+>>>>>>> origin/develop
     p.x+=thift;
     p.x+=iTime*speed*dir;
     p.x=mod(p.x,0.08)-0.04;
     d2 = max(d2,B(p,vec2(0.011,thick)));
+<<<<<<< HEAD
     d = min(d,d2);
+=======
+    d = min(d,d2);    
+>>>>>>> origin/develop
     p = prevP;
     d = max(-(abs(p.y)-0.1),d);
     d = min(B(p,vec2(1.,0.005)),d);
     p.y=abs(p.y)-0.079;
+<<<<<<< HEAD
     d = min(B(p,vec2(1.,0.02)),d);
 
     p = prevP;
@@ -144,18 +219,43 @@ vec3 pattern2(vec2 p, vec3 col, float dir){
     d = B(p,vec2(0.03));
     col = mix(col,vec3(1.),S(d,0.0));
 
+=======
+    d = min(B(p,vec2(1.,0.02)),d);    
+    
+    p = prevP;
+    d2 = abs(B(p,vec2(size*0.3)))-0.05;
+    d = min(d,d2); 
+    
+    col = mix(col,vec3(1.),S(d,0.0));
+    
+    d = B(p,vec2(0.08));
+    col = mix(col,vec3(0.),S(d,0.0));
+    
+    p*=Rot(radians(60.*iTime*dir));
+    d = B(p,vec2(0.03));
+    col = mix(col,vec3(1.),S(d,0.0));     
+     
+>>>>>>> origin/develop
     return col;
 }
 
 vec3 drawBelt(vec2 p, vec3 col, float size){
     vec2 prevP = p;
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     p*=size;
     vec2 id = floor(p);
     vec2 gr = fract(p)-0.5;
     float dir = mod(id.x+id.y,2.)*2.-1.;
     float n = random(id);
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     if(n<0.5){
         if(n<0.25){
             gr.x*=-1.;
@@ -167,7 +267,11 @@ vec3 drawBelt(vec2 p, vec3 col, float size){
         }
         col = pattern2(gr,col,dir);
     }
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     return col;
 }
 
@@ -183,7 +287,11 @@ vec3 gear(vec2 p, vec3 col, float dir){
     float d2 = abs(length(p)-0.29)-0.02;
     d = min(d,d2);
     col = mix(col,vec3(1.),S(d,0.0));
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     p*=Rot(radians(iTime*30.-30.)*dir);
     p = DF(p,6.);
     p-=vec2(0.14);
@@ -195,7 +303,11 @@ vec3 gear(vec2 p, vec3 col, float dir){
     d2 = max(-(abs(p.x)-0.05),d2);
     d = min(d,d2);
     col = mix(col,vec3(1.),S(d,0.0));
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     return col;
 }
 
@@ -205,6 +317,7 @@ vec3 item0(vec2 p, vec3 col, float dir){
     p*=Rot(radians(iTime*30.+30.));
     float d = abs(length(p)-0.2)-0.05;
     col = mix(col,vec3(0.3),S(d,0.0));
+<<<<<<< HEAD
 
     d = abs(length(p)-0.2)-0.05;
     d = max(-p.x,d);
@@ -212,6 +325,15 @@ vec3 item0(vec2 p, vec3 col, float dir){
 
     col = mix(col,vec3(a),S(d,0.0));
 
+=======
+    
+    d = abs(length(p)-0.2)-0.05;
+    d = max(-p.x,d);
+    float a = clamp(atan(p.x,p.y)*0.5,0.3,1.);
+    
+    col = mix(col,vec3(a),S(d,0.0));
+    
+>>>>>>> origin/develop
     return col;
 }
 
@@ -225,14 +347,22 @@ vec3 item1(vec2 p, vec3 col, float dir){
     float d2 = abs(length(p)-0.25)-0.01;
     d2 = max((abs(p.y)-0.12),d2);
     d = min(d,d2);
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     d2 = abs(length(p)-0.27)-0.01;
     d2 = max(-(abs(p.y)-0.22),d2);
     d = min(d,d2);
     d2 = B(p,vec2(0.01,0.32));
     d2 = max(-(abs(p.y)-0.22),d2);
     d = min(d,d2);
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     p = prevP;
     p*=Rot(radians(iTime*-20.+30.));
     p = DF(p,2.);
@@ -240,15 +370,25 @@ vec3 item1(vec2 p, vec3 col, float dir){
     p*=Rot(radians(45.));
     d2 = B(p,vec2(0.03,0.01));
     d = min(d,d2);
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     p = prevP;
     d2 = abs(length(p)-0.09)-0.005;
     d2 = max(-(abs(p.x)-0.03),d2);
     d2 = max(-(abs(p.y)-0.03),d2);
     d = min(d,d2);
+<<<<<<< HEAD
 
     col = mix(col,vec3(0.6),S(d,0.0));
 
+=======
+    
+    col = mix(col,vec3(0.6),S(d,0.0));
+    
+>>>>>>> origin/develop
     return col;
 }
 
@@ -260,22 +400,38 @@ vec3 item2(vec2 p, vec3 col, float dir){
     float d2 =  abs(length(p)-0.2)-0.01;
     d2 = max((abs(p.y)-0.15),d2);
     d = min(d,d2);
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     p = DF(p,1.);
     p-=vec2(0.13);
     p*=Rot(radians(45.));
     d2 = B(p,vec2(0.008,0.1));
+<<<<<<< HEAD
     d = min(d,d2);
 
+=======
+    d = min(d,d2);    
+    
+>>>>>>> origin/develop
     p = prevP;
     p = DF(p,4.);
     p-=vec2(0.18);
     p*=Rot(radians(45.));
     d2 = B(p,vec2(0.005,0.02));
+<<<<<<< HEAD
     d = min(d,d2);
 
     col = mix(col,vec3(0.6),S(d,0.0));
 
+=======
+    d = min(d,d2);   
+    
+    col = mix(col,vec3(0.6),S(d,0.0));
+    
+>>>>>>> origin/develop
     return col;
 }
 
@@ -296,10 +452,17 @@ float needle(vec2 p){
 }
 
 vec3 item3(vec2 p, vec3 col, float dir){
+<<<<<<< HEAD
 
     p*=Rot(radians(sin(iTime*dir)*120.));
     vec2 prevP = p;
 
+=======
+    
+    p*=Rot(radians(sin(iTime*dir)*120.));
+    vec2 prevP = p;
+   
+>>>>>>> origin/develop
     p.y= abs(p.y)-0.05;
     float d = needle(p);
     p = prevP;
@@ -309,16 +472,27 @@ vec3 item3(vec2 p, vec3 col, float dir){
     d2 = abs(length(p)-0.2)-0.005;
     d2 = max(-(abs(p.x)-0.08),d2);
     d = min(d,d2);
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     p = DF(p,4.);
     p-=vec2(0.18);
     d2 = length(p)-0.01;
     p = prevP;
     d2 = max(-(abs(p.x)-0.03),d2);
+<<<<<<< HEAD
     d = min(d,d2);
 
     col = mix(col,vec3(0.6),S(d,0.0));
 
+=======
+    d = min(d,d2);   
+    
+    col = mix(col,vec3(0.6),S(d,0.0));
+    
+>>>>>>> origin/develop
     return col;
 }
 
@@ -326,10 +500,17 @@ vec3 drawGearsAndItems(vec2 p, vec3 col, float size){
     vec2 prevP = p;
     p*=size;
     p+=vec2(0.5);
+<<<<<<< HEAD
 
     vec2 id = floor(p);
     vec2 gr = fract(p)-0.5;
 
+=======
+    
+    vec2 id = floor(p);
+    vec2 gr = fract(p)-0.5;
+    
+>>>>>>> origin/develop
     float n = random(id);
     float dir = mod(id.x+id.y,2.)*2.-1.;
     if(n<0.3){
@@ -343,7 +524,11 @@ vec3 drawGearsAndItems(vec2 p, vec3 col, float size){
     } else if(n>=0.8){
         col = item3(gr,col,dir);
     }
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     return col;
 }
 
@@ -352,6 +537,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     vec2 p = (fragCoord-0.5*iResolution.xy)/iResolution.y;
     // set speed of downwards motion
     p.y+=iTime*0.02;
+<<<<<<< HEAD
 
     float size = 4.;
     vec3 col = vec3(0.);
@@ -373,5 +559,28 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     // Blend with reduced opacity for the shader elements
     vec3 blendedColor = terminalColor.rgb + col.rgb * 0.7; // Reduced blend factor
 
+=======
+    
+    float size = 4.;
+    vec3 col = vec3(0.);
+    
+    // Modify the colors to be darker by multiplying with a small factor
+    vec3 darkFactor = vec3(.5); // This makes everything 50% as bright
+    
+    // Get the original colors but make them darker
+    col = drawBelt(p, col, size) * darkFactor;
+    col = drawGearsAndItems(p, col, size) * darkFactor;
+    
+    // Additional option: you can add a color tint to make it less stark white
+    vec3 tint = vec3(0.1, 0.12, 0.15); // Slight blue-ish dark tint
+    col = col * tint;
+    
+    vec2 uv = fragCoord/iResolution.xy;
+    vec4 terminalColor = texture(iChannel0, uv);
+    
+    // Blend with reduced opacity for the shader elements
+    vec3 blendedColor = terminalColor.rgb + col.rgb * 0.7; // Reduced blend factor
+    
+>>>>>>> origin/develop
     fragColor = vec4(blendedColor, terminalColor.a);
 }

@@ -8,4 +8,8 @@ console.log(Math.hypot(3, 4, 5));
 // expected output: 7.0710678118654755
 
 console.log(Math.hypot(-5));
+<<<<<<< HEAD
 // expected output: 5
+=======
+// expected output: 5
+>>>>>>> origin/develop

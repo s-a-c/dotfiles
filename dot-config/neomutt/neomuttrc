@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #
 # ME's personal .muttrc (Mutt 0.92.5)
@@ -338,6 +339,8 @@ source ~/.muttrc-local	# config commands local to this site
 # EOF
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+=======
+>>>>>>> origin/develop
 
 source ~/.config/neomutt/colors
 source ~/.config/neomutt/headers

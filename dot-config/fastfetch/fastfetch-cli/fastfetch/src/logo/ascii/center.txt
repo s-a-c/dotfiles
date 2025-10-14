@@ -10,4 +10,8 @@
         :d:.,xcld,.,:.
     ;l,    .l;     ';'
             .o;
+<<<<<<< HEAD
             l,
+=======
+            l,
+>>>>>>> origin/develop

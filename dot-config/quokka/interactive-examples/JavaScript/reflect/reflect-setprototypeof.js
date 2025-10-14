@@ -9,4 +9,8 @@ console.log(Reflect.setPrototypeOf(object1, null));
 const object2 = {};
 
 console.log(Reflect.setPrototypeOf(Object.freeze(object2), null));
+<<<<<<< HEAD
 // expected output: false
+=======
+// expected output: false
+>>>>>>> origin/develop

@@ -2,12 +2,20 @@
 name: CI Core
 on:
   push:
+<<<<<<< HEAD
     branches: [ main ]
+=======
+    branches: [ main, develop ]
+>>>>>>> origin/develop
     paths:
       - 'dot-config/zsh/**'
       - '.github/workflows/ci-core.yml'
   pull_request:
+<<<<<<< HEAD
     branches: [ main ]
+=======
+    branches: [ main, develop ]
+>>>>>>> origin/develop
     paths:
       - 'dot-config/zsh/**'
       - '.github/workflows/ci-core.yml'

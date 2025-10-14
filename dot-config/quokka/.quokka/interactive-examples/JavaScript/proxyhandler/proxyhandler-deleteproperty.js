@@ -19,4 +19,8 @@ const proxy1 = new Proxy(monster1, handler1);
 delete proxy1.texture;
 
 console.log(monster1.texture);
+<<<<<<< HEAD
 // expected output: undefined
+=======
+// expected output: undefined
+>>>>>>> origin/develop

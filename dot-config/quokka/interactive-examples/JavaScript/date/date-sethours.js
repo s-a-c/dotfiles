@@ -8,4 +8,8 @@ console.log(event);
 event.setHours(20,21,22);
 
 console.log(event);
+<<<<<<< HEAD
 // expected output: Tue Aug 19 1975 20:21:22 GMT+0200 (CEST)
+=======
+// expected output: Tue Aug 19 1975 20:21:22 GMT+0200 (CEST)
+>>>>>>> origin/develop

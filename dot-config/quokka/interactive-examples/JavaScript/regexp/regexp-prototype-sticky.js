@@ -10,4 +10,8 @@ console.log(regex1.test(str1));
 // expected output: true
 
 console.log(regex1.test(str1));
+<<<<<<< HEAD
 // expected output: false
+=======
+// expected output: false
+>>>>>>> origin/develop

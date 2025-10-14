@@ -6,4 +6,8 @@ console.log(event.getMilliseconds());
 event.setMilliseconds(456);
 
 console.log(event.getMilliseconds());
+<<<<<<< HEAD
 // expected output: 456
+=======
+// expected output: 456
+>>>>>>> origin/develop

@@ -12,4 +12,8 @@ ${c2}dMMMMXd,     `OMMMMMMWk${c1}ccc;:''` ,ccccccc:
 ${c2}XMMMMMMMWKkxxOWMMMMMNo${c1}ccc;     .cccccccc.
 ${c2} `':ldxO0KXXXXXK0Okdo${c1}cccc.     :cccccccc.
                     :ccc:'     `cccccccc:,
+<<<<<<< HEAD
                                    ''
+=======
+                                   ''
+>>>>>>> origin/develop

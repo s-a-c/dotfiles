@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #!/usr/bin/env zsh
+=======
+#!/opt/homebrew/bin/zsh
+>>>>>>> origin/develop
 #
 # SSH Agent Security Test Suite
 # Tests the secure SSH agent implementation across multiple scenarios
@@ -17,14 +21,20 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 test_ssh_security() {
+<<<<<<< HEAD
     zf::debug -e "${YELLOW}=== SSH Agent Security Test Suite ===${NC}"
     zf::debug "Testing secure SSH agent implementation..."
+=======
+        zsh_debug_echo -e "${YELLOW}=== SSH Agent Security Test Suite ===${NC}"
+        zsh_debug_echo "Testing secure SSH agent implementation..."
+>>>>>>> origin/develop
     echo
 
     # Setup test environment
     mkdir -p "$TEST_SSH_DIR"
 
     # Test 1: Initial agent setup
+<<<<<<< HEAD
     zf::debug -e "${YELLOW}Test 1: Initial SSH agent setup${NC}"
     if test_initial_agent_setup; then
         TEST_RESULTS+=("✓ Initial agent setup: PASS")
@@ -32,10 +42,20 @@ test_ssh_security() {
     else
         TEST_RESULTS+=("✗ Initial agent setup: FAIL")
         zf::debug -e "${RED}✗ FAIL: Agent creation failed${NC}"
+=======
+        zsh_debug_echo -e "${YELLOW}Test 1: Initial SSH agent setup${NC}"
+    if test_initial_agent_setup; then
+        TEST_RESULTS+=("✓ Initial agent setup: PASS")
+            zsh_debug_echo -e "${GREEN}✓ PASS: Agent created successfully${NC}"
+    else
+        TEST_RESULTS+=("✗ Initial agent setup: FAIL")
+            zsh_debug_echo -e "${RED}✗ FAIL: Agent creation failed${NC}"
+>>>>>>> origin/develop
     fi
     echo
 
     # Test 2: Agent reuse across shells
+<<<<<<< HEAD
     zf::debug -e "${YELLOW}Test 2: Agent reuse across multiple shells${NC}"
     if test_agent_reuse; then
         TEST_RESULTS+=("✓ Agent reuse: PASS")
@@ -43,10 +63,20 @@ test_ssh_security() {
     else
         TEST_RESULTS+=("✗ Agent reuse: FAIL")
         zf::debug -e "${RED}✗ FAIL: Multiple agents created${NC}"
+=======
+        zsh_debug_echo -e "${YELLOW}Test 2: Agent reuse across multiple shells${NC}"
+    if test_agent_reuse; then
+        TEST_RESULTS+=("✓ Agent reuse: PASS")
+            zsh_debug_echo -e "${GREEN}✓ PASS: Single agent reused correctly${NC}"
+    else
+        TEST_RESULTS+=("✗ Agent reuse: FAIL")
+            zsh_debug_echo -e "${RED}✗ FAIL: Multiple agents created${NC}"
+>>>>>>> origin/develop
     fi
     echo
 
     # Test 3: Environment file security
+<<<<<<< HEAD
     zf::debug -e "${YELLOW}Test 3: Environment file permissions${NC}"
     if test_env_file_security; then
         TEST_RESULTS+=("✓ File security: PASS")
@@ -54,10 +84,20 @@ test_ssh_security() {
     else
         TEST_RESULTS+=("✗ File security: FAIL")
         zf::debug -e "${RED}✗ FAIL: Insecure file permissions${NC}"
+=======
+        zsh_debug_echo -e "${YELLOW}Test 3: Environment file permissions${NC}"
+    if test_env_file_security; then
+        TEST_RESULTS+=("✓ File security: PASS")
+            zsh_debug_echo -e "${GREEN}✓ PASS: Environment file secured${NC}"
+    else
+        TEST_RESULTS+=("✗ File security: FAIL")
+            zsh_debug_echo -e "${RED}✗ FAIL: Insecure file permissions${NC}"
+>>>>>>> origin/develop
     fi
     echo
 
     # Test 4: Process cleanup
+<<<<<<< HEAD
     zf::debug -e "${YELLOW}Test 4: Process cleanup on exit${NC}"
     if test_process_cleanup; then
         TEST_RESULTS+=("✓ Process cleanup: PASS")
@@ -65,10 +105,20 @@ test_ssh_security() {
     else
         TEST_RESULTS+=("✗ Process cleanup: FAIL")
         zf::debug -e "${RED}✗ FAIL: Orphaned processes${NC}"
+=======
+        zsh_debug_echo -e "${YELLOW}Test 4: Process cleanup on exit${NC}"
+    if test_process_cleanup; then
+        TEST_RESULTS+=("✓ Process cleanup: PASS")
+            zsh_debug_echo -e "${GREEN}✓ PASS: Processes cleaned up${NC}"
+    else
+        TEST_RESULTS+=("✗ Process cleanup: FAIL")
+            zsh_debug_echo -e "${RED}✗ FAIL: Orphaned processes${NC}"
+>>>>>>> origin/develop
     fi
     echo
 
     # Test 5: Lock file behavior
+<<<<<<< HEAD
     zf::debug -e "${YELLOW}Test 5: Lock file race condition prevention${NC}"
     if test_lock_file_behavior; then
         TEST_RESULTS+=("✓ Lock behavior: PASS")
@@ -76,6 +126,15 @@ test_ssh_security() {
     else
         TEST_RESULTS+=("✗ Lock behavior: FAIL")
         zf::debug -e "${RED}✗ FAIL: Race condition possible${NC}"
+=======
+        zsh_debug_echo -e "${YELLOW}Test 5: Lock file race condition prevention${NC}"
+    if test_lock_file_behavior; then
+        TEST_RESULTS+=("✓ Lock behavior: PASS")
+            zsh_debug_echo -e "${GREEN}✓ PASS: Lock prevents race conditions${NC}"
+    else
+        TEST_RESULTS+=("✗ Lock behavior: FAIL")
+            zsh_debug_echo -e "${RED}✗ FAIL: Race condition possible${NC}"
+>>>>>>> origin/develop
     fi
     echo
 
@@ -98,9 +157,15 @@ test_initial_agent_setup() {
     local test_env_file="$TEST_SSH_DIR/test-env-1"
 
     # Simulate the secure setup function locally for 040-testing
+<<<<<<< HEAD
     if ssh-agent -s >"$test_env_file" 2>/dev/null; then
         chmod 600 "$test_env_file"
         source "$test_env_file" >/dev/null 2>&1
+=======
+    if ssh-agent -s > "$test_env_file" 2>/dev/null; then
+        chmod 600 "$test_env_file"
+        source "$test_env_file" > /dev/null 2>&1
+>>>>>>> origin/develop
 
         # Verify agent is running
         if [[ -n "$SSH_AUTH_SOCK" ]] && [[ -n "$SSH_AGENT_PID" ]]; then
@@ -126,11 +191,19 @@ test_initial_agent_setup() {
 test_agent_reuse() {
     # Create a test environment file
     local test_env_file="$TEST_SSH_DIR/reuse-test-env"
+<<<<<<< HEAD
     ssh-agent -s >"$test_env_file" 2>/dev/null
     chmod 600 "$test_env_file"
 
     # Source in first "shell"
     source "$test_env_file" >/dev/null 2>&1
+=======
+    ssh-agent -s > "$test_env_file" 2>/dev/null
+    chmod 600 "$test_env_file"
+
+    # Source in first "shell"
+    source "$test_env_file" > /dev/null 2>&1
+>>>>>>> origin/develop
     local first_pid="$SSH_AGENT_PID"
     local first_sock="$SSH_AUTH_SOCK"
 
@@ -159,14 +232,22 @@ test_env_file_security() {
     local test_env_file="$TEST_SSH_DIR/security-test-env"
 
     # Create environment file
+<<<<<<< HEAD
     ssh-agent -s >"$test_env_file" 2>/dev/null
+=======
+    ssh-agent -s > "$test_env_file" 2>/dev/null
+>>>>>>> origin/develop
     chmod 600 "$test_env_file"
 
     # Check permissions are correct (600)
     local perms=$(stat -f "%Mp%Lp" "$test_env_file" 2>/dev/null || stat -c "%a" "$test_env_file" 2>/dev/null)
 
     # Source and cleanup agent
+<<<<<<< HEAD
     source "$test_env_file" >/dev/null 2>&1
+=======
+    source "$test_env_file" > /dev/null 2>&1
+>>>>>>> origin/develop
     [[ -n "$SSH_AGENT_PID" ]] && kill "$SSH_AGENT_PID" 2>/dev/null
 
     # Check if permissions are 600
@@ -181,8 +262,13 @@ test_process_cleanup() {
     local test_env_file="$TEST_SSH_DIR/cleanup-test-env"
 
     # Start agent
+<<<<<<< HEAD
     ssh-agent -s >"$test_env_file" 2>/dev/null
     source "$test_env_file" >/dev/null 2>&1
+=======
+    ssh-agent -s > "$test_env_file" 2>/dev/null
+    source "$test_env_file" > /dev/null 2>&1
+>>>>>>> origin/develop
     local test_pid="$SSH_AGENT_PID"
 
     if [[ -n "$test_pid" ]] && kill -0 "$test_pid" 2>/dev/null; then
@@ -204,10 +290,14 @@ test_lock_file_behavior() {
 
     # Simulate lock file creation
     (
+<<<<<<< HEAD
         if (
             set -C
             zf::debug $$ >"$lock_file"
         ) 2>/dev/null; then
+=======
+        if (set -C;     zsh_debug_echo $$ > "$lock_file") 2>/dev/null; then
+>>>>>>> origin/develop
             sleep 2
             rm -f "$lock_file"
             exit 0
@@ -220,10 +310,14 @@ test_lock_file_behavior() {
     sleep 0.1
 
     # Try to create lock again (should fail)
+<<<<<<< HEAD
     if (
         set -C
         zf::debug $$ >"$lock_file"
     ) 2>/dev/null; then
+=======
+    if (set -C;     zsh_debug_echo $$ > "$lock_file") 2>/dev/null; then
+>>>>>>> origin/develop
         # Second lock succeeded - this is bad
         rm -f "$lock_file"
         wait "$first_process" 2>/dev/null
@@ -236,12 +330,20 @@ test_lock_file_behavior() {
 }
 
 print_test_summary() {
+<<<<<<< HEAD
     zf::debug -e "${YELLOW}=== Test Results Summary ===${NC}"
+=======
+        zsh_debug_echo -e "${YELLOW}=== Test Results Summary ===${NC}"
+>>>>>>> origin/develop
     local pass_count=0
     local total_count=${#TEST_RESULTS[@]}
 
     for result in "${TEST_RESULTS[@]}"; do
+<<<<<<< HEAD
         zf::debug "$result"
+=======
+            zsh_debug_echo "$result"
+>>>>>>> origin/develop
         if [[ "$result" == *"PASS" ]]; then
             ((pass_count++))
         fi
@@ -249,11 +351,19 @@ print_test_summary() {
 
     echo
     if [[ $pass_count -eq $total_count ]]; then
+<<<<<<< HEAD
         zf::debug -e "${GREEN}All tests passed! ($pass_count/$total_count)${NC}"
         zf::debug -e "${GREEN}SSH agent security implementation is working correctly.${NC}"
     else
         zf::debug -e "${RED}Some tests failed. ($pass_count/$total_count passed)${NC}"
         zf::debug -e "${YELLOW}Review the secure SSH agent implementation.${NC}"
+=======
+            zsh_debug_echo -e "${GREEN}All tests passed! ($pass_count/$total_count)${NC}"
+            zsh_debug_echo -e "${GREEN}SSH agent security implementation is working correctly.${NC}"
+    else
+            zsh_debug_echo -e "${RED}Some tests failed. ($pass_count/$total_count passed)${NC}"
+            zsh_debug_echo -e "${YELLOW}Review the secure SSH agent implementation.${NC}"
+>>>>>>> origin/develop
     fi
 }
 
@@ -268,6 +378,7 @@ cleanup_test_environment() {
 
 # Function to run a quick SSH agent status check
 ssh_agent_status() {
+<<<<<<< HEAD
     zf::debug -e "${YELLOW}=== Current SSH Agent Status ===${NC}"
 
     if [[ -n "$SSH_AUTH_SOCK" ]] && [[ -n "$SSH_AGENT_PID" ]]; then
@@ -291,12 +402,38 @@ ssh_agent_status() {
         fi
     else
         zf::debug -e "${YELLOW}• No SSH agent configured${NC}"
+=======
+        zsh_debug_echo -e "${YELLOW}=== Current SSH Agent Status ===${NC}"
+
+    if [[ -n "$SSH_AUTH_SOCK" ]] && [[ -n "$SSH_AGENT_PID" ]]; then
+            zsh_debug_echo "SSH_AUTH_SOCK: $SSH_AUTH_SOCK"
+            zsh_debug_echo "SSH_AGENT_PID: $SSH_AGENT_PID"
+
+        if kill -0 "$SSH_AGENT_PID" 2>/dev/null; then
+                zsh_debug_echo -e "${GREEN}✓ Agent process is running${NC}"
+
+            local key_count=$(ssh-add -l 2>/dev/null | wc -l)
+            if [[ $? -eq 0 ]]; then
+                    zsh_debug_echo -e "${GREEN}✓ Agent is responsive${NC}"
+                    zsh_debug_echo "Loaded keys: $key_count"
+            elif [[ $? -eq 1 ]]; then
+                    zsh_debug_echo -e "${YELLOW}• Agent is responsive (no keys loaded)${NC}"
+            else
+                    zsh_debug_echo -e "${RED}✗ Agent communication failed${NC}"
+            fi
+        else
+                zsh_debug_echo -e "${RED}✗ Agent process not found${NC}"
+        fi
+    else
+            zsh_debug_echo -e "${YELLOW}• No SSH agent configured${NC}"
+>>>>>>> origin/develop
     fi
     echo
 }
 
 # Allow running individual functions for debugging
 case "${1:-}" in
+<<<<<<< HEAD
 "status")
     ssh_agent_status
     ;;
@@ -309,4 +446,18 @@ case "${1:-}" in
     zf::debug "  ssh_agent_status  - Check current agent status"
     zf::debug "  test_ssh_security - Run full security test suite"
     ;;
+=======
+    "status")
+        ssh_agent_status
+        ;;
+    "test")
+        test_ssh_security
+        ;;
+    *)
+        # Default: provide help
+            zsh_debug_echo "SSH Security Test Functions:"
+            zsh_debug_echo "  ssh_agent_status  - Check current agent status"
+            zsh_debug_echo "  test_ssh_security - Run full security test suite"
+        ;;
+>>>>>>> origin/develop
 esac

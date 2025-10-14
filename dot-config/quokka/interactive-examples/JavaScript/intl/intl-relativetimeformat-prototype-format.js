@@ -7,4 +7,8 @@ console.log(rtf1.format(-1, 'day'));
 // expected output: "1 day ago"
 
 console.log(rtf1.format(10, 'seconds'));
+<<<<<<< HEAD
 // expected output: "in 10 sec."
+=======
+// expected output: "in 10 sec."
+>>>>>>> origin/develop

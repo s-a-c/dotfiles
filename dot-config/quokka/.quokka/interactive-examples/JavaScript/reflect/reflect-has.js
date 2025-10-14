@@ -9,4 +9,8 @@ console.log(Reflect.has(object1, 'property2'));
 // expected output: false
 
 console.log(Reflect.has(object1, 'toString'));
+<<<<<<< HEAD
 // expected output: true
+=======
+// expected output: true
+>>>>>>> origin/develop

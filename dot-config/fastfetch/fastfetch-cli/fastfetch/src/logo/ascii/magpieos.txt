@@ -17,4 +17,8 @@ o00.              k0O${c2}dddddd${c1}occ
     .:o.          ${c4}.xd       ckd${c1}
        ..          ${c4}dxl     .xx;
                     :xxolldxd'
+<<<<<<< HEAD
                       ;oxdl.
+=======
+                      ;oxdl.
+>>>>>>> origin/develop

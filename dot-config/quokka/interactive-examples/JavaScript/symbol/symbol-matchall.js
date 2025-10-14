@@ -3,4 +3,8 @@ let str = '2016-01-02|2019-03-07';
 let result = re[Symbol.matchAll](str);
 
 console.log(Array.from(result, x => x[0]));
+<<<<<<< HEAD
 // expected output: Array ["2016", "01", "02", "2019", "03", "07"]
+=======
+// expected output: Array ["2016", "01", "02", "2019", "03", "07"]
+>>>>>>> origin/develop

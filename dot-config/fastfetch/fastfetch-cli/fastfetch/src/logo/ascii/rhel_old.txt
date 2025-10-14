@@ -13,4 +13,8 @@ ${c2}      .-`:NMMNMs`  `..-------..`
 MMM    MMMMMMMMMMMMMMyyddMMM+
  MMMM   MMMMMMMMMMMMMNdyNMMh`     hyhMMM
   MMMMMMMMMMMMMMMMyoNNNMMM+.   MMMMMMMM
+<<<<<<< HEAD
    MMNMMMNNMMMMMNM+ mhsMNyyyyMNMMMMsMM
+=======
+   MMNMMMNNMMMMMNM+ mhsMNyyyyMNMMMMsMM
+>>>>>>> origin/develop

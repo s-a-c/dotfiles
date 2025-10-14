@@ -28,7 +28,11 @@ Based on configuration structure and patterns:
 
 2. **Minimal Pre-plugin Setup**: Only 3 essential files loaded early
    - FZF conflict prevention
+<<<<<<< HEAD
    - Completion system preparation
+=======
+   - Completion system preparation  
+>>>>>>> origin/develop
    - NVM environment fixes
 
 3. **Efficient PATH Management**: Uses helper functions
@@ -91,7 +95,11 @@ Based on configuration structure and patterns:
 _setup_macos_defaults() {
     local defaults_file="${ZDOTDIR}/macos-defaults-applied"
     local config_file="${ZDOTDIR}/.zshrc.Darwin.d/100-macos-defaults.zsh"
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     # Only run if config newer than last application
     if [[ "$config_file" -nt "$defaults_file" ]]; then
         # Apply defaults here
@@ -171,7 +179,11 @@ Replace command substitutions in exports with cached values
    ```zsh
    # Enable profiling
    touch ~/.config/zsh/.zqs-zprof-enabled
+<<<<<<< HEAD
 
+=======
+   
+>>>>>>> origin/develop
    # Start new shell and check results
    zsh -c 'exit' && zprof
    ```
@@ -249,7 +261,11 @@ zcompile ~/.config/zsh/.zshrc.d/**/*.zsh
 2. Implement lazy loading for heavy evaluations
 3. Cache git configuration
 
+<<<<<<< HEAD
 ### Phase 2: Medium (Week 2-3)
+=======
+### Phase 2: Medium (Week 2-3)  
+>>>>>>> origin/develop
 1. Optimize plugin loading with zsh-defer
 2. Batch directory creation
 3. Add performance monitoring
@@ -277,7 +293,11 @@ Set up performance regression detection:
 # Add to finalization script
 startup_time=$(( SECONDS * 1000 ))
 if (( startup_time > 500 )); then
+<<<<<<< HEAD
         zsh_debug_echo "⚠️  Startup time: ${startup_time}ms (target: <500ms)"
+=======
+        zsh_debug_echo "⚠️  Startup time: ${startup_time}ms (target: <500ms)" 
+>>>>>>> origin/develop
 fi
 ```
 

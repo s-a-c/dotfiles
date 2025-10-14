@@ -12,4 +12,8 @@ $2sMMMMMMMMMMMMMMMMMMMMMMMh$1yyyyyyhho
       -ssss$2hmmmmmmmmmmmmmmmmmmmyssss-
        $1`/ssssyyyyyyyyyyyyyyyy+`
          $1`:osyyyyyyyyyyyyys/`
+<<<<<<< HEAD
             $1`.:/+ooooo+:-`
+=======
+            $1`.:/+ooooo+:-`
+>>>>>>> origin/develop

@@ -9,4 +9,8 @@ console.log(event.toUTCString());
 event.setUTCFullYear(1975);
 
 console.log(event.toUTCString());
+<<<<<<< HEAD
 // expected output: Wed, 01 Jan 1975 02:15:30 GMT
+=======
+// expected output: Wed, 01 Jan 1975 02:15:30 GMT
+>>>>>>> origin/develop

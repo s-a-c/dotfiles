@@ -226,3 +226,7 @@ eval "$(uv generate-shell-completion zsh)"
 
 
 eval "$(uvx generate-shell-completion zsh)"
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/develop

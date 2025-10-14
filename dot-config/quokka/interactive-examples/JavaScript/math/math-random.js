@@ -9,4 +9,8 @@ console.log(getRandomInt(1));
 // expected output: 0
 
 console.log(Math.random());
+<<<<<<< HEAD
 // expected output: a number between 0 and 1
+=======
+// expected output: a number between 0 and 1
+>>>>>>> origin/develop

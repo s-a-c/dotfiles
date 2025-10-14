@@ -9,4 +9,8 @@ console.log(Math.pow(7, -2));
 //                  (1/49)
 
 console.log(Math.pow(-7, 0.5));
+<<<<<<< HEAD
 // expected output: NaN
+=======
+// expected output: NaN
+>>>>>>> origin/develop

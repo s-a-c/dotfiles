@@ -21,4 +21,8 @@ ${c1}            cooo:     ${c2}coooooooooooooooooool
                         coooooc    loc
                        :oooool,    coool:, looool:,
                        looool:      ooooooooooooooo:
+<<<<<<< HEAD
                        cooolc        .ooooooooooool
+=======
+                       cooolc        .ooooooooooool
+>>>>>>> origin/develop

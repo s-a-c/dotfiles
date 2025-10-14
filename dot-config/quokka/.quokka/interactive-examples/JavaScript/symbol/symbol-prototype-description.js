@@ -8,4 +8,8 @@ console.log(Symbol.for('foo').description);
 // expected output: "foo"
 
 console.log(Symbol('foo').description + 'bar');
+<<<<<<< HEAD
 // expected output: "foobar"
+=======
+// expected output: "foobar"
+>>>>>>> origin/develop

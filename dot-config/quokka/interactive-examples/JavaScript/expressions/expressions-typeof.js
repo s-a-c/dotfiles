@@ -8,4 +8,8 @@ console.log(typeof true);
 // expected output: "boolean"
 
 console.log(typeof declaredButUndefinedVariable);
+<<<<<<< HEAD
 // expected output: "undefined";
+=======
+// expected output: "undefined";
+>>>>>>> origin/develop

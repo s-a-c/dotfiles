@@ -5,4 +5,8 @@ console.log(french.toString());
 // expected output: "fr-Latn-FR-u-ca-gregory-hc-h24"
 
 console.log(korean.toString())
+<<<<<<< HEAD
 //expected output: "ko-Kore-KR-u-kf-upper-kn"
+=======
+//expected output: "ko-Kore-KR-u-kf-upper-kn"
+>>>>>>> origin/develop

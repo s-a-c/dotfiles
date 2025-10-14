@@ -19,4 +19,8 @@ console.log(proxy1.eyeCount);
 // expected output: 4
 
 console.log(proxy1.secret);
+<<<<<<< HEAD
 // expected output: "easi ... shhhh!"
+=======
+// expected output: "easi ... shhhh!"
+>>>>>>> origin/develop

@@ -263,11 +263,16 @@ plugins {
 // eg. "https://example.com/my-plugin.wasm"
 load_plugins {
 }
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> origin/develop
 // Use a simplified UI without special fonts (arrow glyphs)
 // Options:
 //   - true
 //   - false (Default)
+<<<<<<< HEAD
 //
 // simplified_ui true
 
@@ -305,48 +310,117 @@ default_mode "normal"
 //
 // theme_dir "/tmp"
 
+=======
+// 
+// simplified_ui true
+ 
+// Choose the theme that is specified in the themes section.
+// Default: default
+// 
+// theme "dracula"
+ 
+// Choose the base input mode of zellij.
+// Default: normal
+// 
+default_mode "normal"
+ 
+// Choose the path to the default shell that zellij will use for opening new panes
+// Default: $SHELL
+// 
+// default_shell "fish"
+ 
+// Choose the path to override cwd that zellij will use for opening new panes
+// 
+// default_cwd "/tmp"
+ 
+// The name of the default layout to load on startup
+// Default: "default"
+// 
+// default_layout "compact"
+ 
+// The folder in which Zellij will look for layouts
+// (Requires restart)
+// 
+// layout_dir "/tmp"
+ 
+// The folder in which Zellij will look for themes
+// (Requires restart)
+// 
+// theme_dir "/tmp"
+ 
+>>>>>>> origin/develop
 // Toggle enabling the mouse mode.
 // On certain configurations, or terminals this could
 // potentially interfere with copying text.
 // Options:
 //   - true (default)
 //   - false
+<<<<<<< HEAD
 //
 // mouse_mode false
 
+=======
+// 
+// mouse_mode false
+ 
+>>>>>>> origin/develop
 // Toggle having pane frames around the panes
 // Options:
 //   - true (default, enabled)
 //   - false
+<<<<<<< HEAD
 //
 // pane_frames false
 
+=======
+// 
+// pane_frames false
+ 
+>>>>>>> origin/develop
 // When attaching to an existing session with other users,
 // should the session be mirrored (true)
 // or should each user have their own cursor (false)
 // (Requires restart)
 // Default: false
+<<<<<<< HEAD
 //
 // mirror_session true
 
+=======
+// 
+// mirror_session true
+ 
+>>>>>>> origin/develop
 // Choose what to do when zellij receives SIGTERM, SIGINT, SIGQUIT or SIGHUP
 // eg. when terminal window with an active zellij session is closed
 // (Requires restart)
 // Options:
 //   - detach (Default)
 //   - quit
+<<<<<<< HEAD
 //
 // on_force_close "quit"
 
+=======
+// 
+// on_force_close "quit"
+ 
+>>>>>>> origin/develop
 // Configure the scroll back buffer size
 // This is the number of lines zellij stores for each pane in the scroll back
 // buffer. Excess number of lines are discarded in a FIFO fashion.
 // (Requires restart)
 // Valid values: positive integers
 // Default value: 10000
+<<<<<<< HEAD
 //
 // scroll_buffer_size 10000
 
+=======
+// 
+// scroll_buffer_size 10000
+ 
+>>>>>>> origin/develop
 // Provide a command to execute when copying text. The text will be piped to
 // the stdin of the program to perform the copy. This can be used with
 // terminal emulators which do not support the OSC 52 ANSI control sequence
@@ -356,15 +430,22 @@ default_mode "normal"
 // copy_command "xclip -selection clipboard" // x11
 // copy_command "wl-copy"                    // wayland
 // copy_command "pbcopy"                     // osx
+<<<<<<< HEAD
 //
 // copy_command "pbcopy"
 
+=======
+// 
+// copy_command "pbcopy"
+ 
+>>>>>>> origin/develop
 // Choose the destination for copied text
 // Allows using the primary selection buffer (on x11/wayland) instead of the system clipboard.
 // Does not apply when using copy_command.
 // Options:
 //   - system (default)
 //   - primary
+<<<<<<< HEAD
 //
 // copy_clipboard "primary"
 
@@ -377,10 +458,25 @@ default_mode "normal"
 // Default: $EDITOR or $VISUAL
 // scrollback_editor "/usr/bin/vim"
 
+=======
+// 
+// copy_clipboard "primary"
+ 
+// Enable automatic copying (and clearing) of selection when releasing mouse
+// Default: true
+// 
+// copy_on_select true
+ 
+// Path to the default editor to use to edit pane scrollbuffer
+// Default: $EDITOR or $VISUAL
+// scrollback_editor "/usr/bin/vim"
+ 
+>>>>>>> origin/develop
 // A fixed name to always give the Zellij session.
 // Consider also setting `attach_to_session true,`
 // otherwise this will error if such a session exists.
 // Default: <RANDOM>
+<<<<<<< HEAD
 //
 // session_name "My singleton session"
 
@@ -390,24 +486,48 @@ default_mode "normal"
 //
 // attach_to_session true
 
+=======
+// 
+// session_name "My singleton session"
+ 
+// When `session_name` is provided, attaches to that session
+// if it is already running or creates it otherwise.
+// Default: false
+// 
+// attach_to_session true
+ 
+>>>>>>> origin/develop
 // Toggle between having Zellij lay out panes according to a predefined set of layouts whenever possible
 // Options:
 //   - true (default)
 //   - false
+<<<<<<< HEAD
 //
 // auto_layout false
 
+=======
+// 
+// auto_layout false
+ 
+>>>>>>> origin/develop
 // Whether sessions should be serialized to the cache folder (including their tabs/panes, cwds and running commands) so that they can later be resurrected
 // Options:
 //   - true (default)
 //   - false
+<<<<<<< HEAD
 //
 // session_serialization false
 
+=======
+// 
+// session_serialization false
+ 
+>>>>>>> origin/develop
 // Whether pane viewports are serialized along with the session, default is false
 // Options:
 //   - true
 //   - false (default)
+<<<<<<< HEAD
 //
 // serialize_pane_viewport false
 
@@ -417,10 +537,22 @@ default_mode "normal"
 //
 // scrollback_lines_to_serialize 10000
 
+=======
+// 
+// serialize_pane_viewport false
+ 
+// Scrollback lines to serialize along with the pane viewport when serializing sessions, 0
+// defaults to the scrollback size. If this number is higher than the scrollback size, it will
+// also default to the scrollback size. This does nothing if `serialize_pane_viewport` is not true.
+// 
+// scrollback_lines_to_serialize 10000
+ 
+>>>>>>> origin/develop
 // Enable or disable the rendering of styled and colored underlines (undercurl).
 // May need to be disabled for certain unsupported terminals
 // (Requires restart)
 // Default: true
+<<<<<<< HEAD
 //
 // styled_underlines false
 
@@ -428,10 +560,20 @@ default_mode "normal"
 //
 // serialization_interval 10000
 
+=======
+// 
+// styled_underlines false
+ 
+// How often in seconds sessions are serialized
+// 
+// serialization_interval 10000
+ 
+>>>>>>> origin/develop
 // Enable or disable writing of session metadata to disk (if disabled, other sessions might not know
 // metadata info on this session)
 // (Requires restart)
 // Default: false
+<<<<<<< HEAD
 //
 // disable_session_metadata false
 
@@ -439,4 +581,13 @@ default_mode "normal"
 // (Requires restart)
 // Default: true (if the host terminal supports it)
 //
+=======
+// 
+// disable_session_metadata false
+ 
+// Enable or disable support for the enhanced Kitty Keyboard Protocol (the host terminal must also support it)
+// (Requires restart)
+// Default: true (if the host terminal supports it)
+// 
+>>>>>>> origin/develop
 // support_kitty_keyboard_protocol false

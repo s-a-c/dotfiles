@@ -9,4 +9,8 @@ console.log(precise(0.004));
 // expected output: "0.004000"
 
 console.log(precise('1.23e+5'));
+<<<<<<< HEAD
 // expected output: "1.230e+5"
+=======
+// expected output: "1.230e+5"
+>>>>>>> origin/develop

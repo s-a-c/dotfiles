@@ -9,4 +9,8 @@ for (let item of iterator1) {
   console.log(item);
   // expected output: Array ["0", "foo"]
   // expected output: Array [1, "bar"]
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/develop

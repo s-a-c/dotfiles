@@ -38,7 +38,11 @@ float box(vec3 pos, vec3 size)
 float distfunc(vec3 pos)
 {
     float t = iTime;
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     float size = 0.45 + 0.25*abs(16.0*sin(t*speed/4.0));
     // float size = 2.3 + 1.8*tan((t-5.4)*6.549);
     size = cube_size * 0.16 * clamp(size, 2.0, 4.0);
@@ -60,6 +64,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     cameraTarget = vec3(t*20.0,0.0,0.0) * rotationMatrix(vec3(0.0,0.0,1.0), t*speed*camera_rotation_speed);
 
     vec3 upDirection = vec3(0.5, 1.0, 0.6);
+<<<<<<< HEAD
 
     vec3 cameraDir = normalize(cameraTarget - cameraOrigin);
     vec3 cameraRight = normalize(cross(upDirection, cameraOrigin));
@@ -75,6 +80,23 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     vec3 pos = cameraOrigin;
     float dist = EPSILON;
 
+=======
+    
+    vec3 cameraDir = normalize(cameraTarget - cameraOrigin);
+    vec3 cameraRight = normalize(cross(upDirection, cameraOrigin));
+    vec3 cameraUp = cross(cameraDir, cameraRight);
+    
+    vec3 rayDir = normalize(cameraRight * screenPos.x + cameraUp * screenPos.y + cameraDir);
+    
+    const int MAX_ITER = 64;
+    const float MAX_DIST = 48.0;
+    const float EPSILON = 0.001;
+    
+    float totalDist = 0.0;
+    vec3 pos = cameraOrigin;
+    float dist = EPSILON;
+    
+>>>>>>> origin/develop
     for (int i = 0; i < MAX_ITER; i++)
     {
         if (dist < EPSILON || totalDist > MAX_DIST)
@@ -102,7 +124,11 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         color += cubeColor;
         cubes = vec4(color, 1.0) * vec4(1.0 - (totalDist/MAX_DIST));
         cubes = vec4(cubes.rgb*0.02*cube_brightness, 0.1);
+<<<<<<< HEAD
     }
+=======
+    } 
+>>>>>>> origin/develop
     else {
         cubes = vec4(0.0);
     }

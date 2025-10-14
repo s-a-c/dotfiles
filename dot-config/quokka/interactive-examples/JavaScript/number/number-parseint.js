@@ -10,4 +10,8 @@ console.log(roughScale(' 0xF', 16));
 // expected output: 1500
 
 console.log(roughScale('321', 2));
+<<<<<<< HEAD
 // expected output: 0
+=======
+// expected output: 0
+>>>>>>> origin/develop

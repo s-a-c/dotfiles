@@ -1,5 +1,9 @@
 # ZSH Configuration Remediation Plan
+<<<<<<< HEAD
 **Date:** 2025-08-25
+=======
+**Date:** 2025-08-25  
+>>>>>>> origin/develop
 **Priority:** Critical fixes first, then optimizations
 
 ## Phase 1: Critical Conflict Resolution (Immediate - 2 hours)
@@ -67,7 +71,11 @@ _git_config_cache_ttl=3600  # 1 hour
 git_cached_config() {
     local key="$1"
     local cache_file="$_git_config_cache_dir/${key//\//_}"
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     if [[ -f "$cache_file" && $(($(date +%s) - $(stat -f %m "$cache_file"))) -lt $_git_config_cache_ttl ]]; then
         cat "$cache_file"
     else
@@ -104,7 +112,11 @@ git_cached_config() {
 - Move all zgenom calls to appropriate directories
 - Establish clear loading phases:
   1. Pre-plugins: Environment setup only
+<<<<<<< HEAD
   2. Add-plugins: Plugin definitions only
+=======
+  2. Add-plugins: Plugin definitions only  
+>>>>>>> origin/develop
   3. Main config: Plugin configuration and customization
 
 ## Phase 3: File Organization (Medium-term - 2 hours)
@@ -176,7 +188,11 @@ _config_load_time=$(( (_config_end_time - _config_start_time) / 1000000 ))
 - [ ] Day 4: Centralize PATH management
 - [ ] Day 5: Testing and validation
 
+<<<<<<< HEAD
 ### Week 2: Performance Optimization
+=======
+### Week 2: Performance Optimization  
+>>>>>>> origin/develop
 - [ ] Day 1-2: Implement git config caching
 - [ ] Day 3-4: Split oversized files
 - [ ] Day 5: Implement lazy loading
@@ -234,6 +250,11 @@ cp -r ~/.config/zsh ~/.config/zsh.backup.$(date +%Y%m%d_%H%M%S)
 - Have emergency minimal config ready
 
 ---
+<<<<<<< HEAD
 **Plan Created:** 2025-08-25 20:35 UTC
 **Estimated Total Time:** 10-12 hours over 4 weeks
+=======
+**Plan Created:** 2025-08-25 20:35 UTC  
+**Estimated Total Time:** 10-12 hours over 4 weeks  
+>>>>>>> origin/develop
 **Risk Level:** Medium (with proper backups and testing)

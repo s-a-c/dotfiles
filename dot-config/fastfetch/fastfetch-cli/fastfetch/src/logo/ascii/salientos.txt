@@ -17,4 +17,8 @@ xxxxxxxxxxxxxxxxxx0       xxxxxxxxxxxxxx
      0xxxxxxxxxxxx0       0xxxxxxx0
         0xxxxxxx0         xxxxxx0
                         0xxx00
+<<<<<<< HEAD
                       x00
+=======
+                      x00
+>>>>>>> origin/develop

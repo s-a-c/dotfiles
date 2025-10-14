@@ -10,4 +10,8 @@ console.log(dateTimeFormat.formatRange(startDate, endDate));
 
 var dateTimeFormat2 = new Intl.DateTimeFormat("en", options2);
 console.log(dateTimeFormat2.formatRange(startDate, endDate));
+<<<<<<< HEAD
 // expected output: 1/10/07 – 1/10/08
+=======
+// expected output: 1/10/07 – 1/10/08
+>>>>>>> origin/develop

@@ -11,4 +11,8 @@ console.log(regex1.test('rugby\nfootball'));
 // expected output: false
 
 console.log(regex2.test('rugby\nfootball'));
+<<<<<<< HEAD
 // expected output: true
+=======
+// expected output: true
+>>>>>>> origin/develop

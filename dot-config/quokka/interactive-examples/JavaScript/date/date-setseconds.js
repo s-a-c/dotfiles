@@ -7,4 +7,8 @@ console.log(event.getSeconds());
 
 console.log(event);
 // Sat Aug 19 1975 23:15:42 GMT+0100 (CET)
+<<<<<<< HEAD
 // (note: your timezone may vary)
+=======
+// (note: your timezone may vary)
+>>>>>>> origin/develop

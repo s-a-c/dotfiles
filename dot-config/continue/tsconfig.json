@@ -26,4 +26,8 @@
   "include": [
     "./config.ts"
   ]
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/develop

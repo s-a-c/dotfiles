@@ -1,4 +1,5 @@
 # dotfiles
+<<<<<<< HEAD
 
 Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md vb7f03a299a01b1b6d7c8be5a74646f0b5127cbc5b5d614c8b4c20fc99bc21620
 
@@ -235,3 +236,6 @@ git log -- dot-config/zsh/.env/ | head -1 || echo 'Directory removed'
 
 ## Acknowledgements
 Security automation aligns with documented security standards (authentication, logging, incident response) in the guidelines referenced above.
+=======
+learning stow
+>>>>>>> origin/develop

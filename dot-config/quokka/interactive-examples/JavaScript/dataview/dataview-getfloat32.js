@@ -5,4 +5,8 @@ const view = new DataView(buffer);
 view.setFloat32(1, Math.PI);
 
 console.log(view.getFloat32(1));
+<<<<<<< HEAD
 // expected output: 3.1415927410125732
+=======
+// expected output: 3.1415927410125732
+>>>>>>> origin/develop

@@ -13,4 +13,8 @@ ${c2}                         .sy/
  -:`                   .:oys/.
 +-               `./oyys/.
 h+`      `.-:+oyyyo/-`
+<<<<<<< HEAD
 `/ossssysso+/-.`
+=======
+`/ossssysso+/-.`
+>>>>>>> origin/develop

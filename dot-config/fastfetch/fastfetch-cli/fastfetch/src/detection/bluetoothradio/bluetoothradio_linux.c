@@ -202,7 +202,11 @@ const char* ffDetectBluetoothRadio(FFlist* devices /* FFBluetoothRadioResult */)
     #ifdef FF_HAVE_DBUS
         return detectBluetooth(devices);
     #else
+<<<<<<< HEAD
         FF_UNUSED(devices)
+=======
+        FF_UNUSED(devices) 
+>>>>>>> origin/develop
         return "Fastfetch was compiled without DBus support";
     #endif
 }

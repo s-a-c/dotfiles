@@ -21,4 +21,8 @@
      +dNMMNMMMMMMMmy`          ``./ys.
       `/hMMMMMMMMMMMNo-``    `.+yy+-`
         `-/hmNMNMMMMMMmmddddhhy/-`
+<<<<<<< HEAD
             `-+oooyMMMdsoo+/:.
+=======
+            `-+oooyMMMdsoo+/:.
+>>>>>>> origin/develop

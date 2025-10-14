@@ -10,7 +10,11 @@ set -o nounset
 
 url="$1"
 title="$2"
+<<<<<<< HEAD
 title=$(echo "$title" | sed -e 's/ (matches.*$//')
+=======
+title=$(echo "$title" | sed -e 's/ (matches.*$//') 
+>>>>>>> origin/develop
 
 rawcontent=$(wget -q -O - "$url")
 
@@ -30,7 +34,11 @@ cd "$TH_PROJECTS_FOLDER/vimwiki" || exit 1
 
 echo "
 
+<<<<<<< HEAD
 ## $title
+=======
+## $title 
+>>>>>>> origin/develop
 
 > $description
 

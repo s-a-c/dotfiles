@@ -10,4 +10,8 @@ var options2 = { style: 'currency', currency: 'USD' };
 var numberFormat2 = new Intl.NumberFormat('en-US', options2);
 
 console.log(numberFormat2.format(amount));
+<<<<<<< HEAD
 // expected output: "$654,321.99"
+=======
+// expected output: "$654,321.99"
+>>>>>>> origin/develop

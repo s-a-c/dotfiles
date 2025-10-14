@@ -17,4 +17,8 @@
   .,,;,ckOOOOOOOOOOOOOOOOOOOOOOOOx;,;,'.
  .:l'  ...........................   ;:;
  lOk'                                cdd
+<<<<<<< HEAD
  ;lccccccccccccccccccccccccccccccccccc:.
+=======
+ ;lccccccccccccccccccccccccccccccccccc:.
+>>>>>>> origin/develop

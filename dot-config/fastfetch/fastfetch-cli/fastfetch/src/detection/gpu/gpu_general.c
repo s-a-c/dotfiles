@@ -15,7 +15,11 @@ const char* ffDetectGPUImpl(FF_MAYBE_UNUSED const FFGPUOptions* options, FFlist*
     FF_LIBRARY_LOAD_SYMBOL_MESSAGE(pciaccess, pci_slot_match_iterator_create)
     FF_LIBRARY_LOAD_SYMBOL_MESSAGE(pciaccess, pci_device_next)
     FF_LIBRARY_LOAD_SYMBOL_MESSAGE(pciaccess, pci_system_cleanup)
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/develop
     {
         // Requires root access
         // Same behavior can be observed with `cp $(which scanpci) /tmp/ && /tmp/scanpci`

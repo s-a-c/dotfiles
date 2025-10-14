@@ -8,4 +8,8 @@ var a;
 var b;
 
 console.log(a = b = 5);
+<<<<<<< HEAD
 // expected output: 5;
+=======
+// expected output: 5;
+>>>>>>> origin/develop

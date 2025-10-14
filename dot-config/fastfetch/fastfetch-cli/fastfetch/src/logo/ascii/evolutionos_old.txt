@@ -15,4 +15,8 @@ dd:   ldl:                    dd:
 dd:   ldl: ddddddddddddddd;   dd:
 dddd:.'''  '''''''''''''''  dddd:
    dddddddddddddddddddddddddd;;'
+<<<<<<< HEAD
     '''''''''''''''''''''''''
+=======
+    '''''''''''''''''''''''''
+>>>>>>> origin/develop

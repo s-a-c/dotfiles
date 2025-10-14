@@ -8,4 +8,8 @@ while (i < 6) {
 }
 
 console.log(i);
+<<<<<<< HEAD
 // expected output: 3
+=======
+// expected output: 3
+>>>>>>> origin/develop
