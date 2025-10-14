@@ -258,17 +258,35 @@ bindkey '^[f' forward-word
 bindkey '^[d' kill-word
 bindkey '^[h' backward-kill-word
 
+
+# === Basic Arrow Keys ===
+# These ensure that arrow keys work properly for cursor movement
+bindkey '^[[D' backward-char    # Left arrow
+bindkey '^[[C' forward-char     # Right arrow
+bindkey '^[[A' up-history       # Up arrow
+bindkey '^[[B' down-history     # Down arrow
+
+# Alternative escape sequences for different terminals
+bindkey '^[OD' backward-char    # Left arrow (application mode)
+bindkey '^[OC' forward-char     # Right arrow (application mode)
+bindkey '^[OA' up-history       # Up arrow (application mode)
+bindkey '^[OB' down-history     # Down arrow (application mode)
+
 # === macOS-specific Keybindings ===
 if [[ "$OSTYPE" == darwin* ]]; then
   # Option + Left/Right for word movement
-  bindkey '^[
-' backward-word
-  bindkey '^[
-' forward-word
+  bindkey '^[[1;3D' backward-word   # Option + Left
+  bindkey '^[[1;3C' forward-word    # Option + Right
+  bindkey '^[^[[D' backward-word    # Alt + Left (alternative)
+  bindkey '^[^[[C' forward-word     # Alt + Right (alternative)
 
   # Command + Left/Right for line movement
-  bindkey '^[[H' beginning-of-line
-  bindkey '^[[F' end-of-line
+  bindkey '^[[H' beginning-of-line  # Home / Command + Left
+  bindkey '^[[F' end-of-line        # End / Command + Right
+  
+  # Ctrl + Left/Right for word movement (alternative)
+  bindkey '^[[1;5D' backward-word   # Ctrl + Left
+  bindkey '^[[1;5C' forward-word    # Ctrl + Right
 fi
 
 # === Advanced Editing ===
