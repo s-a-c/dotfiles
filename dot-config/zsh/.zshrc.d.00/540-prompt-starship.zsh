@@ -49,23 +49,25 @@ starship_init_safe() {
   fi
   # If inherited from parent shell (e.g. bash), clear so starship sets correct value
   if [[ ${STARSHIP_SHELL:-} != "" && ${STARSHIP_SHELL} != "starship" ]]; then
-  zf::debug "# [starship] clearing inherited STARSHIP_SHELL='${STARSHIP_SHELL}'"
+    zf::debug "# [starship] clearing inherited STARSHIP_SHELL='${STARSHIP_SHELL}'"
     unset STARSHIP_SHELL 2>/dev/null || true
   fi
   # Patch problematic ZLE widget access
   local safe_init_script
-  safe_init_script="${init_script//\${widgets\[zle-keymap-select\]#user:}/\${widgets[zle-keymap-select]:-}}"
-  safe_init_script="${safe_init_script//\${widgets\[zle-keymap-select\]:-}#user:/\${widgets[zle-keymap-select]:-}}"
+  safe_init_script="${init_script//\${widgets\[zle-keymap-select\]#user:/}/\${widgets[zle-keymap-select]:-}}"
+  safe_init_script="${safe_init_script//\${widgets\[zle-keymap-select\]:-/}#user:/\${widgets[zle-keymap-select]:-}}"
   eval "$safe_init_script"
   _zf_end_time="${EPOCHREALTIME:-}"
   if [[ -n "$_zf_start_time" && -n "_zf_end_time" ]]; then
     local s1=${_zf_start_time%%.*} us1=${_zf_start_time#*.}
-    local s2=${_zf_end_time%%.*}   us2=${_zf_end_time#*.}
-    us1="${us1}000000"; us1=${us1:0:6}
-    us2="${us2}000000"; us2=${us2:0:6}
-    local total_us=$(( (10#$s2*1000000 + 10#$us2) - (10#$s1*1000000 + 10#$us1) ))
-    if (( total_us >= 0 )); then
-      _zf_elapsed_ms=$(( total_us / 1000 ))
+    local s2=${_zf_end_time%%.*} us2=${_zf_end_time#*.}
+    us1="${us1}000000"
+    us1=${us1:0:6}
+    us2="${us2}000000"
+    us2=${us2:0:6}
+    local total_us=$(((10#$s2 * 1000000 + 10#$us2) - (10#$s1 * 1000000 + 10#$us1)))
+    if ((total_us >= 0)); then
+      _zf_elapsed_ms=$((total_us / 1000))
       export _ZF_STARSHIP_INIT_MS=$_zf_elapsed_ms
     fi
   fi
@@ -77,25 +79,25 @@ starship_init_safe() {
     STARSHIP_SHELL=starship
   fi
   if [[ -n ${_ZF_STARSHIP_INIT_MS:-} ]]; then
-  zf::debug "# [prompt] starship initialized (${_ZF_STARSHIP_INIT_MS}ms)"
+    zf::debug "# [prompt] starship initialized (${_ZF_STARSHIP_INIT_MS}ms)"
     if [[ -z ${ZF_DISABLE_METRICS:-} ]]; then
       local metrics_dir="${ZDOTDIR:-$HOME}/dot-config/zsh/artifacts/metrics"
       if [[ -d "$metrics_dir" && -w "$metrics_dir" ]]; then
         {
           printf '%s\t%s\t%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "starship_init_ms" "${_ZF_STARSHIP_INIT_MS}" || true
-        } >> "$metrics_dir/starship-init.log" 2>/dev/null || true
+        } >>"$metrics_dir/starship-init.log" 2>/dev/null || true
         if [[ -f "$metrics_dir/starship-init.log" ]]; then
           local sz
           sz=$(wc -c <"$metrics_dir/starship-init.log" 2>/dev/null || echo 0)
           if [[ -n "$sz" && "$sz" -gt 65536 ]]; then
-            tail -n 500 "$metrics_dir/starship-init.log" > "$metrics_dir/.starship-init.tmp" 2>/dev/null || true
+            tail -n 500 "$metrics_dir/starship-init.log" >"$metrics_dir/.starship-init.tmp" 2>/dev/null || true
             mv "$metrics_dir/.starship-init.tmp" "$metrics_dir/starship-init.log" 2>/dev/null || true
           fi
         fi
       fi
     fi
   else
-  zf::debug "# [prompt] starship initialized"
+    zf::debug "# [prompt] starship initialized"
   fi
 }
 
@@ -120,7 +122,7 @@ fi
 # Guard: duplicate (with stale repair)
 if [[ -n ${__ZF_PROMPT_INIT_DONE:-} ]]; then
   if [[ ${STARSHIP_SHELL:-} != starship ]]; then
-  zf::debug "# [starship] stale guard detected (STARSHIP_SHELL='${STARSHIP_SHELL:-unset}'); clearing for re-init"
+    zf::debug "# [starship] stale guard detected (STARSHIP_SHELL='${STARSHIP_SHELL:-unset}'); clearing for re-init"
     unset __ZF_PROMPT_INIT_DONE 2>/dev/null || true
   else
     return 0
@@ -137,28 +139,37 @@ fi
 if [[ ${ZSH_STARSHIP_FORCE_DEFER:-0} == 1 && -z ${ZSH_STARSHIP_FORCE_IMMEDIATE:-} ]]; then
   autoload -Uz add-zsh-hook 2>/dev/null || true
   if typeset -f add-zsh-hook >/dev/null 2>&1; then
-  zf::debug "# [starship] defer: forced (ZSH_STARSHIP_FORCE_DEFER=1)"
-    zf::prompt_init_deferred() { add-zsh-hook -d precmd zf::prompt_init_deferred 2>/dev/null || true; zf::prompt_init || starship_init_safe || true; }
+    zf::debug "# [starship] defer: forced (ZSH_STARSHIP_FORCE_DEFER=1)"
+    zf::prompt_init_deferred() {
+      add-zsh-hook -d precmd zf::prompt_init_deferred 2>/dev/null || true
+      zf::prompt_init || starship_init_safe || true
+    }
     add-zsh-hook precmd zf::prompt_init_deferred
   else
-  zf::debug "# [starship] defer failed: add-zsh-hook missing; falling back to immediate"
+    zf::debug "# [starship] defer failed: add-zsh-hook missing; falling back to immediate"
     zf::prompt_init 2>/dev/null || starship_init_safe 2>/dev/null || true
   fi
 elif [[ -f ${ZDOTDIR:-$HOME}/.p10k.zsh && -z ${ZSH_STARSHIP_FORCE_IMMEDIATE:-} ]]; then
   autoload -Uz add-zsh-hook 2>/dev/null || true
   if whence -w add-zsh-hook >/dev/null 2>&1; then
-  zf::debug "# [starship] defer: p10k present (precmd hook registered)"
-    zf::prompt_init_deferred() { add-zsh-hook -d precmd zf::prompt_init_deferred 2>/dev/null || true; zf::prompt_init || starship_init_safe || true; }
+    zf::debug "# [starship] defer: p10k present (precmd hook registered)"
+    zf::prompt_init_deferred() {
+      add-zsh-hook -d precmd zf::prompt_init_deferred 2>/dev/null || true
+      zf::prompt_init || starship_init_safe || true
+    }
     add-zsh-hook precmd zf::prompt_init_deferred
   else
-  zf::debug "# [starship] init: p10k present but no add-zsh-hook; immediate fallback"
+    zf::debug "# [starship] init: p10k present but no add-zsh-hook; immediate fallback"
     zf::prompt_init 2>/dev/null || starship_init_safe 2>/dev/null || true
   fi
 else
   if [[ -n ${ZSH_STARSHIP_FORCE_IMMEDIATE:-} && -f ${ZDOTDIR:-$HOME}/.p10k.zsh ]]; then
-  zf::debug "# [starship] force: immediate override despite p10k (ZSH_STARSHIP_FORCE_IMMEDIATE set)"
+    zf::debug "# [starship] force: immediate override despite p10k (ZSH_STARSHIP_FORCE_IMMEDIATE set)"
   else
-  zf::debug "# [starship] init: immediate (no p10k detected)"
+    zf::debug "# [starship] init: immediate (no p10k detected)"
   fi
   zf::prompt_init 2>/dev/null || starship_init_safe 2>/dev/null || true
+  if [[ ${ZSH_DEBUG:-0} == 1 ]]; then
+    echo "# [starship] active config: ${STARSHIP_CONFIG:-<unset>} cache: ${STARSHIP_CACHE:-<unset>}"
+  fi
 fi

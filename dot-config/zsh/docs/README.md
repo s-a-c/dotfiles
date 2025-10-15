@@ -186,6 +186,46 @@ zqs enable-control-c-decorator       # Enable ^C display
 zqs enable-zsh-profiling             # Enable startup profiling
 ```
 
+#### 6.2.1. Splash Display Controls
+
+The startup splash system is controlled via persistent `zqs` settings plus optional environment overrides:
+
+Settings (persisted):
+```bash
+zqs set-setting show-splash true             # Enable splash (default true)
+zqs set-setting show-splash false            # Disable splash entirely
+zqs enable-always-show-splash                # Show splash on every reload/interactive start
+zqs disable-always-show-splash               # Revert to once-per-session behavior (default)
+```
+
+Environment overrides (per session):
+```bash
+export FORCE_SPLASH=1                        # Force splash even in SSH/CI contexts
+unset FORCE_SPLASH                           # Return to normal suppression logic
+```
+
+Behavior matrix:
+
+Condition | Result
+--------- | ------
+show-splash=false | Splash never shown (manual force still possible)
+show-splash=true & always-show-splash=false | Splash shown once per interactive shell
+show-splash=true & always-show-splash=true | Splash shown on every reload / new prompt cycle
+SSH / CI session | Suppressed unless FORCE_SPLASH=1 or always-show-splash=true
+FORCE_SPLASH=1 | Overrides SSH/CI suppression (still respects show-splash=true)
+
+Manual helpers (provided by the UI module):
+```bash
+splash                # Re-run splash once (unsets in-memory guard)
+force_splash          # Alias of 'splash'
+reload-with-splash    # Reload config and force splash in same step
+```
+
+Notes:
+- Idempotency flag `_STARTUP_SPLASH_PRINTED` is in-memory only (not exported). Each new `exec zsh` or new terminal naturally qualifies for a splash unless disabled.
+- Remote/CI detection uses `$SSH_CONNECTION` and `$CI`. To simulate locally: `SSH_CONNECTION=1 zsh -i`. To end the simulation: `exit` that shell or `unset SSH_CONNECTION`.
+- If you previously relied on unsetting `_UI_SPLASH_SHOWN` in `.zshrc.local`, that is obsolete; use the settings above instead.
+
 ### 6.3. **Debug Commands**
 
 Troubleshooting and analysis commands:

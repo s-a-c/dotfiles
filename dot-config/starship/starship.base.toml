@@ -103,7 +103,6 @@ $directory\
 [](bg:yellow fg:peach)\
 $git_branch\
 $git_status\
-$custom.lang_open\
 $c\
 $rust\
 $golang\
@@ -113,24 +112,12 @@ $java\
 $kotlin\
 $haskell\
 $python\
-$bun\
-$deno\
-$perl\
-$lua\
-$ruby\
-$scala\
-$swift\
-$zig\
-$julia\
-$elixir\
-$erlang\
 [](fg:green bg:sapphire)\
 $docker_context\
 $kubernetes\
 $aws\
 $pulumi\
 $conda\
-$custom.time_sep\
 $env_var\
 [ ](fg:lavender)\
 $line_break\
@@ -241,50 +228,6 @@ symbol = ""
 style = "bg:green"
 format = '[[ $symbol( $version)(\(#$virtualenv\)) ](fg:crust bg:green)]($style)'
 
-[bun]
-style = "bg:green"
-format = '[[ $symbol( $version) ](fg:crust bg:green)]($style)'
-
-[deno]
-style = "bg:green"
-format = '[[ $symbol( $version) ](fg:crust bg:green)]($style)'
-
-[perl]
-style = "bg:green"
-format = '[[ $symbol( $version) ](fg:crust bg:green)]($style)'
-
-[lua]
-style = "bg:green"
-format = '[[ $symbol( $version) ](fg:crust bg:green)]($style)'
-
-[ruby]
-style = "bg:green"
-format = '[[ $symbol( $version) ](fg:crust bg:green)]($style)'
-
-[scala]
-style = "bg:green"
-format = '[[ $symbol( $version) ](fg:crust bg:green)]($style)'
-
-[swift]
-style = "bg:green"
-format = '[[ $symbol( $version) ](fg:crust bg:green)]($style)'
-
-[zig]
-style = "bg:green"
-format = '[[ $symbol( $version) ](fg:crust bg:green)]($style)'
-
-[julia]
-style = "bg:green"
-format = '[[ $symbol( $version) ](fg:crust bg:green)]($style)'
-
-[elixir]
-style = "bg:green"
-format = '[[ $symbol( $version) ](fg:crust bg:green)]($style)'
-
-[erlang]
-style = "bg:green"
-format = '[[ $symbol( $version) ](fg:crust bg:green)]($style)'
-
 [docker_context]
 symbol = ""
 style = "bg:sapphire"
@@ -297,14 +240,10 @@ format = '[$symbol$environment ]($style)'
 ignore_base = false
 
 # Aggregator to open the green languages block only when at least one tool exists
-[custom.lang_open]
-command = "zsh -c 'for cmd in node npm yarn pnpm bun deno rustc cargo go perl ruby lua python3 python php java kotlinc ghc scala swift zig julia elixir erl nim dart dotnet tsc bunx; do command -v \"$cmd\" >/dev/null 2>&1 && exit 0; done; exit 1'"
-format = '[](fg:yellow bg:green)'
+
 
 # Show the sapphire->lavender separator only when time is visible
-[custom.time_sep]
-command = "zsh -c '[[ -n \"$STARSHIP_SHOW_TIME\" ]]'"
-format = '[](fg:sapphire bg:lavender)'
+
 
 # Display time using a precalculated TIME_FMT when STARSHIP_SHOW_TIME is set
 [env_var]
@@ -315,9 +254,10 @@ format = '[](fg:sapphire bg:lavender)[  $env_value ]($style)'
 [time]
 disabled = true
 time_format = "%R"
-utc_time_offset = "+0"
+utc_time_offset = "__UTC_OFFSET__"
 style = "fg:crust bg:lavender"
 format = '[  $time ]($style)'
+#format = '[[  $time ](fg:crust bg:lavender)]($style)'
 
 [line_break]
 disabled = false

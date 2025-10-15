@@ -21,12 +21,13 @@
 #   zqs set-setting run-health-check true
 #
 # Available settings controlled by this file:
-#   - show-splash:      Controls the main splash screen banner. (Default: true)
-#   - show-colorscript: Controls the `colorscript` display. (Default: true)
-#   - use-lolcat:       Controls whether `lolcat` is used with `colorscript`. (Default: true)
-#   - show-fastfetch:   Controls the `fastfetch` system info display. (Default: true)
-#   - run-health-check: Controls the shell health check on startup. (Default: true)
-#   - show-tips:        Controls the display of a random tip on startup. (Default: true)
+#   - show-splash:        Controls the main splash screen banner. (Default: true)
+#   - show-colorscript:   Controls the `colorscript` display. (Default: true)
+#   - use-lolcat:         Controls whether `lolcat` is used with `colorscript`. (Default: true)
+#   - show-fastfetch:     Controls the `fastfetch` system info display. (Default: true)
+#   - run-health-check:   Controls the shell health check on startup. (Default: true)
+#   - show-tips:          Controls the display of a random tip on startup. (Default: true)
+#   - always-show-splash: Show splash every reload/interactive startup (Default: false)
 #
 # ==============================================================================
 
@@ -258,35 +259,34 @@ bindkey '^[f' forward-word
 bindkey '^[d' kill-word
 bindkey '^[h' backward-kill-word
 
-
 # === Basic Arrow Keys ===
 # These ensure that arrow keys work properly for cursor movement
-bindkey '^[[D' backward-char    # Left arrow
-bindkey '^[[C' forward-char     # Right arrow
-bindkey '^[[A' up-history       # Up arrow
-bindkey '^[[B' down-history     # Down arrow
+bindkey '^[[D' backward-char # Left arrow
+bindkey '^[[C' forward-char  # Right arrow
+bindkey '^[[A' up-history    # Up arrow
+bindkey '^[[B' down-history  # Down arrow
 
 # Alternative escape sequences for different terminals
-bindkey '^[OD' backward-char    # Left arrow (application mode)
-bindkey '^[OC' forward-char     # Right arrow (application mode)
-bindkey '^[OA' up-history       # Up arrow (application mode)
-bindkey '^[OB' down-history     # Down arrow (application mode)
+bindkey '^[OD' backward-char # Left arrow (application mode)
+bindkey '^[OC' forward-char  # Right arrow (application mode)
+bindkey '^[OA' up-history    # Up arrow (application mode)
+bindkey '^[OB' down-history  # Down arrow (application mode)
 
 # === macOS-specific Keybindings ===
 if [[ "$OSTYPE" == darwin* ]]; then
   # Option + Left/Right for word movement
-  bindkey '^[[1;3D' backward-word   # Option + Left
-  bindkey '^[[1;3C' forward-word    # Option + Right
-  bindkey '^[^[[D' backward-word    # Alt + Left (alternative)
-  bindkey '^[^[[C' forward-word     # Alt + Right (alternative)
+  bindkey '^[[1;3D' backward-word # Option + Left
+  bindkey '^[[1;3C' forward-word  # Option + Right
+  bindkey '^[^[[D' backward-word  # Alt + Left (alternative)
+  bindkey '^[^[[C' forward-word   # Alt + Right (alternative)
 
   # Command + Left/Right for line movement
-  bindkey '^[[H' beginning-of-line  # Home / Command + Left
-  bindkey '^[[F' end-of-line        # End / Command + Right
-  
+  bindkey '^[[H' beginning-of-line # Home / Command + Left
+  bindkey '^[[F' end-of-line       # End / Command + Right
+
   # Ctrl + Left/Right for word movement (alternative)
-  bindkey '^[[1;5D' backward-word   # Ctrl + Left
-  bindkey '^[[1;5C' forward-word    # Ctrl + Right
+  bindkey '^[[1;5D' backward-word # Ctrl + Left
+  bindkey '^[[1;5C' forward-word  # Ctrl + Right
 fi
 
 # === Advanced Editing ===
@@ -409,122 +409,148 @@ alias cd='cd_with_ls'
 
 # Display startup splash screen
 splash_screen() {
-    # Show colorful output with lolcat if not disabled
-    if [[ "$(_zqs-get-setting show-colorscript true)" == 'true' ]]; then
-        if [[ "$(_zqs-get-setting use-lolcat true)" == 'true' ]] && command -v lolcat >/dev/null 2>&1 && command -v colorscript >/dev/null 2>&1; then
-            colorscript random | lolcat
-        elif command -v colorscript >/dev/null 2>&1; then
-            colorscript random
-        fi
+  # Show colorful output with lolcat if not disabled
+  if [[ "$(_zqs-get-setting show-colorscript true)" == 'true' ]]; then
+    if [[ "$(_zqs-get-setting use-lolcat true)" == 'true' ]] && command -v lolcat >/dev/null 2>&1 && command -v colorscript >/dev/null 2>&1; then
+      colorscript random | lolcat
+    elif command -v colorscript >/dev/null 2>&1; then
+      colorscript random
     fi
+  fi
 
-    # Show system information with fastfetch if not disabled
-    if [[ "$(_zqs-get-setting show-fastfetch true)" == 'true' ]] && command -v fastfetch >/dev/null 2>&1; then
-        echo ""
-        fastfetch
-        echo ""
-    fi
-
-    local shell_version="ZSH $ZSH_VERSION"
-    local config_version="${ZDOTDIR##*/} configuration"
-    local timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-
+  # Show system information with fastfetch if not disabled
+  if [[ "$(_zqs-get-setting show-fastfetch true)" == 'true' ]] && command -v fastfetch >/dev/null 2>&1; then
     echo ""
-    echo "╭─────────────────────────────────────────────────────────╮"
-    echo "│  🚀 Welcome to Enhanced ZSH Configuration              │"
-    echo "│                                                         │"
-    echo "│  Shell: $shell_version                                    │"
-    echo "│  Config: $config_version                          │"
-    echo "│  Time: $timestamp                            │"
-    echo "│                                                         │"
-    echo "│  💡 Enhanced features now active:                      │"
-    echo "│    • 139 productivity aliases                           │"
-    echo "│    • 67+ enhanced keybindings                           │"
-    echo "│    • Advanced prompt system                             │"
-    echo "│    • Modern tool integrations                           │"
-    echo "╰─────────────────────────────────────────────────────────╯"
+    fastfetch
     echo ""
+  fi
+
+  local shell_version="ZSH $ZSH_VERSION"
+  local config_version="${ZDOTDIR##*/} configuration"
+  local timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+
+  echo ""
+  echo "╭─────────────────────────────────────────────────────────╮"
+  echo "│  🚀 Welcome to Enhanced ZSH Configuration              │"
+  echo "│                                                         │"
+  echo "│  Shell: $shell_version                                    │"
+  echo "│  Config: $config_version                          │"
+  echo "│  Time: $timestamp                            │"
+  echo "│                                                         │"
+  echo "│  💡 Enhanced features now active:                      │"
+  echo "│    • 139 productivity aliases                           │"
+  echo "│    • 67+ enhanced keybindings                           │"
+  echo "│    • Advanced prompt system                             │"
+  echo "│    • Modern tool integrations                           │"
+  echo "╰─────────────────────────────────────────────────────────╯"
+  echo ""
 }
 
 # Perform basic shell health check
 shell_health_check() {
-    local issues=0
-    local warnings=()
-    local cmd tool warning
+  local issues=0
+  local warnings=()
+  local cmd tool warning
 
-    # Check for essential commands
-    local essential_commands=(git curl wget ssh)
-    for cmd in "${essential_commands[@]}"; do
-        if ! command -v "$cmd" >/dev/null 2>&1; then
-            warnings+=("Missing essential command: $cmd")
-            ((issues++))
-        fi
+  # Check for essential commands
+  local essential_commands=(git curl wget ssh)
+  for cmd in "${essential_commands[@]}"; do
+    if ! command -v "$cmd" >/dev/null 2>&1; then
+      warnings+=("Missing essential command: $cmd")
+      ((issues++))
+    fi
+  done
+
+  # Check shell options
+  if [[ ! -o EXTENDED_GLOB ]]; then
+    warnings+=("EXTENDED_GLOB not set - some features may not work")
+    ((issues++))
+  fi
+
+  # Check for modern tools
+  local modern_tools=(eza bat fd rg)
+  local modern_count=0
+  for tool in "${modern_tools[@]}"; do
+    if command -v "$tool" >/dev/null 2>&1; then
+      ((modern_count++))
+    fi
+  done
+
+  if [[ $issues -gt 0 ]]; then
+    echo "⚠️  Shell Health Issues Detected ($issues):"
+    for warning in "${warnings[@]}"; do
+      echo "   • $warning"
     done
+    echo ""
+  fi
 
-    # Check shell options
-    if [[ ! -o EXTENDED_GLOB ]]; then
-        warnings+=("EXTENDED_GLOB not set - some features may not work")
-        ((issues++))
-    fi
+  if [[ $modern_count -gt 0 ]]; then
+    echo "✨ Modern tools available: $modern_count/${#modern_tools[@]}"
+  fi
 
-    # Check for modern tools
-    local modern_tools=(eza bat fd rg)
-    local modern_count=0
-    for tool in "${modern_tools[@]}"; do
-        if command -v "$tool" >/dev/null 2>&1; then
-            ((modern_count++))
-        fi
-    done
-
-    if [[ $issues -gt 0 ]]; then
-        echo "⚠️  Shell Health Issues Detected ($issues):"
-        for warning in "${warnings[@]}"; do
-            echo "   • $warning"
-        done
-        echo ""
-    fi
-
-    if [[ $modern_count -gt 0 ]]; then
-        echo "✨ Modern tools available: $modern_count/${#modern_tools[@]}"
-    fi
-
-    return $issues
+  return $issues
 }
 
 # Show performance tips
 show_performance_tips() {
-    local tips=(
-        "Use 'reload' alias to quickly reload your shell configuration"
-        "Press Ctrl+X Ctrl+S to add 'sudo' to any command"
-        "Use 'l' for detailed file listing, 'll' for long format"
-        "Press Ctrl+R for history search, Ctrl+X Ctrl+G for git status"
-        "Modern tools (eza, bat, fd, rg) provide enhanced functionality"
-        "Use '..' '...' '....' for quick directory navigation"
-    )
+  local tips=(
+    "Use 'reload' alias to quickly reload your shell configuration"
+    "Press Ctrl+X Ctrl+S to add 'sudo' to any command"
+    "Use 'l' for detailed file listing, 'll' for long format"
+    "Press Ctrl+R for history search, Ctrl+X Ctrl+G for git status"
+    "Modern tools (eza, bat, fd, rg) provide enhanced functionality"
+    "Use '..' '...' '....' for quick directory navigation"
+  )
 
-    local tip_index=$((RANDOM % ${#tips[@]} + 1))
-    echo "💡 Tip: ${tips[tip_index]}"
-    echo ""
+  local tip_index=$((RANDOM % ${#tips[@]} + 1))
+  echo "💡 Tip: ${tips[tip_index]}"
+  echo ""
 }
 
 # Main splash function to orchestrate startup display
 show_startup_splash() {
-    # Only show splash in interactive shells
-    if [[ ! -o interactive ]]; then
-        return 0
-    fi
+  # Hybrid B + C logic with settings & remote/CI suppression
+  local always="$(_zqs-get-setting always-show-splash false)"
 
-    if [[ "$(_zqs-get-setting show-splash true)" == 'true' ]]; then
-        splash_screen
-    fi
+  # Idempotency unless always-show-splash enabled
+  if [[ "$always" != 'true' && -n "${_STARTUP_SPLASH_PRINTED:-}" ]]; then
+    return 0
+  fi
 
-    if [[ "$(_zqs-get-setting run-health-check true)" == 'true' ]]; then
-        shell_health_check
-    fi
+  # Must be interactive
+  if [[ ! -o interactive ]]; then
+    return 0
+  fi
 
-    if [[ "$(_zqs-get-setting show-tips true)" == 'true' ]]; then
-        show_performance_tips
+  # Primary enable
+  if [[ "$(_zqs-get-setting show-splash true)" != 'true' ]]; then
+    return 0
+  fi
+
+  # Remote/CI suppression unless forced or always-show-splash
+  if [[ -n "${CI:-}" || -n "${SSH_CONNECTION:-}" ]]; then
+    if [[ -z "${FORCE_SPLASH:-}" && "$always" != 'true' ]]; then
+      return 0
     fi
+  fi
+
+  # Mark printed unless repeating mode
+  if [[ "$always" != 'true' ]]; then
+    _STARTUP_SPLASH_PRINTED=1
+  fi
+
+  # Core banner
+  splash_screen
+
+  # Optional health check
+  if [[ "$(_zqs-get-setting run-health-check true)" == 'true' ]]; then
+    shell_health_check
+  fi
+
+  # Optional tips
+  if [[ "$(_zqs-get-setting show-tips true)" == 'true' ]]; then
+    show_performance_tips
+  fi
 }
 
 # ==============================================================================
@@ -533,38 +559,38 @@ show_startup_splash() {
 
 # Color definitions for UI elements
 init_ui_colors() {
-    # Only set colors if terminal supports them
-    if [[ -t 1 ]] && [[ $(tput colors 2>/dev/null) -ge 8 ]]; then
-        export UI_RED=$(tput setaf 1)
-        export UI_GREEN=$(tput setaf 2)
-        export UI_YELLOW=$(tput setaf 3)
-        export UI_BLUE=$(tput setaf 4)
-        export UI_MAGENTA=$(tput setaf 5)
-        export UI_CYAN=$(tput setaf 6)
-        export UI_WHITE=$(tput setaf 7)
-        export UI_BOLD=$(tput bold)
-        export UI_RESET=$(tput sgr0)
-    else
-        # Fallback for terminals without color support
-        export UI_RED=""
-        export UI_GREEN=""
-        export UI_YELLOW=""
-        export UI_BLUE=""
-        export UI_MAGENTA=""
-        export UI_CYAN=""
-        export UI_WHITE=""
-        export UI_BOLD=""
-        export UI_RESET=""
-    fi
+  # Only set colors if terminal supports them
+  if [[ -t 1 ]] && [[ $(tput colors 2>/dev/null) -ge 8 ]]; then
+    export UI_RED=$(tput setaf 1)
+    export UI_GREEN=$(tput setaf 2)
+    export UI_YELLOW=$(tput setaf 3)
+    export UI_BLUE=$(tput setaf 4)
+    export UI_MAGENTA=$(tput setaf 5)
+    export UI_CYAN=$(tput setaf 6)
+    export UI_WHITE=$(tput setaf 7)
+    export UI_BOLD=$(tput bold)
+    export UI_RESET=$(tput sgr0)
+  else
+    # Fallback for terminals without color support
+    export UI_RED=""
+    export UI_GREEN=""
+    export UI_YELLOW=""
+    export UI_BLUE=""
+    export UI_MAGENTA=""
+    export UI_CYAN=""
+    export UI_WHITE=""
+    export UI_BOLD=""
+    export UI_RESET=""
+  fi
 }
 
 # Quick directory listing with colors
 quick_ls() {
-    if command -v eza >/dev/null 2>&1; then
-        eza --color=auto --icons "$@"
-    else
-        ls -G "$@"
-    fi
+  if command -v eza >/dev/null 2>&1; then
+    eza --color=auto --icons "$@"
+  else
+    ls -G "$@"
+  fi
 }
 
 # ==============================================================================
@@ -575,8 +601,54 @@ quick_ls() {
 init_ui_colors
 
 # Show startup splash when module loads (only in interactive shells)
-if [[ -o interactive ]] && [[ -z "${_UI_SPLASH_SHOWN:-}" ]]; then
-    export _UI_SPLASH_SHOWN=1
-    # Delay splash slightly to allow shell to fully initialize
-    (sleep 0.1; show_startup_splash) &!
-fi
+# ------------------------------------------------------------------------------
+# Splash scheduling (precmd hook hybrid)
+# ------------------------------------------------------------------------------
+# Defers splash until first prompt so theme/prompt init finishes.
+# Guards:
+#   - Interactive shell
+#   - show-splash setting enabled
+#   - Idempotent unless always-show-splash
+#   - Remote/CI suppressed unless FORCE_SPLASH or always-show-splash
+#
+show_startup_splash_precmd() {
+  # Remove hook after first run unless always-show-splash
+  if [[ "$(_zqs-get-setting always-show-splash false)" != 'true' ]]; then
+    if command -v add-zsh-hook >/dev/null 2>&1; then
+      add-zsh-hook -d precmd show_startup_splash_precmd 2>/dev/null
+    fi
+  fi
+  show_startup_splash
+}
+
+schedule_startup_splash() {
+  if [[ ! -o interactive ]]; then
+    return 0
+  fi
+  if [[ "$(_zqs-get-setting show-splash true)" != 'true' ]]; then
+    return 0
+  fi
+  if [[ "$(_zqs-get-setting always-show-splash false)" != 'true' && -n "${_STARTUP_SPLASH_PRINTED:-}" ]]; then
+    return 0
+  fi
+  if command -v add-zsh-hook >/dev/null 2>&1; then
+    # Avoid duplicate registration
+    if ! add-zsh-hook -L precmd | grep -q 'show_startup_splash_precmd'; then
+      add-zsh-hook precmd show_startup_splash_precmd
+    fi
+  else
+    # Fallback immediate invocation
+    show_startup_splash
+  fi
+}
+
+# Manual helpers
+force_splash() {
+  unset _STARTUP_SPLASH_PRINTED
+  show_startup_splash
+}
+alias splash='force_splash'
+alias reload-with-splash='unset _STARTUP_SPLASH_PRINTED; source ~/.zshrc'
+
+# Kick off scheduling
+schedule_startup_splash
