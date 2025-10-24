@@ -1,0 +1,9 @@
+version: 2
+updates:
+  - package-ecosystem: "all"
+  - runtime: "all"
+  - groups: "all"
+ignore:
+  - "documentation/examples/**"
+  - "docs/**"
+  - "*.md"

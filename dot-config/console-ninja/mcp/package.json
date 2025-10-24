@@ -1,5 +1,5 @@
 {
   "name": "console-ninja-mcp-server",
-  "version": "1.0.486",
+  "version": "1.0.488",
   "main": "./index.js"
 }
