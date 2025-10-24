@@ -1,3 +1,8 @@
+#!/usr/bin/env zsh
+
+# vim: ft=zsh
+# -*- mode: sh; sh-shell: zsh; -*-
+
 # ==============================================================================
 # CRITICAL STARTUP STANZA - MUST BE FIRST
 # Sets essential environment variables before any other shell initialization
@@ -62,15 +67,15 @@
 #   * exported env before launching interactive shell
 #
 # RULE (Path Resolution):
-#   Avoid using the brittle form `${0:A:h}` directly inside any redesign or plugin
+#   Avoid using the brittle form \`${0:A:h}\` directly inside any redesign or plugin
 #   module (especially when code may be compiled / cached by a plugin manager).
-#   Instead, use the helper `zf::script_dir` (defined later in this file) or,
-#   for very early bootstrap contexts, `resolve_script_dir` with an optional
+#   Instead, use the helper \`zf::script_dir\` (defined later in this file) or,
+#   for very early bootstrap contexts, \`resolve_script_dir\` with an optional
 #   path argument. These helpers are resilient to symlinks and compilation
-#   contexts and defer to `${(%):-%N}` rather than `$0` where appropriate.
+#   contexts and defer to \`${(%):-%N}\` rather than \`$0\` where appropriate.
 #   Migration Plan:
-#     - New code MUST use `zf::script_dir` or `resolve_script_dir`.
-#     - Existing `${0:A:h}` usages should be incrementally refactored.
+#     - New code MUST use \`zf::script_dir\` or \`resolve_script_dir\`.
+#     - Existing \`${0:A:h}\` usages should be incrementally refactored.
 # ==============================================================================
 
 # Suppress Powerlevel10k configuration wizard by default (Starship-first policy).
@@ -263,6 +268,76 @@ export PATH
 
 export RIPGREP_CONFIG_PATH="${RIPGREP_CONFIG_PATH:-${XDG_CONFIG_HOME}/ripgrep/ripgreprc}"
 
+# ------------------------------------------------------------------------------
+# Git root helpers and environment export
+# - zf::git_root: print repo root (or fail)
+# - zf::update_git_root: keep $ZF_GIT_ROOT in sync with current directory
+# - Initialize on startup and register in chpwd_functions (deduped)
+# - Mnemonic helpers: git_root, cdr
+# ------------------------------------------------------------------------------
+zf::git_root() {
+  git -C "${1:-$PWD}" rev-parse --show-toplevel 2>/dev/null
+}
+
+zf::git_super_root() {
+  local d="${1:-$PWD}" super
+  super=$(git -C "$d" rev-parse --show-superproject-working-tree 2>/dev/null) || super=""
+  if [[ -n "$super" ]]; then
+    print -r -- "$super"
+  else
+    git -C "$d" rev-parse --show-toplevel 2>/dev/null
+  fi
+}
+zf::git_common_dir() {
+  git -C "${1:-$PWD}" rev-parse --git-common-dir 2>/dev/null
+}
+zf::git_common_root() {
+  local d="${1:-$PWD}" common bare parent
+  common=$(git -C "$d" rev-parse --git-common-dir 2>/dev/null) || return 1
+  bare=$(git -C "$d" rev-parse --is-bare-repository 2>/dev/null) || bare="false"
+  if [[ "$bare" == "true" ]]; then
+    return 1
+  fi
+  parent="${common%/.git}"
+  if [[ "$parent" != "$common" && -d "$parent" ]]; then
+    print -r -- "$parent"
+  else
+    git -C "$d" rev-parse --show-toplevel 2>/dev/null
+  fi
+}
+
+zf::update_git_root() {
+  local root super common_dir common_root
+  root="$(zf::git_root)" || root=""
+  super="$(zf::git_super_root)" || super=""
+  common_dir="$(zf::git_common_dir)" || common_dir=""
+  common_root="$(zf::git_common_root)" || common_root=""
+  export ZF_GIT_ROOT="$root" ZF_GIT_SUPER_ROOT="$super" ZF_GIT_COMMON_DIR="$common_dir" ZF_GIT_COMMON_ROOT="$common_root"
+}
+
+# Initialize on startup
+zf::update_git_root
+
+# Ensure chpwd_functions exists and register updater once
+typeset -ga chpwd_functions
+{
+  local __zf_found=0 __zf_f
+  for __zf_f in "${chpwd_functions[@]}"; do
+    [[ "$__zf_f" == "zf::update_git_root" ]] && __zf_found=1 && break
+  done
+  (( __zf_found == 0 )) && chpwd_functions+=("zf::update_git_root")
+  unset __zf_found __zf_f
+}
+
+# Mnemonic helpers that delegate to namespaced functions
+git_root() { zf::git_root "$@"; }
+cdr() { local r; r="$(zf::git_root)" || return 1; cd "$r"; }
+git_super_root() { zf::git_super_root "$@"; }
+cdrs() { local r; r="$(zf::git_super_root)" || return 1; cd "$r"; }
+git_common_dir() { zf::git_common_dir "$@"; }
+git_common_root() { zf::git_common_root "$@"; }
+cdrc() { local r; r="$(zf::git_common_root)" || return 1; cd "$r"; }
+
 # Prefer repo path if available; otherwise default to XDG
 if [[ -z "${ZDOTDIR:-}" ]]; then
   if [[ -d "${HOME}/dotfiles/dot-config/zsh" ]]; then
@@ -273,7 +348,7 @@ if [[ -z "${ZDOTDIR:-}" ]]; then
 fi
 
 # Allow a localized override file to run early. This file may set ZDOTDIR
-# or other site/user-specific values. It's safe to source here because it is
+# or other site/user-specific values. It is safe to source here because it is
 # expected to be conservative and provide defaults only.
 _local_zshenv_local="${XDG_CONFIG_HOME:-${HOME}/.config}/zsh/.zshenv.local"
 if [[ -f "${_local_zshenv_local}" ]]; then
@@ -286,25 +361,25 @@ unset _local_zshenv_local
 
 # ------------------------------------------------------------------------------
 # Robustly canonicalize ZDOTDIR (resolve symlinks) WITHOUT breaking on systems
-# that lack `realpath`. We only canonicalize if ZDOTDIR is set and points to a
-# directory so we don't accidentally touch unrelated values.
+# that lack \`realpath\`. We only canonicalize if ZDOTDIR is set and points to a
+# directory so we do not accidentally touch unrelated values.
 # ------------------------------------------------------------------------------
 if [[ -n "${ZDOTDIR:-}" && -d "${ZDOTDIR}" ]]; then
-    if command -v realpath >/dev/null 2>&1; then
-        # Use realpath when available (portable and resolves symlinks)
-        ZDOTDIR="$(realpath "${ZDOTDIR}")"
-    else
-        # Fallback: attempt to cd into dir and print the physical path (pwd -P)
-        # If that fails for any reason, leave ZDOTDIR as-is.
-        _zd_prev_pwd=""
-        _zd_prev_pwd="$PWD" 2>/dev/null || true
-        if cd "${ZDOTDIR}" 2>/dev/null; then
-            ZDOTDIR="$(pwd -P 2>/dev/null || pwd)"
-            # return to previous working directory
-            cd "$_zd_prev_pwd" 2>/dev/null || true
-        fi
-        unset _zd_prev_pwd
+  if command -v realpath >/dev/null 2>&1; then
+    # Use realpath when available (portable and resolves symlinks)
+    ZDOTDIR="$(realpath "${ZDOTDIR}")"
+  else
+    # Fallback: attempt to cd into dir and print the physical path (pwd -P)
+    # If that fails for any reason, leave ZDOTDIR as-is.
+    _zd_prev_pwd=""
+    _zd_prev_pwd="$PWD" 2>/dev/null || true
+    if cd "${ZDOTDIR}" 2>/dev/null; then
+      ZDOTDIR="$(pwd -P 2>/dev/null || pwd)"
+      # return to previous working directory
+      cd "$_zd_prev_pwd" 2>/dev/null || true
     fi
+    unset _zd_prev_pwd
+  fi
 fi
 
 # Create common cache/log dirs (do not fail startup if mkdir fails)
@@ -350,7 +425,7 @@ export ZSH_DEBUG="${ZSH_DEBUG:-0}"
 zf::apply_debug_policy() {
   export ZSH_DEBUG="${ZSH_DEBUG:-0}"
   export ZSH_DEBUG_POLICY_APPLIED=1
-  # Disable xtrace if it's on (our xtrace fix)
+  # Disable xtrace if it is on (our xtrace fix)
   if [[ "${options[xtrace]}" == "on" && "${ZSH_FORCE_XTRACE:-0}" != "1" ]]; then
     set +x 2>/dev/null || true
   fi
@@ -386,7 +461,7 @@ zf::reset_debug_policy() {
     fi
   fi
 
-  # Restore xtrace state if it differs now and user didn't force override
+  # Restore xtrace state if it differs now and user did not force override
   if [[ -n "${ZSH_DEBUG_ORIG_XTRACE+x}" ]]; then
     local current="${options[xtrace]}"
     if [[ "${ZSH_DEBUG_ORIG_XTRACE}" == "on" && "$current" == "off" ]]; then
@@ -408,11 +483,11 @@ export _PERFORMANCE_MONITORING_LOADED="${_PERFORMANCE_MONITORING_LOADED:-1}"
 
 # Set BREW_PREFIX early for module compatibility
 if [[ -z "${BREW_PREFIX:-}" ]]; then
-    if [[ -d "/opt/homebrew" ]]; then
-        export BREW_PREFIX="/opt/homebrew"
-    elif [[ -d "/usr/local" ]]; then
-        export BREW_PREFIX="/usr/local"
-    fi
+  if [[ -d "/opt/homebrew" ]]; then
+    export BREW_PREFIX="/opt/homebrew"
+  elif [[ -d "/usr/local" ]]; then
+    export BREW_PREFIX="/usr/local"
+  fi
 fi
 
 # Set DESK_ENV to empty to prevent undefined variable errors
@@ -525,14 +600,14 @@ typeset -g PS4="${PS4-+%N:%i> }"
 typeset -g vi_mode_in_opts="${vi_mode_in_opts-0}"
 
 # Guard oh-my-zsh root variable so zgenom-oh-my-zsh can reference $ZSH under set -u
-if ! (( ${+ZSH} )); then
+if [[ ! -v ZSH ]]; then
   typeset -g ZSH=""
 fi
 
 # Guard oh-my-zsh custom directory variable ($ZSH_CUSTOM) early so numerous
 # upstream oh-my-zsh scripts that reference it under nounset do not explode.
 # If ZSH is empty (because oh-my-zsh not yet cloned) point custom dir at cache.
-if ! (( ${+ZSH_CUSTOM} )); then
+if [[ ! -v ZSH_CUSTOM ]]; then
   if [[ -n ${ZSH:-} ]]; then
     typeset -g ZSH_CUSTOM="${ZSH}/custom"
   else
@@ -545,21 +620,21 @@ mkdir -p -- "$ZSH_CUSTOM" 2>/dev/null || true
 
 # ---------------------------------------------------------------------------
 # Oh My Zsh frequently references variables such as DISABLE_UPDATE_PROMPT and
-# the 'plugins' array before user config sets them. Under 'set -u' this causes
+# the 'plugins' array before user config sets them. Under \`set -u\`, this causes
 # immediate aborts. Seed them to safe defaults early.
 # ---------------------------------------------------------------------------
-if ! (( ${+DISABLE_UPDATE_PROMPT} )); then typeset -g DISABLE_UPDATE_PROMPT=0; fi
-if ! (( ${+DISABLE_AUTO_UPDATE}   )); then typeset -g DISABLE_AUTO_UPDATE=1; fi
-if ! (( ${+ENABLE_CORRECTION}     )); then typeset -g ENABLE_CORRECTION=0; fi
-if ! (( ${+COMPLETION_WAITING_DOTS} )); then typeset -g COMPLETION_WAITING_DOTS=0; fi
-if ! (( ${+plugins} )); then typeset -ga plugins; plugins=(); fi
-if ! (( ${+TERM_PROGRAM} )); then typeset -g TERM_PROGRAM="unknown"; fi
-if ! (( ${+ZSH_COMPDUMP} )); then typeset -g ZSH_COMPDUMP="${ZSH_CACHE_DIR}/.zcompdump"; fi
-if ! (( ${+CASE_SENSITIVE} )); then typeset -g CASE_SENSITIVE=0; fi
-if ! (( ${+DISABLE_MAGIC_FUNCTIONS} )); then typeset -g DISABLE_MAGIC_FUNCTIONS=0; fi
-if ! (( ${+INSIDE_EMACS} )); then typeset -g INSIDE_EMACS=""; fi
-if ! (( ${+DISABLE_LS_COLORS} )); then typeset -g DISABLE_LS_COLORS=0; fi
-if ! (( ${+ZSH_THEME} )); then typeset -g ZSH_THEME=""; fi
+if [[ ! -v DISABLE_UPDATE_PROMPT ]]; then typeset -g DISABLE_UPDATE_PROMPT=0; fi
+if [[ ! -v DISABLE_AUTO_UPDATE ]]; then typeset -g DISABLE_AUTO_UPDATE=1; fi
+if [[ ! -v ENABLE_CORRECTION ]]; then typeset -g ENABLE_CORRECTION=0; fi
+if [[ ! -v COMPLETION_WAITING_DOTS ]]; then typeset -g COMPLETION_WAITING_DOTS=0; fi
+if [[ ! -v plugins ]]; then typeset -ga plugins; plugins=(); fi
+if [[ ! -v TERM_PROGRAM ]]; then typeset -g TERM_PROGRAM="unknown"; fi
+if [[ ! -v ZSH_COMPDUMP ]]; then typeset -g ZSH_COMPDUMP="${ZSH_CACHE_DIR}/.zcompdump"; fi
+if [[ ! -v CASE_SENSITIVE ]]; then typeset -g CASE_SENSITIVE=0; fi
+if [[ ! -v DISABLE_MAGIC_FUNCTIONS ]]; then typeset -g DISABLE_MAGIC_FUNCTIONS=0; fi
+if [[ ! -v INSIDE_EMACS ]]; then typeset -g INSIDE_EMACS=""; fi
+if [[ ! -v DISABLE_LS_COLORS ]]; then typeset -g DISABLE_LS_COLORS=0; fi
+if [[ ! -v ZSH_THEME ]]; then typeset -g ZSH_THEME=""; fi
 
 # Ensure nounset is off very early for plugin safety
 unsetopt UNSET 2>/dev/null || true
@@ -568,40 +643,41 @@ unsetopt UNSET 2>/dev/null || true
 ## Starship & prompt instrumentation guard block
 ## Goal: Provide unconditional, nounset-safe first declarations for all custom
 ## STARSHIP_CMD_* variables that our prompt or hooks may reference. Some third-
-## party plugins (or user experimentation) may enable `set -u` mid-startup or
-## temporarily `unset` these symbols; declaring them here (earliest practical
+## party plugins (or user experimentation) may enable \`set -u\` mid-startup or
+## temporarily \`unset\` these symbols; declaring them here (earliest practical
 ## point) prevents cascading "parameter not set" errors during precmd/preexec.
 ## ---------------------------------------------------------------------------
 
 # Core status (integer)
-if ! (( ${+STARSHIP_CMD_STATUS} )); then typeset -gi STARSHIP_CMD_STATUS=0; fi
+
+if [[ ! -v STARSHIP_CMD_STATUS ]]; then typeset -gi STARSHIP_CMD_STATUS=0; fi
 
 # Additional timing / reason / job context (integers)
-if ! (( ${+STARSHIP_DURATION_MS}       )); then typeset -gi STARSHIP_DURATION_MS=0; fi
-if ! (( ${+STARSHIP_CMD_EXIT_REASON}   )); then typeset -gi STARSHIP_CMD_EXIT_REASON=0; fi
-if ! (( ${+STARSHIP_CMD_START_TIME}    )); then typeset -gi STARSHIP_CMD_START_TIME=0; fi
-if ! (( ${+STARSHIP_CMD_END_TIME}      )); then typeset -gi STARSHIP_CMD_END_TIME=0; fi
-if ! (( ${+STARSHIP_CMD_BG}            )); then typeset -gi STARSHIP_CMD_BG=0; fi
-if ! (( ${+STARSHIP_CMD_JOBS}          )); then typeset -gi STARSHIP_CMD_JOBS=0; fi
-if ! (( ${+STARSHIP_CMD_PIPESTATUS}    )); then typeset -gi STARSHIP_CMD_PIPESTATUS=0; fi
-if ! (( ${+STARSHIP_CMD_SIG}           )); then typeset -gi STARSHIP_CMD_SIG=0; fi
-if ! (( ${+STARSHIP_CMD_ERR}           )); then typeset -gi STARSHIP_CMD_ERR=0; fi
-if ! (( ${+STARSHIP_CMD_ERRNO}         )); then typeset -gi STARSHIP_CMD_ERRNO=0; fi
-if ! (( ${+STARSHIP_CMD_ERRCODE}       )); then typeset -gi STARSHIP_CMD_ERRCODE=0; fi
-if ! (( ${+STARSHIP_CMD_ERRLINE}       )); then typeset -gi STARSHIP_CMD_ERRLINE=0; fi
+if [[ ! -v STARSHIP_DURATION_MS ]]; then typeset -gi STARSHIP_DURATION_MS=0; fi
+if [[ ! -v STARSHIP_CMD_EXIT_REASON ]]; then typeset -gi STARSHIP_CMD_EXIT_REASON=0; fi
+if [[ ! -v STARSHIP_CMD_START_TIME ]]; then typeset -gi STARSHIP_CMD_START_TIME=0; fi
+if [[ ! -v STARSHIP_CMD_END_TIME ]]; then typeset -gi STARSHIP_CMD_END_TIME=0; fi
+if [[ ! -v STARSHIP_CMD_BG ]]; then typeset -gi STARSHIP_CMD_BG=0; fi
+if [[ ! -v STARSHIP_CMD_JOBS ]]; then typeset -gi STARSHIP_CMD_JOBS=0; fi
+if [[ ! -v STARSHIP_CMD_PIPESTATUS ]]; then typeset -gi STARSHIP_CMD_PIPESTATUS=0; fi
+if [[ ! -v STARSHIP_CMD_SIG ]]; then typeset -gi STARSHIP_CMD_SIG=0; fi
+if [[ ! -v STARSHIP_CMD_ERR ]]; then typeset -gi STARSHIP_CMD_ERR=0; fi
+if [[ ! -v STARSHIP_CMD_ERRNO ]]; then typeset -gi STARSHIP_CMD_ERRNO=0; fi
+if [[ ! -v STARSHIP_CMD_ERRCODE ]]; then typeset -gi STARSHIP_CMD_ERRCODE=0; fi
+if [[ ! -v STARSHIP_CMD_ERRLINE ]]; then typeset -gi STARSHIP_CMD_ERRLINE=0; fi
 
 # String/context fields
-if ! (( ${+STARSHIP_CMD_ERRMSG}        )); then typeset -g STARSHIP_CMD_ERRMSG=""; fi
-if ! (( ${+STARSHIP_CMD_ERRCTX}        )); then typeset -g STARSHIP_CMD_ERRCTX=""; fi
-if ! (( ${+STARSHIP_CMD_ERRFUNC}       )); then typeset -g STARSHIP_CMD_ERRFUNC=""; fi
-if ! (( ${+STARSHIP_CMD_ERRFILE}       )); then typeset -g STARSHIP_CMD_ERRFILE=""; fi
+if [[ ! -v STARSHIP_CMD_ERRMSG ]]; then typeset -g STARSHIP_CMD_ERRMSG=""; fi
+if [[ ! -v STARSHIP_CMD_ERRCTX ]]; then typeset -g STARSHIP_CMD_ERRCTX=""; fi
+if [[ ! -v STARSHIP_CMD_ERRFUNC ]]; then typeset -g STARSHIP_CMD_ERRFUNC=""; fi
+if [[ ! -v STARSHIP_CMD_ERRFILE ]]; then typeset -g STARSHIP_CMD_ERRFILE=""; fi
 
 export STARSHIP_CMD_STATUS
 
 # STARSHIP_PIPE_STATUS (from upstream starship usage) is usually an array; we
-# keep a separate guard but don't export. Only declare if truly unset to avoid
+# keep a separate guard but do not export. Only declare if truly unset to avoid
 # clobbering caller-provided type.
-if ! (( ${+STARSHIP_PIPE_STATUS} )); then typeset -ga STARSHIP_PIPE_STATUS; STARSHIP_PIPE_STATUS=(); fi
+if [[ ! -v STARSHIP_PIPE_STATUS ]]; then typeset -ga STARSHIP_PIPE_STATUS; STARSHIP_PIPE_STATUS=(); fi
 
 # Minimal defaults to avoid set -u trips for external configs
 : ${INTELLIJ_ENVIRONMENT_READER:=}
@@ -658,15 +734,15 @@ fi
 
 # fzf integration can reference FZF_PATH very early; provide a lightweight default
 if [[ -z "${FZF_PATH-}" ]]; then
-    if [[ -d "/opt/homebrew/opt/fzf" ]]; then
-        export FZF_PATH="/opt/homebrew/opt/fzf"
-    elif [[ -d "/usr/local/opt/fzf" ]]; then
-        export FZF_PATH="/usr/local/opt/fzf"
-    elif [[ -d "${HOME}/.fzf" ]]; then
-    export FZF_PATH="${HOME}/.fzf"
-    else
-        export FZF_PATH=""
-    fi
+  if [[ -d "/opt/homebrew/opt/fzf" ]]; then
+    export FZF_PATH="/opt/homebrew/opt/fzf"
+  elif [[ -d "/usr/local/opt/fzf" ]]; then
+    export FZF_PATH="/usr/local/opt/fzf"
+  elif [[ -d "${HOME}/.fzf" ]]; then
+  export FZF_PATH="${HOME}/.fzf"
+  else
+    export FZF_PATH=""
+  fi
 fi
 
 # AWS and cloud service variables
@@ -836,17 +912,17 @@ export ZSH_SCRIPT_DIR_HELPERS=1
 # in constrained CI sandboxes. Must appear before plugin manager / theme logic.
 # ------------------------------------------------------------------------------
 if [[ "${PERF_HARNESS_MINIMAL:-0}" == "1" ]]; then
-    # Minimal perf harness path detected, but early return disabled to allow full interactive startup.
-    # (Original minimal fast path intentionally bypassed.)
-    ZSH_DEBUG=${ZSH_DEBUG:-0}
-    export ZSH_PERF_PROMPT_MARKERS=1
-    if [[ -f "${ZDOTDIR}/.zshrc.d.REDESIGN/95-prompt-ready.zsh" ]]; then
-        source "${ZDOTDIR}/.zshrc.d.REDESIGN/95-prompt-ready.zsh"
-    fi
-    if [[ -f "${ZDOTDIR}/tools/segment-lib.zsh" ]]; then
-        source "${ZDOTDIR}/tools/segment-lib.zsh"
-    fi
-    # return 0  # disabled
+  # Minimal perf harness path detected, but early return disabled to allow full interactive startup.
+  # (Original minimal fast path intentionally bypassed.)
+  ZSH_DEBUG=${ZSH_DEBUG:-0}
+  export ZSH_PERF_PROMPT_MARKERS=1
+  if [[ -f "${ZDOTDIR}/.zshrc.d.REDESIGN/95-prompt-ready.zsh" ]]; then
+    source "${ZDOTDIR}/.zshrc.d.REDESIGN/95-prompt-ready.zsh"
+  fi
+  if [[ -f "${ZDOTDIR}/tools/segment-lib.zsh" ]]; then
+    source "${ZDOTDIR}/tools/segment-lib.zsh"
+  fi
+  # return 0  # disabled
 fi
 
 # ------------------------------------------------------------------------------
@@ -889,7 +965,7 @@ zf::safe_git() {
 
 # ------------------------------------------------------------------------------
 # ZGENOM / plugin manager variables (use ZDOTDIR to localize installs)
-# Prefer non-dot `zgenom` locations but keep backwards compatible fallbacks.
+# Prefer non-dot \`zgenom\` locations but keep backwards compatible fallbacks.
 # ------------------------------------------------------------------------------
 ZGENOM_PARENT_DIR="${ZDOTDIR}"
 
@@ -901,15 +977,15 @@ ZGENOM_PARENT_DIR="${ZDOTDIR}"
 # If none exist, default to the stow-friendly name under ZDOTDIR so callers
 # that write into the stowed config know the expected location.
 if [[ -n "${ZDOTDIR:-}" && -d "${ZDOTDIR}/.zqs-zgenom" ]]; then
-    ZGEN_SOURCE="${ZDOTDIR}/.zqs-zgenom"
+  ZGEN_SOURCE="${ZDOTDIR}/.zqs-zgenom"
 elif [[ -n "${ZDOTDIR:-}" && -d "${ZDOTDIR}/zgenom" ]]; then
-    ZGEN_SOURCE="${ZDOTDIR}/zgenom"
+  ZGEN_SOURCE="${ZDOTDIR}/zgenom"
 elif [[ -n "${ZDOTDIR:-}" && -d "${ZDOTDIR}/.zgenom" ]]; then
-    ZGEN_SOURCE="${ZDOTDIR}/.zgenom"
+  ZGEN_SOURCE="${ZDOTDIR}/.zgenom"
 elif [[ -d "${HOME}/.zgenom" ]]; then
-    ZGEN_SOURCE="${HOME}/.zgenom"
+  ZGEN_SOURCE="${HOME}/.zgenom"
 else
-    ZGEN_SOURCE="${ZDOTDIR}/zgenom"
+  ZGEN_SOURCE="${ZDOTDIR}/zgenom"
 fi
 
 # Primary zgenom entry points derived from chosen source
@@ -944,19 +1020,19 @@ zf::debug "    ZGEN_AUTOLOAD_COMPINIT=${ZGEN_AUTOLOAD_COMPINIT-}" || true
 # Safe: only appends; does not reorder front-of-line priorities.
 # ------------------------------------------------------------------
 {
-    _core_added=0
-    for __core_dir in /usr/local/bin /opt/homebrew/bin /usr/bin /bin /usr/sbin /sbin; do
-        [ -d "$__core_dir" ] || continue
-        case ":$PATH:" in
-        *:"$__core_dir":*) ;;
-        *)
-            PATH="${PATH:+$PATH:}$__core_dir"
-            _core_added=$(( _core_added + 1 ))
-            ;;
-        esac
-    done
-    export PATH
-    unset __core_dir _core_added
+  _core_added=0
+  for __core_dir in /usr/local/bin /opt/homebrew/bin /usr/bin /bin /usr/sbin /sbin; do
+    [ -d "$__core_dir" ] || continue
+    case ":$PATH:" in
+    *:"$__core_dir":*) ;;
+    *)
+      PATH="${PATH:+$PATH:}$__core_dir"
+      _core_added=$(( _core_added + 1 ))
+      ;;
+    esac
+  done
+  export PATH
+  unset __core_dir _core_added
 }
 
 # Optional: custom compdump location and compinit flags (keeps compdump in cache)
@@ -972,9 +1048,9 @@ export ZGEN_OH_MY_ZSH_BRANCH="${ZGEN_OH_MY_ZSH_BRANCH:-master}"
 
 # Add vendored zgenom functions to fpath early if present (try source then dir)
 if [[ -d "${ZGEN_SOURCE}/functions" ]]; then
-    fpath=("${ZGEN_SOURCE}/functions" $fpath)
+  fpath=("${ZGEN_SOURCE}/functions" $fpath)
 elif [[ -d "${ZGEN_DIR}/functions" ]]; then
-    fpath=("${ZGEN_DIR}/functions" $fpath)
+  fpath=("${ZGEN_DIR}/functions" $fpath)
 fi
 
 # Now that path helper functions (zf::path_prepend etc.) are defined, safely add Composer vendor bin
@@ -998,25 +1074,25 @@ export HISTDUP="${HISTDUP:-erase}"
 # interactive and non-interactive shells. These files are expected to contain
 # user-level environment variables and API keys the user wants available.
 if [[ -d "${ZDOTDIR}/.env" ]]; then
-    for env_file in "${ZDOTDIR}/.env"/*.env; do
-        [[ -r "$env_file" ]] && source "$env_file"
-    done
-    unset env_file
+  for env_file in "${ZDOTDIR}/.env"/*.env; do
+    [[ -r "$env_file" ]] && source "$env_file"
+  done
+  unset env_file
 fi
 
 # Export a stable EDITOR/VISUAL if not already set (best-effort)
 if [[ -z "${EDITOR:-}" ]]; then
-    for e in nvim vim nano; do
-        if command -v "$e" >/dev/null 2>&1; then
-            export EDITOR="$e"
-            break
-        fi
-    done
+  for e in nvim vim nano; do
+    if command -v "$e" >/dev/null 2>&1; then
+      export EDITOR="$e"
+      break
+    fi
+  done
 fi
 if [[ -z "${VISUAL:-}" ]]; then
-    for v in "$EDITOR" code code-insiders; do
-        command -v "${v}" >/dev/null 2>&1 && { export VISUAL="$v"; break; } || true
-    done
+  for v in "$EDITOR" code code-insiders; do
+    command -v "${v}" >/dev/null 2>&1 && { export VISUAL="$v"; break; } || true
+  done
 fi
 
 # Set a sane default LANG/LC if unset

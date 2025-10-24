@@ -8,7 +8,7 @@ cd /Users/s-a-c/dotfiles/dot-config/zsh
 
 # Test with properly configured zgenom
 timeout 20s bash -c '
-ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh"
+ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
 export ZDOTDIR
 echo "Testing ZLE with proper zgenom configuration..."
 zsh -i -c "

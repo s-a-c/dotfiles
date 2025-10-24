@@ -15,7 +15,7 @@ echo ""
 # Test 1: Basic startup test in normal terminal (bash)
 echo "🧪 Test 1: Startup in bash terminal (should succeed)"
 timeout 15s bash -c '
-    export ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh"
+    export ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
     echo "Starting ZSH in bash terminal..."
     zsh -i -c "
         echo \"SUCCESS: ZSH startup completed in bash terminal\"
@@ -31,7 +31,7 @@ echo ""
 # Test 2: Startup test simulating Warp Terminal
 echo "🧪 Test 2: Startup simulating Warp Terminal (k plugin should be skipped)"
 timeout 15s bash -c '
-    export ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh"
+    export ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
     export TERM_PROGRAM="WarpTerminal"
     echo "Starting ZSH simulating Warp Terminal..."
     zsh -i -c "
@@ -50,7 +50,7 @@ echo ""
 # Test 3: Autopair parameter test
 echo "🧪 Test 3: Autopair parameter error test"
 timeout 10s bash -c '
-    export ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh"
+    export ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
     echo "Testing autopair parameters..."
     zsh -i -c "
         echo \"Testing autopair function availability...\"
@@ -73,7 +73,7 @@ echo "🧪 Test 4: Interactive prompt hanging test (5 second timeout)"
 echo "   This test checks if the shell hangs after showing the prompt..."
 
 result=$(timeout 5s bash -c '
-    export ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh"
+    export ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
     echo "Testing interactive prompt..."
     
     # Use expect-like behavior with a very short interactive session

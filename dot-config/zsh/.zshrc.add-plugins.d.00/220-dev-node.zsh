@@ -76,11 +76,8 @@ export NVM_AUTO_USE=true
 export NVM_LAZY_LOAD=true
 export NVM_COMPLETION=true
 
-# Herd NVM integration (if available)
-if [[ -d "/Users/s-a-c/Library/Application Support/Herd/config/nvm" ]]; then
-  export NVM_DIR="/Users/s-a-c/Library/Application Support/Herd/config/nvm"
-  zf::debug "# [dev-node] Using Herd NVM at: $NVM_DIR"
-fi
+# Herd NVM integration now handled in pre-plugin phase (080-early-node-runtimes.zsh)
+[[ -n "${_ZF_NVM_PRESETUP:-}" ]] && zf::debug "# [dev-node] NVM_DIR already set by pre-plugin: $NVM_DIR"
 
 # Bun integration (additional runtime)
 if [[ -d "$HOME/.bun" ]]; then

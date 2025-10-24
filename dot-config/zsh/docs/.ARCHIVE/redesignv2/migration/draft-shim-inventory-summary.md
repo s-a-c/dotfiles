@@ -65,7 +65,7 @@ This document summarizes the current shim audit results for the ZSH redesign mig
 {
   "schema":"shim-audit.v1",
   "generated_at":"2025-09-08T00:18:31Z",
-  "repo_root":"/Users/s-a-c/dotfiles",
+  "repo_root":"${HOME}/dotfiles",
   "total":1,
   "shim_count":1,
   "non_shim_count":0,

@@ -11,7 +11,7 @@ echo ""
 echo "Starting interactive shell that should be error-free..."
 echo ""
 
-ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh" timeout 25s zsh -i -c '
+ZDOTDIR="${HOME}/dotfiles/dot-config/zsh" timeout 25s zsh -i -c '
 echo "Interactive test started..."
 echo ""
 

@@ -82,6 +82,18 @@ bindkey '^[8~' end-of-line
 bindkey -M emacs '^[[3~' delete-char
 bindkey '^[[3~' delete-char
 
+# Page Up/Down keys
+bindkey -M emacs '^[[5~' beginning-of-history  # Page Up
+bindkey -M emacs '^[[6~' end-of-history        # Page Down
+bindkey '^[[5~' beginning-of-history           # Page Up
+bindkey '^[[6~' end-of-history                 # Page Down
+
+# Alternative Page Up/Down sequences
+bindkey -M emacs '^[5~' beginning-of-history   # Page Up (alt)
+bindkey -M emacs '^[6~' end-of-history         # Page Down (alt)
+bindkey '^[5~' beginning-of-history            # Page Up (alt)
+bindkey '^[6~' end-of-history                  # Page Down (alt)
+
 # Backspace key (both DEL and BS)
 bindkey -M emacs '^?' backward-delete-char
 bindkey -M emacs '^H' backward-delete-char

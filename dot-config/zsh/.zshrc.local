@@ -10,14 +10,10 @@
 #     .zshrc.d.00/*                (post-plugin augmentations)
 # - Keep this file tiny; it's the last hook. Re-sourcing must be harmless.
 
-# --- Force splash screen at next interactive startup -------------------------
-unset _UI_SPLASH_SHOWN
-
-# --- Local PATH additions ----------------------------------------------------
-# Added by LM Studio CLI (lms)
-zf::path_append "${HOME}/.lmstudio/bin"
-# End of LM Studio CLI section
-
-zf::path_prepend "/opt/homebrew/opt/trash-cli/bin"
+# PATH tweaks moved to .zprofile:
+# - Apply once per login so all child shells inherit PATH (no repeated edits per interactive shell)
+# - Keep this file focused on truly late interactive overrides
+# - Helpers (zf::path_prepend/append) load via .zshenv, so they are available in .zprofile
+# See .zprofile for existence checks and duplicate-safe PATH handling
 
 return 0

@@ -16,7 +16,7 @@ echo
 # Test full startup with post-initialization
 echo "=== Full Startup Test with Post-Initialization ==="
 timeout 20s bash -c '
-ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh"
+ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
 export ZDOTDIR
 echo "Testing full startup with post-initialization..."
 zsh -i -c "

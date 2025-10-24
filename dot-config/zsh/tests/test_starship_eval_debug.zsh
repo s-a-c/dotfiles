@@ -8,7 +8,7 @@ cd /Users/s-a-c/dotfiles/dot-config/zsh
 
 # Test eval with full error output
 timeout 15s bash -c '
-ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh"
+ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
 export ZDOTDIR
 zsh -i -c "
 echo \"=== Testing Starship Eval in Full Environment ===\" 

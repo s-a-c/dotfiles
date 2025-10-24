@@ -71,7 +71,7 @@ export LESS=' --HILITE-UNREAD --LONG-PROMPT --no-histdups --ignore-case --incsea
 export MY_SESSION_BUS_SOCKET=/tmp/dbus/$USER.session.usock
 export DBUS_SESSION_BUS_ADDRESS=unix:path=${MY_SESSION_BUS_SOCKET}
 
-export ALLOWED_DIRECTORIES="/Users/s-a-c/Desktop,/Users/s-a-c/Downloads,/Users/s-a-c/Herd,/Users/s-a-c/Library,/Users/s-a-c/Projects,/Users/s-a-c/Work,/Users/s-a-c/.config,/Users/s-a-c/dotfiles,/Users/s-a-c/.local,/Users/s-a-c/.zshenv,/Users/s-a-c/.zshrc,/Users/s-a-c/.zprofile,/Users/s-a-c/.zlogin"
+export ALLOWED_DIRECTORIES="${HOME}/Desktop,/Users/s-a-c/Downloads,/Users/s-a-c/Herd,/Users/s-a-c/Library,/Users/s-a-c/Projects,/Users/s-a-c/Work,/Users/s-a-c/.config,/Users/s-a-c/dotfiles,/Users/s-a-c/.local,/Users/s-a-c/.zshenv,/Users/s-a-c/.zshrc,/Users/s-a-c/.zprofile,/Users/s-a-c/.zlogin"
 
 ## [_path]    ## {{{
 ## [_path.remove] ## {{{
@@ -112,9 +112,9 @@ export PATH="/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
 
 "$HOME/.local/share/bob/env/env.sh"
 
-. "/Users/s-a-c/.local/share/bob/env/env.sh"
-. "/Users/s-a-c/.local/share/bob/env/env.sh"
-. "/Users/s-a-c/.local/share/bob/env/env.sh"
-. "/Users/s-a-c/.local/share/bob/env/env.sh"
-. "/Users/s-a-c/.local/share/bob/env/env.sh"
-. "/Users/s-a-c/.local/share/bob/env/env.sh"
+. "${HOME}/.local/share/bob/env/env.sh"
+. "${HOME}/.local/share/bob/env/env.sh"
+. "${HOME}/.local/share/bob/env/env.sh"
+. "${HOME}/.local/share/bob/env/env.sh"
+. "${HOME}/.local/share/bob/env/env.sh"
+. "${HOME}/.local/share/bob/env/env.sh"

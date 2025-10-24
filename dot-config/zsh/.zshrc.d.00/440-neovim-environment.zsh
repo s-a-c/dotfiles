@@ -35,11 +35,7 @@ export GIT_EDITOR="nvim"
 
 # _zf_nv_xdg_cfg and zf::nvim_alias_if_exists() - moved to .zshenv.00 for global availability
 
-zf::nvim_alias_if_exists nvim-Lazyman   lmvim
-zf::nvim_alias_if_exists nvim-Kickstart ksnvim
-zf::nvim_alias_if_exists nvim-Lazyvim   lznvim
-zf::nvim_alias_if_exists nvim-Mini      minvim
-zf::nvim_alias_if_exists nvim-NvChad    nvnvim
+
 
 nvprofile() {
   local tail="$1"; shift || true

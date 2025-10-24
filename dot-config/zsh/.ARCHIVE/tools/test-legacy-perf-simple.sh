@@ -8,7 +8,7 @@ echo ""
 # Test script for the zsh subprocess
 cat > /tmp/perf_test.zsh << 'ZSH_TEST'
 # Set ZDOTDIR to repo path
-typeset -gx ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh"
+typeset -gx ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
 
 # Source the legacy performance module
 source "$ZDOTDIR/.zshrc.d.legacy/consolidated-modules/02-performance-monitoring.zsh"

@@ -9,7 +9,7 @@ echo
 
 # Test 1: Direct ZSH launch with command
 echo "Test 1: Direct ZSH with immediate command"
-ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh" timeout 10 zsh -c 'echo "ZSH COMMAND SUCCESS: $(date)"'
+ZDOTDIR="${HOME}/dotfiles/dot-config/zsh" timeout 10 zsh -c 'echo "ZSH COMMAND SUCCESS: $(date)"'
 echo "Exit code: $?"
 echo
 
@@ -18,7 +18,7 @@ echo "Test 2: Interactive ZSH launch (will timeout after 5 seconds)"
 echo "Looking for: any signs of startup completing or hanging..."
 echo "---"
 
-ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh" timeout 5 zsh -i &
+ZDOTDIR="${HOME}/dotfiles/dot-config/zsh" timeout 5 zsh -i &
 ZSH_PID=$!
 echo "ZSH launched with PID: $ZSH_PID"
 
@@ -49,7 +49,7 @@ echo
 # Test 3: ZSH with debug output
 echo "Test 3: ZSH with debug output to see where it stops"
 echo "---"
-ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh" timeout 10 bash -c '
+ZDOTDIR="${HOME}/dotfiles/dot-config/zsh" timeout 10 bash -c '
     echo "Launching ZSH with debug output..."
     exec zsh -x -i
 ' 2>&1 | head -30

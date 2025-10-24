@@ -14,7 +14,7 @@ trap 'cd "$test_start_dir" 2>/dev/null || true' EXIT
 # Test logging setup
 log_date=$(date -u +%Y-%m-%d)
 log_time=$(date -u +%H-%M-%S)
-log_dir="/Users/s-a-c/.config/zsh/logs/$log_date"
+log_dir="${HOME}/.config/zsh/logs/$log_date"
 log_file="$log_dir/test-lazy-loading_$log_time.log"
 
 # Ensure log directory exists

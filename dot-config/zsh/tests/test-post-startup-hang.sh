@@ -10,7 +10,7 @@
 set -euo pipefail
 
 # Configuration
-readonly ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh"
+readonly ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
 readonly TIMEOUT_STARTUP=45  # Generous timeout for startup completion
 readonly TIMEOUT_POST=15     # Shorter timeout for post-startup responsiveness
 readonly TEST_LOG="/tmp/zsh-hang-test.log"

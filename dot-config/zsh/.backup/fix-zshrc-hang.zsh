@@ -210,7 +210,7 @@ if [[ -f "$EXTERNAL_FILE" ]]; then
     # Test Herd
     if grep -q "Herd injected" "$EXTERNAL_FILE"; then
         echo -n "  Herd PHP: "
-        if timeout 1 zsh -c 'export PATH="/Users/s-a-c/Library/Application Support/Herd/bin/":$PATH' 2>/dev/null; then
+        if timeout 1 zsh -c 'export PATH="${HOME}/Library/Application Support/Herd/bin/":$PATH' 2>/dev/null; then
             echo "OK"
         else
             echo "TIMEOUT/FAIL"

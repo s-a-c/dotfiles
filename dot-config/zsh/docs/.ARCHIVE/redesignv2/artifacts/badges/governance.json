@@ -4,8 +4,8 @@
   "sources": {
     "perf_drift": "missing",
     "perf_ledger": "missing",
-    "variance_state": "/Users/s-a-c/dotfiles/docs/redesignv2/artifacts/badges/variance-state.json",
-    "micro_bench": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/redesignv2/artifacts/metrics/microbench-core.json"
+    "variance_state": "${HOME}/dotfiles/docs/redesignv2/artifacts/badges/variance-state.json",
+    "micro_bench": "${HOME}/dotfiles/dot-config/zsh/docs/redesignv2/artifacts/metrics/microbench-core.json"
   },
   "stats": {
     "regressions": 0,

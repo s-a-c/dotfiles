@@ -23,7 +23,7 @@ echo
 # Test 2: Test eval method in isolated ZSH
 echo "=== Test 2: Eval Method Test ==="
 timeout 10s bash -c '
-ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh"
+ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
 export ZDOTDIR
 echo "Testing eval method..."
 zsh -c "
@@ -45,7 +45,7 @@ temp_starship_file=$(mktemp)
 starship init zsh > "$temp_starship_file" 2>/dev/null
 
 timeout 10s bash -c "
-ZDOTDIR=\"/Users/s-a-c/dotfiles/dot-config/zsh\"
+ZDOTDIR=\"${HOME}/dotfiles/dot-config/zsh\"
 export ZDOTDIR
 echo \"Testing source method...\"
 zsh -c \"
@@ -66,7 +66,7 @@ echo
 # Test 4: Test in full ZSH environment with debug
 echo "=== Test 4: Full Environment Test ==="
 timeout 15s bash -c '
-ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh"
+ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
 export ZDOTDIR
 export ZSH_DEBUG=1
 echo "Testing in full ZSH environment..."

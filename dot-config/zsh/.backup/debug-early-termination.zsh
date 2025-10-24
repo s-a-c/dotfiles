@@ -3,7 +3,7 @@
 
 echo "=== ZSH Early Termination Debug ==="
 
-ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh"
+ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
 
 # Test 1: Check if .zshenv causes exit
 echo "Test 1: .zshenv only"

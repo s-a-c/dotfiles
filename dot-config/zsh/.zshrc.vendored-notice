@@ -1,0 +1,36 @@
+#!/bin/zsh
+
+# ========================================================================
+#
+#                  ⚠️  DO NOT MODIFY THIS FILE DIRECTLY  ⚠️
+#
+#   This .zshrc file is from zsh-quickstart-kit and should be treated
+#   as a vendored file. It should remain a symlink to the original in:
+#
+#   zsh-quickstart-kit/zsh/.zshrc
+#
+#   Instead of modifying this file, add your customizations to:
+#
+#   - .zshrc.pre-plugins.d/  (for code that runs before plugins)
+#   - .zshrc.d/              (for code that runs after plugins)
+#
+#   See VENDORED.md for the complete policy on vendored files.
+#
+# ========================================================================
+
+# This is a simple passthrough script that displays this notice and then
+# sources the original .zshrc file from zsh-quickstart-kit
+
+# Display this notice if we're in an interactive shell
+if [[ -o interactive ]]; then
+  echo "ℹ️  Using vendored .zshrc from zsh-quickstart-kit"
+  echo "   Customize by adding files to .zshrc.pre-plugins.d/ or .zshrc.d/"
+fi
+
+# Source the actual .zshrc from zsh-quickstart-kit
+if [[ -f "$ZDOTDIR/zsh-quickstart-kit/zsh/.zshrc" ]]; then
+  source "$ZDOTDIR/zsh-quickstart-kit/zsh/.zshrc"
+else
+  echo "ERROR: Original .zshrc not found at $ZDOTDIR/zsh-quickstart-kit/zsh/.zshrc"
+  echo "Please restore the zsh-quickstart-kit or check your symlinks"
+fi

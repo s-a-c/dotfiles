@@ -19,7 +19,7 @@ echo "Launching ZSH with comprehensive tracing..."
 echo "=============================================="
 
 timeout 30 env \
-    ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh" \
+    ZDOTDIR="${HOME}/dotfiles/dot-config/zsh" \
     ZSH_DEBUG=1 \
     PS4='+[%D{%H:%M:%S}] %N:%i> ' \
     zsh -x -i -c 'echo "===ZSH STARTUP COMPLETED===" && sleep 2 && echo "===EXITING ZSH===" && exit 0' \

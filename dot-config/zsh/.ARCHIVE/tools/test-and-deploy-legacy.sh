@@ -26,7 +26,7 @@ log_action "Starting comprehensive module integration test"
 # Test all modules together
 test_result=$(SHELL=/opt/homebrew/bin/zsh ZDOTDIR="$PWD" /opt/homebrew/bin/zsh -df << 'ZSH_TEST'
 setopt no_global_rcs
-export ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh"
+export ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
 
 echo "Loading all consolidated modules in sequence..."
 

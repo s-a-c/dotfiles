@@ -4,7 +4,7 @@
 
 set -euo pipefail
 
-ZSHRC_D_DIR="/Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.d"
+ZSHRC_D_DIR="${HOME}/dotfiles/dot-config/zsh/.zshrc.d"
 
 echo "🔧 Simple Fix Script Renamer"
 echo "=================================="

@@ -14,7 +14,7 @@ echo "Press Enter to continue..."
 read -r
 
 echo "Launching interactive ZSH..."
-ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh" zsh -i
+ZDOTDIR="${HOME}/dotfiles/dot-config/zsh" zsh -i
 
 echo
 echo "=== BACK IN BASH ==="
@@ -23,7 +23,7 @@ echo
 
 # Test 2: Quick ZSH version info
 echo "Test 2: ZSH version and info"
-ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh" zsh -c 'echo "ZSH Version: $ZSH_VERSION"; echo "ZDOTDIR: $ZDOTDIR"; echo "Shell: $0"'
+ZDOTDIR="${HOME}/dotfiles/dot-config/zsh" zsh -c 'echo "ZSH Version: $ZSH_VERSION"; echo "ZDOTDIR: $ZDOTDIR"; echo "Shell: $0"'
 
 echo
 echo "=== WARP CONFIGURATION INFO ==="

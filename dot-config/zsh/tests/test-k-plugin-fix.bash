@@ -10,7 +10,7 @@ echo "🧪 Test 1: Warp Terminal k plugin conflict fix"
 echo "   (Should not show k plugin parse errors)"
 
 timeout 20s bash -c '
-    export ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh"
+    export ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
     export TERM_PROGRAM="WarpTerminal"
     
     echo "Starting ZSH in simulated Warp Terminal..."
@@ -35,7 +35,7 @@ echo "🧪 Test 2: Normal terminal k plugin loading"
 echo "   (Should load k plugin without conflicts)"
 
 timeout 15s bash -c '
-    export ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh"
+    export ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
     unset TERM_PROGRAM
     
     echo "Starting ZSH in normal terminal..."
@@ -57,7 +57,7 @@ echo "🧪 Test 3: Parse error detection"
 echo "   (Should not show 'parse error near' messages)"
 
 parse_errors=$(timeout 10s bash -c '
-    export ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh"
+    export ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
     export TERM_PROGRAM="WarpTerminal"
     zsh -i -c "exit" 2>&1 | grep -i "parse error" || true
 ' 2>&1)
@@ -76,7 +76,7 @@ echo "🧪 Test 4: BASH_COMPAT error check"
 echo "   (Should not show 'compatibility value out of range' messages)"
 
 bash_errors=$(timeout 10s bash -c '
-    export ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh"
+    export ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
     zsh -i -c "exit" 2>&1 | grep -i "compatibility value out of range" || true
 ' 2>&1)
 

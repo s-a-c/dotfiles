@@ -2,12 +2,13 @@
 # Compute composite sha256 checksum of guidelines sources.
 # Sources: main guidelines.md + all files under guidelines/ (stable sorted)
 set -euo pipefail
-base_dir="/Users/s-a-c/dotfiles/dot-config/ai"
+base_dir="${HOME}/dotfiles/dot-config/ai"
 main_file="$base_dir/guidelines.md"
 extra_dir="$base_dir/guidelines"
 
 if [[ ! -f $main_file ]]; then
-  echo "missing-guidelines"; exit 0
+  echo "missing-guidelines"
+  exit 0
 fi
 
 # Build ordered list

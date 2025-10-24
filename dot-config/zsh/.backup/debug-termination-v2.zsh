@@ -3,7 +3,7 @@
 
 echo "=== ZSH Early Termination Debug V2 ==="
 
-ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh"
+ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
 
 # Test 1: Run with full error tracing
 echo "Test 1: Full startup with error tracing"

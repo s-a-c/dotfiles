@@ -173,3 +173,123 @@ else
     echo "# [starship] active config: ${STARSHIP_CONFIG:-<unset>} cache: ${STARSHIP_CACHE:-<unset>}"
   fi
 fi
+
+# ==============================================================================
+# STARSHIP CURSOR POSITIONING FIXES
+# ==============================================================================
+# Addresses cursor positioning issues with Starship prompt on long wrapped lines
+# when using complex prompts with many ANSI escape sequences
+
+# Function definitions (always available, even in non-interactive shells)
+# Check if starship is available for auto-fix logic (but always define functions)
+if ! command -v starship >/dev/null 2>&1; then
+  # Starship not available, but still define the functions for manual use
+fi
+
+# Fix for Starship cursor positioning issues
+# The problem: Starship generates prompts with many ANSI escape sequences that
+# confuse zsh's cursor position calculations, especially on long wrapped lines
+
+# Solution 1: Ensure proper prompt escape sequence handling
+# This tells zsh to properly handle non-printing characters in prompts
+autoload -Uz promptinit && promptinit 2>/dev/null || true
+
+# Solution 2: Override problematic Starship behavior
+# Starship sometimes doesn't properly wrap escape sequences in %{%}
+# This function ensures proper wrapping
+starship_prompt_safe() {
+  local prompt
+  prompt="$(starship prompt)"
+
+  # If the prompt contains escape sequences not properly wrapped,
+  # wrap the entire prompt to be safe
+  if [[ "$prompt" == *$'\e['* ]] && [[ "$prompt" != *'%{'*'%}'* ]]; then
+    # Wrap the entire prompt in %{%} to tell zsh these are non-printing
+    prompt="%{$prompt%}"
+  fi
+
+  print -r -- "$prompt"
+}
+
+# Solution 3: Fix cursor positioning widgets
+# Override the beginning-of-line widget to handle wrapped lines correctly
+zle -N beginning-of-line-safe beginning-of-line
+beginning-of-line-safe() {
+  # Try normal behavior first
+  zle beginning-of-line
+
+  # If we're not at the beginning, force it
+  if [[ $CURSOR -gt 0 ]]; then
+    CURSOR=0
+  fi
+}
+
+# Solution 4: Add a diagnostic and fix command
+# Users can run this to test and fix the issue
+fix-starship-cursor() {
+  print -P "%F{yellow}=== Starship Cursor Position Fix ===%f"
+
+  # Test current prompt
+  local test_line="ai/tools/apply-doc-standards/apply-doc-standards ai/AI-GUIDELINES/Documentation/000-index.md"
+  print -P "%F{blue}Test line: $test_line%f"
+  print -P "%F{blue}Length: ${#test_line} characters%f"
+
+  # Check prompt complexity
+  local starship_prompt
+  starship_prompt="$(starship prompt 2>/dev/null || echo '')"
+  local escape_count
+  escape_count=$(echo -E "$starship_prompt" | grep -o $'\e\[[0-9;]*m' | wc -l)
+
+  if ((escape_count > 15)); then
+    print -P "%F{red}⚠️  High escape sequence count: $escape_count%f"
+    print -P "%F{yellow}This is likely causing cursor positioning issues%f"
+  fi
+
+  # Apply fixes
+  print -P "%F{green}Applying cursor positioning fixes...%f"
+
+  # Ensure proper options are set
+  unsetopt PROMPT_CR 2>/dev/null || true
+  setopt PROMPT_SP 2>/dev/null || true
+
+  # Rebind keys with safe versions
+  bindkey '^A' beginning-of-line-safe
+  bindkey "${terminfo[khome]}" beginning-of-line-safe 2>/dev/null || true
+  bindkey '^[[H' beginning-of-line-safe 2>/dev/null || true
+  bindkey '^[OH' beginning-of-line-safe 2>/dev/null || true
+
+  print -P "%F{green}✓ Fixes applied%f"
+  print -P "%F{yellow}Test by pasting a long line and using Home/Ctrl-A%f"
+}
+
+# Solution 5: Auto-fix on startup if needed (only in interactive shells)
+# Check if we're in a narrow terminal and using a complex prompt
+if [[ -o interactive ]] && [[ ${COLUMNS:-80} -lt 80 ]] && command -v starship >/dev/null 2>&1; then
+  local starship_prompt
+  starship_prompt="$(starship prompt 2>/dev/null || echo '')"
+  local escape_count
+  escape_count=$(echo -E "$starship_prompt" | grep -o $'\e\[[0-9;]*m' | wc -l 2>/dev/null || echo 0)
+
+  # If we have many escape sequences in a narrow terminal, apply fixes
+  if ((escape_count > 10)); then
+    # Apply the safe beginning-of-line widget
+    zle -N beginning-of-line-safe 2>/dev/null || true
+    bindkey '^A' beginning-of-line-safe 2>/dev/null || true
+
+    # Debug info (only if ZSH_DEBUG is enabled)
+    if [[ ${ZSH_DEBUG:-0} == 1 ]]; then
+      print -P "%F{yellow}[starship-cursor-fix] Auto-applied cursor fixes for narrow terminal%f"
+    fi
+  fi
+fi
+
+# Export the fix function for manual use (only if not already exported)
+if ! typeset -f fix-starship-cursor >/dev/null 2>&1; then
+  typeset -fx fix-starship-cursor >/dev/null
+  export -f fix-starship-cursor 2>/dev/null || true
+fi
+
+# Debug info
+if [[ ${ZSH_DEBUG:-0} == 1 ]]; then
+  print -P "%F{yellow}[starship-cursor-fix] Loaded cursor positioning fixes%f"
+fi

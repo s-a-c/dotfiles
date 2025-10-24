@@ -8,7 +8,7 @@ cd /Users/s-a-c/dotfiles/dot-config/zsh
 
 # Test ZLE module directly
 timeout 15s bash -c '
-ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh"
+ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
 export ZDOTDIR
 export ZSH_DEBUG=1
 echo "Testing ZLE module directly..."

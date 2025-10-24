@@ -60,7 +60,7 @@ search_mode = "fuzzy"
 
 ## which style to use
 ## possible values: auto, full, compact
-style = "compact"  # "auto"
+style = "auto"
 
 ## the maximum number of lines the interface should take up
 ## set it to 0 to always go full screen
@@ -71,7 +71,7 @@ inline_height = 20
 
 ## enable or disable showing a preview of the selected command
 ## useful when the command is longer than the terminal width and is cut off
-# show_preview = true
+show_preview = true
 
 ## what to do when the escape key is pressed when searching
 ## possible values: return-original, return-query
@@ -166,12 +166,14 @@ keymap_cursor = { emacs = "blink-bar", vim_insert = "blink-bar", vim_normal = "b
 common_subcommands = [
   "apt",
   "brew",
+  "bun",
   "cargo",
   "composer",
   "dnf",
   "docker",
   "git",
   "go",
+  "herd",
   "ip",
   "kubectl",
   "nix",
@@ -218,7 +220,7 @@ records = true
 
 [daemon]
 ## Enables using the daemon to sync. Requires the daemon to be running in the background. Start it with `atuin daemon`
-#enabled = true
+enabled = true
 
 ## How often the daemon should sync in seconds
 # sync_frequency = 300
@@ -241,4 +243,4 @@ records = true
 enabled = true
 
 [theme]
-name = "autumn"
+name = "catppuccin-mocha-mauve"

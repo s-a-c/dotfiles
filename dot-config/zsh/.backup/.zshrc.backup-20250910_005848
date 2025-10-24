@@ -680,15 +680,15 @@ fi
 
 
 # Herd injected PHP binary.
-export PATH="/Users/s-a-c/Library/Application Support/Herd/bin/":$PATH
+export PATH="${HOME}/Library/Application Support/Herd/bin/":$PATH
 
 
 # Herd injected PHP 8.4 configuration.
-export HERD_PHP_84_INI_SCAN_DIR="/Users/s-a-c/Library/Application Support/Herd/config/php/84/"
+export HERD_PHP_84_INI_SCAN_DIR="${HOME}/Library/Application Support/Herd/config/php/84/"
 
 
 # Herd injected PHP 8.5 configuration.
-export HERD_PHP_85_INI_SCAN_DIR="/Users/s-a-c/Library/Application Support/Herd/config/php/85/"
+export HERD_PHP_85_INI_SCAN_DIR="${HOME}/Library/Application Support/Herd/config/php/85/"
 
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/Users/s-a-c/.lmstudio/bin"

@@ -37,7 +37,7 @@ run_zsh_test() {
     
     # Run test in isolated zsh environment
     SHELL=/opt/homebrew/bin/zsh \
-    ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh" \
+    ZDOTDIR="${HOME}/dotfiles/dot-config/zsh" \
     /opt/homebrew/bin/zsh -df <<< "$zsh_code" 2>&1
 }
 

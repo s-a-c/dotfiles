@@ -20,7 +20,7 @@ echo
 # Test ZLE initialization in full environment
 echo "=== ZLE + Starship Integration Test ==="
 timeout 20s bash -c '
-ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh"
+ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
 export ZDOTDIR
 echo "Testing ZLE initialization with Starship..."
 zsh -i -c "

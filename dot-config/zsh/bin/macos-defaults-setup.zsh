@@ -25,7 +25,7 @@ _setup_logging() {
     # Use macOS-compatible date format instead of GNU format
     local log_date=$(date +%Y-%m-%d 2>/dev/null || zf::debug "unknown")
     local log_time=$(date +%H-%M-%S 2>/dev/null || zf::debug "unknown")
-    export LOG_DIR="/Users/s-a-c/.config/zsh/logs/$log_date"
+    export LOG_DIR="${HOME}/.config/zsh/logs/$log_date"
     export LOG_FILE="$LOG_DIR/macos-defaults-setup_$log_time.log"
 
     # Create log directory
@@ -149,7 +149,7 @@ main() {
     # Setup logging variables using macOS-compatible date format
     local log_date=$(date +%Y-%m-%d)
     local log_time=$(date +%H-%M-%S)
-    local log_dir="/Users/s-a-c/.config/zsh/logs/$log_date"
+    local log_dir="${HOME}/.config/zsh/logs/$log_date"
     local log_file="$log_dir/macos-defaults-setup_$log_time.log"
 
     # Create log directory

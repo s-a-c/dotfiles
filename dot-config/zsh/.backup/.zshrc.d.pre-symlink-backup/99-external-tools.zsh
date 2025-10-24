@@ -10,10 +10,10 @@ export _EXTERNAL_TOOLS_LOADED=1
 
 # Load with timeout protection
 () {
-    local external_file="/Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.d/99-external-tools.zsh.original"
+    local external_file="${HOME}/dotfiles/dot-config/zsh/.zshrc.d/99-external-tools.zsh.original"
     if [[ -f "$external_file" ]]; then
         # Use a subshell with timeout to prevent hangs
-        ( 
+        (
             # Set a 2-second timeout for external tool loading
             if command -v timeout >/dev/null 2>&1; then
                 timeout 2 zsh -c "source '$external_file'"
@@ -43,17 +43,16 @@ export _EXTERNAL_TOOLS_LOADED=1
 
 
 # Herd injected PHP binary.
-export PATH="/Users/s-a-c/Library/Application Support/Herd/bin/":$PATH
+export PATH="${HOME}/Library/Application Support/Herd/bin/":$PATH
 
 
 # Herd injected PHP 8.4 configuration.
-export HERD_PHP_84_INI_SCAN_DIR="/Users/s-a-c/Library/Application Support/Herd/config/php/84/"
+export HERD_PHP_84_INI_SCAN_DIR="${HOME}/Library/Application Support/Herd/config/php/84/"
 
 
 # Herd injected PHP 8.5 configuration.
-export HERD_PHP_85_INI_SCAN_DIR="/Users/s-a-c/Library/Application Support/Herd/config/php/85/"
+export HERD_PHP_85_INI_SCAN_DIR="${HOME}/Library/Application Support/Herd/config/php/85/"
 
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/Users/s-a-c/.lmstudio/bin"
 # End of LM Studio CLI section
-

@@ -4,7 +4,7 @@
 echo "=== Warp Issue Reproduction Test ==="
 
 # Test if we can simulate Warp's initialization process
-ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh"
+ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
 export ZDOTDIR
 
 # Simulate Warp's environment variables

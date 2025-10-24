@@ -36,7 +36,7 @@ TEST_RESULTS=()
 TEST_SSH_DIR="/tmp/ssh-security-test-$$"
 
 # Import the secure SSH implementation
-source "/Users/s-a-c/.config/zsh/.zshrc.pre-plugins.d/03-secure-ssh-agent.zsh"
+source "${HOME}/.config/zsh/.zshrc.pre-plugins.d/03-secure-ssh-agent.zsh"
 
 test_secure_ssh_implementation() {
         zf::debug -e "${YELLOW}=== Secure SSH Agent Implementation Test Suite ===${NC}"

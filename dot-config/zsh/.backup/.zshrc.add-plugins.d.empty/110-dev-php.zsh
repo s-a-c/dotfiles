@@ -48,17 +48,17 @@ fi
 
 # Herd integration (primary PHP environment)
 # Note: Herd NVM integration handled in 030-dev-node.zsh
-if [[ -d "/Users/s-a-c/Library/Application Support/Herd/config/nvm" ]]; then
+if [[ -d "${HOME}/Library/Application Support/Herd/config/nvm" ]]; then
   zf::debug "# [dev-php] Herd environment detected"
-  export HERD_PHP_PATH="/Users/s-a-c/Library/Application Support/Herd/bin"
+  export HERD_PHP_PATH="${HOME}/Library/Application Support/Herd/bin"
   [[ -d "$HERD_PHP_PATH" ]] && export PATH="$HERD_PHP_PATH:$PATH"
   # Herd per-version INI scan directory exports (guarded)
-  if [[ -d "/Users/s-a-c/Library/Application Support/Herd/config/php/84" ]]; then
-    export HERD_PHP_84_INI_SCAN_DIR="/Users/s-a-c/Library/Application Support/Herd/config/php/84/"
+  if [[ -d "${HOME}/Library/Application Support/Herd/config/php/84" ]]; then
+    export HERD_PHP_84_INI_SCAN_DIR="${HOME}/Library/Application Support/Herd/config/php/84/"
     zf::debug "# [dev-php] Herd PHP 8.4 INI scan dir set"
   fi
-  if [[ -d "/Users/s-a-c/Library/Application Support/Herd/config/php/85" ]]; then
-    export HERD_PHP_85_INI_SCAN_DIR="/Users/s-a-c/Library/Application Support/Herd/config/php/85/"
+  if [[ -d "${HOME}/Library/Application Support/Herd/config/php/85" ]]; then
+    export HERD_PHP_85_INI_SCAN_DIR="${HOME}/Library/Application Support/Herd/config/php/85/"
     zf::debug "# [dev-php] Herd PHP 8.5 INI scan dir set"
   fi
 fi

@@ -179,7 +179,7 @@ if [ -f "${XDG_DATA_HOME}/google-cloud-sdk/path.zsh.inc" ]; then source "${XDG_D
 if [ -f "${XDG_DATA_HOME}/google-cloud-sdk/completion.zsh.inc" ]; then source "${XDG_DATA_HOME}/google-cloud-sdk/completion.zsh.inc"; fi
 
 # pnpm
-export PNPM_HOME="/Users/s-a-c/.local/share/pnpm"
+export PNPM_HOME="${HOME}/.local/share/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
@@ -187,7 +187,7 @@ esac
 # pnpm end
 
 # The following lines have been added by Docker Desktop to enable Docker CLI completions.
-fpath=("/Users/s-a-c/.docker/completions" $fpath)
+fpath=("${HOME}/.docker/completions" $fpath)
 autoload -Uz compinit
 compinit
 # End of Docker CLI completions
@@ -208,16 +208,16 @@ source ~/.mcp-environment.sh
 
 
 # Herd injected PHP 8.2 configuration.
-export HERD_PHP_82_INI_SCAN_DIR="/Users/s-a-c/Library/Application Support/Herd/config/php/82/"
+export HERD_PHP_82_INI_SCAN_DIR="${HOME}/Library/Application Support/Herd/config/php/82/"
 
 # Herd injected PHP 8.3 configuration.
-export HERD_PHP_83_INI_SCAN_DIR="/Users/s-a-c/Library/Application Support/Herd/config/php/83/"
+export HERD_PHP_83_INI_SCAN_DIR="${HOME}/Library/Application Support/Herd/config/php/83/"
 
 # Herd injected PHP 8.4 configuration.
-export HERD_PHP_84_INI_SCAN_DIR="/Users/s-a-c/Library/Application Support/Herd/config/php/84/"
+export HERD_PHP_84_INI_SCAN_DIR="${HOME}/Library/Application Support/Herd/config/php/84/"
 
 # Herd injected PHP 8.5 configuration.
-export HERD_PHP_85_INI_SCAN_DIR="/Users/s-a-c/Library/Application Support/Herd/config/php/85/"
+export HERD_PHP_85_INI_SCAN_DIR="${HOME}/Library/Application Support/Herd/config/php/85/"
 _path_prepend \
     "$HOME/Library/Application Support/Herd" \
     "$HOME/Library/Application Support/Herd/bin"

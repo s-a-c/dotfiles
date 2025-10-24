@@ -15,7 +15,7 @@ _test_setup() {
     # Setup logging
     local log_date=$(date -u +%Y-%m-%d)
     local log_time=$(date -u +%H-%M-%S)
-    export LOG_DIR="/Users/s-a-c/.config/zsh/logs/$log_date"
+    export LOG_DIR="${HOME}/.config/zsh/logs/$log_date"
     export LOG_FILE="$LOG_DIR/test-macos-defaults_$log_time.log"
 
     # Create log directory
@@ -38,7 +38,7 @@ _test_setup() {
     fi
 
     # Test configuration paths
-    export CONFIG_BASE="/Users/s-a-c/.config/zsh"
+    export CONFIG_BASE="${HOME}/.config/zsh"
     export SETUP_SCRIPT="$CONFIG_BASE/bin/macos-defaults-setup.zsh"
     export WRAPPER_SCRIPT="$CONFIG_BASE/.zshrc.pre-plugins.d/03-macos-defaults-deferred.zsh"
     export MARKER_FILE="$CONFIG_BASE/.macos-defaults-last-run"

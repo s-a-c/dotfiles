@@ -5,10 +5,11 @@
 
 # --theme="TwoDark"
 # --theme="Midnight"
-#--theme="hytrast"
-#--theme="Hail"
-#--theme="tronlegacy"
---theme="modus-vivendi"
+# --theme="hytrast"
+# --theme="Hail"
+# --theme="tronlegacy"
+# --theme="modus-vivendi"
+--theme="catppuccin-mocha"
 
 # Enable this to use italic text on the terminal. This is not supported on all terminal emulators (like tmux, by default)
 

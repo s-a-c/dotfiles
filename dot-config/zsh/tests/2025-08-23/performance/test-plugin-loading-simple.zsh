@@ -51,13 +51,13 @@ _log_test "Original PWD: $_original_pwd"
 _log_test ""
 _log_test "=== Configuration Files ==="
 
-if [[ -f "/Users/s-a-c/.config/zsh/.zshrc.pre-plugins.d/04-plugin-deferred-loading.zsh" ]]; then
+if [[ -f "${HOME}/.config/zsh/.zshrc.pre-plugins.d/04-plugin-deferred-loading.zsh" ]]; then
     _assert_pass "Deferred loading script exists"
 else
     _assert_fail "Deferred loading script exists" "Missing file"
 fi
 
-if [[ -x "/Users/s-a-c/.config/zsh/.zshrc.pre-plugins.d/04-plugin-deferred-loading.zsh" ]]; then
+if [[ -x "${HOME}/.config/zsh/.zshrc.pre-plugins.d/04-plugin-deferred-loading.zsh" ]]; then
     _assert_pass "Deferred loading script is executable"
 else
     _assert_fail "Deferred loading script is executable" "No execute permission"
@@ -103,7 +103,7 @@ fi
 _log_test ""
 _log_test "=== Deferred Configuration Content ==="
 
-_defer_script="/Users/s-a-c/.config/zsh/.zshrc.pre-plugins.d/04-plugin-deferred-loading.zsh"
+_defer_script="${HOME}/.config/zsh/.zshrc.pre-plugins.d/04-plugin-deferred-loading.zsh"
 
 # Check for key components in deferred script
 if grep -q "zsh-defer -t 1" "$_defer_script"; then
@@ -135,7 +135,7 @@ fi
 _log_test ""
 _log_test "=== Main Configuration Cleanup ==="
 
-_main_config="/Users/s-a-c/.config/zsh/.zgen-setup"
+_main_config="${HOME}/.config/zsh/.zgen-setup"
 
 # Check specific deferred plugins are commented
 _deferred_plugins=("git-extra-commands" "jpb.zshplugin" "warhol.plugin.zsh" "tumult.plugin.zsh" "docker-zsh" "1password-op")

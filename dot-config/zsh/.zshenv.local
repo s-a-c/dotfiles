@@ -94,3 +94,8 @@ if [[ "${DEBUG_LOAD_FRAGMENTS:-0}" == "1" ]]; then
 fi
 
 export ZF_DISABLE_AUTO_UPDATES=0
+
+local ai_tools_dir
+ai_tools_dir="$HOME/nc/Documents/notes/obsidian/s-a-c/ai/tools"
+[[ -d "$ai_tools_dir/bin" ]] && PATH="%PATH:$ai_tools_dir/bin" && export PATH
+unset ai_tools_dir

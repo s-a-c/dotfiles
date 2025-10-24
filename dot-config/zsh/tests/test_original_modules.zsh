@@ -8,7 +8,7 @@ cd /Users/s-a-c/dotfiles/dot-config/zsh
 
 # Test with original modules (should now use .zshrc.pre-plugins.d instead of .REDESIGN)
 timeout 15s bash -c '
-ZSH_ENABLE_PREPLUGIN_REDESIGN=0 ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh" zsh -i -c "
+ZSH_ENABLE_PREPLUGIN_REDESIGN=0 ZDOTDIR="${HOME}/dotfiles/dot-config/zsh" zsh -i -c "
 echo \"=== Module Selection Test ===\" 
 echo \"PREPLUGIN_REDESIGN: \${ZSH_ENABLE_PREPLUGIN_REDESIGN:-not_set}\"
 echo \"POSTPLUGIN_REDESIGN: \${ZSH_ENABLE_POSTPLUGIN_REDESIGN:-not_set}\"

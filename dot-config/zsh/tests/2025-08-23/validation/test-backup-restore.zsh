@@ -15,7 +15,7 @@ _test_setup() {
     # Setup logging
     local log_date=$(date -u +%Y-%m-%d)
     local log_time=$(date -u +%H-%M-%S)
-    export LOG_DIR="/Users/s-a-c/.config/zsh/logs/$log_date"
+    export LOG_DIR="${HOME}/.config/zsh/logs/$log_date"
     export LOG_FILE="$LOG_DIR/test-backup-restore_$log_time.log"
 
     # Create log directory
@@ -31,7 +31,7 @@ _test_setup() {
         zf::debug "📋 Log File: $LOG_FILE"
         zf::debug ""
 
-    export ZSH_CONFIG_BASE="/Users/s-a-c/.config/zsh"
+    export ZSH_CONFIG_BASE="${HOME}/.config/zsh"
     export BACKUP_DIR="$ZSH_CONFIG_BASE/.zsh-backups"
     export TEST_TIMESTAMP=$(date +%Y-%m-%d_%H-%M-%S)
     export TEST_BACKUP_DIR="$BACKUP_DIR/test-$TEST_TIMESTAMP"

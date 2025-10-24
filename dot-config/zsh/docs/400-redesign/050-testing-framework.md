@@ -65,14 +65,14 @@
           "target": "README.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/README.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/README.md"
         },
         {
           "text": "000-index",
           "target": "000-index.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/000-index.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/000-index.md"
         }
       ]
     },
@@ -90,28 +90,28 @@
           "target": "020-architecture.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/020-architecture.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/020-architecture.md"
         },
         {
           "text": "030-activation-flow.md",
           "target": "030-activation-flow.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/030-activation-flow.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/030-activation-flow.md"
         },
         {
           "text": "200-current-state.md",
           "target": "200-current-state.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/200-current-state.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/200-current-state.md"
         },
         {
           "text": "220-improvement-recommendations.md",
           "target": "220-improvement-recommendations.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/220-improvement-recommendations.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/220-improvement-recommendations.md"
         }
       ]
     },
@@ -131,14 +131,14 @@
           "target": "README.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/README.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/README.md"
         },
         {
           "text": "000-index",
           "target": "000-index.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/000-index.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/000-index.md"
         }
       ]
     },
@@ -176,252 +176,252 @@
           "target": "000-index.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/000-index.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/000-index.md"
         },
         {
           "text": "010-overview.md",
           "target": "010-overview.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/010-overview.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/010-overview.md"
         },
         {
           "text": "020-architecture.md",
           "target": "020-architecture.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/020-architecture.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/020-architecture.md"
         },
         {
           "text": "030-activation-flow.md",
           "target": "030-activation-flow.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/030-activation-flow.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/030-activation-flow.md"
         },
         {
           "text": "040-security-system.md",
           "target": "040-security-system.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/040-security-system.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/040-security-system.md"
         },
         {
           "text": "050-performance-monitoring.md",
           "target": "050-performance-monitoring.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/050-performance-monitoring.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/050-performance-monitoring.md"
         },
         {
           "text": "060-plugin-management.md",
           "target": "060-plugin-management.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/060-plugin-management.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/060-plugin-management.md"
         },
         {
           "text": "070-layered-system.md",
           "target": "070-layered-system.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/070-layered-system.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/070-layered-system.md"
         },
         {
           "text": "100-development-tools.md",
           "target": "100-development-tools.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/100-development-tools.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/100-development-tools.md"
         },
         {
           "text": "110-productivity-features.md",
           "target": "110-productivity-features.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/110-productivity-features.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/110-productivity-features.md"
         },
         {
           "text": "120-terminal-integration.md",
           "target": "120-terminal-integration.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/120-terminal-integration.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/120-terminal-integration.md"
         },
         {
           "text": "130-history-management.md",
           "target": "130-history-management.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/130-history-management.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/130-history-management.md"
         },
         {
           "text": "140-completion-system.md",
           "target": "140-completion-system.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/140-completion-system.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/140-completion-system.md"
         },
         {
           "text": "200-current-state.md",
           "target": "200-current-state.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/200-current-state.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/200-current-state.md"
         },
         {
           "text": "210-issues-inconsistencies.md",
           "target": "210-issues-inconsistencies.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/210-issues-inconsistencies.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/210-issues-inconsistencies.md"
         },
         {
           "text": "220-improvement-recommendations.md",
           "target": "220-improvement-recommendations.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/220-improvement-recommendations.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/220-improvement-recommendations.md"
         },
         {
           "text": "230-naming-convention-analysis.md",
           "target": "230-naming-convention-analysis.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/230-naming-convention-analysis.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/230-naming-convention-analysis.md"
         },
         {
           "text": "300-architecture-diagrams.md",
           "target": "300-architecture-diagrams.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/300-architecture-diagrams.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/300-architecture-diagrams.md"
         },
         {
           "text": "310-flow-diagrams.md",
           "target": "310-flow-diagrams.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/310-flow-diagrams.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/310-flow-diagrams.md"
         },
         {
           "text": "900-next-steps-implementation-plan.md",
           "target": "250-next-steps/010-next-steps-implementation-plan.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/250-next-steps/010-next-steps-implementation-plan.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/250-next-steps/010-next-steps-implementation-plan.md"
         },
         {
           "text": "400-redesign/000-index.md",
           "target": "400-redesign/000-index.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/400-redesign/000-index.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/400-redesign/000-index.md"
         },
         {
           "text": "400-redesign/010-implementation-plan.md",
           "target": "400-redesign/010-implementation-plan.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/400-redesign/010-implementation-plan.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/400-redesign/010-implementation-plan.md"
         },
         {
           "text": "400-redesign/020-symlink-architecture.md",
           "target": "400-redesign/020-symlink-architecture.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/400-redesign/020-symlink-architecture.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/400-redesign/020-symlink-architecture.md"
         },
         {
           "text": "400-redesign/030-versioned-strategy.md",
           "target": "400-redesign/030-versioned-strategy.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/400-redesign/030-versioned-strategy.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/400-redesign/030-versioned-strategy.md"
         },
         {
           "text": "400-redesign/040-implementation-guide.md",
           "target": "400-redesign/040-implementation-guide.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/400-redesign/040-implementation-guide.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/400-redesign/040-implementation-guide.md"
         },
         {
           "text": "010-overview.md",
           "target": "010-overview.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/010-overview.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/010-overview.md"
         },
         {
           "text": "020-architecture.md",
           "target": "020-architecture.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/020-architecture.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/020-architecture.md"
         },
         {
           "text": "200-current-state.md",
           "target": "200-current-state.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/200-current-state.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/200-current-state.md"
         },
         {
           "text": "060-plugin-management.md",
           "target": "060-plugin-management.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/060-plugin-management.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/060-plugin-management.md"
         },
         {
           "text": "230-naming-convention-analysis.md",
           "target": "230-naming-convention-analysis.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/230-naming-convention-analysis.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/230-naming-convention-analysis.md"
         },
         {
           "text": "220-improvement-recommendations.md",
           "target": "220-improvement-recommendations.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/220-improvement-recommendations.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/220-improvement-recommendations.md"
         },
         {
           "text": "210-issues-inconsistencies.md",
           "target": "210-issues-inconsistencies.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/210-issues-inconsistencies.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/210-issues-inconsistencies.md"
         },
         {
           "text": "050-performance-monitoring.md",
           "target": "050-performance-monitoring.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/050-performance-monitoring.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/050-performance-monitoring.md"
         },
         {
           "text": "310-flow-diagrams.md",
           "target": "310-flow-diagrams.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/310-flow-diagrams.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/310-flow-diagrams.md"
         },
         {
           "text": "200-current-state.md",
           "target": "200-current-state.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/200-current-state.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/200-current-state.md"
         },
         {
           "text": "210-issues-inconsistencies.md",
           "target": "210-issues-inconsistencies.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/210-issues-inconsistencies.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/210-issues-inconsistencies.md"
         },
         {
           "text": "zsh-quickstart-kit GitHub",
@@ -449,10 +449,10 @@
         },
         {
           "text": "`/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md`",
-          "target": "/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md",
+          "target": "${HOME}/dotfiles/dot-config/ai/guidelines.md",
           "type": "absolute-repo-path",
           "status": "missing",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md"
         }
       ]
     },
@@ -468,14 +468,14 @@
           "target": "README.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/README.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/README.md"
         },
         {
           "text": "000-index",
           "target": "000-index.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/000-index.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/000-index.md"
         }
       ]
     },
@@ -503,14 +503,14 @@
           "target": "README.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/README.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/README.md"
         },
         {
           "text": "000-index",
           "target": "000-index.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/000-index.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/000-index.md"
         }
       ]
     },
@@ -528,231 +528,231 @@
           "target": "010-overview.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/010-overview.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/010-overview.md"
         },
         {
           "text": "020-architecture.md",
           "target": "020-architecture.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/020-architecture.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/020-architecture.md"
         },
         {
           "text": "030-activation-flow.md",
           "target": "030-activation-flow.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/030-activation-flow.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/030-activation-flow.md"
         },
         {
           "text": "040-security-system.md",
           "target": "040-security-system.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/040-security-system.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/040-security-system.md"
         },
         {
           "text": "050-performance-monitoring.md",
           "target": "050-performance-monitoring.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/050-performance-monitoring.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/050-performance-monitoring.md"
         },
         {
           "text": "060-plugin-management.md",
           "target": "060-plugin-management.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/060-plugin-management.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/060-plugin-management.md"
         },
         {
           "text": "070-layered-system.md",
           "target": "070-layered-system.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/070-layered-system.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/070-layered-system.md"
         },
         {
           "text": "100-development-tools.md",
           "target": "100-development-tools.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/100-development-tools.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/100-development-tools.md"
         },
         {
           "text": "110-productivity-features.md",
           "target": "110-productivity-features.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/110-productivity-features.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/110-productivity-features.md"
         },
         {
           "text": "120-terminal-integration.md",
           "target": "120-terminal-integration.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/120-terminal-integration.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/120-terminal-integration.md"
         },
         {
           "text": "130-history-management.md",
           "target": "130-history-management.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/130-history-management.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/130-history-management.md"
         },
         {
           "text": "140-completion-system.md",
           "target": "140-completion-system.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/140-completion-system.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/140-completion-system.md"
         },
         {
           "text": "200-current-state.md",
           "target": "200-current-state.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/200-current-state.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/200-current-state.md"
         },
         {
           "text": "210-issues-inconsistencies.md",
           "target": "210-issues-inconsistencies.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/210-issues-inconsistencies.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/210-issues-inconsistencies.md"
         },
         {
           "text": "220-improvement-recommendations.md",
           "target": "220-improvement-recommendations.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/220-improvement-recommendations.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/220-improvement-recommendations.md"
         },
         {
           "text": "230-naming-convention-analysis.md",
           "target": "230-naming-convention-analysis.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/230-naming-convention-analysis.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/230-naming-convention-analysis.md"
         },
         {
           "text": "300-architecture-diagrams.md",
           "target": "300-architecture-diagrams.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/300-architecture-diagrams.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/300-architecture-diagrams.md"
         },
         {
           "text": "310-flow-diagrams.md",
           "target": "310-flow-diagrams.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/310-flow-diagrams.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/310-flow-diagrams.md"
         },
         {
           "text": "900-next-steps-implementation-plan.md",
           "target": "250-next-steps/010-next-steps-implementation-plan.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/250-next-steps/010-next-steps-implementation-plan.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/250-next-steps/010-next-steps-implementation-plan.md"
         },
         {
           "text": "400-redesign/000-index.md",
           "target": "400-redesign/000-index.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/400-redesign/000-index.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/400-redesign/000-index.md"
         },
         {
           "text": "400-redesign/010-implementation-plan.md",
           "target": "400-redesign/010-implementation-plan.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/400-redesign/010-implementation-plan.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/400-redesign/010-implementation-plan.md"
         },
         {
           "text": "400-redesign/020-symlink-architecture.md",
           "target": "400-redesign/020-symlink-architecture.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/400-redesign/020-symlink-architecture.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/400-redesign/020-symlink-architecture.md"
         },
         {
           "text": "400-redesign/030-versioned-strategy.md",
           "target": "400-redesign/030-versioned-strategy.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/400-redesign/030-versioned-strategy.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/400-redesign/030-versioned-strategy.md"
         },
         {
           "text": "400-redesign/040-implementation-guide.md",
           "target": "400-redesign/040-implementation-guide.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/400-redesign/040-implementation-guide.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/400-redesign/040-implementation-guide.md"
         },
         {
           "text": "010-overview.md",
           "target": "010-overview.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/010-overview.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/010-overview.md"
         },
         {
           "text": "020-architecture.md",
           "target": "020-architecture.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/020-architecture.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/020-architecture.md"
         },
         {
           "text": "200-current-state.md",
           "target": "200-current-state.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/200-current-state.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/200-current-state.md"
         },
         {
           "text": "060-plugin-management.md",
           "target": "060-plugin-management.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/060-plugin-management.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/060-plugin-management.md"
         },
         {
           "text": "230-naming-convention-analysis.md",
           "target": "230-naming-convention-analysis.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/230-naming-convention-analysis.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/230-naming-convention-analysis.md"
         },
         {
           "text": "220-improvement-recommendations.md",
           "target": "220-improvement-recommendations.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/220-improvement-recommendations.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/220-improvement-recommendations.md"
         },
         {
           "text": "210-issues-inconsistencies.md",
           "target": "210-issues-inconsistencies.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/210-issues-inconsistencies.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/210-issues-inconsistencies.md"
         },
         {
           "text": "050-performance-monitoring.md",
           "target": "050-performance-monitoring.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/050-performance-monitoring.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/050-performance-monitoring.md"
         },
         {
           "text": "310-flow-diagrams.md",
           "target": "310-flow-diagrams.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/310-flow-diagrams.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/310-flow-diagrams.md"
         }
       ]
     },
@@ -768,14 +768,14 @@
           "target": "README.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/README.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/README.md"
         },
         {
           "text": "000-index",
           "target": "000-index.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/000-index.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/000-index.md"
         }
       ]
     },
@@ -787,14 +787,14 @@
           "target": "../000-index.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/000-index.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/000-index.md"
         },
         {
           "text": "000-index",
           "target": "../000-index.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/000-index.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/000-index.md"
         }
       ]
     },
@@ -806,14 +806,14 @@
           "target": "../000-index.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/000-index.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/000-index.md"
         },
         {
           "text": "000-index",
           "target": "../000-index.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/000-index.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/000-index.md"
         }
       ]
     },
@@ -975,14 +975,14 @@
           "target": "000-index.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/400-redesign/000-index.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/400-redesign/000-index.md"
         },
         {
           "text": "Next",
           "target": "020-symlink-architecture.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/400-redesign/020-symlink-architecture.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/400-redesign/020-symlink-architecture.md"
         },
         {
           "text": "Top",
@@ -991,11 +991,11 @@
           "status": "missing"
         },
         {
-          "text": "/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md",
-          "target": "/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md",
+          "text": "${HOME}/dotfiles/dot-config/ai/guidelines.md",
+          "target": "${HOME}/dotfiles/dot-config/ai/guidelines.md",
           "type": "absolute-repo-path",
           "status": "missing",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md"
         }
       ]
     },
@@ -1235,14 +1235,14 @@
           "target": "030-versioned-strategy.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/400-redesign/030-versioned-strategy.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/400-redesign/030-versioned-strategy.md"
         },
         {
           "text": "Next",
           "target": "../000-index.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/000-index.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/000-index.md"
         },
         {
           "text": "Top",
@@ -1251,11 +1251,11 @@
           "status": "missing"
         },
         {
-          "text": "/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md",
-          "target": "/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md",
+          "text": "${HOME}/dotfiles/dot-config/ai/guidelines.md",
+          "target": "${HOME}/dotfiles/dot-config/ai/guidelines.md",
           "type": "absolute-repo-path",
           "status": "missing",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md"
         }
       ]
     },
@@ -1369,14 +1369,14 @@
           "target": "010-implementation-plan.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/400-redesign/010-implementation-plan.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/400-redesign/010-implementation-plan.md"
         },
         {
           "text": "Next",
           "target": "030-versioned-strategy.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/400-redesign/030-versioned-strategy.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/400-redesign/030-versioned-strategy.md"
         },
         {
           "text": "Top",
@@ -1385,11 +1385,11 @@
           "status": "missing"
         },
         {
-          "text": "/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md",
-          "target": "/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md",
+          "text": "${HOME}/dotfiles/dot-config/ai/guidelines.md",
+          "target": "${HOME}/dotfiles/dot-config/ai/guidelines.md",
           "type": "absolute-repo-path",
           "status": "missing",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md"
         }
       ]
     },
@@ -1551,14 +1551,14 @@
           "target": "020-symlink-architecture.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/400-redesign/020-symlink-architecture.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/400-redesign/020-symlink-architecture.md"
         },
         {
           "text": "Next",
           "target": "040-implementation-guide.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/400-redesign/040-implementation-guide.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/400-redesign/040-implementation-guide.md"
         },
         {
           "text": "Top",
@@ -1567,11 +1567,11 @@
           "status": "missing"
         },
         {
-          "text": "/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md",
-          "target": "/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md",
+          "text": "${HOME}/dotfiles/dot-config/ai/guidelines.md",
+          "target": "${HOME}/dotfiles/dot-config/ai/guidelines.md",
           "type": "absolute-repo-path",
           "status": "missing",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md"
         }
       ]
     },
@@ -1613,98 +1613,98 @@
           "target": "010-implementation-plan.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/400-redesign/010-implementation-plan.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/400-redesign/010-implementation-plan.md"
         },
         {
           "text": "020-symlink-architecture",
           "target": "020-symlink-architecture.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/400-redesign/020-symlink-architecture.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/400-redesign/020-symlink-architecture.md"
         },
         {
           "text": "030-versioned-strategy",
           "target": "030-versioned-strategy.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/400-redesign/030-versioned-strategy.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/400-redesign/030-versioned-strategy.md"
         },
         {
           "text": "040-implementation-guide",
           "target": "040-implementation-guide.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/400-redesign/040-implementation-guide.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/400-redesign/040-implementation-guide.md"
         },
         {
           "text": "050-testing-framework",
           "target": "050-testing-framework.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/400-redesign/050-testing-framework.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/400-redesign/050-testing-framework.md"
         },
         {
           "text": "060-risk-assessment",
           "target": "060-risk-assessment.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/400-redesign/060-risk-assessment.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/400-redesign/060-risk-assessment.md"
         },
         {
           "text": "070-maintenance-guide",
           "target": "070-maintenance-guide.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/400-redesign/070-maintenance-guide.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/400-redesign/070-maintenance-guide.md"
         },
         {
           "text": "../current-state.md",
           "target": "../200-current-state.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/200-current-state.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/200-current-state.md"
         },
         {
           "text": "../architecture.md",
           "target": "../020-architecture.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/020-architecture.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/020-architecture.md"
         },
         {
           "text": "../security-system.md",
           "target": "../040-security-system.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/040-security-system.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/040-security-system.md"
         },
         {
           "text": "../performance-monitoring.md",
           "target": "../050-performance-monitoring.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/050-performance-monitoring.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/050-performance-monitoring.md"
         },
         {
           "text": "010-implementation-plan.md",
           "target": "010-implementation-plan.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/400-redesign/010-implementation-plan.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/400-redesign/010-implementation-plan.md"
         },
         {
           "text": "../issues-inconsistencies.md",
           "target": "../210-issues-inconsistencies.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/210-issues-inconsistencies.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/210-issues-inconsistencies.md"
         },
         {
           "text": "../improvement-recommendations.md",
           "target": "../220-improvement-recommendations.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/220-improvement-recommendations.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/220-improvement-recommendations.md"
         },
         {
           "text": "Zgenom Documentation",
@@ -1723,14 +1723,14 @@
           "target": "../README.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/README.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/README.md"
         },
         {
           "text": "Next",
           "target": "010-implementation-plan.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/400-redesign/010-implementation-plan.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/400-redesign/010-implementation-plan.md"
         },
         {
           "text": "Top",
@@ -1739,11 +1739,11 @@
           "status": "missing"
         },
         {
-          "text": "/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md",
-          "target": "/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md",
+          "text": "${HOME}/dotfiles/dot-config/ai/guidelines.md",
+          "target": "${HOME}/dotfiles/dot-config/ai/guidelines.md",
           "type": "absolute-repo-path",
           "status": "missing",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md"
         }
       ]
     },
@@ -1755,7 +1755,7 @@
           "target": "../000-index.md",
           "type": "relative",
           "status": "exists",
-          "resolved": "/Users/s-a-c/dotfiles/dot-config/zsh/docs/000-index.md"
+          "resolved": "${HOME}/dotfiles/dot-config/zsh/docs/000-index.md"
         },
         {
           "text": "000-index",

@@ -2,5 +2,120 @@
   "api_key": "SET_OUTSIDE_REPO",
   "note": "Sanitized placeholder committed to repo. Provide your actual key via environment variable, OS keychain, or external secrets manager.",
   "managed_by": "dotfiles",
-  "last_updated_utc": "2025-10-03T01:09:00Z"
+  "last_updated_utc": "2025-10-03T01:09:00Z",
+  "mcpServers": {
+    "Context7": {
+      "args": [
+        "-y",
+        "@upstash/context7-mcp@latest"
+      ],
+      "command": "bunx",
+      "type":    "stdio"
+    },
+    "fetch": {
+      "args": [
+        "mcp-server-fetch"
+      ],
+      "command": "uvx"
+    },
+    "filesystem": {
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/s-a-c/Desktop",
+        "/Users/s-a-c/Downloads",
+        "/Users/s-a-c/Herd",
+        "/Users/s-a-c/code",
+        "/Users/s-a-c/dotfiles",
+        "/Users/s-a-c/nc",
+        "/Users/s-a-c/.config"
+      ],
+      "command": "bunx"
+    },
+    "git": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-git",
+        "--repository",
+        "${ZF_GIT_ROOT}"
+      ]
+    },
+    "github": {
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "command": "bunx",
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GH_TOKEN}"
+      }
+  },
+    "jetbrains": {
+      "args": [
+        "-y",
+        "@jetbrains/mcp-proxy"
+      ],
+      "command": "bunx"
+    },
+    "json": {
+      "args": [
+        "-y",
+        "@gongrzhe/server-json-mcp@latest"
+      ],
+      "command": "bunx"
+    },
+    "mcp-installer": {
+      "args": [
+        "-y",
+        "@anaisbetts/mcp-installer"
+      ],
+      "command": "bunx"
+    },
+    "memory": {
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ],
+      "command": "bunx"
+    },
+    "nx-mcp": {
+      "args": [
+        "-y",
+        "nx-mcp@latest"
+      ],
+      "command": "bunx"
+    },
+    "sequential-thinking": {
+      "args":    [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "command": "bunx"
+    },
+    "serena": {
+      "args": [
+        "--from",
+        "git+https://github.com/oraios/serena",
+        "serena",
+        "start-mcp-server"
+      ],
+      "command": "uvx"
+    },
+    "tavily-mcp": {
+      "args": [
+        "-y",
+        "tavily-mcp@latest"
+      ],
+      "command": "bunx",
+      "env": {
+        "TAVILY_API_KEY": "${TAVILY_API_KEY}"
+      }
+    },
+    "time": {
+      "args": [
+        "mcp-server-time"
+      ],
+      "command": "uvx"\
+    }
+  }
 }

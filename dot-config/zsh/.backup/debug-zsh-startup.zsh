@@ -3,7 +3,7 @@
 
 set -e
 
-ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh"
+ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
 TEMP_DIR=$(mktemp -d)
 LOG_FILE="$TEMP_DIR/zsh-startup.log"
 

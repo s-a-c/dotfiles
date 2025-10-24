@@ -21,7 +21,7 @@ fi
 echo "🔧 Temporarily disabling problematic plugins..."
 
 # Create a temporary simplified .zgen-setup that excludes problematic plugins
-ZGEN_SETUP_PATH="/Users/s-a-c/dotfiles/dot-config/zsh/zsh-quickstart-kit/zsh/.zgen-setup"
+ZGEN_SETUP_PATH="${HOME}/dotfiles/dot-config/zsh/zsh-quickstart-kit/zsh/.zgen-setup"
 ZGEN_SETUP_BACKUP="${ZGEN_SETUP_PATH}.backup.$(date +%Y%m%d_%H%M%S)"
 
 if [[ -f "$ZGEN_SETUP_PATH" ]]; then

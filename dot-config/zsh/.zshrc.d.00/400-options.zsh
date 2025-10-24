@@ -173,6 +173,30 @@ setopt AUTO_MENU
 # Description: Moves the cursor to the end of the word after completion.
 # Default: Unset
 # Recommendation: `setopt ALWAYS_TO_END`
+
+# === PROMPT CURSOR POSITIONING FIXES ===
+# These options fix cursor positioning issues with complex prompts (like Starship)
+# that have many ANSI escape sequences, especially with long wrapped lines
+
+# Disable prompt carriage return (prevents cursor misalignment)
+unsetopt PROMPT_CR
+
+# Enable prompt spacing (helps with cursor positioning on wrapped lines)
+setopt PROMPT_SP
+
+# Disable PROMPT_SUBST if not needed (can interfere with cursor positioning)
+# Comment this out if you use command substitution in your prompt
+unsetopt PROMPT_SUBST
+
+# === CURSOR POSITIONING: SPLASH SCREEN CONTROL ===
+# The splash screen (welcome banner) has been repositioned to run BEFORE
+# the first prompt to prevent cursor positioning issues on long wrapped lines.
+#
+# The splash screen now runs immediately during shell startup in 560-user-interface.zsh
+# instead of after the prompt via precmd hook, ensuring proper cursor positioning.
+#
+# To disable the splash screen, set the environment variable:
+# export NO_SPLASH=1
 # Rationale: Improves workflow by allowing you to immediately type the next argument.
 setopt ALWAYS_TO_END
 

@@ -215,7 +215,7 @@ Create `.zshrc.add-plugins.d.empty/020-php-environment.zsh`:
 
 ```bash
 # Herd integration (primary)
-[[ -d "/Users/s-a-c/Library/Application Support/Herd/config/nvm" ]] && export NVM_DIR="/Users/s-a-c/Library/Application Support/Herd/config/nvm"
+[[ -d "${HOME}/Library/Application Support/Herd/config/nvm" ]] && export NVM_DIR="${HOME}/Library/Application Support/Herd/config/nvm"
 
 # Traditional PHP setup (secondary)
 zgenom oh-my-zsh plugins/composer

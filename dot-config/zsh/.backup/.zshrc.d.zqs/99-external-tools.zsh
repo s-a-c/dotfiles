@@ -13,7 +13,7 @@ if [[ "${SKIP_EXTERNAL_TOOLS:-0}" == "1" ]]; then
 fi
 
 # Added by LM Studio CLI (lms)
-if [[ -d "/Users/s-a-c/.lmstudio/bin" ]]; then
+if [[ -d "${HOME}/.lmstudio/bin" ]]; then
     export PATH="$PATH:/Users/s-a-c/.lmstudio/bin"
     zf::debug "# [post-plugin-ext] Added LM Studio CLI to PATH"
 fi

@@ -1,0 +1,156 @@
+# ZSH Configuration - AI Assistant Context Guide
+
+This document provides comprehensive context for AI assistants working with the zsh configuration system. It explains the framework architecture, load sequences, module organization, and key scripts.
+
+## AI Guidelines Reference
+
+### AI Guidelines Documentation
+- **Reference**: `/Users/s-a-c/nc/Documents/notes/obsidian/s-a-c/ai/AI-GUIDELINES.md` - [Comprehensive AI development guidelines](/Users/s-a-c/nc/Documents/notes/obsidian/s-a-c/ai/AI-GUIDELINES.md)
+- **Location**: `/Users/s-a-c/nc/Documents/notes/obsidian/s-a-c/ai/AI-GUIDELINES/` - [Directory containing specific AI development standards](/Users/s-a-c/nc/Documents/notes/obsidian/s-a-c/ai/AI-GUIDELINES/000-index.md)
+- **Purpose**: Provides standards, best practices, and conventions for AI-assisted development
+
+### Usage Guidelines for AI Assistants
+
+#### When Modifying ZSH Configuration
+1. **Reference AI-GUIDELINES.md First**: Before making any changes to the zsh configuration, consult the AI guidelines to ensure compliance with established standards
+2. **Follow Development Standards**: Adhere to the coding standards, documentation requirements, and testing protocols outlined in the AI guidelines
+3. **Maintain Compatibility**: Ensure any modifications preserve backward compatibility and follow the layered versioning system
+4. **Document Changes**: Update appropriate documentation and commit messages following the guidelines
+
+#### When Creating New Scripts or Modules
+1. **Check Guidelines**: Review the AI guidelines for script creation, file organization, and naming conventions
+2. **Follow Patterns**: Use established patterns from existing modules for consistency
+3. **Include Documentation**: Add proper headers, comments, and usage examples as required by guidelines
+4. **Test Thoroughly**: Follow testing procedures and include appropriate test files
+
+#### When Debugging or Troubleshooting
+1. **Use Standard Procedures**: Follow debugging and troubleshooting procedures outlined in both this document and the AI guidelines
+2. **Document Findings**: Record findings and solutions in appropriate documentation following guidelines
+3. **Provide Clear Explanations**: Explain root causes and solutions in clear, documented format
+
+#### When Interacting with Version Control
+1. **Follow Commit Standards**: Use the commit message formats and branching strategies defined in AI-GUIDELINES.md
+2. **Document Changes**: Ensure all changes are properly documented and follow the established patterns
+3. **Maintain History**: Preserve meaningful commit history and follow the guidelines for version control
+
+### Integration with Development Workflow
+
+#### Code Review Process
+- **Guidelines Reference**: Use AI-GUIDELINES.md as the authoritative source for code review standards
+- **ZSH-Specific Considerations**: Apply zsh-specific best practices alongside general AI guidelines
+- **Documentation Requirements**: Ensure all changes are properly documented according to both sets of guidelines
+
+#### Testing and Validation
+- **Testing Standards**: Follow testing procedures from both AI-GUIDELINES.md and zsh-specific testing requirements
+- **Validation Criteria**: Use validation criteria defined in the guidelines to ensure quality and compatibility
+- **Performance Considerations**: Apply performance testing standards from both guidelines
+
+#### Documentation Updates
+- **Consistency**: Maintain consistency between this AGENTS.md and AI-GUIDELINES.md
+- **Cross-Reference**: Ensure proper cross-referencing between documentation files
+- **Version Control**: Follow documentation version control procedures from the guidelines
+
+### Key Principles from AI Guidelines
+
+#### Development Standards
+- **Modular Design**: Maintain modular design principles when modifying zsh configuration
+- **Backward Compatibility**: Preserve backward compatibility as required by guidelines
+- **Performance Considerations**: Apply performance optimization standards from guidelines
+
+#### Documentation Standards
+- **Clear Documentation**: Maintain clear, comprehensive documentation for all changes
+- **Consistent Formatting**: Use consistent formatting and organization as defined in guidelines
+- **Version Control**: Follow proper version control and documentation practices
+
+#### Quality Assurance
+- **Testing Requirements**: Meet testing requirements from both general and zsh-specific guidelines
+- **Code Review**: Participate in code review processes following established standards
+- **Validation**: Ensure all changes meet validation criteria from guidelines
+
+### Practical Implementation
+
+#### Before Making Changes
+1. **Read AI-GUIDELINES.md**: Review relevant sections of the AI guidelines
+2. **Check Existing Patterns**: Look for similar patterns in existing zsh configuration
+3. **Plan Changes**: Plan changes following both zsh and AI guidelines
+4. **Document Intent**: Document the intent and approach following guidelines
+
+#### During Development
+1. **Follow Standards**: Apply coding standards from both guidelines
+2. **Test Incrementally**: Test changes incrementally following testing procedures
+3. **Document Progress**: Document progress and findings according to guidelines
+4. **Validate Compliance**: Ensure compliance with both sets of guidelines
+
+#### After Implementation
+1. **Final Testing**: Perform final testing following guidelines
+2. **Documentation Updates**: Update all relevant documentation following guidelines
+3. **Code Review**: Participate in code review following established standards
+4. **Version Control**: Commit changes following version control procedures
+
+This AGENTS.md should be used in conjunction with AI-GUIDELINES.md to ensure all zsh configuration modifications follow established standards and best practices for AI-assisted development.
+
+## Framework Overview
+
+### Architecture Description
+This zsh configuration is built on the **unixorn zsh-quickstart-kit** framework with extensive customizations and layered versioning.
+
+### Core Sources
+- **Main .zshrc**: `/Users/s-a-c/dotfiles/dot-config/zsh/.zshrc`
+- **zgenom**: Custom fork at `/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/`
+
+## Module Load Sequence
+
+### Phase 1: Early Environment (.zshenv)
+```
+1. .zshenv → Environment variables (PATH, ZDOTDIR, etc.)
+2. Basic shell setup and XDG compliance
+```
+
+### Phase 2: Pre-Plugin Phase (.zshrc.pre-plugins.d/)
+```
+005: load-fragments-no-warn.zsh      → Override load-shell-fragments function
+006: zqs-get-setting-no-warn.zsh      → Settings system functions
+095: user-interface.zsh               → User interface and splash screen
+```
+
+### Phase 4: Post-Plugin Phase (.zshrc.d/)
+```
+400: options.zsh                        → Core zsh options and cursor positioning fixes
+540: prompt-starship.zsh                → Starship prompt (includes cursor fixes)
+560: user-interface.zsh                 → Simplified splash screen
+990: force-emacs-mode.zsh               → Emacs keymap enforcement
+```
+
+## Special Features
+
+### Cursor Positioning System
+Multi-layered approach:
+1. `400-options.zsh` - Core zsh options (`unsetopt PROMPT_CR`, `setopt PROMPT_SP`)
+2. `540-prompt-starship.zsh` - Starship-specific fixes
+3. `560-user-interface.zsh` - Simplified splash timing
+
+### Splash Screen System
+Immediate execution in `560-user-interface.zsh` before first prompt
+Controls: `NO_SPLASH=1` environment variable
+
+## Key Commands for AI Assistants
+
+### Diagnostics
+```bash
+# Test cursor positioning
+fix-starship-cursor
+
+# Check loaded plugins
+zgenom list
+```
+
+### Configuration Management
+```bash
+# Reload configuration
+source ~/.zshrc
+
+# Test specific modules
+zsh -i -c "source ~/.zshrc.d/540-prompt-starship.zsh"
+```
+
+This AGENTS.md provides comprehensive context for understanding and extending the zsh configuration system.

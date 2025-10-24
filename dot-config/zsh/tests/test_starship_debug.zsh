@@ -9,7 +9,7 @@ cd /Users/s-a-c/dotfiles/dot-config/zsh
 # Test the external integrations module directly
 echo "=== Testing External Integrations Module ==="
 timeout 15s bash -c '
-ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh"
+ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
 export ZDOTDIR
 zsh -i -c "
 echo \"External integrations loaded: \${_EXTERNAL_INTEGRATIONS_LOADED:-not_set}\"

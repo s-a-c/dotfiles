@@ -6,7 +6,7 @@ echo "Module: .zshrc.d.legacy/consolidated-modules/02-performance-monitoring.zsh
 echo "Using: /opt/homebrew/bin/zsh"
 echo ""
 
-REPO_PATH="/Users/s-a-c/dotfiles/dot-config/zsh"
+REPO_PATH="${HOME}/dotfiles/dot-config/zsh"
 MODULE_PATH="$REPO_PATH/.zshrc.d.legacy/consolidated-modules/02-performance-monitoring.zsh"
 
 if [[ ! -f "$MODULE_PATH" ]]; then

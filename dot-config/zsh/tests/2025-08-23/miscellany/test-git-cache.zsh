@@ -11,7 +11,7 @@
 original_cwd="$(pwd)"
 
 # ******* Configuration and logging setup
-config_base="/Users/s-a-c/.config/zsh"
+config_base="${HOME}/.config/zsh"
 log_date=$(date -u +%Y-%m-%d)
 log_time=$(date -u +%H-%M-%S)
 log_dir="$config_base/logs/$log_date"

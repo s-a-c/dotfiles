@@ -47,7 +47,6 @@ _ZF_NVIM_HELPERS_DONE=1
 # Virtualenv alias override (default enabled; opt-out with ZF_DISABLE_NVIM_VENV_ALIAS=1)
 if [[ "${ZF_DISABLE_NVIM_VENV_ALIAS:-0}" != 1 ]]; then
   if command -v nvim >/dev/null 2>&1; then
-    alias nvim='zf::nvimvenv'
     _ZF_NVIM_VENV_ALIAS=1
     zf::debug "# [nvimvenv] Alias nvim='zf::nvimvenv' (default enabled)"
   else

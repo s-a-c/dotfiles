@@ -14,7 +14,7 @@ echo ""
 # Test for parse errors during startup
 echo "🧪 Testing for k plugin parse errors..."
 parse_errors=$(timeout 15s bash -c '
-    export ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh"
+    export ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
     zsh -i -c "exit" 2>&1 | grep -E "(parse error|defining function based on alias)" || true
 ' 2>&1)
 
@@ -32,7 +32,7 @@ echo ""
 # Test that the shell starts successfully
 echo "🧪 Testing successful shell startup..."
 startup_success=$(timeout 10s bash -c '
-    export ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh"
+    export ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
     zsh -i -c "echo STARTUP_SUCCESS; exit" 2>/dev/null
 ' 2>&1)
 
@@ -49,7 +49,7 @@ echo ""
 # Test k function availability
 echo "🧪 Testing k function/alias availability..."
 k_status=$(timeout 10s bash -c '
-    export ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh"
+    export ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
     zsh -i -c "
         if [[ -n \"\${functions[k]:-}\" ]]; then
             echo \"k_function_available\"

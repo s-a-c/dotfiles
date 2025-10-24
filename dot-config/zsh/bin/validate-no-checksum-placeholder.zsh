@@ -3,7 +3,7 @@
 set -euo pipefail
 root_dir="${ZDOTDIR:-$HOME}/."
 # Limit to this repo directory explicitly (adjust if executed elsewhere)
-repo_root="/Users/s-a-c/dotfiles/dot-config/zsh"
+repo_root="${HOME}/dotfiles/dot-config/zsh"
 cd "$repo_root"
 
 # Grep for placeholder

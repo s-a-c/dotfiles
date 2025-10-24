@@ -8,7 +8,7 @@
 #=============================================================================
 
 # Configuration
-ZSH_CONFIG_BASE="/Users/s-a-c/.config/zsh"
+ZSH_CONFIG_BASE="${HOME}/.config/zsh"
 BACKUP_BASE_DIR="$ZSH_CONFIG_BASE/.zsh-backups"
 TIMESTAMP=$(date +%Y-%m-%d_%H-%M-%S)
 BACKUP_DIR="$BACKUP_BASE_DIR/$TIMESTAMP"
@@ -264,7 +264,7 @@ main() {
     # Setup logging
     local log_date=$(date -u +%Y-%m-%d)
     local log_time=$(date -u +%H-%M-%S)
-    local log_dir="/Users/s-a-c/.config/zsh/logs/$log_date"
+    local log_dir="${HOME}/.config/zsh/logs/$log_date"
     local log_file="$log_dir/zsh-config-backup_$log_time.log"
 
     # Create log directory

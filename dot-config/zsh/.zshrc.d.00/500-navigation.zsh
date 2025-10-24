@@ -23,10 +23,6 @@ fi
 # Rationale: Ensure a consistent modern listing experience while keeping reversibility and explicit test signals.
 if command -v eza >/dev/null 2>&1; then
   if [[ ${ZF_DISABLE_EZA_ALIAS:-0} != 1 ]]; then
-    alias ls='eza'
-    alias ll='eza -lh'
-    alias la='eza -alh'
-    alias tree='eza --tree'
     export ALIAS_LS_EZA=1
   else
     export ALIAS_LS_EZA=0

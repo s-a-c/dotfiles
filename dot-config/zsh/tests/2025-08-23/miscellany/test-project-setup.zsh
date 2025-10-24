@@ -15,7 +15,7 @@ _test_setup() {
     # Setup logging
     local log_date=$(date -u +%Y-%m-%d)
     local log_time=$(date -u +%H-%M-%S)
-    export LOG_DIR="/Users/s-a-c/.config/zsh/logs/$log_date"
+    export LOG_DIR="${HOME}/.config/zsh/logs/$log_date"
     export LOG_FILE="$LOG_DIR/test-project-setup_$log_time.log"
 
     # Create log directory
@@ -31,7 +31,7 @@ _test_setup() {
         zf::debug "📋 Log File: $LOG_FILE"
         zf::debug ""
 
-    local base_dir="/Users/s-a-c/.config/zsh"
+    local base_dir="${HOME}/.config/zsh"
     export ZSH_CONFIG_BASE="$base_dir"
     export TESTS_PASSED=0
     export TESTS_FAILED=0

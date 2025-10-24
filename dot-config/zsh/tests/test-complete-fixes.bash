@@ -19,7 +19,7 @@ echo ""
 # Step 3: Test k plugin conflict fix
 echo "🧪 Step 3: K plugin conflict fix test"
 timeout 20s bash -c '
-    export ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh"
+    export ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
     export DEBUG_ZSH_REDESIGN=1
     
     echo "Testing ZSH startup with k plugin fixes..."
@@ -38,7 +38,7 @@ echo ""
 echo "🧪 Step 4: Autopair parameter fix test"
 echo "   Testing backspace functionality..."
 timeout 10s bash -c '
-    export ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh"
+    export ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
     
     zsh -i -c "
         # Test if autopair parameters are set
@@ -59,7 +59,7 @@ echo ""
 # Step 5: Test for parse errors
 echo "🧪 Step 5: Parse error detection"
 parse_errors=$(timeout 15s bash -c '
-    export ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh"
+    export ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
     zsh -i -c "exit" 2>&1 | grep -i "parse error" || true
 ' 2>&1)
 
@@ -77,7 +77,7 @@ echo "🧪 Step 6: Startup performance test (5-second timeout)"
 start_time=$(date +%s)
 
 result=$(timeout 5s bash -c '
-    export ZDOTDIR="/Users/s-a-c/dotfiles/dot-config/zsh"
+    export ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
     zsh -i -c "
         echo \"STARTUP_SUCCESS_$(date +%s)\"
         exit

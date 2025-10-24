@@ -77,8 +77,8 @@ export NVM_LAZY_LOAD=true
 export NVM_COMPLETION=true
 
 # Herd NVM integration (if available)
-if [[ -d "/Users/s-a-c/Library/Application Support/Herd/config/nvm" ]]; then
-  export NVM_DIR="/Users/s-a-c/Library/Application Support/Herd/config/nvm"
+if [[ -d "${HOME}/Library/Application Support/Herd/config/nvm" ]]; then
+  export NVM_DIR="${HOME}/Library/Application Support/Herd/config/nvm"
   zf::debug "# [dev-node] Using Herd NVM at: $NVM_DIR"
 fi
 

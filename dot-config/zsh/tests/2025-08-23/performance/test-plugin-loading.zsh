@@ -84,11 +84,11 @@ _log_test "Log file: $_test_log_file"
 _log_test ""
 _log_test "=== Test Group 1: Configuration Validation ==="
 
-_assert_true '[[ -f "/Users/s-a-c/.config/zsh/.zshrc.pre-plugins.d/04-plugin-deferred-loading.zsh" ]]' \
+_assert_true '[[ -f "${HOME}/.config/zsh/.zshrc.pre-plugins.d/04-plugin-deferred-loading.zsh" ]]' \
     "Deferred loading configuration file exists" \
     "Path: /Users/s-a-c/.config/zsh/.zshrc.pre-plugins.d/04-plugin-deferred-loading.zsh"
 
-_assert_true '[[ -x "/Users/s-a-c/.config/zsh/.zshrc.pre-plugins.d/04-plugin-deferred-loading.zsh" ]]' \
+_assert_true '[[ -x "${HOME}/.config/zsh/.zshrc.pre-plugins.d/04-plugin-deferred-loading.zsh" ]]' \
     "Deferred loading configuration is executable"
 
 # Test 2: Verify zsh-defer availability
@@ -288,10 +288,10 @@ _assert_true 'grep -q "zgenom load romkatv/powerlevel10k" /Users/s-a-c/.config/z
 _log_test ""
 _log_test "=== Test Group 9: File System Validation ==="
 
-_assert_true '[[ -r "/Users/s-a-c/.config/zsh/.zshrc.pre-plugins.d/04-plugin-deferred-loading.zsh" ]]' \
+_assert_true '[[ -r "${HOME}/.config/zsh/.zshrc.pre-plugins.d/04-plugin-deferred-loading.zsh" ]]' \
     "Deferred loading script is readable"
 
-_assert_true '[[ -f "/Users/s-a-c/.config/zsh/docs/plugin-audit-defer-candidates.md" ]]' \
+_assert_true '[[ -f "${HOME}/.config/zsh/docs/plugin-audit-defer-candidates.md" ]]' \
     "Plugin audit documentation exists" \
     "Documentation should be available for reference"
 
@@ -299,7 +299,7 @@ _assert_true '[[ -f "/Users/s-a-c/.config/zsh/docs/plugin-audit-defer-candidates
 _log_test ""
 _log_test "=== Test Group 10: Backup and Safety ==="
 
-_assert_true '[[ -f "/Users/s-a-c/.config/zsh/.zgen-setup.backup-deferred-"* ]]' \
+_assert_true '[[ -f "${HOME}/.config/zsh/.zgen-setup.backup-deferred-"* ]]' \
     "Main configuration backup was created" \
     "Safety measure before modifications"
 
