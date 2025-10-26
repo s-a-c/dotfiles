@@ -10,9 +10,9 @@
 _check_php_post_plugin_deps() {
   local missing_deps=()
 
-  # Check if PHP post-plugin configuration exists
-  if [[ ! -f "${ZDOTDIR}/.zshrc.d/040-dev-php.zsh" ]]; then
-    missing_deps+=("040-dev-php.zsh (Herd integration & Laravel aliases)")
+  # Check if Herd environment is configured
+  if [[ -z "${HERD_PHP_84_INI_SCAN_DIR:-}" ]]; then
+    missing_deps+=("Herd environment not configured in .zshrc.d")
   fi
 
   if [[ ${#missing_deps[@]} -gt 0 ]]; then

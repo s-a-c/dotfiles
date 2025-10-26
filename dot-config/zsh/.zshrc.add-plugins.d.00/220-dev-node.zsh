@@ -11,9 +11,9 @@
 _check_node_pre_plugin_deps() {
   local missing_deps=()
 
-  # Check if NVM environment setup exists in pre-plugins
-  if [[ ! -f "${ZDOTDIR}/.zshrc.pre-plugins.d/050-dev-node.zsh" ]]; then
-    missing_deps+=("050-dev-node.zsh (NVM environment variables)")
+  # Check if NVM environment setup is complete
+  if [[ -z "${_ZF_NVM_PRESETUP:-}" ]]; then
+    missing_deps+=("NVM environment not configured in .zshrc.pre-plugins.d")
   fi
 
   if [[ ${#missing_deps[@]} -gt 0 ]]; then
