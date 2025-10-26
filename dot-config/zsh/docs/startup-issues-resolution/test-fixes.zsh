@@ -147,11 +147,11 @@ echo "Phase 4: Package Manager Safety"
 echo "==============================="
 
 # Test 7: Package manager detection function
-if typeset -f _zf_detect_pkg_manager >/dev/null 2>&1; then
+if typeset -f zf::detect_pkg_manager >/dev/null 2>&1; then
     print_test "Package manager detection function exists" "PASS"
 
     # Test detection
-    detected_pm=$(_zf_detect_pkg_manager 2>/dev/null || echo "error")
+    detected_pm=$(zf::detect_pkg_manager 2>/dev/null || echo "error")
     if [[ "$detected_pm" != "error" ]]; then
         print_test "Package manager detection works" "PASS"
         print_info "Detected: $detected_pm"

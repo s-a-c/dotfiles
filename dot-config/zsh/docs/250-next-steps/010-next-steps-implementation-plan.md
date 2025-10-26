@@ -123,7 +123,7 @@ Active logic (file: `/.zshrc.d.00/520-prompt-starship.zsh`):
 - `ZSH_DISABLE_STARSHIP=0` (default) → Starship enabled.
   - If `.p10k.zsh` present: Starship defers via a `precmd` hook (one p10k paint allowed, then Starship overrides).
   - If `.p10k.zsh` absent: Immediate Starship initialization.
-- `ZSH_STARSHIP_SUPPRESS_AUTOINIT=1` → Functions (`zf::prompt_init`, `starship_init_safe`) are defined but no automatic initialization or hooks are registered (used by deprecated wrapper shim & for controlled test scenarios).
+- `ZSH_STARSHIP_SUPPRESS_AUTOINIT=1` → Functions (`zf::prompt_init`, `zf::starship_init_safe`) are defined but no automatic initialization or hooks are registered (used by deprecated wrapper shim & for controlled test scenarios).
 - Legacy `ZF_ENABLE_STARSHIP=1` (if present and `ZSH_DISABLE_STARSHIP` unset) maps to `ZSH_DISABLE_STARSHIP=0` with a debug notice. (Compatibility fragment removed; mapping now lives inside unified file.)
 
 Auxiliary prompt toggle:
@@ -148,7 +148,7 @@ Normalization: Post-init, `STARSHIP_SHELL` is force-set to `starship` if the ups
 
 Stale guard repair (2025-10-08): If a previous shell exported `__ZF_PROMPT_INIT_DONE=1` but `STARSHIP_SHELL` does not equal `starship` (e.g. inherited `bash`), the unified file now clears the stale guard, re-runs initialization, and normalizes `STARSHIP_SHELL`. Validated by `test_starship_stale_guard_repair.zsh`.
 
-Function definition order: `starship_init_safe` and `zf::prompt_init` are now declared BEFORE any early-return gating (disable / guard / binary missing) so that sourcing `520-prompt-starship.zsh` in isolation always provides a callable `zf::prompt_init` (see test Case F for verification).
+Function definition order: `zf::starship_init_safe` and `zf::prompt_init` are now declared BEFORE any early-return gating (disable / guard / binary missing) so that sourcing `520-prompt-starship.zsh` in isolation always provides a callable `zf::prompt_init` (see test Case F for verification).
 
 Wrapper removal: The former `starship-init-wrapper.zsh` shim has been fully removed. All initialization flows now source only the unified `520-prompt-starship.zsh`; suppression mode (`ZSH_STARSHIP_SUPPRESS_AUTOINIT=1`) is available directly for tests or controlled manual init scenarios.
 

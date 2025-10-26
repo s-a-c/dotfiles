@@ -5,6 +5,13 @@
 # transient_prompt, instant_prompt=quiet.
 # Type `p10k configure` to generate another config.
 #
+
+# Guard against running Powerlevel10k if Starship is the preferred prompt.
+# This check respects the ZSH_DISABLE_STARSHIP flag from .zshenv.
+if [[ "${ZSH_DISABLE_STARSHIP:-0}" == "0" ]]; then
+  return 0
+fi
+
 # Config for Powerlevel10k with lean prompt style. Type `p10k configure` to generate
 # your own config based on it.
 #

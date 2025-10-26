@@ -36,7 +36,7 @@ You were absolutely right! The consolidated approach is much cleaner and more ef
 # =============================================================================
 
 # Core safety check function
-_zf_safe_pm_command() {
+zf::safe_pm_command() {
   # Project validation, auto-detection, error handling
 }
 
@@ -46,9 +46,9 @@ pm-info() {
 }
 
 # Safe legacy aliases (essential commands)
-install() { _zf_safe_pm_command "install" "$@"; }
-build() { _zf_safe_pm_command "run" "build" "$@"; }
-dev() { _zf_safe_pm_command "run" "dev" "$@"; }
+install() { zf::safe_pm_command "install" "$@"; }
+build() { zf::safe_pm_command "run" "build" "$@"; }
+dev() { zf::safe_pm_command "run" "dev" "$@"; }
 # ... and 15 more safe functions
 
 # Compatibility short aliases
@@ -100,7 +100,7 @@ Environment: NVM (/Users/s-a-c/Library/Application Support/Herd/config/nvm)
 ❯ pm-bun
 ✅ Switched to bun
 
-❯ pm-info  
+❯ pm-info
 Current package manager: bun (not found)
 Environment: NVM (/Users/s-a-c/Library/Application Support/Herd/config/nvm)
 ```

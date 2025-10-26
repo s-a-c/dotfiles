@@ -4,33 +4,36 @@
 # ==============================================================================
 # This file ensures that emacs mode is active and arrow keys work correctly.
 # It's loaded late (990-prefix) to override any plugin that might set vi mode.
+# Updated with document-aware navigation for optimal multiline behavior.
 
 # Force emacs mode
-bindkey -e
+bindkey -e                            # ←  Set emacs mode
+bindkey -A emacs main                 # ←  Set main keymap to emacs
 zmodload zsh/terminfo 2>/dev/null || true
 
 # Ensure arrow keys work in emacs mode - bind to emacs keymap explicitly
-bindkey -M emacs '^[[D' backward-char # Left arrow
-bindkey -M emacs '^[[C' forward-char  # Right arrow
-bindkey -M emacs '^[[A' up-history    # Up arrow
-bindkey -M emacs '^[[B' down-history  # Down arrow
+# UPDATED: Use multiline-aware widgets for proper cursor behavior
+bindkey -M emacs '^[[D' backward-char              # Left arrow
+bindkey -M emacs '^[[C' forward-char               # Right arrow
+bindkey -M emacs '^[[A' up-line-or-history         # Up arrow (multiline-aware)
+bindkey -M emacs '^[[B' down-line-or-history       # Down arrow (multiline-aware)
 
-# Alternative sequences (application mode)
-bindkey -M emacs '^[OD' backward-char # Left arrow (app mode)
-bindkey -M emacs '^[OC' forward-char  # Right arrow (app mode)
-bindkey -M emacs '^[OA' up-history    # Up arrow (app mode)
-bindkey -M emacs '^[OB' down-history  # Down arrow (app mode)
+# Alternative sequences (application mode) - UPDATED
+bindkey -M emacs '^[OD' backward-char              # Left arrow (app mode)
+bindkey -M emacs '^[OC' forward-char               # Right arrow (app mode)
+bindkey -M emacs '^[OA' up-line-or-history         # Up arrow (app mode)
+bindkey -M emacs '^[OB' down-line-or-history       # Down arrow (app mode)
 
-# Also bind in the main keymap (in case emacs isn't the main)
+# Also bind in the main keymap (in case emacs isn't the main) - UPDATED
 bindkey '^[[D' backward-char
 bindkey '^[[C' forward-char
-bindkey '^[[A' up-history
-bindkey '^[[B' down-history
+bindkey '^[[A' up-line-or-history                 # Up arrow (multiline-aware)
+bindkey '^[[B' down-line-or-history               # Down arrow (multiline-aware)
 
 bindkey '^[OD' backward-char
 bindkey '^[OC' forward-char
-bindkey '^[OA' up-history
-bindkey '^[OB' down-history
+bindkey '^[OA' up-line-or-history                 # Up arrow (app mode)
+bindkey '^[OB' down-line-or-history               # Down arrow (app mode)
 
 # Basic emacs keybindings
 bindkey -M emacs '^B' backward-char
@@ -76,29 +79,79 @@ bindkey -M emacs '^[8~' end-of-line
 bindkey '^[[F' end-of-line
 bindkey '^[OF' end-of-line
 bindkey '^[[4~' end-of-line
-bindkey '^[8~' end-of-line
+bindkey '^[[8~' end-of-line
 
 # Delete key
 bindkey -M emacs '^[[3~' delete-char
 bindkey '^[[3~' delete-char
 
-# Page Up/Down keys
-bindkey -M emacs '^[[5~' beginning-of-history  # Page Up
-bindkey -M emacs '^[[6~' end-of-history        # Page Down
-bindkey '^[[5~' beginning-of-history           # Page Up
-bindkey '^[[6~' end-of-history                 # Page Down
+# Page Up/Down keys - UPDATED: Use document-aware widgets
+bindkey -M emacs '^[[5~' beginning-of-buffer-or-history  # Page Up (smart navigation)
+bindkey -M emacs '^[[6~' end-of-buffer-or-history        # Page Down (smart navigation)
+bindkey '^[[5~' beginning-of-buffer-or-history           # Page Up (smart navigation)
+bindkey '^[[6~' end-of-buffer-or-history                 # Page Down (smart navigation)
 
-# Alternative Page Up/Down sequences
-bindkey -M emacs '^[5~' beginning-of-history   # Page Up (alt)
-bindkey -M emacs '^[6~' end-of-history         # Page Down (alt)
-bindkey '^[5~' beginning-of-history            # Page Up (alt)
-bindkey '^[6~' end-of-history                  # Page Down (alt)
+# Alternative Page Up/Down sequences - UPDATED: Use document-aware widgets
+bindkey -M emacs '^[5~' beginning-of-buffer-or-history   # Page Up (alt, smart navigation)
+bindkey -M emacs '^[6~' end-of-buffer-or-history         # Page Down (alt, smart navigation)
+bindkey '^[5~' beginning-of-buffer-or-history            # Page Up (alt, smart navigation)
+bindkey '^[6~' end-of-buffer-or-history                  # Page Down (alt, smart navigation)
+
+# Additional document navigation widgets for comprehensive coverage
+# Ctrl+Page Up/Down for explicit document navigation
+bindkey -M emacs '^[[5;5~' beginning-of-buffer-or-history   # Ctrl+Page Up
+bindkey -M emacs '^[[6;5~' end-of-buffer-or-history         # Ctrl+Page Down
+
+# Shift+Page Up/Down for explicit document navigation
+bindkey -M emacs '^[[5;2~' beginning-of-buffer-or-history   # Shift+Page Up
+bindkey -M emacs '^[[6;2~' end-of-buffer-or-history         # Shift+Page Down
+
+# Word movement in emacs mode
+bindkey -M emacs '^[B' backward-word
+bindkey -M emacs '^[F' forward-word
+bindkey -M emacs '^A' beginning-of-line
+bindkey -M emacs '^E' end-of-line
+
+# Enhanced word movement for multiline documents
+bindkey -M emacs '^[^B' backward-word
+bindkey -M emacs '^[^F' forward-word
 
 # Backspace key (both DEL and BS)
 bindkey -M emacs '^?' backward-delete-char
 bindkey -M emacs '^H' backward-delete-char
 bindkey '^?' backward-delete-char
 bindkey '^H' backward-delete-char
+
+# Enhanced deletion for multiline documents
+bindkey -M emacs '^W' backward-kill-word
+bindkey -M emacs '^U' backward-kill-line
+
+# Tab completion handling
+bindkey -M emacs '^I' expand-or-complete
+bindkey -M emacs '^[^I' reverse-menu-complete
+
+# Escape sequence handling for better multiline editing
+bindkey -M emacs '^[[3~' delete-char
+
+# Vi-style movements in emacs mode for muscle memory compatibility
+bindkey -M emacs '^[[1;5D' backward-word                # Ctrl+Left
+bindkey -M emacs '^[[1;5C' forward-word                 # Ctrl+Right
+bindkey -M emacs '^[[1;5A' up-line-or-history           # Ctrl+Up
+bindkey -M emacs '^[[1;5B' down-line-or-history         # Ctrl+Down
+
+# Alt+Page movements for enhanced navigation
+bindkey -M emacs '^[[5;3~' beginning-of-buffer-or-history   # Alt+Page Up
+bindkey -M emacs '^[[6;3~' end-of-buffer-or-history         # Alt+Page Down
+
+# Comprehensive text editing widgets
+bindkey -M emacs '^K' kill-line
+bindkey -M emacs '^Y' yank
+bindkey -M emacs '^T' transpose-chars
+
+# Enhanced multiline text operations
+bindkey -M emacs '^X^K' kill-line
+bindkey -M emacs '^X^Y' yank
+bindkey -M emacs '^X^W' backward-kill-word
 
 # Diagnostic ZLE widget: capture and display key escape sequences
 function _zle_diag_keyseq() {
@@ -136,7 +189,7 @@ function _zle_diag_keyseq() {
     hex+=($(printf "%02X" "$code"))
   done
 
-  print -r -- ""
+  print -r -- ""    # Print a newline
   print -r -- "[ZLE keyseq] length=${#seq} caret=${caret} hex=${(j: :)hex}"
   zle -M "Captured: caret=${caret} hex=${(j: :)hex}"
 }
@@ -189,11 +242,24 @@ zle -N _zle_bindkey_suggest
 bindkey -M emacs '^X^G' _zle_bindkey_suggest
 bindkey '^X^G' _zle_bindkey_suggest
 
+# Additional diagnostic: test document navigation widgets
+function _zle_test_document_nav() {
+  emulate -L zsh
+  local test_multiline=$'Line 1\nLine 2\nLine 3\nLine 4'
+  LBUFFER=$test_multiline
+  RBUFFER=""
+  zle -M "Test multiline buffer loaded. Use up/down/page keys to test navigation."
+}
+zle -N _zle_test_document_nav
+bindkey -M emacs '^X^T' _zle_test_document_nav
 
 # Export KEYMAP to indicate emacs mode
 export KEYMAP=emacs
 
 # Debug output (only if ZSH_DEBUG is enabled)
 if [[ ${ZSH_DEBUG:-0} == 1 ]]; then
-    echo "[990-force-emacs-mode] Emacs mode enforced, arrow keys configured"
+    echo "[990-force-emacs-mode] Emacs mode enforced with document-aware navigation"
+    echo "[990-force-emacs-mode] Arrow keys: up-line-or-history / down-line-or-history"
+    echo "[990-force-emacs-mode] Page keys: beginning-of-buffer-or-history / end-of-buffer-or-history"
+    echo "[990-force-emacs-mode] Main keymap set to: emacs"
 fi

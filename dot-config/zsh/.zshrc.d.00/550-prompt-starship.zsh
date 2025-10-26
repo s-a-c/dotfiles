@@ -26,7 +26,7 @@ if [[ -n ${__ZF_PROMPT_INIT_DONE:-} ]] && ! typeset -f starship_precmd >/dev/nul
 fi
 
 # Robust Starship initialization (with widget patching and metrics)
-starship_init_safe() {
+zf::starship_init_safe() {
   zf::debug "# [starship] init entry (force=${ZSH_STARSHIP_FORCE_IMMEDIATE:-0} disable=${ZSH_DISABLE_STARSHIP:-0})"
   if [[ -n ${__ZF_PROMPT_INIT_DONE:-} ]]; then
     zf::debug "# [prompt] starship init skipped (already done)"
@@ -102,7 +102,7 @@ starship_init_safe() {
 }
 
 # Namespaced entrypoint
-zf::prompt_init() { starship_init_safe "$@"; }
+zf::prompt_init() { zf::starship_init_safe "$@"; }
 
 # --- Gating & Activation (moved to ensure functions defined) ---
 # Legacy variable removed; ZF_ENABLE_STARSHIP is deprecated and ignored.
@@ -142,12 +142,12 @@ if [[ ${ZSH_STARSHIP_FORCE_DEFER:-0} == 1 && -z ${ZSH_STARSHIP_FORCE_IMMEDIATE:-
     zf::debug "# [starship] defer: forced (ZSH_STARSHIP_FORCE_DEFER=1)"
     zf::prompt_init_deferred() {
       add-zsh-hook -d precmd zf::prompt_init_deferred 2>/dev/null || true
-      zf::prompt_init || starship_init_safe || true
+      zf::prompt_init || zf::starship_init_safe || true
     }
     add-zsh-hook precmd zf::prompt_init_deferred
   else
     zf::debug "# [starship] defer failed: add-zsh-hook missing; falling back to immediate"
-    zf::prompt_init 2>/dev/null || starship_init_safe 2>/dev/null || true
+    zf::prompt_init 2>/dev/null || zf::starship_init_safe 2>/dev/null || true
   fi
 elif [[ -f ${ZDOTDIR:-$HOME}/.p10k.zsh && -z ${ZSH_STARSHIP_FORCE_IMMEDIATE:-} ]]; then
   autoload -Uz add-zsh-hook 2>/dev/null || true
@@ -155,12 +155,12 @@ elif [[ -f ${ZDOTDIR:-$HOME}/.p10k.zsh && -z ${ZSH_STARSHIP_FORCE_IMMEDIATE:-} ]
     zf::debug "# [starship] defer: p10k present (precmd hook registered)"
     zf::prompt_init_deferred() {
       add-zsh-hook -d precmd zf::prompt_init_deferred 2>/dev/null || true
-      zf::prompt_init || starship_init_safe || true
+      zf::prompt_init || zf::starship_init_safe || true
     }
     add-zsh-hook precmd zf::prompt_init_deferred
   else
     zf::debug "# [starship] init: p10k present but no add-zsh-hook; immediate fallback"
-    zf::prompt_init 2>/dev/null || starship_init_safe 2>/dev/null || true
+    zf::prompt_init 2>/dev/null || zf::starship_init_safe 2>/dev/null || true
   fi
 else
   if [[ -n ${ZSH_STARSHIP_FORCE_IMMEDIATE:-} && -f ${ZDOTDIR:-$HOME}/.p10k.zsh ]]; then
@@ -168,7 +168,7 @@ else
   else
     zf::debug "# [starship] init: immediate (no p10k detected)"
   fi
-  zf::prompt_init 2>/dev/null || starship_init_safe 2>/dev/null || true
+  zf::prompt_init 2>/dev/null || zf::starship_init_safe 2>/dev/null || true
   if [[ ${ZSH_DEBUG:-0} == 1 ]]; then
     echo "# [starship] active config: ${STARSHIP_CONFIG:-<unset>} cache: ${STARSHIP_CACHE:-<unset>}"
   fi
@@ -213,14 +213,45 @@ starship_prompt_safe() {
 
 # Solution 3: Fix cursor positioning widgets
 # Override the beginning-of-line widget to handle wrapped lines correctly
-zle -N beginning-of-line-safe beginning-of-line
+zle -N beginning-of-line-safe
 beginning-of-line-safe() {
+  # Store current position
+  local original_cursor=$CURSOR
+
   # Try normal behavior first
   zle beginning-of-line
 
-  # If we're not at the beginning, force it
+  # If we're still not at the beginning after normal behavior,
+  # this indicates a cursor positioning issue with complex prompts
   if [[ $CURSOR -gt 0 ]]; then
+    # Force cursor to actual beginning
     CURSOR=0
+
+    # Clear and redraw the line to fix visual positioning
+    zle reset-prompt
+  fi
+}
+
+# Also fix end-of-line widget for consistency
+zle -N end-of-line-safe
+end-of-line-safe() {
+  # Store current position
+  local original_cursor=$CURSOR
+
+  # Try normal behavior first
+  zle end-of-line
+
+  # Store the buffer length for comparison
+  local buffer_length=${#BUFFER}
+
+  # If we're not at the end after normal behavior,
+  # this indicates a cursor positioning issue
+  if [[ $CURSOR -lt $buffer_length ]]; then
+    # Force cursor to actual end
+    CURSOR=$buffer_length
+
+    # Clear and redraw the line to fix visual positioning
+    zle reset-prompt
   fi
 }
 
@@ -254,9 +285,21 @@ fix-starship-cursor() {
 
   # Rebind keys with safe versions
   bindkey '^A' beginning-of-line-safe
+  bindkey '^E' end-of-line-safe
+
+  # Home key bindings
   bindkey "${terminfo[khome]}" beginning-of-line-safe 2>/dev/null || true
   bindkey '^[[H' beginning-of-line-safe 2>/dev/null || true
   bindkey '^[OH' beginning-of-line-safe 2>/dev/null || true
+  bindkey '^[[1~' beginning-of-line-safe 2>/dev/null || true
+  bindkey '^[7~' beginning-of-line-safe 2>/dev/null || true
+
+  # End key bindings
+  bindkey "${terminfo[kend]}" end-of-line-safe 2>/dev/null || true
+  bindkey '^[[F' end-of-line-safe 2>/dev/null || true
+  bindkey '^[OF' end-of-line-safe 2>/dev/null || true
+  bindkey '^[[4~' end-of-line-safe 2>/dev/null || true
+  bindkey '^[8~' end-of-line-safe 2>/dev/null || true
 
   print -P "%F{green}✓ Fixes applied%f"
   print -P "%F{yellow}Test by pasting a long line and using Home/Ctrl-A%f"
@@ -272,9 +315,13 @@ if [[ -o interactive ]] && [[ ${COLUMNS:-80} -lt 80 ]] && command -v starship >/
 
   # If we have many escape sequences in a narrow terminal, apply fixes
   if ((escape_count > 10)); then
-    # Apply the safe beginning-of-line widget
+    # Apply the safe widgets
     zle -N beginning-of-line-safe 2>/dev/null || true
+    zle -N end-of-line-safe 2>/dev/null || true
+
+    # Apply keybindings
     bindkey '^A' beginning-of-line-safe 2>/dev/null || true
+    bindkey '^E' end-of-line-safe 2>/dev/null || true
 
     # Debug info (only if ZSH_DEBUG is enabled)
     if [[ ${ZSH_DEBUG:-0} == 1 ]]; then

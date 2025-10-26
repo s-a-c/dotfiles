@@ -1,9 +1,0 @@
-[debug][dir=1][name=.zshrc.pre-plugins.d.empty] mapped_files=
-[debug][dir=2][name=.zshrc.add-plugins.d.empty] mapped_files=
-[debug][dir=3][name=.zshrc.d.empty] mapped_files=
-[debug][json] dir=1 building_files=
-[debug][report] dir=1 expected=5 file_keys=
-[debug][json] dir=2 building_files=
-[debug][report] dir=2 expected=11 file_keys=
-[debug][json] dir=3 building_files=
-[debug][report] dir=3 expected=10 file_keys=

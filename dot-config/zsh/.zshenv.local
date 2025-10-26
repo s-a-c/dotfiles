@@ -95,6 +95,8 @@ fi
 
 export ZF_DISABLE_AUTO_UPDATES=0
 
+export ZSH_DISABLE_FASTFETCH=1
+
 local ai_tools_dir
 ai_tools_dir="$HOME/nc/Documents/notes/obsidian/s-a-c/ai/tools"
 [[ -d "$ai_tools_dir/bin" ]] && PATH="%PATH:$ai_tools_dir/bin" && export PATH

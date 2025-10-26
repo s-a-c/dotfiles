@@ -4,22 +4,22 @@ local mux = wezterm.mux
 
 local config = wezterm.config_builder()
 
--- -- Set the color scheme depending on the system setting
--- function get_appearance()
---     if wezterm.gui then
---         -- return wezterm.gui.get_appearance()
---         return 'Dark'
---     end
---     return 'Dark'
--- end
+-- Set the color scheme depending on the system setting
+function get_appearance()
+  if wezterm.gui then
+    return wezterm.gui.get_appearance()
+  else
+    return 'Dark'
+  end
+end
 
 function scheme_for_appearance(appearance)
-    if appearance:find 'Dark' then
-        return 'Catppuccin Mocha' -- 'Modus-Vivendi'
-    else
-        -- return 'Catppuccin Latte' -- 'Modus-Operandi'
-        return 'Catppuccin Mocha' -- 'Modus-Vivendi'
-    end
+  if appearance:find 'Dark' then
+    return 'Catppuccin Mocha' -- 'Modus-Vivendi'
+  else
+    -- return 'Catppuccin Latte' -- 'Modus-Operandi'
+    return 'Catppuccin Mocha' -- 'Modus-Vivendi'
+  end
 end
 
 config.automatically_reload_config = true
@@ -27,39 +27,39 @@ config.automatically_reload_config = true
 config.check_for_updates = true
 
 -- Font settings
-config.font_size = 15
+config.font_size = 13
 config.line_height = 1.5
 config.font = wezterm.font_with_fallback {
-    {
-        family = 'Monaspace Argon NF',
-        harfbuzz_features = {
-            'calt',
-            'ss01',
-            'ss02',
-            'ss03',
-            'ss04',
-            'ss05',
-            'ss06',
-            'ss07',
-            'ss08',
-            'ss09',
-            'liga',
-        },
+  {
+    family = 'Iosevka NFM',
+    harfbuzz_features = {
+      'calt',
+      'ss01',
+      'ss02',
+      'ss03',
+      'ss04',
+      'ss05',
+      'ss06',
+      'ss07',
+      'ss08',
+      'ss09',
+      'liga',
     },
-    { family = 'Symbols Nerd Font Mono' },
+  },
+  { family = 'Symbols Nerd Font Mono' },
 }
 config.font_rules = {
-    {
-        font = wezterm.font('Dank Mono', {
-            bold = true,
-        }),
-    },
-    {
-        italic = true,
-        font = wezterm.font('Dank Mono', {
-            italic = true,
-        }),
-    },
+  {
+    font = wezterm.font('Dank Mono', {
+      bold = true,
+    }),
+  },
+  {
+    italic = true,
+    font = wezterm.font('Dank Mono', {
+      italic = true,
+    }),
+  },
 }
 
 -- Appearance
@@ -67,10 +67,10 @@ config.cursor_blink_rate = 300
 -- config.window_decorations = 'RESIZE'
 config.hide_tab_bar_if_only_one_tab = true
 config.window_padding = {
-    left = 4,
-    right = 4,
-    top = 0,
-    bottom = 0,
+  left = 4,
+  right = 4,
+  top = 0,
+  bottom = 0,
 }
 config.macos_window_background_blur = 40
 
@@ -108,17 +108,17 @@ config.enable_tab_bar = true
 
 config.native_macos_fullscreen_mode = true -- false
 config.keys = {
-    {
-        key = 'n',
-        mods = 'SHIFT|CTRL',
-        action = wezterm.action.ToggleFullScreen,
-    },
+  {
+    key = 'n',
+    mods = 'SHIFT|CTRL',
+    action = wezterm.action.ToggleFullScreen,
+  },
 }
 
 wezterm.on('gui-startup', function(window)
-    local tab, pane, window = mux.spawn_window(cmd or {})
-    local gui_window = window:gui_window();
-    gui_window:perform_action(wezterm.action.ToggleFullScreen, pane)
+  local tab, pane, window = mux.spawn_window(cmd or {})
+  local gui_window = window:gui_window();
+  gui_window:perform_action(wezterm.action.ToggleFullScreen, pane)
 end)
 
 config.prefer_to_spawn_tabs = true -- false
@@ -129,45 +129,43 @@ config.show_update_window = true -- false
 
 config.tab_bar_at_bottom = true  -- false
 
-
 -- The filled in variant of the < symbol
 local SOLID_LEFT_ARROW = wezterm.nerdfonts.pl_right_hard_divider
-
 -- The filled in variant of the > symbol
 local SOLID_RIGHT_ARROW = wezterm.nerdfonts.pl_left_hard_divider
 
 -- config.tab_bar_style = {
---     active_tab_left = wezterm.format {
---         { Background = { Color = '#0b0022' } },
---         { Foreground = { Color = '#2b2042' } },
---         { Text = SOLID_LEFT_ARROW },
---     },
---     active_tab_right = wezterm.format {
---         { Background = { Color = '#0b0022' } },
---         { Foreground = { Color = '#2b2042' } },
---         { Text = SOLID_RIGHT_ARROW },
---     },
---     inactive_tab_left = wezterm.format {
---         { Background = { Color = '#0b0022' } },
---         { Foreground = { Color = '#1b1032' } },
---         { Text = SOLID_LEFT_ARROW },
---     },
---     inactive_tab_right = wezterm.format {
---         { Background = { Color = '#0b0022' } },
---         { Foreground = { Color = '#1b1032' } },
---         { Text = SOLID_RIGHT_ARROW },
---     },
+--   active_tab_left = wezterm.format {
+--     { Background = { Color = '#0b0022' } },
+--     { Foreground = { Color = '#2b2042' } },
+--     { Text = SOLID_LEFT_ARROW },
+--   },
+--   active_tab_right = wezterm.format {
+--     { Background = { Color = '#0b0022' } },
+--     { Foreground = { Color = '#2b2042' } },
+--     { Text = SOLID_RIGHT_ARROW },
+--   },
+--   inactive_tab_left = wezterm.format {
+--     { Background = { Color = '#0b0022' } },
+--     { Foreground = { Color = '#1b1032' } },
+--     { Text = SOLID_LEFT_ARROW },
+--   },
+--   inactive_tab_right = wezterm.format {
+--     { Background = { Color = '#0b0022' } },
+--     { Foreground = { Color = '#1b1032' } },
+--     { Text = SOLID_RIGHT_ARROW },
+--   },
 -- }
 
 config.visual_bell = {
-    fade_in_duration_ms = 75,
-    fade_out_duration_ms = 75,
-    target = 'CursorColor',
+  fade_in_duration_ms = 75,
+  fade_out_duration_ms = 75,
+  target = 'CursorColor',
 }
 
 -- Custom commands
 wezterm.on('augment-command-palette', function()
-    return commands
+  return commands
 end)
 
 return config

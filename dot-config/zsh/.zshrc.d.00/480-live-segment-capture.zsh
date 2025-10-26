@@ -95,8 +95,11 @@ if [[ "${ZF_SEGMENT_CAPTURE:-0}" != 1 ]]; then
   _zf_seg_dbg "Disabled (ZF_SEGMENT_CAPTURE!=1)"
   # Define inert stubs (lightweight)
   zf::segment_capture_start() { :; }
-  zf::segment_capture_end()   { :; }
-  zf::segment_capture_wrap()  { shift; "$@"; }
+  zf::segment_capture_end() { :; }
+  zf::segment_capture_wrap() {
+    shift
+    "$@"
+  }
   zf::segment_capture_flush() { :; }
   return 0
 fi
@@ -119,8 +122,11 @@ fi
 # If disabled due to directory failure supply inert stubs
 if [[ "${_ZF_SEGMENT_CAPTURE}" != 1 ]]; then
   zf::segment_capture_start() { :; }
-  zf::segment_capture_end()   { :; }
-  zf::segment_capture_wrap()  { shift; "$@"; }
+  zf::segment_capture_end() { :; }
+  zf::segment_capture_wrap() {
+    shift
+    "$@"
+  }
   zf::segment_capture_flush() { :; }
   return 0
 fi
@@ -160,20 +166,20 @@ _zf_seg_maybe_rotate() {
   sz=$(wc -c <"$f" 2>/dev/null || echo 0)
   [[ -z "$sz" ]] && return 0
   # Numeric compare
-  if (( sz < ZF_SEGMENT_CAPTURE_ROTATE_MAX_BYTES )); then
+  if ((sz < ZF_SEGMENT_CAPTURE_ROTATE_MAX_BYTES)); then
     return 0
   fi
   _zf_seg_dbg "rotate trigger file=${f} size=${sz} threshold=${ZF_SEGMENT_CAPTURE_ROTATE_MAX_BYTES}"
   local i
   # Remove oldest
-  if (( ZF_SEGMENT_CAPTURE_ROTATE_BACKUPS > 0 )); then
+  if ((ZF_SEGMENT_CAPTURE_ROTATE_BACKUPS > 0)); then
     if [[ -f "${f}.${ZF_SEGMENT_CAPTURE_ROTATE_BACKUPS}" ]]; then
       command rm -f -- "${f}.${ZF_SEGMENT_CAPTURE_ROTATE_BACKUPS}" 2>/dev/null || true
     fi
     # Shift higher indexes
-    for (( i=ZF_SEGMENT_CAPTURE_ROTATE_BACKUPS-1; i>=1; i-- )); do
+    for ((i = ZF_SEGMENT_CAPTURE_ROTATE_BACKUPS - 1; i >= 1; i--)); do
       if [[ -f "${f}.${i}" ]]; then
-        command mv -f -- "${f}.${i}" "${f}.$((i+1))" 2>/dev/null || true
+        command mv -f -- "${f}.${i}" "${f}.$((i + 1))" 2>/dev/null || true
       fi
     done
     # Shift current live file
@@ -184,11 +190,16 @@ _zf_seg_maybe_rotate() {
     }
   else
     # No backups retained; just truncate
-    : > "${f}" || return 0
-    return 0
+    if [[ -n "${f}" ]]; then
+      : >"${f}" || return 0
+    else
+      return 0
+    fi
   fi
   # Create/truncate fresh file (owner perms inherited by umask)
-  : > "${f}" || true
+  if [[ -n "${f}" ]]; then
+    : >"${f}" || true
+  fi
 }
 
 # Internal state: associative array for start times

@@ -46,7 +46,7 @@ search_mode = "fuzzy"
 
 ## With workspace filtering enabled, Atuin will filter for commands executed
 ## in any directory within a git repository tree (default: false)
-# workspaces = false
+workspaces = false
 
 ## which filter mode to use when atuin is invoked from a shell up-key binding
 ## the accepted values are identical to those of "filter_mode"
@@ -203,7 +203,7 @@ common_subcommands = [
 
 [keys]
 # Defaults to true. If disabled, using the up/down key won't exit the TUI when scrolled past the first/last entry.
-# scroll_exits = false
+scroll_exits = false
 
 [sync]
 # Enable sync v2 by default

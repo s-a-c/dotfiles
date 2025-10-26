@@ -43,7 +43,7 @@ AFTER (Elegant, Unified):
 ### **2. Intelligent Safety System**
 ```bash
 # Core safety validation function
-_zf_safe_pm_command() {
+zf::safe_pm_command() {
   # Project validation with helpful error messages
   # Auto-detection of package manager
   # Environment awareness (Laravel Herd)

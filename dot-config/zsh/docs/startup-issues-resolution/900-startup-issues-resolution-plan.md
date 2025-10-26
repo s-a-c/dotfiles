@@ -158,7 +158,7 @@ if [[ $_atuin_running == false ]]; then
           }
         fi
       fi
-      
+
       # Double-check inside the critical section
       if command -v pgrep >/dev/null 2>&1; then
         if ! pgrep -u "$UID" -f '^atuin([[:space:]].*)?[[:space:]]+daemon( |$)' >/dev/null 2>&1; then
@@ -214,9 +214,9 @@ _npm_validate_config() {
   local config_key="$1"
   local expected_value="$2"
   local current_value
-  
+
   current_value=$(npm config get "$config_key" 2>/dev/null || echo "undefined")
-  
+
   case "$current_value" in
     "undefined"|"null"|"")
       # Expected unset/invalid values
@@ -237,9 +237,9 @@ _npm_fix_config() {
   local config_key="$1"
   local new_value="$2"
   local old_value
-  
+
   old_value=$(npm config get "$config_key" 2>/dev/null || echo "undefined")
-  
+
   if npm config set "$config_key" "$new_value" 2>/dev/null; then
     echo "✅ Fixed npm $config_key: '$old_value' → '$new_value'" >&2
     return 0
@@ -257,13 +257,13 @@ _npm_fix_config() {
 if [[ -n "${_ZF_HERD_NVM:-}" ]] || [[ -n "${_ZF_HERD_DETECTED:-}" ]]; then
   # Herd-specific npm configurations
   export NPM_CONFIG_GLOBALCONFIG="${NVM_DIR}/etc/npmrc"
-  
+
   # Ensure Herd's npmrc exists and is readable
   if [[ ! -f "$NPM_CONFIG_GLOBALCONFIG" ]]; then
     mkdir -p "$(dirname "$NPM_CONFIG_GLOBALCONFIG")"
     touch "$NPM_CONFIG_GLOBALCONFIG" 2>/dev/null
   fi
-  
+
   zf::debug "# [npm-validator] Herd environment detected, npmrc: $NPM_CONFIG_GLOBALCONFIG"
 fi
 
@@ -279,14 +279,14 @@ fi
 # Fix other potentially corrupted configurations
 local corrupted_configs=(
   "prefix"
-  "globalconfig" 
+  "globalconfig"
   "userconfig"
 )
 
 for config in "${corrupted_configs[@]}"; do
   local current_value
   current_value=$(npm config get "$config" 2>/dev/null || echo "undefined")
-  
+
   # Check for common corruption patterns
   if [[ "$current_value" == *".iterm2"* ]] || [[ "$current_value" == *".zshrc"* ]]; then
     _npm_fix_config "$config" ""
@@ -328,23 +328,23 @@ if [[ -n "${NVM_DIR:-}" && -d "$NVM_DIR" ]]; then
   export NVM_AUTO_USE=true
   export NVM_LAZY_LOAD=true
   export NVM_COMPLETION=true
-  
+
   # Herd-specific optimizations
   if [[ -n "${_ZF_HERD_NVM:-}" ]]; then
     # Herd manages its own npm configuration
     export NVM_NO_ADDITIONAL_PATHS=1
     zf::debug "# [dev-node] Herd NVM optimizations applied"
   fi
-  
+
   # CRITICAL: Unset NPM_CONFIG_PREFIX for NVM compatibility
   unset NPM_CONFIG_PREFIX
-  
+
   # NVM Lazy Loading Function (Enhanced)
   nvm() {
     # Remove the lazy loader function
     unfunction nvm 2>/dev/null
     unset NPM_CONFIG_PREFIX
-    
+
     # Source NVM scripts with error handling
     if [[ -s "$NVM_DIR/nvm.sh" ]]; then
       builtin source "$NVM_DIR/nvm.sh" || {
@@ -355,17 +355,17 @@ if [[ -n "${NVM_DIR:-}" && -d "$NVM_DIR" ]]; then
       echo "⚠️  NVM script not found at $NVM_DIR/nvm.sh" >&2
       return 1
     fi
-    
+
     [[ -s "$NVM_DIR/bash_completion" ]] && builtin source "$NVM_DIR/bash_completion" 2>/dev/null
-    
+
     # Call nvm with original arguments
     nvm "$@"
   }
-  
+
   # Verify nvm function is properly defined
   if typeset -f nvm >/dev/null 2>&1; then
     zf::debug "# [dev-node] NVM lazy loader configured for: $NVM_DIR"
-    
+
     # Set up minimal path for immediate Node.js access (Herd-optimized)
     if [[ -d "$NVM_DIR/versions/node" ]]; then
       local node_dir
@@ -376,7 +376,7 @@ if [[ -n "${NVM_DIR:-}" && -d "$NVM_DIR" ]]; then
         # Standard NVM: use current or latest
         node_dir="$(ls -1d "$NVM_DIR"/versions/node/v* 2>/dev/null | tail -1)"
       fi
-      
+
       if [[ -d "$node_dir/bin" ]]; then
         export PATH="$node_dir/bin:$PATH"
         zf::debug "# [dev-node] Added immediate Node.js access: $node_dir/bin"
@@ -410,12 +410,12 @@ fi
 # Safe package manager aliases with project validation
 pm-info() {
   local current_pm pm_exec
-  current_pm=$(_zf_detect_pkg_manager)
+  current_pm=$(zf::detect_pkg_manager)
   pm_exec=$(command -v "$current_pm" 2>/dev/null || echo "not found")
-  
+
   # Enhanced environment information
   echo "Current package manager: $current_pm ($pm_exec)"
-  
+
   # Show additional context
   if [[ -n "${_ZF_HERD_NVM:-}" ]]; then
     echo "Environment: Laravel Herd (NVM: $NVM_DIR)"
@@ -424,7 +424,7 @@ pm-info() {
   else
     echo "Environment: System Node.js"
   fi
-  
+
   # Project validation
   if [[ ! -f "package.json" && "$PWD" != "$HOME" ]]; then
     echo "⚠️  Not in a Node.js project (no package.json found)"
@@ -473,24 +473,24 @@ pm-switch() {
 _zf_safe_pm_exec() {
   local pm="$1"
   shift
-  
+
   # Check if we're in a Node.js project for commands that need package.json
   local needs_package_json=("install" "run" "start" "test" "build" "dev" "serve")
   local command_needs_json=false
-  
+
   for cmd in "${needs_package_json[@]}"; do
     if [[ "$1" == "$cmd" ]]; then
       command_needs_json=true
       break
     fi
   done
-  
+
   if [[ "$command_needs_json" == true && ! -f "package.json" && "$PWD" != "$HOME" ]]; then
     echo "⚠️  Command '$pm $*' requires a package.json file" >&2
     echo "💡 Run this command in a Node.js project directory" >&2
     return 1
   fi
-  
+
   # Execute the command
   command "$pm" "$@"
 }

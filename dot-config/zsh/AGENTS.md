@@ -1,14 +1,11 @@
 # <a id="zsh-configuration---ai-assistant-context-guide"></a>ZSH Configuration - AI Assistant Context Guide
 
-## 1. Introduction
-
-This document provides comprehensive information and guidelines.
-
 ## Table of Contents
 
 <details>
 <summary>Expand Table of Contents</summary>
 
+- [1. Introduction](#1-introduction)
 - [2. ZSH Configuration - AI Assistant Context Guide](#2-zsh-configuration---ai-assistant-context-guide)
 - [3. AI Guidelines Reference](#3-ai-guidelines-reference)
   - [4. AI Guidelines Documentation](#4-ai-guidelines-documentation)
@@ -48,6 +45,10 @@ This document provides comprehensive information and guidelines.
 - [38. Test specific modules](#38-test-specific-modules)
 
 </details>
+
+## 1. Introduction
+
+This document provides comprehensive information and guidelines.
 
 ## 2. ZSH Configuration - AI Assistant Context Guide
 
@@ -182,48 +183,90 @@ This AGENTS.md should be used in conjunction with AI-GUIDELINES.md to ensure all
 
 ## 22. Framework Overview
 
+This Zsh configuration is built upon the **[Unixorn Zsh Quickstart Kit](https://github.com/unixorn/zsh-quickstart-kit)**. It uses a modular, directory-based approach to manage configuration files in distinct phases.
 
+Plugin management is handled by **[zgenom](https://github.com/jandamm/zgenom)**, a fast, lightweight plugin manager. The Quickstart Kit provides the orchestration to load `zgenom` and the plugins it manages.
 
-## 23. Architecture Description
+---
 
-This zsh configuration is built on the **unixorn zsh-quickstart-kit** framework with extensive customizations and layered versioning.
+### **Versioning and Symlink Schema**
 
+A key feature of this configuration is a versioning system managed by symlinks. This allows for atomic updates and easy rollbacks of configuration sets. The pattern is consistent across all major components:
 
-## 24. Core Sources
+-   A base file/directory (e.g., `.zshrc.d`) is a symlink to a `.live` version (e.g., `.zshrc.d.live`).
+-   The `.live` version is a symlink to a specific, numbered version (e.g., `.zshrc.d.01`).
 
-- **Main .zshrc**: `/Users/s-a-c/dotfiles/dot-config/zsh/.zshrc`
-- **zgenom**: Custom fork at `/Users/s-a-c/dotfiles/dot-config/zsh/.zqs-zgenom/`
+**Example:** `zshrc.d` → `zshrc.d.live` → `zshrc.d.01`
 
+This means the **effective directory** being sourced is the numbered one. When making changes, it's crucial to edit files in the correct, active, numbered directory.
 
-## 25. Module Load Sequence
+---
 
+## 25. Zsh Startup Sequence (Detailed Analysis)
 
+The shell startup is a precise, multi-phase process orchestrated by the main `.zshrc` file. Understanding this sequence is critical for debugging and correctly placing new functionality.
 
-## 26. Phase 1: Early Environment (.zshenv)
+### **Phase 1: Pre-Zshrc Environment (`.zshenv`)**
 
-```
-1. .zshenv → Environment variables (PATH, ZDOTDIR, etc.)
-2. Basic shell setup and XDG compliance
-```
+This phase runs first for **all** shell sessions, both interactive and non-interactive.
 
+-   **Effective File:** `/Users/s-a-c/dotfiles/dot-config/zsh/.zshenv.01` (via `.zshenv` → `.zshenv.live`)
+-   **Purpose:**
+    -   Set critical, universal environment variables (`PATH`, `ZDOTDIR`, `XDG_` variables).
+    -   Define globally required helper functions (e.g., `zf::path_prepend`, `zf::debug`).
+    -   **NO** plugins are loaded here. This phase must be lightweight and dependency-free.
 
-## 27. Phase 2: Pre-Plugin Phase (.zshrc.pre-plugins.d/)
+### **Phase 2: Interactive Shell Entrypoint (`.zshrc`)**
 
-```
-005: load-fragments-no-warn.zsh      → Override load-shell-fragments function
-006: zqs-get-setting-no-warn.zsh      → Settings system functions
-095: user-interface.zsh               → User interface and splash screen
-```
+The main `.zshrc` file, sourced from the Quickstart Kit, begins the interactive session setup. It acts as the central orchestrator for the following sub-phases.
 
+-   **Effective File:** `/Users/s-a-c/dotfiles/dot-config/zsh/zsh-quickstart-kit/zsh/.zshrc` (via `.zshrc` symlink)
 
-## 28. Phase 4: Post-Plugin Phase (.zshrc.d/)
+### **Phase 3: Pre-Plugin Configuration (`.zshrc.pre-plugins.d`)**
 
-```
-400: options.zsh                        → Core zsh options and cursor positioning fixes
-540: prompt-starship.zsh                → Starship prompt (includes cursor fixes)
-560: user-interface.zsh                 → Simplified splash screen
-990: force-emacs-mode.zsh               → Emacs keymap enforcement
-```
+This is the first directory sourced by the `.zshrc` orchestrator.
+
+-   **Effective Directory:** `/Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.pre-plugins.d.01`
+-   **Purpose:**
+    -   Load user-defined functions and settings that must exist *before* plugins are loaded.
+    -   Configure settings that influence how `zgenom` or specific plugins will behave.
+
+### **Phase 4: Plugin Activation (`.zgen-setup` & `.zshrc.add-plugins.d`)**
+
+This is the core phase where `zgenom` loads all plugins.
+
+1.  **Plugin Definition (`.zshrc.add-plugins.d`)**:
+    -   **Effective Directory:** `/Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.add-plugins.d.00`
+    -   **Purpose:** This directory's scripts contain the `zgenom load ...` commands that tell `zgenom` *which* plugins to manage. The plugins are declared here but are **not yet active**.
+
+2.  **Plugin Sourcing (`.zgen-setup`)**:
+    -   **Effective File:** `/Users/s-a-c/dotfiles/dot-config/zsh/zsh-quickstart-kit/zsh/.zgen-setup`
+    -   **Purpose:** This script runs `zgenom`. It takes the list of plugins from the previous step, generates a static `init.zsh` script, and then sources it. **After this script completes, all plugins are fully loaded and their functions are available in the shell.**
+
+### **Phase 5: Post-Plugin Configuration (`.zshrc.d`)**
+
+This is the final major configuration directory sourced by `.zshrc`.
+
+-   **Effective Directory:** `/Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.d.01`
+-   **Purpose:**
+    -   This is the correct location for any script that needs to **use functions or commands provided by plugins**.
+    -   Configure aliases, keybindings, and settings that depend on the plugin environment.
+    -   The startup errors you observed were caused by logic (like `herd-load-nvmrc`) being in this phase but called from an earlier one.
+
+### **Phase 6: Finalization**
+
+The `.zshrc` orchestrator concludes by setting up the prompt (sourcing `.p10k.zsh`), running final health checks, and defining any last-minute shell options.
+
+---
+
+### **Implications for Development (Key Rules)**
+
+1.  **To set a global environment variable:** Use `.zshenv.01`.
+2.  **To add a new plugin:** Add a `zgenom load ...` command in a file within `.zshrc.add-plugins.d.00`.
+3.  **To configure a plugin's behavior *before* it loads:** Use a file in `.zshrc.pre-plugins.d.01`.
+4.  **To *use* a command from a plugin:** Place your script in `.zshrc.d.01`.
+5.  **Execution Order:** Files within each `.d` directory are sourced in lexicographical (alphabetical) order. Use numbered prefixes (e.g., `000-`, `450-`, `999-`) to control the sequence precisely.
+
 
 
 ## 29. Special Features

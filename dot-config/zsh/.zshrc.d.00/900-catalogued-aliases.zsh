@@ -128,7 +128,7 @@ export ZF_PNPM_CMD="${ZF_PNPM_CMD:-pnpm}"
 export ZF_BUN_CMD="${ZF_BUN_CMD:-bun}"
 
 # Function to detect preferred package manager
-_zf_detect_pkg_manager() {
+zf::detect_pkg_manager() {
   local preferred="${ZF_PREFERRED_PKG_MANAGER:-auto}"
 
   # If explicitly set, use that
@@ -172,11 +172,11 @@ _zf_get_pm_run_exec() {
 }
 
 # Core safety check function
-_zf_safe_pm_command() {
+zf::safe_pm_command() {
   local cmd="$1"
   shift
   local args=("$@")
-  local pm="$(_zf_detect_pkg_manager)"
+  local pm="$(zf::detect_pkg_manager)"
   local pm_exec="$(_zf_get_pm_run_exec "$pm")"
 
   # Check if we're in a Node.js project for commands that need package.json
@@ -235,7 +235,7 @@ _zf_safe_pm_command() {
 # Enhanced package manager information
 pm-info() {
   local current_pm pm_exec
-  current_pm=$(_zf_detect_pkg_manager)
+  current_pm=$(zf::detect_pkg_manager)
   pm_exec=$(command -v "$current_pm" 2>/dev/null || echo "not found")
 
   # Enhanced environment information
@@ -303,41 +303,41 @@ pm-switch() {
 # Core development aliases - most commonly used
 install() {
   if [[ $# -eq 0 ]]; then
-    _zf_safe_pm_command "install"
+    zf::safe_pm_command "install"
   else
-    _zf_safe_pm_command "install" "$@"
+    zf::safe_pm_command "install" "$@"
   fi
 }
 
 build() {
   if [[ $# -eq 0 ]]; then
-    _zf_safe_pm_command "run" "build"
+    zf::safe_pm_command "run" "build"
   else
-    _zf_safe_pm_command "run" "build" -- "$@"
+    zf::safe_pm_command "run" "build" -- "$@"
   fi
 }
 
 dev() {
   if [[ $# -eq 0 ]]; then
-    _zf_safe_pm_command "run" "dev"
+    zf::safe_pm_command "run" "dev"
   else
-    _zf_safe_pm_command "run" "dev" -- "$@"
+    zf::safe_pm_command "run" "dev" -- "$@"
   fi
 }
 
 start() {
   if [[ $# -eq 0 ]]; then
-    _zf_safe_pm_command "start"
+    zf::safe_pm_command "start"
   else
-    _zf_safe_pm_command "start" "$@"
+    zf::safe_pm_command "start" "$@"
   fi
 }
 
 test() {
   if [[ $# -eq 0 ]]; then
-    _zf_safe_pm_command "test"
+    zf::safe_pm_command "test"
   else
-    _zf_safe_pm_command "test" "$@"
+    zf::safe_pm_command "test" "$@"
   fi
 }
 
@@ -348,81 +348,81 @@ run() {
     echo "💡 Example: run build, run dev, run test" >&2
     return 1
   else
-    _zf_safe_pm_command "run" "$@"
+    zf::safe_pm_command "run" "$@"
   fi
 }
 
 serve() {
   if [[ $# -eq 0 ]]; then
-    _zf_safe_pm_command "run" "serve"
+    zf::safe_pm_command "run" "serve"
   else
-    _zf_safe_pm_command "run" "serve" -- "$@"
+    zf::safe_pm_command "run" "serve" -- "$@"
   fi
 }
 
 clean() {
   if [[ $# -eq 0 ]]; then
-    _zf_safe_pm_command "run" "clean"
+    zf::safe_pm_command "run" "clean"
   else
-    _zf_safe_pm_command "run" "clean" -- "$@"
+    zf::safe_pm_command "run" "clean" -- "$@"
   fi
 }
 
 format() {
   if [[ $# -eq 0 ]]; then
-    _zf_safe_pm_command "run" "format"
+    zf::safe_pm_command "run" "format"
   else
-    _zf_safe_pm_command "run" "format" -- "$@"
+    zf::safe_pm_command "run" "format" -- "$@"
   fi
 }
 
 lint() {
   if [[ $# -eq 0 ]]; then
-    _zf_safe_pm_command "run" "lint"
+    zf::safe_pm_command "run" "lint"
   else
-    _zf_safe_pm_command "run" "lint" -- "$@"
+    zf::safe_pm_command "run" "lint" -- "$@"
   fi
 }
 
 lint-fix() {
   if [[ $# -eq 0 ]]; then
-    _zf_safe_pm_command "run" "lint:fix"
+    zf::safe_pm_command "run" "lint:fix"
   else
-    _zf_safe_pm_command "run" "lint:fix" -- "$@"
+    zf::safe_pm_command "run" "lint:fix" -- "$@"
   fi
 }
 
 # Package management aliases
 add() {
-  _zf_safe_pm_command "install" "$@"
+  zf::safe_pm_command "install" "$@"
 }
 
 remove() {
-  _zf_safe_pm_command "uninstall" "$@"
+  zf::safe_pm_command "uninstall" "$@"
 }
 
 update() {
   if [[ $# -eq 0 ]]; then
-    _zf_safe_pm_command "update"
+    zf::safe_pm_command "update"
   else
-    _zf_safe_pm_command "update" "$@"
+    zf::safe_pm_command "update" "$@"
   fi
 }
 
 outdated() {
-  _zf_safe_pm_command "outdated" "$@"
+  zf::safe_pm_command "outdated" "$@"
 }
 
 publish() {
-  _zf_safe_pm_command "publish" "$@"
+  zf::safe_pm_command "publish" "$@"
 }
 
 audit() {
-  _zf_safe_pm_command "audit" "$@"
+  zf::safe_pm_command "audit" "$@"
 }
 
 audit-fix() {
-  _zf_safe_pm_command "audit" "fix"
+  zf::safe_pm_command "audit" "fix"
 }
 
 # =============================================================================
@@ -431,16 +431,16 @@ audit-fix() {
 
 # Short-form aliases for power users
 ni() { install "$@"; }
-nid() { _zf_safe_pm_command "install" --save-dev "$@"; }
+nid() { zf::safe_pm_command "install" --save-dev "$@"; }
 nr() { run "$@"; }
 ns() { start "$@"; }
 nt() { test "$@"; }
 nb() { build "$@"; }
 nw() {
   if [[ $# -eq 0 ]]; then
-    _zf_safe_pm_command "run" "watch"
+    zf::safe_pm_command "run" "watch"
   else
-    _zf_safe_pm_command "run" "watch" -- "$@"
+    zf::safe_pm_command "run" "watch" -- "$@"
   fi
 }
 
