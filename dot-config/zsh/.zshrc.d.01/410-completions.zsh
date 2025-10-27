@@ -17,6 +17,27 @@
 #   - `ZF_DISABLE_CARAPACE_STYLES=1`: Disables Carapace styling.
 #   - `ZF_CARAPACE_STYLE_MODE=<mode>`: Sets a predefined style (e.g., colorful, mono).
 
+# Compliant with AI-GUIDELINES.md v09f72e258e7b5a3c2c7e81ff2e0501fee4a5ed8a9d1a9123ad6d2c6e237748d4
+
+# --- Personal Completions Directory (Prepended before compinit) ---
+# Create a secure, user-controlled directory for custom completion functions and
+# ensure it is prepended to fpath so your completions take precedence.
+{
+  local _pc_guard="${SERENA_PERSONAL_SITEFUNCS_ENABLE-1}"
+  [[ "$_pc_guard" = 1 ]] || true
+  if [[ "$_pc_guard" = 1 ]]; then
+    local _pc_dir
+    _pc_dir="${SERENA_PERSONAL_SITEFUNCS_DIR-${ZDOTDIR-$HOME}/.zsh/site-functions.personal}"
+    mkdir -p -- "$_pc_dir" 2>/dev/null || true
+    chmod 700 "$_pc_dir" 2>/dev/null || true
+    if (( ${fpath[(Ie)$_pc_dir]} == 0 )); then
+      fpath=( "$_pc_dir" $fpath )
+    fi
+    unset _pc_dir
+  fi
+  unset _pc_guard
+}
+
 # --- Completion System Initialization ---
 if [[ -z "${__ZF_COMPINIT_DONE:-}" ]] && ! typeset -f compdef >/dev/null 2>&1; then
   if autoload -Uz compinit 2>/dev/null; then
