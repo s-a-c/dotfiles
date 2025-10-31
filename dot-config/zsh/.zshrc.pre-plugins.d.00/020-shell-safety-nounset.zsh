@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 # 010-SHELL-SAFETY-NOUNSET.ZSH
-# Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v${GUIDELINES_CHECKSUM:-pending}
+# Compliant with [${HOME}/dotfiles/dot-config/ai/guidelines.md](${HOME}/dotfiles/dot-config/ai/guidelines.md) v${GUIDELINES_CHECKSUM:-pending}
 # Purpose: Centralize early safety options & nounset resilience previously scattered
 # across legacy guards. Ensures interactive shell viability before plugins load.
 

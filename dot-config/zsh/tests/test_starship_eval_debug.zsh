@@ -4,14 +4,14 @@
 echo "=== Starship Eval Debug ==="
 echo
 
-cd /Users/s-a-c/dotfiles/dot-config/zsh
+cd ${HOME}/dotfiles/dot-config/zsh
 
 # Test eval with full error output
 timeout 15s bash -c '
 ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
 export ZDOTDIR
 zsh -i -c "
-echo \"=== Testing Starship Eval in Full Environment ===\" 
+echo \"=== Testing Starship Eval in Full Environment ===\"
 
 # Generate starship init
 echo \"Generating starship init script...\"

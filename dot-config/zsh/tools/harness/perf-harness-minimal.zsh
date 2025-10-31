@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 # perf-harness-minimal.zsh
-# Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v<placeholder_checksum>
+# Compliant with [${HOME}/dotfiles/dot-config/ai/guidelines.md](${HOME}/dotfiles/dot-config/ai/guidelines.md) v<placeholder_checksum>
 #
 # PURPOSE:
 #   Ultra‑minimal, deterministic Zsh startup instrumentation harness for perf-capture tooling.

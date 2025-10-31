@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 # preplugin-baseline-capture.zsh
-# Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) ${GUIDELINES_CHECKSUM:-vUNKNOWN}
+# Compliant with [${HOME}/dotfiles/dot-config/ai/guidelines.md](${HOME}/dotfiles/dot-config/ai/guidelines.md) ${GUIDELINES_CHECKSUM:-vUNKNOWN}
 #
 # PURPOSE:
 #   Capture a multi-sample performance baseline for the pre-plugin phase (`pre_plugin_total`)

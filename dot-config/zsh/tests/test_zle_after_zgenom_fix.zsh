@@ -4,7 +4,7 @@
 echo "=== Testing ZLE After Zgenom Fix ==="
 echo
 
-cd /Users/s-a-c/dotfiles/dot-config/zsh
+cd ${HOME}/dotfiles/dot-config/zsh
 
 # Test with properly configured zgenom
 timeout 20s bash -c '
@@ -12,13 +12,13 @@ ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
 export ZDOTDIR
 echo "Testing ZLE with proper zgenom configuration..."
 zsh -i -c "
-echo \"=== ZLE Status After Zgenom Fix ===\" 
+echo \"=== ZLE Status After Zgenom Fix ===\"
 echo \"ZLE_VERSION: \${ZLE_VERSION:-not_set}\"
 echo \"ZLE_READY: \${ZLE_READY:-not_set}\"
 echo \"Interactive: \$([[ -o interactive ]] && echo yes || echo no)\"
 
 echo
-echo \"=== Widget Check ===\" 
+echo \"=== Widget Check ===\"
 if [[ -n \${widgets+x} ]]; then
     echo \"Widgets array available: yes\"
     echo \"Widgets count: \${#widgets[@]}\"
@@ -30,18 +30,18 @@ else
 fi
 
 echo
-echo \"=== Starship Test ===\" 
+echo \"=== Starship Test ===\"
 echo \"STARSHIP_SHELL: \${STARSHIP_SHELL:-not_set}\"
 echo \"STARSHIP_INITIALIZED: \${STARSHIP_INITIALIZED:-not_set}\"
 echo \"Starship available: \$(command -v starship >/dev/null && echo yes || echo no)\"
 
 echo
-echo \"=== System Health ===\" 
+echo \"=== System Health ===\"
 echo \"System health: \${SYSTEM_HEALTH_STATUS:-not_available}\"
 echo \"Post-init loaded: \${_POST_INITIALIZATION_LOADED:-not_set}\"
 
 echo
-echo \"=== Manual Starship Test ===\" 
+echo \"=== Manual Starship Test ===\"
 if command -v starship >/dev/null 2>&1; then
     echo \"Testing manual Starship initialization...\"
     starship_script=\$(starship init zsh 2>/dev/null)

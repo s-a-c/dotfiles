@@ -8,6 +8,10 @@
 # Sets essential environment variables before any other shell initialization
 # (Content from .zshenv.00)
 # ==============================================================================
+
+# Ensure essential system paths are set at the very beginning.
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${PATH}"
+
 #
 # Flag / Toggle Index (Customizable via environment before shell init)
 # --------------------------------------------------------------------
@@ -268,6 +272,23 @@ mkdir -p "${XDG_CONFIG_HOME}" "${XDG_CACHE_HOME}" "${XDG_DATA_HOME}" "${XDG_STAT
 export PATH
 
 export RIPGREP_CONFIG_PATH="${RIPGREP_CONFIG_PATH:-${XDG_CONFIG_HOME}/ripgrep/ripgreprc}"
+
+# ------------------------------------------------------------------------------
+# Command presence helpers
+# - zf::can_haz: reliable command-exists check using command -v
+# - can_haz: thin wrapper delegating to zf::can_haz for compatibility
+#   Defined here so it's available in all shells, including non-interactive.
+#   Note: Later layers may redefine can_haz; the namespaced version remains.
+# ------------------------------------------------------------------------------
+if ! typeset -f zf::can_haz >/dev/null 2>&1; then
+zf::can_haz() {
+  command -v -- "$1" >/dev/null 2>&1
+}
+fi
+
+if ! typeset -f can_haz >/dev/null 2>&1; then
+can_haz() { zf::can_haz "$@"; }
+fi
 
 # ------------------------------------------------------------------------------
 # Git root helpers and environment export

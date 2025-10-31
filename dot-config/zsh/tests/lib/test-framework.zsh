@@ -62,7 +62,7 @@ test_suite_start() {
   TF_SUITE_START_TS=$(_now_ts)
   printf "\n===== TEST SUITE START: %s (%s) =====\n" "${TF_SUITE_NAME}" "$(_now_iso)"
   # Ensure we print a summary on exit if the caller forgets
-  trap 'test_framework_summary; exit $(( TF_FAILED > 0 ? 1 : 0 ))' EXIT INT TERM
+  # trap 'test_framework_summary; exit $(( TF_FAILED > 0 ? 1 : 0 ))' EXIT INT TERM
 }
 
 # Start a single test

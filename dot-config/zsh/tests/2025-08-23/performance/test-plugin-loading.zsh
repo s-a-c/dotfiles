@@ -86,7 +86,7 @@ _log_test "=== Test Group 1: Configuration Validation ==="
 
 _assert_true '[[ -f "${HOME}/.config/zsh/.zshrc.pre-plugins.d/04-plugin-deferred-loading.zsh" ]]' \
     "Deferred loading configuration file exists" \
-    "Path: /Users/s-a-c/.config/zsh/.zshrc.pre-plugins.d/04-plugin-deferred-loading.zsh"
+    "Path: ${HOME}/.config/zsh/.zshrc.pre-plugins.d/04-plugin-deferred-loading.zsh"
 
 _assert_true '[[ -x "${HOME}/.config/zsh/.zshrc.pre-plugins.d/04-plugin-deferred-loading.zsh" ]]' \
     "Deferred loading configuration is executable"
@@ -108,19 +108,19 @@ _log_test ""
 _log_test "=== Test Group 3: Main Configuration Updates ==="
 
 # Check that deferred plugins are commented out in main config
-_assert_true 'grep -q "# DEFERRED.*git-extra-commands" /Users/s-a-c/.config/zsh/.zgen-setup' \
+_assert_true 'grep -q "# DEFERRED.*git-extra-commands" ${HOME}/.config/zsh/.zgen-setup' \
     "git-extra-commands removed from main loading" \
     "Should be commented as deferred in .zgen-setup"
 
-_assert_true 'grep -q "# DEFERRED.*jpb.zshplugin" /Users/s-a-c/.config/zsh/.zgen-setup' \
+_assert_true 'grep -q "# DEFERRED.*jpb.zshplugin" ${HOME}/.config/zsh/.zgen-setup' \
     "jpb utilities removed from main loading" \
     "Should be commented as deferred in .zgen-setup"
 
-_assert_true 'grep -q "# DEFERRED.*warhol.plugin.zsh" /Users/s-a-c/.config/zsh/.zgen-setup' \
+_assert_true 'grep -q "# DEFERRED.*warhol.plugin.zsh" ${HOME}/.config/zsh/.zgen-setup' \
     "warhol plugin removed from main loading" \
     "Should be commented as deferred in .zgen-setup"
 
-_assert_true 'grep -q "# DEFERRED.*docker.*completions" /Users/s-a-c/.config/zsh/.zgen-setup' \
+_assert_true 'grep -q "# DEFERRED.*docker.*completions" ${HOME}/.config/zsh/.zgen-setup' \
     "docker completions removed from main loading" \
     "Should be commented as deferred in .zgen-setup"
 
@@ -242,7 +242,7 @@ _log_test ""
 _log_test "=== Test Group 6: Script Syntax Validation ==="
 
 # Test that our deferred loading script has valid syntax
-_syntax_check=$(zsh -n /Users/s-a-c/.config/zsh/.zshrc.pre-plugins.d/04-plugin-deferred-loading.zsh 2>&1)
+_syntax_check=$(zsh -n ${HOME}/.config/zsh/.zshrc.pre-plugins.d/04-plugin-deferred-loading.zsh 2>&1)
 _syntax_result=$?
 
 _assert_true "[[ $_syntax_result -eq 0 ]]" \
@@ -267,20 +267,20 @@ _log_test ""
 _log_test "=== Test Group 8: Configuration Integrity ==="
 
 # Verify essential plugins are still loaded immediately
-_assert_true 'grep -q "zgenom load zdharma-continuum/fast-syntax-highlighting" /Users/s-a-c/.config/zsh/.zgen-setup' \
+_assert_true 'grep -q "zgenom load zdharma-continuum/fast-syntax-highlighting" ${HOME}/.config/zsh/.zgen-setup' \
     "Essential syntax highlighting plugin still loads immediately" \
     "Critical for real-time syntax highlighting"
 
-_assert_true 'grep -q "zgenom load zsh-users/zsh-history-substring-search" /Users/s-a-c/.config/zsh/.zgen-setup' \
+_assert_true 'grep -q "zgenom load zsh-users/zsh-history-substring-search" ${HOME}/.config/zsh/.zgen-setup' \
     "Essential history search plugin still loads immediately" \
     "Critical for UP/DOWN arrow functionality"
 
-_assert_true 'grep -q "zgenom load zsh-users/zsh-autosuggestions" /Users/s-a-c/.config/zsh/.zgen-setup' \
+_assert_true 'grep -q "zgenom load zsh-users/zsh-autosuggestions" ${HOME}/.config/zsh/.zgen-setup' \
     "Essential autosuggestions plugin still loads immediately" \
     "Critical for interactive shell experience"
 
 # Verify prompt system is still loaded immediately
-_assert_true 'grep -q "zgenom load romkatv/powerlevel10k" /Users/s-a-c/.config/zsh/.zgen-setup' \
+_assert_true 'grep -q "zgenom load romkatv/powerlevel10k" ${HOME}/.config/zsh/.zgen-setup' \
     "Essential prompt system still loads immediately" \
     "Critical for shell display"
 
@@ -308,9 +308,9 @@ _log_test ""
 _log_test "=== Test Group 11: Performance Comparison ==="
 
 # Simulate pre-deferred loading by counting original plugins in backup
-_backup_file=$(ls /Users/s-a-c/.config/zsh/.zgen-setup.backup-deferred-* | head -1)
+_backup_file=$(ls ${HOME}/.config/zsh/.zgen-setup.backup-deferred-* | head -1)
 _original_plugin_count=$(grep -c "zgenom load" "$_backup_file" 2>/dev/null || zf::debug "0")
-_current_plugin_count=$(grep -c "zgenom load" /Users/s-a-c/.config/zsh/.zgen-setup 2>/dev/null || zf::debug "0")
+_current_plugin_count=$(grep -c "zgenom load" ${HOME}/.config/zsh/.zgen-setup 2>/dev/null || zf::debug "0")
 
 _log_test "Original plugin count (immediate loading): $_original_plugin_count"
 _log_test "Current plugin count (immediate loading): $_current_plugin_count"
@@ -325,11 +325,11 @@ _log_test ""
 _log_test "=== Test Group 12: Deferred Scheduling Validation ==="
 
 # Test that zsh-defer commands are properly structured in our config
-_assert_true 'grep -q "zsh-defer -t 1" /Users/s-a-c/.config/zsh/.zshrc.pre-plugins.d/04-plugin-deferred-loading.zsh' \
+_assert_true 'grep -q "zsh-defer -t 1" ${HOME}/.config/zsh/.zshrc.pre-plugins.d/04-plugin-deferred-loading.zsh' \
     "Utility plugins scheduled with 1s delay" \
     "Background loading timing is configured"
 
-_assert_true 'grep -q "zsh-defer -t 2" /Users/s-a-c/.config/zsh/.zshrc.pre-plugins.d/04-plugin-deferred-loading.zsh' \
+_assert_true 'grep -q "zsh-defer -t 2" ${HOME}/.config/zsh/.zshrc.pre-plugins.d/04-plugin-deferred-loading.zsh' \
     "OMZ plugins scheduled with 2s delay" \
     "Staged loading approach is configured"
 
@@ -337,7 +337,7 @@ _assert_true 'grep -q "zsh-defer -t 2" /Users/s-a-c/.config/zsh/.zshrc.pre-plugi
 _deferred_utility_plugins=("jpb.zshplugin" "warhol.plugin.zsh" "tumult.plugin.zsh" "eventi/noreallyjustfuckingstopalready" "bitbucket-git-helpers" "skx/sysadmin-util" "StackExchange/blackbox" "sharat87/pip-app" "chrissicool/zsh-256color" "supercrabtree/k")
 
 for plugin in "${_deferred_utility_plugins[@]}"; do
-    _assert_true "grep -q \"$plugin\" /Users/s-a-c/.config/zsh/.zshrc.pre-plugins.d/04-plugin-deferred-loading.zsh" \
+    _assert_true "grep -q \"$plugin\" ${HOME}/.config/zsh/.zshrc.pre-plugins.d/04-plugin-deferred-loading.zsh" \
         "Utility plugin $plugin is in deferred loading" \
         "Should be loaded in background"
 done
@@ -346,7 +346,7 @@ done
 _deferred_omz_plugins=("plugins/aws" "plugins/chruby" "plugins/rsync" "plugins/screen" "plugins/vagrant" "plugins/macos")
 
 for plugin in "${_deferred_omz_plugins[@]}"; do
-    _assert_true "grep -q \"$plugin\" /Users/s-a-c/.config/zsh/.zshrc.pre-plugins.d/04-plugin-deferred-loading.zsh" \
+    _assert_true "grep -q \"$plugin\" ${HOME}/.config/zsh/.zshrc.pre-plugins.d/04-plugin-deferred-loading.zsh" \
         "OMZ plugin $plugin is in deferred loading" \
         "Should be loaded in background"
 done

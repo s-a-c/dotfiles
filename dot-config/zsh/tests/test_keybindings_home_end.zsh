@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v${GUIDELINES_CHECKSUM:-pending}
+# Compliant with [${HOME}/dotfiles/dot-config/ai/guidelines.md](${HOME}/dotfiles/dot-config/ai/guidelines.md) v${GUIDELINES_CHECKSUM:-pending}
 # Test: Verify Home/End keybindings exist across common sequences in active shell.
 set -euo pipefail
 cd "$(dirname "$0")/.."

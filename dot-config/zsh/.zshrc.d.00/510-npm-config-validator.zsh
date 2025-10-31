@@ -104,7 +104,7 @@ done
 # =============================================================================
 
 # Set safe npm defaults for dotfiles directory (no package.json)
-if [[ "$PWD" == "/Users/s-a-c/dotfiles" ]] && [[ ! -f "package.json" ]]; then
+if [[ "$PWD" == "${HOME}/dotfiles" ]] && [[ ! -f "package.json" ]]; then
   export npm_config_package_json_lock=false
   export npm_config_strict_ssl=false
   export npm_config_audit=false

@@ -1,0 +1,65 @@
+{
+  "version": "1.0.0",
+  "mode": "code",
+  "telemetry": true,
+  "provider": "default",
+  "providers": [
+    {
+      "id": "default",
+      "provider": "kilocode",
+      "kilocodeToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnYiOiJwcm9kdWN0aW9uIiwia2lsb1VzZXJJZCI6ImZmZGFhZTNjLThmNDItNGZiYy1hNjUxLWY4OWVjYTdhMDA1MSIsImFwaVRva2VuUGVwcGVyIjpudWxsLCJ2ZXJzaW9uIjozLCJpYXQiOjE3NjE3MTI4MzUsImV4cCI6MTkxOTUwMDgzNX0.lAcHcWhobd5zkCA9WbB-hKY8TTFVRPPZhh5BD15j6iU",
+      "kilocodeModel": "anthropic/claude-sonnet-4.5"
+    }
+  ],
+  "autoApproval": {
+    "enabled": true,
+    "read": {
+      "enabled": true,
+      "outside": true
+    },
+    "write": {
+      "enabled": true,
+      "outside": true,
+      "protected": false
+    },
+    "browser": {
+      "enabled": false
+    },
+    "retry": {
+      "enabled": false,
+      "delay": 10
+    },
+    "mcp": {
+      "enabled": true
+    },
+    "mode": {
+      "enabled": true
+    },
+    "subtasks": {
+      "enabled": true
+    },
+    "execute": {
+      "enabled": true,
+      "allowed": [
+        "ls",
+        "cat",
+        "echo",
+        "pwd"
+      ],
+      "denied": [
+        "rm -rf",
+        "sudo rm",
+        "mkfs",
+        "dd if="
+      ]
+    },
+    "question": {
+      "enabled": false,
+      "timeout": 60
+    },
+    "todo": {
+      "enabled": true
+    }
+  },
+  "theme": "dark"
+}

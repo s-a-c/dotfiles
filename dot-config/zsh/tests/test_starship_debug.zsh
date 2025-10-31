@@ -4,7 +4,7 @@
 echo "=== Starship Debug Test ==="
 echo
 
-cd /Users/s-a-c/dotfiles/dot-config/zsh
+cd ${HOME}/dotfiles/dot-config/zsh
 
 # Test the external integrations module directly
 echo "=== Testing External Integrations Module ==="

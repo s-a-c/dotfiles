@@ -3,7 +3,7 @@
 echo "=== Testing load-shell-fragments behavior ==="
 
 # Source the load-shell-fragments function from .zshrc
-source /Users/s-a-c/dotfiles/dot-config/zsh/.zshrc
+source ${HOME}/dotfiles/dot-config/zsh/.zshrc
 
 BASEDIR="${ZDOTDIR:-$HOME}/.config/zsh"
 

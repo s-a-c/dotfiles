@@ -4,7 +4,7 @@
 echo "=== Prompt Sequence Conflict Test ==="
 echo
 
-cd /Users/s-a-c/dotfiles/dot-config/zsh
+cd ${HOME}/dotfiles/dot-config/zsh
 
 # Run ZSH startup with verbose prompt debugging
 ZDOTDIR="$PWD" timeout 15s zsh -i -c '

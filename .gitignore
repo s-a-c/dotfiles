@@ -558,6 +558,9 @@ dot-config/rovodev/
 .qoder/rules/byterover-rules.md
 .augment/rules/byterover-rules.md
 
+.crush//.env/
+.zgenom/
+
 # ...existing code...
 # Ignore files/dirs whose name is only digits (e.g. 1, 42, 2023).
 # Note: gitignore globs can't express "only digits of arbitrary length", so list common lengths.
@@ -589,3 +592,4 @@ dot-config/rovodev/
  !.obsidian/community-plugins.json
  !.obsidian/core-plugins.json
  !.obsidian/workspace.json
+.index.json.tmp

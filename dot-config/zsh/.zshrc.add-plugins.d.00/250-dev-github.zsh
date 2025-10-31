@@ -11,11 +11,32 @@ fi
 
 zf::debug "# [dev-github] Loading GitHub CLI integration..."
 
-# GitHub CLI plugin (guarded)
-if typeset -f zgenom >/dev/null 2>&1; then
-  zgenom oh-my-zsh plugins/gh || zf::debug "# [dev-github] gh plugin load failed"
+# P2.3 Optimization: Defer GitHub CLI plugin loading
+# Defers with 2-second delay for occasional GitHub operations
+# Estimated savings: ~60ms
+
+: "${ZF_DISABLE_GITHUB_DEFER:=0}"
+
+if [[ "${ZF_DISABLE_GITHUB_DEFER}" == "1" ]]; then
+  # Eager loading (original behavior)
+  if typeset -f zgenom >/dev/null 2>&1; then
+    zgenom oh-my-zsh plugins/gh || zf::debug "# [dev-github] gh plugin load failed"
+    zf::debug "# [dev-github] GitHub CLI plugin loaded eagerly (defer disabled)"
+  else
+    zf::debug "# [dev-github] zgenom absent; skipping gh plugin"
+  fi
 else
-  zf::debug "# [dev-github] zgenom absent; skipping gh plugin"
+  # Deferred loading (optimized)
+  if typeset -f zgenom >/dev/null 2>&1 && typeset -f zsh-defer >/dev/null 2>&1; then
+    zsh-defer -t 2 zgenom oh-my-zsh plugins/gh
+    zf::debug "# [dev-github] GitHub CLI plugin deferred (2s delay)"
+  elif typeset -f zgenom >/dev/null 2>&1; then
+    # Fallback: load eagerly if zsh-defer not available
+    zgenom oh-my-zsh plugins/gh || zf::debug "# [dev-github] gh plugin load failed"
+    zf::debug "# [dev-github] GitHub CLI plugin loaded eagerly (zsh-defer unavailable)"
+  else
+    zf::debug "# [dev-github] zgenom absent; skipping gh plugin"
+  fi
 fi
 
 # GitHub Copilot CLI alias integration (optional)

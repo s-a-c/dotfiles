@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 # dotfiles/dot-config/zsh/tests/performance/badges/test-summary-goal-suffix.zsh
-# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md vb7f03a299a01b1b6d7c8be5a74646f0b5127cbc5b5d614c8b4c20fc99bc21620
+# Compliant with ${HOME}/dotfiles/dot-config/ai/guidelines.md vb7f03a299a01b1b6d7c8be5a74646f0b5127cbc5b5d614c8b4c20fc99bc21620
 #
 # PURPOSE:
 #   Validate that the summary-goal badge message composes compact suffixes

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # validate-no-wrapper-sourcing.zsh
-# Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) ${GUIDELINES_CHECKSUM:-vUNKNOWN}
+# Compliant with [${HOME}/dotfiles/dot-config/ai/guidelines.md](${HOME}/dotfiles/dot-config/ai/guidelines.md) ${GUIDELINES_CHECKSUM:-vUNKNOWN}
 # Purpose: Ensure redesigned pre-plugin modules (100-240 range) no longer source legacy numeric originals.
 # Strategy: Grep for patterns like 'source ${0:A:h}/[0-9]' inside .zshrc.pre-plugins.d.REDESIGN files.
 # Exit non-zero if any offending sourcing statements are found.

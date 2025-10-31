@@ -4,7 +4,7 @@
 echo "=== Final Starship Prompt Test ==="
 echo
 
-cd /Users/s-a-c/dotfiles/dot-config/zsh
+cd ${HOME}/dotfiles/dot-config/zsh
 
 # Test Starship prompt setup in current configuration
 ZDOTDIR="$PWD" timeout 15s zsh -i -c '

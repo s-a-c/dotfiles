@@ -4,7 +4,7 @@
 echo "=== ZLE Module Direct Test ==="
 echo
 
-cd /Users/s-a-c/dotfiles/dot-config/zsh
+cd ${HOME}/dotfiles/dot-config/zsh
 
 # Test ZLE module directly
 timeout 15s bash -c '

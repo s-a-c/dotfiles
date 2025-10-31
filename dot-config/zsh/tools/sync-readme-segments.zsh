@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 # sync-readme-segments.zsh
-# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v900f08def0e6f7959ffd283aebb73b625b3473f5e49c57e861c6461b50a62ef2
+# Compliant with ${HOME}/dotfiles/dot-config/ai/guidelines.md v900f08def0e6f7959ffd283aebb73b625b3473f5e49c57e861c6461b50a62ef2
 #
 # PURPOSE:
 #   Synchronize the canonical segment / telemetry classifier documentation

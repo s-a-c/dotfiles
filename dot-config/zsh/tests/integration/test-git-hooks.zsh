@@ -3,11 +3,11 @@
 #
 # Integration test: verify critical Git hook infrastructure is present and properly documented.
 #
-# Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+# Compliant with [${HOME}/dotfiles/dot-config/ai/guidelines.md](${HOME}/dotfiles/dot-config/ai/guidelines.md) v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
 # Sensitive action domain: repository security / contribution workflow integrity
 # Policy references:
-#   - [/Users/s-a-c/dotfiles/dot-config/ai/guidelines/100-security-standards.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines/100-security-standards.md)
-#   - [/Users/s-a-c/dotfiles/dot-config/ai/guidelines/040-development-standards.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines/040-development-standards.md)
+#   - [${HOME}/dotfiles/dot-config/ai/guidelines/100-security-standards.md](${HOME}/dotfiles/dot-config/ai/guidelines/100-security-standards.md)
+#   - [${HOME}/dotfiles/dot-config/ai/guidelines/040-development-standards.md](${HOME}/dotfiles/dot-config/ai/guidelines/040-development-standards.md)
 #
 # Purpose:
 #   Ensure required local enforcement points (Git hooks) exist and contain expected usage & safety guidance.

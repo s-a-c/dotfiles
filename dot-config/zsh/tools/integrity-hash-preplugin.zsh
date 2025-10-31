@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 # integrity-hash-preplugin.zsh
-# Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v900f08def0e6f7959ffd283aebb73b625b3473f5e49c57e861c6461b50a62ef2
+# Compliant with [${HOME}/dotfiles/dot-config/ai/guidelines.md](${HOME}/dotfiles/dot-config/ai/guidelines.md) v900f08def0e6f7959ffd283aebb73b625b3473f5e49c57e861c6461b50a62ef2
 #
 # PURPOSE:
 #   Generate a JSON manifest of cryptographic (SHA‑256) hashes for critical *pre‑plugin*
