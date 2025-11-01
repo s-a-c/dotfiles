@@ -37,37 +37,38 @@ case "${TERM_PROGRAM:-}" in
     fi
     ;;
   vscode)
-    local _vscode_cmd="" _vscode_path=""
-    if command -v code >/dev/null 2>&1; then
-      _vscode_cmd="code"
-    elif command -v code-insiders >/dev/null 2>&1; then
-      _vscode_cmd="code-insiders"
+    # VSCode/Cursor handles its own shell integration automatically via VSCODE_INJECTION
+    # We don't need to source it manually - it's already active by the time we get here
+    # We just need to clean up the side effects (PATH corruption, broken functions)
+
+    # CRITICAL: VSCode shell integration corrupts PATH by prepending extension directories
+    # (.console-ninja/.bin, .lmstudio/bin, etc.) Re-fix PATH after VSCode integration runs
+    export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${PATH}"
+
+    # Ensure vendor env-tracking arrays exist (missing definitions cause math errors)
+    if ! typeset -f __zf_vscode_env_guard >/dev/null 2>&1; then
+      __zf_vscode_env_guard() {
+        if [[ ${__vsc_use_aa:-0} -eq 1 ]]; then
+          typeset -gA vsc_aa_env
+        fi
+        typeset -ga __vsc_env_keys
+        typeset -ga __vsc_env_values
+      }
     fi
 
-    if [[ -n ${_vscode_cmd} ]]; then
-      _vscode_path="$("${_vscode_cmd}" --locate-shell-integration-path zsh 2>/dev/null)"
-      if [[ -n ${_vscode_path} && -f "${_vscode_path}" ]]; then
-        source "${_vscode_path}" 2>/dev/null || true
-        # Ensure vendor env-tracking arrays exist; missing definitions cause math errors in __vsc_update_env.
-        if ! typeset -f __zf_vscode_env_guard >/dev/null 2>&1; then
-          __zf_vscode_env_guard() {
-            if [[ ${__vsc_use_aa:-0} -eq 1 ]]; then
-              typeset -gA vsc_aa_env
-            fi
-            typeset -ga __vsc_env_keys
-            typeset -ga __vsc_env_values
-          }
-        fi
-        add-zsh-hook precmd __zf_vscode_env_guard
-        precmd_functions=(__zf_vscode_env_guard ${precmd_functions:#__zf_vscode_env_guard})
-        zf::debug "# [term] VS Code integration guard registered before precmd"
-        zf::debug "# [term] VS Code integration script sourced (${_vscode_cmd})"
-      else
-        zf::debug "# [term] VS Code integration path missing (${_vscode_cmd})"
-      fi
+    # Ensure add-zsh-hook is loaded before using it
+    autoload -Uz add-zsh-hook 2>/dev/null || true
+
+    # Register guard function if add-zsh-hook is available
+    if typeset -f add-zsh-hook >/dev/null 2>&1; then
+      add-zsh-hook precmd __zf_vscode_env_guard
+      precmd_functions=(__zf_vscode_env_guard ${precmd_functions:#__zf_vscode_env_guard})
     else
-      zf::debug "# [term] VS Code integration command unavailable"
+      # Fallback: directly add to precmd_functions if add-zsh-hook unavailable
+      precmd_functions=(__zf_vscode_env_guard ${precmd_functions:#__zf_vscode_env_guard})
     fi
+
+    zf::debug "# [term] VS Code/Cursor integration active (auto-loaded), PATH fixed"
     ;;
   iTerm.app)
     if [[ -f "${HOME}/.iterm2_shell_integration.zsh" ]]; then

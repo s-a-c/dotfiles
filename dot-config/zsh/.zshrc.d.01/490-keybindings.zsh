@@ -88,5 +88,43 @@ _zle_diag_keyseq() {
 zle -N _zle_diag_keyseq
 bindkey '^X^K' _zle_diag_keyseq
 
+# --- Help Function ---
+keybinds-help() {
+  echo "--- Core Emacs Keybindings ---"
+  echo "^A        : Beginning of line (Starship-aware)"
+  echo "^E        : End of line (Starship-aware)"
+  echo "^B        : Backward one character"
+  echo "^F        : Forward one character"
+  echo "^P        : Previous line (or history)"
+  echo "^N        : Next line (or history)"
+  echo "^D        : Delete character (or list completions)"
+  echo "^H, ^?    : Backward delete character (backspace)"
+  echo ""
+  echo "--- Arrow & Navigation Keys ---"
+  echo "↑         : Previous line (or history)"
+  echo "↓         : Next line (or history)"
+  echo "←         : Backward one character"
+  echo "→         : Forward one character"
+  echo "Home      : Beginning of line (Starship-aware)"
+  echo "End       : End of line (Starship-aware)"
+  echo "Delete    : Delete character under cursor"
+  echo "Page Up   : Beginning of buffer or history"
+  echo "Page Down : End of buffer or history"
+  echo ""
+  echo "--- Diagnostic Tools ---"
+  echo "^X^K      : Capture and display key sequence (for debugging)"
+  echo ""
+  echo "--- Notes ---"
+  echo "• All keybindings use Emacs mode (not Vi mode)"
+  echo "• Cursor positioning widgets are Starship-prompt aware"
+  echo "• Arrow/navigation keys work across multiple terminals"
+}
+
+# --- Welcome Message ---
+if [[ -z "${_ZF_KEYBINDINGS_NOTIFIED:-}" ]]; then
+  echo "⌨️  Emacs keybindings active. Type 'keybinds-help' for a full list."
+  export _ZF_KEYBINDINGS_NOTIFIED=1
+fi
+
 typeset -f zf::debug >/dev/null 2>&1 && zf::debug "# [keys] Emacs keybindings enforced with Starship cursor fix"
 return 0

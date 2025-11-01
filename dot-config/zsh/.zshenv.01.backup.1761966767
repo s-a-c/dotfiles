@@ -24,7 +24,7 @@
 # --- Initialize PATH FIRST ---
 # CRITICAL: Set PATH before running ANY commands (ps, grep, etc.)
 # Some terminals (Cursor, VSCode) provide incomplete PATH that breaks terminal detection
-export PATH="/opt/homebrew/bin:/run/current/system/sw/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${PATH}"
+export PATH="/opt/homebrew/bin:/run/current/system/sw/bin/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${PATH}"
 
 # ==============================================================================
 # VSCODE/CURSOR INJECTION GUARD
@@ -191,6 +191,7 @@ zf::debug() {
     fi
   fi
 }
+readonly -f zf::debug 2>/dev/null || true
 # Use zf::debug directly - no compatibility wrappers
 
 # ==============================================================================
@@ -214,6 +215,7 @@ zf::now_ms() {
     echo $(($(date +%s) * 1000))
   fi
 }
+readonly -f zf::now_ms 2>/dev/null || true
 
 # Early interactive guard: suppress global-creation warnings during vendor bootstrap,
 # enable extended globbing, and predeclare ZF-owned globals.
@@ -291,6 +293,7 @@ zf::segment_fallback() {
     unset "_ZF_SEGMENT_START[$key]"
   fi
 }
+readonly -f zf::segment_fallback 2>/dev/null || true
 
 # Unified segment helper for all plugin phases
 # Usage: zf::segment <module_name> <action> [phase]
@@ -311,11 +314,15 @@ zf::segment() {
     zf::segment_fallback "$module_name" "$action" "$phase"
   fi
 }
+readonly -f zf::segment 2>/dev/null || true
 
 # Phase-specific segment helpers for consistent usage
 zf::pre_segment() { zf::segment "$1" "$2" "pre_plugin"; }
+readonly -f zf::pre_segment 2>/dev/null || true
 zf::add_segment() { zf::segment "$1" "$2" "add_plugin"; }
+readonly -f zf::add_segment 2>/dev/null || true
 zf::post_segment() { zf::segment "$1" "$2" "post_plugin"; }
+readonly -f zf::post_segment 2>/dev/null || true
 
 # EMERGENCY IFS PROTECTION - Prevent corruption during startup
 if [[ "$IFS" != $' \t\n' ]]; then

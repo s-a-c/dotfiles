@@ -9,46 +9,49 @@
 <details>
 <summary>Expand Table of Contents</summary>
 
-- [1. Quick Diagnostics](#1-quick-diagnostics)
-  - [1.1. First Steps](#11-first-steps)
-  - [1.2. Enable Debug Mode](#12-enable-debug-mode)
-- [2. Startup Issues](#2-startup-issues)
-  - [2.1. Issue: Shell Won't Start](#21-issue-shell-wont-start)
-  - [2.2. Issue: "Command Not Found" on Startup](#22-issue-command-not-found-on-startup)
-  - [2.3. Issue: Slow Startup](#23-issue-slow-startup)
-  - [2.4. Issue: Variable Not Set Errors](#24-issue-variable-not-set-errors)
-- [3. Plugin Problems](#3-plugin-problems)
-  - [3.1. Issue: Plugin Not Loading](#31-issue-plugin-not-loading)
-  - [3.2. Issue: Plugin Conflicts](#32-issue-plugin-conflicts)
-  - [3.3. Issue: Plugin Slow to Load](#33-issue-plugin-slow-to-load)
-- [4. ⚡ Performance Issues](#4-performance-issues)
-- [5. ️ Path Problems](#5-path-problems)
-  - [5.1. Issue: Command in PATH Not Found](#51-issue-command-in-path-not-found)
-  - [5.2. Issue: Duplicate PATH Entries](#52-issue-duplicate-path-entries)
-- [6. Completion Issues](#6-completion-issues)
-  - [6.1. Issue: Completions Not Working](#61-issue-completions-not-working)
-  - [6.2. Issue: Slow Tab Completion](#62-issue-slow-tab-completion)
-- [7. Terminal-Specific Issues](#7-terminal-specific-issues)
-  - [7.1. Issue: Prompt Doesn't Appear](#71-issue-prompt-doesnt-appear)
-  - [7.2. Issue: Colors Not Working](#72-issue-colors-not-working)
-  - [7.3. Issue: iTerm2 Integration Not Working](#73-issue-iterm2-integration-not-working)
-- [8. Emergency Recovery](#8-emergency-recovery)
-  - [8.1. Nuclear Option 1: Minimal Shell](#81-nuclear-option-1-minimal-shell)
-  - [8.2. Nuclear Option 2: Rebuild Plugin Cache](#82-nuclear-option-2-rebuild-plugin-cache)
-  - [8.3. Nuclear Option 3: Rollback Version](#83-nuclear-option-3-rollback-version)
-  - [8.4. Nuclear Option 4: Use Backup](#84-nuclear-option-4-use-backup)
-- [9. Getting Help](#9-getting-help)
-  - [9.1. Information to Gather](#91-information-to-gather)
-  - [9.2. Diagnostic Commands](#92-diagnostic-commands)
-- [10. Advanced Troubleshooting](#10-advanced-troubleshooting)
-  - [10.1. Trace Execution](#101-trace-execution)
-  - [10.2. Binary Search for Problem](#102-binary-search-for-problem)
-  - [10.3. Verify File Integrity](#103-verify-file-integrity)
-- [11. Prevention Tips](#11-prevention-tips)
-  - [1. Test Before Committing](#1-test-before-committing)
-  - [2. Use Version Control](#2-use-version-control)
-  - [3. Keep Backups](#3-keep-backups)
-  - [4. Monitor Performance](#4-monitor-performance)
+- [Troubleshooting Guide](#troubleshooting-guide)
+  - [📋 Table of Contents](#-table-of-contents)
+  - [1. 🔍 Quick Diagnostics](#1--quick-diagnostics)
+    - [1.1. First Steps](#11-first-steps)
+    - [1.2. Enable Debug Mode](#12-enable-debug-mode)
+  - [2. 🚨 Startup Issues](#2--startup-issues)
+    - [2.1. Issue: Shell Won't Start](#21-issue-shell-wont-start)
+    - [2.2. Issue: "Command Not Found" on Startup](#22-issue-command-not-found-on-startup)
+      - [2.2.1. Special Case: VSCode/Cursor PATH Corruption](#221-special-case-vscodecursor-path-corruption)
+    - [2.3. Issue: Slow Startup](#23-issue-slow-startup)
+    - [2.4. Issue: Variable Not Set Errors](#24-issue-variable-not-set-errors)
+  - [3. 🔌 Plugin Problems](#3--plugin-problems)
+    - [3.1. Issue: Plugin Not Loading](#31-issue-plugin-not-loading)
+    - [3.2. Issue: Plugin Conflicts](#32-issue-plugin-conflicts)
+    - [3.3. Issue: Plugin Slow to Load](#33-issue-plugin-slow-to-load)
+  - [4. ⚡ Performance Issues](#4--performance-issues)
+  - [5. 🛣️ Path Problems](#5-️-path-problems)
+    - [5.1. Issue: Command in PATH Not Found](#51-issue-command-in-path-not-found)
+    - [5.2. Issue: Duplicate PATH Entries](#52-issue-duplicate-path-entries)
+  - [6. 🎯 Completion Issues](#6--completion-issues)
+    - [6.1. Issue: Completions Not Working](#61-issue-completions-not-working)
+    - [6.2. Issue: Slow Tab Completion](#62-issue-slow-tab-completion)
+  - [7. 💻 Terminal-Specific Issues](#7--terminal-specific-issues)
+    - [7.1. Issue: Prompt Doesn't Appear](#71-issue-prompt-doesnt-appear)
+    - [7.2. Issue: Colors Not Working](#72-issue-colors-not-working)
+    - [7.3. Issue: iTerm2 Integration Not Working](#73-issue-iterm2-integration-not-working)
+  - [8. 🆘 Emergency Recovery](#8--emergency-recovery)
+    - [8.1. Nuclear Option 1: Minimal Shell](#81-nuclear-option-1-minimal-shell)
+    - [8.2. Nuclear Option 2: Rebuild Plugin Cache](#82-nuclear-option-2-rebuild-plugin-cache)
+    - [8.3. Nuclear Option 3: Rollback Version](#83-nuclear-option-3-rollback-version)
+    - [8.4. Nuclear Option 4: Use Backup](#84-nuclear-option-4-use-backup)
+  - [9. 📞 Getting Help](#9--getting-help)
+    - [9.1. Information to Gather](#91-information-to-gather)
+    - [9.2. Diagnostic Commands](#92-diagnostic-commands)
+  - [10. 🔧 Advanced Troubleshooting](#10--advanced-troubleshooting)
+    - [10.1. Trace Execution](#101-trace-execution)
+    - [10.2. Binary Search for Problem](#102-binary-search-for-problem)
+    - [10.3. Verify File Integrity](#103-verify-file-integrity)
+  - [11. 💡 Prevention Tips](#11--prevention-tips)
+    - [1. Test Before Committing](#1-test-before-committing)
+    - [2. Use Version Control](#2-use-version-control)
+    - [3. Keep Backups](#3-keep-backups)
+    - [4. Monitor Performance](#4-monitor-performance)
 
 </details>
 
@@ -182,6 +185,69 @@ zsh 2>&1 | grep "command not found"
    fi
 
 ```
+
+#### 2.2.1. Special Case: VSCode/Cursor PATH Corruption
+
+**Symptoms**: In Cursor or VSCode integrated terminal, basic utilities (`awk`, `sed`, `git`, `find`, `mkdir`) report "command not found" during startup, but work normally after shell initialization completes.
+
+**Root Cause**: **Double PATH corruption** from two sources:
+
+1. **macOS `path_helper`**: Runs in `/etc/zprofile` and reorders PATH
+2. **VSCode Shell Integration**: Sourced during `.zshrc` startup, prepends extension directories
+
+Both push system directories (`/usr/bin`, `/bin`) to position 15+, behind Cursor's extension directories (`.console-ninja/.bin`, `.lmstudio/bin`, etc.).
+
+**Execution sequence**:
+
+1. `/etc/zshenv` sets ZDOTDIR
+2. `$ZDOTDIR/.zshenv` sets PATH correctly ✅
+3. `/etc/zprofile` calls `path_helper` ❌ **← PATH corrupted (first time)**
+4. `$ZDOTDIR/.zprofile` re-fixes PATH ✅
+5. `$ZDOTDIR/.zshrc` starts
+6. VSCode shell integration sourced ❌ **← PATH corrupted (second time)**
+7. `420-terminal-integration.zsh` re-fixes PATH ✅
+
+**Solution**: PATH is set in THREE places to handle both corruptions:
+
+1. **`.zshenv.01`** (line 26) - for non-login shells and scripts:
+
+```zsh
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${PATH}"
+```
+
+2. **`$ZDOTDIR/.zprofile`** (line 16) - for login shells, runs AFTER `path_helper`:
+
+```zsh
+# Re-establish correct PATH after path_helper reorders it
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${PATH}"
+```
+
+3. **`.zshrc.d.01/420-terminal-integration.zsh`** (line 54) - AFTER VSCode shell integration:
+
+```zsh
+# Re-fix PATH after VSCode integration corrupts it
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${PATH}"
+```
+
+**Verification**:
+
+```bash
+# Check terminal is detected correctly
+echo $TERM_PROGRAM  # Should show "vscode" in Cursor/VSCode
+
+# Check PATH has system directories
+echo $PATH | tr ':' '\n' | head -6
+# Should show: /opt/homebrew/bin, /usr/local/bin, /usr/bin, /bin, etc.
+```
+
+**Manual Override** (if needed):
+
+```bash
+# Add to ~/.zshenv.local (sourced before other initialization)
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
+```
+
+**Note**: This fix is defensive and helps all environments, not just VSCode/Cursor. SSH sessions, tmux, screen, and GUI-launched terminals also benefit.
 
 ---
 

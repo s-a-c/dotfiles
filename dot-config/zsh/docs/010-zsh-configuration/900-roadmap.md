@@ -11,16 +11,17 @@
 
 - [ZSH Configuration Roadmap](#zsh-configuration-roadmap)
   - [📋 Table of Contents](#-table-of-contents)
-  - [🎯 Immediate Next Steps](#-immediate-next-steps)
-    - [User Actions Required](#user-actions-required)
-    - [Development Tasks Ready](#development-tasks-ready)
-    - [Deferred / Future](#deferred--future)
   - [✅ Completed Issues (2025-10-31)](#-completed-issues-2025-10-31)
     - [P1.1: Duplicate Filename - RESOLVED](#p11-duplicate-filename---resolved)
     - [P1.2: Load Order Dependencies - DOCUMENTED](#p12-load-order-dependencies---documented)
     - [P2.1: Performance Log Accumulation - RESOLVED](#p21-performance-log-accumulation---resolved)
     - [P2.2: Test Coverage Improvement - PLANNED](#p22-test-coverage-improvement---planned)
     - [P2.3: Plugin Loading Optimization - IMPLEMENTED](#p23-plugin-loading-optimization---implemented)
+    - [P2.4: Terminal PATH Initialization Issues - RESOLVED](#p24-terminal-path-initialization-issues---resolved)
+  - [🎯 Immediate Next Steps](#-immediate-next-steps)
+    - [User Actions Required](#user-actions-required)
+    - [Development Tasks Ready](#development-tasks-ready)
+    - [Deferred / Future](#deferred--future)
   - [1. 📊 Executive Summary](#1--executive-summary)
     - [1.1. System Health Status](#11-system-health-status)
     - [1.2. Key Takeaways](#12-key-takeaways)
@@ -267,11 +268,74 @@ fi
 
 ---
 
+### P2.4: Terminal PATH Initialization Issues - RESOLVED
+
+**Status**: ✅ **RESOLVED** (2025-11-01)
+
+**Problem**: VSCode/Cursor integrated terminals (and potentially other environments) showed "command not found" errors for basic utilities during startup:
+
+- `awk`, `sed`, `git`, `find`, `mkdir`, `dirname`, `readlink` all reported not found
+- PATH appeared corrupted during early initialization but recovered after startup
+- Issue specific to environments that don't properly inherit PATH (IDEs, SSH, GUI launchers)
+
+**Root Cause**:
+
+- Some environments launch shells with incomplete PATH
+- Terminal detection logic was scattered across `.zshenv.01` (lines 13, 477)
+- No VSCode/Cursor detection implemented
+- PATH setup was conditional instead of defensive
+
+**Resolution**:
+
+1. **Consolidated terminal detection** at top of `.zshenv.01` (lines 13-73)
+   - Added VSCode/Cursor detection via `VSCODE_*` environment variables and parent process detection
+   - Added detection for all major terminals (Alacritty, Ghostty, iTerm2, Kitty, Warp, WezTerm, Apple Terminal)
+   - Set `TERM_PROGRAM` early for all terminals
+
+2. **Unconditional PATH initialization**
+   - PATH is now set defensively for ALL environments, not just problematic ones
+   - Ensures essential system directories are available before any commands run
+   - Benefits all environments (VSCode, Cursor, SSH, tmux, screen, GUI launchers)
+
+3. **Removed duplicate detection** (was at line 477-501)
+   - Eliminated redundant terminal detection logic
+   - Single source of truth for `TERM_PROGRAM` and PATH setup
+
+4. **Documented in troubleshooting guide**
+   - Added section 2.2.1 to [130-troubleshooting.md](130-troubleshooting.md#221-special-case-vscodecursor-path-corruption)
+   - Provided verification steps and manual override instructions
+
+**Files Modified**:
+
+- `.zshenv.01` - Consolidated terminal detection and PATH initialization (lines 13-73)
+- `.zshenv.01` - Removed duplicate terminal detection (line 477-501 → 477-478)
+- `docs/010-zsh-configuration/130-troubleshooting.md` - Added section 2.2.1
+
+**Impact**:
+
+- ✅ No more "command not found" errors in Cursor/VSCode integrated terminals
+- ✅ Defensive PATH setup benefits all environments
+- ✅ Cleaner codebase with single terminal detection point
+- ✅ Easier to maintain and extend terminal support
+
+**Verification**:
+
+```bash
+# In any terminal (especially Cursor/VSCode)
+echo $TERM_PROGRAM  # Should show correct terminal type ("vscode" for Cursor/VSCode)
+echo $PATH | tr ':' '\n' | head -6  # Should show system paths first
+```
+
+**Date Completed**: 2025-11-01
+
+---
+
 ## 🎯 Immediate Next Steps
 
 ### User Actions Required
 
 **1. Validate Performance Improvements** (⏱️ 10 minutes)
+
 - **Priority**: HIGH
 - **Action**: Test shell startup time and verify optimizations work
 - **Guide**: See [IMPLEMENTATION-SUMMARY.md](IMPLEMENTATION-SUMMARY.md)
@@ -292,6 +356,7 @@ sleep 2 && z ~  # Should work after 1s
 ### Development Tasks Ready
 
 **2. Module Header Standardization** (⏱️ 1-2 weeks, P3.1)
+
 - **Priority**: MEDIUM
 - **Status**: Ready to start
 - **Scope**: Add standard headers to ~30% of modules (~66 files)
@@ -299,6 +364,7 @@ sleep 2 && z ~  # Should work after 1s
 - **Risk**: Low
 
 **3. Test Coverage Implementation** (⏱️ 6 weeks, P2.2)
+
 - **Priority**: MEDIUM
 - **Status**: Comprehensive plan ready
 - **Plan**: [TEST-COVERAGE-IMPROVEMENT-PLAN.md](TEST-COVERAGE-IMPROVEMENT-PLAN.md)
@@ -306,6 +372,7 @@ sleep 2 && z ~  # Should work after 1s
 - **Effort**: ~18-20 hours
 
 **4. Environment Variable Organization** (⏱️ 3-4 days, P3.3)
+
 - **Priority**: MEDIUM
 - **Status**: Ready to start
 - **Scope**: Organize 70+ variables in `.zshenv.01`
