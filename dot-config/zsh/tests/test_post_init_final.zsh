@@ -4,7 +4,7 @@
 echo "=== Post-Initialization Final Test ==="
 echo
 
-cd /Users/s-a-c/dotfiles/dot-config/zsh
+cd ${HOME}/dotfiles/dot-config/zsh
 
 # Check module setup
 echo "=== Module Setup Check ==="
@@ -28,7 +28,7 @@ echo \"STARSHIP_INITIALIZED: \${STARSHIP_INITIALIZED:-not_set}\"
 echo \"POST_INITIALIZATION_LOADED: \${_POST_INITIALIZATION_LOADED:-not_set}\"
 
 echo
-echo \"=== System Health ===\" 
+echo \"=== System Health ===\"
 echo \"System health: \${SYSTEM_HEALTH_STATUS:-not_available}\"
 echo \"ZLE status: \${ZLE_INIT_STATUS:-not_available}\"
 
@@ -44,7 +44,7 @@ else
 fi
 
 echo
-echo \"=== Post-Init Self-Test ===\" 
+echo \"=== Post-Init Self-Test ===\"
 if command -v test_post_initialization >/dev/null 2>&1; then
     test_post_initialization
 else

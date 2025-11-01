@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 # PTY Test: STARSHIP_CMD_STATUS resilience via zpty command loop
-# Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) ${GUIDELINES_CHECKSUM:-vUNKNOWN}
+# Compliant with [${HOME}/dotfiles/dot-config/ai/guidelines.md](${HOME}/dotfiles/dot-config/ai/guidelines.md) ${GUIDELINES_CHECKSUM:-vUNKNOWN}
 # Purpose: Validate STARSHIP_CMD_STATUS stays defined across multiple precmd/preexec cycles
 #          when driven through a pseudo-terminal (zpty) rather than a here-doc interactive shell.
 

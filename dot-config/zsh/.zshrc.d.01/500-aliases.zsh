@@ -42,23 +42,24 @@ alias main="git checkout \$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/nul
 alias ..="cd .."
 alias ...="cd ../.."
 if command -v eza >/dev/null 2>&1 && [[ ${ZF_DISABLE_EZA_ALIAS:-0} != 1 ]]; then
-  alias ls='eza'
-  alias ll='eza -lh'
+  alias ls='\eza'
+  alias ll='\eza -lh'
   alias la='eza -alh'
-  alias tree='eza --tree'
+  alias tree='\eza --tree'
 fi
 alias mkdir='\mkdir -p'
 alias md='\mkdir -p'
-alias df='df -h'
-alias du='du -h'
-alias psa='ps aux'
-alias psg='ps aux | grep -v grep | grep'
-alias myip='curl -s ifconfig.me'
-if command -v htop >/dev/null 2>&1; then alias top='htop'; fi
-if command -v bat >/dev/null 2>&1; then alias cat='bat'; fi
+alias df='\df -h'
+alias du='\du -h'
+alias psa='\ps aux'
+alias psg='\ps aux | grep -v grep | grep'
+alias myip='\curl -s ifconfig.me'
+if command -v htop >/dev/null 2>&1; then alias top='\htop'; fi
+if command -v btop >/dev/null 2>&1; then alias top='\btop'; fi
+if command -v bat >/dev/null 2>&1; then alias cat='\bat'; fi
 if command -v nvim >/dev/null 2>&1; then
-  alias vim='nvim'
-  alias vi='nvim'
+  alias vim='\nvim'
+  alias vi='\nvim'
 fi
 
 # --- Safe Package Manager Functions (defined in .zshenv) ---

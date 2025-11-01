@@ -135,9 +135,16 @@ if [[ $_ZF_ABBR -eq 1 ]]; then
   fi
 fi
 
+# P2.3 Optimization: Defer curated abbreviation pack loading
+# Load the plugin eagerly (small overhead), but defer the 30+ abbreviations
+# Estimated savings: ~20ms
+
+: "${ZF_DISABLE_ABBR_PACK_DEFER:=0}"
+
 # Curated Core Abbreviation Pack (D16B)
 # Enabled by default when abbreviation system is loaded unless user opts out:
 #   ZF_DISABLE_ABBR_PACK_CORE=1  -> skip curated core pack
+#   ZF_DISABLE_ABBR_PACK_DEFER=1 -> load pack immediately (no defer)
 # Markers:
 #   _ZF_ABBR_PACK_CORE=1 applied, 0 skipped
 #   _ZF_ABBR_PACK="core" when core pack applied (empty otherwise)
@@ -148,55 +155,78 @@ fi
 #   - Focus: high-signal, low-surprise productivity shorthands.
 #
 # Nounset safety: all parameter expansions guarded; array defined locally.
-if [[ "${ZF_DISABLE_ABBR_PACK_CORE:-0}" != 1 && "${_ZF_ABBR:-0}" == 1 && -n "${_ZF_ABBR_MODE:-}" && "$(
-  typeset -f abbr >/dev/null 2>&1
-  echo $?
-)" -eq 0 ]]; then
-  # Helper: define global abbreviation if not already present
-  _zf_abbr_core_define() {
-    local lhs="$1" rhs="$2"
-    [[ -z "${lhs}" || -z "${rhs}" ]] && return 0
-    # Check existing abbreviation (quiet)
-    if abbr list 2>/dev/null | grep -E "^[[:space:]]*${lhs}[[:space:]]" >/dev/null 2>&1; then
-      return 0
-    fi
-    abbr -g "${lhs}"="${rhs}" 2>/dev/null || true
-  }
 
-  # Core curated set (balanced: navigation, git, system, diagnostics)
-  _zf_abbr_core_define gs 'git status -sb'
-  _zf_abbr_core_define ga 'git add'
-  _zf_abbr_core_define gc 'git commit'
-  _zf_abbr_core_define gca 'git commit --amend --no-edit'
-  _zf_abbr_core_define gco 'git checkout'
-  _zf_abbr_core_define gp 'git push'
-  _zf_abbr_core_define gpl 'git pull --rebase'
-  _zf_abbr_core_define gl 'git log --oneline --decorate --graph -20'
-  _zf_abbr_core_define gdf 'git diff'
-  _zf_abbr_core_define gdc 'git diff --cached'
-  _zf_abbr_core_define gsw 'git switch'
-  _zf_abbr_core_define gss 'git stash'
-  _zf_abbr_core_define gsp 'git stash pop'
-  _zf_abbr_core_define grb 'git rebase -i HEAD~5'
-  _zf_abbr_core_define grbc 'git rebase --continue'
+_zf_load_abbr_pack_core() {
+  if [[ "${ZF_DISABLE_ABBR_PACK_CORE:-0}" != 1 && "${_ZF_ABBR:-0}" == 1 && -n "${_ZF_ABBR_MODE:-}" && "$(
+    typeset -f abbr >/dev/null 2>&1
+    echo $?
+  )" -eq 0 ]]; then
+    zf::debug "# [abbr-pack] Loading curated abbreviation pack..."
 
-  _zf_abbr_core_define .. 'cd ..'
-  _zf_abbr_core_define ... 'cd ../..'
-  _zf_abbr_core_define .... 'cd ../../..'
+    # Helper: define global abbreviation if not already present
+    _zf_abbr_core_define() {
+      local lhs="$1" rhs="$2"
+      [[ -z "${lhs}" || -z "${rhs}" ]] && return 0
+      # Check existing abbreviation (quiet)
+      if abbr list 2>/dev/null | grep -E "^[[:space:]]*${lhs}[[:space:]]" >/dev/null 2>&1; then
+        return 0
+      fi
+      abbr -g "${lhs}"="${rhs}" 2>/dev/null || true
+    }
 
-  _zf_abbr_core_define vaf 'nvim $(fzf)'
-  _zf_abbr_core_define lg 'lazygit'
-  _zf_abbr_core_define k 'kubectl'
-  _zf_abbr_core_define dcu 'docker compose up'
-  _zf_abbr_core_define dcd 'docker compose down'
+    # Core curated set (balanced: navigation, git, system, diagnostics)
+    _zf_abbr_core_define gs 'git status -sb'
+    _zf_abbr_core_define ga 'git add'
+    _zf_abbr_core_define gc 'git commit'
+    _zf_abbr_core_define gca 'git commit --amend --no-edit'
+    _zf_abbr_core_define gco 'git checkout'
+    _zf_abbr_core_define gp 'git push'
+    _zf_abbr_core_define gpl 'git pull --rebase'
+    _zf_abbr_core_define gl 'git log --oneline --decorate --graph -20'
+    _zf_abbr_core_define gdf 'git diff'
+    _zf_abbr_core_define gdc 'git diff --cached'
+    _zf_abbr_core_define gsw 'git switch'
+    _zf_abbr_core_define gss 'git stash'
+    _zf_abbr_core_define gsp 'git stash pop'
+    _zf_abbr_core_define grb 'git rebase -i HEAD~5'
+    _zf_abbr_core_define grbc 'git rebase --continue'
 
-  _zf_abbr_core_define hst 'history 1 | tail -n 50'
-  _zf_abbr_core_define path 'echo $PATH | tr ":" "\\n"'
+    _zf_abbr_core_define .. 'cd ..'
+    _zf_abbr_core_define ... 'cd ../..'
+    _zf_abbr_core_define .... 'cd ../../..'
 
-  _ZF_ABBR_PACK_CORE=1
-  unset -f _zf_abbr_core_define
+    _zf_abbr_core_define vaf 'nvim $(fzf)'
+    _zf_abbr_core_define lg 'lazygit'
+    _zf_abbr_core_define k 'kubectl'
+    _zf_abbr_core_define dcu 'docker compose up'
+    _zf_abbr_core_define dcd 'docker compose down'
+
+    _zf_abbr_core_define hst 'history 1 | tail -n 50'
+    _zf_abbr_core_define path 'echo $PATH | tr ":" "\\n"'
+
+    _ZF_ABBR_PACK_CORE=1
+    unset -f _zf_abbr_core_define
+    zf::debug "# [abbr-pack] Curated abbreviation pack loaded (${_ZF_ABBR_PACK_CORE} abbreviations)"
+  else
+    _ZF_ABBR_PACK_CORE=0
+  fi
+}
+
+# Decide whether to load pack immediately or defer
+if [[ "${ZF_DISABLE_ABBR_PACK_DEFER}" == "1" ]]; then
+  # Load immediately (original behavior)
+  _zf_load_abbr_pack_core
+  zf::debug "# [abbr] Abbreviation pack loaded eagerly (defer disabled)"
 else
-  _ZF_ABBR_PACK_CORE=0
+  # Defer pack loading (optimized)
+  if typeset -f zsh-defer >/dev/null 2>&1; then
+    zsh-defer -c '_zf_load_abbr_pack_core'
+    zf::debug "# [abbr] Abbreviation pack deferred (zsh-defer)"
+  else
+    # Fallback: load immediately if zsh-defer not available
+    _zf_load_abbr_pack_core
+    zf::debug "# [abbr] Abbreviation pack loaded eagerly (zsh-defer unavailable)"
+  fi
 fi
 
 # Export final markers

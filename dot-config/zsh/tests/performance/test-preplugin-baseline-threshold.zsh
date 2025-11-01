@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 # test-preplugin-baseline-threshold.zsh
-# Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) ${GUIDELINES_CHECKSUM:-vUNKNOWN}
+# Compliant with [${HOME}/dotfiles/dot-config/ai/guidelines.md](${HOME}/dotfiles/dot-config/ai/guidelines.md) ${GUIDELINES_CHECKSUM:-vUNKNOWN}
 #
 # PURPOSE:
 #   Guard against regressions in the pre-plugin phase cost after the Stage 2 baseline

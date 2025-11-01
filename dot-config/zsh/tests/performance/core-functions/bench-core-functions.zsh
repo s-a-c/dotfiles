@@ -10,7 +10,7 @@
 #   3. Debug prints (guard / counts) and improved fallback path.
 # bench-core-functions.zsh
 # Micro-benchmark harness for Stage 3 core helper functions (zf:: namespace)
-# Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
+# Compliant with [${HOME}/dotfiles/dot-config/ai/guidelines.md](${HOME}/dotfiles/dot-config/ai/guidelines.md) v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49
 #
 # PURPOSE:
 #   Provide a lightweight, side‑effect minimal timing harness to measure the

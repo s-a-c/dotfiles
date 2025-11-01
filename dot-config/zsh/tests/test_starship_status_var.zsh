@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Test: STARSHIP_CMD_STATUS resilience & fallback activation
-# Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v${GUIDELINES_CHECKSUM:-pending}
+# Compliant with [${HOME}/dotfiles/dot-config/ai/guidelines.md](${HOME}/dotfiles/dot-config/ai/guidelines.md) v${GUIDELINES_CHECKSUM:-pending}
 # Purpose: Ensure no 'parameter not set' errors for STARSHIP_CMD_STATUS across multiple prompt cycles.
 
 # If executed with an interpreter other than bash (e.g. user runs `zsh tests/...`),

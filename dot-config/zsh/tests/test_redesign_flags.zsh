@@ -4,7 +4,7 @@
 echo "=== Testing Redesign Flags After .zshenv Update ==="
 echo
 
-cd /Users/s-a-c/dotfiles/dot-config/zsh
+cd ${HOME}/dotfiles/dot-config/zsh
 
 # Test 1: Check flags are set correctly by sourcing .zshenv directly
 echo "=== Test 1: Direct .zshenv sourcing ==="

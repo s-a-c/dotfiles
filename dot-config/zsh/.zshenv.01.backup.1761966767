@@ -1,0 +1,1816 @@
+#!/usr/bin/env zsh
+
+# .zshenv.01 - Merged Zsh Environment File
+# vim: ft=zsh
+# -*- mode: sh; sh-shell: zsh; -*-
+
+# ==============================================================================
+# CRITICAL STARTUP STANZA - MUST BE FIRST
+# Sets essential environment variables before any other shell initialization
+# (Content from .zshenv.00)
+# ==============================================================================
+
+# ==============================================================================
+# TERMINAL DETECTION & PATH INITIALIZATION
+# ==============================================================================
+# Some environments (IDEs, SSH, GUI launchers) don't properly inherit PATH when
+# starting new shell sessions. Set PATH unconditionally to ensure all essential
+# system utilities are available before any other code runs.
+#
+# Also detect terminal type and set TERM_PROGRAM for downstream terminal-specific
+# configuration (terminal integration, shell features, etc.).
+# ==============================================================================
+
+# --- Initialize PATH FIRST ---
+# CRITICAL: Set PATH before running ANY commands (ps, grep, etc.)
+# Some terminals (Cursor, VSCode) provide incomplete PATH that breaks terminal detection
+export PATH="/opt/homebrew/bin:/run/current/system/sw/bin/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${PATH}"
+
+# ==============================================================================
+# VSCODE/CURSOR INJECTION GUARD
+# ==============================================================================
+# VSCode/Cursor shell integration (VSCODE_INJECTION=1) sources .zshrc TWICE:
+# 1. First run:  During integration injection (VSCODE_SHELL_INTEGRATION not set)
+# 2. Second run: Normal ZSH interactive startup (VSCODE_SHELL_INTEGRATION=1)
+#
+# The vendored .zshrc is NOT idempotent - running it twice causes:
+# - Duplicate plugin loading, splash screens, update checks
+# - PATH corruption, function overwrites (can_haz), spurious output
+#
+# Solution: Set a flag during first run to make .zshrc.d scripts skip heavy work
+# ==============================================================================
+if [[ "${VSCODE_INJECTION:-}" == "1" && -z "${VSCODE_SHELL_INTEGRATION:-}" ]]; then
+  # First .zshrc run (injection phase) - mark as minimal run
+  export ZF_VSCODE_FIRST_RUN=1
+  export QUICKSTART_KIT_REFRESH_IN_DAYS=999999  # Disable update checks
+fi
+
+# --- Detect Terminal Type ---
+# Set TERM_PROGRAM if not already set or if set to invalid value
+
+if [[ -z ${TERM_PROGRAM:-} || ${TERM_PROGRAM} == unknown || ${TERM_PROGRAM} == zsh ]]; then
+  # Alacritty
+  if [[ -n ${ALACRITTY_LOG:-} ]]; then
+    export TERM_PROGRAM=Alacritty
+
+  # VSCode/Cursor (check environment vars and parent process)
+  elif [[ -n ${VSCODE_PID:-} || -n ${VSCODE_IPC_HOOK:-} || -n ${VSCODE_INJECTION:-} ]]; then
+    export TERM_PROGRAM=vscode
+  elif ps -o comm= -p "$(ps -o ppid= -p $$ 2>/dev/null)" 2>/dev/null | grep -qiE "\\b(code|cursor|electron)\\b"; then
+    export TERM_PROGRAM=vscode
+
+  # Ghostty
+  elif ps -o comm= -p "$(ps -o ppid= -p $$)" 2>/dev/null | grep -qi ghostty; then
+    export TERM_PROGRAM=ghostty
+
+  # iTerm2
+  elif [[ -n ${ITERM_SESSION_ID:-} ]]; then
+    export TERM_PROGRAM=iTerm.app
+
+  # Kitty
+  elif [[ ${TERM:-} == xterm-kitty || -n ${KITTY_PID:-} ]]; then
+    export TERM_PROGRAM=kitty
+
+  # Warp
+  elif [[ -n ${WARP_IS_LOCAL_SHELL_SESSION:-} ]]; then
+    export TERM_PROGRAM=WarpTerminal
+
+  # WezTerm
+  elif [[ -n ${WEZTERM_EXECUTABLE:-} || -n ${WEZTERM_CONFIG_DIR:-} ]]; then
+    export TERM_PROGRAM=WezTerm
+
+  # Apple Terminal (fallback: check parent process)
+  elif ps -o comm= -p "$(ps -o ppid= -p $$)" 2>/dev/null | grep -qi terminal; then
+    export TERM_PROGRAM=Apple_Terminal
+
+  # Unknown/fallback
+  else
+    export TERM_PROGRAM=unknown
+  fi
+fi
+
+#
+# Flag / Toggle Index (Customizable via environment before shell init)
+# --------------------------------------------------------------------
+# Visual / Splash:
+#   ZSH_DISABLE_SPLASH (0|1, default 0)     - Disable splash entirely
+#   FORCE_SPLASH (0|1, default 1)           - Force splash even in minimal mode
+#   ZSH_MINIMAL (0|1, default 0)            - Minimal visual / interactive footprint
+#   ZSH_DISABLE_FASTFETCH (0|1, default 0)  - Disable fastfetch banner
+#   ZSH_DISABLE_COLORSCRIPT (0|1, default 0)- Disable colorscript
+#   ZSH_DISABLE_LOLCAT (0|1, default 0)     - Disable lolcat style colorization
+#   ZSH_DISABLE_STARSHIP (0|1, default 0)   - Disable starship prompt
+#   ZSH_DISABLE_TIPS (0|1, default 0)       - Disable tips/help panels
+#   POWERLEVEL10K_DISABLE_CONFIGURATION_WIZARD (0|1, default 1 here) - Suppress p10k wizard when Starship primary
+#
+# Health / Instrumentation:
+#   ZSH_ENABLE_HEALTH_CHECK (0|1, default 0) - Enable health summary logic
+#   ZSH_PERF_TRACK (0|1, default 0)          - Enable perf segment tracking
+#   PERF_SEGMENT_LOG (path, default unset)   - Explicit perf log path (autogenerated if ZSH_PERF_TRACK=1)
+#   PERF_SEGMENT_TRACE (0|1, default 0)      - Verbose segment trace markers
+#   PERF_CAPTURE_FAST (0|1, default 0)       - Use reduced capture path
+#   ZF_WITH_TIMING_EMIT (auto|0|1, default auto) - Emit high level timing summary
+#
+# Segment / Harness:
+#   PERF_HARNESS_MINIMAL (0|1, default 0)    - Minimal harness instrumentation mode
+#   PERF_HARNESS_TIMEOUT_SEC (int, default 0)- Watchdog timeout (commented logic currently disabled)
+#
+# Debug / Diagnostics:
+#   ZSH_DEBUG (0|1, default 0)               - Enable early debug logging
+#   ZSH_FORCE_XTRACE (0|1, default 0)        - Allow xtrace if already active
+#   ZSH_DEBUG_KEEP_DEBUG (0|1, default 0)    - Preserve $DEBUG var when debugging
+#   ZSH_DEBUG_PS4_FORMAT (string)            - Custom PS4 when debug active
+#   DEBUG_ZSH_REDESIGN (0|1, default 0)      - Additional redesign oriented logs
+#
+# Security / Integrity:
+#   ZSH_SEC_DISABLE_AUTO_DEDUP (0|1, default 0) - Disable auto PATH dedupe attempts
+#   ZSH_INTERACTIVE_OPTIONS_STRICT (0|1, default 0) - Enforce stricter interactive opts
+#
+# Plugin / Env Management:
+#   ZSH_ENABLE_ABBR (0|1, default 1)         - Enable abbreviation subsystem
+#   ZSH_AUTOSUGGEST_SSH_DISABLE (0|1, 0)     - Disable autosuggest inside SSH
+#   ZSH_ENABLE_NVM_PLUGINS (0|1, default 1)  - Enable NVM related plugin path logic
+#   ZSH_NODE_LAZY (0|1, default 1)           - Lazy node version / path activation
+#   ZGEN_AUTOLOAD_COMPINIT (0|1, default 0)  - Auto run compinit (0 retains manual control)
+#
+# Path / Cleanup:
+#   PATH_CLEANUP (0|1, default 1)            - Enable PATH normalization
+#
+# Compatibility / Legacy:
+#   ZQS_COMPAT (0|1, default 0)              - Enable quickstart compatibility shims
+#
+# Misc / Telemetry (future placeholders):
+#   ZF_ASSERT_EXIT (0|1, default 0)          - Convert certain recoverable conditions to fatal
+# Updates / Network:
+#   ZF_DISABLE_AUTO_UPDATES (0|1, default 1) - Disable auto-updates for frameworks (ZQS/Oh-My-Zsh)
+#
+# NOTE: All flags intentionally exported with defaults below. Users override via:
+#   * ~/.zshenv.local
+#   * exported env before launching interactive shell
+#
+# RULE (Path Resolution):
+#   Avoid using the brittle form \`${0:A:h}\` directly inside any redesign or plugin
+#   module (especially when code may be compiled / cached by a plugin manager).
+#   Instead, use the helper \`zf::script_dir\` (defined later in this file) or,
+#   for very early bootstrap contexts, \`resolve_script_dir\` with an optional
+#   path argument. These helpers are resilient to symlinks and compilation
+#   contexts and defer to \`${(%):-%N}\` rather than \`$0\` where appropriate.
+#   Migration Plan:
+#     - New code MUST use \`zf::script_dir\` or \`resolve_script_dir\`.
+#     - Existing \`${0:A:h}\` usages should be incrementally refactored.
+# ==============================================================================
+
+# Suppress Powerlevel10k configuration wizard by default (Starship-first policy).
+# Users can override by exporting POWERLEVEL10K_DISABLE_CONFIGURATION_WIZARD=0 in ~/.zshenv.local BEFORE this file runs
+# or setting it in the environment prior to shell launch.
+: "${POWERLEVEL10K_DISABLE_CONFIGURATION_WIZARD:=1}"
+export POWERLEVEL10K_DISABLE_CONFIGURATION_WIZARD
+
+# Disable auto-updates by default; users can override in ~/.zshenv.local
+: "${ZF_DISABLE_AUTO_UPDATES:=1}"
+export ZF_DISABLE_AUTO_UPDATES
+
+# Prompt: Starship defaults
+# - ZSH_DISABLE_STARSHIP=1 -> hard disable (no init, no hooks)
+# - ZSH_STARSHIP_SUPPRESS_AUTOINIT=1 -> export functions only; caller must init
+# Defaults enable Starship and autoinit
+: "${ZSH_DISABLE_STARSHIP:=0}"
+export ZSH_DISABLE_STARSHIP
+: "${ZSH_STARSHIP_SUPPRESS_AUTOINIT:=0}"
+export ZSH_STARSHIP_SUPPRESS_AUTOINIT
+
+# Minimal debug logger used during early startup
+zf::debug() {
+  # Emit only when debugging is enabled; send human-visible output to stderr.
+  # Always append to debug log when both ZSH_DEBUG=1 and ZSH_DEBUG_LOG are set.
+  if [[ "${ZSH_DEBUG:-0}" == "1" ]]; then
+    # stderr for separation from command output pipelines
+    printf '%s\n' "$@" 1>&2
+    if [[ -n "${ZSH_DEBUG_LOG:-}" ]]; then
+      print -r -- "$@" >> "$ZSH_DEBUG_LOG" 2>/dev/null || true
+    fi
+  fi
+}
+readonly -f zf::debug 2>/dev/null || true
+# Use zf::debug directly - no compatibility wrappers
+
+# ==============================================================================
+# Segment Management Helper Functions
+# ==============================================================================
+# Moved from .zshrc.pre-plugins.d/030-segment-management.zsh to .zshenv
+# to ensure availability during zgenom save (plugin cache regeneration).
+# These functions must be available in ALL execution contexts.
+# ==============================================================================
+
+# Millisecond timestamp helper
+zf::now_ms() {
+  if command -v python3 >/dev/null 2>&1; then
+    python3 -c "import time; print(int(time.time() * 1000))"
+  elif command -v node >/dev/null 2>&1; then
+    node -e "console.log(Date.now())"
+  elif command -v perl >/dev/null 2>&1; then
+    perl -MTime::HiRes=time -E 'say int(time*1000)'
+  else
+    # Fallback to seconds * 1000
+    echo $(($(date +%s) * 1000))
+  fi
+}
+readonly -f zf::now_ms 2>/dev/null || true
+
+# Early interactive guard: suppress global-creation warnings during vendor bootstrap,
+# enable extended globbing, and predeclare ZF-owned globals.
+if [[ -o interactive ]]; then
+  # Temporarily suppress WARN_CREATE_GLOBAL during vendor-managed bootstrap
+  setopt no_warn_create_global
+
+  # Ensure extended globbing is available for scripts that rely on it
+  setopt extendedglob
+
+  # Predeclare ZF-owned globals to avoid "created globally in function" noise
+  typeset -g __ZF_COMPINIT_DONE=
+  typeset -g _ZF_CARAPACE_STYLES_DONE=
+  typeset -g _ZF_CARAPACE_STYLES=
+  typeset -g _ZF_CARAPACE_STYLE_MODE=
+  typeset -g _ZF_BOB_PATH=
+  typeset -g _ZF_BOB_ALIAS_CLEARED=
+  typeset -g _ZF_BOB_ENV_SOURCED=
+  typeset -g _ZF_NVIM_BIND_SHIM=
+  typeset -g _ZF_NVIM_HELPERS_DONE=
+  typeset -g _ZF_NVIM_VENV_ALIAS=
+  typeset -g _ZF_TERMINAL_INTEGRATION_DONE=
+  typeset -g _ZF_SEGMENT_CAPTURE_LOADED=
+  typeset -g _ZF_SEGMENT_CAPTURE=
+  typeset -g _ZF_ATUIN=
+  typeset -g _ZF_ATUIN_KEYBINDS=
+
+  # Predeclare recurring non-ZF globals to suppress vendor bootstrap warnings
+  typeset -g have_lsd=
+  typeset -g fzfver=
+  typeset -ga items=()
+  typeset -ga ndirs=()
+  typeset -g ndir=
+  typeset -g entry=
+  typeset -ga ZSH_AUTOSUGGEST_STRATEGY=()
+  typeset -g ATUIN_HISTORY_ID=
+  typeset -g __zoxide_result=
+  typeset -g FZF_DEFAULT_OPTS=
+  typeset -g _fzf_base=
+  typeset -g __fzf_completion_options=
+  typeset -g __fzf_key_bindings_options=
+  typeset -g _zqs_fragment=
+  typeset -g svalue=
+  typeset -g _herd_nvm_dir=
+  typeset -g STARSHIP_SESSION_KEY=
+  typeset -g VIRTUAL_ENV_DISABLE_PROMPT=
+  typeset -g CARAPACE_COLORS=
+  typeset -g _cfg_root=
+  typeset -g _user_styles_file=
+  typeset -g _mode=
+  typeset -g BOB_CONFIG=
+  typeset -g _bob_env_file=
+fi
+
+# Fallback segment timing (when segment-lib not available)
+typeset -gA _ZF_SEGMENT_START
+zf::segment_fallback() {
+  local module_name="$1" action="$2" phase="$3"
+  local key="${module_name}_${phase}"
+
+  if [[ "$action" == "start" ]]; then
+    _ZF_SEGMENT_START[$key]=$(zf::now_ms)
+    zf::debug "# [segment-fallback] Started: plugin/${module_name} phase=${phase}"
+  elif [[ "$action" == "end" && -n ${_ZF_SEGMENT_START[$key]:-} ]]; then
+    local end_ms=$(zf::now_ms)
+    local delta=$((end_ms - _ZF_SEGMENT_START[$key]))
+    ((delta < 0)) && delta=0
+
+    # Emit segment data if logging enabled
+    if [[ -n "${PERF_SEGMENT_LOG:-}" ]]; then
+      print "SEGMENT name=plugin/${module_name} ms=${delta} phase=${phase} sample=${PERF_SAMPLE_CONTEXT:-unknown}" >>"${PERF_SEGMENT_LOG}" 2>/dev/null || true
+    fi
+
+    zf::debug "# [segment-fallback] Completed: plugin/${module_name} phase=${phase} delta=${delta}ms"
+    unset "_ZF_SEGMENT_START[$key]"
+  fi
+}
+readonly -f zf::segment_fallback 2>/dev/null || true
+
+# Unified segment helper for all plugin phases
+# Usage: zf::segment <module_name> <action> [phase]
+# Example: zf::segment "perf-core" "start" "add_plugin"
+zf::segment() {
+  local module_name="$1" action="$2" phase="${3:-other}"
+  [[ -z "$module_name" || -z "$action" ]] && return 0
+
+  # Normalize module name (consistent with file naming)
+  module_name=${module_name// /-}
+  local segment_label="plugin/${module_name}"
+
+  if typeset -f _zsh_perf_segment_${action} >/dev/null 2>&1; then
+    # Use full segment library
+    _zsh_perf_segment_${action} "$segment_label" "$phase"
+  else
+    # Fallback timing system
+    zf::segment_fallback "$module_name" "$action" "$phase"
+  fi
+}
+readonly -f zf::segment 2>/dev/null || true
+
+# Phase-specific segment helpers for consistent usage
+zf::pre_segment() { zf::segment "$1" "$2" "pre_plugin"; }
+readonly -f zf::pre_segment 2>/dev/null || true
+zf::add_segment() { zf::segment "$1" "$2" "add_plugin"; }
+readonly -f zf::add_segment 2>/dev/null || true
+zf::post_segment() { zf::segment "$1" "$2" "post_plugin"; }
+readonly -f zf::post_segment 2>/dev/null || true
+
+# EMERGENCY IFS PROTECTION - Prevent corruption during startup
+if [[ "$IFS" != $' \t\n' ]]; then
+    unset IFS
+    IFS=$' \t\n'
+    export IFS
+fi
+
+# Emergency PATH fix if corrupted with literal $sep
+if [[ "$PATH" == *'$sep'* ]]; then
+    PATH="${PATH//\$sep/:}"
+    export PATH
+fi
+
+# FALLBACK: Simple PATH setup
+if [[ -z "${PATH:-}" ]]; then
+    PATH="/opt/homebrew/bin:/usr/local/bin:/run/current-system/sw/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
+fi
+export PATH
+
+# XDG Base Directory Specification (set early so other code can rely on them)
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-${HOME}/.cache}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}"
+export XDG_STATE_HOME="${XDG_STATE_HOME:-${HOME}/.local/state}"
+export XDG_BIN_HOME="${XDG_BIN_HOME:-${HOME}/.local/bin}"
+mkdir -p "${XDG_CONFIG_HOME}" "${XDG_CACHE_HOME}" "${XDG_DATA_HOME}" "${XDG_STATE_HOME}" "${XDG_BIN_HOME}" 2>/dev/null || true
+
+# Prefer XDG user bin early in PATH if present
+[[ -d ${XDG_BIN_HOME} ]] && PATH="${XDG_BIN_HOME}:${PATH}"
+export PATH
+
+export RIPGREP_CONFIG_PATH="${RIPGREP_CONFIG_PATH:-${XDG_CONFIG_HOME}/ripgrep/ripgreprc}"
+
+# ------------------------------------------------------------------------------
+# Command presence helpers
+# - zf::can_haz: reliable command-exists check using command -v
+# - can_haz: thin wrapper delegating to zf::can_haz for compatibility
+#   Defined here so it's available in all shells, including non-interactive.
+#   Note: Later layers may redefine can_haz; the namespaced version remains.
+# ------------------------------------------------------------------------------
+if ! typeset -f zf::can_haz >/dev/null 2>&1; then
+zf::can_haz() {
+  command -v -- "$1" >/dev/null 2>&1
+}
+fi
+
+if ! typeset -f can_haz >/dev/null 2>&1; then
+can_haz() { zf::can_haz "$@"; }
+fi
+
+# ------------------------------------------------------------------------------
+# Git root helpers and environment export
+# - zf::git_root: print repo root (or fail)
+# - zf::update_git_root: keep $ZF_GIT_ROOT in sync with current directory
+# - Initialize on startup and register in chpwd_functions (deduped)
+# - Mnemonic helpers: git_root, cdr
+# ------------------------------------------------------------------------------
+zf::git_root() {
+  git -C "${1:-$PWD}" rev-parse --show-toplevel 2>/dev/null
+}
+
+zf::git_super_root() {
+  local d="${1:-$PWD}" super
+  super=$(git -C "$d" rev-parse --show-superproject-working-tree 2>/dev/null) || super=""
+  if [[ -n "$super" ]]; then
+    print -r -- "$super"
+  else
+    git -C "$d" rev-parse --show-toplevel 2>/dev/null
+  fi
+}
+zf::git_common_dir() {
+  git -C "${1:-$PWD}" rev-parse --git-common-dir 2>/dev/null
+}
+zf::git_common_root() {
+  local d="${1:-$PWD}" common bare parent
+  common=$(git -C "$d" rev-parse --git-common-dir 2>/dev/null) || return 1
+  bare=$(git -C "$d" rev-parse --is-bare-repository 2>/dev/null) || bare="false"
+  if [[ "$bare" == "true" ]]; then
+    return 1
+  fi
+  parent="${common%/.git}"
+  if [[ "$parent" != "$common" && -d "$parent" ]]; then
+    print -r -- "$parent"
+  else
+    git -C "$d" rev-parse --show-toplevel 2>/dev/null
+  fi
+}
+
+zf::update_git_root() {
+  local root super common_dir common_root
+  root="$(zf::git_root)" || root=""
+  super="$(zf::git_super_root)" || super=""
+  common_dir="$(zf::git_common_dir)" || common_dir=""
+  common_root="$(zf::git_common_root)" || common_root=""
+  export ZF_GIT_ROOT="$root" ZF_GIT_SUPER_ROOT="$super" ZF_GIT_COMMON_DIR="$common_dir" ZF_GIT_COMMON_ROOT="$common_root"
+}
+
+# Initialize on startup
+zf::update_git_root
+
+# Ensure chpwd_functions exists and register updater once
+typeset -ga chpwd_functions
+{
+  local __zf_found=0 __zf_f
+  for __zf_f in "${chpwd_functions[@]}"; do
+    [[ "$__zf_f" == "zf::update_git_root" ]] && __zf_found=1 && break
+  done
+  (( __zf_found == 0 )) && chpwd_functions+=("zf::update_git_root")
+  unset __zf_found __zf_f
+}
+
+# Mnemonic helpers that delegate to namespaced functions
+git_root() { zf::git_root "$@"; }
+cdr() { local r; r="$(zf::git_root)" || return 1; cd "$r"; }
+git_super_root() { zf::git_super_root "$@"; }
+cdrs() { local r; r="$(zf::git_super_root)" || return 1; cd "$r"; }
+git_common_dir() { zf::git_common_dir "$@"; }
+git_common_root() { zf::git_common_root "$@"; }
+cdrc() { local r; r="$(zf::git_common_root)" || return 1; cd "$r"; }
+
+# Prefer repo path if available; otherwise default to XDG
+if [[ -z "${ZDOTDIR:-}" ]]; then
+  if [[ -d "${HOME}/dotfiles/dot-config/zsh" ]]; then
+    export ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
+  else
+    export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
+  fi
+fi
+
+# Allow a localized override file to run early. This file may set ZDOTDIR
+# or other site/user-specific values. It is safe to source here because it is
+# expected to be conservative and provide defaults only.
+_local_zshenv_local="${XDG_CONFIG_HOME:-${HOME}/.config}/zsh/.zshenv.local"
+if [[ -f "${_local_zshenv_local}" ]]; then
+    # shellcheck disable=SC1090
+    source "${_local_zshenv_local}"
+fi
+unset _local_zshenv_local
+
+# Set ZDOTDIR to an XDG-friendly localized default but do not overwrite
+
+# ------------------------------------------------------------------------------
+# Robustly canonicalize ZDOTDIR (resolve symlinks) WITHOUT breaking on systems
+# that lack \`realpath\`. We only canonicalize if ZDOTDIR is set and points to a
+# directory so we do not accidentally touch unrelated values.
+# ------------------------------------------------------------------------------
+if [[ -n "${ZDOTDIR:-}" && -d "${ZDOTDIR}" ]]; then
+  if command -v realpath >/dev/null 2>&1; then
+    # Use realpath when available (portable and resolves symlinks)
+    ZDOTDIR="$(realpath "${ZDOTDIR}")"
+  else
+    # Fallback: attempt to cd into dir and print the physical path (pwd -P)
+    # If that fails for any reason, leave ZDOTDIR as-is.
+    _zd_prev_pwd=""
+    _zd_prev_pwd="$PWD" 2>/dev/null || true
+    if cd "${ZDOTDIR}" 2>/dev/null; then
+      ZDOTDIR="$(pwd -P 2>/dev/null || pwd)"
+      # return to previous working directory
+      cd "$_zd_prev_pwd" 2>/dev/null || true
+    fi
+    unset _zd_prev_pwd
+  fi
+fi
+
+# Create common cache/log dirs (do not fail startup if mkdir fails)
+# Recreate ensured dirs now anchored to canonical ZDOTDIR
+export ZSH_CACHE_DIR="${ZSH_CACHE_DIR:-${XDG_CACHE_HOME:-${HOME/.cache}/zsh}}"
+export ZSH_LOG_DIR="${ZSH_LOG_DIR:-${ZSH_CACHE_DIR}/logs}"
+mkdir -p "$ZSH_CACHE_DIR" "$ZSH_LOG_DIR" 2>/dev/null || true
+
+# Provide a short session id for debug/log filenames
+export ZSH_SESSION_ID="${ZSH_SESSION_ID:-$$-$(date +%s 2>/dev/null || echo 'unknown')}"
+export ZSH_DEBUG_LOG="${ZSH_DEBUG_LOG:-${ZSH_LOG_DIR}/${ZSH_SESSION_ID}-zsh-debug.log}"
+
+# TERM_PROGRAM and PATH are now set at the top of .zshenv.01 (lines 23-70).
+# PATH is set BEFORE terminal detection to ensure ps/grep work correctly.
+
+# Basic optional debug flag
+export ZSH_DEBUG="${ZSH_DEBUG:-0}"
+
+# FALLBACK: Simple debug setup
+zf::apply_debug_policy() {
+  export ZSH_DEBUG="${ZSH_DEBUG:-0}"
+  export ZSH_DEBUG_POLICY_APPLIED=1
+  # Disable xtrace if it is on (our xtrace fix)
+  if [[ "${options[xtrace]}" == "on" && "${ZSH_FORCE_XTRACE:-0}" != "1" ]]; then
+    set +x 2>/dev/null || true
+  fi
+}
+
+# Teardown / reset debug policy: restore snapshot (best-effort)
+if ! typeset -f zf::reset_debug_policy >/dev/null 2>&1; then
+zf::reset_debug_policy() {
+  emulate -L zsh
+  # Only act if snapshot exists
+  [[ -n "${ZSH_DEBUG_POLICY_SNAPSHOTTED:-}" ]] || return 0
+
+  # Restore DEBUG (respect emptiness)
+  if [[ -n "${ZSH_DEBUG_ORIG_DEBUG+x}" ]]; then
+    if [[ -n "${ZSH_DEBUG_ORIG_DEBUG}" ]]; then
+      export DEBUG="${ZSH_DEBUG_ORIG_DEBUG}"
+    else
+      unset DEBUG 2>/dev/null || true
+    fi
+  fi
+
+  # Restore ZSH_DEBUG exactly
+  if [[ -n "${ZSH_DEBUG_ORIG_ZSH_DEBUG+x}" ]]; then
+    export ZSH_DEBUG="${ZSH_DEBUG_ORIG_ZSH_DEBUG}"
+  fi
+
+  # Restore PS4 (if originally set) or unset if it was absent
+  if [[ -n "${ZSH_DEBUG_ORIG_PS4+x}" ]]; then
+    if [[ -n "${ZSH_DEBUG_ORIG_PS4}" ]]; then
+      export PS4="${ZSH_DEBUG_ORIG_PS4}"
+    else
+      unset PS4 2>/dev/null || true
+    fi
+  fi
+
+  # Restore xtrace state if it differs now and user did not force override
+  if [[ -n "${ZSH_DEBUG_ORIG_XTRACE+x}" ]]; then
+    local current="${options[xtrace]}"
+    if [[ "${ZSH_DEBUG_ORIG_XTRACE}" == "on" && "$current" == "off" ]]; then
+      [[ "${ZSH_FORCE_XTRACE:-0}" == "1" ]] && set -x 2>/dev/null || true
+    elif [[ "${ZSH_DEBUG_ORIG_XTRACE}" == "off" && "$current" == "on" ]]; then
+      set +x 2>/dev/null || true
+    fi
+  fi
+
+  export ZSH_DEBUG_POLICY_RESET=1
+}
+fi
+
+# Apply the debug policy early (before plugins or other modules)
+zf::apply_debug_policy
+
+# Performance monitoring flag - set early to prevent module initialization errors
+export _PERFORMANCE_MONITORING_LOADED="${_PERFORMANCE_MONITORING_LOADED:-1}"
+
+# Set BREW_PREFIX early for module compatibility
+if [[ -z "${BREW_PREFIX:-}" ]]; then
+  if [[ -d "/opt/homebrew" ]]; then
+    export BREW_PREFIX="/opt/homebrew"
+  elif [[ -d "/usr/local" ]]; then
+    export BREW_PREFIX="/usr/local"
+  fi
+fi
+
+# Set DESK_ENV to empty to prevent undefined variable errors
+export DESK_ENV="${DESK_ENV:-}"
+
+# Set QUICKSTART_KIT_REFRESH_IN_DAYS to prevent undefined variable errors
+typeset -gi QUICKSTART_KIT_REFRESH_IN_DAYS=${QUICKSTART_KIT_REFRESH_IN_DAYS:-7}
+
+# ==============================================================================
+# REDESIGN CONFIGURATION (ALWAYS ACTIVE VIA SYMLINKS)
+# ==============================================================================
+# Note: The redesign configuration is now always active since .zshrc.pre-plugins.d/
+# and .zshrc.d/ are symlinked to their respective REDESIGN directories.
+# The old ZSH_ENABLE_*PLUGIN_REDESIGN flags are no longer used.
+
+# ==============================================================================
+# SPLASH SCREEN AND VISUAL CONTROL OPTIONS
+# ==============================================================================
+# Visual startup and user interface control flags with customizable defaults
+# Default: All visual features disabled (0) for minimal startup by default
+# Users can enable features by setting these to 1 in .zshenv.local or environment
+
+# Splash screen control
+# Note: ZSH_DISABLE_SPLASH=1 disables splash entirely
+# When ZSH_DISABLE_SPLASH=0 (default), splash displays with all visual elements
+# Individual visual controls only disable specific elements when explicitly set to 1
+export ZSH_DISABLE_SPLASH="${ZSH_DISABLE_SPLASH:-0}"
+export ZSH_ENABLE_HEALTH_CHECK="${ZSH_ENABLE_HEALTH_CHECK:-0}"
+export ZSH_DISABLE_STARSHIP=${ZSH_DISABLE_STARSHIP:-0}
+export ZSH_DISABLE_TIPS="${ZSH_DISABLE_TIPS:-0}"
+export ZSH_MINIMAL="${ZSH_MINIMAL:-0}"
+export FORCE_SPLASH="${FORCE_SPLASH:-1}"
+
+# Visual elements control
+# Note: 0 = show by default when splash is enabled, 1 = explicitly disable
+export ZSH_DISABLE_FASTFETCH="${ZSH_DISABLE_FASTFETCH:-0}"
+export ZSH_DISABLE_COLORSCRIPT="${ZSH_DISABLE_COLORSCRIPT:-0}"
+export ZSH_DISABLE_LOLCAT="${ZSH_DISABLE_LOLCAT:-0}"
+
+# Performance and logging control
+export ZF_ASSERT_EXIT="${ZF_ASSERT_EXIT:-0}"
+export ZF_WITH_TIMING_EMIT="${ZF_WITH_TIMING_EMIT:-auto}"
+export ZSH_PERF_TRACK="${ZSH_PERF_TRACK:-0}"
+export PERF_SEGMENT_LOG="${PERF_SEGMENT_LOG:-}"
+export PERF_SEGMENT_TRACE="${PERF_SEGMENT_TRACE:-0}"
+
+# Security and integrity control
+export ZSH_SEC_DISABLE_AUTO_DEDUP="${ZSH_SEC_DISABLE_AUTO_DEDUP:-0}"
+export ZSH_INTERACTIVE_OPTIONS_STRICT="${ZSH_INTERACTIVE_OPTIONS_STRICT:-0}"
+
+# Plugin and integration control
+export ZSH_AUTOSUGGEST_SSH_DISABLE="${ZSH_AUTOSUGGEST_SSH_DISABLE:-0}"
+export ZSH_SUPPRESS_WELCOME="${ZSH_SUPPRESS_WELCOME:-0}"
+export ZSH_ENABLE_ABBR="${ZSH_ENABLE_ABBR:-1}"
+export ZSH_ENABLE_NVM_PLUGINS="${ZSH_ENABLE_NVM_PLUGINS:-1}"
+export ZSH_NODE_LAZY="${ZSH_NODE_LAZY:-1}"
+
+# Development and performance control
+export PERF_CAPTURE_FAST="${PERF_CAPTURE_FAST:-0}"
+export PATH_CLEANUP="${PATH_CLEANUP:-1}"
+export DEBUG_ZSH_REDESIGN="${DEBUG_ZSH_REDESIGN:-0}"
+# BASH_COMPAT removed - was causing compatibility warnings
+export ZQS_COMPAT="${ZQS_COMPAT:-0}"
+
+# FALLBACK: Set essential flags manually (already indexed above)
+export DEBUG_ZSH_REDESIGN="${DEBUG_ZSH_REDESIGN:-0}"
+export ZSH_MINIMAL="${ZSH_MINIMAL:-0}"
+export FORCE_SPLASH="${FORCE_SPLASH:-1}"
+export ZSH_DISABLE_SPLASH="${ZSH_DISABLE_SPLASH:-0}"
+export ZSH_DISABLE_STARSHIP=${ZSH_DISABLE_STARSHIP:-0}
+
+# Set performance log path if performance tracking is enabled
+if [[ "$ZSH_PERF_TRACK" == "1" && -z "$PERF_SEGMENT_LOG" ]]; then
+    export PERF_SEGMENT_LOG="${ZSH_LOG_DIR}/perf-segments-${ZSH_SESSION_ID}.log"
+fi
+
+# Debug output for flag status
+if [[ "${ZSH_DEBUG:-0}" == "1" ]]; then
+  zf::debug "# [zshenv] ZSH_DISABLE_SPLASH=$ZSH_DISABLE_SPLASH"
+  zf::debug "# [zshenv] ZSH_ENABLE_HEALTH_CHECK=$ZSH_ENABLE_HEALTH_CHECK"
+  zf::debug "# [zshenv] ZSH_PERF_TRACK=$ZSH_PERF_TRACK"
+  zf::debug "# [zshenv] PERF_SEGMENT_LOG=$PERF_SEGMENT_LOG"
+fi
+
+# Composer home following XDG with safe fallback
+typeset -gx COMPOSER_HOME="${COMPOSER_HOME:-${XDG_DATA_HOME:-${HOME}/.local/share}/composer}"
+# Ensure directory exists with safe perms
+[[ -d $COMPOSER_HOME ]] || mkdir -p "$COMPOSER_HOME"
+# (Deferred vendor/bin PATH injection until after path helper functions load)
+
+# After PATH is fully defined, capture a snapshot and set an early sentinel
+typeset -gx ZQS_BASELINE_PATH_SNAPSHOT="$PATH"
+typeset -gx ZQS_EARLY_PATH_BOOTSTRAPPED=1
+# Keep a normalized array view for later merge/dedupe operations
+typeset -ga ZQS_BASELINE_path
+ZQS_BASELINE_path=("${(s.:.)PATH}")
+
+# Safe defaults for prompt variables to prevent nounset errors
+typeset -g RPS1="${RPS1-}"
+typeset -g RPS2="${RPS2-}"
+typeset -g RPS3="${RPS3-}"  # Referenced by Oh My Zsh git plugin async functions
+typeset -g RPS4="${RPS4-}"
+typeset -g RPS5="${RPS5-}"  # Additional prompt variables for completeness
+typeset -g PROMPT="${PROMPT-}"
+typeset -g RPROMPT="${RPROMPT-}"
+typeset -g PS1="${PS1-%# }"
+typeset -g PS2="${PS2-%_ }"
+typeset -g PS3="${PS3-?# }"
+typeset -g PS4="${PS4-+%N:%i> }"
+typeset -g vi_mode_in_opts="${vi_mode_in_opts-0}"
+
+# Guard oh-my-zsh root variable so zgenom-oh-my-zsh can reference $ZSH under set -u
+if [[ ! -v ZSH ]]; then
+  typeset -g ZSH=""
+fi
+
+# Guard oh-my-zsh custom directory variable ($ZSH_CUSTOM) early so numerous
+# upstream oh-my-zsh scripts that reference it under nounset do not explode.
+# If ZSH is empty (because oh-my-zsh not yet cloned) point custom dir at cache.
+if [[ ! -v ZSH_CUSTOM ]]; then
+  if [[ -n ${ZSH:-} ]]; then
+    typeset -g ZSH_CUSTOM="${ZSH}/custom"
+  else
+    typeset -g ZSH_CUSTOM="${ZSH_CACHE_DIR}/ohmyzsh-custom"
+  fi
+fi
+
+# Ensure the custom dir exists lazily (do not fail if cannot create)
+mkdir -p -- "$ZSH_CUSTOM" 2>/dev/null || true
+
+# ---------------------------------------------------------------------------
+# Oh My Zsh frequently references variables such as DISABLE_UPDATE_PROMPT and
+# the 'plugins' array before user config sets them. Under \`set -u\`, this causes
+# immediate aborts. Seed them to safe defaults early.
+# ---------------------------------------------------------------------------
+if [[ ! -v DISABLE_UPDATE_PROMPT ]]; then typeset -g DISABLE_UPDATE_PROMPT=0; fi
+if [[ ! -v DISABLE_AUTO_UPDATE ]]; then typeset -g DISABLE_AUTO_UPDATE=1; fi
+if [[ ! -v ENABLE_CORRECTION ]]; then typeset -g ENABLE_CORRECTION=0; fi
+if [[ ! -v COMPLETION_WAITING_DOTS ]]; then typeset -g COMPLETION_WAITING_DOTS=0; fi
+if [[ ! -v plugins ]]; then typeset -ga plugins; plugins=(); fi
+if [[ ! -v TERM_PROGRAM ]]; then typeset -g TERM_PROGRAM="unknown"; fi
+if [[ ! -v ZSH_COMPDUMP ]]; then typeset -g ZSH_COMPDUMP="${ZSH_CACHE_DIR}/.zcompdump"; fi
+if [[ ! -v CASE_SENSITIVE ]]; then typeset -g CASE_SENSITIVE=0; fi
+if [[ ! -v DISABLE_MAGIC_FUNCTIONS ]]; then typeset -g DISABLE_MAGIC_FUNCTIONS=0; fi
+if [[ ! -v INSIDE_EMACS ]]; then typeset -g INSIDE_EMACS=""; fi
+if [[ ! -v DISABLE_LS_COLORS ]]; then typeset -g DISABLE_LS_COLORS=0; fi
+if [[ ! -v ZSH_THEME ]]; then typeset -g ZSH_THEME=""; fi
+
+# Ensure nounset is off very early for plugin safety
+unsetopt UNSET 2>/dev/null || true
+
+## ---------------------------------------------------------------------------
+## Starship & prompt instrumentation guard block
+## Goal: Provide unconditional, nounset-safe first declarations for all custom
+## STARSHIP_CMD_* variables that our prompt or hooks may reference. Some third-
+## party plugins (or user experimentation) may enable \`set -u\` mid-startup or
+## temporarily \`unset\` these symbols; declaring them here (earliest practical
+## point) prevents cascading "parameter not set" errors during precmd/preexec.
+## ---------------------------------------------------------------------------
+
+# Core status (integer)
+
+if [[ ! -v STARSHIP_CMD_STATUS ]]; then typeset -gi STARSHIP_CMD_STATUS=0; fi
+
+# Additional timing / reason / job context (integers)
+if [[ ! -v STARSHIP_DURATION_MS ]]; then typeset -gi STARSHIP_DURATION_MS=0; fi
+if [[ ! -v STARSHIP_CMD_EXIT_REASON ]]; then typeset -gi STARSHIP_CMD_EXIT_REASON=0; fi
+if [[ ! -v STARSHIP_CMD_START_TIME ]]; then typeset -gi STARSHIP_CMD_START_TIME=0; fi
+if [[ ! -v STARSHIP_CMD_END_TIME ]]; then typeset -gi STARSHIP_CMD_END_TIME=0; fi
+if [[ ! -v STARSHIP_CMD_BG ]]; then typeset -gi STARSHIP_CMD_BG=0; fi
+if [[ ! -v STARSHIP_CMD_JOBS ]]; then typeset -gi STARSHIP_CMD_JOBS=0; fi
+if [[ ! -v STARSHIP_CMD_PIPESTATUS ]]; then typeset -gi STARSHIP_CMD_PIPESTATUS=0; fi
+if [[ ! -v STARSHIP_CMD_SIG ]]; then typeset -gi STARSHIP_CMD_SIG=0; fi
+if [[ ! -v STARSHIP_CMD_ERR ]]; then typeset -gi STARSHIP_CMD_ERR=0; fi
+if [[ ! -v STARSHIP_CMD_ERRNO ]]; then typeset -gi STARSHIP_CMD_ERRNO=0; fi
+if [[ ! -v STARSHIP_CMD_ERRCODE ]]; then typeset -gi STARSHIP_CMD_ERRCODE=0; fi
+if [[ ! -v STARSHIP_CMD_ERRLINE ]]; then typeset -gi STARSHIP_CMD_ERRLINE=0; fi
+
+# String/context fields
+if [[ ! -v STARSHIP_CMD_ERRMSG ]]; then typeset -g STARSHIP_CMD_ERRMSG=""; fi
+if [[ ! -v STARSHIP_CMD_ERRCTX ]]; then typeset -g STARSHIP_CMD_ERRCTX=""; fi
+if [[ ! -v STARSHIP_CMD_ERRFUNC ]]; then typeset -g STARSHIP_CMD_ERRFUNC=""; fi
+if [[ ! -v STARSHIP_CMD_ERRFILE ]]; then typeset -g STARSHIP_CMD_ERRFILE=""; fi
+
+export STARSHIP_CMD_STATUS
+
+# STARSHIP_PIPE_STATUS (from upstream starship usage) is usually an array; we
+# keep a separate guard but do not export. Only declare if truly unset to avoid
+# clobbering caller-provided type.
+if [[ ! -v STARSHIP_PIPE_STATUS ]]; then typeset -ga STARSHIP_PIPE_STATUS; STARSHIP_PIPE_STATUS=(); fi
+
+# Minimal defaults to avoid set -u trips for external configs
+: ${INTELLIJ_ENVIRONMENT_READER:=}
+: ${LSCOLORS:=}
+: ${LS_COLORS:=}
+: ${SSH_CLIENT:=}
+
+
+# Additional safe defaults for variables referenced by upstream ZQS/.zshrc and common plugins
+: ${SSH_AUTH_SOCK:=}
+: ${GENCOMPL_PY:=}
+: ${ZSH_COMPLETION_HACK:=}
+: ${TREE_IGNORE:=}
+: ${DESK_ENV:=}
+: ${GOPATH:=}
+: ${QUICKSTART_KIT_REFRESH_IN_DAYS:=}
+: ${ZGENOM_AUTO_ADD_BIN:=1}
+: ${BREW_PREFIX:=}
+: ${ONE_P_SOCK:=}
+: ${SHOWED_SCREEN_MESSAGE:=}
+: ${ZPFX:=${HOME}/.local}
+: ${ZGENOM_SOURCE_BIN:=0}
+: ${FAST_BASE_DIR:=}
+# zgenom option arrays and related vars: seed as empty to avoid nounset trips during save/init
+typeset -ga ZGENOM_LOADED 2>/dev/null || true
+: ${ZGEN_USE_PREZTO:=0}
+
+: ${ZGENOM_LOADED:=()}
+typeset -ga ZGEN_LOADED 2>/dev/null || true
+: ${ZGEN_LOADED:=()}
+typeset -ga ZGENOM_PLUGINS 2>/dev/null || true
+: ${ZGENOM_PLUGINS:=()}
+typeset -ga ZGEN_PREZTO_OPTIONS 2>/dev/null || true
+: ${ZGEN_PREZTO_OPTIONS:=()}
+typeset -ga ZGEN_PREZTO_LOAD 2>/dev/null || true
+: ${ZGEN_PREZTO_LOAD:=()}
+typeset -ga ZGEN_COMPLETIONS 2>/dev/null || true
+: ${ZGEN_COMPLETIONS:=()}
+typeset -ga zsh_loaded_plugins 2>/dev/null || true
+: ${zsh_loaded_plugins:=()}
+: ${ZGEN_CUSTOM_COMPDUMP:=}
+: ${ZGEN_PREZTO_LOAD_DEFAULT:=1}
+: ${ZGEN_OH_MY_ZSH_REPO:=ohmyzsh/ohmyzsh}
+: ${ZGEN_PREZTO_REPO:=sorin-ionescu}
+: ${ZGEN_COMPINIT_DIR_FLAG:=}
+: ${ZGEN_COMPINIT_FLAGS:=}
+
+
+# Positional parameter guard: ensure $1/$2 exist to avoid nounset in upstream alias/scripts
+if [[ -z ${1+x} || -z ${2+x} ]]; then
+    set -- "${1-}" "${2-}" "${@:3}"
+fi
+
+
+# fzf integration can reference FZF_PATH very early; provide a lightweight default
+if [[ -z "${FZF_PATH-}" ]]; then
+  if [[ -d "/opt/homebrew/opt/fzf" ]]; then
+    export FZF_PATH="/opt/homebrew/opt/fzf"
+  elif [[ -d "/usr/local/opt/fzf" ]]; then
+    export FZF_PATH="/usr/local/opt/fzf"
+  elif [[ -d "${HOME}/.fzf" ]]; then
+  export FZF_PATH="${HOME}/.fzf"
+  else
+    export FZF_PATH=""
+  fi
+fi
+
+# AWS and cloud service variables
+typeset -g AWS_PROFILE_REGION="${AWS_PROFILE_REGION-}"
+typeset -g AWS_PROFILE="${AWS_PROFILE-}"
+typeset -g AWS_DEFAULT_PROFILE="${AWS_DEFAULT_PROFILE-}"
+typeset -g AWS_ACCOUNT_ID="${AWS_ACCOUNT_ID-}"
+
+# Ruby version management variables
+typeset -g RUBY_AUTO_VERSION="${RUBY_AUTO_VERSION-}"
+typeset -g CHRUBY_VERSION="${CHRUBY_VERSION-}"
+typeset -g RUBY_VERSION="${RUBY_VERSION-}"
+
+# ZLE and widget variables (let ZLE initialize these itself)
+typeset -g ZLE_LINE_ABORTED="${ZLE_LINE_ABORTED-}"
+typeset -g ZLE_STATE="${ZLE_STATE-}"
+typeset -g KEYMAP="${KEYMAP-}"
+
+# DO NOT initialize widgets array here - this interferes with ZLE initialization
+# ZLE needs to control widgets array creation to properly populate built-in widgets
+
+# DO NOT initialize parameters or functions arrays - these are ZSH internals
+# ZSH manages these arrays automatically and pre-initialization can cause issues
+
+# ------------------------------------------------------------------------------
+# PATH Management Functions
+# ------------------------------------------------------------------------------
+# These functions automatically dedupe by removing the target path before
+# pre/appending it, as suggested by the user
+
+## [zf::path.remove]
+zf::path_remove() {
+  for ARG in "$@"; do
+    while [[ ":${PATH}:" == *":${ARG}:"* ]]; do
+      # Delete by parts to avoid removing subpaths accidentally
+      [[ "${PATH}" == "${ARG}" ]] && PATH=""
+      PATH=${PATH//":${ARG}:"/:}   # middle
+      PATH=${PATH/#"${ARG}:"/}     # beginning
+      PATH=${PATH/%":${ARG}"/}     # end
+      export PATH
+    done
+  done
+}
+
+## [zf::path.append]
+zf::path_append() {
+  for ARG in "$@"; do
+    zf::path_remove "${ARG}"
+    [[ -d "${ARG}" ]] && export PATH="${PATH:+"${PATH}:"}${ARG}"
+  done
+}
+
+## [zf::path.prepend]
+zf::path_prepend() {
+  for ARG in "$@"; do
+    zf::path_remove "${ARG}"
+    [[ -d "${ARG}" ]] && export PATH="${ARG}${PATH:+":${PATH}"}"
+  done
+}
+
+# All functions now use zf:: namespace - no compatibility wrappers
+
+zf::debug "[DEBUG] early .zshenv:" || true
+zf::debug "    ZDOTDIR=${ZDOTDIR}" || true
+zf::debug "    ZSH_CACHE_DIR=${ZSH_CACHE_DIR}" || true
+zf::debug "    ZSH_LOG_DIR=${ZSH_LOG_DIR}" || true
+
+# ------------------------------------------------------------------------------
+# Utility: PATH de-duplication (preserve first occurrence)
+# ------------------------------------------------------------------------------
+zf::path_dedupe() {
+  # Portable PATH de-duplication
+  local verbose=0 dry=0 arg p _before=0 _after=0 _x
+  for arg in "$@"; do
+    case "$arg" in
+      --verbose) verbose=1 ;;
+      --dry-run) dry=1 ;;
+    esac
+  done
+  local original="$PATH"
+  local IFS=:
+  local seen_list=""
+  for p in $PATH; do
+    [ -z "$p" ] && continue
+    case ":$seen_list:" in
+      *:"$p":*) continue ;;
+      *) seen_list="${seen_list:+$seen_list:}$p" ;;
+    esac
+  done
+  local deduped="$seen_list"
+  if [ "$dry" -eq 1 ]; then
+    printf '%s\n' "${deduped:-$original}"
+    return 0
+  fi
+  if [ "$deduped" != "$original" ]; then
+    PATH="$deduped"
+    export PATH
+  fi
+  PATH_DEDUP_DONE=1
+  if [ "$verbose" -eq 1 ]; then
+    IFS=:; for _x in $original; do _before=$((_before+1)); done
+    IFS=:; for _x in $deduped; do _after=$((_after+1)); done
+    printf '[path_dedupe] entries(before)=%s entries(after)=%s\n' "$_before" "$_after" >&2
+  fi
+}
+
+# Use zf::path_dedupe directly - no compatibility wrapper
+
+# Deduplicate initial PATH (idempotent)
+zf::path_dedupe >/dev/null 2>&1 || true
+
+# ------------------------------------------------------------------------------
+# PATH Display and Inspection Functions
+# ------------------------------------------------------------------------------
+# Comprehensive utilities for displaying and analyzing PATH:
+#   - zf::path_show:     Display PATH entries with optional numbering/colors
+#   - zf::path_find:     Find and highlight specific PATH entries
+#   - zf::path_position: Get numeric position(s) of directory in PATH
+#   - zf::path_verify:   Check if directory exists in PATH (exit code)
+#   - zf::path_which:    Show which PATH entry contains a command
+#
+# Wrapper functions for convenience:
+#   - path-show, path-find, path-position, path-verify, path-which
+# ------------------------------------------------------------------------------
+
+# Core: Display PATH entries with formatting options
+# Usage: zf::path_show [-n] [-c] [-h pattern] [-s start] [-e end]
+#   -n              Show line numbers
+#   -c              Use colors for numbering
+#   -h pattern      Highlight entries matching pattern
+#   -s start        Start at entry N (1-indexed)
+#   -e end          End at entry N (1-indexed)
+#   -H color        Highlight color (default: red)
+if ! typeset -f zf::path_show >/dev/null 2>&1; then
+zf::path_show() {
+  emulate -L zsh
+  local show_numbers=0 use_colors=0 highlight="" start=1 end=$#path
+  local highlight_color="red"
+
+  # Parse options
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -n) show_numbers=1; shift ;;
+      -c) use_colors=1; shift ;;
+      -h) highlight="$2"; shift 2 ;;
+      -H) highlight_color="$2"; shift 2 ;;
+      -s) start="$2"; shift 2 ;;
+      -e) end="$2"; shift 2 ;;
+      --) shift; break ;;
+      -*) print -u2 "Unknown option: $1"; return 1 ;;
+      *) break ;;
+    esac
+  done
+
+  # Validate range
+  [[ $start -lt 1 ]] && start=1
+  [[ $end -gt $#path ]] && end=$#path
+  [[ $start -gt $end ]] && { print -u2 "Invalid range: $start > $end"; return 1; }
+
+  # Display entries
+  local i p
+  for i in {$start..$end}; do
+    p="$path[$i]"
+
+    # Check if entry matches highlight pattern
+    local is_match=0
+    [[ -n $highlight && $p == *"$highlight"* ]] && is_match=1
+
+    # Build output line
+    if [[ $show_numbers -eq 1 ]]; then
+      if [[ $use_colors -eq 1 ]]; then
+        if [[ $is_match -eq 1 ]]; then
+          print -P "%F{cyan}$i:%f %F{$highlight_color}%B$p%b%f"
+        else
+          print -P "%F{cyan}$i:%f $p"
+        fi
+      else
+        if [[ $is_match -eq 1 ]]; then
+          print -P "$i: %F{$highlight_color}%B$p%b%f"
+        else
+          print "$i: $p"
+        fi
+      fi
+    else
+      if [[ $is_match -eq 1 ]]; then
+        print -P "%F{$highlight_color}%B$p%b%f"
+      else
+        print "$p"
+      fi
+    fi
+  done
+}
+fi
+
+# Core: Find and display PATH entries matching a pattern
+# Usage: zf::path_find [-n] [-c] [-i] pattern
+#   -n              Show line numbers
+#   -c              Use colors
+#   -i              Case-insensitive search
+#   -H color        Highlight color (default: red)
+if ! typeset -f zf::path_find >/dev/null 2>&1; then
+zf::path_find() {
+  emulate -L zsh
+  local show_numbers=1 use_colors=1 case_insensitive=0
+  local highlight_color="red" pattern=""
+
+  # Parse options
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -n) show_numbers=1; shift ;;
+      -c) use_colors=1; shift ;;
+      -i) case_insensitive=1; shift ;;
+      -H) highlight_color="$2"; shift 2 ;;
+      --) shift; break ;;
+      -*) print -u2 "Unknown option: $1"; return 1 ;;
+      *) pattern="$1"; shift; break ;;
+    esac
+  done
+
+  [[ -z $pattern ]] && { print -u2 "Usage: zf::path_find [-n] [-c] [-i] pattern"; return 1; }
+
+  # Search and display
+  local i p found=0
+  for i in {1..$#path}; do
+    p="$path[$i]"
+
+    # Match pattern (case-sensitive or insensitive)
+    local matches=0
+    if [[ $case_insensitive -eq 1 ]]; then
+      [[ ${p:l} == *${pattern:l}* ]] && matches=1
+    else
+      [[ $p == *$pattern* ]] && matches=1
+    fi
+
+    if [[ $matches -eq 1 ]]; then
+      found=1
+      if [[ $show_numbers -eq 1 ]]; then
+        if [[ $use_colors -eq 1 ]]; then
+          print -P "%F{cyan}$i:%f %F{$highlight_color}%B$p%b%f"
+        else
+          print -P "$i: %F{$highlight_color}%B$p%b%f"
+        fi
+      else
+        print -P "%F{$highlight_color}%B$p%b%f"
+      fi
+    fi
+  done
+
+  [[ $found -eq 0 ]] && { print -u2 "No PATH entries match: $pattern"; return 1; }
+  return 0
+}
+fi
+
+# Core: Get numeric position(s) of directory in PATH
+# Usage: zf::path_position directory
+# Returns: Space-separated list of positions (1-indexed)
+# Exit code: 0 if found, 1 if not found
+if ! typeset -f zf::path_position >/dev/null 2>&1; then
+zf::path_position() {
+  emulate -L zsh
+  [[ $# -eq 0 ]] && { print -u2 "Usage: zf::path_position directory"; return 1; }
+
+  local target="$1"
+  local -a positions=()
+  local i
+
+  for i in {1..$#path}; do
+    [[ $path[$i] == "$target" ]] && positions+=($i)
+  done
+
+  if [[ ${#positions} -gt 0 ]]; then
+    print -n "${positions[@]}"
+    return 0
+  else
+    return 1
+  fi
+}
+fi
+
+# Core: Verify if directory exists in PATH
+# Usage: zf::path_verify directory
+# Exit code: 0 if found, 1 if not found
+# Output: Position(s) and human-readable message
+if ! typeset -f zf::path_verify >/dev/null 2>&1; then
+zf::path_verify() {
+  emulate -L zsh
+  [[ $# -eq 0 ]] && { print -u2 "Usage: zf::path_verify directory"; return 1; }
+
+  local target="$1"
+  local positions
+
+  if positions=$(zf::path_position "$target" 2>/dev/null); then
+    local -a pos_array=(${(s: :)positions})
+    if [[ ${#pos_array} -eq 1 ]]; then
+      print -P "%F{green}✓%f $target is in PATH at position $positions"
+    else
+      print -P "%F{yellow}⚠%f $target appears ${#pos_array} times in PATH at positions: $positions"
+    fi
+    return 0
+  else
+    print -P "%F{red}✗%f $target is NOT in PATH"
+    return 1
+  fi
+}
+fi
+
+# Core: Show which PATH entry contains a command
+# Usage: zf::path_which [-v] command
+#   -v              Verbose output (show position number)
+if ! typeset -f zf::path_which >/dev/null 2>&1; then
+zf::path_which() {
+  emulate -L zsh
+  local verbose=0 cmd=""
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -v) verbose=1; shift ;;
+      --) shift; break ;;
+      -*) print -u2 "Unknown option: $1"; return 1 ;;
+      *) cmd="$1"; shift; break ;;
+    esac
+  done
+
+  [[ -z $cmd ]] && { print -u2 "Usage: zf::path_which [-v] command"; return 1; }
+
+  # Find command
+  local cmd_path
+  cmd_path=$(command -v "$cmd" 2>/dev/null) || { print -u2 "$cmd: not found"; return 1; }
+
+  # Get directory
+  local cmd_dir="${cmd_path:h}"
+
+  # Find position in PATH
+  local position
+  if position=$(zf::path_position "$cmd_dir" 2>/dev/null); then
+    if [[ $verbose -eq 1 ]]; then
+      print -P "%F{green}$cmd%f -> %F{cyan}$cmd_path%f"
+      print -P "  Directory: %F{yellow}$cmd_dir%f (position $position in PATH)"
+    else
+      print "$cmd_path"
+    fi
+    return 0
+  else
+    # Command exists but directory not in PATH (possible full path execution)
+    if [[ $verbose -eq 1 ]]; then
+      print -P "%F{green}$cmd%f -> %F{cyan}$cmd_path%f"
+      print -P "  Directory: %F{yellow}$cmd_dir%f %F{red}(not in PATH)%f"
+    else
+      print "$cmd_path"
+    fi
+    return 0
+  fi
+}
+fi
+
+# ------------------------------------------------------------------------------
+# Convenience Wrapper Functions
+# ------------------------------------------------------------------------------
+
+if ! typeset -f path-show >/dev/null 2>&1; then
+path-show() { zf::path_show "$@"; }
+fi
+
+if ! typeset -f path-find >/dev/null 2>&1; then
+path-find() { zf::path_find "$@"; }
+fi
+
+if ! typeset -f path-position >/dev/null 2>&1; then
+path-position() { zf::path_position "$@"; }
+fi
+
+if ! typeset -f path-verify >/dev/null 2>&1; then
+path-verify() { zf::path_verify "$@"; }
+fi
+
+if ! typeset -f path-which >/dev/null 2>&1; then
+path-which() { zf::path_which "$@"; }
+fi
+
+# ------------------------------------------------------------------------------
+# Resilient Script Directory Resolution
+# ------------------------------------------------------------------------------
+# Public helper (core): resolve_script_dir [<path_or_script>]
+#   - Resolves symlinks
+#   - Uses zsh parameter expansion ${(%):-%N} when no argument given
+#   - Returns canonical physical directory (pwd -P) or empty on failure
+# Namespaced convenience (preferred in modules): zf::script_dir [<path_or_script>]
+# ------------------------------------------------------------------------------
+if ! typeset -f zf::resolve_script_dir >/dev/null 2>&1; then
+zf::resolve_script_dir() {
+  (
+    emulate -L zsh
+    set -o no_unset
+    local src="${1:-${(%):-%N}}"
+    [[ -z "$src" ]] && { print -r -- "$PWD"; return 0; }
+    local link
+    while [[ -h "$src" ]]; do
+      link="$(readlink "$src" 2>/dev/null || true)"
+      [[ -z "$link" ]] && break
+      if [[ "$link" == /* ]]; then
+        src="$link"
+      else
+        src="${src:h}/$link"
+      fi
+    done
+    builtin cd -q "${src:h}" 2>/dev/null || { print -r -- "${src:h}"; return 0; }
+    pwd -P
+  )
+}
+fi
+# Use zf::resolve_script_dir directly - no compatibility wrappers
+if ! typeset -f zf::script_dir >/dev/null 2>&1; then
+zf::script_dir() { zf::resolve_script_dir "${1:-}"; }
+fi
+
+export ZSH_SCRIPT_DIR_HELPERS=1
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+# Harness Watchdog
+# Reworked: signal the parent interactive shell PID instead of exiting only the
+# background subshell. Prevents hangs when perf-capture harness shells stall.
+# Behavior:
+#   - If PERF_HARNESS_TIMEOUT_SEC > 0, record HARNESS_PARENT_PID=$$ (if unset) and
+#     launch a background watcher.
+#   - After sleep(timeout) if still a harness context (PERF_PROMPT_HARNESS or
+#     PERF_SEGMENT_LOG set) and parent PID alive, send TERM; after a short grace
+#     (default 0.4s) send KILL if still running.
+# Opt-out: set PERF_HARNESS_DISABLE_WATCHDOG=1
+# ------------------------------------------------------------------------------
+# (Removed deprecated performance harness watchdog block – retained minimal harness path only)
+# ------------------------------------------------------------------------------
+# Minimal perf harness mode (PERF_HARNESS_MINIMAL=1)
+# Skips heavy plugin/theme initialization; loads only prompt-ready instrumentation
+# and lightweight segment markers to allow perf-capture tooling to complete quickly
+# in constrained CI sandboxes. Must appear before plugin manager / theme logic.
+# ------------------------------------------------------------------------------
+if [[ "${PERF_HARNESS_MINIMAL:-0}" == "1" ]]; then
+  # Minimal perf harness path detected, but early return disabled to allow full interactive startup.
+  # (Original minimal fast path intentionally bypassed.)
+  ZSH_DEBUG=${ZSH_DEBUG:-0}
+  export ZSH_PERF_PROMPT_MARKERS=1
+  if [[ -f "${ZDOTDIR}/.zshrc.d.REDESIGN/95-prompt-ready.zsh" ]]; then
+    source "${ZDOTDIR}/.zshrc.d.REDESIGN/95-prompt-ready.zsh"
+  fi
+  if [[ -f "${ZDOTDIR}/tools/segment-lib.zsh" ]]; then
+    source "${ZDOTDIR}/tools/segment-lib.zsh"
+  fi
+  # return 0  # disabled
+fi
+
+# ------------------------------------------------------------------------------
+# Helpers: command existence caching and safe wrappers
+# ------------------------------------------------------------------------------
+declare -gA _zsh_command_cache
+
+# Primary (namespaced)
+zf::has_command() {
+  local cmd="$1"
+  local cache_key="cmd_$cmd"
+  [[ -n "$cmd" ]] || return 1
+  if [[ -n "${_zsh_command_cache[$cache_key]:-}" ]]; then
+    [[ "${_zsh_command_cache[$cache_key]}" == "1" ]] && return 0 || return 1
+  fi
+  if command -v "$cmd" >/dev/null 2>&1; then
+    _zsh_command_cache[$cache_key]="1"
+    return 0
+  else
+    _zsh_command_cache[$cache_key]="0"
+    return 1
+  fi
+}
+
+# Use zf::has_command directly - no compatibility wrappers
+# Note: zf::command_exists is an alias for zf::has_command
+zf::command_exists(){ zf::has_command "$@"; }
+
+# Git wrapper (namespaced)
+zf::safe_git() {
+  if [[ -x "/opt/homebrew/bin/git" ]]; then
+    /opt/homebrew/bin/git "$@"
+  elif [[ -x "/usr/local/bin/git" ]]; then
+    /usr/local/bin/git "$@"
+  else
+    command git "$@"
+  fi
+}
+# Use zf::safe_git directly - no compatibility wrappers
+
+# ------------------------------------------------------------------------------
+# ZGENOM / plugin manager variables (use ZDOTDIR to localize installs)
+# Prefer non-dot \`zgenom\` locations but keep backwards compatible fallbacks.
+# ------------------------------------------------------------------------------
+ZGENOM_PARENT_DIR="${ZDOTDIR}"
+
+# Resolve the zgenom source directory in priority order:
+# 1) localized vendored .zqs-zgenom under $ZDOTDIR (preferred for localized installs)
+# 2) localized zgenom under $ZDOTDIR (stow-friendly, no leading dot)
+# 3) localized legacy .zgenom under $ZDOTDIR
+# 4) user-home fallback ${HOME}/.zgenom
+# If none exist, default to the stow-friendly name under ZDOTDIR so callers
+# that write into the stowed config know the expected location.
+if [[ -n "${ZDOTDIR:-}" && -d "${ZDOTDIR}/.zqs-zgenom" ]]; then
+  ZGEN_SOURCE="${ZDOTDIR}/.zqs-zgenom"
+elif [[ -n "${ZDOTDIR:-}" && -d "${ZDOTDIR}/zgenom" ]]; then
+  ZGEN_SOURCE="${ZDOTDIR}/zgenom"
+elif [[ -n "${ZDOTDIR:-}" && -d "${ZDOTDIR}/.zgenom" ]]; then
+  ZGEN_SOURCE="${ZDOTDIR}/.zgenom"
+elif [[ -d "${HOME}/.zgenom" ]]; then
+  ZGEN_SOURCE="${HOME}/.zgenom"
+else
+  ZGEN_SOURCE="${ZDOTDIR}/zgenom"
+fi
+
+# Primary zgenom entry points derived from chosen source
+ZGENOM_SOURCE_FILE=$ZGEN_SOURCE/zgenom.zsh
+
+ZGEN_DIR="${ZGEN_SOURCE}"
+ZGEN_INIT="${ZGEN_DIR}/init.zsh"
+ZGENOM_BIN_DIR="${ZGEN_DIR}/_bin"
+
+export ZGENOM_PARENT_DIR ZGEN_SOURCE ZGENOM_SOURCE_FILE ZGEN_DIR ZGEN_INIT ZGENOM_BIN_DIR
+
+# Completion behavior control: set to 0 to avoid automatic compinit while debugging.
+# When you are confident completions/fpath are correct, you can set this to 1.
+export ZGEN_AUTOLOAD_COMPINIT="${ZGEN_AUTOLOAD_COMPINIT:-0}"
+
+# Debug info (only prints when ZSH_DEBUG=1)
+zf::debug "[DEBUG]: localized zgenom configuration:" || true
+zf::debug "    ZGEN_SOURCE=${ZGEN_SOURCE-}" || true
+zf::debug "    ZGENOM_SOURCE_FILE=${ZGENOM_SOURCE_FILE-}" || true
+zf::debug "    ZGEN_DIR=${ZGEN_DIR-}" || true
+zf::debug "    ZGEN_INIT=${ZGEN_INIT-}" || true
+zf::debug "    ZGEN_AUTOLOAD_COMPINIT=${ZGEN_AUTOLOAD_COMPINIT-}" || true
+
+# (Removed duplicate feature flag exports: ZSH_ENABLE_NVM_PLUGINS, ZSH_NODE_LAZY, ZSH_ENABLE_ABBR)
+
+# ------------------------------------------------------------------
+# Core PATH fallback (Stage 2 stabilization)
+# Ensures essential system utilities (awk, date, mkdir, sed, grep, etc.)
+# are available even in constrained early interactive shells invoked
+# by performance harnesses or baseline scripts. This appends missing
+# core directories without disturbing existing ordering when present.
+# Safe: only appends; does not reorder front-of-line priorities.
+# ------------------------------------------------------------------
+{
+  _core_added=0
+  for __core_dir in /usr/local/bin /opt/homebrew/bin /usr/bin /bin /usr/sbin /sbin; do
+    [ -d "$__core_dir" ] || continue
+    case ":$PATH:" in
+    *:"$__core_dir":*) ;;
+    *)
+      PATH="${PATH:+$PATH:}$__core_dir"
+      _core_added=$(( _core_added + 1 ))
+      ;;
+    esac
+  done
+  export PATH
+  unset __core_dir _core_added
+}
+
+# Optional: custom compdump location and compinit flags (keeps compdump in cache)
+export ZGEN_CUSTOM_COMPDUMP="${ZGEN_CUSTOM_COMPDUMP:-${ZSH_CACHE_DIR}/zcompdump_${ZSH_VERSION:-unknown}}"
+export ZGEN_COMPINIT_FLAGS="${ZGEN_COMPINIT_FLAGS:-${ZGEN_COMPINIT_FLAGS:-}}"
+
+# Optional: oh-my-zsh repo/branch defaults used by some starter plugin lists
+export ZGEN_OH_MY_ZSH_REPO="${ZGEN_OH_MY_ZSH_REPO:-ohmyzsh/ohmyzsh}"
+export ZGEN_OH_MY_ZSH_BRANCH="${ZGEN_OH_MY_ZSH_BRANCH:-master}"
+
+# Initialize fpath if not already set (prevents unbound variable errors)
+: ${fpath:=()}
+
+# Add vendored zgenom functions to fpath early if present (try source then dir)
+if [[ -d "${ZGEN_SOURCE}/functions" ]]; then
+  fpath=("${ZGEN_SOURCE}/functions" $fpath)
+elif [[ -d "${ZGEN_DIR}/functions" ]]; then
+  fpath=("${ZGEN_DIR}/functions" $fpath)
+fi
+
+if [[ -d "${ZDOTDIR}/.zsh_functions.d" ]]; then
+  fpath+="${ZDOTDIR}/.zsh_functions.d"
+fi
+
+# Now that path helper functions (zf::path_prepend etc.) are defined, safely add Composer vendor bin
+if [[ -d "$COMPOSER_HOME/vendor/bin" ]]; then
+  zf::path_prepend "$COMPOSER_HOME/vendor/bin"
+fi
+
+# ------------------------------------------------------------------------------
+# History defaults anchored in localized ZDOTDIR
+# ------------------------------------------------------------------------------
+export HISTFILE="${ZDOTDIR}/.zsh_history"
+export HISTSIZE="${HISTSIZE:-2000000}"
+export SAVEHIST="${SAVEHIST:-2000200}"
+export HISTTIMEFORMAT="${HISTTIMEFORMAT:-'%F %T %z %a %V '}"
+export HISTDUP="${HISTDUP:-erase}"
+
+# ------------------------------------------------------------------------------
+# Final early housekeeping
+# ------------------------------------------------------------------------------
+# Make sure .env files under ZDOTDIR/.env (if any) are loaded for both
+# interactive and non-interactive shells. These files are expected to contain
+# user-level environment variables and API keys the user wants available.
+if [[ -d "${ZDOTDIR}/.env" ]]; then
+  for env_file in "${ZDOTDIR}/.env"/*.env; do
+    [[ -r "$env_file" ]] && source "$env_file"
+  done
+  unset env_file
+fi
+
+# Export a stable EDITOR/VISUAL if not already set (best-effort)
+if [[ -z "${EDITOR:-}" ]]; then
+  for e in nvim vim nano; do
+    if command -v "$e" >/dev/null 2>&1; then
+      export EDITOR="$e"
+      break
+    fi
+  done
+fi
+if [[ -z "${VISUAL:-}" ]]; then
+  for v in "$EDITOR" code code-insiders; do
+    command -v "${v}" >/dev/null 2>&1 && { export VISUAL="$v"; break; } || true
+  done
+fi
+
+# Set a sane default LANG/LC if unset
+export LANG="${LANG:-en_GB.UTF-8}"
+export LC_ALL="${LC_ALL:-${LANG}}"
+
+# Ensure our path is exported (in case callers modified PATH after earlier changes)
+export PATH
+
+# ==============================================================================
+# Custom zf:: Functions (moved from various config files for global availability)
+# ==============================================================================
+
+# -----------------------------------------------------------------------------
+# Python UV Completion Functions
+# From .zshrc.add-plugins.d.00/136-dev-python-uv.zsh
+# -----------------------------------------------------------------------------
+
+zf::uv_completion_status() {
+  print "uv_present=${_ZF_UV} uvx_present=${_ZF_UVX} mode=${_ZF_UV_COMPLETION_MODE}"
+  if [[ "${_ZF_UV_COMPLETION_MODE}" == "file" ]]; then
+    print "path=${_uv_tmp_file}"
+  fi
+}
+
+# -----------------------------------------------------------------------------
+# Neovim Environment Functions
+# From .zshrc.d.00/340-neovim-environment.zsh
+# -----------------------------------------------------------------------------
+
+# Neovim config directory for profile-based aliases (exported for use in other modules)
+export _zf_nv_xdg_cfg="${XDG_CONFIG_HOME:-$HOME/.config}"
+
+zf::nvim_alias_if_exists() {
+  local prof_dir="$1" alname="$2"
+  [[ -z "$prof_dir" || -z "$alname" ]] && return 0
+  local full="${_zf_nv_xdg_cfg}/${prof_dir}"
+  if [[ -d "$full" ]]; then
+    alias "$alname"="NVIM_APPNAME=${prof_dir} nvim"
+  fi
+}
+
+# -----------------------------------------------------------------------------
+# Neovim Virtualenv Helper Functions
+# From .zshrc.d.00/345-neovim-helpers.zsh
+# -----------------------------------------------------------------------------
+
+# Internal: verbose conditional logging
+zf::nvimvenv::_log() {
+  if [[ ${ZF_NVIM_VENV_DEBUG:-0} == 1 ]]; then
+    zf::debug "$@"
+  fi
+}
+
+# Virtualenv-aware Neovim launcher
+# Usage: zf::nvimvenv [args...]
+# Behavior:
+#   - If $VIRTUAL_ENV points to a directory containing bin/activate, invoke Neovim
+#     inside a subshell with that environment active.
+#   - Else just exec Neovim normally (preserves current NVIM_APPNAME if set).
+zf::nvimvenv() {
+  local _args=("$@")
+  if [[ -z ${VIRTUAL_ENV:-} || ! -f ${VIRTUAL_ENV:-}/bin/activate ]]; then
+    zf::nvimvenv::_log "# [nvimvenv] No active virtualenv -> plain nvim"
+    command nvim "${_args[@]}"
+    return $?
+  fi
+  (
+    zf::nvimvenv::_log "# [nvimvenv] Activating virtualenv: ${VIRTUAL_ENV}"
+    # shellcheck disable=SC1090
+    source "${VIRTUAL_ENV}/bin/activate" 2>/dev/null || {
+      zf::nvimvenv::_log "# [nvimvenv] Failed to source activate; continuing without activation"
+    }
+    if [[ -f "${VIRTUAL_ENV}/.nvimvenv-pre" ]]; then
+      # shellcheck disable=SC1090
+      source "${VIRTUAL_ENV}/.nvimvenv-pre" 2>/dev/null || true
+    fi
+    command nvim "${_args[@]}"
+  )
+  local _rc=$?
+  zf::nvimvenv::_log "# [nvimvenv] Completed (exit=${_rc})"
+  return $_rc
+}
+
+# Provide a small helper to show effective resolution for diagnostics
+zf::nvimvenv:which() {
+  if alias nvim 2>/dev/null | grep -q "zf::nvimvenv"; then
+    echo "nvim -> zf::nvimvenv (alias active)"
+  else
+    echo "nvim -> $(command -v nvim 2>/dev/null || echo missing)"
+  fi
+  if [[ -n ${VIRTUAL_ENV:-} ]]; then
+    echo "VIRTUAL_ENV=${VIRTUAL_ENV}"
+  else
+    echo "VIRTUAL_ENV=(none)"
+  fi
+}
+
+# -----------------------------------------------------------------------------
+# Live Segment Capture Functions
+# From .zshrc.d.00/415-live-segment-capture.zsh
+# -----------------------------------------------------------------------------
+
+# Note: These functions depend on variables and helper functions defined in the
+# segment capture module. They will only work properly when that module is loaded.
+zf::segment_capture_start() {
+  [[ "${_ZF_SEGMENT_CAPTURE}" == "1" ]] || return 0
+  local name="${1:-}"
+  [[ -n "${name}" ]] || return 0
+  # Store start time only if not already set (first wins)
+  if [[ -z "${_ZF_SEGMENT_CAP_START[$name]:-}" ]]; then
+    _ZF_SEGMENT_CAP_START[$name]="$(_zf_seg_now)"
+    # Opportunistic RSS snapshot (ignore errors)
+    local _rss
+    _rss="$(_zf_seg_get_rss)"
+    [[ -n "${_rss}" ]] && _ZF_SEGMENT_CAP_RSS_START[$name]="$_rss"
+    _zf_seg_dbg "start name=${name} t=${_ZF_SEGMENT_CAP_START[$name]} rss=${_rss:-NA}"
+  fi
+}
+
+# Public API: end (optionally accept extra key=val pairs that become JSON fields)
+zf::segment_capture_end() {
+  [[ "${_ZF_SEGMENT_CAPTURE}" == "1" ]] || return 0
+  local name="${1:-}"
+  shift || true
+  [[ -n "${name}" ]] || return 0
+  local start="${_ZF_SEGMENT_CAP_START[$name]:-}"
+  [[ -n "${start}" ]] || return 0  # No start recorded
+  local end elapsed raw_elapsed_ms
+  end="$(_zf_seg_now)"
+  # Compute elapsed (seconds float)
+  elapsed="$(command awk -v s="${start}" -v e="${end}" 'BEGIN{printf("%.6f", (e - s))}')"
+  # Convert to ms
+  raw_elapsed_ms="$(command awk -v sec="${elapsed}" 'BEGIN{printf("%.3f", sec*1000)}')"
+
+  # Threshold filter
+  local min="${ZF_SEGMENT_CAPTURE_MIN_MS}"
+  # Use awk for numeric compare to preserve decimals
+  local pass
+  pass="$(command awk -v a="${raw_elapsed_ms}" -v b="${min}" 'BEGIN{if(a+0 >= b+0)print 1;else print 0}')"
+  if [[ "${pass}" != "1" ]]; then
+    _zf_seg_dbg "skip name=${name} elapsed_ms=${raw_elapsed_ms} (< ${min})"
+    unset "_ZF_SEGMENT_CAP_START[$name]"
+    return 0
+  fi
+
+  local ts pid layer_set json_name rss_start rss_end rss_delta
+  ts="$(_zf_seg_rfc3339)"
+  pid="$$"
+  layer_set="${_ZF_LAYER_SET:-null}"
+
+  json_name="$(_zf_seg_json_escape "${name}")"
+
+  # Optional RSS sampling (only if we had a start snapshot)
+  rss_start="${_ZF_SEGMENT_CAP_RSS_START[$name]:-}"
+  if [[ -n "${rss_start}" ]]; then
+    rss_end="$(_zf_seg_get_rss)"
+    if [[ -n "${rss_end}" && "${rss_end}" =~ ^[0-9]+$ && "${rss_start}" =~ ^[0-9]+$ ]]; then
+      rss_delta=$(( rss_end - rss_start ))
+    fi
+  fi
+
+  # Build base JSON
+  local json="{\"type\":\"segment\",\"version\":1,\"segment\":\"${json_name}\",\"elapsed_ms\":${raw_elapsed_ms},\"ts\":\"${ts}\",\"pid\":${pid},\"shell\":\"zsh\""
+  if [[ "${layer_set}" != "null" ]]; then
+    json="${json},\"layer_set\":\"$(_zf_seg_json_escape "${layer_set}")\""
+  fi
+  # Append RSS fields if available & consistent
+  if [[ -n "${rss_start}" && -n "${rss_end}" ]]; then
+    json="${json},\"rss_start_kb\":${rss_start},\"rss_end_kb\":${rss_end}"
+    [[ -n "${rss_delta}" ]] && json="${json},\"rss_delta_kb\":${rss_delta}"
+  fi
+
+  # Extra key=value pairs appended (simple alnum/underscore keys)
+  local kv k v
+  for kv in "$@"; do
+    k="${kv%%=*}"
+    v="${kv#*=}"
+    [[ -n "${k}" && "${k}" != "${v}" && "${k}" =~ ^[A-Za-z0-9_]+$ ]] || continue
+    json="${json},\"$(_zf_seg_json_escape "${k}")\":\"$(_zf_seg_json_escape "${v}")\""
+  done
+  json="${json}}"
+
+  # Rotate (if needed) before append
+  _zf_seg_maybe_rotate
+
+  # Append (best effort)
+  {
+    print -r -- "${json}"
+  } >>|"${ZF_SEGMENT_CAPTURE_FILE}" 2>/dev/null || {
+    _zf_seg_dbg "write-failed file=${ZF_SEGMENT_CAPTURE_FILE}"
+  }
+
+  _zf_seg_dbg "end name=${name} elapsed_ms=${raw_elapsed_ms}"
+  unset "_ZF_SEGMENT_CAP_START[$name]"
+  unset "_ZF_SEGMENT_CAP_RSS_START[$name]"
+}
+
+# Wrapper utility: captures a command block as a segment
+# Usage: zf::segment_capture_wrap segment:name command arg ...
+zf::segment_capture_wrap() {
+  [[ "${_ZF_SEGMENT_CAPTURE}" == "1" ]] || { shift || true; "$@"; return $?; }
+  local seg="${1:-}"
+  shift || true
+  [[ -n "${seg}" ]] || { "$@"; return $?; }
+  zf::segment_capture_start "${seg}"
+  # Execute command
+  "$@"
+  local rc=$?
+  # Record with rc
+  zf::segment_capture_end "${seg}" "rc=${rc}"
+  return $rc
+}
+
+# Flush placeholder (future batch / rotation logic)
+zf::segment_capture_flush() {
+  [[ "${_ZF_SEGMENT_CAPTURE}" == "1" ]] || return 0
+  # No buffering presently; reserved for future implementation
+  return 0
+}
+
+# Debug summary at end of .zshenv load when debugging is enabled
+if [[ "${ZSH_DEBUG}" == "1" ]]; then
+  zf::debug "[DEBUG] .zshenv completed: ZDOTDIR=${ZDOTDIR} ZSH_CACHE_DIR=${ZSH_CACHE_DIR} ZSH_LOG_DIR=${ZSH_LOG_DIR} PATH=${PATH}" >> "${ZSH_DEBUG_LOG}" 2>/dev/null || true
+fi
+
+# ==============================================================================
+# APPENDED CONTENT FROM .zshenv.01
+# ==============================================================================
+
+# --- Safe Package Manager Functions ---
+: "${ZF_PREFERRED_PKG_MANAGER:=auto}"
+
+zf::detect_pkg_manager() {
+  if [[ "$ZF_PREFERRED_PKG_MANAGER" != "auto" ]]; then
+    echo "$ZF_PREFERRED_PKG_MANAGER"
+    return 0
+  fi
+  if [[ -f "bun.lockb" ]]; then echo "bun";
+  elif [[ -f "pnpm-lock.yaml" ]]; then echo "pnpm";
+  elif [[ -f "yarn.lock" ]]; then echo "yarn";
+  else
+    if zf::has_command bun; then echo "bun";
+    elif zf::has_command pnpm; then echo "pnpm";
+    elif zf::has_command yarn; then echo "yarn";
+    else echo "npm"
+    fi
+  fi
+}
+
+zf::safe_pm_command() {
+  local cmd="$1"; shift; local args=("$@")
+  local pm="$(zf::detect_pkg_manager)"
+  local pm_exec
+  case "$pm" in "bun") pm_exec="bun" ;; *) pm_exec="$pm" ;; esac
+
+  case "$cmd" in
+    install|run|start|test|build|dev|serve|clean|format|lint|add|remove|update)
+      if [[ ! -f "package.json" ]]; then
+        echo "⚠️ Command '$pm $cmd' requires a package.json file." >&2
+        return 1
+      fi
+      ;;
+  esac
+  command "$pm_exec" "$cmd" "${args[@]}"
+}
+
+# New function for health checks
+zf::safe_pm_verify() {
+  local pm
+  pm=$(zf::detect_pkg_manager)
+  if zf::has_command "$pm"; then
+    command "$pm" --version >/dev/null 2&>1
+  fi
+}
+
+# --- Starship Prompt Initialization ---
+zf::starship_init_safe() {
+  [[ -n ${__ZF_PROMPT_INIT_DONE:-} ]] && return 0
+  typeset -g __ZF_PROMPT_INIT_DONE=1
+  command -v starship >/dev/null 2>&1 || return 1
+  local init_script
+  init_script="$(starship init zsh 2>/dev/null)"
+  [[ -z "$init_script" ]] && return 1
+  local safe_init_script
+  safe_init_script="${init_script//\${widgets\[zle-keymap-select\]#user:/}/\${widgets[zle-keymap-select]:-}}"
+  safe_init_script="${safe_init_script//\${widgets\[zle-keymap-select\]:-/}#user:/\${widgets[zle-keymap-select]:-}}"
+  eval "$safe_init_script"
+  export STARSHIP_SHELL=starship
+  typeset -f zf::debug >/dev/null 2>&1 && zf::debug "# [prompt] starship initialized safely"
+}
+
+# ==============================================================================
+# MAKE ALL ZSHENV FUNCTIONS READ-ONLY
+# ==============================================================================
+# Functions defined in .zshenv run BEFORE .zshrc and should be immutable.
+# Making them readonly prevents vendored .zshrc, plugins, or user scripts from
+# breaking core functionality (e.g., can_haz, path helpers, git helpers).
+# ==============================================================================
+
+# Make all zf:: and wrapper functions readonly (only if they exist)
+{
+  local func
+  for func in \
+    can_haz \
+    cdr \
+    cdrc \
+    cdrs \
+    git_common_dir \
+    git_common_root \
+    git_root \
+    git_super_root \
+    path-find \
+    path-position \
+    path-show \
+    path-verify \
+    path-which \
+    zf::add_segment \
+    zf::apply_debug_policy \
+    zf::can_haz \
+    zf::debug \
+    zf::detect_pkg_manager \
+    zf::git_common_dir \
+    zf::git_common_root \
+    zf::git_root \
+    zf::git_super_root \
+    zf::has_command \
+    zf::now_ms \
+    zf::nvim_alias_if_exists \
+    zf::nvimvenv \
+    zf::nvimvenv::_log \
+    zf::nvimvenv:which \
+    zf::path_append \
+    zf::path_dedupe \
+    zf::path_find \
+    zf::path_position \
+    zf::path_prepend \
+    zf::path_remove \
+    zf::path_show \
+    zf::path_verify \
+    zf::path_which \
+    zf::post_segment \
+    zf::pre_segment \
+    zf::reset_debug_policy \
+    zf::resolve_script_dir \
+    zf::safe_git \
+    zf::safe_pm_command \
+    zf::safe_pm_verify \
+    zf::script_dir \
+    zf::segment \
+    zf::segment_capture_end \
+    zf::segment_capture_flush \
+    zf::segment_capture_start \
+    zf::segment_capture_wrap \
+    zf::segment_fallback \
+    zf::starship_init_safe \
+    zf::update_git_root \
+    zf::uv_completion_status
+  do
+    if typeset -f "$func" >/dev/null 2>&1; then
+      readonly -f "$func" 2>/dev/null || true
+    fi
+  done
+} >/dev/null 2>&1
+
+# End of .zshenv.01

@@ -6,26 +6,7 @@
 # POST_PLUGIN_DEPS: 040-dev-php.zsh (Herd integration, Laravel aliases)
 # RESTART_REQUIRED: no
 
-# Check for post-plugin dependencies
-_check_php_post_plugin_deps() {
-  local missing_deps=()
-
-  # Check if Herd environment is configured
-  if [[ -z "${HERD_PHP_84_INI_SCAN_DIR:-}" ]]; then
-    missing_deps+=("Herd environment not configured in .zshrc.d")
-  fi
-
-  if [[ ${#missing_deps[@]} -gt 0 ]]; then
-    echo ""
-    echo "💡 OPTIONAL: PHP post-plugin enhancements available"
-    echo "📋 Recommended post-plugin additions:"
-    for dep in "${missing_deps[@]}"; do
-      echo "   - $dep"
-    done
-    echo "🔧 Add to .zshrc.d/ for enhanced PHP/Laravel integration"
-    echo ""
-  fi
-}
+zf::debug "# [dev-php] Loading PHP development environment..."
 
 # Skip if OMZ plugins disabled
 if [[ "${ZSH_DISABLE_OMZ_PLUGINS:-0}" == "1" ]]; then
@@ -33,36 +14,55 @@ if [[ "${ZSH_DISABLE_OMZ_PLUGINS:-0}" == "1" ]]; then
   return 0
 fi
 
-# Check for optional post-plugin enhancements
-_check_php_post_plugin_deps
+# P2.3 Optimization: Lazy-load PHP plugins on first use
+# Instead of loading immediately, create wrapper functions that load on-demand
+# Estimated savings: ~80ms
 
-zf::debug "# [dev-php] Loading PHP development environment..."
+: "${ZF_DISABLE_PHP_LAZY_LOAD:=0}"
 
-# Composer & Laravel (only if zgenom function present)
-if typeset -f zgenom >/dev/null 2>&1; then
-  zgenom oh-my-zsh plugins/composer || zf::debug "# [dev-php] composer plugin load failed"
-  zgenom oh-my-zsh plugins/laravel || zf::debug "# [dev-php] laravel plugin load failed"
+if [[ "${ZF_DISABLE_PHP_LAZY_LOAD}" == "1" ]]; then
+  # Eager loading (original behavior)
+  if typeset -f zgenom >/dev/null 2>&1; then
+    zgenom oh-my-zsh plugins/composer || zf::debug "# [dev-php] composer plugin load failed"
+    zgenom oh-my-zsh plugins/laravel || zf::debug "# [dev-php] laravel plugin load failed"
+    zf::debug "# [dev-php] PHP plugins loaded eagerly (lazy-load disabled)"
+  else
+    zf::debug "# [dev-php] zgenom absent; skipping composer/laravel plugins"
+  fi
 else
-  zf::debug "# [dev-php] zgenom absent; skipping composer/laravel plugins"
+  # Lazy loading via command wrappers
+  typeset -g _zf_php_plugins_loaded=0
+
+  _zf_load_php_plugins() {
+    if ((_zf_php_plugins_loaded == 0)) && typeset -f zgenom >/dev/null 2>&1; then
+      zf::debug "# [dev-php] Loading PHP plugins on-demand..."
+      zgenom oh-my-zsh plugins/composer || zf::debug "# [dev-php] composer plugin load failed"
+      zgenom oh-my-zsh plugins/laravel || zf::debug "# [dev-php] laravel plugin load failed"
+      _zf_php_plugins_loaded=1
+      zf::debug "# [dev-php] PHP plugins loaded on-demand"
+    fi
+  }
+
+  # Wrapper for composer command (primary trigger)
+  composer() {
+    _zf_load_php_plugins
+    unfunction composer 2>/dev/null || true
+    composer "$@"
+  }
+
+  # Optional: Wrapper for Laravel installer (if installed globally)
+  if command -v laravel >/dev/null 2>&1; then
+    laravel() {
+      _zf_load_php_plugins
+      unfunction laravel 2>/dev/null || true
+      laravel "$@"
+    }
+    zf::debug "# [dev-php] Created lazy-load wrappers for composer and laravel"
+  else
+    zf::debug "# [dev-php] Created lazy-load wrapper for composer"
+  fi
 fi
 
-# Herd integration (primary PHP environment)
-# Note: Herd NVM integration handled in 030-dev-node.zsh
-if [[ -d "${HOME}/Library/Application Support/Herd/config/nvm" ]]; then
-  zf::debug "# [dev-php] Herd environment detected"
-  export HERD_PHP_PATH="${HOME}/Library/Application Support/Herd/bin"
-  [[ -d "$HERD_PHP_PATH" ]] && export PATH="$HERD_PHP_PATH:$PATH"
-  # Herd per-version INI scan directory exports (guarded)
-  if [[ -d "${HOME}/Library/Application Support/Herd/config/php/84" ]]; then
-    export HERD_PHP_84_INI_SCAN_DIR="${HOME}/Library/Application Support/Herd/config/php/84/"
-    zf::debug "# [dev-php] Herd PHP 8.4 INI scan dir set"
-  fi
-  if [[ -d "${HOME}/Library/Application Support/Herd/config/php/85" ]]; then
-    export HERD_PHP_85_INI_SCAN_DIR="${HOME}/Library/Application Support/Herd/config/php/85/"
-    zf::debug "# [dev-php] Herd PHP 8.5 INI scan dir set"
-  fi
-fi
-
-zf::debug "# [dev-php] PHP development environment loaded"
+zf::debug "# [dev-php] PHP development environment configured"
 
 return 0

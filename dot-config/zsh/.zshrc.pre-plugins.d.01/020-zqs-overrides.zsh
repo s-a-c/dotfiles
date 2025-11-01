@@ -23,6 +23,29 @@ _ZF_ZQS_OVERRIDES_DONE=1
 
 typeset -f zf::debug >/dev/null 2>&1 || zf::debug() { :; }
 
+# --- Early command presence + PATH ensures ---
+
+# Reliable command-exists check using `command -v`
+if ! typeset -f zf::can_haz >/dev/null 2>&1; then
+zf::can_haz() {
+  command -v -- "$1" >/dev/null 2>&1
+}
+fi
+
+# Ensure callers use the robust checker
+if ! typeset -f can_haz >/dev/null 2>&1; then
+can_haz() { zf::can_haz "$@"; }
+fi
+
+# Make Homebrew bin available early so vendor checks (e.g., fzf) see it
+hb_bin="/opt/homebrew/bin"
+if [[ -d "$hb_bin" ]]; then
+  case ":$PATH:" in
+    (*":$hb_bin:"*) ;;  # already present
+    (*) PATH="$hb_bin:$PATH"; export PATH; hash -r ;;
+  esac
+fi
+
 # --- Override load-shell-fragments ---
 
 function load-shell-fragments() {

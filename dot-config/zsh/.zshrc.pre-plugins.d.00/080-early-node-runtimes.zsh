@@ -19,8 +19,8 @@ zf::debug "# [early-node-runtimes] begin"
 # =============================================================================
 
 # Herd NVM integration - Primary detection for Laravel developers
-if [[ -d "/Users/s-a-c/Library/Application Support/Herd/config/nvm" ]]; then
-  export NVM_DIR="/Users/s-a-c/Library/Application Support/Herd/config/nvm"
+if [[ -d "${HOME}/Library/Application Support/Herd/config/nvm" ]]; then
+  export NVM_DIR="${HOME}/Library/Application Support/Herd/config/nvm"
   export _ZF_HERD_NVM=1
   zf::debug "# [early-node-runtimes] Using Herd NVM at: $NVM_DIR"
 else

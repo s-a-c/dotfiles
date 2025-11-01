@@ -50,8 +50,8 @@ fi
 # --- Node.js and JavaScript Runtimes ---
 if [[ -z "${ZF_DISABLE_EARLY_JS:-}" ]]; then
   # Laravel Herd NVM integration
-  if [[ -d "/Users/s-a-c/Library/Application Support/Herd/config/nvm" ]]; then
-    export NVM_DIR="/Users/s-a-c/Library/Application Support/Herd/config/nvm"
+  if [[ -d "${HOME}/Library/Application Support/Herd/config/nvm" ]]; then
+    export NVM_DIR="${HOME}/Library/Application Support/Herd/config/nvm"
     export _ZF_HERD_NVM=1
     zf::debug "# [dev-environment] Using Herd NVM at: $NVM_DIR"
   # Fallback NVM detection
@@ -95,6 +95,19 @@ if [[ -d "${_zf_codeql_dir}" ]]; then
   zf::debug "# [dev-environment] CodeQL path configured"
 fi
 unset _zf_codeql_dir
+
+# Source nvm if NVM_DIR is set and the script exists
+if [[ -n "${NVM_DIR:-}" && -s "${NVM_DIR}/nvm.sh" ]]; then
+  # shellcheck source=/dev/null
+  source "${NVM_DIR}/nvm.sh"
+  zf::debug "# [dev-environment] Sourced nvm.sh"
+  # Source bash_completion if it exists
+  if [[ -s "${NVM_DIR}/bash_completion" ]]; then
+    # shellcheck source=/dev/null
+    source "${NVM_DIR}/bash_completion"
+    zf::debug "# [dev-environment] Sourced nvm bash_completion"
+  fi
+fi
 
 zf::debug "# [dev-environment] configuration complete"
 return 0
