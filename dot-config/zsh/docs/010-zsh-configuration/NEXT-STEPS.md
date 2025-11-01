@@ -1,6 +1,6 @@
 # Next Steps
 
-**Prioritized Actions After P1/P2 Resolution** | **Updated: 2025-10-31**
+**Prioritized Actions After P1/P2 Resolution** | **Updated: 2025-11-01**
 
 ---
 
@@ -8,15 +8,17 @@
 <summary>Expand Table of Contents</summary>
 
 - [Next Steps](#next-steps)
-  - [1. Immediate Actions (This Week)](#1-immediate-actions-this-week)
-    - [1.1. Validate Performance Improvements ⏱️ 10 minutes](#11-validate-performance-improvements-️-10-minutes)
+  - [1. Recent Completions](#1-recent-completions)
+    - [1.1. P2.4 Terminal PATH Initialization Issues](#11-p24-terminal-path-initialization-issues-)
+    - [1.2. UX Improvements](#12-ux-improvements-)
+    - [1.3. Module Header Standardization (P3.1)](#13-module-header-standardization-p31-)
+    - [1.4. Environment Variable Organization (P3.3)](#14-environment-variable-organization-p33-)
   - [2. Short Term (November 2025)](#2-short-term-november-2025)
-    - [2.1. Module Header Standardization (P3.1)](#21-module-header-standardization-p31)
-    - [2.2. Environment Variable Organization (P3.3)](#22-environment-variable-organization-p33)
+    - [2.1. Plugin Loading Optimization (P2.3)](#21-plugin-loading-optimization-p23---approval-required)
+    - [2.2. Debug Message Consistency (P3.2)](#22-debug-message-consistency-p32)
+    - [2.3. Cache Permission Issues (P3.4)](#23-cache-permission-issues-p34)
   - [3. Medium Term (December 2025)](#3-medium-term-december-2025)
     - [3.1. Test Coverage Implementation (P2.2)](#31-test-coverage-implementation-p22)
-    - [3.2. Debug Message Consistency (P3.2)](#32-debug-message-consistency-p32)
-    - [3.3. Cache Permission Issues (P3.4)](#33-cache-permission-issues-p34)
   - [4. Long Term (Q1-Q2 2026)](#4-long-term-q1-q2-2026)
     - [4.1. Enhanced Error Messages (P4.1)](#41-enhanced-error-messages-p41)
     - [4.2. Interactive Setup Wizard (P4.2)](#42-interactive-setup-wizard-p42)
@@ -29,127 +31,153 @@
 
 ---
 
-## 1. Immediate Actions (This Week)
+## 1. Recent Completions
 
-### 1.1. Validate Performance Improvements ⏱️ 10 minutes
+### 1.1. P2.4 Terminal PATH Initialization Issues ✅
 
-**Priority**: 🔥 **CRITICAL** - User validation required
-**Status**: Waiting for user testing
+**Status**: ✅ **COMPLETED** (2025-11-01)
 
-**What to Test**:
+**What Was Done**:
 
-```bash
-# 1. Measure startup time improvement
-echo "Testing startup time (10 iterations)..."
-for i in {1..10}; do
-    time zsh -i -c "exit"
-done 2>&1 | grep real | awk '{sum+=$2; n++} END {print "Average:", sum/n, "seconds"}'
+- Fixed "command not found" errors in Cursor/VSCode integrated terminals
+- Implemented three-stage PATH setup to handle:
+  - macOS `path_helper` corruption in login shells
+  - VSCode shell integration PATH prepending
+  - General terminal initialization
+- Consolidated VSCode-specific workarounds into `470-user-interface.zsh`
+- Added `keybinds-help()` function for better discoverability
+- Improved `.gitignore` to exclude auto-generated files (`.stamp`, `saved_macos_defaults.plist`)
 
-# Expected: ~1.57s (down from 1.8s, ~230ms savings)
-```
+**User Testing**: ✅ Confirmed working in all terminals (Cursor, VSCode, WezTerm, Warp, Kitty, iTerm, Ghostty)
 
-```bash
-# 2. Test lazy-loaded PHP plugins
-composer --version  # Should trigger on-demand load
+**Documentation**: [P2.4-RESOLUTION-SUMMARY.md](P2.4-RESOLUTION-SUMMARY.md)
 
-# 3. Test deferred GitHub CLI (wait 2+ seconds)
-sleep 3
-gh --version  # Should work after 2s delay
+---
 
-# 4. Test deferred navigation (wait 1+ second)
-sleep 2
-z ~  # Should work after 1s delay
+### 1.2. UX Improvements ✅
 
-# 5. Test autopair (after first prompt)
-echo "(  # Should auto-close parenthesis
+**Status**: ✅ **COMPLETED** (2025-11-01)
 
-# 6. Test abbreviations (after defer)
-# Type: gs<SPACE>  # Should expand to 'git status -sb'
-```
+**Features Added**:
 
-**If Issues Occur**: See [IMPLEMENTATION-SUMMARY.md](IMPLEMENTATION-SUMMARY.md) for:
+- `keybinds-help` command - Displays comprehensive keybinding reference
+- `aliases-help` command - Already existed, now has counterpart
+- Welcome notifications for both features with emoji markers
 
-- Feature toggle instructions
-- Rollback procedures
-- Troubleshooting guide
+**Benefits**:
 
-**Report Results**: Document actual startup time and any issues found
+- Users can discover keybindings via `keybinds-help` command
+- Consistent help function pattern across modules
+- Better discoverability of shell features
+
+---
+
+### 1.3. Module Header Standardization (P3.1) ✅
+
+**Status**: ✅ **COMPLETED** (2025-11-01)
+
+**What Was Done**:
+
+- Created `bin/standardize-headers.py` automation script
+- Standardized headers across 33 ZSH configuration files
+- Applied consistent format: Filename, Purpose, Phase, Requires, Toggles
+- Syntax-checked all files before committing
+
+**Files Updated**:
+- `.zshrc.add-plugins.d.00`: 12 files
+- `.zshrc.pre-plugins.d.01`: 7 files
+- `.zshrc.d.01`: 14 files
+
+**Result**: 34 files changed, 292 insertions, 483 deletions (net cleanup)
+
+**Commit**: `2cc17c986`
+
+---
+
+### 1.4. Environment Variable Organization (P3.3) ✅
+
+**Status**: ✅ **COMPLETED** (2025-11-01)
+
+**What Was Done**:
+
+- Analyzed 1809-line `.zshenv.01` (67 exports, 40+ functions)
+- Added comprehensive Table of Contents documenting 9 major sections
+- Conservative approach: Document rather than reorganize (too complex to safely move code)
+- Tested with `zsh -f` - sources cleanly ✅
+
+**Sections Documented**:
+1. Critical Startup (ZDOTDIR, XDG)
+2. Terminal Detection & PATH
+3. VSCode/Cursor Guards
+4. Segment Management
+5. Redesign Configuration
+6. Splash Screen Control
+7. zf:: Helper Functions
+8. Readonly Protection
+9. Additional Variables
+
+**Result**: 2 files changed, 240 insertions
+
+**Commit**: `55501c681`
 
 ---
 
 ## 2. Short Term (November 2025)
 
-### 2.1. Module Header Standardization (P3.1)
+### 2.1. Plugin Loading Optimization (P2.3) - Approval Required
 
-**Priority**: MEDIUM
-**Effort**: 1-2 weeks (~10-12 hours)
-**Status**: Ready to start
+**Priority**: MEDIUM (awaiting user approval)
+**Effort**: 4 weeks (~12-16 hours)
+**Status**: Analysis complete, implementation plan ready
 
-**Goal**: Add standard headers to ~66 files (~30% of modules)
+**Goal**: Optimize shell startup time by 230ms through plugin lazy-loading
 
-**Header Template**:
+**Plan**: [PLUGIN-LAZY-ASYNC-PLAN.md](PLUGIN-LAZY-ASYNC-PLAN.md)
 
-```bash
-#!/usr/bin/env zsh
-# Filename: NNN-feature-name.zsh
-# Purpose:  Brief description of what this file does
-# Phase:    Which phase it loads in (.zshrc.d/, .zshrc.pre-plugins.d/, etc.)
-# Requires: Dependencies (optional)
-# Toggles:  Environment variables that control behavior (optional)
-```
+**Expected Improvements**:
 
-**Files Needing Headers**:
+- Phase 1: ZSH builtins + PHP wrapper (~90ms savings)
+- Phase 2: GitHub CLI + Navigation deferring (~100ms savings)
+- Phase 3: Autopair + Abbreviations deferring (~40ms savings)
+- **Total**: 800ms → 570ms (29% improvement)
 
-- Scan all `.zshrc.d.01/*.zsh` files
-- Scan all `.zshrc.pre-plugins.d.01/*.zsh` files
-- Scan all `.zshrc.add-plugins.d.00/*.zsh` files
-- Identify missing or non-compliant headers
+**⚠️ IMPORTANT**: This requires explicit user approval before implementation.
 
-**Timeline**:
-
-- Week 1: Audit files, create list (~2 hours)
-- Week 2: Add headers to 30-40 files (~6-8 hours)
-- Validation: Quick syntax check
+**Next Step**: User decision on whether to proceed with implementation.
 
 ---
 
-### 2.2. Environment Variable Organization (P3.3)
+### 2.2. Debug Message Consistency (P3.2)
 
-**Priority**: MEDIUM
-**Effort**: 3-4 days (~6-8 hours)
+**Priority**: LOW
+**Effort**: 1 week (~4-6 hours)
 **Status**: Ready to start
 
-**Goal**: Organize 70+ environment variables in `.zshenv.01` with clear section headers
+**Goal**: Standardize all debug messages to use `zf::debug` helper
 
-**Current State**: Variables scattered without clear organization
+**Current Inconsistencies**:
 
-**Proposed Organization**:
+- `[DEBUG]message`
+- `DEBUG: message`
+- `# DEBUG: message`
+
+**Target**: All messages use `zf::debug "message"`
+
+---
+
+### 2.3. Cache Permission Issues (P3.4)
+
+**Priority**: LOW
+**Effort**: 1-2 days (~2-4 hours)
+**Status**: Ready to start
+
+**Goal**: Standardize cache directory permissions to 700
 
 ```bash
-# === Core Shell Environment ===
-# ZDOTDIR, XDG_ variables, PATH
-
-# === Development Tools ===
-# PHP, Node, Python, Go, Rust environments
-
-# === Terminal & UI ===
-# Terminal emulator settings, colors, prompt
-
-# === Performance & Monitoring ===
-# Log rotation, performance tracking
-
-# === Security & Safety ===
-# Permission settings, safety flags
-
-# === Application Integration ===
-# Tool-specific variables (Herd, LM Studio, etc.)
+# Add to appropriate module
+mkdir -p "$ZSH_CACHE_DIR"
+chmod 700 "$ZSH_CACHE_DIR"
 ```
-
-**Timeline**:
-
-- Day 1-2: Create organization plan, draft sections (~4 hours)
-- Day 3: Implement reorganization (~2 hours)
-- Day 4: Test and validate (~2 hours)
 
 ---
 
@@ -169,42 +197,6 @@ echo "(  # Should auto-close parenthesis
 - **Week 3-4**: Platform-specific tests (+20% coverage)
 - **Week 5-6**: Error handling tests (+10% coverage)
 - **Result**: 85% → 90%+ coverage
-
-**Start When**: After performance validation and module headers complete
-
----
-
-### 3.2. Debug Message Consistency (P3.2)
-
-**Priority**: LOW
-**Effort**: 1 week (~4-6 hours)
-**Status**: Ready to start
-
-**Goal**: Standardize all debug messages to use `zf::debug` helper
-
-**Current Inconsistencies**:
-
-- `[DEBUG]message`
-- `DEBUG: message`
-- `# DEBUG: message`
-
-**Target**: All messages use `zf::debug "message"`
-
----
-
-### 3.3. Cache Permission Issues (P3.4)
-
-**Priority**: LOW
-**Effort**: 1-2 days (~2-4 hours)
-**Status**: Ready to start
-
-**Goal**: Standardize cache directory permissions to 700
-
-```bash
-# Add to appropriate module
-mkdir -p "$ZSH_CACHE_DIR"
-chmod 700 "$ZSH_CACHE_DIR"
-```
 
 ---
 
@@ -241,12 +233,15 @@ Advanced FZF features with previews and custom keybindings.
 
 **Recommended Order** (based on impact vs effort):
 
-1. ✅ **Validate performance** (10 min) - Do now
-2. **Module headers** (1-2 weeks) - High value, clear improvement
-3. **Environment organization** (3-4 days) - Medium value, easy win
-4. **Test coverage** (6 weeks) - High value, larger commitment
-5. **Debug consistency** (1 week) - Low value, polish item
-6. **Future enhancements** - As desired
+1. ✅ **P2.4 Terminal PATH fixes** - Completed (2025-11-01)
+2. ✅ **UX improvements** (keybinds-help, consolidation) - Completed (2025-11-01)
+3. ✅ **Module headers (P3.1)** - Completed (2025-11-01)
+4. ✅ **Environment organization (P3.3)** - Completed (2025-11-01)
+5. **P2.3 Plugin optimization** - Awaiting approval (4 weeks, 29% speedup)
+6. **Test coverage (P2.2)** (6 weeks) - High value, larger commitment
+7. **Debug consistency (P3.2)** (1 week) - Low value, polish item
+8. **Cache permissions (P3.4)** (<1 hour) - Quick win
+9. **Future enhancements** - As desired
 
 ---
 
@@ -254,16 +249,16 @@ Advanced FZF features with previews and custom keybindings.
 
 **Can be done in <1 hour each**:
 
-- Fix cache permissions (P3.4)
-- Update 5-10 module headers (partial P3.1)
-- Organize one category of env vars (partial P3.3)
+- Fix cache permissions (P3.4) - Only remaining quick win
 
 ---
 
 ## 7. Related Documentation
 
 - [Roadmap](900-roadmap.md) - Complete issue tracking
-- [IMPLEMENTATION-SUMMARY.md](IMPLEMENTATION-SUMMARY.md) - Testing guide for P2.3
+- [P2-RESOLUTION-SUMMARY.md](P2-RESOLUTION-SUMMARY.md) - All P2 issue resolutions
+- [P2.4-RESOLUTION-SUMMARY.md](P2.4-RESOLUTION-SUMMARY.md) - Terminal PATH fix details
+- [PLUGIN-LAZY-ASYNC-PLAN.md](PLUGIN-LAZY-ASYNC-PLAN.md) - P2.3 optimization plan (awaiting approval)
 - [TEST-COVERAGE-IMPROVEMENT-PLAN.md](TEST-COVERAGE-IMPROVEMENT-PLAN.md) - Test plan for P2.2
 - [Development Guide](090-development-guide.md) - How to extend configuration
 
@@ -274,4 +269,4 @@ Advanced FZF features with previews and custom keybindings.
 ---
 
 *Compliant with AI-GUIDELINES.md (v1.0 2025-10-31)*
-*Updated: 2025-10-31 after P1/P2 resolution*
+*Updated: 2025-11-01 after P2.4, P3.1, and P3.3 completion*

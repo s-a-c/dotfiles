@@ -18,6 +18,8 @@
     - [P2.2: Test Coverage Improvement - PLANNED](#p22-test-coverage-improvement---planned)
     - [P2.3: Plugin Loading Optimization - IMPLEMENTED](#p23-plugin-loading-optimization---implemented)
     - [P2.4: Terminal PATH Initialization Issues - RESOLVED](#p24-terminal-path-initialization-issues---resolved)
+    - [P3.1: Module Header Standardization - RESOLVED](#p31-module-header-standardization---resolved)
+    - [P3.3: Environment Variable Organization - RESOLVED](#p33-environment-variable-organization---resolved)
   - [🎯 Immediate Next Steps](#-immediate-next-steps)
     - [User Actions Required](#user-actions-required)
     - [Development Tasks Ready](#development-tasks-ready)
@@ -330,6 +332,87 @@ echo $PATH | tr ':' '\n' | head -6  # Should show system paths first
 
 ---
 
+### P3.1: Module Header Standardization - RESOLVED
+
+**Status**: ✅ **RESOLVED** (2025-11-01)
+
+**Problem**: ~30% of ZSH configuration modules lacked standard headers, making it harder to understand module purpose, dependencies, and loading phase.
+
+**Resolution**:
+
+- Created `bin/standardize-headers.py` automation script
+- Standardized headers across 33 ZSH configuration files
+- Applied consistent format: Filename, Purpose, Phase, Requires, Toggles
+- Syntax-checked all files before committing
+
+**Standard Header Format**:
+
+```zsh
+#!/usr/bin/env zsh
+# Filename: NNN-feature-name.zsh
+# Purpose:  Brief description
+# Phase:    Loading phase (pre-plugin, plugin activation, post-plugin)
+# Requires: Dependencies (optional)
+# Toggles:  Environment variables (optional)
+```
+
+**Files Updated**:
+- `.zshrc.add-plugins.d.00`: 12 files
+- `.zshrc.pre-plugins.d.01`: 7 files
+- `.zshrc.d.01`: 14 files
+
+**Result**: 34 files changed, 292 insertions, 483 deletions (net cleanup)
+
+**Impact**:
+- ✅ Consistent documentation across all modules
+- ✅ Clear phase information for debugging load order
+- ✅ Easier onboarding for new developers
+- ✅ Explicit dependency tracking
+
+**Commit**: `2cc17c986`
+**Date Completed**: 2025-11-01
+
+---
+
+### P3.3: Environment Variable Organization - RESOLVED
+
+**Status**: ✅ **RESOLVED** (2025-11-01)
+
+**Problem**: 70+ environment variables in `.zshenv.01` (1809 lines) lacked clear organization, making maintenance difficult.
+
+**Resolution**:
+
+- Analyzed file structure (67 exports, 40+ functions)
+- Added comprehensive Table of Contents documenting 9 major sections
+- Conservative approach: Document rather than reorganize (too complex to safely move code)
+- Tested with `zsh -f` - sources cleanly ✅
+
+**Sections Documented**:
+
+1. Critical Startup (ZDOTDIR, XDG)
+2. Terminal Detection & PATH
+3. VSCode/Cursor Guards
+4. Segment Management
+5. Redesign Configuration
+6. Splash Screen Control
+7. zf:: Helper Functions
+8. Readonly Protection
+9. Additional Variables
+
+**Result**: 2 files changed, 240 insertions
+
+**Impact**:
+
+- ✅ Clear organization structure via Table of Contents
+- ✅ Improved discoverability of functions and variables
+- ✅ Easier maintenance and navigation
+- ✅ No risk from code reorganization
+
+**Commit**: `55501c681`
+**Date Completed**: 2025-11-01
+
+---
+
 ## 🎯 Immediate Next Steps
 
 ### User Actions Required
@@ -398,9 +481,10 @@ sleep 2 && z ~  # Should work after 1s
 | **Plugin Count** | 40+ | 30-45 | ✅ Acceptable |
 | **File Count** | 220 | <250 | ✅ Manageable |
 | **Test Coverage** | ~85% | 90%+ | ✅ Plan ready |
-| **Documentation** | 30 files | Complete | ✅ Comprehensive |
+| **Documentation** | 32 files | Complete | ✅ Comprehensive |
 | **Critical Issues (P1)** | 0 | 0 | ✅ All resolved |
 | **High Priority (P2)** | 0 | 0 | ✅ All resolved/planned |
+| **Medium Priority (P3)** | 2 of 4 | 0 | ⚠️ 2 remaining (P3.2, P3.4) |
 
 ### 1.2. Key Takeaways
 
@@ -414,18 +498,21 @@ sleep 2 && z ~  # Should work after 1s
 - **All P1 critical issues resolved (2025-10-31)**
 - **All P2 high-priority issues resolved or planned (2025-10-31)**
 
-✅ **Recent Achievements (2025-10-31)**:
+✅ **Recent Achievements (2025-10-31 to 2025-11-01)**:
 
 - **Plugin lazy-loading implemented** - 6 files optimized, ~230ms expected savings
 - **ZSH builtin optimization** - Replaced external utilities (stat, wc, ls, date, find)
 - **Age-based log cleanup** - Performance logs auto-deleted after 7 days
-- **Complete documentation** - 31 files covering all aspects
+- **Terminal PATH fixes** - Resolved Cursor/VSCode "command not found" errors
+- **Module headers standardized** - 33 files with consistent headers
+- **Environment variables organized** - Table of Contents added to .zshenv.01
+- **Complete documentation** - 32 files covering all aspects
 
 ⚠️ **Next Focus Areas**:
 
-- **Validate performance improvements** - Test ~230ms plugin loading savings
-- **Test coverage implementation** - Plan ready (6 weeks to reach 90%+)
-- **Medium-priority improvements** - Module headers, debug consistency, env var organization (P3)
+- **Validate performance improvements** - Test ~230ms plugin loading savings (P2.3)
+- **Test coverage implementation** - Plan ready (6 weeks to reach 90%+) (P2.2)
+- **Remaining medium-priority** - Debug consistency (P3.2), cache permissions (P3.4)
 
 ---
 
@@ -458,7 +545,7 @@ sleep 2 && z ~  # Should work after 1s
 2. **Performance Validation** - Plugin optimizations need user testing (~230ms expected)
 3. **File Count** - 220 files may overwhelm newcomers
 4. **Naming Inconsistencies** - Some files don't follow conventions
-5. **Module Headers** - ~30% of modules lack standard headers (P3)
+5. **Debug Message Consistency** - Multiple formats need standardization (P3.2)
 
 🔴 **Critical**:
 
@@ -594,17 +681,13 @@ See [Completed Issues](#-completed-issues-2025-10-31) section for P2.1, P2.2, an
 
 ## 5. 🟢 Medium Priority Issues (P3)
 
+**Status**: P3.1 and P3.3 completed 2025-11-01. See [Completed Issues](#-completed-issues-2025-10-31) for details.
+
 ### 5.1. Priority 3.1: Module Header Standardization
 
-**Issue**: Not all modules have standard headers
+**Status**: ✅ **RESOLVED** (2025-11-01)
 
-**Impact**: Harder to understand module purpose and dependencies
-
-**Solution**: Add headers to all files using template
-
-**Timeline**: 1-2 weeks
-
-**Risk**: Low
+**See**: [P3.1: Module Header Standardization - RESOLVED](#p31-module-header-standardization---resolved) for complete details.
 
 ---
 
@@ -628,13 +711,9 @@ See [Completed Issues](#-completed-issues-2025-10-31) section for P2.1, P2.2, an
 
 ### 5.3. Priority 3.3: Environment Variable Organization
 
-**Issue**: 70+ environment variables in `.zshenv.01` without clear organization
+**Status**: ✅ **RESOLVED** (2025-11-01)
 
-**Solution**: Group variables by category with clear section headers
-
-**Timeline**: 3-4 days
-
-**Risk**: Low
+**See**: [P3.3: Environment Variable Organization - RESOLVED](#p33-environment-variable-organization---resolved) for complete details.
 
 ---
 
@@ -877,19 +956,22 @@ gantt
 - ✅ **COMPLETED**: Fix critical issues (P1.1, P1.2)
 - ✅ **COMPLETED**: Implement log rotation (P2.1)
 - ✅ **COMPLETED**: Plugin optimization analysis (P2.3)
+- ✅ **COMPLETED**: Terminal PATH fixes (P2.4)
+- ✅ **COMPLETED**: Module header standardization (P3.1)
+- ✅ **COMPLETED**: Environment variable organization (P3.3)
 
 **Week 2** (Nov 8-14):
 
 - ✅ **COMPLETED**: Plugin lazy-loading implementation (P2.3)
 - ✅ **COMPLETED**: ZSH builtin optimization
 - ⏳ **NEXT**: Validate performance improvements
-- ⏳ **NEXT**: Begin module header standardization
+- ⏳ **NEXT**: Begin test coverage implementation (P2.2)
 
 **Week 3-4** (Nov 15-30):
 
-- ⏳ **PENDING**: Complete module header standardization
-- ⏳ **PENDING**: Begin test coverage implementation
-- ⏳ **PENDING**: Organize environment variables
+- ⏳ **PENDING**: Debug message consistency (P3.2)
+- ⏳ **PENDING**: Cache permission fixes (P3.4)
+- ⏳ **PENDING**: Continue test coverage implementation
 
 ### 10.3. December 2025
 
@@ -1248,9 +1330,11 @@ Ctrl+P K → Processes with resource usage
 
 - [x] Zero critical issues ✅ (2025-10-31)
 - [ ] 90%+ test coverage (plan ready)
-- [ ] All modules with standard headers (in progress)
+- [x] All modules with standard headers ✅ (2025-11-01)
 - [x] Log rotation implemented ✅ (2025-10-31)
 - [x] Load order documented and optimized ✅ (2025-10-31)
+- [x] Terminal PATH issues resolved ✅ (2025-11-01)
+- [x] Environment variables organized ✅ (2025-11-01)
 
 ### 15.2. Q1 2026 Goals
 

@@ -1,6 +1,6 @@
 # P2 High-Priority Issues - Resolution Summary
 
-**All P2 Issues Resolved or Planned** | **Completed: 2025-10-31**
+**All P2 Issues Resolved or Planned** | **Updated: 2025-11-01**
 
 ---
 
@@ -11,6 +11,7 @@
 | **P2.1** Log Accumulation | ✅ RESOLVED | Code implemented | [P2.1 Details](#p21-performance-log-accumulation) |
 | **P2.2** Test Coverage | ✅ PLANNED | Implementation ready | [TEST-COVERAGE-IMPROVEMENT-PLAN.md](TEST-COVERAGE-IMPROVEMENT-PLAN.md) |
 | **P2.3** Plugin Loading | ✅ ANALYZED | **Approval required** | [PLUGIN-LAZY-ASYNC-PLAN.md](PLUGIN-LAZY-ASYNC-PLAN.md) |
+| **P2.4** Terminal PATH Issues | ✅ RESOLVED | Code implemented | [P2.4 Details](#p24-terminal-path-initialization-issues) |
 
 ---
 
@@ -137,19 +138,69 @@ FZF integration                    N/A    - Users expect instant Ctrl+R/Ctrl+T
 
 ---
 
+## P2.4 Terminal PATH Initialization Issues
+
+**Status**: Resolved and Merged to Main (2025-11-01)
+
+**What Was Done**:
+
+- Fixed "command not found" errors in Cursor/VSCode integrated terminals
+- Implemented three-stage PATH setup to handle:
+  1. macOS `path_helper` corruption in login shells
+  2. VSCode shell integration PATH prepending
+  3. General terminal initialization
+- Consolidated VSCode-specific workarounds into single file
+- Added `keybinds-help()` function for better discoverability
+- Improved .gitignore to exclude auto-generated files
+
+**Root Cause**: Double PATH corruption:
+
+1. **macOS `path_helper`**: Runs in `/etc/zprofile` during login shells, reorders PATH
+2. **VSCode shell integration**: Prepends extension directories, pushing system paths back
+
+**Solution**: Three-stage PATH re-initialization:
+
+| Stage | File | Purpose |
+|-------|------|---------|
+| 1 | `.zshenv.01:26` | Initial PATH for all shells |
+| 2 | `.zprofile:16` | Fix after `path_helper` (login shells) |
+| 3 | `420-terminal-integration.zsh:54` | Fix after VSCode integration |
+
+**Code Locations**:
+
+- `.zshenv.01` - Early PATH initialization (line 26)
+- `$ZDOTDIR/.zprofile` - Login shell PATH fix (lines 11-16)
+- `.zshrc.d.01/420-terminal-integration.zsh` - VSCode PATH fix (lines 51-54)
+- `.zshrc.d.01/470-user-interface.zsh` - Consolidated VSCode splash logic
+- `.zshrc.d.01/490-keybindings.zsh` - Added `keybinds-help()` function
+- `.gitignore` - Added auto-generated file patterns
+
+**Testing**:
+
+User confirmed in all terminals:
+
+- ✅ Cursor/VSCode: No "command not found" errors
+- ✅ WezTerm, Warp, Kitty, iTerm, Ghostty: No regression
+- ✅ Splash screen and colorscript display correctly
+- ✅ Function definitions no longer printed during startup
+
+**Documentation**: [P2.4-RESOLUTION-SUMMARY.md](P2.4-RESOLUTION-SUMMARY.md)
+
+---
+
 ## Impact on Roadmap
 
 **Before P2 Resolution**:
 
 - Critical Issues (P1): 2 🔴
-- High Priority (P2): 3 ⚠️
+- High Priority (P2): 4 ⚠️
 - Documentation: 25 files
 
 **After P2 Resolution**:
 
 - Critical Issues (P1): 0 ✅
 - High Priority (P2): 0 ✅ (all resolved or planned)
-- Documentation: 30 files ✅
+- Documentation: 32 files ✅
 
 **New Documentation Created**:
 
@@ -157,10 +208,18 @@ FZF integration                    N/A    - Users expect instant Ctrl+R/Ctrl+T
 2. `TEST-COVERAGE-IMPROVEMENT-PLAN.md` - 6-week test improvement schedule
 3. `PLUGIN-LAZY-ASYNC-PLAN.md` - Plugin optimization with ZSH builtin analysis (revised)
 4. `P2-RESOLUTION-SUMMARY.md` - This summary document
+5. `P2.4-RESOLUTION-SUMMARY.md` - Terminal PATH initialization fix details
+6. `CURSOR-PATH-FIX.md` - Implementation details for P2.4
 
 **Code Changes**:
 
 1. `050-logging-and-monitoring.zsh` - Added age-based log cleanup (lines 81-87)
+2. `.zshenv.01` - Early PATH initialization (line 26), VSCode detection guard (lines 29-46)
+3. `$ZDOTDIR/.zprofile` - Login shell PATH fix (lines 11-16)
+4. `420-terminal-integration.zsh` - VSCode PATH fix and `add-zsh-hook` loading (lines 51-65)
+5. `470-user-interface.zsh` - Consolidated VSCode splash screen logic (lines 23-60)
+6. `490-keybindings.zsh` - Added `keybinds-help()` function and welcome message (lines 91-127)
+7. `.gitignore` - Added auto-generated file patterns (lines 543-545)
 
 ---
 
@@ -178,4 +237,5 @@ FZF integration                    N/A    - Users expect instant Ctrl+R/Ctrl+T
 ---
 
 *Compliant with AI-GUIDELINES.md (v1.0 2025-10-31)*
-*All P2 issues resolved or ready for implementation as of 2025-10-31*
+*All P2 issues resolved or ready for implementation as of 2025-11-01*
+*Last updated: 2025-11-01 after P2.4 resolution and merge to main*
