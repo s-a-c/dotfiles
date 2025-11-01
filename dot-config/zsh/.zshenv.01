@@ -5,6 +5,32 @@
 # -*- mode: sh; sh-shell: zsh; -*-
 
 # ==============================================================================
+# TABLE OF CONTENTS
+# ==============================================================================
+# This file contains environment variables, helper functions, and startup logic
+# that must be available to ALL ZSH shells (login, non-login, interactive, scripts).
+#
+# Major Sections:
+#   1. CRITICAL STARTUP STANZA - Essential environment (ZDOTDIR, XDG_ vars)
+#   2. TERMINAL DETECTION & PATH INITIALIZATION - PATH setup, terminal detection
+#   3. VSCODE/CURSOR INJECTION GUARD - Prevent double-.zshrc-sourcing issues
+#   4. SEGMENT MANAGEMENT HELPERS - Performance monitoring functions
+#   5. REDESIGN CONFIGURATION - Configuration system setup
+#   6. SPLASH SCREEN & VISUAL CONTROL - UI toggle options
+#   7. CORE ZF:: HELPER FUNCTIONS - Reusable utility functions
+#      - Path manipulation (zf::path_*)
+#      - Debug/logging (zf::debug, zf::now_ms)
+#      - Git helpers (zf::git_*, zf::safe_git)
+#      - Package manager detection (zf::detect_pkg_manager, zf::safe_pm_*)
+#      - Command checking (zf::has_command, zf::command_exists)
+#      - Segment capture/telemetry
+#   8. READONLY FUNCTION PROTECTION - Lock all zf:: functions
+#   9. ADDITIONAL ENVIRONMENT VARIABLES - Tool-specific settings
+#
+# Total: ~1800 lines, 67 export statements, 40+ helper functions
+# ==============================================================================
+
+# ==============================================================================
 # CRITICAL STARTUP STANZA - MUST BE FIRST
 # Sets essential environment variables before any other shell initialization
 # (Content from .zshenv.00)
