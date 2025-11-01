@@ -539,6 +539,11 @@ dist/
 dot-config/lmstudio/server-logs/
 dot-config/zsh/.zgenom
 dot-config/zsh/.zqs-zgenom
+
+# ZSH auto-generated files
+dot-config/zsh/.zsh/site-functions.homebrew/.stamp
+dot-config/zsh/saved_macos_defaults.plist
+
 # Ignore generated or local-only directories (symlink-heavy)
 .trunk/
 
