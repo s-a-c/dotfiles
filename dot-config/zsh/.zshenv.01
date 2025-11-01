@@ -512,6 +512,7 @@ fi
 export ZSH_CACHE_DIR="${ZSH_CACHE_DIR:-${XDG_CACHE_HOME:-${HOME/.cache}/zsh}}"
 export ZSH_LOG_DIR="${ZSH_LOG_DIR:-${ZSH_CACHE_DIR}/logs}"
 mkdir -p "$ZSH_CACHE_DIR" "$ZSH_LOG_DIR" 2>/dev/null || true
+chmod 700 "$ZSH_CACHE_DIR" "$ZSH_LOG_DIR" 2>/dev/null || true  # Secure permissions
 
 # Provide a short session id for debug/log filenames
 export ZSH_SESSION_ID="${ZSH_SESSION_ID:-$$-$(date +%s 2>/dev/null || echo 'unknown')}"
