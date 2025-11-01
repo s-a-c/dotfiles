@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
-# 230-dev-systems.zsh - Systems Languages (Rust + Go) for ZSH REDESIGN v2
-# Phase 3C: Rust + Go Environment
-# New module for systems programming languages
+# Filename: 230-dev-systems.zsh
+# Purpose:  New module for systems programming languages
+# Phase:    Plugin activation (.zshrc.add-plugins.d/)
 
 zf::debug "# [dev-systems] Loading systems programming languages..."
 

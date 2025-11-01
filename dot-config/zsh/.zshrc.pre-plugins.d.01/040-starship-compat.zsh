@@ -1,17 +1,8 @@
 #!/usr/bin/env zsh
-# 040-starship-compat.zsh
-#
-# Purpose:
-#   Provides backward compatibility for Starship prompt configuration and
-#   assists in diagnosing potential .zshenv multi-loading issues.
-#
-# Features:
-#   - Maps the legacy `ZF_ENABLE_STARSHIP=1` variable to the current
-#     `ZSH_DISABLE_STARSHIP=0` to ensure the prompt is enabled correctly
-#     if the old setting is still in use.
-#   - Includes a diagnostic marker to trace if .zshenv is loaded multiple times.
-#
-# Nounset Safety: All parameter expansions are guarded.
+# Filename: 040-starship-compat.zsh
+# Purpose:  Provides backward compatibility for Starship prompt configuration and Features: - Maps the legacy `ZF_ENABLE_STARSHIP=1` variable to the current `ZSH_DISABLE_STARSHIP=0` to ensure the prompt is enabled correctly if the old setting is still in use. Nounset Safety: All parameter expansions are guarded.
+# Phase:    Pre-plugin (.zshrc.pre-plugins.d/)
+# Toggles:  ZF_ENABLE_STARSHIP
 
 typeset -f zf::debug >/dev/null 2>&1 || zf::debug() { :; }
 

@@ -1,41 +1,9 @@
 #!/usr/bin/env zsh
-# 240-dev-python-uv.zsh - Python Packaging (uv / uvx) Integration for ZSH REDESIGN v2
-# Phase 3E (Development Environments – auxiliary)
-#
-# Purpose:
-#   Provide lightweight, nounset-safe integration for the `uv` Python packaging / project
-#   manager and its companion `uvx` wrapper:
-#     - Adds generated Zsh completion files (preferred) or eval-based fallback
-#     - Sets explicit presence markers for diagnostics / smoke tests
-#
-# Features:
-#   - Idempotent (safe to source multiple times)
-#   - Skippable via ZF_DISABLE_UV_COMPLETIONS=1
-#   - Attempts several generation syntaxes for future-proofing:
-#       uv generate-shell-completion zsh
-#       uv --generate-shell-completion zsh
-#       uv completion zsh (fallback / hypothetical)
-#   - Writes completion files to: ${XDG_CACHE_HOME:-$HOME/.cache}/zsh/completions
-#   - Ensures that completion directory is in $fpath (front) BEFORE compinit
-#
-# Environment / Marker Variables:
-#   _ZF_UV_COMPLETION_DONE=1        -> Module sourced
-#   _ZF_UV=1|0                      -> uv detected
-#   _ZF_UVX=1|0                     -> uvx detected
-#   _ZF_UV_COMPLETION_MODE=file|eval|none
-#
-# Nounset & Safety:
-#   All variable references guarded with ${var:-}. No unguarded assumptions about unset vars.
-#
-# Manual Validation:
-#   1) zmodload zsh/parameter  (if needed)
-#   2) echo $fpath | tr ' ' '\n' | grep completions
-#   3) compinit (if not already) then attempt: uv <TAB>
-#
-# Removal / Cleanup:
-#   Generated completion scripts live under cache; clearing ${XDG_CACHE_HOME}/zsh/completions
-#   removes them safely. They are recreated on next shell start if still needed.
-#
+# Filename: 240-dev-python-uv.zsh
+# Purpose:  Provide lightweight, nounset-safe integration for the `uv` Python packaging / project manager and its companion `uvx` wrapper: - Adds generated Zsh completion files (preferred) or eval-based fallback - Sets explicit presence markers for diagnostics / smoke tests Features: - Idempotent (safe to source multiple times) - Skippable via ZF_DISABLE_UV_COMPLETIONS=1 - Attempts several generation syntaxes for future-proofing: uv generate-shell-completion zsh uv --generate-shell-completion zsh uv completion zsh (fallback / hypothetical) - Writes completion files to: ${XDG_CACHE_HOME:-$HOME/.cache}/zsh/completions - Ensures that completion directory is in $fpath (front) BEFORE compinit
+# Phase:    Plugin activation (.zshrc.add-plugins.d/)
+# Toggles:  ZF_DISABLE_UV_COMPLETIONS
+
 # ------------------------------------------------------------------------------
 
 # Skip if user explicitly disabled this feature

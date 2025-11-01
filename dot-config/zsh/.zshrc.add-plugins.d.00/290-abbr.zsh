@@ -1,45 +1,9 @@
 #!/usr/bin/env zsh
-# 290-abbr.zsh - Optional Abbreviation Expansion (olets/zsh-abbr)
-# Phase 7 (Optional Enhancements)
-#
-# Purpose:
-#   Integrate the zsh-abbr plugin (if available) in an idempotent, nounset-safe
-#   manner, providing a modern abbreviation system without impacting core shell
-#   stability or startup when absent.
-#
-# Features:
-#   - Safe early environment variable exports controlling plugin behavior
-#   - Dual load strategy:
-#       (a) Preferred: zgenom managed (if function present)
-#       (b) Fallback: manual source from discovered plugin path
-#   - Marker variables for diagnostics & smoke tests
-#   - No-op if explicitly disabled by user (ZF_DISABLE_ABBR=1)
-#
-# Environment / Toggle Variables:
-#   ZF_DISABLE_ABBR=1            -> Skip all abbreviation setup
-#   ZF_ABBR_DEBUG=1              -> Force ABBR_DEBUG=1 (verbose plugin logging)
-#   ZF_ABBR_NO_DEFAULT_BINDS=1   -> Suppress default key bindings
-#
-# Marker Variables (exported):
-#   _ZF_ABBR_DONE=1              -> This module has been processed
-#   _ZF_ABBR=1|0                 -> Abbreviation system loaded (1) or not (0)
-#   _ZF_ABBR_MODE=managed|manual -> Load path (if loaded)
-#
-# Nounset Safety:
-#   All variable references guarded with ${var:-}; no unbound parameter errors
-#
-# Idempotency:
-#   Re-sourcing is a no-op (guard sentinel). Uses only additive exports/aliases.
-#
-# Reference:
-#   Legacy configuration details captured from historical plugin integration blocks
-#   (see: legacy disabled plugin environment modules).
-#
-# Validation (Manual):
-#   1) Run: `typeset -f abbr >/dev/null && echo OK`
-#   2) Create a test abbreviation: `abbr -g hw='echo hello world'`
-#      Then type: hw<SPACE> -> should expand.
-#
+# Filename: 290-abbr.zsh
+# Purpose:  Integrate the zsh-abbr plugin (if available) in an idempotent, nounset-safe manner, providing a modern abbreviation system without impacting core shell stability or startup when absent. Features: - Safe early environment variable exports controlling plugin behavior - Dual load strategy: (a) Preferred: zgenom managed (if function present) (b) Fallback: manual source from discovered plugin path - Marker variables for diagnostics & smoke tests - No-op if explicitly disabled by user (ZF_DISABLE_ABBR=1) Environment / Toggle Variables: ZF_DISABLE_ABBR=1            -> Skip all abbreviation setup ZF_ABBR_DEBUG=1              -> Force ABBR_DEBUG=1 (verbose plugin logging)
+# Phase:    Plugin activation (.zshrc.add-plugins.d/)
+# Toggles:  ZF_ABBR_DEBUG, ZF_ABBR_NO_DEFAULT_BINDS, ZF_DISABLE_ABBR
+
 # -----------------------------------------------------------------------------
 
 # Idempotency guard

@@ -1,19 +1,7 @@
 #!/usr/bin/env zsh
-# 490-keybindings.zsh
-#
-# Purpose:
-#   Ensures a consistent and powerful keybinding experience by forcing Emacs
-#   mode and applying fixes for modern terminals and complex prompts like Starship.
-#   This script is loaded late to override any conflicting settings from plugins.
-#
-# Features:
-#   - Forces `emacs` keymap to be active.
-#   - Binds arrow keys, Home, End, Delete, and Page Up/Down to multiline-aware
-#     ZLE widgets for correct cursor behavior.
-#   - Includes enhanced cursor positioning widgets (`beginning-of-line-starship`,
-#     `end-of-line-starship`) to fix issues with Starship's prompt.
-#   - Provides diagnostic ZLE widgets (`_zle_diag_keyseq`, `_zle_bindkey_suggest`)
-#     for debugging key escape sequences.
+# Filename: 490-keybindings.zsh
+# Purpose:  Ensures a consistent and powerful keybinding experience by forcing Emacs mode and applying fixes for modern terminals and complex prompts like Starship. This script is loaded late to override any conflicting settings from plugins. Features: - Forces `emacs` keymap to be active. - Binds arrow keys, Home, End, Delete, and Page Up/Down to multiline-aware ZLE widgets for correct cursor behavior. - Includes enhanced cursor positioning widgets (`beginning-of-line-starship`, `end-of-line-starship`) to fix issues with Starship's prompt. - Provides diagnostic ZLE widgets (`_zle_diag_keyseq`, `_zle_bindkey_suggest`) for debugging key escape sequences. --- Force Emacs Mode ---
+# Phase:    Post-plugin (.zshrc.d/)
 
 # --- Force Emacs Mode ---
 bindkey -e

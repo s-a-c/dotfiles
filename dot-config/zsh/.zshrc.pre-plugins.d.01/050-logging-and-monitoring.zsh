@@ -1,21 +1,9 @@
 #!/usr/bin/env zsh
-# 050-logging-and-monitoring.zsh
-#
-# Purpose:
-#   Sets up logging and performance monitoring infrastructure. This script
-#   handles log rotation to prevent unbounded growth of log files and loads
-#   the advanced segment library for detailed performance tracking.
-#
-# Features:
-#   - Log rotation for key Zsh logs (debug, starship, performance, etc.).
-#   - Configurable rotation thresholds, limits, and targets via environment variables.
-#   - Pure Zsh implementation with no external dependencies beyond coreutils.
-#   - Loads the advanced segment library (`tools/segment-lib.zsh`) if available,
-#     falling back to core functions defined in .zshenv.
-#
-# Nounset Safety: All parameter expansions are guarded.
+# Filename: 050-logging-and-monitoring.zsh
+# Purpose:  Sets up logging and performance monitoring infrastructure. This script handles log rotation to prevent unbounded growth of log files and loads the advanced segment library for detailed performance tracking. Features: - Log rotation for key Zsh logs (debug, starship, performance, etc.). - Configurable rotation thresholds, limits, and targets via environment variables. - Pure Zsh implementation with no external dependencies beyond coreutils. Nounset Safety: All parameter expansions are guarded. Idempotency Guard
+# Phase:    Pre-plugin (.zshrc.pre-plugins.d/)
+# Toggles:  ZF_LOG_ROTATION_ENABLE, ZF_LOG_ROTATION_FORCE, ZF_LOG_ROTATION_LIMIT
 
-# Idempotency Guard
 [[ -n ${_ZF_LOGGING_MONITORING_DONE:-} ]] && return 0
 _ZF_LOGGING_MONITORING_DONE=1
 

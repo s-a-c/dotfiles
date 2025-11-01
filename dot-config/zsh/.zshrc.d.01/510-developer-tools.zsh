@@ -1,15 +1,7 @@
 #!/usr/bin/env zsh
-# 510-developer-tools.zsh
-#
-# Purpose:
-#   Configures environment and PATH for various developer tools, including
-#   Laravel Herd, LM Studio, and Console Ninja.
-#
-# Features:
-#   - Detects Laravel Herd and sources its specific shell configuration.
-#   - Adds Herd's binary directory to the PATH.
-#   - Adds LM Studio's binary directory to the PATH if it exists.
-#   - Adds Console Ninja's binary directory to the PATH if it exists.
+# Filename: 510-developer-tools.zsh
+# Purpose:  Configures environment and PATH for various developer tools, including Laravel Herd, LM Studio, and Console Ninja. Features: - Detects Laravel Herd and sources its specific shell configuration. - Adds Herd's binary directory to the PATH. - Adds LM Studio's binary directory to the PATH if it exists. - Adds Console Ninja's binary directory to the PATH if it exists.
+# Phase:    Post-plugin (.zshrc.d/)
 
 typeset -f zf::debug >/dev/null 2>&1 || zf::debug() { :; }
 

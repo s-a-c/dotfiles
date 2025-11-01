@@ -1,18 +1,8 @@
 #!/usr/bin/env zsh
-# 430-navigation-tools.zsh
-#
-# Purpose:
-#   Configures and initializes modern navigation tools like `zoxide` and `fzf`
-#   to enhance shell productivity.
-#
-# Features:
-#   - `zoxide`: Initializes the smart `cd` command.
-#   - `fzf`: Sets up keybindings (Ctrl-T, Ctrl-R, Alt-C) and fuzzy completions.
-#   - Configurable `FZF_DEFAULT_OPTS` for a consistent look and feel.
-#
-# Toggles:
-#   - `ZF_DISABLE_NAVIGATION=1`: Disables zoxide integration.
-#   - `ZF_DISABLE_FZF=1`: Disables fzf integration.
+# Filename: 430-navigation-tools.zsh
+# Purpose:  Configures and initializes modern navigation tools like `zoxide` and `fzf` to enhance shell productivity. Features: - `zoxide`: Initializes the smart `cd` command. - `fzf`: Sets up keybindings (Ctrl-T, Ctrl-R, Alt-C) and fuzzy completions. - Configurable `FZF_DEFAULT_OPTS` for a consistent look and feel. Toggles: - `ZF_DISABLE_NAVIGATION=1`: Disables zoxide integration. - `ZF_DISABLE_FZF=1`: Disables fzf integration.
+# Phase:    Post-plugin (.zshrc.d/)
+# Toggles:  ZF_DISABLE_FZF, ZF_DISABLE_NAVIGATION
 
 typeset -f zf::debug >/dev/null 2>&1 || zf::debug() { :; }
 

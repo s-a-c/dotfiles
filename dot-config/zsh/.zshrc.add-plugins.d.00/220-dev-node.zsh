@@ -1,13 +1,8 @@
 #!/usr/bin/env zsh
-# 220-dev-node.zsh - Node.js + Bun (+ PNPM) Development Environment for ZSH REDESIGN v2
-# Phase 3B: Node.js + Bun Environment
-# Refactored from legacy 010-add-plugins.zsh (lines 75-82)
-# PRE_PLUGIN_DEPS: 050-dev-node.zsh (NVM environment variables)
-# POST_PLUGIN_DEPS: none
-# RESTART_REQUIRED: yes-if-pre-missing
-# D11 Override: PNPM supplemental flags block (opt-out) with validation marker `_ZF_PNPM_FLAGS`
+# Filename: 220-dev-node.zsh
+# Purpose:  D11 Override: PNPM supplemental flags block (opt-out) with validation marker `_ZF_PNPM_FLAGS`
+# Phase:    Plugin activation (.zshrc.add-plugins.d/)
 
-# Check for pre-plugin dependencies
 _check_node_pre_plugin_deps() {
   local missing_deps=()
 

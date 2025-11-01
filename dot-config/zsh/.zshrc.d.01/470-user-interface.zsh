@@ -1,23 +1,8 @@
 #!/usr/bin/env zsh
-# 470-user-interface.zsh
-#
-# Purpose:
-#   Manages the user interface elements of the shell, primarily the startup
-#   splash screen. This script is designed to provide a visually appealing
-#   welcome message without interfering with shell performance or prompt rendering.
-#
-# Features:
-#   - Displays a splash screen on the first interactive shell launch.
-#   - The splash screen is executed immediately during startup to prevent
-#     cursor positioning issues with the first prompt.
-#   - Integrates `colorscript`, `fastfetch`, and `lolcat` if available for a
-#     richer visual experience.
-#   - Provides a clean, informative fallback if optional tools are not installed.
-#
-# Toggles:
-#   - `NO_SPLASH=1` or `ZF_NO_SPLASH=1`: Disables the splash screen entirely.
+# Filename: 470-user-interface.zsh
+# Purpose:  Manages the user interface elements of the shell, primarily the startup splash screen. This script is designed to provide a visually appealing welcome message without interfering with shell performance or prompt rendering. Features: - Displays a splash screen on the first interactive shell launch. - The splash screen is executed immediately during startup to prevent cursor positioning issues with the first prompt. - Integrates `colorscript`, `fastfetch`, and `lolcat` if available for a richer visual experience. - Provides a clean, informative fallback if optional tools are not installed. Toggles: - `NO_SPLASH=1` or `ZF_NO_SPLASH=1`: Disables the splash screen entirely. Only run in interactive shells
+# Phase:    Post-plugin (.zshrc.d/)
 
-# Only run in interactive shells
 [[ -o interactive ]] || return 0
 
 # ------------------------------------------------------------------------------
@@ -115,6 +100,7 @@ _zqs_show_splash() {
   echo "│    💡 Productivity aliases                               │"
   echo "│      •  Type 'aliases-help' for a list of commands.      │"
   echo "│    💡 Enhanced keybindings                               │"
+  echo "│      •  Type 'keybinds-help' for a list of useful keys.  │"
   echo "│    💡 Advanced prompt system                             │"
   echo "│    💡 Modern tool integrations                           │"
   echo "╰──────────────────────────────────────────────────────────╯"

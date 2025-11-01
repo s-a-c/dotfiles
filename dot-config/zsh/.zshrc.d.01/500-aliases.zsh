@@ -1,21 +1,7 @@
 #!/usr/bin/env zsh
-# 500-aliases.zsh
-#
-# Purpose:
-#   Provides a comprehensive and safe set of aliases for common commands,
-#   with a focus on Git and Node.js project management. This script uses a
-#   safety-first approach for package manager commands to prevent accidental
-#   execution outside of a project context.
-#
-# Features:
-#   - Extensive Git aliases for common workflows (`gs`, `ga`, `gc`, `gpl`, etc.).
-#   - Filesystem and system utility aliases (`..`, `ll`, `psa`, `top`).
-#   - Safe package manager aliases (`install`, `build`, `dev`, `test`) that
-#     automatically detect the correct package manager (npm, yarn, pnpm, bun)
-#     and validate that a `package.json` exists before running.
-#   - Helper functions (`pm-info`, `pm-npm`, etc.) to manage and inspect the
-#     package manager environment.
-#   - A comprehensive help command (`aliases-help`) to list all available aliases.
+# Filename: 500-aliases.zsh
+# Purpose:  Provides a comprehensive and safe set of aliases for common commands, with a focus on Git and Node.js project management. This script uses a safety-first approach for package manager commands to prevent accidental execution outside of a project context. Features: - Extensive Git aliases for common workflows (`gs`, `ga`, `gc`, `gpl`, etc.). - Filesystem and system utility aliases (`..`, `ll`, `psa`, `top`). - Safe package manager aliases (`install`, `build`, `dev`, `test`) that automatically detect the correct package manager (npm, yarn, pnpm, bun) and validate that a `package.json` exists before running. - Helper functions (`pm-info`, `pm-npm`, etc.) to manage and inspect the package manager environment. - A comprehensive help command (`aliases-help`) to list all available aliases. --- Git Aliases ---
+# Phase:    Post-plugin (.zshrc.d/)
 
 # --- Git Aliases ---
 alias gs="git status"

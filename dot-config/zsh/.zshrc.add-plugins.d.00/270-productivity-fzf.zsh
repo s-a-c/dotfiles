@@ -1,9 +1,8 @@
 #!/usr/bin/env zsh
-# 270-productivity-fzf.zsh - FZF Fuzzy Finder Integration for ZSH REDESIGN v2
-# Phase 4B: FZF Integration (continued)
-# Refactored from legacy 010-add-plugins.zsh (lines 110-115)
+# Filename: 270-productivity-fzf.zsh
+# Purpose:  Skip if OMZ plugins disabled
+# Phase:    Plugin activation (.zshrc.add-plugins.d/)
 
-# Skip if OMZ plugins disabled
 if [[ "${ZSH_DISABLE_OMZ_PLUGINS:-0}" == "1" ]]; then
   zf::debug "# [productivity-fzf] OMZ fzf plugin disabled via ZSH_DISABLE_OMZ_PLUGINS=1"
   return 0

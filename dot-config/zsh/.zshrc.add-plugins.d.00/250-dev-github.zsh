@@ -1,9 +1,9 @@
 #!/usr/bin/env zsh
-# 250-dev-github.zsh - GitHub CLI Integration for ZSH REDESIGN v2
-# Phase 3D: GitHub Integration
-# Refactored from legacy 010-add-plugins.zsh (lines 62-63)
+# Filename: 250-dev-github.zsh
+# Purpose:  Skip if OMZ plugins disabled
+# Phase:    Plugin activation (.zshrc.add-plugins.d/)
+# Toggles:  ZF_DISABLE_GITHUB_DEFER
 
-# Skip if OMZ plugins disabled
 if [[ "${ZSH_DISABLE_OMZ_PLUGINS:-0}" == "1" ]]; then
   zf::debug "# [dev-github] OMZ dev plugins disabled via ZSH_DISABLE_OMZ_PLUGINS=1"
   return 0

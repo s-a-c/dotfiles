@@ -1,7 +1,8 @@
 #!/usr/bin/env zsh
-# 280-autopair.zsh - Autopair Functionality for ZSH REDESIGN v2
-# Phase 7B: Autopair Functionality (Using Standard Plugin)
-# Refactored from legacy 010-add-plugins.zsh (lines 37-40) - UPDATED to use standard plugin
+# Filename: 280-autopair.zsh
+# Purpose:  P2.3 Optimization: Defer autopair to first prompt
+# Phase:    Plugin activation (.zshrc.add-plugins.d/)
+# Toggles:  ZF_DISABLE_AUTOPAIR_DEFER
 
 zf::debug "# [autopair] Loading autopair functionality..."
 

@@ -1,23 +1,7 @@
 #!/usr/bin/env zsh
-# 410-completions.zsh
-#
-# Purpose:
-#   Initializes the Zsh completion system (`compinit`) and integrates the
-#   Carapace completion engine if available. This script ensures that advanced
-#   completions are ready before other tools and plugins require them.
-#
-# Features:
-#   - Guarded `compinit` initialization to run only once.
-#   - Fast path for `compinit` using `-C` to skip regeneration if the dump file is valid.
-#   - Automatic integration of Carapace for rich, context-aware completions.
-#   - Optional, configurable styling for Carapace completions via environment variables.
-#
-# Toggles:
-#   - `ZF_DISABLE_CARAPACE=1`: Disables Carapace integration.
-#   - `ZF_DISABLE_CARAPACE_STYLES=1`: Disables Carapace styling.
-#   - `ZF_CARAPACE_STYLE_MODE=<mode>`: Sets a predefined style (e.g., colorful, mono).
-
-# Compliant with AI-GUIDELINES.md v09f72e258e7b5a3c2c7e81ff2e0501fee4a5ed8a9d1a9123ad6d2c6e237748d4
+# Filename: 410-completions.zsh
+# Purpose:  Initializes the Zsh completion system (`compinit`) and integrates the Carapace completion engine if available. This script ensures that advanced completions are ready before other tools and plugins require them. Features: - Guarded `compinit` initialization to run only once. - Fast path for `compinit` using `-C` to skip regeneration if the dump file is valid. - Automatic integration of Carapace for rich, context-aware completions. - Optional, configurable styling for Carapace completions via environment variables. Toggles: - `ZF_DISABLE_CARAPACE=1`: Disables Carapace integration. - `ZF_DISABLE_CARAPACE_STYLES=1`: Disables Carapace styling. - `ZF_CARAPACE_STYLE_MODE=<mode>`: Sets a predefined style (e.g., colorful, mono).
+# Phase:    Post-plugin (.zshrc.d/)
 
 # --- Personal Completions Directory (Prepended before compinit) ---
 # Create a secure, user-controlled directory for custom completion functions and

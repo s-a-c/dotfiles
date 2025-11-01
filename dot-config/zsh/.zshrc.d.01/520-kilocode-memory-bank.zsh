@@ -1,9 +1,8 @@
 #!/usr/bin/env zsh
+# Filename: 520-kilocode-memory-bank.zsh
+# Purpose:  KiloCode Memory Bank System
+# Phase:    Post-plugin (.zshrc.d/)
 
-# KiloCode Memory Bank System
-# A file-based code snippet storage system following XDG Base Directory Specification
-
-# Define configuration file path
 export KILOCODE_CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/kilocode/config.json"
 
 # Function to get a configuration value

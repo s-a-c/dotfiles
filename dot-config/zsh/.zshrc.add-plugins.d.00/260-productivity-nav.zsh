@@ -1,9 +1,9 @@
 #!/usr/bin/env zsh
-# 260-productivity-nav.zsh - Directory Navigation & File Management for ZSH REDESIGN v2
-# Phase 4B: Directory Navigation + FZF
-# Refactored from legacy 010-add-plugins.zsh (lines 90-102)
+# Filename: 260-productivity-nav.zsh
+# Purpose:  Skip if OMZ plugins disabled
+# Phase:    Plugin activation (.zshrc.add-plugins.d/)
+# Toggles:  ZF_DISABLE_NAV_DEFER
 
-# Skip if OMZ plugins disabled
 if [[ "${ZSH_DISABLE_OMZ_PLUGINS:-0}" == "1" ]]; then
   zf::debug "# [productivity-nav] OMZ file/nav plugins disabled via ZSH_DISABLE_OMZ_PLUGINS=1"
   return 0

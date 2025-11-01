@@ -1,21 +1,8 @@
 #!/usr/bin/env zsh
-# 060-zqs-enhancements.zsh
-#
-# Purpose:
-#   Extends the functionality of the Zsh Quickstart Kit (ZQS) by adding
-#   new commands and overriding the default help function to include them.
-#
-# Features:
-#   - `zqs enable-always-show-splash`: Configures the startup splash to show on every reload.
-#   - `zqs disable-always-show-splash`: Restores the default behavior of showing the splash only once.
-#   - `zqs set-starship-offset VALUE`: Sets the UTC offset for the Starship time module.
-#   - The `zqs-help` function is extended to display these new commands.
-#
-# Implementation:
-#   - Uses a layered approach to wrap the original `zqs` and `zqs-help` functions,
-#     ensuring that original functionality is preserved.
+# Filename: 060-zqs-enhancements.zsh
+# Purpose:  Extends the functionality of the Zsh Quickstart Kit (ZQS) by adding new commands and overriding the default help function to include them. Features: - `zqs enable-always-show-splash`: Configures the startup splash to show on every reload. - `zqs disable-always-show-splash`: Restores the default behavior of showing the splash only once. - `zqs set-starship-offset VALUE`: Sets the UTC offset for the Starship time module. - The `zqs-help` function is extended to display these new commands. Implementation: - Uses a layered approach to wrap the original `zqs` and `zqs-help` functions, ensuring that original functionality is preserved. Store original zqs implementation if it exists
+# Phase:    Pre-plugin (.zshrc.pre-plugins.d/)
 
-# Store original zqs implementation if it exists
 if typeset -f zqs >/dev/null 2>&1; then
   builtin functions -c zqs _zqs_original_impl 2>/dev/null || true
 fi

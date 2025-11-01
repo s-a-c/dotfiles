@@ -1,23 +1,8 @@
 #!/usr/bin/env zsh
-# 440-neovim.zsh
-#
-# Purpose:
-#   Integrates the Neovim ecosystem into the shell. This script sets default
-#   editors, configures Neovim profiles, and provides helper functions for a
-#   seamless development experience.
-#
-# Features:
-#   - Sets `EDITOR`, `VISUAL`, and `GIT_EDITOR` to `nvim`.
-#   - Gated aliases for Neovim profiles (Lazyman, Kickstart, etc.) that are
-#     defined only when their configuration directories exist.
-#   - `nvprofile` function to launch any Neovim profile by name.
-#   - Integration with `bob` (Neovim version manager).
-#   - `zf::nvimvenv` wrapper (aliased to `nvim`) to automatically handle Python
-#     virtual environments within Neovim sessions.
-#
-# Toggles:
-#   - `ZF_DISABLE_NVIM=1`: Disables all Neovim integration.
-#   - `ZF_DISABLE_NVIM_VENV_ALIAS=1`: Prevents aliasing `nvim` to the virtualenv wrapper.
+# Filename: 440-neovim.zsh
+# Purpose:  Integrates the Neovim ecosystem into the shell. This script sets default editors, configures Neovim profiles, and provides helper functions for a seamless development experience. Features: - Sets `EDITOR`, `VISUAL`, and `GIT_EDITOR` to `nvim`. - Gated aliases for Neovim profiles (Lazyman, Kickstart, etc.) that are defined only when their configuration directories exist. - `nvprofile` function to launch any Neovim profile by name. - Integration with `bob` (Neovim version manager). - `zf::nvimvenv` wrapper (aliased to `nvim`) to automatically handle Python virtual environments within Neovim sessions. Toggles: - `ZF_DISABLE_NVIM=1`: Disables all Neovim integration. - `ZF_DISABLE_NVIM_VENV_ALIAS=1`: Prevents aliasing `nvim` to the virtualenv wrapper.
+# Phase:    Post-plugin (.zshrc.d/)
+# Toggles:  ZF_DISABLE_NVIM
 
 if [[ "${ZF_DISABLE_NVIM:-0}" == 1 ]]; then
   return 0

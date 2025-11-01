@@ -1,20 +1,8 @@
 #!/usr/bin/env zsh
-# 010-shell-safety.zsh
-#
-# Purpose:
-#   Centralizes shell safety options, particularly nounset management, to ensure
-#   a stable interactive environment before plugins are loaded. This script
-#   combines initial setup and delayed activation for better control.
-#
-# Features:
-#   - Snapshots original options (nounset, errexit, pipefail) for restoration.
-#   - Initializes critical variables to prevent 'parameter not set' errors.
-#   - Disables nounset for Oh-My-Zsh/zgenom compatibility to prevent hangs and errors.
-#   - Provides helpers (zf::enable_nounset_safe, zf::restore_option_snapshot) for
-#     controlled option management.
-#   - Delays nounset activation until after critical startup phases, honoring opt-outs.
+# Filename: 010-shell-safety.zsh
+# Purpose:  Centralizes shell safety options, particularly nounset management, to ensure a stable interactive environment before plugins are loaded. This script combines initial setup and delayed activation for better control. Features: - Snapshots original options (nounset, errexit, pipefail) for restoration. - Initializes critical variables to prevent 'parameter not set' errors. - Disables nounset for Oh-My-Zsh/zgenom compatibility to prevent hangs and errors. - Provides helpers (zf::enable_nounset_safe, zf::restore_option_snapshot) for controlled option management. - Delays nounset activation until after critical startup phases, honoring opt-outs. Idempotency Guard
+# Phase:    Pre-plugin (.zshrc.pre-plugins.d/)
 
-# Idempotency Guard
 [[ -n ${_ZQS_SHELL_SAFETY_DONE:-} ]] && return 0
 _ZQS_SHELL_SAFETY_DONE=1
 

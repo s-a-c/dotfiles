@@ -1,13 +1,7 @@
 #!/usr/bin/env zsh
-# 200-perf-core.zsh - Core Performance Plugins for ZSH REDESIGN v2
-# Phase 2: Performance + Core Plugins
-# Refactored from legacy 010-add-plugins.zsh (lines 22-33)
-# PRE_PLUGIN_DEPS: none
-# POST_PLUGIN_DEPS: none
-# RESTART_REQUIRED: no
-
-# Performance and async utilities - Load early for other plugins to use
-# These plugins are self-contained and don't require pre/post setup
+# Filename: 200-perf-core.zsh
+# Purpose:  Performance and async utilities - Load early for other plugins to use
+# Phase:    Plugin activation (.zshrc.add-plugins.d/)
 
 zf::add_segment "perf-core" "start"
 zf::debug "# [perf-core] Loading performance utilities..."

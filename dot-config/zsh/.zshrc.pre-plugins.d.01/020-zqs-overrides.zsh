@@ -1,23 +1,8 @@
 #!/usr/bin/env zsh
-# 020-zqs-overrides.zsh
-#
-# Purpose:
-#   Overrides core Zsh Quickstart Kit (ZQS) functions to enhance functionality
-#   and prevent warnings. This script ensures that vendor scripts (like FZF)
-#   can be loaded without generating 'WARN_CREATE_GLOBAL' messages.
-#
-# Overrides:
-#   - load-shell-fragments: Redefined to suppress warnings during sourcing and
-#     to use zsh-native globbing for performance and safety, removing `ls` dependency.
-#   - _zqs-get-setting: Redefined to declare local variables properly, preventing
-#     warnings when WARN_CREATE_GLOBAL is enabled.
-#
-# Features:
-#   - Performance monitoring for fragment loading.
-#   - Optional filtering to load only `.zsh` files for improved security.
-#   - Idempotent design ensures functions are overridden only once.
+# Filename: 020-zqs-overrides.zsh
+# Purpose:  Overrides core Zsh Quickstart Kit (ZQS) functions to enhance functionality and prevent warnings. This script ensures that vendor scripts (like FZF) can be loaded without generating 'WARN_CREATE_GLOBAL' messages. Overrides: - load-shell-fragments: Redefined to suppress warnings during sourcing and to use zsh-native globbing for performance and safety, removing `ls` dependency. - _zqs-get-setting: Redefined to declare local variables properly, preventing warnings when WARN_CREATE_GLOBAL is enabled. Features: - Performance monitoring for fragment loading. - Idempotent design ensures functions are overridden only once. Idempotency Guard
+# Phase:    Pre-plugin (.zshrc.pre-plugins.d/)
 
-# Idempotency Guard
 [[ -n ${_ZF_ZQS_OVERRIDES_DONE:-} ]] && return 0
 _ZF_ZQS_OVERRIDES_DONE=1
 

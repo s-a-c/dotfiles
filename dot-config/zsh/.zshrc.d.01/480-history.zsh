@@ -1,19 +1,8 @@
 #!/usr/bin/env zsh
-# 480-history.zsh
-#
-# Purpose:
-#   Configures and enhances shell history, with optional integration for `atuin`
-#   for a more powerful, synchronized history experience.
-#
-# Features:
-#   - Sets modern Zsh history options (`APPEND_HISTORY`, `SHARE_HISTORY`, etc.).
-#   - Integrates `atuin` if installed, enabling synchronized, searchable history.
-#   - Automatically starts the `atuin` daemon in the background.
-#   - Enables `atuin` keybindings by default (Ctrl-R for search).
-#
-# Toggles:
-#   - `ZF_DISABLE_HISTORY_ENHANCE=1`: Disables this entire module.
-#   - `ZF_HISTORY_ATUIN_DISABLE_KEYBINDS=1`: Disables `atuin` keybindings.
+# Filename: 480-history.zsh
+# Purpose:  Configures and enhances shell history, with optional integration for `atuin` for a more powerful, synchronized history experience. Features: - Sets modern Zsh history options (`APPEND_HISTORY`, `SHARE_HISTORY`, etc.). - Integrates `atuin` if installed, enabling synchronized, searchable history. - Automatically starts the `atuin` daemon in the background. - Enables `atuin` keybindings by default (Ctrl-R for search). Toggles: - `ZF_DISABLE_HISTORY_ENHANCE=1`: Disables this entire module. - `ZF_HISTORY_ATUIN_DISABLE_KEYBINDS=1`: Disables `atuin` keybindings.
+# Phase:    Post-plugin (.zshrc.d/)
+# Toggles:  ZF_DISABLE_HISTORY_ENHANCE
 
 if [[ "${ZF_DISABLE_HISTORY_ENHANCE:-0}" == 1 ]]; then
   return 0

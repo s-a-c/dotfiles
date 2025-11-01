@@ -1,40 +1,9 @@
 #!/usr/bin/env zsh
-# 3000-brew-abbr.zsh - Optional Homebrew Abbreviation Pack
-# Phase 7 (Optional Enhancements)
-#
-# Decision: D5A (Implement brew abbreviation module)
-#
-# Purpose:
-#   Provide a small, high-signal set of Homebrew-related abbreviations leveraging the
-#   zsh-abbr plugin (if loaded) to accelerate common maintenance, install, and diagnostic
-#   workflows without polluting the namespace or overriding user preferences.
-#
-# Load & Behavior Rules:
-#   - Only activates if:
-#       * Abbreviation system loaded (_ZF_ABBR == 1) AND
-#       * 'abbr' function exists AND
-#       * 'brew' is on PATH
-#   - Skippable via toggle: export ZF_DISABLE_ABBR_BREW=1
-#   - Idempotent: guarded by sentinel _ZF_ABBR_BREW_DONE
-#   - Does NOT overwrite existing abbreviations (pre-existing user definitions win)
-#
-# Markers (exported):
-#   _ZF_ABBR_BREW=1|0         -> 1 if brew abbreviations applied, else 0
-#   _ZF_ABBR_BREW_COUNT=<n>   -> Number of brew abbreviations added this pass
-#   _ZF_ABBR_BREW_DONE=1      -> Module processed (prevents re-run)
-#
-# Additional Design Considerations:
-#   - Abbreviation names kept concise and mnemonic; no multi-level niche ops
-#   - Avoids dangerous inline chains (user can compose)
-#   - Leaves room for future optional packs (e.g. language/toolchain-specific)
-#
-# Opt-Out Examples:
-#   export ZF_DISABLE_ABBR_BREW=1     # Disable this pack entirely
-#
-# Manual Validation:
-#   typeset -f abbr >/dev/null && abbr list | grep '^bup[[:space:]]'
-#   echo "$_ZF_ABBR_BREW ($_ZF_ABBR_BREW_COUNT entries)"
-#
+# Filename: 300-brew-abbr.zsh
+# Purpose:  Decision: D5A (Implement brew abbreviation module) Provide a small, high-signal set of Homebrew-related abbreviations leveraging the zsh-abbr plugin (if loaded) to accelerate common maintenance, install, and diagnostic workflows without polluting the namespace or overriding user preferences. Load & Behavior Rules: - Only activates if: * Abbreviation system loaded (_ZF_ABBR == 1) AND * 'abbr' function exists AND * 'brew' is on PATH - Skippable via toggle: export ZF_DISABLE_ABBR_BREW=1 - Idempotent: guarded by sentinel _ZF_ABBR_BREW_DONE - Does NOT overwrite existing abbreviations (pre-existing user definitions win)
+# Phase:    Plugin activation (.zshrc.add-plugins.d/)
+# Toggles:  export ZF_DISABLE_ABBR_BREW=1
+
 # ------------------------------------------------------------------------------
 
 # Idempotency sentinel

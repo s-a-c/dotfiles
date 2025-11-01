@@ -1,20 +1,7 @@
 #!/usr/bin/env zsh
-# 450-node-environment.zsh
-#
-# Purpose:
-#   Manages the Node.js environment, with a focus on NVM (Node Version Manager)
-#   and compatibility with Laravel Herd. This script ensures that the correct
-#   NVM instance is configured and provides validation for npm settings.
-#
-# Features:
-#   - Prioritizes Laravel Herd's NVM installation.
-#   - Falls back to Homebrew or standard `~/.nvm` installations.
-#   - Configures the `oh-my-zsh` nvm plugin for lazy loading.
-#   - Includes an enhanced lazy loader for `nvm` as a fallback.
-#   - Validates and fixes potentially corrupted npm configuration settings.
-#
-# Toggles:
-#   - `ZF_DISABLE_NPM_VALIDATION=1`: Skips the npm configuration validation.
+# Filename: 450-node-environment.zsh
+# Purpose:  Manages the Node.js environment, with a focus on NVM (Node Version Manager) and compatibility with Laravel Herd. This script ensures that the correct NVM instance is configured and provides validation for npm settings. Features: - Prioritizes Laravel Herd's NVM installation. - Falls back to Homebrew or standard `~/.nvm` installations. - Configures the `oh-my-zsh` nvm plugin for lazy loading. - Includes an enhanced lazy loader for `nvm` as a fallback. - Validates and fixes potentially corrupted npm configuration settings. Toggles: - `ZF_DISABLE_NPM_VALIDATION=1`: Skips the npm configuration validation.
+# Phase:    Post-plugin (.zshrc.d/)
 
 typeset -f zf::debug >/dev/null 2>&1 || zf::debug() { :; }
 

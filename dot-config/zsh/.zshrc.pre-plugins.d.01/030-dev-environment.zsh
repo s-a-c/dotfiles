@@ -1,20 +1,8 @@
 #!/usr/bin/env zsh
-# 030-dev-environment.zsh
-#
-# Purpose:
-#   Configures the environment for various development tools and runtimes. This
-#   script runs early to ensure that paths and settings for tools like Node.js,
-#   ripgrep, and CodeQL are available before plugins are loaded.
-#
-# Features:
-#   - XDG-aware configuration for tools like ripgrep.
-#   - Prioritized detection of Laravel Herd NVM, with fallbacks to Homebrew,
-#     XDG, and standard ~/.nvm locations.
-#   - Path setup for alternative JavaScript runtimes: Bun, Deno, and PNPM.
-#   - Early PATH configuration for the CodeQL CLI.
-#   - Nounset-safe and idempotent.
+# Filename: 030-dev-environment.zsh
+# Purpose:  Configures the environment for various development tools and runtimes. This script runs early to ensure that paths and settings for tools like Node.js, ripgrep, and CodeQL are available before plugins are loaded. Features: - XDG-aware configuration for tools like ripgrep. - Prioritized detection of Laravel Herd NVM, with fallbacks to Homebrew, XDG, and standard ~/.nvm locations. - Path setup for alternative JavaScript runtimes: Bun, Deno, and PNPM. - Early PATH configuration for the CodeQL CLI. - Nounset-safe and idempotent. Idempotency Guard
+# Phase:    Pre-plugin (.zshrc.pre-plugins.d/)
 
-# Idempotency Guard
 [[ -n ${_ZF_DEV_ENVIRONMENT_DONE:-} ]] && return 0
 _ZF_DEV_ENVIRONMENT_DONE=1
 

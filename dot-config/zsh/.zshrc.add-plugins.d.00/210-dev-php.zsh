@@ -1,10 +1,8 @@
 #!/usr/bin/env zsh
-# 210-dev-php.zsh - PHP Development Environment for ZSH REDESIGN v2
-# Phase 3A: PHP Environment (Herd + Traditional)
-# Refactored from legacy 010-add-plugins.zsh (lines 54-69)
-# PRE_PLUGIN_DEPS: none (Herd manages PHP environment)
-# POST_PLUGIN_DEPS: 040-dev-php.zsh (Herd integration, Laravel aliases)
-# RESTART_REQUIRED: no
+# Filename: 210-dev-php.zsh
+# Purpose:  Skip if OMZ plugins disabled
+# Phase:    Plugin activation (.zshrc.add-plugins.d/)
+# Toggles:  ZF_DISABLE_PHP_LAZY_LOAD
 
 zf::debug "# [dev-php] Loading PHP development environment..."
 

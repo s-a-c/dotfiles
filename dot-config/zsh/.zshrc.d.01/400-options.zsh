@@ -1,23 +1,7 @@
 #!/usr/bin/env zsh
-# 400-options.zsh
-#
-# Purpose:
-#   Consolidates all Zsh shell options (`setopt`/`unsetopt`) into a single,
-#   authoritative file. This script provides a comprehensive baseline for shell
-#   behavior, covering history, completion, navigation, and more.
-#
-# Customization:
-#   To override these settings, create a file with a higher number in this
-#   directory (e.g., `401-my-options.zsh`) and add your `setopt` or `unsetopt`
-#   commands there.
-#
-# Key Sections:
-#   - History: Configuration for command history behavior.
-#   - Completion: Settings for tab-completion.
-#   - Navigation: Options for directory navigation (`cd`, `pushd`).
-#   - Globbing: Enhanced file matching patterns.
-#   - Safety: Features to prevent accidental data loss (e.g., `NO_CLOBBER`).
-#   - Job Control: Management of background processes.
+# Filename: 400-options.zsh
+# Purpose:  Consolidates all Zsh shell options (`setopt`/`unsetopt`) into a single, authoritative file. This script provides a comprehensive baseline for shell behavior, covering history, completion, navigation, and more. Customization: To override these settings, create a file with a higher number in this commands there. Key Sections: - History: Configuration for command history behavior. - Completion: Settings for tab-completion. - Navigation: Options for directory navigation (`cd`, `pushd`). - Globbing: Enhanced file matching patterns. - Safety: Features to prevent accidental data loss (e.g., `NO_CLOBBER`). - Job Control: Management of background processes.
+# Phase:    Post-plugin (.zshrc.d/)
 
 # --- History Options ---
 setopt APPEND_HISTORY

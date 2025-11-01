@@ -1,18 +1,8 @@
 #!/usr/bin/env zsh
-# 990-final-overrides.zsh
-#
-# Purpose:
-#   This is the final script to run in the post-plugin phase. It handles
-#   last-minute overrides, cleanup, and safety checks to ensure the shell
-#   is in a consistent state.
-#
-# Features:
-#   - Restores `WARN_CREATE_GLOBAL` to help catch unintended global variable
-#     creation in user scripts and interactive sessions.
-#   - Disables automatic updates for ZQS and Oh-My-Zsh if requested, which is
-#     useful for CI/CD environments or stable setups.
-#   - Sources a `.zshrc.local` file if it exists, providing a hook for
-#     machine-specific or private configurations.
+# Filename: 990-final-overrides.zsh
+# Purpose:  This is the final script to run in the post-plugin phase. It handles last-minute overrides, cleanup, and safety checks to ensure the shell is in a consistent state. Features: - Restores `WARN_CREATE_GLOBAL` to help catch unintended global variable creation in user scripts and interactive sessions. - Disables automatic updates for ZQS and Oh-My-Zsh if requested, which is useful for CI/CD environments or stable setups. machine-specific or private configurations.
+# Phase:    Post-plugin (.zshrc.d/)
+# Toggles:  ZF_DISABLE_AUTO_UPDATES
 
 typeset -f zf::debug >/dev/null 2>&1 || zf::debug() { :; }
 

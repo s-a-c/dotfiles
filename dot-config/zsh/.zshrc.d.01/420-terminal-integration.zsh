@@ -1,17 +1,7 @@
 #!/usr/bin/env zsh
-# Compliant with AI-GUIDELINES.md vbc9deb6c637b1c541e1a04ab4578ac5e1dbf786b6aa902097a66f841d6914c34
-# 420-terminal-integration.zsh
-#
-# Purpose:
-#   Unifies terminal emulator integration for Warp, WezTerm, Ghostty, Kitty,
-#   and iTerm2. This script sets the necessary environment variables and sources
-#   integration scripts to enable features like custom prompts, semantic regions,
-#   and proper shell interaction within these modern terminals.
-#
-# Features:
-#   - Idempotent design prevents duplicate exports and sourcing.
-#   - Automatically detects the running terminal emulator.
-#   - Minimal side-effects and safe to source multiple times.
+# Filename: 420-terminal-integration.zsh
+# Purpose:  Unifies terminal emulator integration for Warp, WezTerm, Ghostty, Kitty, and iTerm2. This script sets the necessary environment variables and sources integration scripts to enable features like custom prompts, semantic regions, and proper shell interaction within these modern terminals. Features: - Idempotent design prevents duplicate exports and sourcing. - Automatically detects the running terminal emulator. - Minimal side-effects and safe to source multiple times.
+# Phase:    Post-plugin (.zshrc.d/)
 
 [[ -n ${_ZF_TERMINAL_INTEGRATION_DONE:-} ]] && return 0
 _ZF_TERMINAL_INTEGRATION_DONE=1

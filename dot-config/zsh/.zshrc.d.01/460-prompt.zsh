@@ -1,25 +1,7 @@
 #!/usr/bin/env zsh
-# Compliant with AI-GUIDELINES.md vbc9deb6c637b1c541e1a04ab4578ac5e1dbf786b6aa902097a66f841d6914c34
-# 460-prompt.zsh
-#
-# Purpose:
-#   Manages the shell prompt, primarily by initializing Starship. This script
-#   handles the complexities of when and how to load the prompt, with special
-#   considerations for compatibility with Powerlevel10k.
-#
-# Features:
-#   - Robust, idempotent Starship initialization (`zf::starship_init_safe`).
-#   - Deferred loading via `precmd` hook when Powerlevel10k is detected,
-#     preventing conflicts.
-#   - Patches problematic ZLE widget access in Starship's init script.
-#   - Captures and logs Starship initialization time for performance monitoring.
-#   - Manages Starship configuration templating and symlinks.
-#   - Includes a weekly health check for the Starship prompt.
-#
-# Toggles:
-#   - `ZSH_DISABLE_STARSHIP=1`: Hard disables Starship.
-#   - `ZSH_SHOW_P10K_HINT=1`: Shows a hint to run `p10k configure` if Starship
-#     is disabled and no .p10k.zsh file exists.
+# Filename: 460-prompt.zsh
+# Purpose:  Manages the shell prompt, primarily by initializing Starship. This script handles the complexities of when and how to load the prompt, with special considerations for compatibility with Powerlevel10k. Features: - Robust, idempotent Starship initialization (`zf::starship_init_safe`). - Deferred loading via `precmd` hook when Powerlevel10k is detected, preventing conflicts. - Patches problematic ZLE widget access in Starship's init script. - Captures and logs Starship initialization time for performance monitoring. - Manages Starship configuration templating and symlinks. - Includes a weekly health check for the Starship prompt. Toggles: - `ZSH_DISABLE_STARSHIP=1`: Hard disables Starship.
+# Phase:    Post-plugin (.zshrc.d/)
 
 typeset -f zf::debug >/dev/null 2>&1 || zf::debug() { :; }
 
