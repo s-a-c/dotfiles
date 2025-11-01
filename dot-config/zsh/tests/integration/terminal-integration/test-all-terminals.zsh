@@ -30,23 +30,23 @@ test_terminal_type() {
     local term_value="${2:-xterm-256color}"
     local expected_var="$3"
     local description="$4"
-    
+
     echo "Testing: $description (TERM_PROGRAM=$term_program)"
-    
+
     # Clean state
     unset _ZF_TERMINAL_INTEGRATION_DONE
     unset WARP_IS_LOCAL_SHELL_SESSION
     unset WEZTERM_SHELL_INTEGRATION
     unset GHOSTTY_SHELL_INTEGRATION
     unset KITTY_SHELL_INTEGRATION
-    
+
     export TERM_PROGRAM="$term_program"
     export TERM="$term_value"
-    
+
     # Source module
     if source "$REPO_ROOT/.zshrc.d.01/420-terminal-integration.zsh" 2>/dev/null; then
         assert_passes "$description: Module sources successfully"
-        
+
         # Check expected variable if specified
         if [[ -n "$expected_var" ]]; then
             if [[ -n "${(P)expected_var:-}" ]]; then
@@ -104,14 +104,14 @@ export TERM="xterm-256color"
 
 if source "$REPO_ROOT/.zshrc.d.01/420-terminal-integration.zsh" 2>/dev/null; then
     assert_passes "VSCode: Module sources successfully"
-    
+
     # Check if PATH was fixed
     if [[ "$PATH" == /opt/homebrew/bin:* || "$PATH" == /usr/local/bin:* ]]; then
         assert_passes "VSCode: PATH was fixed to start with system directories"
     else
         assert_fails "VSCode: PATH should be fixed to start with system directories"
     fi
-    
+
     # Check if env guard function exists
     if typeset -f __zf_vscode_env_guard >/dev/null 2>&1; then
         assert_passes "VSCode: Env guard function is defined"
@@ -159,4 +159,3 @@ echo "Total: $PASS_COUNT passed, $FAIL_COUNT failed"
 echo "========================================="
 
 [[ $FAIL_COUNT -eq 0 ]] && exit 0 || exit 1
-

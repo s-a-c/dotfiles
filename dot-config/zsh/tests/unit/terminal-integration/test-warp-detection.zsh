@@ -62,18 +62,18 @@ assert_var_equals() {
 # Test: Warp terminal detection
 test_warp_detection() {
     echo "Running: test_warp_detection"
-    
+
     # Set up Warp environment
     export TERM_PROGRAM="WarpTerminal"
     unset _ZF_TERMINAL_INTEGRATION_DONE
-    
+
     # Source the terminal integration module
     source "$REPO_ROOT/.zshrc.d.01/420-terminal-integration.zsh" || return 1
-    
+
     # Verify Warp-specific variable is set
     assert_var_set "WARP_IS_LOCAL_SHELL_SESSION" "Warp should set WARP_IS_LOCAL_SHELL_SESSION"
     assert_var_equals "WARP_IS_LOCAL_SHELL_SESSION" "1" "Warp session flag should be 1"
-    
+
     # Verify idempotency guard is set
     assert_var_set "_ZF_TERMINAL_INTEGRATION_DONE" "Idempotency guard should be set"
 }
@@ -81,14 +81,14 @@ test_warp_detection() {
 # Test: Idempotency (sourcing twice should not duplicate)
 test_warp_idempotency() {
     echo "Running: test_warp_idempotency"
-    
+
     export TERM_PROGRAM="WarpTerminal"
     unset _ZF_TERMINAL_INTEGRATION_DONE
-    
+
     # Source twice
     source "$REPO_ROOT/.zshrc.d.01/420-terminal-integration.zsh" || return 1
     source "$REPO_ROOT/.zshrc.d.01/420-terminal-integration.zsh" || return 1
-    
+
     # Should still work correctly
     assert_var_equals "WARP_IS_LOCAL_SHELL_SESSION" "1" "Warp session flag should remain 1 after double-sourcing"
 }
@@ -96,13 +96,13 @@ test_warp_idempotency() {
 # Test: Non-Warp terminal should not set Warp variables
 test_non_warp_terminal() {
     echo "Running: test_non_warp_terminal"
-    
+
     export TERM_PROGRAM="NotWarp"
     unset _ZF_TERMINAL_INTEGRATION_DONE
     unset WARP_IS_LOCAL_SHELL_SESSION
-    
+
     source "$REPO_ROOT/.zshrc.d.01/420-terminal-integration.zsh" || return 1
-    
+
     # WARP variable should not be set
     if [[ -z "${WARP_IS_LOCAL_SHELL_SESSION:-}" ]]; then
         ((PASS_COUNT++))
@@ -126,4 +126,3 @@ echo "========================================="
 
 # Exit with appropriate code
 [[ $FAIL_COUNT -eq 0 ]] && exit 0 || exit 1
-

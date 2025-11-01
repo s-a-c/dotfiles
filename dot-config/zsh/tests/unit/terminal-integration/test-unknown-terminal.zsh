@@ -27,18 +27,18 @@ assert_fails() {
 # Test: Unknown terminal should not cause errors
 test_unknown_terminal_no_error() {
     echo "Running: test_unknown_terminal_no_error"
-    
+
     export TERM_PROGRAM="UnknownTerminal"
     export TERM="xterm-256color"
     unset _ZF_TERMINAL_INTEGRATION_DONE
-    
+
     # Module should source successfully even for unknown terminals
     if source "$REPO_ROOT/.zshrc.d.01/420-terminal-integration.zsh" 2>/dev/null; then
         assert_passes "Unknown terminal does not cause sourcing errors"
     else
         assert_fails "Module should handle unknown terminals gracefully"
     fi
-    
+
     # Idempotency guard should still be set
     if [[ -n "${_ZF_TERMINAL_INTEGRATION_DONE:-}" ]]; then
         assert_passes "Idempotency guard set even for unknown terminal"
@@ -50,11 +50,11 @@ test_unknown_terminal_no_error() {
 # Test: Empty TERM_PROGRAM should not cause errors
 test_empty_term_program() {
     echo "Running: test_empty_term_program"
-    
+
     unset TERM_PROGRAM
     export TERM="xterm-256color"
     unset _ZF_TERMINAL_INTEGRATION_DONE
-    
+
     # Module should source successfully with empty TERM_PROGRAM
     if source "$REPO_ROOT/.zshrc.d.01/420-terminal-integration.zsh" 2>/dev/null; then
         assert_passes "Empty TERM_PROGRAM does not cause errors"
@@ -66,7 +66,7 @@ test_empty_term_program() {
 # Test: No terminal-specific variables set for unknown terminal
 test_unknown_terminal_no_vars() {
     echo "Running: test_unknown_terminal_no_vars"
-    
+
     export TERM_PROGRAM="UnknownTerminal"
     export TERM="xterm"
     unset _ZF_TERMINAL_INTEGRATION_DONE
@@ -74,16 +74,16 @@ test_unknown_terminal_no_vars() {
     unset WEZTERM_SHELL_INTEGRATION
     unset GHOSTTY_SHELL_INTEGRATION
     unset KITTY_SHELL_INTEGRATION
-    
+
     source "$REPO_ROOT/.zshrc.d.01/420-terminal-integration.zsh" || return 1
-    
+
     # Verify no terminal-specific variables were set
     local vars_set=0
     [[ -n "${WARP_IS_LOCAL_SHELL_SESSION:-}" ]] && ((vars_set++))
     [[ -n "${WEZTERM_SHELL_INTEGRATION:-}" ]] && ((vars_set++))
     [[ -n "${GHOSTTY_SHELL_INTEGRATION:-}" ]] && ((vars_set++))
     [[ -n "${KITTY_SHELL_INTEGRATION:-}" ]] && ((vars_set++))
-    
+
     if [[ $vars_set -eq 0 ]]; then
         assert_passes "No terminal-specific variables set for unknown terminal"
     else
@@ -94,10 +94,10 @@ test_unknown_terminal_no_vars() {
 # Test: Idempotency with unknown terminal
 test_unknown_terminal_idempotency() {
     echo "Running: test_unknown_terminal_idempotency"
-    
+
     export TERM_PROGRAM="UnknownTerminal"
     unset _ZF_TERMINAL_INTEGRATION_DONE
-    
+
     # Source twice
     if source "$REPO_ROOT/.zshrc.d.01/420-terminal-integration.zsh" 2>/dev/null && \
        source "$REPO_ROOT/.zshrc.d.01/420-terminal-integration.zsh" 2>/dev/null; then
@@ -120,4 +120,3 @@ echo "Test Results: $PASS_COUNT passed, $FAIL_COUNT failed"
 echo "========================================="
 
 [[ $FAIL_COUNT -eq 0 ]] && exit 0 || exit 1
-

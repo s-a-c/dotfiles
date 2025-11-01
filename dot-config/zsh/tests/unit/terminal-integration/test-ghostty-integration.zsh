@@ -45,13 +45,13 @@ assert_var_equals() {
 # Test: Ghostty terminal detection without integration script
 test_ghostty_detection_basic() {
     echo "Running: test_ghostty_detection_basic"
-    
+
     export TERM_PROGRAM="ghostty"
     unset _ZF_TERMINAL_INTEGRATION_DONE
     unset GHOSTTY_RESOURCES_DIR
-    
+
     source "$REPO_ROOT/.zshrc.d.01/420-terminal-integration.zsh" || return 1
-    
+
     # Verify Ghostty-specific variable is set
     assert_var_set "GHOSTTY_SHELL_INTEGRATION" "Ghostty should set GHOSTTY_SHELL_INTEGRATION"
     assert_var_equals "GHOSTTY_SHELL_INTEGRATION" "1" "Ghostty shell integration flag should be 1"
@@ -60,13 +60,13 @@ test_ghostty_detection_basic() {
 # Test: Ghostty with integration script path (but file doesn't exist)
 test_ghostty_integration_missing_file() {
     echo "Running: test_ghostty_integration_missing_file"
-    
+
     export TERM_PROGRAM="ghostty"
     export GHOSTTY_RESOURCES_DIR="/nonexistent/path"
     unset _ZF_TERMINAL_INTEGRATION_DONE
-    
+
     source "$REPO_ROOT/.zshrc.d.01/420-terminal-integration.zsh" || return 1
-    
+
     # Should still set the integration flag even if script is missing
     assert_var_set "GHOSTTY_SHELL_INTEGRATION" "Ghostty should set GHOSTTY_SHELL_INTEGRATION even if script missing"
 }
@@ -74,14 +74,14 @@ test_ghostty_integration_missing_file() {
 # Test: Idempotency
 test_ghostty_idempotency() {
     echo "Running: test_ghostty_idempotency"
-    
+
     export TERM_PROGRAM="ghostty"
     unset _ZF_TERMINAL_INTEGRATION_DONE
-    
+
     # Source twice
     source "$REPO_ROOT/.zshrc.d.01/420-terminal-integration.zsh" || return 1
     source "$REPO_ROOT/.zshrc.d.01/420-terminal-integration.zsh" || return 1
-    
+
     assert_var_equals "GHOSTTY_SHELL_INTEGRATION" "1" "Ghostty flag should remain 1 after double-sourcing"
 }
 
@@ -97,4 +97,3 @@ echo "Test Results: $PASS_COUNT passed, $FAIL_COUNT failed"
 echo "========================================="
 
 [[ $FAIL_COUNT -eq 0 ]] && exit 0 || exit 1
-
