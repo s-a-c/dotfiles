@@ -13,10 +13,10 @@
     - [1.2. UX Improvements ✅](#12-ux-improvements-)
     - [1.3. Module Header Standardization (P3.1) ✅](#13-module-header-standardization-p31-)
     - [1.4. Environment Variable Organization (P3.3) ✅](#14-environment-variable-organization-p33-)
+    - [1.5. Cache Permission Issues (P3.4) ✅](#15-cache-permission-issues-p34-)
+    - [1.6. Debug Message Consistency (P3.2) ✅](#16-debug-message-consistency-p32-)
   - [2. Short Term (November 2025)](#2-short-term-november-2025)
     - [2.1. Plugin Loading Optimization (P2.3) - Approval Required](#21-plugin-loading-optimization-p23---approval-required)
-    - [2.2. Debug Message Consistency (P3.2)](#22-debug-message-consistency-p32)
-    - [2.3. Cache Permission Issues (P3.4)](#23-cache-permission-issues-p34)
   - [3. Medium Term (December 2025)](#3-medium-term-december-2025)
     - [3.1. Test Coverage Implementation (P2.2)](#31-test-coverage-implementation-p22)
   - [4. Long Term (Q1-Q2 2026)](#4-long-term-q1-q2-2026)
@@ -124,6 +124,54 @@
 
 ---
 
+### 1.5. Cache Permission Issues (P3.4) ✅
+
+**Status**: ✅ **COMPLETED** (2025-11-01)
+
+**What Was Done**:
+
+- Added `chmod 700` for ZSH_CACHE_DIR and ZSH_LOG_DIR after creation
+- Ensures secure, user-only access to cache and log directories
+- Non-fatal (continues on error)
+
+**Security Benefits**:
+
+- Prevents other users from reading cache contents
+- Protects potentially sensitive data in logs
+- Aligns with security best practices
+
+**Files Modified**: `.zshenv.01` (line 515)
+
+**Commit**: `27080abf0`
+
+---
+
+### 1.6. Debug Message Consistency (P3.2) ✅
+
+**Status**: ✅ **COMPLETED** (2025-11-01)
+
+**Investigation Result**: **NO CHANGES REQUIRED**
+
+**Findings**:
+
+- Core configuration files already clean - all use `zf::debug()`
+- No inconsistent debug messages found in `.zshrc.d.01/`
+- No inconsistent debug messages found in `.zshrc.pre-plugins.d.01/`
+- `.zshenv.01` uses `zf::debug` correctly (3 instances)
+
+**Out of Scope** (Appropriate As-Is):
+
+- `tools/` scripts use context-specific debug helpers (intentional)
+- `tests/` use self-contained debug helpers (required for `zsh -f`)
+
+**Result**: Core shell configuration already uses consistent `zf::debug()` helper
+
+**Documentation**: [P3.2-RESOLUTION-SUMMARY.md](P3.2-RESOLUTION-SUMMARY.md)
+
+**Commit**: `5a782dc58`
+
+---
+
 ## 2. Short Term (November 2025)
 
 ### 2.1. Plugin Loading Optimization (P2.3) - Approval Required
@@ -146,40 +194,6 @@
 **⚠️ IMPORTANT**: This requires explicit user approval before implementation.
 
 **Next Step**: User decision on whether to proceed with implementation.
-
----
-
-### 2.2. Debug Message Consistency (P3.2)
-
-**Priority**: LOW
-**Effort**: 1 week (~4-6 hours)
-**Status**: Ready to start
-
-**Goal**: Standardize all debug messages to use `zf::debug` helper
-
-**Current Inconsistencies**:
-
-- `[DEBUG]message`
-- `DEBUG: message`
-- `# DEBUG: message`
-
-**Target**: All messages use `zf::debug "message"`
-
----
-
-### 2.3. Cache Permission Issues (P3.4)
-
-**Priority**: LOW
-**Effort**: 1-2 days (~2-4 hours)
-**Status**: Ready to start
-
-**Goal**: Standardize cache directory permissions to 700
-
-```bash
-# Add to appropriate module
-mkdir -p "$ZSH_CACHE_DIR"
-chmod 700 "$ZSH_CACHE_DIR"
-```
 
 ---
 
@@ -239,19 +253,20 @@ Advanced FZF features with previews and custom keybindings.
 2. ✅ **UX improvements** (keybinds-help, consolidation) - Completed (2025-11-01)
 3. ✅ **Module headers (P3.1)** - Completed (2025-11-01)
 4. ✅ **Environment organization (P3.3)** - Completed (2025-11-01)
-5. **P2.3 Plugin optimization** - Awaiting approval (4 weeks, 29% speedup)
-6. **Test coverage (P2.2)** (6 weeks) - High value, larger commitment
-7. **Debug consistency (P3.2)** (1 week) - Low value, polish item
-8. **Cache permissions (P3.4)** (<1 hour) - Quick win
+5. ✅ **Cache permissions (P3.4)** - Completed (2025-11-01)
+6. ✅ **Debug consistency (P3.2)** - Completed (2025-11-01, no changes needed)
+7. **P2.3 Plugin optimization** - Awaiting approval (4 weeks, 29% speedup)
+8. **Test coverage (P2.2)** (6 weeks) - High value, larger commitment
 9. **Future enhancements** - As desired
 
 ---
 
 ## 6. Quick Win Opportunities
 
-**Can be done in <1 hour each**:
+**All quick wins completed!** ✅
 
-- Fix cache permissions (P3.4) - Only remaining quick win
+- ✅ Cache permissions (P3.4)
+- ✅ Debug consistency (P3.2) - Investigation showed already clean
 
 ---
 
@@ -271,4 +286,4 @@ Advanced FZF features with previews and custom keybindings.
 ---
 
 *Compliant with AI-GUIDELINES.md (v1.0 2025-10-31)*
-*Updated: 2025-11-01 after P2.4, P3.1, and P3.3 completion*
+*Updated: 2025-11-01 after completing P2.4, P3.1, P3.2, P3.3, and P3.4*

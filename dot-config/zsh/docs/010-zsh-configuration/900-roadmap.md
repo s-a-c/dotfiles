@@ -19,7 +19,9 @@
     - [P2.3: Plugin Loading Optimization - IMPLEMENTED](#p23-plugin-loading-optimization---implemented)
     - [P2.4: Terminal PATH Initialization Issues - RESOLVED](#p24-terminal-path-initialization-issues---resolved)
     - [P3.1: Module Header Standardization - RESOLVED](#p31-module-header-standardization---resolved)
+    - [P3.2: Debug Message Consistency - RESOLVED](#p32-debug-message-consistency---resolved)
     - [P3.3: Environment Variable Organization - RESOLVED](#p33-environment-variable-organization---resolved)
+    - [P3.4: Cache Permission Issues - RESOLVED](#p34-cache-permission-issues---resolved)
   - [🎯 Immediate Next Steps](#-immediate-next-steps)
     - [User Actions Required](#user-actions-required)
     - [Development Tasks Ready](#development-tasks-ready)
@@ -413,6 +415,72 @@ echo $PATH | tr ':' '\n' | head -6  # Should show system paths first
 
 ---
 
+### P3.2: Debug Message Consistency - RESOLVED
+
+**Status**: ✅ **RESOLVED** (2025-11-01)
+
+**Problem**: Multiple debug message formats allegedly used inconsistently (`[DEBUG]`, `DEBUG:`, `# DEBUG`)
+
+**Investigation Findings**:
+
+- Core configuration files already clean - all use `zf::debug()`
+- No inconsistent debug messages in `.zshrc.d.01/` (0 instances)
+- No inconsistent debug messages in `.zshrc.pre-plugins.d.01/` (0 instances)
+- `.zshenv.01` uses `zf::debug` correctly (3 instances, all proper)
+
+**Out of Scope** (Appropriate As-Is):
+
+- `tools/` scripts use context-specific debug helpers (27 instances, intentional)
+- `tests/` use self-contained debug helpers (80+ instances, required for `zsh -f`)
+
+**Resolution**: NO CHANGES REQUIRED
+
+**Rationale**:
+
+- Core shell configuration already uses consistent `zf::debug()` helper
+- Tools/tests use appropriate context-specific debug functions
+- No actual inconsistency found in areas that matter
+
+**Files Analyzed**: 50+ files across all configuration directories
+
+**Documentation**: [P3.2-RESOLUTION-SUMMARY.md](P3.2-RESOLUTION-SUMMARY.md)
+
+**Commit**: `5a782dc58`
+**Date Completed**: 2025-11-01
+
+---
+
+### P3.4: Cache Permission Issues - RESOLVED
+
+**Status**: ✅ **RESOLVED** (2025-11-01)
+
+**Problem**: Inconsistent cache directory permissions (default 755, not secure)
+
+**Resolution**:
+
+- Added `chmod 700` for `ZSH_CACHE_DIR` and `ZSH_LOG_DIR` after creation
+- Ensures secure, user-only access (permissions: `drwx------`)
+- Non-fatal (continues on error)
+
+**Security Benefits**:
+
+- Prevents other users from reading cache contents
+- Protects potentially sensitive data in logs
+- Aligns with security best practices
+
+**Code Added** (`.zshenv.01` line 515):
+
+```zsh
+chmod 700 "$ZSH_CACHE_DIR" "$ZSH_LOG_DIR" 2>/dev/null || true  # Secure permissions
+```
+
+**Files Modified**: `.zshenv.01`
+
+**Commit**: `27080abf0`
+**Date Completed**: 2025-11-01
+
+---
+
 ## 🎯 Immediate Next Steps
 
 ### User Actions Required
@@ -481,10 +549,10 @@ sleep 2 && z ~  # Should work after 1s
 | **Plugin Count** | 40+ | 30-45 | ✅ Acceptable |
 | **File Count** | 220 | <250 | ✅ Manageable |
 | **Test Coverage** | ~85% | 90%+ | ✅ Plan ready |
-| **Documentation** | 32 files | Complete | ✅ Comprehensive |
+| **Documentation** | 33 files | Complete | ✅ Comprehensive |
 | **Critical Issues (P1)** | 0 | 0 | ✅ All resolved |
 | **High Priority (P2)** | 0 | 0 | ✅ All resolved/planned |
-| **Medium Priority (P3)** | 2 of 4 | 0 | ⚠️ 2 remaining (P3.2, P3.4) |
+| **Medium Priority (P3)** | 0 of 4 | 0 | ✅ All resolved |
 
 ### 1.2. Key Takeaways
 
@@ -506,13 +574,15 @@ sleep 2 && z ~  # Should work after 1s
 - **Terminal PATH fixes** - Resolved Cursor/VSCode "command not found" errors
 - **Module headers standardized** - 33 files with consistent headers
 - **Environment variables organized** - Table of Contents added to .zshenv.01
-- **Complete documentation** - 32 files covering all aspects
+- **Cache permissions secured** - chmod 700 for user-only access
+- **Debug consistency verified** - Core config already clean
+- **Complete documentation** - 33 files covering all aspects
 
 ⚠️ **Next Focus Areas**:
 
 - **Validate performance improvements** - Test ~230ms plugin loading savings (P2.3)
 - **Test coverage implementation** - Plan ready (6 weeks to reach 90%+) (P2.2)
-- **Remaining medium-priority** - Debug consistency (P3.2), cache permissions (P3.4)
+- **All P3 issues resolved** - All medium-priority tasks complete ✅
 
 ---
 
@@ -681,7 +751,7 @@ See [Completed Issues](#-completed-issues-2025-10-31) section for P2.1, P2.2, an
 
 ## 5. 🟢 Medium Priority Issues (P3)
 
-**Status**: P3.1 and P3.3 completed 2025-11-01. See [Completed Issues](#-completed-issues-2025-10-31) for details.
+**Status**: ✅ **ALL P3 ISSUES RESOLVED** (2025-11-01). See [Completed Issues](#-completed-issues-2025-10-31) for details.
 
 ### 5.1. Priority 3.1: Module Header Standardization
 
@@ -693,19 +763,9 @@ See [Completed Issues](#-completed-issues-2025-10-31) section for P2.1, P2.2, an
 
 ### 5.2. Priority 3.2: Debug Message Consistency
 
-**Issue**: Multiple debug message formats used
+**Status**: ✅ **RESOLVED** (2025-11-01)
 
-**Current Formats**:
-
-- `[DEBUG]message`
-- `DEBUG: message`
-- `# DEBUG: message`
-
-**Solution**: Standardize on `zf::debug` helper
-
-**Timeline**: 1 week
-
-**Risk**: Low
+**See**: [P3.2: Debug Message Consistency - RESOLVED](#p32-debug-message-consistency---resolved) for complete details.
 
 ---
 
@@ -719,22 +779,9 @@ See [Completed Issues](#-completed-issues-2025-10-31) section for P2.1, P2.2, an
 
 ### 5.4. Priority 3.4: Cache Permission Issues
 
-**Issue**: Inconsistent cache directory permissions
+**Status**: ✅ **RESOLVED** (2025-11-01)
 
-**Solution**:
-
-```bash
-
-# Standardize on secure permissions
-
-mkdir -p "$ZSH_CACHE_DIR"
-chmod 700 "$ZSH_CACHE_DIR"
-
-```
-
-**Timeline**: 1-2 days
-
-**Risk**: Low
+**See**: [P3.4: Cache Permission Issues - RESOLVED](#p34-cache-permission-issues---resolved) for complete details.
 
 ---
 
