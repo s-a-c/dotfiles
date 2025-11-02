@@ -87,7 +87,7 @@ zf::history_based_completion() {
 # Detect project type and provide relevant completions
 zf::detect_project_type() {
     local dir="${1:-$PWD}"
-    
+
     if [[ -f "$dir/package.json" ]]; then
         echo "node"
     elif [[ -f "$dir/composer.json" ]]; then
@@ -205,12 +205,14 @@ Performance:
 EOF
 }
 
-# Mark functions as readonly
-readonly -f zf::history_based_completion 2>/dev/null || true
-readonly -f zf::detect_project_type 2>/dev/null || true
-readonly -f zf::npm_script_completion 2>/dev/null || true
-readonly -f zf::composer_script_completion 2>/dev/null || true
-readonly -f enhanced-completions-help 2>/dev/null || true
+# Mark functions as readonly (wrapped to prevent function definition output)
+(
+  readonly -f zf::history_based_completion 2>/dev/null || true
+  readonly -f zf::detect_project_type 2>/dev/null || true
+  readonly -f zf::npm_script_completion 2>/dev/null || true
+  readonly -f zf::composer_script_completion 2>/dev/null || true
+  readonly -f enhanced-completions-help 2>/dev/null || true
+) >/dev/null 2>&1
 
 # Welcome message
 if [[ -z "${_ZF_ENHANCED_COMPLETIONS_NOTIFIED:-}" ]]; then
@@ -221,4 +223,3 @@ fi
 zf::debug "# [completions] Enhanced completion system loaded"
 
 return 0
-
