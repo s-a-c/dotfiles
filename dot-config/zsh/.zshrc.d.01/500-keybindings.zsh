@@ -108,11 +108,5 @@ keybinds-help() {
   echo "• Arrow/navigation keys work across multiple terminals"
 }
 
-# --- Welcome Message ---
-if [[ -z "${_ZF_KEYBINDINGS_NOTIFIED:-}" ]]; then
-  echo "⌨️  Emacs keybindings active. Type 'keybinds-help' for a full list."
-  export _ZF_KEYBINDINGS_NOTIFIED=1
-fi
-
 typeset -f zf::debug >/dev/null 2>&1 && zf::debug "# [keys] Emacs keybindings enforced with Starship cursor fix"
 return 0

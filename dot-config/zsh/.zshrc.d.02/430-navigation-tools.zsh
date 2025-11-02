@@ -249,12 +249,6 @@ if [[ "${ZF_DISABLE_FZF_ENHANCEMENTS:-0}" == 0 ]] && command -v fzf >/dev/null 2
 EOF
   }
 
-  # Welcome message (only show once per session)
-  if [[ -z "${_ZF_FZF_ENHANCEMENTS_NOTIFIED:-}" ]]; then
-      echo "🔍 Enhanced FZF + zoxide active. Type 'fzf-help' for keybindings."
-      export _ZF_FZF_ENHANCEMENTS_NOTIFIED=1
-  fi
-
   zf::debug "# [nav] Enhanced FZF integration and navigation tools loaded"
 fi
 

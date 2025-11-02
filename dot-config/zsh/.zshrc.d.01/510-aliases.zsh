@@ -95,11 +95,5 @@ aliases-help() {
   echo ".., ..., ls, ll, la, tree, mkdir, df, du, psa, psg, myip, top, cat, vim, vi"
 }
 
-# --- Welcome Message ---
-if [[ -z "${_ZF_ALIASES_NOTIFIED:-}" ]]; then
-  echo "🎯 Safe aliases active. Type 'aliases-help' for a full list."
-  export _ZF_ALIASES_NOTIFIED=1
-fi
-
 typeset -f zf::debug >/dev/null 2>&1 && zf::debug "# [aliases] Safe aliases and package manager functions loaded"
 return 0

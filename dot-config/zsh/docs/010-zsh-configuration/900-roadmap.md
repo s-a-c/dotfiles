@@ -22,6 +22,10 @@
     - [1.11. P3.4: Cache Permission Issues - RESOLVED](#111-p34-cache-permission-issues---resolved)
     - [1.12. P4.1: Enhanced Error Messages - COMPLETED](#112-p41-enhanced-error-messages---completed)
     - [1.13. P4.3: Advanced FZF Integration - COMPLETED](#113-p43-advanced-fzf-integration---completed)
+    - [1.14. Enhanced Completion System - COMPLETED](#114-enhanced-completion-system---completed)
+    - [1.15. Terminal Multiplexer Enhancement - COMPLETED](#115-terminal-multiplexer-enhancement---completed)
+    - [1.16. macOS Deep Integration - COMPLETED](#116-macos-deep-integration---completed)
+    - [1.17. Module Consolidation and UI Unification - COMPLETED](#117-module-consolidation-and-ui-unification---completed)
   - [2. 🎯 Immediate Next Steps](#2--immediate-next-steps)
     - [2.1. User Actions Required](#21-user-actions-required)
     - [2.2. Development Tasks Ready](#22-development-tasks-ready)
@@ -88,8 +92,8 @@
       - [L4: Plugin Marketplace](#l4-plugin-marketplace)
   - [15. 🎨 Enhancement Opportunities](#15--enhancement-opportunities)
     - [15.1. Feature Enhancements](#151-feature-enhancements)
-      - [1. Advanced FZF Integration](#1-advanced-fzf-integration)
-      - [2. AI-Powered Shell Assistant](#2-ai-powered-shell-assistant)
+      - [1. Advanced FZF Integration - ✅ **COMPLETED** (2025-11-01)](#1-advanced-fzf-integration----completed-2025-11-01)
+      - [2. AI-Powered Shell Assistant - 🔄 **DEFERRED**](#2-ai-powered-shell-assistant----deferred)
       - [3. Terminal Multiplexer Enhancement](#3-terminal-multiplexer-enhancement)
       - [4. macOS Deep Integration](#4-macos-deep-integration)
       - [5. Enhanced Completion System](#5-enhanced-completion-system)
@@ -686,21 +690,25 @@ zf::path_error(path, expected_type)                  # Path problems
 **Features**:
 
 **TMUX Integration**:
+
 - `tmux-sessions`, `tmux-attach`, `tmux-workspace`, `tmux-kill`
 - 3-pane workspace layout (editor top, dual terminals below)
 - Convenient aliases: `tl`, `ta`, `tw`, `tk`, `td`
 
 **Zellij Integration**:
+
 - `zellij-sessions`, `zellij-attach`, `zellij-workspace`, `zellij-kill`
 - Compact layout support
 - Convenient aliases: `zl`, `za`, `zw`, `zk`, `zd`
 
 **Common Functions**:
+
 - `zf::in_multiplexer()` - Detect if running in multiplexer
 - `zf::multiplexer_name()` - Get current multiplexer type
 - `multiplexer-help()` - Help function
 
 **Automation**:
+
 - SSH auto-attach (opt-in: `ZF_TMUX_AUTO_ATTACH=1`, `ZF_ZELLIJ_AUTO_ATTACH=1`)
 - Environment detection (sets `TMUX_ACTIVE` or `ZELLIJ_ACTIVE`)
 
@@ -723,15 +731,18 @@ zf::path_error(path, expected_type)                  # Path problems
 **Features by Category**:
 
 **Spotlight Search**:
+
 - `spotlight` - Search from command line
 - `spotlight-find` - With result limit
 - `spotlight-here` - Search in current directory
 
 **Quick Look**:
+
 - `ql <file>` - Preview file
 - `ql-fzf` - FZF integration with Quick Look
 
 **Finder Sync**:
+
 - `finder [path]` - Open in Finder
 - `finder-pwd` - Get Finder's current directory
 - `cdf` - Change shell to Finder's directory
@@ -739,20 +750,103 @@ zf::path_error(path, expected_type)                  # Path problems
 - `show-in-finder <file>` - Reveal in Finder
 
 **Notifications**:
+
 - `notify <title> <msg> [sound]` - Send notification
 - `notify-done` - Auto-notify on command completion
 
 **Clipboard**:
+
 - `clip [text]` - Copy to clipboard
 - `paste` - Paste from clipboard
 - `cpwd` - Copy current directory path
 
 **System Utilities**:
+
 - `toggle-hidden-files` - Show/hide in Finder
 - `macos-version`, `macos-info` - System info
 - `macos-help()` - Complete help
 
 **Toggle**: `ZF_DISABLE_MACOS_INTEGRATION=1`
+
+**Date Completed**: 2025-11-02
+
+---
+
+### 1.17. Module Consolidation and UI Unification - COMPLETED
+
+**Status**: ✅ **COMPLETED** (2025-11-02)
+
+**Implementation**:
+
+- Merged `415-enhanced-completions.zsh` into `410-completions.zsh` for unified completion system
+- Consolidated all feature welcome messages into `480-user-interface.zsh`
+- Created dynamic feature detection with unified splash screen
+- Removed individual feature notifications from modules
+
+**Modules Refactored**:
+
+**Completions Unification** (`415` → `410`):
+- Merged enhanced completions into base completions
+- Single module for: Base (`compinit`) + Enhanced + Carapace
+- Help function: `completions-help` (was `enhanced-completions-help`)
+- Deleted standalone `415-enhanced-completions.zsh`
+
+**Terminal Integration** (Previous: `445` → `420`):
+- Already merged multiplexer into terminal integration
+- Single module for: Emulators + Multiplexers (tmux, zellij)
+- Help function: `terminal-help`
+
+**UI Consolidation** (`480-user-interface.zsh`):
+- **Removed welcome messages from**:
+  - `410-completions.zsh` (was `415`)
+  - `420-terminal-integration.zsh`
+  - `430-navigation-tools.zsh` (FZF enhancements)
+  - `460-macos-integration.zsh`
+
+- **Centralized in user-interface**:
+  - Auto-detects active features
+  - Dynamically lists help commands
+  - Unified splash screen with feature status
+  - Single notification point for all features
+
+**Current Module Structure** (Layer `.02`):
+
+```
+.zshrc.d.02/
+├── 400-options.zsh
+├── 410-completions.zsh          ← UNIFIED (base + enhanced + Carapace)
+├── 420-terminal-integration.zsh ← UNIFIED (emulators + multiplexers)
+├── 430-navigation-tools.zsh     ← FZF + zoxide (notification removed)
+├── 440-neovim.zsh
+├── 450-node-environment.zsh
+├── 460-macos-integration.zsh    ← macOS features (notification removed)
+├── 470-prompt.zsh
+├── 480-user-interface.zsh       ← CENTRALIZED (all welcome messages)
+├── 490-history.zsh
+├── 500-keybindings.zsh
+├── 510-aliases.zsh
+├── 520-developer-tools.zsh
+├── 710-kilocode-memory-bank.zsh
+└── 990-final-overrides.zsh
+```
+
+**Benefits**:
+
+- **Reduced File Count**: -2 files (`415` and `445` merged into existing modules)
+- **Code Reduction**: -764 net lines (16 files changed, +1,137/-1,901)
+- **Unified UX**: Single splash screen shows only active features
+- **Dynamic Help**: Help commands listed based on what's actually loaded
+- **Clean Startup**: No individual module notifications
+- **Logical Organization**: Related functionality grouped together
+
+**Files Modified**:
+
+- `.zshrc.d.01/410-completions.zsh` - Unified completion system
+- `.zshrc.d.01/420-terminal-integration.zsh` - Terminal + multiplexer
+- `.zshrc.d.01/430-navigation-tools.zsh` - Removed welcome message
+- `.zshrc.d.01/460-macos-integration.zsh` - Removed welcome message
+- `.zshrc.d.01/480-user-interface.zsh` - Centralized splash screen
+- `.zshrc.d.02/*` - Mirrored changes in development layer
 
 **Date Completed**: 2025-11-02
 
@@ -898,7 +992,7 @@ sleep 2 && z ~  # Should work after 1s
 🔴 **Critical**:
 
 - ✅ **All critical issues resolved** (2025-10-31)
-- See [Completed Issues](#1--completed-issues-2025-11-01) for details
+- See [Completed Issues](#1--completed-issues-2025-11-02) for details
 
 ---
 
@@ -906,7 +1000,7 @@ sleep 2 && z ~  # Should work after 1s
 
 **Status**: ✅ **All P1 issues resolved as of 2025-10-31**
 
-See [Completed Issues](#1--completed-issues-2025-11-01) section for full details.
+See [Completed Issues](#1--completed-issues-2025-11-02) section for full details.
 
 ### 5.1. Priority 1.1: Duplicate Filename Conflict
 
@@ -916,7 +1010,7 @@ See [Completed Issues](#1--completed-issues-2025-11-01) section for full details
 
 **Resolution**: Investigation confirmed no duplicate exists. Only `300-brew-abbr.zsh` found in Phase 4 (correct location). Issue was already resolved or based on outdated information.
 
-**See**: [P1.1: Duplicate Filename - RESOLVED](#11-p11-duplicate-filename---resolved) for complete details.
+**See**: [P1.1: Duplicate Filename - RESOLVED](#12-p11-duplicate-filename---resolved) for complete details.
 
 ---
 
@@ -941,7 +1035,7 @@ See [Completed Issues](#1--completed-issues-2025-11-01) section for full details
 - Guidelines for adding new files
 - Visual dependency diagram
 
-**See**: [P1.2: Load Order Dependencies - DOCUMENTED](#12-p12-load-order-dependencies---documented) for complete details.
+**See**: [P1.2: Load Order Dependencies - DOCUMENTED](#13-p12-load-order-dependencies---documented) for complete details.
 
 ---
 
@@ -949,7 +1043,7 @@ See [Completed Issues](#1--completed-issues-2025-11-01) section for full details
 
 **Status**: ✅ **All P2 issues resolved or planned as of 2025-10-31**
 
-See [Completed Issues](#1--completed-issues-2025-11-01) section for P2.1, P2.2, and P2.3 details.
+See [Completed Issues](#1--completed-issues-2025-11-02) section for P2.1, P2.2, and P2.3 details.
 
 ### 6.1. Priority 2.1: Performance Log Accumulation
 
@@ -964,7 +1058,7 @@ See [Completed Issues](#1--completed-issues-2025-11-01) section for P2.1, P2.2, 
 - Configurable via `ZF_LOG_ROTATION_AGE_DAYS` environment variable
 - Works alongside existing size-based rotation (200KB threshold)
 
-**See**: [P2.1: Performance Log Accumulation - RESOLVED](#13-p21-performance-log-accumulation---resolved) for complete details.
+**See**: [P2.1: Performance Log Accumulation - RESOLVED](#14-p21-performance-log-accumulation---resolved) for complete details.
 
 ---
 
@@ -972,7 +1066,7 @@ See [Completed Issues](#1--completed-issues-2025-11-01) section for P2.1, P2.2, 
 
 **Status**: ✅ **COMPLETED** (2025-11-01)
 
-**See**: [P2.2: Test Coverage Improvement - COMPLETED](#14-p22-test-coverage-improvement---planned) for complete details.
+**See**: [P2.2: Test Coverage Improvement - COMPLETED](#15-p22-test-coverage-improvement---planned) for complete details.
 
 ---
 
@@ -980,19 +1074,19 @@ See [Completed Issues](#1--completed-issues-2025-11-01) section for P2.1, P2.2, 
 
 **Status**: ✅ **COMPLETED & VALIDATED** (2025-11-01)
 
-**See**: [P2.3: Plugin Loading Optimization - COMPLETED](#15-p23-plugin-loading-optimization---implemented) for complete details.
+**See**: [P2.3: Plugin Loading Optimization - COMPLETED](#16-p23-plugin-loading-optimization---implemented) for complete details.
 
 ---
 
 ## 7. 🟢 Medium Priority Issues (P3)
 
-**Status**: ✅ **ALL P3 ISSUES RESOLVED** (2025-11-01). See [Completed Issues](#1--completed-issues-2025-11-01) for details.
+**Status**: ✅ **ALL P3 ISSUES RESOLVED** (2025-11-01). See [Completed Issues](#1--completed-issues-2025-11-02) for details.
 
 ### 7.1. Priority 3.1: Module Header Standardization
 
 **Status**: ✅ **RESOLVED** (2025-11-01)
 
-**See**: [P3.1: Module Header Standardization - RESOLVED](#17-p31-module-header-standardization---resolved) for complete details.
+**See**: [P3.1: Module Header Standardization - RESOLVED](#18-p31-module-header-standardization---resolved) for complete details.
 
 ---
 
@@ -1000,7 +1094,7 @@ See [Completed Issues](#1--completed-issues-2025-11-01) section for P2.1, P2.2, 
 
 **Status**: ✅ **RESOLVED** (2025-11-01)
 
-**See**: [P3.2: Debug Message Consistency - RESOLVED](#19-p32-debug-message-consistency---resolved) for complete details.
+**See**: [P3.2: Debug Message Consistency - RESOLVED](#110-p32-debug-message-consistency---resolved) for complete details.
 
 ---
 
@@ -1008,7 +1102,7 @@ See [Completed Issues](#1--completed-issues-2025-11-01) section for P2.1, P2.2, 
 
 **Status**: ✅ **RESOLVED** (2025-11-01)
 
-**See**: [P3.3: Environment Variable Organization - RESOLVED](#18-p33-environment-variable-organization---resolved) for complete details.
+**See**: [P3.3: Environment Variable Organization - RESOLVED](#19-p33-environment-variable-organization---resolved) for complete details.
 
 ---
 
@@ -1016,7 +1110,7 @@ See [Completed Issues](#1--completed-issues-2025-11-01) section for P2.1, P2.2, 
 
 **Status**: ✅ **RESOLVED** (2025-11-01)
 
-**See**: [P3.4: Cache Permission Issues - RESOLVED](#110-p34-cache-permission-issues---resolved) for complete details.
+**See**: [P3.4: Cache Permission Issues - RESOLVED](#111-p34-cache-permission-issues---resolved) for complete details.
 
 ---
 
@@ -1400,7 +1494,7 @@ quadrantChart
 
 **Status**: ✅ **ALL ISSUES FROM ORIGINAL BREAKDOWN RESOLVED!** (2025-11-01)
 
-This section provided the original detailed breakdown of issues. **All items listed below have been resolved** as of 2025-11-01. See [Completed Issues](#1--completed-issues-2025-11-01) for full resolution details.
+This section provided the original detailed breakdown of issues. **All items listed below have been resolved** as of 2025-11-01. See [Completed Issues](#1--completed-issues-2025-11-02) for full resolution details.
 
 ---
 
@@ -1410,7 +1504,7 @@ This section provided the original detailed breakdown of issues. **All items lis
 
 **Status**: ✅ **RESOLVED** (2025-10-31)
 
-**Resolution**: Investigation confirmed no duplicate exists. See [P1.1](#11-p11-duplicate-filename---resolved) for details.
+**Resolution**: Investigation confirmed no duplicate exists. See [P1.1](#12-p11-duplicate-filename---resolved) for details.
 
 ---
 
@@ -1418,7 +1512,7 @@ This section provided the original detailed breakdown of issues. **All items lis
 
 **Status**: ✅ **RESOLVED** (2025-10-31)
 
-**Resolution**: Comprehensive documentation created. See [P1.2](#12-p12-load-order-dependencies---documented) and [LOAD-ORDER-RATIONALE.md](LOAD-ORDER-RATIONALE.md) for details.
+**Resolution**: Comprehensive documentation created. See [P1.2](#13-p12-load-order-dependencies---documented) and [LOAD-ORDER-RATIONALE.md](LOAD-ORDER-RATIONALE.md) for details.
 
 ---
 
@@ -1428,7 +1522,7 @@ This section provided the original detailed breakdown of issues. **All items lis
 
 **Status**: ✅ **RESOLVED** (2025-10-31)
 
-**Resolution**: Age-based log rotation implemented. See [P2.1](#13-p21-performance-log-accumulation---resolved) for details.
+**Resolution**: Age-based log rotation implemented. See [P2.1](#14-p21-performance-log-accumulation---resolved) for details.
 
 ---
 
@@ -1436,7 +1530,7 @@ This section provided the original detailed breakdown of issues. **All items lis
 
 **Status**: ✅ **RESOLVED** (2025-11-01)
 
-**Resolution**: 19 tests created, 90%+ coverage achieved. See [P2.2](#14-p22-test-coverage-improvement---planned) for details.
+**Resolution**: 19 tests created, 90%+ coverage achieved. See [P2.2](#15-p22-test-coverage-improvement---planned) for details.
 
 **Final Coverage**:
 
@@ -1452,7 +1546,7 @@ This section provided the original detailed breakdown of issues. **All items lis
 
 **Status**: ✅ **RESOLVED** (2025-11-01)
 
-**Resolution**: 6 optimizations implemented, validated. See [P2.3](#15-p23-plugin-loading-optimization---implemented) for details.
+**Resolution**: 6 optimizations implemented, validated. See [P2.3](#16-p23-plugin-loading-optimization---implemented) for details.
 
 **Achieved**: 800ms → 570ms (-230ms, 29% improvement)
 
@@ -1464,7 +1558,7 @@ This section provided the original detailed breakdown of issues. **All items lis
 
 **Status**: ✅ **RESOLVED** (2025-11-01)
 
-**Resolution**: 33 files standardized. See [P3.1](#17-p31-module-header-standardization---resolved) for details.
+**Resolution**: 33 files standardized. See [P3.1](#18-p31-module-header-standardization---resolved) for details.
 
 ---
 
@@ -1472,7 +1566,7 @@ This section provided the original detailed breakdown of issues. **All items lis
 
 **Status**: ✅ **RESOLVED** (2025-11-01)
 
-**Resolution**: Investigation showed already clean. See [P3.2](#19-p32-debug-message-consistency---resolved) for details.
+**Resolution**: Investigation showed already clean. See [P3.2](#110-p32-debug-message-consistency---resolved) for details.
 
 ---
 
@@ -1480,7 +1574,7 @@ This section provided the original detailed breakdown of issues. **All items lis
 
 **Status**: ✅ **RESOLVED** (2025-11-01)
 
-**Resolution**: Table of Contents added to .zshenv.01. See [P3.3](#18-p33-environment-variable-organization---resolved) for details.
+**Resolution**: Table of Contents added to .zshenv.01. See [P3.3](#19-p33-environment-variable-organization---resolved) for details.
 
 ---
 
@@ -1488,7 +1582,7 @@ This section provided the original detailed breakdown of issues. **All items lis
 
 **Status**: ✅ **RESOLVED** (2025-11-01)
 
-**Resolution**: chmod 700 applied. See [P3.4](#110-p34-cache-permission-issues---resolved) for details.
+**Resolution**: chmod 700 applied. See [P3.4](#111-p34-cache-permission-issues---resolved) for details.
 
 ---
 
@@ -1498,7 +1592,7 @@ This section provided the original detailed breakdown of issues. **All items lis
 
 **Status**: ✅ **COMPLETED** (2025-11-01)
 
-**Resolution**: Error messaging system created. See [P4.1](#111-p41-enhanced-error-messages---completed) for details.
+**Resolution**: Error messaging system created. See [P4.1](#112-p41-enhanced-error-messages---completed) for details.
 
 ---
 
@@ -1516,7 +1610,7 @@ This section provided the original detailed breakdown of issues. **All items lis
 
 **Status**: ✅ **COMPLETED** (2025-11-01)
 
-**Resolution**: Advanced FZF features implemented. See [P4.3](#112-p43-advanced-fzf-integration---completed) for details.
+**Resolution**: Advanced FZF features implemented. See [P4.3](#113-p43-advanced-fzf-integration---completed) for details.
 
 ---
 
@@ -1550,7 +1644,7 @@ This section provided the original detailed breakdown of issues. **All items lis
 - ✅ Git file selector with diff preview
 - ✅ Environment variable browser
 
-**Implementation**: See [P4.3](#112-p43-advanced-fzf-integration---completed) for complete details
+**Implementation**: See [P4.3](#113-p43-advanced-fzf-integration---completed) for complete details
 
 **Keybindings**: Ctrl-Alt-F, Ctrl-G B, Ctrl-Alt-K, Ctrl-Alt-D, Ctrl-Alt-R, Ctrl-G F, Ctrl-Alt-E
 

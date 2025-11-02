@@ -376,12 +376,6 @@ EOF
   readonly -f macos-help 2>/dev/null || true
 ) >/dev/null 2>&1
 
-# Welcome message
-if [[ -z "${_ZF_MACOS_NOTIFIED:-}" ]]; then
-    echo "🍎 macOS integration active. Type 'macos-help' for native features."
-    export _ZF_MACOS_NOTIFIED=1
-fi
-
 zf::debug "# [macos] macOS deep integration loaded"
 
 return 0
