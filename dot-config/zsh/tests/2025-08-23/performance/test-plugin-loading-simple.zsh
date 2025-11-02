@@ -67,7 +67,7 @@ fi
 _log_test ""
 _log_test "=== Backup Safety ==="
 
-_backup_count=$(ls /Users/s-a-c/.config/zsh/.zgen-setup.backup-deferred-* 2>/dev/null | wc -l)
+_backup_count=$(ls ${HOME}/.config/zsh/.zgen-setup.backup-deferred-* 2>/dev/null | wc -l)
 if [[ $_backup_count -gt 0 ]]; then
     _assert_pass "Configuration backup exists" "Found $_backup_count backup file(s)"
 else
@@ -78,12 +78,12 @@ fi
 _log_test ""
 _log_test "=== Plugin Loading Analysis ==="
 
-_backup_file=$(ls /Users/s-a-c/.config/zsh/.zgen-setup.backup-deferred-* 2>/dev/null | head -1)
+_backup_file=$(ls ${HOME}/.config/zsh/.zgen-setup.backup-deferred-* 2>/dev/null | head -1)
 if [[ -f "$_backup_file" ]]; then
     _original_active=$(grep "zgenom load" "$_backup_file" | grep -v "^#" | grep -v "^ *#" | wc -l | tr -d ' ')
-    _current_active=$(grep "zgenom load" /Users/s-a-c/.config/zsh/.zgen-setup | grep -v "^#" | grep -v "^ *#" | wc -l | tr -d ' ')
+    _current_active=$(grep "zgenom load" ${HOME}/.config/zsh/.zgen-setup | grep -v "^#" | grep -v "^ *#" | wc -l | tr -d ' ')
     _original_total=$(grep "zgenom load" "$_backup_file" | wc -l | tr -d ' ')
-    _current_commented=$(grep "# DEFERRED" /Users/s-a-c/.config/zsh/.zgen-setup | wc -l | tr -d ' ')
+    _current_commented=$(grep "# DEFERRED" ${HOME}/.config/zsh/.zgen-setup | wc -l | tr -d ' ')
 
     _log_test "Original active plugins: $_original_active"
     _log_test "Current active plugins: $_current_active"
@@ -267,8 +267,8 @@ cat > "$_performance_report" << EOF
 
 ## Files Modified
 
-- **Main Config**: /Users/s-a-c/.config/zsh/.zgen-setup (plugins commented)
-- **Deferred System**: /Users/s-a-c/.config/zsh/.zshrc.pre-plugins.d/04-plugin-deferred-loading.zsh
+- **Main Config**: ${HOME}/.config/zsh/.zgen-setup (plugins commented)
+- **Deferred System**: ${HOME}/.config/zsh/.zshrc.pre-plugins.d/04-plugin-deferred-loading.zsh
 - **Backup**: $_backup_file
 
 ## Log Files

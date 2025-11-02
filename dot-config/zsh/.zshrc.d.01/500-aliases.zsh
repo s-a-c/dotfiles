@@ -1,21 +1,7 @@
 #!/usr/bin/env zsh
-# 500-aliases.zsh
-#
-# Purpose:
-#   Provides a comprehensive and safe set of aliases for common commands,
-#   with a focus on Git and Node.js project management. This script uses a
-#   safety-first approach for package manager commands to prevent accidental
-#   execution outside of a project context.
-#
-# Features:
-#   - Extensive Git aliases for common workflows (`gs`, `ga`, `gc`, `gpl`, etc.).
-#   - Filesystem and system utility aliases (`..`, `ll`, `psa`, `top`).
-#   - Safe package manager aliases (`install`, `build`, `dev`, `test`) that
-#     automatically detect the correct package manager (npm, yarn, pnpm, bun)
-#     and validate that a `package.json` exists before running.
-#   - Helper functions (`pm-info`, `pm-npm`, etc.) to manage and inspect the
-#     package manager environment.
-#   - A comprehensive help command (`aliases-help`) to list all available aliases.
+# Filename: 500-aliases.zsh
+# Purpose:  Provides a comprehensive and safe set of aliases for common commands, with a focus on Git and Node.js project management. This script uses a safety-first approach for package manager commands to prevent accidental execution outside of a project context. Features: - Extensive Git aliases for common workflows (`gs`, `ga`, `gc`, `gpl`, etc.). - Filesystem and system utility aliases (`..`, `ll`, `psa`, `top`). - Safe package manager aliases (`install`, `build`, `dev`, `test`) that automatically detect the correct package manager (npm, yarn, pnpm, bun) and validate that a `package.json` exists before running. - Helper functions (`pm-info`, `pm-npm`, etc.) to manage and inspect the package manager environment. - A comprehensive help command (`aliases-help`) to list all available aliases. --- Git Aliases ---
+# Phase:    Post-plugin (.zshrc.d/)
 
 # --- Git Aliases ---
 alias gs="git status"
@@ -42,23 +28,24 @@ alias main="git checkout \$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/nul
 alias ..="cd .."
 alias ...="cd ../.."
 if command -v eza >/dev/null 2>&1 && [[ ${ZF_DISABLE_EZA_ALIAS:-0} != 1 ]]; then
-  alias ls='eza'
-  alias ll='eza -lh'
+  alias ls='\eza'
+  alias ll='\eza -lh'
   alias la='eza -alh'
-  alias tree='eza --tree'
+  alias tree='\eza --tree'
 fi
 alias mkdir='\mkdir -p'
 alias md='\mkdir -p'
-alias df='df -h'
-alias du='du -h'
-alias psa='ps aux'
-alias psg='ps aux | grep -v grep | grep'
-alias myip='curl -s ifconfig.me'
-if command -v htop >/dev/null 2>&1; then alias top='htop'; fi
-if command -v bat >/dev/null 2>&1; then alias cat='bat'; fi
+alias df='\df -h'
+alias du='\du -h'
+alias psa='\ps aux'
+alias psg='\ps aux | grep -v grep | grep'
+alias myip='\curl -s ifconfig.me'
+if command -v htop >/dev/null 2>&1; then alias top='\htop'; fi
+if command -v btop >/dev/null 2>&1; then alias top='\btop'; fi
+if command -v bat >/dev/null 2>&1; then alias cat='\bat'; fi
 if command -v nvim >/dev/null 2>&1; then
-  alias vim='nvim'
-  alias vi='nvim'
+  alias vim='\nvim'
+  alias vi='\nvim'
 fi
 
 # --- Safe Package Manager Functions (defined in .zshenv) ---

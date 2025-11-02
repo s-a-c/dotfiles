@@ -4,7 +4,7 @@
 #
 # Category: design (dependency graph integrity)
 #
-# Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md)
+# Compliant with [${HOME}/dotfiles/dot-config/ai/guidelines.md](${HOME}/dotfiles/dot-config/ai/guidelines.md)
 #
 # PURPOSE:
 #   Validates Stage 4 enhanced dependency handling introduced in

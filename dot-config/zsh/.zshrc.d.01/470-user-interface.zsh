@@ -1,27 +1,51 @@
 #!/usr/bin/env zsh
-# 470-user-interface.zsh
-#
-# Purpose:
-#   Manages the user interface elements of the shell, primarily the startup
-#   splash screen. This script is designed to provide a visually appealing
-#   welcome message without interfering with shell performance or prompt rendering.
-#
-# Features:
-#   - Displays a splash screen on the first interactive shell launch.
-#   - The splash screen is executed immediately during startup to prevent
-#     cursor positioning issues with the first prompt.
-#   - Integrates `colorscript`, `fastfetch`, and `lolcat` if available for a
-#     richer visual experience.
-#   - Provides a clean, informative fallback if optional tools are not installed.
-#
-# Toggles:
-#   - `NO_SPLASH=1`: Disables the splash screen entirely.
+# Filename: 470-user-interface.zsh
+# Purpose:  Manages the user interface elements of the shell, primarily the startup splash screen. This script is designed to provide a visually appealing welcome message without interfering with shell performance or prompt rendering. Features: - Displays a splash screen on the first interactive shell launch. - The splash screen is executed immediately during startup to prevent cursor positioning issues with the first prompt. - Integrates `colorscript`, `fastfetch`, and `lolcat` if available for a richer visual experience. - Provides a clean, informative fallback if optional tools are not installed. Toggles: - `NO_SPLASH=1` or `ZF_NO_SPLASH=1`: Disables the splash screen entirely. Only run in interactive shells
+# Phase:    Post-plugin (.zshrc.d/)
 
-# Only run in interactive shells
 [[ -o interactive ]] || return 0
 
-# Disable if requested
-if [[ -n ${NO_SPLASH:-} ]]; then
+# ------------------------------------------------------------------------------
+# VSCode/Cursor Splash Screen Control
+# ------------------------------------------------------------------------------
+# ROOT CAUSE: VSCode shell integration (VSCODE_INJECTION=1) SOURCES .zshrc TWICE
+#
+# The integration script at:
+# /Applications/Cursor.app/Contents/Resources/app/out/vs/workbench/contrib/terminal/
+#   common/scripts/shellIntegration-rc.zsh
+#
+# Line 29-32 shows it re-sources .zshrc during injection phase:
+#   if [[ "$VSCODE_INJECTION" == "1" ]]; then
+#       . $USER_ZDOTDIR/.zshrc   # ← FIRST .zshrc RUN (during injection)
+#   fi
+#
+# Then normal ZSH startup runs .zshrc again (SECOND run).
+#
+# The vendored .zshrc is NOT idempotent. Running it twice causes:
+# - Duplicate splash screens, plugin loads, update checks
+# - Spurious "0" output, "No quickstart marker" errors
+#
+# SOLUTIONS IMPLEMENTED:
+# 1. .zshenv.01: Sets ZF_VSCODE_FIRST_RUN=1 during injection phase
+# 2. .zshenv.01: Makes ALL zshenv functions readonly (prevents overwrites)
+# 3. .zshenv.01: Disables quickstart update checks (QUICKSTART_KIT_REFRESH_IN_DAYS)
+# 4. 420-terminal-integration.zsh: Skips manual VSCode integration (auto-loaded)
+# 5. This section: Suppresses splash on first run, re-enables on second run
+# ------------------------------------------------------------------------------
+if [[ "${TERM_PROGRAM:-}" == "vscode" ]]; then
+  if [[ -n "${ZF_VSCODE_FIRST_RUN:-}" ]]; then
+    # First .zshrc run (injection phase) - suppress splash and heavy operations
+    export ZF_NO_SPLASH=1
+    typeset -f zf::debug >/dev/null 2>&1 && zf::debug "# [vscode] First .zshrc run - splash suppressed"
+  else
+    # Second .zshrc run (normal startup) - re-enable splash
+    unset ZF_NO_SPLASH
+    typeset -f zf::debug >/dev/null 2>&1 && zf::debug "# [vscode] Second .zshrc run - splash enabled"
+  fi
+fi
+
+# Disable if requested (check both NO_SPLASH and ZF_NO_SPLASH)
+if [[ -n ${NO_SPLASH:-} || -n ${ZF_NO_SPLASH:-} ]]; then
   return 0
 fi
 
@@ -72,7 +96,13 @@ _zqs_show_splash() {
   printf '│  %s%*s│\n' "Shell: $shell_version" $((60 - 11 - ${#shell_version})) ''
   printf '│  %s%*s│\n' "Time: $timestamp" $((60 - 10 - ${#timestamp})) ''
   echo "│                                                          │"
-  echo "│  💡 Type 'aliases-help' for a list of commands.          │"
+  echo "│  🚀 Enhanced features active:                            │"
+  echo "│    💡 Productivity aliases                               │"
+  echo "│      •  Type 'aliases-help' for a list of commands.      │"
+  echo "│    💡 Enhanced keybindings                               │"
+  echo "│      •  Type 'keybinds-help' for a list of useful keys.  │"
+  echo "│    💡 Advanced prompt system                             │"
+  echo "│    💡 Modern tool integrations                           │"
   echo "╰──────────────────────────────────────────────────────────╯"
   echo ""
 }

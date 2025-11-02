@@ -131,7 +131,7 @@ else
 fi
 
 # Test 6: Laravel Herd detection
-herd_nvm_dir="/Users/s-a-c/Library/Application Support/Herd/config/nvm"
+herd_nvm_dir="${HOME}/Library/Application Support/Herd/config/nvm"
 if [[ -n "${_ZF_HERD_NVM:-}" ]]; then
     print_test "Herd NVM environment marker is set" "PASS"
     print_info "Running in Laravel Herd environment"
@@ -163,7 +163,7 @@ else
 fi
 
 # Test 8: Project validation in dotfiles directory
-if [[ "$PWD" == "/Users/s-a-c/dotfiles" ]]; then
+if [[ "$PWD" == "${HOME}/dotfiles" ]]; then
     if [[ ! -f "package.json" ]]; then
         print_test "Correctly detected no package.json in dotfiles" "PASS"
         print_info "Package manager safety should warn in this directory"
@@ -219,12 +219,12 @@ echo "====================================="
 
 # Test 11: Check if our files exist
 config_files=(
-    "/Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.pre-plugins.d.00/080-early-node-runtimes.zsh"
-    "/Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.d/500-shell-history.zsh"
-    "/Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.d/510-npm-config-validator.zsh"
-    "/Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.d.00/400-aliases.zsh"
-    "/Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.d.00/530-nvm-post-augmentation.zsh"
-    "/Users/s-a-c/dotfiles/dot-config/zsh/.zshrc.add-plugins.d.00/220-dev-node.zsh"
+    "${HOME}/dotfiles/dot-config/zsh/.zshrc.pre-plugins.d.00/080-early-node-runtimes.zsh"
+    "${HOME}/dotfiles/dot-config/zsh/.zshrc.d/500-shell-history.zsh"
+    "${HOME}/dotfiles/dot-config/zsh/.zshrc.d/510-npm-config-validator.zsh"
+    "${HOME}/dotfiles/dot-config/zsh/.zshrc.d.00/400-aliases.zsh"
+    "${HOME}/dotfiles/dot-config/zsh/.zshrc.d.00/530-nvm-post-augmentation.zsh"
+    "${HOME}/dotfiles/dot-config/zsh/.zshrc.add-plugins.d.00/220-dev-node.zsh"
 )
 
 for file in "${config_files[@]}"; do

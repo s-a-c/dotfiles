@@ -4,7 +4,7 @@
 echo "=== ZLE + Starship Integration Test ==="
 echo
 
-cd /Users/s-a-c/dotfiles/dot-config/zsh
+cd ${HOME}/dotfiles/dot-config/zsh
 
 # Check that the symlink was created
 echo "=== Module Setup Check ==="
@@ -24,7 +24,7 @@ ZDOTDIR="${HOME}/dotfiles/dot-config/zsh"
 export ZDOTDIR
 echo "Testing ZLE initialization with Starship..."
 zsh -i -c "
-echo \"=== ZLE Initialization Status ===\" 
+echo \"=== ZLE Initialization Status ===\"
 echo \"ZLE_READY: \${ZLE_READY:-not_set}\"
 echo \"ZLE_VERSION: \${ZLE_VERSION:-not_set}\"
 echo \"ZLE_INIT_STATUS: \${ZLE_INIT_STATUS:-not_set}\"

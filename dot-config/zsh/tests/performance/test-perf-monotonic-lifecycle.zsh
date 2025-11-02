@@ -4,7 +4,7 @@
 #
 # Category: performance (lifecycle ordering)
 #
-# Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md)
+# Compliant with [${HOME}/dotfiles/dot-config/ai/guidelines.md](${HOME}/dotfiles/dot-config/ai/guidelines.md)
 #
 # PURPOSE:
 #   Validate (Stage 3 → Stage 4 transition readiness) that core lifecycle

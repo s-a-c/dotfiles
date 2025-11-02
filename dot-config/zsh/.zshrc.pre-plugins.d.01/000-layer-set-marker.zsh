@@ -1,20 +1,8 @@
 #!/usr/bin/env zsh
-# 000-layer-set-marker.zsh
-# Layer Set Marker (Version 01)
-#
-# Establishes the active "layer set" identifier for the unified ZSH configuration.
-# This provides a stable variable for testing, CI, and future orchestration.
-#
-# Policy:
-#   - Single canonical configuration track.
-#   - Versioned directory sets (*.00, *.01, etc.).
-#   - Symlinks point to the active versioned directories.
-#
-# Exported: _ZF_LAYER_SET
-#
-# Nounset Safety: All parameter references are guarded.
+# Filename: 000-layer-set-marker.zsh
+# Purpose:  This provides a stable variable for testing, CI, and future orchestration.
+# Phase:    Pre-plugin (.zshrc.pre-plugins.d/)
 
-# Idempotency Guard
 [[ -n ${_ZF_LAYER_SET_MARKER_DONE:-} ]] && return 0
 _ZF_LAYER_SET_MARKER_DONE=1
 

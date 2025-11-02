@@ -28,7 +28,7 @@ Quick checks:
 - cat link-existence-map.json | jq '.entries | length'  # number of top-level mapping entries
 - less markdown-lint-report.md
 
-- [Previous](../000-index.md) - Back to main documentation index
+- [Previous](../010-zsh-configuration/000-index.md) - Back to main documentation index
 - [Top](#top)
 
 ---

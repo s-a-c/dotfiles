@@ -4,23 +4,23 @@
 echo "=== Testing Original Pre-Plugin Modules ==="
 echo
 
-cd /Users/s-a-c/dotfiles/dot-config/zsh
+cd ${HOME}/dotfiles/dot-config/zsh
 
 # Test with original modules (should now use .zshrc.pre-plugins.d instead of .REDESIGN)
 timeout 15s bash -c '
 ZSH_ENABLE_PREPLUGIN_REDESIGN=0 ZDOTDIR="${HOME}/dotfiles/dot-config/zsh" zsh -i -c "
-echo \"=== Module Selection Test ===\" 
+echo \"=== Module Selection Test ===\"
 echo \"PREPLUGIN_REDESIGN: \${ZSH_ENABLE_PREPLUGIN_REDESIGN:-not_set}\"
 echo \"POSTPLUGIN_REDESIGN: \${ZSH_ENABLE_POSTPLUGIN_REDESIGN:-not_set}\"
 
 echo
-echo \"=== ZLE Status with Original Modules ===\" 
+echo \"=== ZLE Status with Original Modules ===\"
 echo \"ZLE_VERSION: \${ZLE_VERSION:-not_set}\"
 echo \"ZLE_READY: \${ZLE_READY:-not_set}\"
 echo \"Interactive: \$([[ -o interactive ]] && echo yes || echo no)\"
 
 echo
-echo \"=== Widget Check ===\" 
+echo \"=== Widget Check ===\"
 if [[ -n \${widgets+x} ]]; then
     echo \"Widgets array available: yes\"
     echo \"Widgets count: \${#widgets[@]}\"
@@ -32,12 +32,12 @@ else
 fi
 
 echo
-echo \"=== Starship Test ===\" 
+echo \"=== Starship Test ===\"
 echo \"STARSHIP_SHELL: \${STARSHIP_SHELL:-not_set}\"
 echo \"Starship available: \$(command -v starship >/dev/null && echo yes || echo no)\"
 
 echo
-echo \"=== Manual Starship Init Test ===\" 
+echo \"=== Manual Starship Init Test ===\"
 if command -v starship >/dev/null 2>&1; then
     echo \"Testing manual Starship initialization...\"
     # Try to initialize starship manually

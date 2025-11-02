@@ -4,7 +4,7 @@
 echo "=== Starship Eval vs Source Test Harness ==="
 echo
 
-cd /Users/s-a-c/dotfiles/dot-config/zsh
+cd ${HOME}/dotfiles/dot-config/zsh
 
 # Test 1: Check if starship init generates output
 echo "=== Test 1: Starship Init Output Check ==="
@@ -79,7 +79,7 @@ echo \"PS1 starts with: \${PS1:0:50}...\"
 echo \"PROMPT starts with: \${PROMPT:0:50}...\"
 
 echo
-echo \"=== Manual Starship Test ===\" 
+echo \"=== Manual Starship Test ===\"
 # Test manual initialization
 unset STARSHIP_SHELL PROMPT PS1
 eval \\\"\\\$(starship init zsh)\\\"

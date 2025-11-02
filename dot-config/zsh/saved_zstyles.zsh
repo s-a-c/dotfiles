@@ -2,7 +2,7 @@ zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' accept-exact-dirs true
 zstyle ':completion:*:options' auto-description %d
 zstyle :omz:plugins:nvm autoload yes
-zstyle ':completion:*' cache-path /Users/s-a-c/.config/zsh/.zsh/cache
+zstyle ':completion:*' cache-path ${HOME}/.config/zsh/.zsh/cache
 zstyle ':completion:*:*:*:*:processes' command 'ps -u s-a-c -o pid,user,comm -w -w'
 zstyle ':completion:*' completer _complete _match _approximate
 zstyle ':completion:*:options' description yes

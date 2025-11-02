@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# Compliant with /Users/s-a-c/dotfiles/dot-config/ai/guidelines.md v<checksum>
+# Compliant with ${HOME}/dotfiles/dot-config/ai/guidelines.md v<checksum>
 #
 # docs-path-audit.zsh
 # -----------------------------------------------------------------------------

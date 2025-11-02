@@ -2,7 +2,7 @@
 # Feature Registry Scaffold
 # File: feature-registry.zsh
 #
-# Compliant with [/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines.md) v3fb33a85972b794c3c0b2f992b1e5a7c19cfbd2ccb3bb519f8865ad8fdfc0316
+# Compliant with [${HOME}/dotfiles/dot-config/ai/guidelines.md](${HOME}/dotfiles/dot-config/ai/guidelines.md) v3fb33a85972b794c3c0b2f992b1e5a7c19cfbd2ccb3bb519f8865ad8fdfc0316
 #
 # Stage 4 (Feature Layer) initial registry implementation.
 # Provides:
@@ -29,7 +29,7 @@
 #   - No external commands executed here beyond builtin shell features.
 #   - If future edits introduce external process spawning or PATH mutation,
 #     cite relevant rule lines (e.g. performance standards) inline:
-#     Example: rule [/Users/s-a-c/dotfiles/dot-config/ai/guidelines/110-performance-standards.md](/Users/s-a-c/dotfiles/dot-config/ai/guidelines/110-performance-standards.md:X)
+#     Example: rule [${HOME}/dotfiles/dot-config/ai/guidelines/110-performance-standards.md](${HOME}/dotfiles/dot-config/ai/guidelines/110-performance-standards.md:X)
 #
 # ==============================================================================
 
