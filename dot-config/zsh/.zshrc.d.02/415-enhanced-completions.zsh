@@ -205,12 +205,14 @@ Performance:
 EOF
 }
 
-# Mark functions as readonly
-readonly -f zf::history_based_completion 2>/dev/null || true
-readonly -f zf::detect_project_type 2>/dev/null || true
-readonly -f zf::npm_script_completion 2>/dev/null || true
-readonly -f zf::composer_script_completion 2>/dev/null || true
-readonly -f enhanced-completions-help 2>/dev/null || true
+# Mark functions as readonly (wrapped to prevent function definition output)
+(
+  readonly -f zf::history_based_completion 2>/dev/null || true
+  readonly -f zf::detect_project_type 2>/dev/null || true
+  readonly -f zf::npm_script_completion 2>/dev/null || true
+  readonly -f zf::composer_script_completion 2>/dev/null || true
+  readonly -f enhanced-completions-help 2>/dev/null || true
+) >/dev/null 2>&1
 
 # Welcome message
 if [[ -z "${_ZF_ENHANCED_COMPLETIONS_NOTIFIED:-}" ]]; then

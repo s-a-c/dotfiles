@@ -351,28 +351,30 @@ Note: Some features require macOS 10.15+ (Catalina)
 EOF
 }
 
-# Mark functions readonly
-readonly -f spotlight 2>/dev/null || true
-readonly -f spotlight-find 2>/dev/null || true
-readonly -f spotlight-here 2>/dev/null || true
-readonly -f ql 2>/dev/null || true
-readonly -f ql-fzf 2>/dev/null || true
-readonly -f finder 2>/dev/null || true
-readonly -f finder-pwd 2>/dev/null || true
-readonly -f cdf 2>/dev/null || true
-readonly -f sync-finder 2>/dev/null || true
-readonly -f show-in-finder 2>/dev/null || true
-readonly -f notify 2>/dev/null || true
-readonly -f notify-done 2>/dev/null || true
-readonly -f clip 2>/dev/null || true
-readonly -f cpwd 2>/dev/null || true
-readonly -f toggle-hidden-files 2>/dev/null || true
-readonly -f show-path-in-finder 2>/dev/null || true
-readonly -f macos-version 2>/dev/null || true
-readonly -f macos-info 2>/dev/null || true
-readonly -f openx 2>/dev/null || true
-readonly -f open-with 2>/dev/null || true
-readonly -f macos-help 2>/dev/null || true
+# Mark functions readonly (wrapped to prevent function definition output)
+(
+  readonly -f spotlight 2>/dev/null || true
+  readonly -f spotlight-find 2>/dev/null || true
+  readonly -f spotlight-here 2>/dev/null || true
+  readonly -f ql 2>/dev/null || true
+  readonly -f ql-fzf 2>/dev/null || true
+  readonly -f finder 2>/dev/null || true
+  readonly -f finder-pwd 2>/dev/null || true
+  readonly -f cdf 2>/dev/null || true
+  readonly -f sync-finder 2>/dev/null || true
+  readonly -f show-in-finder 2>/dev/null || true
+  readonly -f notify 2>/dev/null || true
+  readonly -f notify-done 2>/dev/null || true
+  readonly -f clip 2>/dev/null || true
+  readonly -f cpwd 2>/dev/null || true
+  readonly -f toggle-hidden-files 2>/dev/null || true
+  readonly -f show-path-in-finder 2>/dev/null || true
+  readonly -f macos-version 2>/dev/null || true
+  readonly -f macos-info 2>/dev/null || true
+  readonly -f openx 2>/dev/null || true
+  readonly -f open-with 2>/dev/null || true
+  readonly -f macos-help 2>/dev/null || true
+) >/dev/null 2>&1
 
 # Welcome message
 if [[ -z "${_ZF_MACOS_NOTIFIED:-}" ]]; then

@@ -249,10 +249,12 @@ Tips:
 EOF
 }
 
-# Mark functions readonly
-readonly -f zf::in_multiplexer 2>/dev/null || true
-readonly -f zf::multiplexer_name 2>/dev/null || true
-readonly -f multiplexer-help 2>/dev/null || true
+# Mark functions readonly (wrapped to prevent function definition output)
+(
+  readonly -f zf::in_multiplexer 2>/dev/null || true
+  readonly -f zf::multiplexer_name 2>/dev/null || true
+  readonly -f multiplexer-help 2>/dev/null || true
+) >/dev/null 2>&1
 
 # Welcome message
 if [[ -z "${_ZF_MULTIPLEXER_NOTIFIED:-}" ]] && (command -v tmux >/dev/null 2>&1 || command -v zellij >/dev/null 2>&1); then
