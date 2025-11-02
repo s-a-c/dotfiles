@@ -38,30 +38,34 @@
 
 ```text
 ~/.config/zsh/
-├── .zshenv.01                    # Environment (Phase 1)
+├── .zshenv.01                    # Environment (Phase 1) - Active
+├── .zshenv.02                    # Environment - Development
 ├── .zshenv.live → .zshenv.01
 ├── .zshenv → .zshenv.live
 │
 ├── .zshrc → zsh-quickstart-kit/zsh/.zshrc  # Orchestrator (Phase 2)
 │
-├── .zshrc.pre-plugins.d.01/      # Pre-plugin setup (Phase 3)
+├── .zshrc.pre-plugins.d.01/      # Pre-plugin setup (Phase 3) - Active
 │   ├── 000-layer-set-marker.zsh
 │   ├── 010-shell-safety.zsh
 │   └── ... (7 files total)
+├── .zshrc.pre-plugins.d.02/      # Pre-plugin - Development
 ├── .zshrc.pre-plugins.d.live → .zshrc.pre-plugins.d.01
 ├── .zshrc.pre-plugins.d → .zshrc.pre-plugins.d.live
 │
-├── .zshrc.add-plugins.d.00/      # Plugin declarations (Phase 4)
+├── .zshrc.add-plugins.d.00/      # Plugin declarations (Phase 4) - Active
 │   ├── 200-perf-core.zsh
 │   ├── 210-dev-php.zsh
 │   └── ... (12 files total)
+├── .zshrc.add-plugins.d.02/      # Plugins - Development
 ├── .zshrc.add-plugins.d.live → .zshrc.add-plugins.d.00
 ├── .zshrc.add-plugins.d → .zshrc.add-plugins.d.live
 │
-├── .zshrc.d.01/                  # Post-plugin integration (Phase 5)
+├── .zshrc.d.01/                  # Post-plugin integration (Phase 5) - Active
 │   ├── 400-options.zsh
 │   ├── 410-completions.zsh
 │   └── ... (14 files total)
+├── .zshrc.d.02/                  # Post-plugin - Development
 ├── .zshrc.d.live → .zshrc.d.01
 ├── .zshrc.d → .zshrc.d.live
 │
@@ -78,6 +82,8 @@
 
 ```
 
+**New in v2.0**: All versioned components now include a `.02` layer for safe development and instant rollback capability.
+
 ### 1.2. Visual Tree
 
 ```mermaid
@@ -91,10 +97,14 @@ graph TD
     ROOT --> USER[.zshrc.local<br/>.zshenv.local]
     ROOT --> UTIL[Utilities]
 
-    ENV --> ENV1[.zshenv.01<br/>1,415 lines]
-    PRE --> PRE1[.zshrc.pre-plugins.d.01/<br/>7 files]
-    ADD --> ADD0[.zshrc.add-plugins.d.00/<br/>12 files]
-    POST --> POST1[.zshrc.d.01/<br/>14 files]
+    ENV --> ENV1[.zshenv.01 Active<br/>1,415 lines]
+    ENV --> ENV2[.zshenv.02 Dev<br/>Available]
+    PRE --> PRE1[.zshrc.pre-plugins.d.01/ Active<br/>7 files]
+    PRE --> PRE2[.zshrc.pre-plugins.d.02/ Dev<br/>Available]
+    ADD --> ADD0[.zshrc.add-plugins.d.00/ Active<br/>12 files]
+    ADD --> ADD2[.zshrc.add-plugins.d.02/ Dev<br/>Available]
+    POST --> POST1[.zshrc.d.01/ Active<br/>14 files]
+    POST --> POST2[.zshrc.d.02/ Dev<br/>Available]
 
     UTIL --> BIN[bin/<br/>scripts]
     UTIL --> DOCS[docs/<br/>documentation]

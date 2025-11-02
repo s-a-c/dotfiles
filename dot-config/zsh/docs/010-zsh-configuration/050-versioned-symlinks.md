@@ -283,12 +283,14 @@ All major configuration components use versioning:
 
 ### 3.5. Summary Table
 
-| Component | Base | Live | Versioned | Type |
-|-----------|------|------|-----------|------|
-| Environment | `.zshenv` | `.zshenv.live` | `.zshenv.01` | File |
-| Pre-Plugin | `.zshrc.pre-plugins.d` | `.zshrc.pre-plugins.d.live` | `.zshrc.pre-plugins.d.01/` | Directory |
-| Plugins | `.zshrc.add-plugins.d` | `.zshrc.add-plugins.d.live` | `.zshrc.add-plugins.d.00/` | Directory |
-| Post-Plugin | `.zshrc.d` | `.zshrc.d.live` | `.zshrc.d.01/` | Directory |
+| Component | Base | Live | Current Version | Next Version | Type |
+|-----------|------|------|----------------|--------------|------|
+| Environment | `.zshenv` | `.zshenv.live` | `.zshenv.01` | `.zshenv.02` | File |
+| Pre-Plugin | `.zshrc.pre-plugins.d` | `.zshrc.pre-plugins.d.live` | `.zshrc.pre-plugins.d.01/` | `.zshrc.pre-plugins.d.02/` | Directory |
+| Plugins | `.zshrc.add-plugins.d` | `.zshrc.add-plugins.d.live` | `.zshrc.add-plugins.d.00/` | `.zshrc.add-plugins.d.02/` | Directory |
+| Post-Plugin | `.zshrc.d` | `.zshrc.d.live` | `.zshrc.d.01/` | `.zshrc.d.02/` | Directory |
+
+**Note**: Version `.02` layers are now available for all components, providing enhanced rollback capability and development isolation.
 
 ---
 
@@ -360,11 +362,14 @@ ls -ld .zshrc.d.*
 
 # Output:
 
-drwxr-xr-x  .zshrc.d.00/        # Previous version
+drwxr-xr-x  .zshrc.d.00/        # Legacy/backup version
 drwxr-xr-x  .zshrc.d.01/        # Current active
+drwxr-xr-x  .zshrc.d.02/        # Next/development version
 lrwxr-xr-x  .zshrc.d.live -> .zshrc.d.01
 
 ```
+
+**Current State**: All components now have `.01` (active) and `.02` (available) versions, providing instant rollback and development isolation.
 
 ---
 
@@ -372,14 +377,16 @@ lrwxr-xr-x  .zshrc.d.live -> .zshrc.d.01
 
 ### 5.1. Safe Update Process
 
-#### Step 1: Create New Version
+#### Step 1: Work in Available Version
 
 ```bash
 cd ~/.config/zsh
 
-# Duplicate current active version
+# Version .02 already exists for all components
+# Edit directly in .02 for development
 
-cp -R .zshrc.d.01 .zshrc.d.02
+# OR create a new version if needed:
+cp -R .zshrc.d.02 .zshrc.d.03
 
 ```
 
@@ -387,7 +394,7 @@ cp -R .zshrc.d.01 .zshrc.d.02
 
 ```bash
 
-# Edit the new version
+# Edit version 02 (or your development version)
 
 vim .zshrc.d.02/400-options.zsh
 
@@ -534,21 +541,23 @@ source ~/.zshrc
 
 ```
 
-2. **Create new version for major changes**
+2. **Use version .02 for development**
 
 ```bash
-   cp -R .zshrc.d.01 .zshrc.d.02
+   # Version .02 is available for all components
+   vim .zshrc.d.02/400-options.zsh
    # Make changes in .02
    # Test thoroughly
-   # Switch live pointer
+   # Switch live pointer when ready
 
 ```
 
-3. **Keep at least one backup version**
+3. **Keep multiple versions for safety**
 
 ```bash
-   # Always maintain .01 and .02 minimum
-   # So you can always rollback
+   # Current setup maintains .01 (active) and .02 (development)
+   # Create .03 for experimental features if needed
+   # Always have a known-good version to rollback to
 
 ```
 
@@ -711,21 +720,24 @@ ln -snf .zshrc.d.02 .zshrc.d.live && zsh-performance-baseline
 
 ### 9.2. Version Naming Conventions
 
-**Standard Versions**:
+**Current Production Versions** (all components have these):
 
-- `.00` - Stable, well-tested
-- `.01` - Current production
-- `.02` - Next release candidate
+- `.01` - Active/production version (currently in use)
+- `.02` - Development/next version (available for testing)
 
-**Development Versions**:
+**Optional Versions**:
 
-- `.dev` - Active development
+- `.00` - Legacy/backup version (if maintained)
+- `.03` - Experimental/feature development
+- `.dev` - Active development branch
 - `.test` - Testing/QA
 - `.exp` - Experimental features
 
 **Backup Versions**:
 
 - `.backup-YYYYMMDD` - Dated backups
+
+**Recommendation**: Use `.02` for all development work. It's already set up across all components (`zshenv`, `zshrc.pre-plugins.d`, `zshrc.add-plugins.d`, `zshrc.d`).
 
 ---
 
