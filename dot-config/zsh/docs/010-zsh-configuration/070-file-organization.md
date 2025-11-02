@@ -38,35 +38,35 @@
 
 ```text
 ~/.config/zsh/
-├── .zshenv.01                    # Environment (Phase 1) - Active
-├── .zshenv.02                    # Environment - Development
-├── .zshenv.live → .zshenv.01
+├── .zshenv.02                    # Environment (Phase 1) - Active
+├── .zshenv.01                    # Environment - Rollback
+├── .zshenv.live → .zshenv.02
 ├── .zshenv → .zshenv.live
 │
 ├── .zshrc → zsh-quickstart-kit/zsh/.zshrc  # Orchestrator (Phase 2)
 │
-├── .zshrc.pre-plugins.d.01/      # Pre-plugin setup (Phase 3) - Active
+├── .zshrc.pre-plugins.d.02/      # Pre-plugin setup (Phase 3) - Active
 │   ├── 000-layer-set-marker.zsh
 │   ├── 010-shell-safety.zsh
 │   └── ... (7 files total)
-├── .zshrc.pre-plugins.d.02/      # Pre-plugin - Development
-├── .zshrc.pre-plugins.d.live → .zshrc.pre-plugins.d.01
+├── .zshrc.pre-plugins.d.01/      # Pre-plugin - Rollback
+├── .zshrc.pre-plugins.d.live → .zshrc.pre-plugins.d.02
 ├── .zshrc.pre-plugins.d → .zshrc.pre-plugins.d.live
 │
-├── .zshrc.add-plugins.d.00/      # Plugin declarations (Phase 4) - Active
+├── .zshrc.add-plugins.d.02/      # Plugin declarations (Phase 4) - Active
 │   ├── 200-perf-core.zsh
 │   ├── 210-dev-php.zsh
 │   └── ... (12 files total)
-├── .zshrc.add-plugins.d.02/      # Plugins - Development
-├── .zshrc.add-plugins.d.live → .zshrc.add-plugins.d.00
+├── .zshrc.add-plugins.d.00/      # Plugins - Legacy
+├── .zshrc.add-plugins.d.live → .zshrc.add-plugins.d.02
 ├── .zshrc.add-plugins.d → .zshrc.add-plugins.d.live
 │
-├── .zshrc.d.01/                  # Post-plugin integration (Phase 5) - Active
+├── .zshrc.d.02/                  # Post-plugin integration (Phase 5) - Active
 │   ├── 400-options.zsh
 │   ├── 410-completions.zsh
 │   └── ... (14 files total)
-├── .zshrc.d.02/                  # Post-plugin - Development
-├── .zshrc.d.live → .zshrc.d.01
+├── .zshrc.d.01/                  # Post-plugin - Rollback
+├── .zshrc.d.live → .zshrc.d.02
 ├── .zshrc.d → .zshrc.d.live
 │
 ├── .zshrc.Darwin.d/              # macOS-specific (Phase 6)
@@ -82,7 +82,7 @@
 
 ```
 
-**New in v2.0**: All versioned components now include a `.02` layer for safe development and instant rollback capability.
+**Updated 2025-11-02**: Version `.02` is now the active production layer for all components. Version `.01` serves as a stable rollback point.
 
 ### 1.2. Visual Tree
 
@@ -97,14 +97,14 @@ graph TD
     ROOT --> USER[.zshrc.local<br/>.zshenv.local]
     ROOT --> UTIL[Utilities]
 
-    ENV --> ENV1[.zshenv.01 Active<br/>1,415 lines]
-    ENV --> ENV2[.zshenv.02 Dev<br/>Available]
-    PRE --> PRE1[.zshrc.pre-plugins.d.01/ Active<br/>7 files]
-    PRE --> PRE2[.zshrc.pre-plugins.d.02/ Dev<br/>Available]
-    ADD --> ADD0[.zshrc.add-plugins.d.00/ Active<br/>12 files]
-    ADD --> ADD2[.zshrc.add-plugins.d.02/ Dev<br/>Available]
-    POST --> POST1[.zshrc.d.01/ Active<br/>14 files]
-    POST --> POST2[.zshrc.d.02/ Dev<br/>Available]
+    ENV --> ENV2[.zshenv.02 Active<br/>1,415 lines]
+    ENV --> ENV1[.zshenv.01 Rollback<br/>Available]
+    PRE --> PRE2[.zshrc.pre-plugins.d.02/ Active<br/>7 files]
+    PRE --> PRE1[.zshrc.pre-plugins.d.01/ Rollback<br/>Available]
+    ADD --> ADD2[.zshrc.add-plugins.d.02/ Active<br/>12 files]
+    ADD --> ADD0[.zshrc.add-plugins.d.00/ Legacy<br/>Available]
+    POST --> POST2[.zshrc.d.02/ Active<br/>14 files]
+    POST --> POST1[.zshrc.d.01/ Rollback<br/>Available]
 
     UTIL --> BIN[bin/<br/>scripts]
     UTIL --> DOCS[docs/<br/>documentation]
@@ -112,10 +112,10 @@ graph TD
     UTIL --> TOOLS[tools/<br/>116+ utilities]
 
     style ROOT fill:#008066,stroke:#fff,stroke-width:2px,color:#fff
-    style ENV1 fill:#cc7a00,stroke:#000,stroke-width:2px,color:#fff
-    style PRE1 fill:#0080ff,stroke:#fff,stroke-width:2px,color:#fff
-    style ADD0 fill:#cc0066,stroke:#fff,stroke-width:2px,color:#fff
-    style POST1 fill:#6600cc,stroke:#fff,stroke-width:2px,color:#fff
+    style ENV2 fill:#cc7a00,stroke:#000,stroke-width:2px,color:#fff
+    style PRE2 fill:#0080ff,stroke:#fff,stroke-width:2px,color:#fff
+    style ADD2 fill:#cc0066,stroke:#fff,stroke-width:2px,color:#fff
+    style POST2 fill:#6600cc,stroke:#fff,stroke-width:2px,color:#fff
     style USER fill:#cc6600,stroke:#000,stroke-width:2px,color:#fff
 
 ```

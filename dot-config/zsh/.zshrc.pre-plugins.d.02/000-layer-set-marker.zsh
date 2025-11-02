@@ -9,7 +9,7 @@ _ZF_LAYER_SET_MARKER_DONE=1
 typeset -f zf::debug >/dev/null 2>&1 || zf::debug() { :; }
 
 # Desired active layer set for this version
-__zf_desired_layer_set="01"
+__zf_desired_layer_set="02"
 
 if [[ -n ${_ZF_LAYER_SET:-} ]]; then
   if [[ "${_ZF_LAYER_SET}" != "${__zf_desired_layer_set}" ]]; then
