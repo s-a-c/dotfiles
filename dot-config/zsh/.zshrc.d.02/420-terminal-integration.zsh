@@ -107,7 +107,7 @@ if command -v tmux >/dev/null 2>&1; then
     # Function to create or attach to named session
     tmux-attach() {
         local session_name="${1:-default}"
-        
+
         if tmux has-session -t "$session_name" 2>/dev/null; then
             tmux attach-session -t "$session_name"
         else
@@ -118,7 +118,7 @@ if command -v tmux >/dev/null 2>&1; then
     # Function to create session with 3-pane workspace layout
     tmux-workspace() {
         local workspace_name="${1:-workspace}"
-        
+
         if tmux has-session -t "$workspace_name" 2>/dev/null; then
             echo "Session '$workspace_name' already exists. Attaching..."
             tmux attach-session -t "$workspace_name"
@@ -127,16 +127,16 @@ if command -v tmux >/dev/null 2>&1; then
 
         # Create new session with 3-pane layout
         tmux new-session -d -s "$workspace_name" -n "main"
-        
+
         # Split horizontally (editor on top, terminal on bottom)
         tmux split-window -v -t "$workspace_name:main" -p 30
-        
+
         # Split the bottom pane vertically (two terminal panes)
         tmux split-window -h -t "$workspace_name:main.1"
-        
+
         # Focus top pane (editor)
         tmux select-pane -t "$workspace_name:main.0"
-        
+
         # Attach to session
         tmux attach-session -t "$workspace_name"
     }
@@ -144,14 +144,14 @@ if command -v tmux >/dev/null 2>&1; then
     # Function to kill session
     tmux-kill() {
         local session_name="$1"
-        
+
         if [[ -z "$session_name" ]]; then
             echo "Usage: tmux-kill <session-name>"
             echo "Available sessions:"
             tmux list-sessions 2>/dev/null || echo "  (none)"
             return 1
         fi
-        
+
         tmux kill-session -t "$session_name"
     }
 
@@ -185,7 +185,7 @@ if command -v zellij >/dev/null 2>&1; then
     # Function to attach or create session
     zellij-attach() {
         local session_name="${1:-default}"
-        
+
         if zellij list-sessions 2>/dev/null | grep -q "^${session_name}\$"; then
             zellij attach "$session_name"
         else
@@ -196,7 +196,7 @@ if command -v zellij >/dev/null 2>&1; then
     # Function to create development workspace
     zellij-workspace() {
         local workspace_name="${1:-workspace}"
-        
+
         # Create new session with layout
         zellij -s "$workspace_name" -l compact
     }
@@ -204,14 +204,14 @@ if command -v zellij >/dev/null 2>&1; then
     # Function to kill session
     zellij-kill() {
         local session_name="$1"
-        
+
         if [[ -z "$session_name" ]]; then
             echo "Usage: zellij-kill <session-name>"
             echo "Available sessions:"
             zellij list-sessions 2>/dev/null || echo "  (none)"
             return 1
         fi
-        
+
         zellij delete-session "$session_name"
     }
 
@@ -254,7 +254,7 @@ zf::multiplexer_name() {
 # Enhanced pane/window management
 if zf::in_multiplexer; then
     local mux_type="$(zf::multiplexer_name)"
-    
+
     case "$mux_type" in
         tmux)
             export TMUX_ACTIVE=1
@@ -263,7 +263,7 @@ if zf::in_multiplexer; then
             export ZELLIJ_ACTIVE=1
             ;;
     esac
-    
+
     zf::debug "# [mux] Running inside $mux_type"
 fi
 
@@ -273,7 +273,7 @@ fi
 
 terminal-help() {
     local mux_type="$(zf::multiplexer_name)"
-    
+
     cat <<EOF
 🖥️  Terminal & Multiplexer Integration
 

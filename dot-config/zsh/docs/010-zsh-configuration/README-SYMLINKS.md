@@ -50,4 +50,4 @@ If you've accidentally replaced the symlink with a regular file, here's how to f
 
 The correct way to customize your ZSH configuration is to add files to the extension directories, not by modifying the vendored .zshrc file directly.
 
-See [VENDORED.md](./VENDORED.md) for complete details on the vendored files policy.
+See [VENDORED.md](../../VENDORED.md) for complete details on the vendored files policy.

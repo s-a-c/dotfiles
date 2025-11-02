@@ -20,12 +20,12 @@ fi
 # Search Spotlight from command line
 spotlight() {
     local query="$*"
-    
+
     if [[ -z "$query" ]]; then
         echo "Usage: spotlight <search query>"
         return 1
     fi
-    
+
     mdfind "$query"
 }
 
@@ -33,12 +33,12 @@ spotlight() {
 spotlight-find() {
     local query="$1"
     local limit="${2:-10}"
-    
+
     if [[ -z "$query" ]]; then
         echo "Usage: spotlight-find <query> [limit]"
         return 1
     fi
-    
+
     mdfind "$query" | head -n "$limit"
 }
 
@@ -46,12 +46,12 @@ spotlight-find() {
 spotlight-here() {
     local query="$*"
     local current_dir="$PWD"
-    
+
     if [[ -z "$query" ]]; then
         echo "Usage: spotlight-here <search query>"
         return 1
     fi
-    
+
     mdfind -onlyin "$current_dir" "$query"
 }
 
@@ -62,27 +62,27 @@ spotlight-here() {
 # Quick Look file preview
 ql() {
     local file="$1"
-    
+
     if [[ -z "$file" ]]; then
         echo "Usage: ql <file>"
         return 1
     fi
-    
+
     if [[ ! -e "$file" ]]; then
         echo "Error: File not found: $file"
         return 1
     fi
-    
+
     qlmanage -p "$file" &>/dev/null &
 }
 
 # Quick Look with FZF integration
 ql-fzf() {
     local file
-    
+
     if command -v fzf >/dev/null 2>&1; then
         file=$(find . -type f -not -path '*/\.*' 2>/dev/null | fzf --preview='qlmanage -t {} -s 512 -o /tmp 2>/dev/null && cat /tmp/*.png 2>/dev/null || file {}')
-        
+
         if [[ -n "$file" ]]; then
             ql "$file"
         fi
@@ -116,7 +116,7 @@ finder-pwd() {
 # Change shell to Finder's current directory
 cdf() {
     local finder_path="$(finder-pwd)"
-    
+
     if [[ -n "$finder_path" ]]; then
         cd "$finder_path" || return 1
         echo "Changed to Finder directory: $finder_path"
@@ -131,7 +131,7 @@ sync-finder() {
     osascript -e "tell application \"Finder\"
         set target of front window to (POSIX file \"$PWD\" as alias)
     end tell" 2>/dev/null
-    
+
     if [[ $? -eq 0 ]]; then
         echo "✅ Finder synced to: $PWD"
     else
@@ -144,12 +144,12 @@ sync-finder() {
 # Show file in Finder
 show-in-finder() {
     local target="${1:-.}"
-    
+
     if [[ ! -e "$target" ]]; then
         echo "Error: File or directory not found: $target"
         return 1
     fi
-    
+
     open -R "$target"
 }
 
@@ -162,15 +162,15 @@ notify() {
     local title="${1:-Terminal Notification}"
     local message="${2:-Command completed}"
     local sound="${3:-}"
-    
+
     local cmd="osascript -e 'display notification \"$message\" with title \"$title\""
-    
+
     if [[ -n "$sound" ]]; then
         cmd="${cmd} sound name \"${sound}\""
     fi
-    
+
     cmd="${cmd}'"
-    
+
     eval "$cmd"
 }
 
@@ -178,13 +178,13 @@ notify() {
 notify-done() {
     local exit_code=$?
     local cmd_time="${1:-unknown}"
-    
+
     if [[ $exit_code -eq 0 ]]; then
         notify "✅ Command Succeeded" "Completed in ${cmd_time}" "Glass"
     else
         notify "❌ Command Failed" "Exit code: $exit_code" "Basso"
     fi
-    
+
     return $exit_code
 }
 
@@ -223,7 +223,7 @@ cpwd() {
 # Show/hide hidden files in Finder
 toggle-hidden-files() {
     local current=$(defaults read com.apple.finder AppleShowAllFiles 2>/dev/null || echo "false")
-    
+
     if [[ "$current" == "true" ]] || [[ "$current" == "YES" ]]; then
         defaults write com.apple.finder AppleShowAllFiles -bool false
         echo "Hidden files: disabled"
@@ -231,7 +231,7 @@ toggle-hidden-files() {
         defaults write com.apple.finder AppleShowAllFiles -bool true
         echo "Hidden files: enabled"
     fi
-    
+
     killall Finder
 }
 
@@ -249,12 +249,12 @@ show-path-in-finder() {
 # Open in default application
 openx() {
     local file="$1"
-    
+
     if [[ -z "$file" ]]; then
         echo "Usage: openx <file>"
         return 1
     fi
-    
+
     open "$file"
 }
 
@@ -262,12 +262,12 @@ openx() {
 open-with() {
     local app="$1"
     local file="$2"
-    
+
     if [[ -z "$app" ]] || [[ -z "$file" ]]; then
         echo "Usage: open-with <application> <file>"
         return 1
     fi
-    
+
     open -a "$app" "$file"
 }
 
@@ -379,4 +379,3 @@ EOF
 zf::debug "# [macos] macOS deep integration loaded"
 
 return 0
-

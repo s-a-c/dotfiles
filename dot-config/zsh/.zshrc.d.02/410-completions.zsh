@@ -3,7 +3,7 @@
 # Purpose:  Unified completion system with base compinit, Carapace integration,
 #           and enhanced context-aware, history-based completions
 # Phase:    Post-plugin (.zshrc.d/)
-# Toggles:  ZF_DISABLE_CARAPACE, ZF_DISABLE_CARAPACE_STYLES, 
+# Toggles:  ZF_DISABLE_CARAPACE, ZF_DISABLE_CARAPACE_STYLES,
 #           ZF_DISABLE_ENHANCED_COMPLETIONS, ZF_CARAPACE_STYLE_MODE
 
 typeset -f zf::debug >/dev/null 2>&1 || zf::debug() { :; }
@@ -159,7 +159,7 @@ zf::history_based_completion() {
 # Detect project type and provide relevant completions
 zf::detect_project_type() {
     local dir="${1:-$PWD}"
-    
+
     if [[ -f "$dir/package.json" ]]; then
         echo "node"
     elif [[ -f "$dir/composer.json" ]]; then
