@@ -67,13 +67,13 @@ export _STARTUP_SPLASH_PRINTED=1
 _zf_detect_features() {
   local -a active_features
   local -a help_commands
-  
+
   # Unified Completions (410-completions.zsh)
   if [[ "${ZF_DISABLE_ENHANCED_COMPLETIONS:-0}" != 1 ]] && typeset -f zf::detect_project_type >/dev/null 2>&1; then
     active_features+=("🎯 Enhanced completions")
     help_commands+=("completions-help")
   fi
-  
+
   # Terminal & Multiplexer Integration (420-terminal-integration.zsh)
   if [[ "${ZF_DISABLE_MULTIPLEXER:-0}" != 1 ]] && typeset -f zf::in_multiplexer >/dev/null 2>&1; then
     local available_mux=""
@@ -84,24 +84,36 @@ _zf_detect_features() {
       help_commands+=("terminal-help")
     fi
   fi
-  
+
   # Navigation Tools (430-navigation-tools.zsh)
   if [[ "${ZF_DISABLE_FZF_ENHANCEMENTS:-0}" != 1 ]] && command -v fzf >/dev/null 2>&1; then
     active_features+=("🔍 Advanced FZF + zoxide")
     help_commands+=("fzf-help")
   fi
-  
+
   # macOS Integration (460-macos-integration.zsh)
   if [[ "$(uname -s)" == "Darwin" ]] && [[ "${ZF_DISABLE_MACOS_INTEGRATION:-0}" != 1 ]] && typeset -f spotlight >/dev/null 2>&1; then
     active_features+=("🍎 macOS native features")
     help_commands+=("macos-help")
   fi
-  
+
   # Prompt (470-prompt.zsh)
   if command -v starship >/dev/null 2>&1; then
     active_features+=("✨ Starship prompt")
   fi
-  
+
+  # Keybindings (500-keybindings.zsh)
+  if typeset -f keybinds-help >/dev/null 2>&1; then
+    active_features+=("⌨️  Emacs keybindings")
+    help_commands+=("keybinds-help")
+  fi
+
+  # Aliases (510-aliases.zsh)
+  if typeset -f aliases-help >/dev/null 2>&1; then
+    active_features+=("🎯 Safe aliases")
+    help_commands+=("aliases-help")
+  fi
+
   echo "${(j:\n:)active_features}"
   echo "---HELP---"
   echo "${(j: | :)help_commands}"
@@ -148,32 +160,35 @@ _zqs_show_splash() {
   local features_list="${feature_output%%---HELP---*}"
   local help_list="${feature_output##*---HELP---}"
   help_list="${help_list#$'\n'}"  # Remove leading newline
-  
-  # Info box
+
+  # Info box (box width = 60 characters including borders)
   echo "╭──────────────────────────────────────────────────────────╮"
-  printf '│  %s%*s│\n' "Shell: $shell_version" $((60 - 11 - ${#shell_version})) ''
-  printf '│  %s%*s│\n' "Time: $timestamp" $((60 - 10 - ${#timestamp})) ''
+  printf '│  %-56s│\n' "Shell: $shell_version"
+  printf '│  %-56s│\n' "Time: $timestamp"
   echo "│                                                          │"
   echo "│  🚀 Active Features:                                     │"
-  
+
   # Display detected features
   if [[ -n "$features_list" ]]; then
     while IFS= read -r feature; do
       [[ -z "$feature" ]] && continue
-      printf '│    %s%*s│\n' "$feature" $((58 - ${#feature})) ''
+      # Account for emoji width (usually 2 visual columns)
+      local visual_length=${#feature}
+      printf '│    %-54s│\n' "$feature"
     done <<< "$features_list"
   else
     echo "│    No enhanced features detected                         │"
   fi
-  
+
   echo "│                                                          │"
-  
+
   # Display help commands if any features are active
   if [[ -n "$help_list" && "$help_list" != "" ]]; then
     echo "│  💡 Help:                                                │"
-    printf '│    Type: %s%*s│\n' "$help_list" $((51 - ${#help_list})) ''
+    # Use simple left-align formatting for help text
+    printf '│    Type: %-49s│\n' "$help_list"
   fi
-  
+
   echo "╰──────────────────────────────────────────────────────────╯"
   echo ""
 }
