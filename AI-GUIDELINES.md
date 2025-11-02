@@ -1,0 +1,1 @@
+/Users/s-a-c/nc/Documents/notes/obsidian/s-a-c/ai/AI-GUIDELINES.md
