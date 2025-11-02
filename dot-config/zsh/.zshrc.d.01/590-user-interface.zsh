@@ -1,8 +1,9 @@
 #!/usr/bin/env zsh
-# Filename: 480-user-interface.zsh
+# Filename: 590-user-interface.zsh
 # Purpose:  Manages user interface elements including startup splash screen and feature notifications
 #           Consolidates all feature welcome messages into a single, unified splash screen
-# Phase:    Post-plugin (.zshrc.d/)
+#           Loads last to ensure all features are initialized before detection
+# Phase:    Post-plugin (.zshrc.d/) - loads last (590)
 # Toggles:  NO_SPLASH=1 or ZF_NO_SPLASH=1 disables the splash screen
 
 [[ -o interactive ]] || return 0
@@ -65,13 +66,15 @@ export _STARTUP_SPLASH_PRINTED=1
 # ==============================================================================
 
 _zf_detect_features() {
-  local -a active_features
-  local -a help_commands
+  local -a feature_lines
 
-  # Unified Completions (410-completions.zsh)
-  if [[ "${ZF_DISABLE_ENHANCED_COMPLETIONS:-0}" != 1 ]] && typeset -f zf::detect_project_type >/dev/null 2>&1; then
-    active_features+=("🎯 Enhanced completions")
-    help_commands+=("completions-help")
+  # Base Completions (410-completions.zsh) - always show if compinit loaded
+  if typeset -f compdef >/dev/null 2>&1; then
+    if [[ "${ZF_DISABLE_ENHANCED_COMPLETIONS:-0}" != 1 ]] && typeset -f zf::detect_project_type >/dev/null 2>&1; then
+      feature_lines+=("🎯 Enhanced completions : 💡 'completions-help' for more info")
+    else
+      feature_lines+=("⚙️  Basic completions : 💡 No enhanced features")
+    fi
   fi
 
   # Terminal & Multiplexer Integration (420-terminal-integration.zsh)
@@ -80,43 +83,36 @@ _zf_detect_features() {
     command -v tmux >/dev/null 2>&1 && available_mux="${available_mux}tmux "
     command -v zellij >/dev/null 2>&1 && available_mux="${available_mux}zellij"
     if [[ -n "$available_mux" ]]; then
-      active_features+=("🖥️  Multiplexer (${available_mux% })")
-      help_commands+=("terminal-help")
+      feature_lines+=("🖥️  Multiplexer (${available_mux% }) : 💡 'terminal-help' for more info")
     fi
   fi
 
   # Navigation Tools (430-navigation-tools.zsh)
   if [[ "${ZF_DISABLE_FZF_ENHANCEMENTS:-0}" != 1 ]] && command -v fzf >/dev/null 2>&1; then
-    active_features+=("🔍 Advanced FZF + zoxide")
-    help_commands+=("fzf-help")
+    feature_lines+=("🔍 Advanced FZF + zoxide : 💡 'fzf-help' for more info")
   fi
 
   # macOS Integration (460-macos-integration.zsh)
   if [[ "$(uname -s)" == "Darwin" ]] && [[ "${ZF_DISABLE_MACOS_INTEGRATION:-0}" != 1 ]] && typeset -f spotlight >/dev/null 2>&1; then
-    active_features+=("🍎 macOS native features")
-    help_commands+=("macos-help")
+    feature_lines+=("🍎 macOS native features : 💡 'macos-help' for more info")
   fi
 
   # Prompt (470-prompt.zsh)
   if command -v starship >/dev/null 2>&1; then
-    active_features+=("✨ Starship prompt")
+    feature_lines+=("✨ Starship prompt : 💡 'starship config' to customize")
   fi
 
   # Keybindings (500-keybindings.zsh)
   if typeset -f keybinds-help >/dev/null 2>&1; then
-    active_features+=("⌨️  Emacs keybindings")
-    help_commands+=("keybinds-help")
+    feature_lines+=("⌨️  Emacs keybindings : 💡 'keybinds-help' for more info")
   fi
 
   # Aliases (510-aliases.zsh)
   if typeset -f aliases-help >/dev/null 2>&1; then
-    active_features+=("🎯 Safe aliases")
-    help_commands+=("aliases-help")
+    feature_lines+=("🎯 Safe aliases : 💡 'aliases-help' for more info")
   fi
 
-  echo "${(j:\n:)active_features}"
-  echo "---HELP---"
-  echo "${(j: | :)help_commands}"
+  echo "${(j:\n:)feature_lines}"
 }
 
 # ==============================================================================
@@ -156,40 +152,33 @@ _zqs_show_splash() {
   fi
 
   # Detect active features
-  local feature_output="$(_zf_detect_features)"
-  local features_list="${feature_output%%---HELP---*}"
-  local help_list="${feature_output##*---HELP---}"
-  help_list="${help_list#$'\n'}"  # Remove leading newline
+  local features_list="$(_zf_detect_features)"
 
-  # Info box (box width = 60 characters including borders)
-  echo "╭──────────────────────────────────────────────────────────╮"
-  printf '│  %-56s│\n' "Shell: $shell_version"
-  printf '│  %-56s│\n' "Time: $timestamp"
-  echo "│                                                          │"
-  echo "│  🚀 Active Features:                                     │"
+  # Info box (box width = 80 characters including borders for longer lines)
+  echo "╭──────────────────────────────────────────────────────────────────────────────╮"
+  printf '│  %-76s│\n' "Shell: $shell_version"
+  printf '│  %-76s│\n' "Time: $timestamp"
+  echo "│                                                                              │"
+  echo "│  🚀 Active Features:                                                         │"
 
   # Display detected features
   if [[ -n "$features_list" ]]; then
     while IFS= read -r feature; do
       [[ -z "$feature" ]] && continue
-      # Account for emoji width (usually 2 visual columns)
-      local visual_length=${#feature}
-      printf '│    %-54s│\n' "$feature"
+      # Emojis take 2 visual columns but count as 1 in string length
+      # Most lines have 2 emojis = -2 adjustment (72 padding)
+      # Keybindings line with ⌨️ emoji is narrower, needs less adjustment (74 padding)
+      if [[ "$feature" == *"⌨️"* ]]; then
+        printf '│    %-74s│\n' "$feature"
+      else
+        printf '│    %-72s│\n' "$feature"
+      fi
     done <<< "$features_list"
   else
-    echo "│    No enhanced features detected                         │"
+    echo "│    No enhanced features detected                                             │"
   fi
 
-  echo "│                                                          │"
-
-  # Display help commands if any features are active
-  if [[ -n "$help_list" && "$help_list" != "" ]]; then
-    echo "│  💡 Help:                                                │"
-    # Use simple left-align formatting for help text
-    printf '│    Type: %-49s│\n' "$help_list"
-  fi
-
-  echo "╰──────────────────────────────────────────────────────────╯"
+  echo "╰──────────────────────────────────────────────────────────────────────────────╯"
   echo ""
 }
 
