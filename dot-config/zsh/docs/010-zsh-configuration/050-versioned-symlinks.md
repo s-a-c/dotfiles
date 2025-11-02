@@ -283,14 +283,14 @@ All major configuration components use versioning:
 
 ### 3.5. Summary Table
 
-| Component | Base | Live | Current Version | Next Version | Type |
-|-----------|------|------|----------------|--------------|------|
-| Environment | `.zshenv` | `.zshenv.live` | `.zshenv.01` | `.zshenv.02` | File |
-| Pre-Plugin | `.zshrc.pre-plugins.d` | `.zshrc.pre-plugins.d.live` | `.zshrc.pre-plugins.d.01/` | `.zshrc.pre-plugins.d.02/` | Directory |
-| Plugins | `.zshrc.add-plugins.d` | `.zshrc.add-plugins.d.live` | `.zshrc.add-plugins.d.00/` | `.zshrc.add-plugins.d.02/` | Directory |
-| Post-Plugin | `.zshrc.d` | `.zshrc.d.live` | `.zshrc.d.01/` | `.zshrc.d.02/` | Directory |
+| Component | Base | Live | Active Version | Rollback Version | Type |
+|-----------|------|------|----------------|------------------|------|
+| Environment | `.zshenv` | `.zshenv.live` | `.zshenv.02` | `.zshenv.01` | File |
+| Pre-Plugin | `.zshrc.pre-plugins.d` | `.zshrc.pre-plugins.d.live` | `.zshrc.pre-plugins.d.02/` | `.zshrc.pre-plugins.d.01/` | Directory |
+| Plugins | `.zshrc.add-plugins.d` | `.zshrc.add-plugins.d.live` | `.zshrc.add-plugins.d.02/` | `.zshrc.add-plugins.d.00/` | Directory |
+| Post-Plugin | `.zshrc.d` | `.zshrc.d.live` | `.zshrc.d.02/` | `.zshrc.d.01/` | Directory |
 
-**Note**: Version `.02` layers are now available for all components, providing enhanced rollback capability and development isolation.
+**Note**: Version `.02` is now the active production layer (as of 2025-11-02). Version `.01` remains available for instant rollback if needed.
 
 ---
 
@@ -304,9 +304,9 @@ All major configuration components use versioning:
 
 ```bash
 
-# Edit the actual versioned file
+# Edit the actual versioned file (current active layer .02)
 
-vim ~/.config/zsh/.zshrc.d.01/400-options.zsh
+vim ~/.config/zsh/.zshrc.d.02/400-options.zsh
 
 ```
 
@@ -327,9 +327,9 @@ vim ~/.config/zsh/.zshrc.d/400-options.zsh
 
 ```bash
 
-# Navigate to numbered version
+# Navigate to numbered version (current active layer .02)
 
-cd ~/.config/zsh/.zshrc.d.01/
+cd ~/.config/zsh/.zshrc.d.02/
 
 # Create new file with proper number
 
@@ -363,13 +363,13 @@ ls -ld .zshrc.d.*
 # Output:
 
 drwxr-xr-x  .zshrc.d.00/        # Legacy/backup version
-drwxr-xr-x  .zshrc.d.01/        # Current active
-drwxr-xr-x  .zshrc.d.02/        # Next/development version
-lrwxr-xr-x  .zshrc.d.live -> .zshrc.d.01
+drwxr-xr-x  .zshrc.d.01/        # Previous version (rollback)
+drwxr-xr-x  .zshrc.d.02/        # Current active (production)
+lrwxr-xr-x  .zshrc.d.live -> .zshrc.d.02
 
 ```
 
-**Current State**: All components now have `.01` (active) and `.02` (available) versions, providing instant rollback and development isolation.
+**Current State**: All components now use `.02` as active production (as of 2025-11-02). Version `.01` remains available for instant rollback if needed.
 
 ---
 
@@ -722,13 +722,13 @@ ln -snf .zshrc.d.02 .zshrc.d.live && zsh-performance-baseline
 
 **Current Production Versions** (all components have these):
 
-- `.01` - Active/production version (currently in use)
-- `.02` - Development/next version (available for testing)
+- `.02` - Active/production version (currently in use as of 2025-11-02)
+- `.01` - Previous/rollback version (stable, available for instant rollback)
 
 **Optional Versions**:
 
 - `.00` - Legacy/backup version (if maintained)
-- `.03` - Experimental/feature development
+- `.03` - Experimental/feature development (when needed)
 - `.dev` - Active development branch
 - `.test` - Testing/QA
 - `.exp` - Experimental features
@@ -737,7 +737,7 @@ ln -snf .zshrc.d.02 .zshrc.d.live && zsh-performance-baseline
 
 - `.backup-YYYYMMDD` - Dated backups
 
-**Recommendation**: Use `.02` for all development work. It's already set up across all components (`zshenv`, `zshrc.pre-plugins.d`, `zshrc.add-plugins.d`, `zshrc.d`).
+**Recommendation**: Edit `.02` for production changes. Version `.01` serves as a stable rollback point. Create `.03` if you need experimental/development isolation.
 
 ---
 
@@ -908,9 +908,9 @@ vim .zshrc.d/400-options.zsh
 
 ```bash
 
-# Edit the actual version
+# Edit the actual active version (.02)
 
-vim .zshrc.d.01/400-options.zsh
+vim .zshrc.d.02/400-options.zsh
 
 ```
 
