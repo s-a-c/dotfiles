@@ -1,7 +1,9 @@
 #!/usr/bin/env zsh
-# Filename: 470-user-interface.zsh
-# Purpose:  Manages the user interface elements of the shell, primarily the startup splash screen. This script is designed to provide a visually appealing welcome message without interfering with shell performance or prompt rendering. Features: - Displays a splash screen on the first interactive shell launch. - The splash screen is executed immediately during startup to prevent cursor positioning issues with the first prompt. - Integrates `colorscript`, `fastfetch`, and `lolcat` if available for a richer visual experience. - Provides a clean, informative fallback if optional tools are not installed. Toggles: - `NO_SPLASH=1` or `ZF_NO_SPLASH=1`: Disables the splash screen entirely. Only run in interactive shells
+# Filename: 480-user-interface.zsh
+# Purpose:  Manages user interface elements including startup splash screen and feature notifications
+#           Consolidates all feature welcome messages into a single, unified splash screen
 # Phase:    Post-plugin (.zshrc.d/)
+# Toggles:  NO_SPLASH=1 or ZF_NO_SPLASH=1 disables the splash screen
 
 [[ -o interactive ]] || return 0
 
@@ -58,7 +60,57 @@ if [[ -n ${_STARTUP_SPLASH_PRINTED:-} ]]; then
 fi
 export _STARTUP_SPLASH_PRINTED=1
 
-# --- Splash Screen Function ---
+# ==============================================================================
+# Feature Detection
+# ==============================================================================
+
+_zf_detect_features() {
+  local -a active_features
+  local -a help_commands
+  
+  # Unified Completions (410-completions.zsh)
+  if [[ "${ZF_DISABLE_ENHANCED_COMPLETIONS:-0}" != 1 ]] && typeset -f zf::detect_project_type >/dev/null 2>&1; then
+    active_features+=("🎯 Enhanced completions")
+    help_commands+=("completions-help")
+  fi
+  
+  # Terminal & Multiplexer Integration (420-terminal-integration.zsh)
+  if [[ "${ZF_DISABLE_MULTIPLEXER:-0}" != 1 ]] && typeset -f zf::in_multiplexer >/dev/null 2>&1; then
+    local available_mux=""
+    command -v tmux >/dev/null 2>&1 && available_mux="${available_mux}tmux "
+    command -v zellij >/dev/null 2>&1 && available_mux="${available_mux}zellij"
+    if [[ -n "$available_mux" ]]; then
+      active_features+=("🖥️  Multiplexer (${available_mux% })")
+      help_commands+=("terminal-help")
+    fi
+  fi
+  
+  # Navigation Tools (430-navigation-tools.zsh)
+  if [[ "${ZF_DISABLE_FZF_ENHANCEMENTS:-0}" != 1 ]] && command -v fzf >/dev/null 2>&1; then
+    active_features+=("🔍 Advanced FZF + zoxide")
+    help_commands+=("fzf-help")
+  fi
+  
+  # macOS Integration (460-macos-integration.zsh)
+  if [[ "$(uname -s)" == "Darwin" ]] && [[ "${ZF_DISABLE_MACOS_INTEGRATION:-0}" != 1 ]] && typeset -f spotlight >/dev/null 2>&1; then
+    active_features+=("🍎 macOS native features")
+    help_commands+=("macos-help")
+  fi
+  
+  # Prompt (470-prompt.zsh)
+  if command -v starship >/dev/null 2>&1; then
+    active_features+=("✨ Starship prompt")
+  fi
+  
+  echo "${(j:\n:)active_features}"
+  echo "---HELP---"
+  echo "${(j: | :)help_commands}"
+}
+
+# ==============================================================================
+# Splash Screen Function
+# ==============================================================================
+
 _zqs_show_splash() {
   # Use colorscript and lolcat if available
   if command -v colorscript >/dev/null 2>&1; then
@@ -91,18 +143,37 @@ _zqs_show_splash() {
     echo "🚀 Enhanced ZSH Configuration"
   fi
 
+  # Detect active features
+  local feature_output="$(_zf_detect_features)"
+  local features_list="${feature_output%%---HELP---*}"
+  local help_list="${feature_output##*---HELP---}"
+  help_list="${help_list#$'\n'}"  # Remove leading newline
+  
   # Info box
   echo "╭──────────────────────────────────────────────────────────╮"
   printf '│  %s%*s│\n' "Shell: $shell_version" $((60 - 11 - ${#shell_version})) ''
   printf '│  %s%*s│\n' "Time: $timestamp" $((60 - 10 - ${#timestamp})) ''
   echo "│                                                          │"
-  echo "│  🚀 Enhanced features active:                            │"
-  echo "│    💡 Productivity aliases                               │"
-  echo "│      •  Type 'aliases-help' for a list of commands.      │"
-  echo "│    💡 Enhanced keybindings                               │"
-  echo "│      •  Type 'keybinds-help' for a list of useful keys.  │"
-  echo "│    💡 Advanced prompt system                             │"
-  echo "│    💡 Modern tool integrations                           │"
+  echo "│  🚀 Active Features:                                     │"
+  
+  # Display detected features
+  if [[ -n "$features_list" ]]; then
+    while IFS= read -r feature; do
+      [[ -z "$feature" ]] && continue
+      printf '│    %s%*s│\n' "$feature" $((58 - ${#feature})) ''
+    done <<< "$features_list"
+  else
+    echo "│    No enhanced features detected                         │"
+  fi
+  
+  echo "│                                                          │"
+  
+  # Display help commands if any features are active
+  if [[ -n "$help_list" && "$help_list" != "" ]]; then
+    echo "│  💡 Help:                                                │"
+    printf '│    Type: %s%*s│\n' "$help_list" $((51 - ${#help_list})) ''
+  fi
+  
   echo "╰──────────────────────────────────────────────────────────╯"
   echo ""
 }
@@ -110,5 +181,5 @@ _zqs_show_splash() {
 # Execute the splash screen
 _zqs_show_splash
 
-zf::debug "# [ui] Splash screen executed"
+typeset -f zf::debug >/dev/null 2>&1 && zf::debug "# [ui] Splash screen with feature detection executed"
 return 0

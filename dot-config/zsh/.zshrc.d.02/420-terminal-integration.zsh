@@ -328,14 +328,4 @@ EOF
   readonly -f terminal-help 2>/dev/null || true
 ) >/dev/null 2>&1
 
-# Welcome message for multiplexer integration
-if [[ -z "${_ZF_MULTIPLEXER_NOTIFIED:-}" ]] && (command -v tmux >/dev/null 2>&1 || command -v zellij >/dev/null 2>&1); then
-    local available_mux=""
-    command -v tmux >/dev/null 2>&1 && available_mux="${available_mux}tmux "
-    command -v zellij >/dev/null 2>&1 && available_mux="${available_mux}zellij"
-    
-    echo "🖥️  Multiplexer integration active: ${available_mux}. Type 'terminal-help' for commands."
-    export _ZF_MULTIPLEXER_NOTIFIED=1
-fi
-
 return 0
