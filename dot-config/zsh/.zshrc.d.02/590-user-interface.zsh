@@ -168,7 +168,7 @@ _zqs_show_splash() {
       # Emojis take 2 visual columns but count as 1 in string length
       # Most lines have 2 emojis = -2 adjustment (72 padding)
       # Keybindings line with ⌨️ emoji is narrower, needs less adjustment (74 padding)
-      if [[ "$feature" == *"⌨️"* ]]; then
+      if [[ "$feature" == *"⌨️"* ]] || [[ "$feature" == *"🖥️"* ]]; then
         printf '│    %-74s│\n' "$feature"
       else
         printf '│    %-72s│\n' "$feature"
