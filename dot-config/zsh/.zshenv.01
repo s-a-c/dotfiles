@@ -18,6 +18,7 @@
 #   5. REDESIGN CONFIGURATION - Configuration system setup
 #   6. SPLASH SCREEN & VISUAL CONTROL - UI toggle options
 #   7. CORE ZF:: HELPER FUNCTIONS - Reusable utility functions
+#      - Enhanced error messaging (zf::error, zf::warn, zf::info, zf::success, etc.)
 #      - Path manipulation (zf::path_*)
 #      - Debug/logging (zf::debug, zf::now_ms)
 #      - Git helpers (zf::git_*, zf::safe_git)
@@ -1482,6 +1483,108 @@ export PATH
 # ==============================================================================
 
 # -----------------------------------------------------------------------------
+# Enhanced Error Messaging Functions
+# From .zshrc.d.01/005-error-handling.zsh (moved to .zshenv for early availability)
+# -----------------------------------------------------------------------------
+
+# Display enhanced error with emoji, context, and suggestions
+zf::error() {
+    local message="$1"
+    local context="${2:-}"
+    local suggestion="${3:-}"
+    local doc_link="${4:-}"
+
+    echo "❌ Error: $message" >&2
+
+    if [[ -n "$context" ]]; then
+        echo "   Context: $context" >&2
+    fi
+
+    if [[ -n "$suggestion" ]]; then
+        echo "   💡 Try: $suggestion" >&2
+    fi
+
+    if [[ -n "$doc_link" ]]; then
+        echo "   📖 See: $doc_link" >&2
+    fi
+}
+
+# Display warning with emoji
+zf::warn() {
+    local message="$1"
+    local suggestion="${2:-}"
+
+    echo "⚠️  Warning: $message" >&2
+
+    if [[ -n "$suggestion" ]]; then
+        echo "   💡 Suggestion: $suggestion" >&2
+    fi
+}
+
+# Display info message
+zf::info() {
+    local message="$1"
+    echo "ℹ️  Info: $message" >&2
+}
+
+# Display success message
+zf::success() {
+    local message="$1"
+    echo "✅ Success: $message" >&2
+}
+
+# Plugin-specific error handler
+zf::plugin_error() {
+    local plugin_name="$1"
+    local error_type="${2:-failed to load}"
+
+    zf::error "Plugin '$plugin_name' $error_type" \
+        "Plugin may not be installed or zgenom cache may be stale" \
+        "zgenom reset && source ~/.zshrc" \
+        "docs/130-troubleshooting.md#plugin-problems"
+}
+
+# Command not found enhanced handler
+zf::command_not_found_error() {
+    local command="$1"
+    local package_hint="${2:-}"
+
+    if [[ -n "$package_hint" ]]; then
+        zf::error "Command '$command' not found" \
+            "$package_hint may need to be installed" \
+            "brew install $package_hint  # or your package manager" \
+            ""
+    else
+        zf::error "Command '$command' not found" \
+            "Required dependency may be missing" \
+            "Check if package is installed: which $command" \
+            ""
+    fi
+}
+
+# Permission error handler
+zf::permission_error() {
+    local file_or_dir="$1"
+    local operation="${2:-access}"
+
+    zf::error "Permission denied: $operation $file_or_dir" \
+        "File/directory permissions may be too restrictive" \
+        "chmod 755 $(dirname $file_or_dir) && chmod 644 $file_or_dir" \
+        ""
+}
+
+# Path error handler
+zf::path_error() {
+    local path="$1"
+    local expected="${2:-file}"
+
+    zf::error "Path not found: $path" \
+        "Expected $expected does not exist" \
+        "Verify path spelling and existence: ls -la $(dirname $path)" \
+        ""
+}
+
+# -----------------------------------------------------------------------------
 # Python UV Completion Functions
 # From .zshrc.add-plugins.d.00/136-dev-python-uv.zsh
 # -----------------------------------------------------------------------------
@@ -1769,8 +1872,8 @@ zf::starship_init_safe() {
 # ==============================================================================
 
 # Make all zf:: and wrapper functions readonly (only if they exist)
-{
-  local func
+# Wrapped in subshell with full output suppression to prevent function definitions from printing
+(
   for func in \
     can_haz \
     cdr \
@@ -1788,13 +1891,16 @@ zf::starship_init_safe() {
     zf::add_segment \
     zf::apply_debug_policy \
     zf::can_haz \
+    zf::command_not_found_error \
     zf::debug \
     zf::detect_pkg_manager \
+    zf::error \
     zf::git_common_dir \
     zf::git_common_root \
     zf::git_root \
     zf::git_super_root \
     zf::has_command \
+    zf::info \
     zf::now_ms \
     zf::nvim_alias_if_exists \
     zf::nvimvenv \
@@ -1802,6 +1908,7 @@ zf::starship_init_safe() {
     zf::nvimvenv:which \
     zf::path_append \
     zf::path_dedupe \
+    zf::path_error \
     zf::path_find \
     zf::path_position \
     zf::path_prepend \
@@ -1809,6 +1916,8 @@ zf::starship_init_safe() {
     zf::path_show \
     zf::path_verify \
     zf::path_which \
+    zf::permission_error \
+    zf::plugin_error \
     zf::post_segment \
     zf::pre_segment \
     zf::reset_debug_policy \
@@ -1824,13 +1933,13 @@ zf::starship_init_safe() {
     zf::segment_capture_wrap \
     zf::segment_fallback \
     zf::starship_init_safe \
+    zf::success \
     zf::update_git_root \
-    zf::uv_completion_status
+    zf::uv_completion_status \
+    zf::warn
   do
-    if typeset -f "$func" >/dev/null 2>&1; then
-      readonly -f "$func" 2>/dev/null || true
-    fi
+    typeset -f "$func" >/dev/null 2>&1 && readonly -f "$func" 2>/dev/null || true
   done
-} >/dev/null 2>&1
+) >/dev/null 2>&1
 
 # End of .zshenv.01
