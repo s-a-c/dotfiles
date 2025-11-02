@@ -22,6 +22,10 @@
     - [1.11. P3.4: Cache Permission Issues - RESOLVED](#111-p34-cache-permission-issues---resolved)
     - [1.12. P4.1: Enhanced Error Messages - COMPLETED](#112-p41-enhanced-error-messages---completed)
     - [1.13. P4.3: Advanced FZF Integration - COMPLETED](#113-p43-advanced-fzf-integration---completed)
+    - [1.14. Enhanced Completion System - COMPLETED](#114-enhanced-completion-system---completed)
+    - [1.15. Terminal Multiplexer Enhancement - COMPLETED](#115-terminal-multiplexer-enhancement---completed)
+    - [1.16. macOS Deep Integration - COMPLETED](#116-macos-deep-integration---completed)
+    - [1.17. Module Consolidation and UI Unification - COMPLETED](#117-module-consolidation-and-ui-unification---completed)
   - [2. 🎯 Immediate Next Steps](#2--immediate-next-steps)
     - [2.1. User Actions Required](#21-user-actions-required)
     - [2.2. Development Tasks Ready](#22-development-tasks-ready)
@@ -88,8 +92,8 @@
       - [L4: Plugin Marketplace](#l4-plugin-marketplace)
   - [15. 🎨 Enhancement Opportunities](#15--enhancement-opportunities)
     - [15.1. Feature Enhancements](#151-feature-enhancements)
-      - [1. Advanced FZF Integration](#1-advanced-fzf-integration)
-      - [2. AI-Powered Shell Assistant](#2-ai-powered-shell-assistant)
+      - [1. Advanced FZF Integration - ✅ **COMPLETED** (2025-11-01)](#1-advanced-fzf-integration----completed-2025-11-01)
+      - [2. AI-Powered Shell Assistant - 🔄 **DEFERRED**](#2-ai-powered-shell-assistant----deferred)
       - [3. Terminal Multiplexer Enhancement](#3-terminal-multiplexer-enhancement)
       - [4. macOS Deep Integration](#4-macos-deep-integration)
       - [5. Enhanced Completion System](#5-enhanced-completion-system)
@@ -686,21 +690,25 @@ zf::path_error(path, expected_type)                  # Path problems
 **Features**:
 
 **TMUX Integration**:
+
 - `tmux-sessions`, `tmux-attach`, `tmux-workspace`, `tmux-kill`
 - 3-pane workspace layout (editor top, dual terminals below)
 - Convenient aliases: `tl`, `ta`, `tw`, `tk`, `td`
 
 **Zellij Integration**:
+
 - `zellij-sessions`, `zellij-attach`, `zellij-workspace`, `zellij-kill`
 - Compact layout support
 - Convenient aliases: `zl`, `za`, `zw`, `zk`, `zd`
 
 **Common Functions**:
+
 - `zf::in_multiplexer()` - Detect if running in multiplexer
 - `zf::multiplexer_name()` - Get current multiplexer type
 - `multiplexer-help()` - Help function
 
 **Automation**:
+
 - SSH auto-attach (opt-in: `ZF_TMUX_AUTO_ATTACH=1`, `ZF_ZELLIJ_AUTO_ATTACH=1`)
 - Environment detection (sets `TMUX_ACTIVE` or `ZELLIJ_ACTIVE`)
 
@@ -723,15 +731,18 @@ zf::path_error(path, expected_type)                  # Path problems
 **Features by Category**:
 
 **Spotlight Search**:
+
 - `spotlight` - Search from command line
 - `spotlight-find` - With result limit
 - `spotlight-here` - Search in current directory
 
 **Quick Look**:
+
 - `ql <file>` - Preview file
 - `ql-fzf` - FZF integration with Quick Look
 
 **Finder Sync**:
+
 - `finder [path]` - Open in Finder
 - `finder-pwd` - Get Finder's current directory
 - `cdf` - Change shell to Finder's directory
@@ -739,20 +750,103 @@ zf::path_error(path, expected_type)                  # Path problems
 - `show-in-finder <file>` - Reveal in Finder
 
 **Notifications**:
+
 - `notify <title> <msg> [sound]` - Send notification
 - `notify-done` - Auto-notify on command completion
 
 **Clipboard**:
+
 - `clip [text]` - Copy to clipboard
 - `paste` - Paste from clipboard
 - `cpwd` - Copy current directory path
 
 **System Utilities**:
+
 - `toggle-hidden-files` - Show/hide in Finder
 - `macos-version`, `macos-info` - System info
 - `macos-help()` - Complete help
 
 **Toggle**: `ZF_DISABLE_MACOS_INTEGRATION=1`
+
+**Date Completed**: 2025-11-02
+
+---
+
+### 1.17. Module Consolidation and UI Unification - COMPLETED
+
+**Status**: ✅ **COMPLETED** (2025-11-02)
+
+**Implementation**:
+
+- Merged `415-enhanced-completions.zsh` into `410-completions.zsh` for unified completion system
+- Consolidated all feature welcome messages into `480-user-interface.zsh`
+- Created dynamic feature detection with unified splash screen
+- Removed individual feature notifications from modules
+
+**Modules Refactored**:
+
+**Completions Unification** (`415` → `410`):
+- Merged enhanced completions into base completions
+- Single module for: Base (`compinit`) + Enhanced + Carapace
+- Help function: `completions-help` (was `enhanced-completions-help`)
+- Deleted standalone `415-enhanced-completions.zsh`
+
+**Terminal Integration** (Previous: `445` → `420`):
+- Already merged multiplexer into terminal integration
+- Single module for: Emulators + Multiplexers (tmux, zellij)
+- Help function: `terminal-help`
+
+**UI Consolidation** (`480-user-interface.zsh`):
+- **Removed welcome messages from**:
+  - `410-completions.zsh` (was `415`)
+  - `420-terminal-integration.zsh`
+  - `430-navigation-tools.zsh` (FZF enhancements)
+  - `460-macos-integration.zsh`
+
+- **Centralized in user-interface**:
+  - Auto-detects active features
+  - Dynamically lists help commands
+  - Unified splash screen with feature status
+  - Single notification point for all features
+
+**Current Module Structure** (Layer `.02`):
+
+```
+.zshrc.d.02/
+├── 400-options.zsh
+├── 410-completions.zsh          ← UNIFIED (base + enhanced + Carapace)
+├── 420-terminal-integration.zsh ← UNIFIED (emulators + multiplexers)
+├── 430-navigation-tools.zsh     ← FZF + zoxide (notification removed)
+├── 440-neovim.zsh
+├── 450-node-environment.zsh
+├── 460-macos-integration.zsh    ← macOS features (notification removed)
+├── 470-prompt.zsh
+├── 480-user-interface.zsh       ← CENTRALIZED (all welcome messages)
+├── 490-history.zsh
+├── 500-keybindings.zsh
+├── 510-aliases.zsh
+├── 520-developer-tools.zsh
+├── 710-kilocode-memory-bank.zsh
+└── 990-final-overrides.zsh
+```
+
+**Benefits**:
+
+- **Reduced File Count**: -2 files (`415` and `445` merged into existing modules)
+- **Code Reduction**: -764 net lines (16 files changed, +1,137/-1,901)
+- **Unified UX**: Single splash screen shows only active features
+- **Dynamic Help**: Help commands listed based on what's actually loaded
+- **Clean Startup**: No individual module notifications
+- **Logical Organization**: Related functionality grouped together
+
+**Files Modified**:
+
+- `.zshrc.d.01/410-completions.zsh` - Unified completion system
+- `.zshrc.d.01/420-terminal-integration.zsh` - Terminal + multiplexer
+- `.zshrc.d.01/430-navigation-tools.zsh` - Removed welcome message
+- `.zshrc.d.01/460-macos-integration.zsh` - Removed welcome message
+- `.zshrc.d.01/480-user-interface.zsh` - Centralized splash screen
+- `.zshrc.d.02/*` - Mirrored changes in development layer
 
 **Date Completed**: 2025-11-02
 
