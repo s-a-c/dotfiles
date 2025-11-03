@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+#
+# Pre-commit hook to prevent committing changes to vendored files in the ZSH configuration
+#
+# To install this hook:
+# 1. Make it executable: chmod +x pre-commit-hook
+# 2. Copy it to .git/hooks/pre-commit: cp pre-commit-hook ../.git/hooks/pre-commit
+
+# Exit on error
+set -e
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+NC='\033[0m' # No Color
+
+echo -e "${YELLOW}Checking for modifications to vendored files...${NC}"
+
+# Function to check if a file is staged for commit
+is_staged_for_commit() {
+  git diff --cached --name-only | grep -q "^$1$"
+}
+
+# Define vendored files and directories
+VENDORED_FILES=(
+  "dot-config/zsh/.zshrc"  # Should always be a symlink
+  "dot-config/zsh/zsh-quickstart-kit/"  # The entire directory should not be modified
+)
+
+# Flag to track if any violations were found
+VIOLATIONS_FOUND=0
+
+# Check if .zshrc is a symlink
+if is_staged_for_commit "dot-config/zsh/.zshrc"; then
+  if [ ! -L "dot-config/zsh/.zshrc" ]; then
+    echo -e "${RED}ERROR: dot-config/zsh/.zshrc should be a symlink to zsh-quickstart-kit/zsh/.zshrc${NC}"
+    echo -e "${RED}Please restore the symlink and move your customizations to .zshrc.d/ or .zshrc.pre-plugins.d/${NC}"
+    VIOLATIONS_FOUND=1
+  else
+    SYMLINK_TARGET=$(readlink "dot-config/zsh/.zshrc")
+    if [[ "$SYMLINK_TARGET" != *"zsh-quickstart-kit/zsh/.zshrc"* ]]; then
+      echo -e "${RED}ERROR: dot-config/zsh/.zshrc is a symlink, but points to an incorrect target${NC}"
+      echo -e "${RED}It should point to zsh-quickstart-kit/zsh/.zshrc${NC}"
+      VIOLATIONS_FOUND=1
+    fi
+  fi
+fi
+
+# Check for modifications to any files in the zsh-quickstart-kit directory
+ZSH_QUICKSTART_FILES=$(git diff --cached --name-only | grep "^dot-config/zsh/zsh-quickstart-kit/" || true)
+
+if [ -n "$ZSH_QUICKSTART_FILES" ]; then
+  echo -e "${RED}ERROR: Modifications to vendored files detected:${NC}"
+  echo "$ZSH_QUICKSTART_FILES" | sed 's/^/  /'
+  echo -e "${RED}These files are part of zsh-quickstart-kit and should not be modified.${NC}"
+  echo -e "${RED}Please revert these changes and use the extension directories instead:${NC}"
+  echo -e "${YELLOW}  - .zshrc.pre-plugins.d/ - For code that runs before plugins${NC}"
+  echo -e "${YELLOW}  - .zshrc.d/ - For code that runs after plugins${NC}"
+  VIOLATIONS_FOUND=1
+fi
+
+# If violations were found, abort the commit
+if [ $VIOLATIONS_FOUND -eq 1 ]; then
+  echo -e "${RED}Commit aborted due to modifications to vendored files.${NC}"
+  echo -e "${YELLOW}See dot-config/zsh/VENDORED.md for the complete vendored files policy.${NC}"
+  exit 1
+fi
+
+echo -e "${GREEN}No modifications to vendored files detected. Proceeding with commit.${NC}"
+exit 0

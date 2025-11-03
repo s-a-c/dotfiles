@@ -1,0 +1,42 @@
+{
+  "schema": "variance-state.v1",
+  "generated_at": "2025-09-07T14:32:44Z",
+  "mode": "guard",
+  "rsd": {
+    "pre": { "mean": 99.40, "stddev": 2.06, "rsd": 0.0207 },
+    "post": { "mean": 334.00, "stddev": 6.23, "rsd": 0.0187 },
+    "prompt": { "mean": 334.00, "stddev": 6.23, "rsd": 0.0187 }
+  },
+  "rsd_trimmed": {
+    "method": "none",
+    "pre": { "mean": 0.00, "stddev": 0.00, "rsd": 0.0000 },
+    "post": { "mean": 334.00, "stddev": 6.23, "rsd": 0.0187 },
+    "prompt": { "mean": 334.00, "stddev": 6.23, "rsd": 0.0187 }
+  },
+  "thresholds": {
+    "rsd_warn_max": 0.25,
+    "rsd_gate_max": 0.40,
+    "outlier_factor_min": 2.0,
+    "streak_required": 3
+  },
+  "auth": {
+    "requested": 5,
+    "collected": 5,
+    "authentic": 5
+  },
+  "stable_run_count": 3,
+  "previous_mode": "guard",
+  "promotion_notes": "streak=3/3; trimmed_rsd<=rsd_warn_max?=1",
+  "outliers": {
+    "detected": false,
+    "metric": "",
+    "index": -1,
+    "value": 0,
+    "median": 333,
+    "factor": "0"
+  },
+  "sources": {
+    "samples_file": "dot-config/zsh/docs/redesignv2/artifacts/metrics/perf-multi-simple.json",
+    "state_file": "docs/redesignv2/artifacts/metrics/variance-gating-state.json"
+  }
+}

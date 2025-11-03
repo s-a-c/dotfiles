@@ -1,0 +1,32 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "bunx",
+      "args": ["--bun", "@modelcontextprotocol/server-filesystem", "/Users/s-a-c"]
+    },
+    "sequentialthinking": {
+      "command": "bunx",
+      "args": ["--bun", "@modelcontextprotocol/server-sequential-thinking"]
+    },
+    "time": {
+      "command": "uvx",
+      "args": ["mcp-server-time"]
+    },
+    "tavily": {
+      "command": "bunx",
+      "args": ["--bun", "tavily-mcp@0.2.3"],
+      "env": {
+        "TAVILY_API_KEY": "${TAVILY_API_KEY}"
+      }
+    },
+    "notion": {
+      "command": "./mcp-run-notion-server.sh",
+      "args": [],
+      "env": {}
+    },
+    "playwright": {
+      "command": "bunx",
+      "args": ["--bun", "@playwright/mcp@0.0.38", "--browser=Wavebox.app", "--headless=", "--viewport-size="]
+    }
+  }
+}

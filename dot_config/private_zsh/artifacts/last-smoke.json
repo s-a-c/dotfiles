@@ -1,0 +1,28 @@
+FAIL: widget regression (409 < 416)
+
+💡 OPTIONAL: PHP post-plugin enhancements available
+📋 Recommended post-plugin additions:
+   - 040-dev-php.zsh (Herd integration & Laravel aliases)
+🔧 Add to .zshrc.d/ for enhanced PHP/Laravel integration
+
+
+🔄 RESTART REQUIRED: Node.js plugins need pre-plugin setup
+📋 Missing pre-plugin dependencies:
+   - 050-dev-node.zsh (NVM environment variables)
+💡 Add NVM environment setup to .zshrc.pre-plugins.d/ and restart ZSH
+
+
+WIDGET_COUNT=409
+PROMPT_GUARD=1
+TERM_WARP=0
+TERM_WEZTERM=1
+TERM_GHOSTTY=0
+TERM_KITTY=0
+HAVE_nvim=1
+HAVE_fzf=1
+HAVE_zoxide=1
+HAVE_eza=1
+HAVE_carapace=1
+HAVE_atuin=1
+HAVE_starship=1
+HAVE_AUTOPAIR=0

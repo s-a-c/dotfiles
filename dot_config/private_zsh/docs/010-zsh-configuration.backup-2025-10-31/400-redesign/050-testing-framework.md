@@ -1,0 +1,1769 @@
+# - Testing Framework
+
+## Table of Contents
+
+<details>
+<summary>Click to expand</summary>
+
+
+</details>
+
+---
+
+
+---
+
+
+  "generated": "2025-10-07T22:33:46.434742Z",
+  "files_scanned": [
+    "docs/130-history-management.md",
+    "docs/010-overview.md",
+    "docs/060-plugin-management.md",
+    "docs/070-layered-system.md",
+    "docs/100-development-tools.md",
+    "docs/020-architecture.md",
+    "docs/310-flow-diagrams.md",
+    "docs/220-improvement-recommendations.md",
+    "docs/300-architecture-diagrams.md",
+    "docs/040-security-system.md",
+    "docs/README.md",
+    "docs/110-productivity-features.md",
+    "docs/230-naming-convention-analysis.md",
+    "docs/200-current-state.md",
+    "docs/210-issues-inconsistencies.md",
+    "docs/050-performance-monitoring.md",
+    "docs/140-completion-system.md",
+    "docs/000-index.md",
+    "docs/030-activation-flow.md",
+    "docs/120-terminal-integration.md",
+    "docs/400-redesign/070-maintenance-guide.md",
+    "docs/400-redesign/060-risk-assessment.md",
+    "docs/400-redesign/010-implementation-plan.md",
+    "docs/400-redesign/040-implementation-guide.md",
+    "docs/400-redesign/020-symlink-architecture.md",
+    "docs/400-redesign/030-versioned-strategy.md",
+    "docs/400-redesign/000-index.md",
+    "docs/400-redesign/050-testing-framework.md",
+    "docs/250-next-steps/021-task-1.2-findings.md",
+    "docs/250-next-steps/025-vscode-terminal-fix.md",
+    "docs/250-next-steps/023-zqs-startup-sequence-analysis.md",
+    "docs/250-next-steps/010-next-steps-implementation-plan.md",
+    "docs/250-next-steps/030-performance-baseline-2025-10-07.md",
+    "docs/250-next-steps/020-implementation-task-breakdown.md",
+    "docs/250-next-steps/040-phase-1-completion-report-2025-10-07.md",
+    "docs/250-next-steps/000-index.md",
+    "docs/reports/summary.md",
+    "docs/reports/000-index.md",
+    "docs/reports/markdown-lint-report.md"
+  ],
+  "link_existence": [
+    {
+      "source": "docs/130-history-management.md",
+      "links": [
+        {
+          "text": "README",
+          "target": "README.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/README.md"
+        },
+        {
+          "text": "000-index",
+          "target": "000-index.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/000-index.md"
+        }
+      ]
+    },
+    {
+      "source": "docs/010-overview.md",
+      "links": [
+        {
+          "text": "zsh-quickstart-kit",
+          "target": "https://github.com/unixorn/zsh-quickstart-kit",
+          "type": "external",
+          "status": "external-not-checked"
+        },
+        {
+          "text": "020-architecture.md",
+          "target": "020-architecture.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/020-architecture.md"
+        },
+        {
+          "text": "030-activation-flow.md",
+          "target": "030-activation-flow.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/030-activation-flow.md"
+        },
+        {
+          "text": "200-current-state.md",
+          "target": "200-current-state.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/200-current-state.md"
+        },
+        {
+          "text": "220-improvement-recommendations.md",
+          "target": "220-improvement-recommendations.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/220-improvement-recommendations.md"
+        }
+      ]
+    },
+    {
+      "source": "docs/060-plugin-management.md",
+      "links": []
+    },
+    {
+      "source": "docs/070-layered-system.md",
+      "links": []
+    },
+    {
+      "source": "docs/100-development-tools.md",
+      "links": [
+        {
+          "text": "README",
+          "target": "README.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/README.md"
+        },
+        {
+          "text": "000-index",
+          "target": "000-index.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/000-index.md"
+        }
+      ]
+    },
+    {
+      "source": "docs/020-architecture.md",
+      "links": []
+    },
+    {
+      "source": "docs/310-flow-diagrams.md",
+      "links": []
+    },
+    {
+      "source": "docs/220-improvement-recommendations.md",
+      "links": []
+    },
+    {
+      "source": "docs/300-architecture-diagrams.md",
+      "links": []
+    },
+    {
+      "source": "docs/040-security-system.md",
+      "links": []
+    },
+    {
+      "source": "docs/README.md",
+      "links": [
+        {
+          "text": "zsh-quickstart-kit",
+          "target": "https://github.com/unixorn/zsh-quickstart-kit",
+          "type": "external",
+          "status": "external-not-checked"
+        },
+        {
+          "text": "000-index.md",
+          "target": "000-index.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/000-index.md"
+        },
+        {
+          "text": "010-overview.md",
+          "target": "010-overview.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/010-overview.md"
+        },
+        {
+          "text": "020-architecture.md",
+          "target": "020-architecture.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/020-architecture.md"
+        },
+        {
+          "text": "030-activation-flow.md",
+          "target": "030-activation-flow.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/030-activation-flow.md"
+        },
+        {
+          "text": "040-security-system.md",
+          "target": "040-security-system.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/040-security-system.md"
+        },
+        {
+          "text": "050-performance-monitoring.md",
+          "target": "050-performance-monitoring.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/050-performance-monitoring.md"
+        },
+        {
+          "text": "060-plugin-management.md",
+          "target": "060-plugin-management.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/060-plugin-management.md"
+        },
+        {
+          "text": "070-layered-system.md",
+          "target": "070-layered-system.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/070-layered-system.md"
+        },
+        {
+          "text": "100-development-tools.md",
+          "target": "100-development-tools.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/100-development-tools.md"
+        },
+        {
+          "text": "110-productivity-features.md",
+          "target": "110-productivity-features.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/110-productivity-features.md"
+        },
+        {
+          "text": "120-terminal-integration.md",
+          "target": "120-terminal-integration.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/120-terminal-integration.md"
+        },
+        {
+          "text": "130-history-management.md",
+          "target": "130-history-management.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/130-history-management.md"
+        },
+        {
+          "text": "140-completion-system.md",
+          "target": "140-completion-system.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/140-completion-system.md"
+        },
+        {
+          "text": "200-current-state.md",
+          "target": "200-current-state.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/200-current-state.md"
+        },
+        {
+          "text": "210-issues-inconsistencies.md",
+          "target": "210-issues-inconsistencies.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/210-issues-inconsistencies.md"
+        },
+        {
+          "text": "220-improvement-recommendations.md",
+          "target": "220-improvement-recommendations.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/220-improvement-recommendations.md"
+        },
+        {
+          "text": "230-naming-convention-analysis.md",
+          "target": "230-naming-convention-analysis.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/230-naming-convention-analysis.md"
+        },
+        {
+          "text": "300-architecture-diagrams.md",
+          "target": "300-architecture-diagrams.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/300-architecture-diagrams.md"
+        },
+        {
+          "text": "310-flow-diagrams.md",
+          "target": "310-flow-diagrams.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/310-flow-diagrams.md"
+        },
+        {
+          "text": "900-next-steps-implementation-plan.md",
+          "target": "250-next-steps/010-next-steps-implementation-plan.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/250-next-steps/010-next-steps-implementation-plan.md"
+        },
+        {
+          "text": "400-redesign/000-index.md",
+          "target": "400-redesign/000-index.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/400-redesign/000-index.md"
+        },
+        {
+          "text": "400-redesign/010-implementation-plan.md",
+          "target": "400-redesign/010-implementation-plan.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/400-redesign/010-implementation-plan.md"
+        },
+        {
+          "text": "400-redesign/020-symlink-architecture.md",
+          "target": "400-redesign/020-symlink-architecture.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/400-redesign/020-symlink-architecture.md"
+        },
+        {
+          "text": "400-redesign/030-versioned-strategy.md",
+          "target": "400-redesign/030-versioned-strategy.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/400-redesign/030-versioned-strategy.md"
+        },
+        {
+          "text": "400-redesign/040-implementation-guide.md",
+          "target": "400-redesign/040-implementation-guide.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/400-redesign/040-implementation-guide.md"
+        },
+        {
+          "text": "010-overview.md",
+          "target": "010-overview.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/010-overview.md"
+        },
+        {
+          "text": "020-architecture.md",
+          "target": "020-architecture.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/020-architecture.md"
+        },
+        {
+          "text": "200-current-state.md",
+          "target": "200-current-state.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/200-current-state.md"
+        },
+        {
+          "text": "060-plugin-management.md",
+          "target": "060-plugin-management.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/060-plugin-management.md"
+        },
+        {
+          "text": "230-naming-convention-analysis.md",
+          "target": "230-naming-convention-analysis.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/230-naming-convention-analysis.md"
+        },
+        {
+          "text": "220-improvement-recommendations.md",
+          "target": "220-improvement-recommendations.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/220-improvement-recommendations.md"
+        },
+        {
+          "text": "210-issues-inconsistencies.md",
+          "target": "210-issues-inconsistencies.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/210-issues-inconsistencies.md"
+        },
+        {
+          "text": "050-performance-monitoring.md",
+          "target": "050-performance-monitoring.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/050-performance-monitoring.md"
+        },
+        {
+          "text": "310-flow-diagrams.md",
+          "target": "310-flow-diagrams.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/310-flow-diagrams.md"
+        },
+        {
+          "text": "200-current-state.md",
+          "target": "200-current-state.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/200-current-state.md"
+        },
+        {
+          "text": "210-issues-inconsistencies.md",
+          "target": "210-issues-inconsistencies.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/210-issues-inconsistencies.md"
+        },
+        {
+          "text": "zsh-quickstart-kit GitHub",
+          "target": "https://github.com/unixorn/zsh-quickstart-kit",
+          "type": "external",
+          "status": "external-not-checked"
+        },
+        {
+          "text": "zgenom Documentation",
+          "target": "https://github.com/jandamm/zgenom",
+          "type": "external",
+          "status": "external-not-checked"
+        },
+        {
+          "text": "ZSH Manual",
+          "target": "https://zsh.sourceforge.io/Doc/Release/",
+          "type": "external",
+          "status": "external-not-checked"
+        },
+        {
+          "text": "XDG Base Directory Specification",
+          "target": "https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html",
+          "type": "external",
+          "status": "external-not-checked"
+        },
+        {
+          "text": "`/Users/s-a-c/.config/ai/guidelines.md`",
+          "target": "${HOME}/.config/ai/guidelines.md",
+          "type": "absolute-repo-path",
+          "status": "missing",
+          "resolved": "${HOME}/.config/zsh/Users/s-a-c/.config/ai/guidelines.md"
+        }
+      ]
+    },
+    {
+      "source": "docs/110-productivity-features.md",
+      "links": [
+        {
+          "text": "c' zoxide-cd-widget\n\nalias ll='eza -la --group-directories-first'\nalias gs='git status'\n```
+\n\nNotes on keybindings:\n\n- Choose non-conflicting bindings; keep bindings optional for users with different muscle memory\n- Provide `ZSH_CONFIG_DISABLE_DEFAULT_KEYBINDINGS=1` to opt out\n\n## Performance & deferred loading\n\nTo keep shell startup snappy:\n\n- Defer loading heavy integrations until first use (defer or lazy-source approach)\n- Use lightweight shim functions that source full integration files when invoked\n\nExample lazy loader for `fzf` functions:\n\n
+```bash\nzf::lazy::fzf() {\n  unset -f zf::lazy::fzf\n  source \"$ZSH_CONFIG_DIR/320-fzf.zsh\" 2>/dev/null || true\n  fzf \"$@\"\n}\n\n# Replace direct calls with the lazy function\nalias fzf='zf::lazy::fzf'\n```
+\n\nThis ensures that users who don't use `fzf` during a session don't pay the cost of initializing its bindings.\n\n## Troubleshooting\n\n- Symptom: FZF preview or bindings not working\n\n  - Verify `command -v fzf` and `command -v bat` for preview features\n  - Confirm the guard variable `ZSH_CONFIG_ENABLE_FZF` if your environment intentionally disables optional features\n  - Check for conflicting keybindings with `bindkey` and adjust as necessary\n\n- Symptom: zoxide jump not behaving\n\n  - Inspect `zoxide query -l` to ensure the database has entries\n  - Rebuild the database with `zoxide import` if necessary\n\n## Acceptance criteria\n\n- Examples for the principal workflows (history, file finder, git file chooser) exist\n- Guards and opt-ins are demonstrated clearly so users can disable features\n- Performance guidance provided (defer pattern) plus a minimal lazy-loading example\n- Troubleshooting checklist present for common failure modes\n\n## Smoke test (manual)\n\nA minimal smoke test that asserts core productivity integrations are present and load without error:\n\n
+```bash\n# Check fzf and zoxide (non-fatal)\ncommand -v fzf >/dev/null 2>&1 && echo \"fzf: OK\" || echo \"fzf: missing\"\ncommand -v zoxide >/dev/null 2>&1 && echo \"zoxide: OK\" || echo \"zoxide: missing\"\n# Try lazy loader (if guards are enabled this should be safe)\npython -c 'print(\"smoke\")' >/dev/null 2>&1 && echo \"python: OK\" || true\n```\n\n## Related\n\n- Return to [README",
+          "target": "README.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/README.md"
+        },
+        {
+          "text": "000-index",
+          "target": "000-index.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/000-index.md"
+        }
+      ]
+    },
+    {
+      "source": "docs/230-naming-convention-analysis.md",
+      "links": []
+    },
+    {
+      "source": "docs/200-current-state.md",
+      "links": []
+    },
+    {
+      "source": "docs/210-issues-inconsistencies.md",
+      "links": []
+    },
+    {
+      "source": "docs/050-performance-monitoring.md",
+      "links": []
+    },
+    {
+      "source": "docs/140-completion-system.md",
+      "links": [
+        {
+          "text": "README",
+          "target": "README.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/README.md"
+        },
+        {
+          "text": "000-index",
+          "target": "000-index.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/000-index.md"
+        }
+      ]
+    },
+    {
+      "source": "docs/000-index.md",
+      "links": [
+        {
+          "text": "zsh-quickstart-kit",
+          "target": "https://github.com/unixorn/zsh-quickstart-kit",
+          "type": "external",
+          "status": "external-not-checked"
+        },
+        {
+          "text": "010-overview.md",
+          "target": "010-overview.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/010-overview.md"
+        },
+        {
+          "text": "020-architecture.md",
+          "target": "020-architecture.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/020-architecture.md"
+        },
+        {
+          "text": "030-activation-flow.md",
+          "target": "030-activation-flow.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/030-activation-flow.md"
+        },
+        {
+          "text": "040-security-system.md",
+          "target": "040-security-system.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/040-security-system.md"
+        },
+        {
+          "text": "050-performance-monitoring.md",
+          "target": "050-performance-monitoring.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/050-performance-monitoring.md"
+        },
+        {
+          "text": "060-plugin-management.md",
+          "target": "060-plugin-management.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/060-plugin-management.md"
+        },
+        {
+          "text": "070-layered-system.md",
+          "target": "070-layered-system.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/070-layered-system.md"
+        },
+        {
+          "text": "100-development-tools.md",
+          "target": "100-development-tools.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/100-development-tools.md"
+        },
+        {
+          "text": "110-productivity-features.md",
+          "target": "110-productivity-features.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/110-productivity-features.md"
+        },
+        {
+          "text": "120-terminal-integration.md",
+          "target": "120-terminal-integration.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/120-terminal-integration.md"
+        },
+        {
+          "text": "130-history-management.md",
+          "target": "130-history-management.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/130-history-management.md"
+        },
+        {
+          "text": "140-completion-system.md",
+          "target": "140-completion-system.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/140-completion-system.md"
+        },
+        {
+          "text": "200-current-state.md",
+          "target": "200-current-state.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/200-current-state.md"
+        },
+        {
+          "text": "210-issues-inconsistencies.md",
+          "target": "210-issues-inconsistencies.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/210-issues-inconsistencies.md"
+        },
+        {
+          "text": "220-improvement-recommendations.md",
+          "target": "220-improvement-recommendations.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/220-improvement-recommendations.md"
+        },
+        {
+          "text": "230-naming-convention-analysis.md",
+          "target": "230-naming-convention-analysis.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/230-naming-convention-analysis.md"
+        },
+        {
+          "text": "300-architecture-diagrams.md",
+          "target": "300-architecture-diagrams.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/300-architecture-diagrams.md"
+        },
+        {
+          "text": "310-flow-diagrams.md",
+          "target": "310-flow-diagrams.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/310-flow-diagrams.md"
+        },
+        {
+          "text": "900-next-steps-implementation-plan.md",
+          "target": "250-next-steps/010-next-steps-implementation-plan.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/250-next-steps/010-next-steps-implementation-plan.md"
+        },
+        {
+          "text": "400-redesign/000-index.md",
+          "target": "400-redesign/000-index.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/400-redesign/000-index.md"
+        },
+        {
+          "text": "400-redesign/010-implementation-plan.md",
+          "target": "400-redesign/010-implementation-plan.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/400-redesign/010-implementation-plan.md"
+        },
+        {
+          "text": "400-redesign/020-symlink-architecture.md",
+          "target": "400-redesign/020-symlink-architecture.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/400-redesign/020-symlink-architecture.md"
+        },
+        {
+          "text": "400-redesign/030-versioned-strategy.md",
+          "target": "400-redesign/030-versioned-strategy.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/400-redesign/030-versioned-strategy.md"
+        },
+        {
+          "text": "400-redesign/040-implementation-guide.md",
+          "target": "400-redesign/040-implementation-guide.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/400-redesign/040-implementation-guide.md"
+        },
+        {
+          "text": "010-overview.md",
+          "target": "010-overview.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/010-overview.md"
+        },
+        {
+          "text": "020-architecture.md",
+          "target": "020-architecture.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/020-architecture.md"
+        },
+        {
+          "text": "200-current-state.md",
+          "target": "200-current-state.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/200-current-state.md"
+        },
+        {
+          "text": "060-plugin-management.md",
+          "target": "060-plugin-management.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/060-plugin-management.md"
+        },
+        {
+          "text": "230-naming-convention-analysis.md",
+          "target": "230-naming-convention-analysis.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/230-naming-convention-analysis.md"
+        },
+        {
+          "text": "220-improvement-recommendations.md",
+          "target": "220-improvement-recommendations.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/220-improvement-recommendations.md"
+        },
+        {
+          "text": "210-issues-inconsistencies.md",
+          "target": "210-issues-inconsistencies.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/210-issues-inconsistencies.md"
+        },
+        {
+          "text": "050-performance-monitoring.md",
+          "target": "050-performance-monitoring.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/050-performance-monitoring.md"
+        },
+        {
+          "text": "310-flow-diagrams.md",
+          "target": "310-flow-diagrams.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/310-flow-diagrams.md"
+        }
+      ]
+    },
+    {
+      "source": "docs/030-activation-flow.md",
+      "links": []
+    },
+    {
+      "source": "docs/120-terminal-integration.md",
+      "links": [
+        {
+          "text": "README",
+          "target": "README.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/README.md"
+        },
+        {
+          "text": "000-index",
+          "target": "000-index.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/000-index.md"
+        }
+      ]
+    },
+    {
+      "source": "docs/400-redesign/070-maintenance-guide.md",
+      "links": [
+        {
+          "text": "Redesign Index",
+          "target": "../000-index.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/000-index.md"
+        },
+        {
+          "text": "000-index",
+          "target": "../000-index.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/000-index.md"
+        }
+      ]
+    },
+    {
+      "source": "docs/400-redesign/060-risk-assessment.md",
+      "links": [
+        {
+          "text": "Redesign Index",
+          "target": "../000-index.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/000-index.md"
+        },
+        {
+          "text": "000-index",
+          "target": "../000-index.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/000-index.md"
+        }
+      ]
+    },
+    {
+      "source": "docs/400-redesign/010-implementation-plan.md",
+      "links": [
+        {
+          "text": "Project Overview",
+          "target": "#1-project-overview",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Current State Analysis",
+          "target": "#2-current-state-analysis",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Existing Symlink Structure",
+          "target": "#21-existing-symlink-structure",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Current Configuration Files",
+          "target": "#22-current-configuration-files",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Layered Development Strategy",
+          "target": "#3-layered-development-strategy",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "File/Folder Duplication System",
+          "target": "#31-filefolder-duplication-system",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Symlink Architecture Design",
+          "target": "#32-symlink-architecture-design",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Configuration Switching Mechanism",
+          "target": "#33-configuration-switching-mechanism",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Tests Folder Comprehensive Reorganization",
+          "target": "#4-tests-folder-comprehensive-reorganization",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Current State Audit",
+          "target": "#41-current-state-audit",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Test Cleanup Strategy",
+          "target": "#42-test-cleanup-strategy",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "New Test Structure Design",
+          "target": "#43-new-test-structure-design",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Test Modernization Plan",
+          "target": "#44-test-modernization-plan",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Pre-Implementation Analysis",
+          "target": "#5-pre-implementation-analysis",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Clarifying Questions & Recommendations",
+          "target": "#51-clarifying-questions--recommendations",
+          "type": "anchor",
+          "status": "missing"
+        },
+        {
+          "text": "Risk Assessment",
+          "target": "#52-risk-assessment",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Implementation Sequence",
+          "target": "#53-implementation-sequence",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Final Implementation Commands",
+          "target": "#6-final-implementation-commands",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Initial Setup Commands",
+          "target": "#61-initial-setup-commands",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Switching Scripts Installation",
+          "target": "#62-switching-scripts-installation",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Validation Commands",
+          "target": "#63-validation-commands",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Success Criteria & Validation",
+          "target": "#7-success-criteria--validation",
+          "type": "anchor",
+          "status": "missing"
+        },
+        {
+          "text": "Functional Success Criteria",
+          "target": "#71-functional-success-criteria",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Technical Success Criteria",
+          "target": "#72-technical-success-criteria",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Documentation Success Criteria",
+          "target": "#73-documentation-success-criteria",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Previous",
+          "target": "000-index.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/400-redesign/000-index.md"
+        },
+        {
+          "text": "Next",
+          "target": "020-symlink-architecture.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/400-redesign/020-symlink-architecture.md"
+        },
+        {
+          "text": "Top",
+          "target": "#top",
+          "type": "anchor",
+          "status": "missing"
+        },
+        {
+          "text": "${HOME}/.config/ai/guidelines.md",
+          "target": "${HOME}/.config/ai/guidelines.md",
+          "type": "absolute-repo-path",
+          "status": "missing",
+          "resolved": "${HOME}/.config/zsh/Users/s-a-c/.config/ai/guidelines.md"
+        }
+      ]
+    },
+    {
+      "source": "docs/400-redesign/040-implementation-guide.md",
+      "links": [
+        {
+          "text": "4. ZSH REDESIGN - Final Implementation Guide",
+          "target": "#4-zsh-redesign---final-implementation-guide",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Table of Contents",
+          "target": "#table-of-contents",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "1. Executive Summary",
+          "target": "#1-executive-summary",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "2. Architecture Overview",
+          "target": "#2-architecture-overview",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "2.1 Final Architecture Design",
+          "target": "#21-final-architecture-design",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "2.2 Configuration Lifecycle",
+          "target": "#22-configuration-lifecycle",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "3. Implementation Phases",
+          "target": "#3-implementation-phases",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "3.1 Phase 1: Infrastructure Setup (Day 1)",
+          "target": "#31-phase-1-infrastructure-setup-day-1",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "1.1 Create Development Configuration",
+          "target": "#11-create-development-configuration",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "1.2 Create .active Symlink Pointers",
+          "target": "#12-create-active-symlink-pointers",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "1.3 Update Main Symlinks",
+          "target": "#13-update-main-symlinks",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "1.4 Initialize Version Tracking",
+          "target": "#14-initialize-version-tracking",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "3.2 Phase 2: Management Scripts (Day 1-2)",
+          "target": "#32-phase-2-management-scripts-day-1-2",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "2.1 Create bin Directory",
+          "target": "#21-create-bin-directory",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "2.2 Core Management Scripts",
+          "target": "#22-core-management-scripts",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "2.3 Make Scripts Executable",
+          "target": "#23-make-scripts-executable",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "3.3 Phase 3: Testing Framework (Day 2)",
+          "target": "#33-phase-3-testing-framework-day-2",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "3.1 Create Test Structure",
+          "target": "#31-create-test-structure",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "3.2 Create Test Suite",
+          "target": "#32-create-test-suite",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "3.4 Phase 4: Zgenom Integration (Day 2)",
+          "target": "#34-phase-4-zgenom-integration-day-2",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "4.1 Update Zgenom Configuration",
+          "target": "#41-update-zgenom-configuration",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "4.2 Create Zgenom Init Scripts",
+          "target": "#42-create-zgenom-init-scripts",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "3.5 Phase 5: Validation \\& Documentation (Day 3)",
+          "target": "#35-phase-5-validation--documentation-day-3",
+          "type": "anchor",
+          "status": "missing"
+        },
+        {
+          "text": "5.1 Comprehensive Testing",
+          "target": "#51-comprehensive-testing",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "5.2 Performance Benchmarking",
+          "target": "#52-performance-benchmarking",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "4. Deployment Workflow",
+          "target": "#4-deployment-workflow",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "4.1 Standard Development Cycle",
+          "target": "#41-standard-development-cycle",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "4.2 Emergency Procedures",
+          "target": "#42-emergency-procedures",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "5. Success Criteria",
+          "target": "#5-success-criteria",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "5.1 Functional Requirements",
+          "target": "#51-functional-requirements",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "5.2 Technical Requirements",
+          "target": "#52-technical-requirements",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "5.3 Operational Requirements",
+          "target": "#53-operational-requirements",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "6. Maintenance Guidelines",
+          "target": "#6-maintenance-guidelines",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "6.1 Regular Maintenance",
+          "target": "#61-regular-maintenance",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "6.2 Configuration Hygiene",
+          "target": "#62-configuration-hygiene",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "6.3 Backup Strategy",
+          "target": "#63-backup-strategy",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Conclusion",
+          "target": "#conclusion",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Navigation",
+          "target": "#navigation",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Previous",
+          "target": "030-versioned-strategy.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/400-redesign/030-versioned-strategy.md"
+        },
+        {
+          "text": "Next",
+          "target": "../000-index.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/000-index.md"
+        },
+        {
+          "text": "Top",
+          "target": "#top",
+          "type": "anchor",
+          "status": "missing"
+        },
+        {
+          "text": "${HOME}/.config/ai/guidelines.md",
+          "target": "${HOME}/.config/ai/guidelines.md",
+          "type": "absolute-repo-path",
+          "status": "missing",
+          "resolved": "${HOME}/.config/zsh/Users/s-a-c/.config/ai/guidelines.md"
+        }
+      ]
+    },
+    {
+      "source": "docs/400-redesign/020-symlink-architecture.md",
+      "links": [
+        {
+          "text": "Current vs. Proposed Symlink Structure",
+          "target": "#1-current-vs-proposed-symlink-structure",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Current Structure Analysis",
+          "target": "#11-current-structure-analysis",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Proposed Architecture Options",
+          "target": "#12-proposed-architecture-options",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Recommended Architecture: Enhanced Current Structure",
+          "target": "#2-recommended-architecture-enhanced-current-structure",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Rationale for Recommendation",
+          "target": "#21-rationale-for-recommendation",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Detailed Implementation Plan",
+          "target": "#22-detailed-implementation-plan",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Zgenom Cache Integration",
+          "target": "#3-zgenom-cache-integration",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Current Zgenom Setup Analysis",
+          "target": "#31-current-zgenom-setup-analysis",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Proposed Cache Isolation",
+          "target": "#32-proposed-cache-isolation",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Configuration Switching Mechanisms",
+          "target": "#4-configuration-switching-mechanisms",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Switching Commands",
+          "target": "#41-switching-commands",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Validation Commands",
+          "target": "#42-validation-commands",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Risk Analysis & Mitigation",
+          "target": "#5-risk-analysis--mitigation",
+          "type": "anchor",
+          "status": "missing"
+        },
+        {
+          "text": "High-Risk Scenarios",
+          "target": "#51-high-risk-scenarios",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Medium-Risk Scenarios",
+          "target": "#52-medium-risk-scenarios",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Alternative Architectures Considered",
+          "target": "#6-alternative-architectures-considered",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Final Recommendation",
+          "target": "#7-final-recommendation",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Previous",
+          "target": "010-implementation-plan.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/400-redesign/010-implementation-plan.md"
+        },
+        {
+          "text": "Next",
+          "target": "030-versioned-strategy.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/400-redesign/030-versioned-strategy.md"
+        },
+        {
+          "text": "Top",
+          "target": "#top",
+          "type": "anchor",
+          "status": "missing"
+        },
+        {
+          "text": "${HOME}/.config/ai/guidelines.md",
+          "target": "${HOME}/.config/ai/guidelines.md",
+          "type": "absolute-repo-path",
+          "status": "missing",
+          "resolved": "${HOME}/.config/zsh/Users/s-a-c/.config/ai/guidelines.md"
+        }
+      ]
+    },
+    {
+      "source": "docs/400-redesign/030-versioned-strategy.md",
+      "links": [
+        {
+          "text": "Overview",
+          "target": "#1-overview",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Architecture Evolution",
+          "target": "#2-architecture-evolution",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Basic Architecture vs. Versioned Architecture",
+          "target": "#21-basic-architecture-vs-versioned-architecture",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Configuration Lifecycle",
+          "target": "#3-configuration-lifecycle",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Development to Production Pipeline",
+          "target": "#31-development-to-production-pipeline",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Version Management Strategy",
+          "target": "#32-version-management-strategy",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Implementation Details",
+          "target": "#4-implementation-details",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Directory Structure",
+          "target": "#41-directory-structure",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Configuration Management Scripts",
+          "target": "#42-configuration-management-scripts",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Advanced Configuration Management",
+          "target": "#5-advanced-configuration-management",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Configuration Diff Tool",
+          "target": "#51-configuration-diff-tool",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Configuration Merge Tool",
+          "target": "#52-configuration-merge-tool",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Zgenom Integration with Versioned Configurations",
+          "target": "#6-zgenom-integration-with-versioned-configurations",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Shared Zgenom Strategy",
+          "target": "#61-shared-zgenom-strategy",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Zgenom Cache Management",
+          "target": "#62-zgenom-cache-management",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Deployment Workflow",
+          "target": "#7-deployment-workflow",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Standard Deployment Process",
+          "target": "#71-standard-deployment-process",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Emergency Rollback",
+          "target": "#72-emergency-rollback",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Configuration Metadata",
+          "target": "#8-configuration-metadata",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Version Tracking",
+          "target": "#81-version-tracking",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Change Log",
+          "target": "#82-change-log",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Benefits of Versioned Approach",
+          "target": "#9-benefits-of-versioned-approach",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Advantages",
+          "target": "#91-advantages",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Trade-offs",
+          "target": "#92-trade-offs",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Migration Strategy",
+          "target": "#10-migration-strategy",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Previous",
+          "target": "020-symlink-architecture.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/400-redesign/020-symlink-architecture.md"
+        },
+        {
+          "text": "Next",
+          "target": "040-implementation-guide.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/400-redesign/040-implementation-guide.md"
+        },
+        {
+          "text": "Top",
+          "target": "#top",
+          "type": "anchor",
+          "status": "missing"
+        },
+        {
+          "text": "${HOME}/.config/ai/guidelines.md",
+          "target": "${HOME}/.config/ai/guidelines.md",
+          "type": "absolute-repo-path",
+          "status": "missing",
+          "resolved": "${HOME}/.config/zsh/Users/s-a-c/.config/ai/guidelines.md"
+        }
+      ]
+    },
+    {
+      "source": "docs/400-redesign/000-index.md",
+      "links": [
+        {
+          "text": "Overview",
+          "target": "#1-overview",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Documentation Structure",
+          "target": "#2-documentation-structure",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Quick Start",
+          "target": "#3-quick-start",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Implementation Phases",
+          "target": "#4-implementation-phases",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "Related Documents",
+          "target": "#5-related-documents",
+          "type": "anchor",
+          "status": "exists"
+        },
+        {
+          "text": "010-implementation-plan",
+          "target": "010-implementation-plan.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/400-redesign/010-implementation-plan.md"
+        },
+        {
+          "text": "020-symlink-architecture",
+          "target": "020-symlink-architecture.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/400-redesign/020-symlink-architecture.md"
+        },
+        {
+          "text": "030-versioned-strategy",
+          "target": "030-versioned-strategy.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/400-redesign/030-versioned-strategy.md"
+        },
+        {
+          "text": "040-implementation-guide",
+          "target": "040-implementation-guide.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/400-redesign/040-implementation-guide.md"
+        },
+        {
+          "text": "050-testing-framework",
+          "target": "050-testing-framework.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/400-redesign/050-testing-framework.md"
+        },
+        {
+          "text": "060-risk-assessment",
+          "target": "060-risk-assessment.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/400-redesign/060-risk-assessment.md"
+        },
+        {
+          "text": "070-maintenance-guide",
+          "target": "070-maintenance-guide.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/400-redesign/070-maintenance-guide.md"
+        },
+        {
+          "text": "../current-state.md",
+          "target": "../200-current-state.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/200-current-state.md"
+        },
+        {
+          "text": "../architecture.md",
+          "target": "../020-architecture.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/020-architecture.md"
+        },
+        {
+          "text": "../security-system.md",
+          "target": "../040-security-system.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/040-security-system.md"
+        },
+        {
+          "text": "../performance-monitoring.md",
+          "target": "../050-performance-monitoring.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/050-performance-monitoring.md"
+        },
+        {
+          "text": "010-implementation-plan.md",
+          "target": "010-implementation-plan.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/400-redesign/010-implementation-plan.md"
+        },
+        {
+          "text": "../issues-inconsistencies.md",
+          "target": "../210-issues-inconsistencies.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/210-issues-inconsistencies.md"
+        },
+        {
+          "text": "../improvement-recommendations.md",
+          "target": "../220-improvement-recommendations.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/220-improvement-recommendations.md"
+        },
+        {
+          "text": "Zgenom Documentation",
+          "target": "https://github.com/jandamm/zgenom",
+          "type": "external",
+          "status": "external-not-checked"
+        },
+        {
+          "text": "ZSH Quickstart Kit",
+          "target": "https://github.com/unixorn/zsh-quickstart-kit",
+          "type": "external",
+          "status": "external-not-checked"
+        },
+        {
+          "text": "Previous",
+          "target": "../README.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/README.md"
+        },
+        {
+          "text": "Next",
+          "target": "010-implementation-plan.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/400-redesign/010-implementation-plan.md"
+        },
+        {
+          "text": "Top",
+          "target": "#top",
+          "type": "anchor",
+          "status": "missing"
+        },
+        {
+          "text": "${HOME}/.config/ai/guidelines.md",
+          "target": "${HOME}/.config/ai/guidelines.md",
+          "type": "absolute-repo-path",
+          "status": "missing",
+          "resolved": "${HOME}/.config/zsh/Users/s-a-c/.config/ai/guidelines.md"
+        }
+      ]
+    },
+    {
+      "source": "docs/400-redesign/050-testing-framework.md",
+      "links": [
+        {
+          "text": "Redesign Index",
+          "target": "../000-index.md",
+          "type": "relative",
+          "status": "exists",
+          "resolved": "${HOME}/.config/zsh/docs/000-index.md"
+        },
+        {
+          "text": "000-index",
+
+---
+
+**Navigation:** [← Implementation Guide](400-redesign/040-implementation-guide.md) | [Top ↑](#testing-framework) | [Risk Assessment →](400-redesign/060-risk-assessment.md)
+
+---
+
+*Last updated: 2025-10-13*

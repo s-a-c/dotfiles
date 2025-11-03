@@ -1,0 +1,16 @@
+{
+  "overall_status": "BASELINE_CREATED",
+  "goal": "streak",
+  "worst_metric": "_ms",
+  "worst_delta_pct": 0,
+  "warn_threshold_pct": 10,
+  "fail_threshold_pct": 25,
+  "runs": 5,
+  "mode": "observe",
+  "metrics": {
+    "prompt_ready_ms": { "status": "BASELINE_CREATED", "delta_pct": 0.00, "mean_ms": 0.00, "median_ms": 0.00, "stddev_ms": 0.00, "rsd_pct": 0.00, "baseline_mean_ms": 0.00, "values": [0,0,0,0,0] }
+  },
+  "generated_at": "2025-09-14T14:10:47+01:00",
+  "baseline_dir": "artifacts/metrics",
+  "_debug": { "synthetic_used": 0, "partial": 0, "missing_metrics": [""] }
+}

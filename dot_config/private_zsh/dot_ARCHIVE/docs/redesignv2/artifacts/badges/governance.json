@@ -1,0 +1,31 @@
+{
+  "schema": "governance-badge.v1",
+  "generated_at": "2025-09-07T14:32:44Z",
+  "sources": {
+    "perf_drift": "missing",
+    "perf_ledger": "missing",
+    "variance_state": "${HOME}/dotfiles/docs/redesignv2/artifacts/badges/variance-state.json",
+    "micro_bench": "${HOME}/.config/zsh/docs/redesignv2/artifacts/metrics/microbench-core.json"
+  },
+  "stats": {
+    "regressions": 0,
+    "max_regression_pct": 0,
+    "over_budget_count": 0,
+    "variance_mode": "guard",
+    "auth_shortfall": 0,
+    "auth_requested": 5,
+    "authentic_samples": 5,
+    "multi_source": "none",
+    "rsd_pre": 0.0207,
+    "rsd_post": 0.0187,
+    "rsd_prompt": 0.0187,
+    "microbench_regress_count": 0,
+    "microbench_worst_ratio": 1.0,
+    "shimmed": 0
+  },
+  "badge": {
+    "label": "governance",
+    "message": "guard: stable",
+    "color": "green"
+  }
+}

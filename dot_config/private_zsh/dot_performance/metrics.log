@@ -1,0 +1,8 @@
+# ZSH Performance Metrics Log
+# Format: timestamp,metric_type,value,context
+# Created: 2025-09-09 16:55:00 UTC
+# Note: Previous metrics from 2025-08-22 to 2025-08-27 contained measurement errors
+# This log contains accurate measurements starting 2025-09-09
+2025-09-15T01:56:04 UTC,startup_time,5526,daily
+2025-09-15T01:56:04 UTC,startup_std_dev,821.65807973876822335378,daily
+2025-09-15T01:56:04 UTC,startup_samples,2,daily

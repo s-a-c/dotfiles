@@ -1,0 +1,39 @@
+#!/usr/bin/env zsh
+# .zshrc.local — late overrides only
+# Phase: 5 (Local overrides)
+# Purpose: Minimal, idempotent adjustments after vendored quickstart .zshrc.
+# Dependencies: POST — assumes plugin stack and fragments already sourced.
+# Notes:
+# - Prefer fragments for most changes:
+#     .zshrc.pre-plugins.d.00/*    (early env/path tweaks)
+#     .zshrc.add-plugins.d.00/*    (plugin declarations)
+#     .zshrc.d.00/*                (post-plugin augmentations)
+# - Keep this file tiny; it's the last hook. Re-sourcing must be harmless.
+
+# PATH tweaks moved to .zprofile:
+# - Apply once per login so all child shells inherit PATH (no repeated edits per interactive shell)
+# - Keep this file focused on truly late interactive overrides
+# - Helpers (zf::path_prepend/append) load via .zshenv, so they are available in .zprofile
+# See .zprofile for existence checks and duplicate-safe PATH handling
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+
+# Herd injected PHP 8.4 configuration.
+export HERD_PHP_84_INI_SCAN_DIR="/Users/s-a-c/Library/Application Support/Herd/config/php/84/"
+
+
+# Herd injected PHP 8.5 configuration.
+export HERD_PHP_85_INI_SCAN_DIR="/Users/s-a-c/Library/Application Support/Herd/config/php/85/"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/s-a-c/.lmstudio/bin"
+# End of LM Studio CLI section
+
+
+# bun completions
+[ -s "/Users/s-a-c/.local/share/bun/_bun" ] && source "/Users/s-a-c/.local/share/bun/_bun"
+
+PATH=~/.console-ninja/.bin:$PATH
+
+return 0

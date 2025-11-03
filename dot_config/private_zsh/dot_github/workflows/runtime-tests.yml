@@ -1,0 +1,42 @@
+name: ZSH Runtime Tests
+
+on:
+    push:
+        branches: [main, feature/**]
+    pull_request:
+        branches: [main]
+
+jobs:
+    runtime-tests:
+        runs-on: ubuntu-latest
+        timeout-minutes: 15
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup Zsh
+              run: sudo apt-get update && sudo apt-get install -y zsh
+
+            - name: List runtime tests
+              run: |
+                  echo "Runtime tests:"; ls -1 dot-config/zsh/tests/runtime || true
+
+            - name: Run runtime tests
+              shell: bash
+              run: |
+                  set -euo pipefail
+                  cd dot-config/zsh
+                  failures=0
+                  for t in tests/runtime/test_*.zsh; do
+                    echo "Running $t";
+                    if ZDOTDIR=$PWD zsh $t; then
+                      echo "[PASS] $t";
+                    else
+                      echo "[FAIL] $t"; failures=$((failures+1));
+                    fi
+                  done
+                  if [ $failures -ne 0 ]; then
+                    echo "Failed $failures runtime test(s)" >&2
+                    exit 1
+                  fi
+                  echo "All runtime tests passed"

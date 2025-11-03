@@ -1,0 +1,205 @@
+{
+  "version": 1,
+  "guidelines_checksum": "50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49",
+  "guidelines_ack": "Compliant with /Users/s-a-c/.config/ai/guidelines.md v50b6b88e7dea25311b5e28879c90b857ba9f1c4b0bc974a72f6b14bc68d54f49",
+  "generated_at_utc": "2025-09-02T00:00:00Z",
+  "phase": "A-shadow",
+  "mode": "observe",
+  "notes": "Phase A (shadow) manifest. All enabled tasks run asynchronously in shadow mode; synchronous originals still execute so user-visible behavior is unchanged. Planned tasks listed to stabilize checksum and enable early drift detection (G2). Any addition/removal MUST update this manifest (Gate G4/G2 coupling).",
+  "task_policy": {
+    "default_timeout_ms": 1500,
+    "hard_timeout_cap_ms": 5000,
+    "max_concurrency_default": 4,
+    "overhead_warn_ratio": 1.2
+  },
+  "tasks": [
+    {
+      "id": "theme_extras",
+      "label": "theme_extras_init_async",
+      "description": "Loads optional prompt/theme embellishments (icons, transient tweaks) that are not required for first prompt render.",
+      "priority": "cosmetic",
+      "phase_introduced": "A-shadow",
+      "enabled": true,
+      "mode_restriction": "shadow",
+      "timeout_ms": 800,
+      "retries": 0,
+      "feature_flag": "ASYNC_TASK_THEME_EXTRAS",
+      "status": "active",
+      "classification": "sync_deferral_candidate",
+      "estimated_sync_cost_removed_ms": 0,
+      "metrics": {
+        "budget_ms_interim": 300,
+        "budget_ms_final": 150
+      }
+    },
+    {
+      "id": "completion_cache_scan",
+      "label": "completion_cache_scan_async",
+      "description": "Builds or refreshes completion cache indexes (comp dump / scanning) after initial prompt to reduce synchronous compinit overhead in future sessions.",
+      "priority": "cosmetic",
+      "phase_introduced": "A-shadow",
+      "enabled": true,
+      "mode_restriction": "shadow",
+      "timeout_ms": 1500,
+      "retries": 0,
+      "feature_flag": "ASYNC_TASK_COMPLETION_CACHE",
+      "status": "active",
+      "classification": "sync_deferral_candidate",
+      "estimated_sync_cost_removed_ms": 0,
+      "metrics": {
+        "budget_ms_interim": 600,
+        "budget_ms_final": 300
+      }
+    },
+    {
+      "id": "gitstatus_warm",
+      "label": "gitstatus_init_async",
+      "description": "Warms gitstatus daemon / initial status fetch to avoid large synchronous cost on first VCS prompt segment.",
+      "priority": "normal",
+      "phase_introduced": "planned",
+      "enabled": false,
+      "mode_restriction": "on",
+      "timeout_ms": 1200,
+      "retries": 0,
+      "feature_flag": "ASYNC_TASK_GITSTATUS_WARM",
+      "status": "planned",
+      "classification": "sync_deferral_candidate",
+      "estimated_sync_cost_removed_ms": 250,
+      "metrics": {
+        "budget_ms_interim": 300,
+        "budget_ms_final": 150
+      }
+    },
+    {
+      "id": "fzf_tools",
+      "label": "fzf_tools_init_async",
+      "description": "Initializes fuzzy finder key-bindings and optional preview caches after first prompt.",
+      "priority": "normal",
+      "phase_introduced": "planned",
+      "enabled": false,
+      "mode_restriction": "on",
+      "timeout_ms": 1000,
+      "retries": 0,
+      "feature_flag": "ASYNC_TASK_FZF_TOOLS",
+      "status": "planned",
+      "classification": "sync_deferral_candidate",
+      "estimated_sync_cost_removed_ms": 180,
+      "metrics": {
+        "budget_ms_interim": 300,
+        "budget_ms_final": 120
+      }
+    },
+    {
+      "id": "syntax_highlight_init",
+      "label": "syntax_highlight_init_async",
+      "description": "Loads syntax highlighting plugin and large pattern sets after prompt to shrink synchronous critical path.",
+      "priority": "normal",
+      "phase_introduced": "planned",
+      "enabled": false,
+      "mode_restriction": "on",
+      "timeout_ms": 1300,
+      "retries": 0,
+      "feature_flag": "ASYNC_TASK_SYNTAX_HIGHLIGHT",
+      "status": "planned",
+      "classification": "sync_deferral_candidate",
+      "estimated_sync_cost_removed_ms": 220,
+      "metrics": {
+        "budget_ms_interim": 350,
+        "budget_ms_final": 180
+      }
+    },
+    {
+      "id": "history_backend_init",
+      "label": "history_backend_init_async",
+      "description": "Configures advanced history (dedupe, extended size, share) deferred to avoid early blocking file IO.",
+      "priority": "normal",
+      "phase_introduced": "planned",
+      "enabled": false,
+      "mode_restriction": "on",
+      "timeout_ms": 900,
+      "retries": 0,
+      "feature_flag": "ASYNC_TASK_HISTORY_BACKEND",
+      "status": "planned",
+      "classification": "sync_deferral_candidate",
+      "estimated_sync_cost_removed_ms": 120,
+      "metrics": {
+        "budget_ms_interim": 250,
+        "budget_ms_final": 120
+      }
+    },
+    {
+      "id": "vcs_helpers_init",
+      "label": "vcs_helpers_init_async",
+      "description": "Initializes ancillary VCS helpers (hg, svn fallbacks) not needed for immediate git prompt.",
+      "priority": "cosmetic",
+      "phase_introduced": "planned",
+      "enabled": false,
+      "mode_restriction": "on",
+      "timeout_ms": 700,
+      "retries": 0,
+      "feature_flag": "ASYNC_TASK_VCS_HELPERS",
+      "status": "planned",
+      "classification": "sync_deferral_candidate",
+      "estimated_sync_cost_removed_ms": 90,
+      "metrics": {
+        "budget_ms_interim": 200,
+        "budget_ms_final": 100
+      }
+    },
+    {
+      "id": "security_deep_scan",
+      "label": "security_deep_scan_async",
+      "description": "Performs deferred hashing / integrity validation of plugin sources (Gate G4/G5 prerequisite, heavy IO).",
+      "priority": "normal",
+      "phase_introduced": "planned",
+      "enabled": false,
+      "mode_restriction": "on",
+      "timeout_ms": 5000,
+      "retries": 0,
+      "feature_flag": "ASYNC_TASK_SECURITY_SCAN",
+      "status": "planned",
+      "classification": "deferred_security",
+      "estimated_sync_cost_removed_ms": 0,
+      "metrics": {
+        "budget_ms_interim": 5000,
+        "budget_ms_final": 3000
+      }
+    }
+  ],
+  "schema": {
+    "task_fields": [
+      "id",
+      "label",
+      "description",
+      "priority",
+      "phase_introduced",
+      "enabled",
+      "mode_restriction",
+      "timeout_ms",
+      "retries",
+      "feature_flag",
+      "status",
+      "classification",
+      "estimated_sync_cost_removed_ms",
+      "metrics.budget_ms_interim",
+      "metrics.budget_ms_final"
+    ],
+    "priority_enum": ["critical", "normal", "cosmetic"],
+    "status_enum": ["active", "planned", "deprecated"],
+    "classification_enum": ["sync_deferral_candidate", "deferred_security", "infrastructure"]
+  },
+  "integrity": {
+    "expected_active_shadow_tasks": [
+      "theme_extras",
+      "completion_cache_scan"
+    ],
+    "planned_future_tasks": [
+      "gitstatus_warm",
+      "fzf_tools",
+      "syntax_highlight_init",
+      "history_backend_init",
+      "vcs_helpers_init",
+      "security_deep_scan"
+    ]
+  }
+}

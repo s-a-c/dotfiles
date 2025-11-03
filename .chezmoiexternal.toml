@@ -1,0 +1,18 @@
+# This file tells chezmoi which external git repos to clone.
+
+[".config/ai"]
+    type = "git-repo"
+    url = "https://github.com/s-a-c/ai-guidelines.git"
+
+[".config/nix-darwin"]
+    type = "git-repo"
+    url = "https://github.com/s-a-c/nix-darwin.git"
+
+[".config/alexandersix/tmux-starter"]
+    type = "git-repo"
+    url = "https://github.com/alexandersix/tmux-starter.git"
+
+[".config/zsh/zsh-quickstart-kit"]
+    type = "git-repo"
+    url = "https://github.com/unixorn/zsh-quickstart-kit.git"
+

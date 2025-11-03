@@ -1,0 +1,3 @@
+SEGMENT name=pre_plugin_total ms=1639 phase=pre_plugin sample=mean
+SEGMENT name=post_plugin_total ms=5465 phase=post_plugin sample=mean
+SEGMENT name=prompt_ready ms=5465 phase=prompt sample=mean

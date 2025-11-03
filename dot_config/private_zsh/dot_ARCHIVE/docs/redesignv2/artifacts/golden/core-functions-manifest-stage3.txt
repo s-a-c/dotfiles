@@ -1,0 +1,52 @@
+# core-functions-manifest-stage3.txt
+# ---------------------------------------------------------------------------
+# Golden Manifest: Core Function Namespace (Stage 3)
+#
+# Scope:
+#   Canonical list of exported Stage 3 core helper functions defined in:
+#     .zshrc.d.REDESIGN/10-core-functions.zsh
+#
+# Purpose:
+#   - Provides a stable reference for drift / regression tests once
+#     name-level locking is enabled (beyond simple count thresholds).
+#   - Complements (not replaces) the count test (CORE_FN_MIN_EXPECT /
+#     CORE_FN_GOLDEN_COUNT) and namespace hygiene test.
+#
+# Enforcement Model (Planned):
+#   1. Initial: Informational only (this file exists; test may warn on mismatch).
+#   2. Lock:   Test enforces exact match (add/remove requires manifest update + rationale).
+#   3. Mature: Optional fingerprint (hash of concatenated ordered names) added to
+#              a promotion gate / guard script.
+#
+# Update Workflow (When You Intentionally Add or Remove a Function):
+#   1. Modify 10-core-functions.zsh.
+#   2. Run:   functions | grep '^zf::' | sort  (or use zf::list_functions)
+#   3. Update this file (keep alphabetical order, one name per line below the delimiter).
+#   4. Add a change log entry to IMPLEMENTATION.md describing the rationale.
+#   5. If a test enforces the manifest, update its golden hash (if/when implemented).
+#
+# Non-Goals:
+#   - Does NOT track function bodies (logic drift handled by future fingerprint test).
+#   - Does NOT include helper functions from other modules (e.g. security/options).
+#
+# Format:
+#   - Lines beginning with '#' are comments.
+#   - A single delimiter line of '---' precedes the ordered function list.
+#   - One fully-qualified function name per line, no trailing spaces.
+#
+# Delimiter (do not remove):
+---
+zf::debug
+zf::ensure_cmd
+zf::exports
+zf::list_functions
+zf::log
+zf::require
+zf::script_dir
+zf::timed
+zf::warn
+zf::with_timing
+#
+# End of manifest
+# Manifest Version: stage3-initial
+# Last Updated: 2025-09-10

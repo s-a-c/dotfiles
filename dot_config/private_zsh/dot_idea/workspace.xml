@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="425a36f6-b706-4642-971e-ed0d7ba9f1c7" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../console-ninja/.bin/console-ninja" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../console-ninja/.bin/loader.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../console-ninja/.sm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../console-ninja/.tid" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../console-ninja/.vscode-sync" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../console-ninja/ai.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../console-ninja/hostRegister.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../console-ninja/mcp/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../console-ninja/mcp/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../console-ninja/notifications.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../console-ninja/stateFile.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../console-ninja/trace.1.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../console-ninja/usageFile.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../git/gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../git/gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nix-darwin" beforeDir="false" afterPath="$PROJECT_DIR$/../nix-darwin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nix-darwin/flake.nix" beforeDir="false" afterPath="$PROJECT_DIR$/../nix-darwin/flake.nix" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../quokka/.vscode.settings" beforeDir="false" afterPath="$PROJECT_DIR$/../quokka/.vscode.settings" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../starship.toml" beforeDir="false" afterPath="$PROJECT_DIR$/../starship.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wallaby/.vscode.settings" beforeDir="false" afterPath="$PROJECT_DIR$/../wallaby/.vscode.settings" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.ARCHIVE/docs/redesignv2/migration/draft-70-shim-removal.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/.ARCHIVE/docs/redesignv2/migration/draft-70-shim-removal.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.fzf.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/.fzf.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.zsh/cache/composer" beforeDir="false" afterPath="$PROJECT_DIR$/.zsh/cache/composer" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.zsh/site-functions.homebrew/.stamp" beforeDir="false" afterPath="$PROJECT_DIR$/.zsh/site-functions.homebrew/.stamp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.zshenv.01" beforeDir="false" afterPath="$PROJECT_DIR$/.zshenv.01" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.zshenv.local" beforeDir="false" afterPath="$PROJECT_DIR$/.zshenv.local" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.zshrc" beforeDir="false" afterPath="$PROJECT_DIR$/.zshrc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.zshrc.add-plugins.d.00/210-dev-php.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/.zshrc.add-plugins.d.00/210-dev-php.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.zshrc.d.00/510-npm-config-validator.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/.zshrc.d.00/510-npm-config-validator.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.zshrc.d.01/420-terminal-integration.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/.zshrc.d.01/420-terminal-integration.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.zshrc.d.01/460-prompt.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/.zshrc.d.01/460-prompt.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.zshrc.d.01/500-aliases.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/.zshrc.d.01/500-aliases.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.zshrc.d.01/510-developer-tools.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/.zshrc.d.01/510-developer-tools.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.zshrc.pre-plugins.d.00/020-shell-safety-nounset.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/.zshrc.pre-plugins.d.00/020-shell-safety-nounset.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.zshrc.pre-plugins.d.00/080-early-node-runtimes.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/.zshrc.pre-plugins.d.00/080-early-node-runtimes.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.zshrc.pre-plugins.d.01/020-zqs-overrides.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/.zshrc.pre-plugins.d.01/020-zqs-overrides.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.zshrc.pre-plugins.d.01/030-dev-environment.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/.zshrc.pre-plugins.d.01/030-dev-environment.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/validate-no-wrapper-sourcing.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/validate-no-wrapper-sourcing.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/000-index.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/000-index.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/000-index.md.backup" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/010-overview.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/010-overview.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/020-architecture.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/020-architecture.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/030-activation-flow.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/030-activation-flow.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/040-security-system.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/040-security-system.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/050-performance-monitoring.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/050-performance-monitoring.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/060-plugin-management.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/060-plugin-management.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/070-layered-system.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/070-layered-system.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/100-development-tools.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/100-development-tools.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/110-productivity-features.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/110-productivity-features.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/120-terminal-integration.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/120-terminal-integration.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/130-history-management.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/130-history-management.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/140-completion-system.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/140-completion-system.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/150-troubleshooting-startup-warnings.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/150-troubleshooting-startup-warnings.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/160-option-files-comparison.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/160-option-files-comparison.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/165-options-consolidation-summary.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/165-options-consolidation-summary.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/200-current-state.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/200-current-state.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/210-issues-inconsistencies.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/210-issues-inconsistencies.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/220-improvement-recommendations.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/220-improvement-recommendations.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/230-naming-convention-analysis.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/230-naming-convention-analysis.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/250-next-steps/000-index.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/250-next-steps/000-index.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/250-next-steps/010-next-steps-implementation-plan.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/250-next-steps/010-next-steps-implementation-plan.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/250-next-steps/020-implementation-task-breakdown.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/250-next-steps/020-implementation-task-breakdown.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/250-next-steps/021-task-1.2-findings.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/250-next-steps/021-task-1.2-findings.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/250-next-steps/023-zqs-startup-sequence-analysis.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/250-next-steps/023-zqs-startup-sequence-analysis.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/250-next-steps/025-vscode-terminal-fix.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/250-next-steps/025-vscode-terminal-fix.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/250-next-steps/030-performance-baseline-2025-10-07.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/250-next-steps/030-performance-baseline-2025-10-07.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/250-next-steps/040-phase-1-completion-report-2025-10-07.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/250-next-steps/040-phase-1-completion-report-2025-10-07.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/250-next-steps/2025-10-09-starship-guards.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/250-next-steps/2025-10-09-starship-guards.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/300-architecture-diagrams.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/300-architecture-diagrams.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/310-flow-diagrams.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/310-flow-diagrams.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/400-redesign/000-index.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/400-redesign/000-index.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/400-redesign/010-implementation-plan.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/400-redesign/010-implementation-plan.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/400-redesign/020-symlink-architecture.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/400-redesign/020-symlink-architecture.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/400-redesign/030-versioned-strategy.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/400-redesign/030-versioned-strategy.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/400-redesign/040-implementation-guide.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/400-redesign/040-implementation-guide.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/400-redesign/050-testing-framework.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/400-redesign/050-testing-framework.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/400-redesign/060-risk-assessment.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/400-redesign/060-risk-assessment.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/400-redesign/070-maintenance-guide.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/010-zsh-configuration/400-redesign/070-maintenance-guide.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/README.md.backup" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/reports/000-index.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/reports/000-index.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/startup-issues-resolution/test-fixes.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/docs/startup-issues-resolution/test-fixes.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/feature/_TEMPLATE_FEATURE_MODULE.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/feature/_TEMPLATE_FEATURE_MODULE.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/feature/feature-status.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/feature/feature-status.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/feature/noop.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/feature/noop.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/feature/registry/feature-registry.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/feature/registry/feature-registry.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/saved_macos_defaults.plist" beforeDir="false" afterPath="$PROJECT_DIR$/saved_macos_defaults.plist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/saved_zstyles.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/saved_zstyles.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/2025-08-23/miscellany/test-loading.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/2025-08-23/miscellany/test-loading.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/2025-08-23/performance/test-plugin-loading-simple.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/2025-08-23/performance/test-plugin-loading-simple.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/2025-08-23/performance/test-plugin-loading.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/2025-08-23/performance/test-plugin-loading.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/design/test-logging-homogeneity.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/design/test-logging-homogeneity.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/design/test-module-dependency-edge-cases.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/design/test-module-dependency-edge-cases.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/feature/noop/test-noop-enable-disable.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/feature/noop/test-noop-enable-disable.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/feature/noop/test-noop-failure-containment.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/feature/noop/test-noop-failure-containment.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/feature/registry/test-feature-invocation-wrapper.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/feature/registry/test-feature-invocation-wrapper.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/feature/registry/test-feature-registry-contract.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/feature/registry/test-feature-registry-contract.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/feature/tdd/test-node-lazy-activation.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/feature/tdd/test-node-lazy-activation.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/feature/tdd/test-ssh-agent-duplicate-spawn.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/feature/tdd/test-ssh-agent-duplicate-spawn.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/integration/test-git-hooks.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/integration/test-git-hooks.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/lib/test-framework.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/lib/test-framework.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/badges/test-summary-goal-suffix.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/badges/test-summary-goal-suffix.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/classifier/test-goal-01-explore-partial-ephemeral.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/classifier/test-goal-01-explore-partial-ephemeral.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/classifier/test-goal-02-streak-partial-tolerated.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/classifier/test-goal-02-streak-partial-tolerated.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/classifier/test-goal-03-governance-missing-metric-fail.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/classifier/test-goal-03-governance-missing-metric-fail.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/classifier/test-goal-04-ci-strictness.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/classifier/test-goal-04-ci-strictness.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/classifier/test-goal-05-unset-equals-streak.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/classifier/test-goal-05-unset-equals-streak.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/classifier/test-goal-06-absence-of-flags.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/classifier/test-goal-06-absence-of-flags.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/classifier/test-goal-apply-profile-scaffold.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/classifier/test-goal-apply-profile-scaffold.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/classifier/test-goal-field-stub.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/classifier/test-goal-field-stub.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/classifier/test-goal-governance-strictness.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/classifier/test-goal-governance-strictness.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/core-functions/bench-core-functions.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/core-functions/bench-core-functions.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/core-functions/test-core-micro-bench-smoke.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/core-functions/test-core-micro-bench-smoke.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/idle/test-idle-trigger-basic.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/idle/test-idle-trigger-basic.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/idle/test-idle-trigger-budget.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/idle/test-idle-trigger-budget.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/segments/test-granular-segments.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/segments/test-granular-segments.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/segments/test-segment-attribution.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/segments/test-segment-attribution.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/segments/test-simple-granular.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/segments/test-simple-granular.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/segments/test-structured-telemetry.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/segments/test-structured-telemetry.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/telemetry/test-classifier-baselines.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/telemetry/test-classifier-baselines.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/telemetry/test-structured-telemetry-schema.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/telemetry/test-structured-telemetry-schema.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/test-async-manifest-integrity.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/test-async-manifest-integrity.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/test-async-shadow-mode.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/test-async-shadow-mode.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/test-feature-sync-timings.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/test-feature-sync-timings.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/test-gitstatus-instrumentation.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/test-gitstatus-instrumentation.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/test-guidelines-checksum-present.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/test-guidelines-checksum-present.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/test-multi-sample-variance.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/test-multi-sample-variance.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/test-p10k-instrumentation.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/test-p10k-instrumentation.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/test-perf-drift-badge-presence.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/test-perf-drift-badge-presence.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/test-perf-monotonic-lifecycle.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/test-perf-monotonic-lifecycle.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/test-perf-segment-budget-overrides.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/test-perf-segment-budget-overrides.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/test-postplugin-segments-present.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/test-postplugin-segments-present.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/test-preplugin-baseline-threshold.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/test-preplugin-baseline-threshold.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/test-preplugin-segment-threshold.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/test-preplugin-segment-threshold.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/test-promotion-guard-perf-block.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/test-promotion-guard-perf-block.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/test-prompt-ready-threshold.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/test-prompt-ready-threshold.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/test-required-segment-labels.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/test-required-segment-labels.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/test-required-stage3-segments.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/test-required-stage3-segments.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/performance/test-segment-lines-present.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/performance/test-segment-lines-present.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/policy/test-logging-homogeneity.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/policy/test-logging-homogeneity.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/security/test-preplugin-integrity-hash.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/security/test-preplugin-integrity-hash.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/style/hooks/test-hooks-badge.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/style/hooks/test-hooks-badge.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/style/infra/test-infra-health-badge.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/style/infra/test-infra-health-badge.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/telemetry/test-feature-timing-disabled.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/telemetry/test-feature-timing-disabled.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/telemetry/test-feature-timing-enabled.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/telemetry/test-feature-timing-enabled.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/telemetry/test-feature-timing-schema.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/telemetry/test-feature-timing-schema.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_keybindings_home_end.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_keybindings_home_end.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_original_modules.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_original_modules.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_post_init_final.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_post_init_final.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_prompt_sequence_final.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_prompt_sequence_final.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_redesign_flags.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_redesign_flags.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_starship_debug.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_starship_debug.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_starship_eval_debug.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_starship_eval_debug.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_starship_eval_vs_source.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_starship_eval_vs_source.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_starship_final.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_starship_final.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_starship_status_var.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_starship_status_var.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_starship_status_var_pty.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_starship_status_var_pty.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_zle_after_zgenom_fix.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_zle_after_zgenom_fix.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_zle_direct.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_zle_direct.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_zle_starship_integration.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_zle_starship_integration.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/unit/core/test-trust-anchors.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/core/test-trust-anchors.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/unit/tdd/test-fzf-no-compinit.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/tdd/test-fzf-no-compinit.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/unit/tdd/test-integrations-idempotence.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/tdd/test-integrations-idempotence.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/unit/tdd/test-lazy-dispatcher-negative.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/tdd/test-lazy-dispatcher-negative.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/unit/tdd/test-path-normalization-edges.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/tdd/test-path-normalization-edges.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/unit/tdd/test-path-normalization-whitelist.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/tdd/test-path-normalization-whitelist.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/async-dispatcher.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tools/async-dispatcher.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/async-metrics-export.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tools/async-metrics-export.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/async-tasks.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tools/async-tasks.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/auto-commit-badges.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tools/auto-commit-badges.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/compute-infra-trend.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tools/compute-infra-trend.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/deps-export.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tools/deps-export.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/docs-path-audit.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tools/docs-path-audit.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/export-metrics-json.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tools/export-metrics-json.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/generate-goal-state-badge.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tools/generate-goal-state-badge.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/generate-infra-health-badge.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tools/generate-infra-health-badge.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/generate-summary-goal-badge.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tools/generate-summary-goal-badge.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/harness/perf-harness-minimal.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tools/harness/perf-harness-minimal.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/helpers/perf-minimal-markers.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tools/helpers/perf-minimal-markers.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/integrity-hash-preplugin.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tools/integrity-hash-preplugin.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/perf-badge.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tools/perf-badge.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/perf-ensure-segment-artifacts.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tools/perf-ensure-segment-artifacts.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/perf-extract-feature-sync.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tools/perf-extract-feature-sync.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/perf-regression-classifier.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tools/perf-regression-classifier.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/preplugin-baseline-capture.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tools/preplugin-baseline-capture.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/render-badge-svg.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tools/render-badge-svg.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/segment-lib.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tools/segment-lib.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/sync-readme-performance-status.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tools/sync-readme-performance-status.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/sync-readme-segments.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tools/sync-readme-segments.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/test-structured-telemetry-schema.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tools/test-structured-telemetry-schema.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/update-performance-status.zsh" beforeDir="false" afterPath="$PROJECT_DIR$/tools/update-performance-status.zsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../dot-wget-hsts" beforeDir="false" afterPath="$PROJECT_DIR$/../../dot-wget-hsts" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="EmbeddingIndexingInfo">
+    <option name="cachedIndexableFilesCount" value="7666" />
+    <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="/opt/homebrew/Cellar/php/8.4.11/bin/php" />
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 3
+}]]></component>
+  <component name="ProjectId" id="34n7JqWmkBpE9SGJ021TPl2mtsI" />
+  <component name="ProjectViewState">
+    <option name="autoscrollToSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="openDirectoriesWithSingleClick" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "javascript.preferred.runtime.type.id": "bun",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "bun",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/docs/010-zsh-configuration" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-75c7c973e13d-JavaScript-PS-253.27864.29" />
+        <option value="bundled-php-predefined-a98d8de5180a-865587d0cfff-com.jetbrains.php.sharedIndexes-PS-253.27864.29" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="425a36f6-b706-4642-971e-ed0d7ba9f1c7" name="Changes" comment="" />
+      <created>1761837414691</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1761837414691</updated>
+      <workItem from="1761837419042" duration="614000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
