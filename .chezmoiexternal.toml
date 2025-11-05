@@ -15,4 +15,3 @@
 [".config/zsh/zsh-quickstart-kit"]
     type = "git-repo"
     url = "https://github.com/unixorn/zsh-quickstart-kit.git"
-
